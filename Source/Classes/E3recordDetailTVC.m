@@ -191,7 +191,7 @@
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptEnableInstallment = [defaults boolForKey:GD_OptEnableInstallment];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
-	
+	MbOptAmountCalc = [defaults boolForKey:GD_OptAmountCalc];
 	
 	//--------------------------------------------------------------------------------.
 	// Me0root はArreyじゃない！からrelese不要
@@ -1062,7 +1062,8 @@
 					}
 					break;
 				case 1: // Amount
-					if (!MbE6paid) {
+					if (MbE6paid) break;
+					if (MbOptAmountCalc) { //[0.3.1]
 						if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
 							// 画面ヨコのとき、金額行を最上行にする
 							[self.tableView scrollToRowAtIndexPath:indexPath 
@@ -1071,7 +1072,18 @@
 						}
 						[self showCalcAmount];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+					} else {
+						//[0.3.1]不具合対応のため旧金額入力を復活
+						// 変更あれば[DONE]にて配下E6全削除すること
+						EditAmountVC *evc = [[EditAmountVC alloc] init];
+						evc.title = NSLocalizedString(@"Use Amount", nil);
+						evc.Rentity = Re3edit;
+						evc.RzKey = @"nAmount";
+						evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+						[self.navigationController pushViewController:evc animated:YES];
+						[evc release];
 					}
+
 					break;
 				case 2: // Card
 					if (PiAdd == 2) return; // (2)Card固定

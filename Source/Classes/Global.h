@@ -79,6 +79,7 @@
 #define GD_OptEnableInstallment				@"OptEnableInstallment"	// 分割払い
 #define GD_OptNumAutoShow					@"OptNumAutoShow"		// ＜保留＞ テンキー自動表示
 #define GD_OptFixedPriority					@"OptFixedPriority"		// ＜保留＞ 修正を優先
+#define GD_OptAmountCalc					@"OptAmountCalc"		//[0.3.1] 電卓使用
 
 
 // Option Other Plist KEY

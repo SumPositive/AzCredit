@@ -172,9 +172,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	switch (section) {
-		case 0:	return 4;
+		case 0:	return 3;
 			break;
-		case 1:	return 1;  // [0.1] ボーナス未対応
+		case 1:	return 1;
 			break;
 	}
 	return 0;
@@ -261,7 +261,8 @@
 					}
 				}
 					break;
-				case 2: // Bonus
+/******************** Bonus 未対応  　didSelectRowAtIndexPathの方も忘れず。
+			case 2: // Bonus
 				{
 					cell.textLabel.text = NSLocalizedString(@"CardBonus",nil);
 					NSInteger iB1 = [Re1edit.nBonus1 integerValue];
@@ -279,7 +280,8 @@
 					}
 				}
 					break;
-				case 3: // Bank
+ */
+				case 2: // Bank
 				{
 					cell.textLabel.text = NSLocalizedString(@"CardBank",nil);
 					if (Re1edit.e8bank)
@@ -377,7 +379,8 @@
 					[e1ed release];
 				}
 					break;
-				case 2: // Bonus
+/******************** Bonus 未対応
+			case 2: // Bonus
 				{
 					E1editBonusVC *e1ed = [[E1editBonusVC alloc] init];
 					e1ed.title = NSLocalizedString(@"CardBonus", nil);
@@ -387,7 +390,8 @@
 					[e1ed release];
 				}
 					break;
-				case 3: // Bank
+ */
+				case 2: // Bank
 				{
 					// E8bankTVC へ
 					E8bankTVC *tvc = [[E8bankTVC alloc] init];

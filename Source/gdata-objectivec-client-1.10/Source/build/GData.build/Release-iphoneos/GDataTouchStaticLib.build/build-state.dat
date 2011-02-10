@@ -962,8 +962,8 @@ cCreateUniversalBinary /Users/masa/AzukiSoft/AzCredit/Source/gdata-objectivec-cl
 cStripping /Users/masa/AzukiSoft/AzCredit/Source/gdata-objectivec-client-1.10/Source/build/Release-iphoneos/libGDataTouchStaticLib.a
 
 N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk
-c000000004C405AFA0000000000000110
-t1279286010
+c000000004C755D9B0000000000000110
+t1282760091
 s272
 
 N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
@@ -1032,13 +1032,13 @@ t1274330292
 s1265
 
 N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/usr/include/sys/stat.h
-c000000004BFDFE1A0000000000004A1D
-t1274936858
+c000000004C5A15110000000000004A1D
+t1280972049
 s18973
 
 N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/usr/include/sys/utsname.h
-c000000004BFDFE1D0000000000000F14
-t1274936861
+c000000004C5A15140000000000000F14
+t1280972052
 s3860
 
 N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/usr/include/unistd.h

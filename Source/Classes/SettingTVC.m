@@ -14,8 +14,7 @@
 #define TAG_GD_OptEnableSchedule		974
 #define TAG_GD_OptEnableCategory		965
 #define TAG_GD_OptEnableInstallment		956
-/*#define TAG_GD_OptNumAutoShow			947
-#define TAG_GD_OptFixedPriority			938 */
+#define TAG_GD_OptAmountCalc			947
 
 
 @interface SettingTVC (PrivateMethods)
@@ -133,7 +132,7 @@
 {
 	switch (section) {
 		case 0: // 
-			return 3;
+			return 4;
 			break;
 	}
     return 0;
@@ -227,66 +226,21 @@
 					[sw release];
 				}
 					break;
-/*				case 2:
-				{ // OptEnableSchedule
-					cell.textLabel.text = NSLocalizedString(@"OptEnableSchedule",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptEnableSchedule msg",nil);
+				case 3:
+				{ // OptAmountCalc
+					cell.textLabel.text = NSLocalizedString(@"OptAmountCalc",nil);
+					cell.detailTextLabel.text = NSLocalizedString(@"OptAmountCalc msg",nil);
 					// add UISwitch
 					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptEnableSchedule];
+					BOOL bOpt = [userDefaults boolForKey:GD_OptAmountCalc];
 					[sw setOn:bOpt animated:NO]; // 初期値セット
 					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptEnableSchedule;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw];
-					[sw release];
-				}
-					break;*/
-/*				case 3:
-					 { // OptEnableCategory
-					 cell.textLabel.text = NSLocalizedString(@"OptEnableCategory",nil);
-					 cell.detailTextLabel.text = NSLocalizedString(@"OptEnableCategory msg",nil);
-					 // add UISwitch
-					 UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					 BOOL bOpt = [userDefaults boolForKey:GD_OptEnableCategory];
-					 [sw setOn:bOpt animated:NO]; // 初期値セット
-					 [sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					 sw.tag = TAG_GD_OptEnableCategory;
-					 sw.backgroundColor = [UIColor clearColor]; //背景透明
-					 [cell.contentView  addSubview:sw];
-					 [sw release];
-					 }
-					 break; */
-/*				case 5:
-				{ // OptNumAutoShow
-					cell.textLabel.text = NSLocalizedString(@"OptNumAutoShow",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptNumAutoShow msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptNumAutoShow];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptNumAutoShow;
+					sw.tag = TAG_GD_OptAmountCalc;
 					sw.backgroundColor = [UIColor clearColor]; //背景透明
 					[cell.contentView  addSubview:sw];
 					[sw release];
 				}
 					break;
-				case 6:
-				{ // OptFixedPriority
-					cell.textLabel.text = NSLocalizedString(@"OptFixedPriority",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptFixedPriority msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptFixedPriority];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptFixedPriority;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw];
-					[sw release];
-				}
-					break;*/
 			}
 			break;
 	}
@@ -311,22 +265,12 @@
 			MbOptAntirotation = [sender isOn];  // このViewでも反映させるため。
 			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
 			break;
-/*		case TAG_GD_OptEnableSchedule:
-			[defaults setBool:[sender isOn] forKey:GD_OptEnableSchedule];
-			break;*/
 		case TAG_GD_OptEnableInstallment:
 			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
 			break;
-
-/*		case TAG_GD_OptEnableCategory:
-			[defaults setBool:[sender isOn] forKey:GD_OptEnableCategory];
-			break;*/
-/*		case TAG_GD_OptNumAutoShow:
-			[defaults setBool:[sender isOn] forKey:GD_OptNumAutoShow];
+		case TAG_GD_OptAmountCalc:
+			[defaults setBool:[sender isOn] forKey:GD_OptAmountCalc];
 			break;
-		case TAG_GD_OptFixedPriority:
-			[defaults setBool:[sender isOn] forKey:GD_OptFixedPriority];
-			break;*/
 	}
 }
 

@@ -35,6 +35,7 @@
 	BOOL			MbOptAntirotation;
 	BOOL			MbOptEnableInstallment;
 	BOOL			MbOptUseDateTime;
+	BOOL			MbOptAmountCalc;
 	BOOL			MbAddmode;			// cancel:
 	NSInteger		MiE1cardRow;
 	BOOL			MbE6paid;			// YES:PAIDあり、主要条件の変更禁止！

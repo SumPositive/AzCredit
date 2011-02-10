@@ -69,6 +69,7 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 							  @"NO",	GD_OptUseDateTime,			// 利用日：時刻なし
 							  @"NO",	GD_OptNumAutoShow,			// ＜保留＞ テンキー自動表示
 							  @"NO",	GD_OptFixedPriority,		// ＜保留＞ 修正を優先
+							  @"YES",	GD_OptAmountCalc,			// [0.3.1] 電卓使用
 							  nil];
 
 	[userDefaults registerDefaults:azOptDef];	// 未定義のKeyのみ更新される
