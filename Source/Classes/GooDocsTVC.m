@@ -49,6 +49,8 @@
 
 - (void)dealloc 
 {
+	[MprogressView release];
+
 	AzRETAIN_CHECK(@"GooDocs MtfPassword", MtfPassword, 3) // (1)alloc (2)addSubView (3)TableViewCell
 	[MtfPassword release];
 	AzRETAIN_CHECK(@"GooDocs MtfUsername", MtfUsername, 3)
@@ -72,62 +74,32 @@
 	AzRETAIN_CHECK(@"GooDocs Re0root", Re0root, 1)
 	[Re0root release];
 	
+	[MautoreleasePool release];
     [super dealloc];
-}
-
-- (void)viewDidUnload {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-	AzLOG(@"***viewDidUnload> GooDocsView");
-	[MtfPassword release];			MtfPassword = nil;
-	[MtfUsername release];			MtfUsername = nil;
-
-	[mUploadTicket cancelTicket];	// キャンセルするため
-	[mDocListFetchTicket cancelTicket];	// キャンセルするため
-
-	[mUploadTicket release];		mUploadTicket = nil;
-	[mDocListFetchTicket release];	mDocListFetchTicket = nil;
-	[mDocListFetchError release];	mDocListFetchError = nil;
-	[mDocListFeed release];			mDocListFeed = nil;
-	// @property (retain) は解放しない。
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] init] autorelease];
-	alert.title = @"didReceiveMemoryWarning";
-	alert.message = @"GooDocsTVC";
-	[alert addButtonWithTitle:@"OK"];
-	[alert show];
-	// autorelease
-#endif
-    [super didReceiveMemoryWarning];
 }
 
 
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブルにする
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		self.tableView.allowsSelectionDuringEditing = YES;
+		MbLogin = NO; // 未ログイン
+		MbUpload = NO;
 	}
-	// 初期化
-	MbLogin = NO; // 未ログイン
-	MbUpload = NO;
 	return self;
 }
 
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成(alloc)された直後に呼び出されるメソッド
-// 注意！alloc後のパラメータ設定の前に実行されるので、パラメータはまだ設定されていない！
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-	MtfUsername = nil;
-	MtfPassword = nil;
-	mDocListFeed = nil;
-	mDocListFetchError = nil;
-	mDocListFetchTicket = nil;
-	mUploadTicket = nil;
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MtfUsername = nil;		// ここ(loadView)で生成
+	MtfPassword = nil;		// ここ(loadView)で生成
 	
+
 	// ユーザが既に設定済みであればその情報を表示する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	// Username
@@ -159,6 +131,19 @@
 	// 注意！ この時点では、まだ self.managedObjectContext などはセットされていない！
 }
 
+/*
+- (void)viewDidUnload 
+{
+	[super viewDidUnload];
+}
+
+// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成(alloc)された直後に呼び出されるメソッド
+// 注意！alloc後のパラメータ設定の前に実行されるので、パラメータはまだ設定されていない！
+- (void)viewDidLoad 
+{
+	[super viewDidUnload];
+}
+*/
 
 - (void)viewWillAppear:(BOOL)animated 
 {
@@ -247,7 +232,7 @@
 	if (!service) {
 		service = [[GDataServiceGoogleDocs alloc] init];
 		
-		[service setUserAgent:@"Azukid.com-AzCredit-0.0"]; // set this to yourName-appName-appVersion
+		[service setUserAgent:@"Azukid.com-AzCredit-0.3"]; // set this to yourName-appName-appVersion
 		[service setShouldCacheDatedData:YES];
 		[service setServiceShouldFollowNextLinks:YES];
 		
@@ -337,6 +322,7 @@
 	[self setUploadTicket:nil];
 
 	//	[mUploadProgressIndicator setDoubleValue:0.0];
+	MprogressView.progress = 0.0;
 	// 進捗表示を消す
 //	[self.actionProgress release];
 
@@ -474,6 +460,14 @@
 	BOOL didWrite = [data writeToFile:savePath
 							  options:NSAtomicWrite
 								error:&error];
+	
+	if (fetcherActive) {
+		// Cancel the fetch of the request that's currently in progress
+		[fetcherActive stopFetching];
+		fetcherActive = nil;
+	}
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+
 	if (!didWrite) {
 		NSLog(@"Error saving file: %@", error);
 		// ＜＜＜エラー発生！何らかのアラートを出すこと＞＞
@@ -514,14 +508,8 @@
 			//self.bDownloading = YES; // 完了したので繰り返し禁止するため
 		}
 	}
-	if (fetcherActive) {
-		// Cancel the fetch of the request that's currently in progress
-		[fetcherActive stopFetching];
-		fetcherActive = nil;
-	}
 	// 進捗サインOFF
 	if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 }
 
 - (void)alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -570,6 +558,7 @@
 	@try {
 		NSString *errorMsg = nil;
 		NSString *mimeType = @"text/csv";  //@"text/plain";
+		
 		Class entryClass = NSClassFromString(@"GDataEntryStandardDoc");
 		
 		GDataEntryDocBase *newEntry = [entryClass documentEntry];
@@ -579,39 +568,30 @@
 		[newEntry setTitleWithString:docName];
 		
 		// iPhone ローカルファイル名
-		NSData *uploadData = [NSData dataWithContentsOfFile:pathLocal];
-		if (!uploadData) {
-			errorMsg = NSLocalizedString(@"Cannot read file.", @"内部障害：ファイルが読めません");
-		}
+//		NSData *uploadData = [NSData dataWithContentsOfFile:pathLocal];
+//		if (!uploadData) {
+//			errorMsg = NSLocalizedString(@"Cannot read file.", @"内部障害：ファイルが読めません");
+//		}
 		
-		if (uploadData) {
-			[newEntry setUploadData:uploadData];
+//		if (uploadData) {
+//			[newEntry setUploadData:uploadData];
+
+		NSFileHandle *uploadFileHandle = [NSFileHandle fileHandleForReadingAtPath:pathLocal];
+		if (!uploadFileHandle) {
+			//errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
+			errorMsg = NSLocalizedString(@"Cannot read file.",nil);
+		}
+		else {
+			[newEntry setUploadFileHandle:uploadFileHandle];
+			
 			[newEntry setUploadMIMEType:mimeType];
 			[newEntry setUploadSlug:[pathLocal lastPathComponent]];
 			
-			NSURL *postURL = [[mDocListFeed postLink] URL];
+			//NSURL *postURL = [[mDocListFeed postLink] URL];
+			NSURL *postURL = [GDataServiceGoogleDocs docsUploadURL];
 
 			// make service tickets call back into our upload progress selector
 			GDataServiceGoogleDocs *service = [self docsService];
-			
-			//SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
-			//[service setServiceUploadProgressSelector:progressSel];
-/*			// 進捗表示　ActionSheet & ProgressBar & Cancel Button  ＜＜消すとき release するため毎回生成＞＞
-			{
-				self.actionProgress = [[UIActionSheet alloc] initWithTitle:@"Please wait." 
-																  delegate:self 
-														 cancelButtonTitle:NSLocalizedString(@"Cancel", nil) 
-													destructiveButtonTitle:nil 
-														 otherButtonTitles:nil];
-				[self.actionProgress setNumberOfRows:5];
-				[self.actionProgress setMessage:NSLocalizedString(@"Now iPack Uploading.", nil)];
-				UIProgressView *progress = [[UIProgressView alloc] initWithFrame:CGRectMake(50, 70, 220, 90)];
-				[progress setProgressViewStyle:UIProgressViewStyleDefault];
-				[self.actionProgress addSubview:progress];
-				[progress release];
-			}
-			[self.actionProgress showInView:self.view];  // 表示開始　.windowでは回転しない
-*/
 			
 			// insert the entry into the docList feed
 			GDataServiceTicket *ticket;
@@ -621,7 +601,9 @@
 									   didFinishSelector:@selector(uploadFileFinish:finishedWithEntry:error:)];
 			
 			// we don't want future tickets to always use the upload progress selector
-//			[service setServiceUploadProgressSelector:nil];
+			//[service setServiceUploadProgressSelector:nil];
+			SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
+			[ticket setUploadProgressSelector:progressSel];
 			
 			[self setUploadTicket:ticket];
 		}
@@ -651,6 +633,7 @@
 		}
 	}
 	@finally {
+		// Upload進行中
 	}
 	[self refreshView];
 }
@@ -664,6 +647,9 @@
 	//	[mUploadProgressIndicator setMinValue:0.0];
 	//	[mUploadProgressIndicator setMaxValue:(double)dataLength];
 	//	[mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
+	if (MprogressView && 0 < dataLength) {
+		MprogressView.progress = (double)numberOfBytesRead / (double)dataLength;
+	}
 }
 
 
@@ -894,7 +880,9 @@
 			}
 			break;
 		case 1:
-			if (!MbUpload) {
+			if (MbUpload) {
+				return NSLocalizedString(@"Upload After",nil);
+			} else {
 				return NSLocalizedString(@"Please backup first",nil);
 			}
 			break;
@@ -1114,14 +1102,33 @@
 														cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
 												   destructiveButtonTitle:nil
 														otherButtonTitles:nil];
-					UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 					[actionProgress setMessage:NSLocalizedString(@"Uploading...",nil)];
 					actionProgress.tag = TAG_ACTION_UPLOAD_CANCEL;
-					[ai setCenter:CGPointMake(160.0f, 90.0f)];
+					// アクティビティインジケータ
+					CGPoint indicatorPoint;
+					indicatorPoint.y = 90.0;
+					if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+						// 横方向のとき
+						indicatorPoint.x = 480.0 / 2.0;
+					} else {
+						indicatorPoint.x = 320.0 / 2.0;
+					}
+					// アクティビティインジケータ
+					UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+					[ai setCenter:indicatorPoint];
 					[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
 					[ai startAnimating];
 					[actionProgress addSubview:ai];
 					[ai release];
+					// プログレスバー
+					if (!MprogressView) {
+						[MprogressView release];
+						MprogressView = nil;
+					}
+					MprogressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+					MprogressView.center = indicatorPoint;
+					MprogressView.progress = 0.0;
+					[actionProgress addSubview:MprogressView];
 					[actionProgress showInView:self.view];
 					[actionProgress release];
 				}
@@ -1145,7 +1152,14 @@
 				// セルからドキュメント名を取得してUploadドキュメント名として渡す
 				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 				// Upload開始
-				[self uploadFile:cell.detailTextLabel.text];
+				//[self uploadFile:cell.detailTextLabel.text];
+				//[self performSelectorOnMainThread:@selector(uploadFile:)
+				//					   withObject:cell.detailTextLabel.text ＜＜これがバグ！処理中に破棄されてしまう
+				//					waitUntilDone:NO];
+				// cell.detailTextLabel.text は、cell表示次第で破棄されるから stringWithString で保持したものを渡す必要がある。
+				[self performSelectorOnMainThread:@selector(uploadFile:)
+									   withObject:[NSString stringWithString:cell.detailTextLabel.text] // autorelease任せ
+									waitUntilDone:NO];
 			}
 			break;
 
@@ -1295,6 +1309,7 @@
 			[mUploadTicket cancelTicket];
 			[self setUploadTicket:nil];
 			//[mUploadProgressIndicator setDoubleValue:0.0];
+			MprogressView.progress = 0.0;
 			[self refreshView];
 			break;
 

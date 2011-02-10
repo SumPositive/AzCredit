@@ -19,7 +19,7 @@
 	
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-//	E1card		*Me1tmp;
+	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields

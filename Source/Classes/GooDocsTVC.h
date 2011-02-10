@@ -8,23 +8,15 @@
 /* -----------------------------------------------------------------------------------------------
  * GData API ライブラリの組み込み手順
  *
- * 1)ダウンロードした gdata-objectivec-client-1 の Source／GData.xcodeproj から Xcode起動
- *
- * 2)グループとファイルに表示される「GData Source」フォルダを丸ごとドラッグして自己のグループとファイルへ「リンク」する
- *																			　（コピーでなく「リンク」にすること）
- *
- * 3)Xcodeメニュー、プロジェクト設定を編集から「検索パス」をセットする
  *		ヘッダ検索パス		/usr/include/libxml2
  *		他のリンカフラグ	-lxml2		（既に他の定義があれば付け足すことになる）
- *
- * 以上でコンパイル可能になる。
  * -----------------------------------------------------------------------------------------------
  */
 
 
 #import <UIKit/UIKit.h>
-#import "GData/GData.h"
-#import "GData/GDataFeedDocList.h"
+#import "GData.h"
+#import "GDataFeedDocList.h"
 
 
 @interface GooDocsTVC : UITableViewController <UITextFieldDelegate, UIActionSheetDelegate> 
@@ -33,12 +25,13 @@
 
 @private
 	//-------------------------------------------------------viewDidLoadでnil, retain > release必要
-	UITextField *MtfUsername;
-	UITextField *MtfPassword;
-	GDataFeedDocList *mDocListFeed;
-	NSError *mDocListFetchError;
-	GDataServiceTicket *mDocListFetchTicket;
-	GDataServiceTicket *mUploadTicket;
+	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	UITextField			*MtfUsername;
+	UITextField			*MtfPassword;
+	GDataFeedDocList	*mDocListFeed;
+	NSError				*mDocListFetchError;
+	GDataServiceTicket	*mDocListFetchTicket;
+	GDataServiceTicket	*mUploadTicket;
 	//----------------------------------------------------------------assign
 	BOOL			MbLogin;
 	BOOL			MbOptAntirotation;
@@ -48,6 +41,7 @@
 	NSString		*MzOldUsername;
 	GDataHTTPFetcher *fetcherActive;  // STOPのため保持
 	UIActionSheet	*actionProgress;
+	UIProgressView	*MprogressView;
 }
 
 @property (nonatomic, retain) E0root		*Re0root;

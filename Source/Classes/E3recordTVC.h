@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <iAd/iAd.h>
 
 //@class E2invoice;
 
@@ -17,11 +18,16 @@
 	//----------------------------------------------assign
 	E4shop			*Pe4shop;		// 
 	E5category		*Pe5category;	// 
+	E8bank			*Pe8bank;		//[0.3]New
 	
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSMutableArray	*Me3list;
+	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*Me3list;
+	NSMutableArray		*Msection;
+	NSMutableArray		*Mindex;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+	//ADBannerView		*MbannerView;
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
@@ -33,6 +39,7 @@
 //@property (nonatomic, assign) E1card			*Pe1card;
 @property (nonatomic, assign) E4shop			*Pe4shop;
 @property (nonatomic, assign) E5category		*Pe5category;
+@property (nonatomic, assign) E8bank			*Pe8bank;
 
 - (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 

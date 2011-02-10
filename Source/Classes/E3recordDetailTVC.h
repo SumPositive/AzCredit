@@ -22,32 +22,29 @@
 	
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	E0root			*Me0root;		// Arrayではない！単独　release不要（するとFreeze）
-	NSMutableArray	*Me6parts;
-	NSMutableArray	*Me3lasts;		// 前回引用するための直近3件
-//	E3record		*Me3editMask;	// Re3editをコピーしておき、比較することにより、その間で修正された箇所を検出するため
+	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*Me6parts;
+	NSMutableArray		*Me3lasts;		// 前回引用するための直近3件
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+	E0root				*Me0root;		// Arrayではない！単独　release不要（するとFreeze）
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
-	UISegmentedControl	*MsegAddPrevious;
+	UIBarButtonItem		*MbuDelete;		// BarButton ＜PAID時に無効にするため＞ [0.3]
 	UILabel				*MlbAmount;
 	CalcView			*McalcView;
 	//----------------------------------------------assign
 	BOOL			MbOptAntirotation;
-	BOOL			MbOptEnableCategory;
 	BOOL			MbOptEnableInstallment;
 	BOOL			MbOptUseDateTime;
-//	BOOL			MbOptNumAutoShow;
-//	BOOL			MbOptFixedPriority;
 	BOOL			MbAddmode;			// cancel:
 	NSInteger		MiE1cardRow;
 	BOOL			MbE6paid;			// YES:PAIDあり、主要条件の変更禁止！
 	BOOL			MbCopyAdd;			// YES:既存明細をコピーして新規追加している状態
 	BOOL			MbRotatShowCalc;	// YES:回転前に表示されていたので、回転後再表示する。
 	NSInteger		MiIndexE3lasts;
+	BOOL			MbModified;			// YES:変更された ⇒ ToolBarを無効にする
 }
 
 @property (nonatomic, retain) E3record	*Re3edit;
-//@property BOOL							PbAdd;
 @property NSInteger						PiAdd;
 @property NSInteger						PiFirstYearMMDD;	
 

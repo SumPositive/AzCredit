@@ -36,18 +36,8 @@
 	AzRETAIN_CHECK(@"TopMenuTVC Re0root", Re0root, 0)
 	[Re0root release];
     
+	[MautoreleasePool release];
 	[super dealloc];
-}
-
-- (void)viewDidUnload {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-	[Me4shops release];		Me4shops = nil;
-
-	// @property (retain) は解放しない。
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 
@@ -57,41 +47,18 @@
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonAdd {
-	// Add Shop
-	[self e4shopDatail:(-1)]; // :(-1)Add mode
-}
-
-- (void)barButtonUntitled {
-	// 未定(nil)にする
-	Pe3edit.e4shop = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-- (void)barSegmentSort:(id)sender {
-	MiOptE4SortMode = [sender selectedSegmentIndex];
-	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE4SortMode forKey:GD_OptE4SortMode];
-	// Requery
-	[self requeryMe4shops:nil];
-}
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-	Me4shops = nil;
-	
-	// ここは、alloc直後に呼ばれるため、パラは未セット状態である。==>> viewWillAppearで参照すること
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MbuTop = nil;		// ここ(loadView)で生成
 	
 	// Set up NEXT Left [Back] buttons.
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
@@ -114,11 +81,11 @@
 	self.tableView.tableHeaderView = searchBar;
 	
 	// Search segmented
-	NSArray *aItems = [NSArray arrayWithObjects:
+	NSArray *aItems = [[NSArray alloc] initWithObjects:
 					   NSLocalizedString(@"Sort Recent",nil),
 					   NSLocalizedString(@"Sort Views",nil),
 					   NSLocalizedString(@"Sort Amount",nil),
-					   NSLocalizedString(@"Sort Index",nil), nil]; // release不要
+					   NSLocalizedString(@"Sort Index",nil), nil];
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
 	segment.frame = CGRectMake(0,0, 210,30);
 	//segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -129,6 +96,7 @@
 	[segment addTarget:self action:@selector(barSegmentSort:) forControlEvents:UIControlEventValueChanged];
 	UIBarButtonItem *buSort = [[UIBarButtonItem alloc] initWithCustomView:segment];
 	[segment release];
+	[aItems release];
 	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -159,6 +127,24 @@
 	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+	[super viewWillAppear:animated];
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	
+	if (MbuTop) {
+		// hasChanges時にTop戻りボタンを無効にする
+		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
+	}
+	
+	// Requery
+	[self requeryMe4shops:nil];
+}
+
 
 - (void)requeryMe4shops:(NSString *)zSearch 
 {
@@ -235,6 +221,29 @@
 	[searchBar resignFirstResponder]; // キーボードを非表示にする
 }
 
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)barButtonAdd {
+	// Add Shop
+	[self e4shopDatail:(-1)]; // :(-1)Add mode
+}
+
+- (void)barButtonUntitled {
+	// 未定(nil)にする
+	Pe3edit.e4shop = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+- (void)barSegmentSort:(id)sender {
+	MiOptE4SortMode = [sender selectedSegmentIndex];
+	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE4SortMode forKey:GD_OptE4SortMode];
+	// Requery
+	[self requeryMe4shops:nil];
+}
+
+
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -269,23 +278,6 @@
 	// SerchBar
 	self.tableView.tableHeaderView.frame = CGRectMake(0,0, self.tableView.bounds.size.width,0);
 	[self.tableView.tableHeaderView sizeToFit];
-}
-
-- (void)viewWillAppear:(BOOL)animated 
-{
-	[super viewWillAppear:animated];
-	
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-
-	if (MbuTop) {
-		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
-	}
-	
-	// Requery
-	[self requeryMe4shops:nil];
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
@@ -350,7 +342,7 @@
 		e4detail.Re4edit = [NSEntityDescription insertNewObjectForEntityForName:@"E4shop"
 											  inManagedObjectContext:Re0root.managedObjectContext];
 		e4detail.PbAdd = YES;
-		e4detail.Pe3edit = Pe3edit; // !=nil ならば新規追加後、一気にE3まで戻る
+		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
 	}
 	else if ([Me4shops count] <= iE4index) {
 		return; // Add行以降、パスする
@@ -359,7 +351,7 @@
 		e4detail.title = NSLocalizedString(@"Edit Shop",nil);
 		e4detail.Re4edit = [Me4shops objectAtIndex:iE4index]; //[MfetchE1card objectAtIndexPath:indexPath];
 		e4detail.PbAdd = NO;
-		e4detail.Pe3edit = nil;
+		//e4detail.Pe3edit = nil;
 	}
 	
 	if (Pe3edit) {

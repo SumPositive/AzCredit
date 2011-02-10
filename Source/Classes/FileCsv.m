@@ -9,16 +9,11 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
+#import "EntityRelation.h"
 #import "FileCsv.h"
 
 
 @implementation FileCsv
-
-//static E0root		*Me0root;
-//static E2invoice	*Me2invoices;
-//static E3record	*Me3records;
-//static E6part		*Me6parts;
-//static E7payment	*Me7payments;
 
 static NSData *MdLF;
 static NSData *MdCR;
@@ -28,10 +23,9 @@ static unsigned long MulStart;
 static unsigned long MulEnd;
 static long	MlCsvLine;
 
-
 // string ⇒ csv : 文字列中にあるCSV予約文字を取り除くか置き換えてCSV保存できるようにする
 static NSString *strToCsv( NSString *inStr ) {
-	if ([inStr length]) {
+	if (inStr && [inStr length]) {
 		// 文字列中にある["]ダブルクォーテーションを[']シングルに置き換えてCSV保存できるようにする
 		return [inStr stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];  // ["]-->>[']
 	}
@@ -50,6 +44,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 
 + (NSString *)zSave: (E0root *)Pe0root toLocalFileName:(NSString *)PzFname
 {
+	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+
 	NSString *zErrMsg = NSLocalizedString(@"File write error",nil);
 	NSString *home_dir = NSHomeDirectory();
 	NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
@@ -61,7 +57,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	
 	// 	@finally にて release する。
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	// E1 Sort
+	// E1,E8 Sort
 	NSSortDescriptor *key1 = [[NSSortDescriptor alloc] initWithKey:@"nRow" ascending:YES];
 	NSArray *sortRow = [[NSArray alloc] initWithObjects:key1, nil];  [key1 release];
 	// E4,E5 Sort
@@ -106,7 +102,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 				if (0 < [zName length]) {
 					if (e4node.zNote == nil) e4node.zNote = @"";
 					// E4,zName,zNote,sortDate,sortCount,sortAmount,sortName,
-					str = [NSString stringWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n", 
+					//str = [NSString stringWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n",   autoreleseを減らすため
+					str = [[NSString alloc] initWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n", 
 						   strToCsv(zName), 
 						   strToCsv(e4node.zNote), 
 						   [e4node.sortDate description], 
@@ -114,6 +111,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 						   (long)[e4node.sortAmount integerValue], 
 						   strToCsv(e4node.sortName)];
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
+					[str release];
 				}
 			}
 		}
@@ -136,7 +134,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 				NSString *zName = [e5node.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 				if (0 < [zName length]) {
 					// E5,zName,zNote,sortDate,sortCount,sortAmount,sortName,
-					str = [NSString stringWithFormat:@"Cat,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n", 
+					str = [[NSString alloc] initWithFormat:@"Cat,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n", 
 						   strToCsv(zName), 
 						   strToCsv(e5node.zNote), 
 						   [e5node.sortDate description], 
@@ -144,6 +142,35 @@ static NSString *csvToStr( NSString *inCsv ) {
 						   (long)[e5node.sortAmount integerValue], 
 						   strToCsv(e5node.sortName)];
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
+					[str release];
+				}
+			}
+		}
+		
+		//----------------------------------------------------------------------------[Bank] E8bank
+		entity = [NSEntityDescription entityForName:@"E8bank" inManagedObjectContext:context];
+		[fetchRequest setEntity:entity];
+		[fetchRequest setSortDescriptors:sortRow]; // Sorting
+		error = nil;
+		NSArray *e8banks = [Pe0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		if (error) {
+			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			exit(-1);  // Fail
+		}
+		
+		for (E8bank *e8node in e8banks) {
+			//--------------------------------------E8 (nRow昇順)
+			if (e8node.zName != nil) {	// nilやブランクはSAVE時に拒否して存在しないハズだが念のために除外する
+				// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
+				NSString *zName = [e8node.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				if (0 < [zName length]) {
+					if (e8node.zNote == nil) e8node.zNote = @"";
+					// E8,zName,zNote,
+					str = [[NSString alloc] initWithFormat:@"Bank,\"%@\",\"%@\",\n", 
+						   strToCsv(zName), 
+						   strToCsv(e8node.zNote)];
+					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
+					[str release];
 				}
 			}
 		}
@@ -161,18 +188,18 @@ static NSString *csvToStr( NSString *inCsv ) {
 		
 		for (E1card *e1node in e1cards) {
 			//--------------------------------------E1 (nRow昇順)
-			if (e1node.zName == nil) e1node.zName = @"";
-			if (e1node.zNote == nil) e1node.zNote = @"";
-			// E1,zName,nClosingDay,nPayMonth,nPayDay,nBonus1,nBonus2,zNote,
-			str = [NSString stringWithFormat:@"Card,\"%@\",%d,%d,%d,%d,%d,\"%@\",\n", 
+			// E1,zName,nClosingDay,nPayMonth,nPayDay,nBonus1,nBonus2,zNote,zBank,
+			str = [[NSString alloc] initWithFormat:@"Card,\"%@\",%d,%d,%d,%d,%d,\"%@\",\"%@\",\n", 
 				   strToCsv(e1node.zName), 
 				   [e1node.nClosingDay intValue], 
 				   [e1node.nPayMonth intValue], 
 				   [e1node.nPayDay intValue], 
 				   [e1node.nBonus1 intValue], 
 				   [e1node.nBonus2 intValue],
-				   strToCsv(e1node.zNote)];
+				   strToCsv(e1node.zNote),
+				   strToCsv(e1node.e8bank.zName)];
 			[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
+			[str release];
 			
 			//----------------------------------------------------------E1-->>E3 [Rec]
 			for (E3record *e3node in e1node.e3records) {
@@ -184,7 +211,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 				NSString *zCategory = @"";
 				if (e3node.e5category && e3node.e5category.zName) zCategory = e3node.e5category.zName;
 				// E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,
-				str = [NSString stringWithFormat:@"Rec,%@,%ld,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",\n", 
+				//str = [NSString stringWithFormat:@"Rec,%@,%ld,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",\n", 
+				str = [[NSString alloc] initWithFormat:@"Rec,%@,%ld,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",\n", 
 					   [e3node.dateUse description], 
 					   (long)[e3node.nAmount integerValue], 
 					   [e3node.nPayType intValue], 
@@ -194,6 +222,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 					   strToCsv(e3node.zName),
 					   strToCsv(e3node.zNote)];
 				[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
+				[str release]; // autorelease使用せず！
 				
 				//----------------------------------------------------------E3-->>E6 [Pay]
 				for (E6part *e6node in e3node.e6parts) {
@@ -207,13 +236,14 @@ static NSString *csvToStr( NSString *inCsv ) {
 					if (0 < [e6node.nNoCheck intValue]) zCheck = @""; // 未Check
 					
 					// E6,iYearMMDD,zPaid,lAmount,fInterest,bChecked,
-					str = [NSString stringWithFormat:@"Pay,%ld,%@,%ld,%ld,%@,\n", 
+					str = [[NSString alloc] initWithFormat:@"Pay,%ld,%@,%ld,%ld,%@,\n", 
 						   iYearMMDD, 
 						   zPaid, 
 						   [e6node.nAmount longValue], 
 						   [e6node.nInterest longValue], 
 						   zCheck];
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
+					[str release]; // autorelease使用せず！
 				}
 			}
 		}
@@ -240,6 +270,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		[fetchRequest release];
 		[sortRow release];
 		[sortDate release];
+		[autoPool release];
 	}
 	return zErrMsg;
 }
@@ -305,13 +336,13 @@ static NSString *csvToStr( NSString *inCsv ) {
 
 + (NSString *)zLoad: (E0root *)Pe0root fromLocalFileName:(NSString *)PzFname
 {
+	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+
 	NSString *home_dir = NSHomeDirectory();
 	NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
 	NSString *csvPath = [doc_dir stringByAppendingPathComponent:PzFname];  //GD_CSVFILENAME];		
 	
 	long	lE1nRow = 0;
-//	long	lE4nRow = 0;
-//	long	lE5nRow = 0;
 	
 	E1card		*ActE1card = nil;
 	E3record	*ActE3record = nil;
@@ -326,7 +357,6 @@ static NSString *csvToStr( NSString *inCsv ) {
 	NSManagedObjectContext *context = Pe0root.managedObjectContext;
 	NSError *err = nil;
 	NSString *zErrMsg = nil;
-//	NSInteger iSection = 0;
 	MulStart = 0;
 	MulEnd = 0;
 	MlCsvLine = 0;
@@ -341,6 +371,10 @@ static NSString *csvToStr( NSString *inCsv ) {
 	// input OPEN
 	NSFileHandle *csvHandle = [NSFileHandle fileHandleForReadingAtPath:csvPath];
 	@try {
+		// 全データをクリアする　＜ E0root だけが残る＞
+		[EntityRelation allReset];
+		// ここではSAVEしない。CSV読み込み成功時にSAVEする
+
 		while (1) {
 			// "AzCredit,CSV,UTF-8,Copyright,(C)2000-2010,Azukid,,,\n";
 			if (![self getMaCsv:csvHandle]) { // EOF
@@ -385,9 +419,20 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e5node.sortName = csvToStr([MaCsv objectAtIndex:6]);
 				}
 			} 
+			//--------------------------------------------------------------------------------[Bank] E8
+			else if ([[MaCsv objectAtIndex:0] isEqualToString:@"Bank"]) 
+			{	// Bank,zName,zNote,
+				NSString *zName = [csvToStr([MaCsv objectAtIndex:1]) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				if (![zName isEqualToString:@""]) 
+				{ // zNameが有効
+					E8bank *e8node = [NSEntityDescription insertNewObjectForEntityForName:@"E8bank" inManagedObjectContext:context];
+					e8node.zName = zName;
+					e8node.zNote = csvToStr([MaCsv objectAtIndex:2]);
+				}
+			} 
 			//--------------------------------------------------------------------------------[Card] E1
 			else if ([[MaCsv objectAtIndex:0] isEqualToString:@"Card"]) 
-			{	// E1,zName,nClosingDay,nPayMonth,nPayDay,nBonus1,nBonus2,zNote,
+			{	// E1,zName,nClosingDay,nPayMonth,nPayDay,nBonus1,nBonus2,zNote,zBank,
 				ActE1card = nil;
 				// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
 				NSString *zName = [csvToStr([MaCsv objectAtIndex:1]) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -405,6 +450,28 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e1node.nBonus1 = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:5] integerValue]];
 					e1node.nBonus2 = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:6] integerValue]];
 					e1node.zNote = csvToStr([MaCsv objectAtIndex:7]);
+					NSString *zBank = [csvToStr([MaCsv objectAtIndex:8]) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+					// E8Bank
+					if (![zBank isEqualToString:@""]) {
+						// 検索して、あればリンク、無ければ追加してリンク
+						NSFetchRequest *request = [[NSFetchRequest alloc] init];
+						[request setEntity:[NSEntityDescription entityForName:@"E8bank" inManagedObjectContext:context]];
+						[request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", @"zName", zBank]];
+						// コンテキストにリクエストを送る
+						NSArray* aRes = [context executeFetchRequest:request error:&err];
+						[request release];
+						if (0 < [aRes count]) {
+							// Find & Link
+							e1node.e8bank = [aRes objectAtIndex:0];
+						} else {
+							// ＜＜手作業でCSV作成や変更された場合、先にLoadされていなくても対応するため＞＞
+							E8bank *e8node = [NSEntityDescription insertNewObjectForEntityForName:@"E8bank" inManagedObjectContext:context];
+							e8node.zName = zBank;
+							//e8node.zNote = nil;
+							// Add & Link
+							e1node.e8bank = e8node;
+						}
+					}
 				}
 			} 
 			//--------------------------------------------------------------------------------[Rec] E3
@@ -432,7 +499,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 				e3node.nAmount = [NSNumber numberWithLong:lAmount];
 				e3node.nPayType = [NSNumber numberWithLong:lPayType];
 				e3node.nAnnual = [NSNumber numberWithLong:lAnnual];
-				// E4shop  ＜＜SaveされたCSVならば最初に[Shop]群がLoadされているが、手作業でCSV作成や変更したとき[Shop]に無くても対応するため＞＞
+				// E4shop
 				if (![zShop isEqualToString:@""]) {
 					// 検索して、あればリンク、無ければ追加してリンク
 					NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -445,6 +512,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 						// Find & Link
 						e3node.e4shop = [aRes objectAtIndex:0];
 					} else {
+						// ＜＜手作業でCSV作成や変更された場合、先にLoadされていなくても対応するため＞＞
 						E4shop *e4node = [NSEntityDescription insertNewObjectForEntityForName:@"E4shop" inManagedObjectContext:context];
 						e4node.zName = zShop;
 						e4node.sortName = zShop;
@@ -455,8 +523,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 						e3node.e4shop = e4node;
 					}
 				}
-				// E5category  ＜＜SaveされたCSVならば最初に[Cat]群がLoadされているが、手作業でCSV作成や変更したとき[Cat]に無くても対応するため＞＞
-				if (![[MaCsv objectAtIndex:6] isEqualToString:@""]) {
+				// E5category 
+				if (![zCategory isEqualToString:@""]) {
 					// 検索して、あればリンク、無ければ追加してリンク
 					NSFetchRequest *request = [[NSFetchRequest alloc] init];
 					[request setEntity:[NSEntityDescription entityForName:@"E5category" inManagedObjectContext:context]];
@@ -468,6 +536,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 						// Find & Link
 						e3node.e5category = [aRes objectAtIndex:0];
 					} else {
+						// ＜＜手作業でCSV作成や変更された場合、先にLoadされていなくても対応するため＞＞
 						E5category *e5node = [NSEntityDescription insertNewObjectForEntityForName:@"E5category" inManagedObjectContext:context];
 						e5node.zName = zCategory;
 						e5node.sortName = zCategory;
@@ -582,7 +651,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e6node.e2invoice.e7payment = e7node;
 				}
 			}
-		}
+		} // End of while ( [self getMaCsv:csvHandle] ) 
+
 		//--------------------------------------------------------------------------sum
 		// E2 sum値　集計
 		NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -622,6 +692,9 @@ static NSString *csvToStr( NSString *inCsv ) {
 			e5.sortAmount = [e5 valueForKeyPath:@"e3records.@sum.nAmount"];
 			e5.sortCount =	[e5 valueForKeyPath:@"e3records.@count"];
 		}
+		//
+		// E8bank 事前集計は無い、リスト表示時に集計している
+		//
 		//--------------------------------------------------------------------------SAVE
 		if (![context save:&err]) {
 			NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
@@ -652,6 +725,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		[MdLF release];
 		[MzCsvStr release];
 		[dateFormatter release];
+		[autoPool release];
 	}	
 	return zErrMsg;
 }

@@ -28,25 +28,12 @@
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"EditTextVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
-{
-    [super viewDidLoad];
-	MtextView = nil;
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MtextView = nil;	// ここで生成
 
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
@@ -64,6 +51,14 @@
 	MtextView.delegate = self;
 	[self.view addSubview:MtextView]; [MtextView release]; // self.viewがOwnerになる
 }
+
+/*
+- (void)viewDidUnload 
+{
+	[super viewDidUnload];
+	AzLOG(@"MEMORY! EditTextVC: viewDidUnload");
+}
+*/
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 

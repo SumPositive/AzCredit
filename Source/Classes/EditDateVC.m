@@ -31,29 +31,15 @@
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MdatePicker = nil;	// ここ(loadView)で生成
+	MbuToday = nil;		// ここ(loadView)で生成
+	MbuYearTime = nil;	// ここ(loadView)で生成
 
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"EditDateVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
-{
-    [super viewDidLoad];
-	MdatePicker = nil;	
-	MbuToday = nil;
-	MbuYearTime = nil;
 	
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 

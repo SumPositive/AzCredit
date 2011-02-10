@@ -27,8 +27,15 @@
 	// SAVE
 	NSError *err = nil;
 	if (![appDelegate.managedObjectContext  save:&err]) {
-		NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-		exit(-1);  // Fail
+		NSLog(@"MOC commit error %@, %@", err, [err userInfo]);
+		//exit(-1);  // Fail
+		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"MOC CommitErr",nil)
+														 message:NSLocalizedString(@"MOC CommitErrMsg",nil)
+														delegate:nil 
+											   cancelButtonTitle:nil 
+											   otherButtonTitles:@"OK", nil] autorelease];
+		[alert show];
+		return;
 	}
 }
 
@@ -39,6 +46,171 @@
 	// ROLLBACK
 	[appDelegate.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
 }
+
++ (void)allReset
+{
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *moc = appDelegate.managedObjectContext;
+
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSError *error;
+	NSEntityDescription *entity;
+	NSArray *arFetch;
+
+	// E6削除　＜＜ E2,E3 より先に削除する
+	entity = [NSEntityDescription entityForName:@"E6part" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E6 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E6part *e6 in arFetch) {
+#if AzDEBUG
+		//if (!e6.e3record) AzLOG(@"allReset: E6.e3link Nothing");
+		//if (!e6.e2invoice) AzLOG(@"allReset: E6.e2link Nothing");
+		assert(e6.e3record);
+		assert(e6.e2invoice);
+#endif
+		[moc deleteObject:e6]; // 削除
+	}
+	
+	// E2削除
+	entity = [NSEntityDescription entityForName:@"E2invoice" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E2 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E2invoice *e2 in arFetch) {
+#if AzDEBUG
+		//if (!e2.e1paid && !e2.e1unpaid) AzLOG(@"allReset: E2.e1link Nothing");
+		//if (!e2.e7payment) AzLOG(@"allReset: E2.e7link Nothing");
+		assert(e2.e1paid OR e2.e1unpaid);
+		assert(e2.e7payment);
+#endif
+		[moc deleteObject:e2]; // 削除
+	}
+	
+	// E3削除
+	entity = [NSEntityDescription entityForName:@"E3record" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E3 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E3record *e3 in arFetch) {
+#if AzDEBUG
+		//if (!e3.e1card) AzLOG(@"allReset: E3.e1link Nothing");
+		assert(e3.e1card);
+#endif
+		[moc deleteObject:e3]; // 削除
+	}
+	
+	// E1削除　＜＜ E2,E3 から参照されているので、それらの後に削除すること
+	entity = [NSEntityDescription entityForName:@"E1card" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E1 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E1card *e1 in arFetch) {
+#if AzDEBUG
+		// E2を先に削除しているから、逆に残っていたらバグ
+		//if (0 < [e1.e2paids count]) AzLOG(@"allReset: E1.e2paids NoClear");
+		//if (0 < [e1.e2unpaids count]) AzLOG(@"allReset: E1.e2unpaids NoClear");
+		assert([e1.e2paids count]==0);
+		assert([e1.e2unpaids count]==0);
+#endif
+		[moc deleteObject:e1]; // 削除
+	}
+	
+	// E4削除
+	entity = [NSEntityDescription entityForName:@"E4shop" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E4 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E4shop *e4 in arFetch) {
+		[moc deleteObject:e4]; // 削除
+	}
+	
+	// E5削除
+	entity = [NSEntityDescription entityForName:@"E5category" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E5 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E5category *e5 in arFetch) {
+		[moc deleteObject:e5]; // 削除
+	}
+	
+	// E8削除
+	entity = [NSEntityDescription entityForName:@"E8bank" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E4 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E8bank *e8 in arFetch) {
+		[moc deleteObject:e8]; // 削除
+	}
+
+	// E7削除
+	entity = [NSEntityDescription entityForName:@"E7payment" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E7 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	for (E7payment *e7 in arFetch) {
+#if AzDEBUG
+		//if (!e7.e0paid && !e7.e0unpaid) AzLOG(@"allReset: E7.e0link Nothing");
+		assert(e7.e0paid OR e7.e0unpaid);
+#endif
+		[moc deleteObject:e7]; // 削除
+	}
+	
+#if AzDEBUG
+	// E0root
+	entity = [NSEntityDescription entityForName:@"E0root" inManagedObjectContext:moc];
+	[fetchRequest setEntity:entity];
+	error = nil;
+	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
+	if (error) {
+		AzLOG(@"allReset E0 Error: %@, %@", error, [error userInfo]);
+		return;
+	}
+	if ([arFetch count] == 1) {
+		E0root *e0 = [arFetch objectAtIndex:0]; // 未払い計を表示するためTopMenuTVCへ渡す
+		if (0 < [e0.e7paids count]) AzLOG(@"allReset: E0.e7paids NoClear");
+		if (0 < [e0.e7unpaids count]) AzLOG(@"allReset: E0.e7unpaids NoClear");
+	} else {
+		AzLOG(@"LOGIC ERR: E0root Nothing");
+		assert(NO);
+	}
+#endif
+
+	[fetchRequest release];
+}
+
 
 // E0（固有ノード）を取得する
 + (E0root *)e0root
@@ -75,12 +247,14 @@
 	if (e1obj==nil) return;
 	NSManagedObjectContext *moc = e1obj.managedObjectContext;
 	//------------------------------------------------------- E1配下E3
-	NSArray *aE3s = [NSArray arrayWithArray:[e1obj.e3records allObjects]]; // 削除必須パターン
+	NSArray *aE3s = [[NSArray alloc] initWithArray:[e1obj.e3records allObjects]]; // 削除必須パターン
 	for (E3record *e3 in aE3s)
 	{
 		// E3以下削除　　関連するE6,E2,さらに配下のE2が無くなったE7も削除される
 		[EntityRelation e3delete:e3];
 	}
+	[aE3s release];
+	
 	// E1削除
 	[moc deleteObject:e1obj]; // 削除
 	// この後、呼び出し元にて、削除行以下の E1.nRow 更新が必要！
@@ -167,6 +341,11 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 	NSInteger iPayMonth = [Pe1card.nPayMonth integerValue]; // 支払月（0=当月、1=翌月、2=翌々月）
 	NSInteger iPayDay = [Pe1card.nPayDay integerValue];
 
+	if (iClosingDay<=0 OR iPayMonth<0 OR iPayDay<=0) {
+		// Debit
+		return GiYearMMDD( PtUse );  // Debut: 支払日＝利用日
+	}
+	
 	NSCalendar *cal = [NSCalendar currentCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
 	NSDateComponents *compUse = [cal components:unitFlags fromDate:PtUse]; // 利用日
@@ -177,6 +356,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		// 当月の締め切りを過ぎているので（支払月+1）
 		iPayMonth++;
 	}
+	//[compUse release]; autorelease
 	// 支払月へ移動
 	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, iPayMonth, 0);	// これが支払日である
 	return iYearMMDD;
@@ -194,7 +374,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		// カード(e1obj)と利用日(e3.dateUse)から支払日を求める
 		NSInteger iYearMMDD = MiYearMMDDpayment(e1obj, e3.dateUse);
 		// E3配下のE6を取得
-		NSMutableArray *muE6 = [NSMutableArray arrayWithArray:[e3.e6parts allObjects]];
+		//NSMutableArray *muE6 = [NSMutableArray arrayWithArray:[e3.e6parts allObjects]];
+		NSMutableArray *muE6 = [[NSMutableArray alloc] initWithArray:[e3.e6parts allObjects]];
 		if (1 < [muE6 count]) {
 			// 2分割以上あるのでソートする
 			NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
@@ -210,13 +391,16 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				// E2.unpaid にあるか
 				E2invoice *e2old = e6.e2invoice; // 移動元のE2 sum のため
 #ifdef AzDEBUG
-				if (e2old==nil) AzLOG(@"LOGIC ERR: e1update: e2old nil");
-				if (e2old.e1unpaid==nil) AzLOG(@"LOGIC ERR: e1update: e2old.e1unpaid nil");
+				//if (e2old==nil) AzLOG(@"LOGIC ERR: e1update: e2old nil");
+				//if (e2old.e1unpaid==nil) AzLOG(@"LOGIC ERR: e1update: e2old.e1unpaid nil");
+				assert(e2old);
+				assert(e2old.e1unpaid);
 #endif
 				// e1obj配下にあるiYearMMDDのE2を取得する（無ければE7まで生成）
 				E2invoice *e2new = [EntityRelation e2invoice:e1obj inYearMMDD:iYearMMDD];
 				if (e2new==nil OR e2new.e7payment.e0paid) {
 					AzLOG(@"LOGIC ERR: e1update: e2new NG");
+					[muE6 release];
 					return;
 				}
 				// E2 old -->> new リンク変更
@@ -243,8 +427,11 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				}
 			} // if (e6.e2invoice.e1unpaid)
 			// 次のE6のため
-			iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0);	// 翌月へ
+			if (0 < [e1obj.nPayDay integerValue]) {	// <=0:Debitならば同じ利用日
+				iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0);	// 翌月へ
+			}
 		} // e6
+		[muE6 release];
 	} // e3
 }
 
@@ -252,39 +439,57 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 + (void)e3delete:(E3record *)e3obj
 {
 	if (e3obj==nil) return;
+	
 	NSManagedObjectContext *moc = e3obj.managedObjectContext;
 	// E3 以下削除
 	// e3obj.e6parts 配下が削除されても配列位置がズレないようにコピー配列を用いる
-	NSArray *arrayE6 = [NSArray arrayWithArray:[e3obj.e6parts allObjects]]; 
+	//NSArray *arrayE6 = [NSArray arrayWithArray:[e3obj.e6parts allObjects]];  できるだけautoreleaseを使わないようにする
+	NSArray *arrayE6 = [[NSArray alloc] initWithArray:[e3obj.e6parts allObjects]];
 	for (E6part *e6 in arrayE6) {
 		E2invoice *e2 = e6.e2invoice;
 		E7payment *e7 = nil;
 		if (e2) {
 			e7 = e2.e7payment; // 次でe2が削除される場合があるので先にe7保持する
-			if ([e2.e6parts count] <= 1) {
-				// E2 削除： E2配下のE6が自身だけなので削除する
+			/***************************************************[0.3]ここではE2削除しない。
+			 E8からE1別E2一覧表示するときの処理が難しくなるので削除しないことにした。
+			 配下のE6が無くなったE2さらにE7は、e7e2clean により適時削除するようにした。
+			 **************************************************************
+			 if ([e2.e6parts count] <= 1) {
+				// E2配下のE6が自身だけなのでE2を削除する
 				e2.e1paid = nil;
 				e2.e1unpaid = nil;
 				e2.e7payment = nil;
 				[moc deleteObject:e2];
 				e2 = nil;
-			} else {
-				e6.e2invoice = nil; // 切断してから
+			 } else {
+				// E2配下から切り離す（まだここではE6削除しない）
+				e6.e2invoice = nil; // 切断してからsum
 				// E2 sum
 				e2.sumAmount = [e2 valueForKeyPath:@"e6parts.@sum.nAmount"];
 				e2.sumNoCheck = [e2 valueForKeyPath:@"e6parts.@sum.nNoCheck"];
-			}
+			 }
+			 ***************************************************/
+			// E2配下から切り離す（まだここではE6削除しない）
+			e6.e2invoice = nil; // 切断してからsum
+			// E2 sum
+			e2.sumAmount = [e2 valueForKeyPath:@"e6parts.@sum.nAmount"];
+			e2.sumNoCheck = [e2 valueForKeyPath:@"e6parts.@sum.nNoCheck"];
+
 			if (e7) {
 				// E6 が属する E7 配下のE2数を調べる
-				if ([e7.e2invoices count] <= 1) {
-					// E7 削除： E7配下のE2が自身だけなので削除する
+				if ([e7.e2invoices count] <= 0) {
+					// E7配下のE2が先の削除により無くなったのでE7削除する
 					e7.e0paid = nil;
 					e7.e0unpaid = nil;
 					[moc deleteObject:e7];
-					e7 = nil;
+					e7 = nil; // 次の集計をスルーするため
+				}
+				else {	// E7 sum  [0.3]
+					e7.sumAmount = [e7 valueForKeyPath:@"e2invoices.@sum.sumAmount"];
+					e7.sumNoCheck = [e7 valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
 				}
 			}
-			if (e7 && e7.e0paid) {	// E7.paids sum
+	/*[0.3]	if (e7 && e7.e0paid) {	// E7.paids sum
 				for (E7payment *e7sum in e7.e0paid.e7paids) {
 					e7sum.sumAmount = [e7sum valueForKeyPath:@"e2invoices.@sum.sumAmount"];
 					e7sum.sumNoCheck = [e7sum valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
@@ -295,7 +500,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 					e7sum.sumAmount = [e7sum valueForKeyPath:@"e2invoices.@sum.sumAmount"];
 					e7sum.sumNoCheck = [e7sum valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
 				}
-			}
+			} [0.3]*/
 		}
 		// E6 削除
 		e6.e2invoice = nil;
@@ -303,6 +508,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		[moc deleteObject:e6];
 		e6 = nil;
 	}
+	[arrayE6 release];
+	
 	// E3 削除
 	E4shop *e4 = e3obj.e4shop;
 	E5category *e5 = e3obj.e5category;
@@ -383,7 +590,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		
 		//------------------------------------------------------------E6 削除
 		// e3obj.e6parts 配下が削除されても配列位置がズレないようにコピー配列を用いる
-		NSArray *arrayE6 = [NSArray arrayWithArray:[e3obj.e6parts allObjects]]; 
+		//NSArray *arrayE6 = [NSArray arrayWithArray:[e3obj.e6parts allObjects]]; 
+		NSArray *arrayE6 = [[NSArray alloc] initWithArray:[e3obj.e6parts allObjects]]; 
 		for (E6part *e6 in arrayE6) {
 			// E6 削除
 			E2invoice *e2 = e6.e2invoice; // 後のsumのため親E2を保存
@@ -413,6 +621,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				[moc deleteObject:e7];	// E7削除
 			}
 		}
+		[arrayE6 release];
 		
 		//------------------------------------------------------------E6 新規追加
 		
@@ -429,8 +638,12 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				E6part *e6obj = nil;
 				for (e2obj in e3obj.e1card.e2paids) { // E2支払済 から探す
 					if ([e2obj.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
-						// ありましたが支払済なので、さらに翌月を探す　＜＜新規の場合だけ＞＞
-						iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
+						// ありましたが支払済なので、次を探す　＜＜新規の場合だけ＞＞
+						if (0 < [e3obj.e1card.nPayDay integerValue]) {	// <=0:Debit
+							iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 通常:翌月へ
+						} else {
+							iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, 0, +1); // Debit:翌日へ
+						}
 					}
 				}
 				for (e2obj in e3obj.e1card.e2unpaids) { // E2未払い から探す
@@ -499,7 +712,9 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 					e7obj.sumNoCheck = [e7obj valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
 				}
 				// 次回（翌月）へ
-				iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
+				if (0 < [e3obj.e1card.nPayDay integerValue]) {	// <=0:Debitならば同じ利用日
+					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
+				}
 			}
 		}
 		else {
@@ -759,12 +974,52 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 // bE6noCheckNext = YES: E6未チェック分を翌月以降に移動する
 + (void)e7paid:(E7payment *)e7obj inE6payNextMonth:(BOOL)bE6payNextMonth
 {
-	NSArray *aE2 = [NSArray arrayWithArray:[e7obj.e2invoices allObjects]];
+	//NSArray *aE2 = [NSArray arrayWithArray:[e7obj.e2invoices allObjects]];  autoreleseを減らすため
+	NSArray *aE2 = [[NSArray alloc] initWithArray:[e7obj.e2invoices allObjects]];
 	// e2paid:内で配下が無くなったe7objが削除される可能性があるためコピーを使用する。
 	for (E2invoice *e2 in aE2) {
 		// 配下E2の Paid と Unpaid を切り替える
 		[EntityRelation e2paid:e2 inE6payNextMonth:bE6payNextMonth];
 	}
+	[aE2 release];
+}
+
+
+// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
++ (void)e7e2clean
+{
+	E0root *e0root = [EntityRelation e0root];
+	BOOL bSave = NO;
+	NSManagedObjectContext *moc = e0root.managedObjectContext;
+
+	NSArray *aE7 = [[NSArray alloc] initWithArray:[e0root.e7unpaids allObjects]]; // Unpaid側だけ処理する
+	for (E7payment *e7 in aE7) // aE7要素は削除しないので reverseObjectEnumerator は不要 
+	{
+		NSArray *aE2 = [[NSArray alloc] initWithArray:[e7.e2invoices allObjects]];
+		for (E2invoice *e2 in aE2) // aE2要素は削除しないので reverseObjectEnumerator は不要 
+		{
+			if (e2.e6parts==nil OR [e2.e6parts count]<=0) {
+				e2.e1paid = nil;
+				e2.e1unpaid = nil;
+				e2.e7payment = nil;
+				[moc deleteObject:e2]; // 削除
+				e2 = nil;
+				bSave = YES;
+			}
+		}
+		[aE2 release];
+		
+		if (e7.e2invoices==nil OR [e7.e2invoices count]<=0) {
+			e7.e0paid = nil;
+			e7.e0unpaid = nil;
+			[moc deleteObject:e7];
+			e7 = nil;
+			bSave = YES;
+		}
+	}
+	[aE7 release];
+
+	if (bSave) [EntityRelation commit]; // 保存
 }
 
 @end

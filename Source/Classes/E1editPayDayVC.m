@@ -26,31 +26,17 @@
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
+
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"E1editPayDayVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
-{
-    [super viewDidLoad];
-	Mpicker = nil;	
-//	MlbClosing = nil;
-//	MlbPayMonth = nil;
-//	MlbPayDay = nil;
-
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	Mpicker = nil;		// ここで生成
+	MlbClosing = nil;	// ここで生成
+	MlbPayMonth = nil;	// ここで生成
+	MlbPayDay = nil;	// ここで生成
+	
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
 	// DONEボタンを右側に追加する
@@ -67,26 +53,26 @@
 	[self.view addSubview:Mpicker]; [Mpicker release];
 	//------------------------------------------------------
 	MlbClosing = [[UILabel alloc] init];
-	MlbClosing.font = [UIFont systemFontOfSize:14];
-	MlbClosing.textAlignment = UITextAlignmentCenter;
 	MlbClosing.text = NSLocalizedString(@"Closing day",nil);
-	MlbPayDay.numberOfLines = 2;
+	//MlbClosing.numberOfLines = 2;
+	MlbClosing.textAlignment = UITextAlignmentCenter;
+	MlbClosing.font = [UIFont systemFontOfSize:14];
 	MlbClosing.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbClosing]; [MlbClosing release];
 	//------------------------------------------------------
 	MlbPayMonth = [[UILabel alloc] init];
+	MlbPayMonth.text = NSLocalizedString(@"Payment month",nil);
+	//MlbPayMonth.numberOfLines = 2;
 	MlbPayMonth.font = [UIFont systemFontOfSize:14];
 	MlbPayMonth.textAlignment = UITextAlignmentCenter;
-	MlbPayMonth.text = NSLocalizedString(@"Payment month",nil);
-	MlbPayDay.numberOfLines = 2;
 	MlbPayMonth.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbPayMonth]; [MlbPayMonth release];
 	//------------------------------------------------------
 	MlbPayDay = [[UILabel alloc] init];
+	MlbPayDay.text = NSLocalizedString(@"Payment day",nil);
+	//MlbPayDay.numberOfLines = 2;
 	MlbPayDay.font = [UIFont systemFontOfSize:14];
 	MlbPayDay.textAlignment = UITextAlignmentCenter;
-	MlbPayDay.text = NSLocalizedString(@"Payment day",nil);
-	MlbPayDay.numberOfLines = 2;
 	MlbPayDay.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbPayDay]; [MlbPayDay release];
 	//------------------------------------------------------
@@ -103,16 +89,16 @@
 
 	// PICKER 指定されたコンポーネンツの行を選択する。
 	NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
-	if (iDay < 1 OR 29 < iDay) iDay = 20;
-	[Mpicker selectRow:iDay-1 inComponent:0 animated:NO];	
+	if (iDay < 0 OR 29 < iDay) iDay = 20;
+	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 0=Debit
 
 	iDay = [Re1edit.nPayMonth integerValue];
-	if (iDay < 0 OR 3 < iDay) iDay = 1;
-	[Mpicker selectRow:iDay inComponent:1 animated:NO];	
+	if (iDay < -1 OR 2 < iDay) iDay = 1;
+	[Mpicker selectRow:1+iDay inComponent:1 animated:NO]; // 0=Debit
 	
 	iDay = [Re1edit.nPayDay integerValue];
-	if (iDay < 1 OR 29 < iDay) iDay = 20;
-	[Mpicker selectRow:iDay-1 inComponent:2 animated:NO];	
+	if (iDay < 0 OR 29 < iDay) iDay = 20;
+	[Mpicker selectRow:iDay inComponent:2 animated:NO];  // 0=Debit
 
 	
 	[self viewDesign];
@@ -159,7 +145,7 @@
 	Mpicker.frame = rect;
 
 	rect.size.width = 80;
-	rect.size.height = 40;
+	rect.size.height = 20;
 	rect.origin.y -= rect.size.height;
 	float fcx = self.view.bounds.size.width / 2;
 	// 中央
@@ -184,11 +170,11 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
 	switch (component) {
-		case 0: return 28;
+		case 0: return 30;
 			break;
-		case 1: return 3;
+		case 1: return 4;
 			break;
-		case 2: return 28;
+		case 2: return 30;
 			break;
 	}
 	return 0;
@@ -197,11 +183,11 @@
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
 	switch (component) {
-		case 0: return 80;
+		case 0: return 100;
 			break;
-		case 1: return 110;
+		case 1: return 100;
 			break;
-		case 2: return 80;
+		case 2: return 100;
 			break;
 	}
 	return 0;
@@ -211,36 +197,61 @@
 {
 	switch (component) {
 		case 0:
-			//return GstringDay( 1 + row );
-			return [NSString stringWithFormat:@"%@%@", 
-					GstringDay( 1 + row ), 
-					NSLocalizedString(@"Closing", nil)];
+			if (row <= 0) {
+				return NSLocalizedString(@"Debit", nil); // 0=Debit(自動引落し)	
+			} else {
+				return [NSString stringWithFormat:@"%@%@", 
+						GstringDay( row ), 
+						NSLocalizedString(@"Closing", nil)];
+			}
 			break;
 		case 1:
 			switch (row) {
 				case 0:
-					return NSLocalizedString(@"This month",nil);
+					return NSLocalizedString(@"Debit",nil);
 					break;
 				case 1:
-					return NSLocalizedString(@"Next month",nil);
+					return NSLocalizedString(@"This month",nil);
 					break;
 				case 2:
+					return NSLocalizedString(@"Next month",nil);
+					break;
+				case 3:
 					return NSLocalizedString(@"Twice months",nil);
 					break;
 			}
 			break;
 		case 2:
-			//return GstringDay( 1 + row );
-			return [NSString stringWithFormat:@"%@%@", 
-					GstringDay( 1 + row ), 
-					NSLocalizedString(@"Due", nil)];
+			if (row <= 0) {
+				return NSLocalizedString(@"Debit", nil); // 0=Debit(自動引落し)	
+			} else {
+				return [NSString stringWithFormat:@"%@%@", 
+						GstringDay( row ), 
+						NSLocalizedString(@"Due", nil)];
+			}
 			break;
 	}
 	return 0;
 }
 
-
-
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+	if ([Mpicker selectedRowInComponent:1] <= 0) {
+		// 0=Debit(自動引落し)
+		[pickerView selectRow:0 inComponent:0 animated:YES];
+		[pickerView selectRow:0 inComponent:2 animated:YES];
+	} 
+	else if ([Mpicker selectedRowInComponent:0] <= 0 
+		  OR [Mpicker selectedRowInComponent:2] <= 0) {
+		NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
+		if (iDay < 1 OR 29 < iDay) iDay = 20;
+		[pickerView selectRow:iDay inComponent:0 animated:YES];
+		
+		iDay = [Re1edit.nPayDay integerValue];
+		if (iDay < 1 OR 29 < iDay) iDay = 20;
+		[pickerView selectRow:iDay inComponent:2 animated:YES];
+	}
+}
 
 
 // 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
@@ -249,14 +260,20 @@
 - (void)done:(id)sender
 {
 	// 結果更新
-	Re1edit.nClosingDay = [NSNumber numberWithInteger:1+[Mpicker selectedRowInComponent:0]];
-	Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
-	Re1edit.nPayDay = [NSNumber numberWithInteger:1+[Mpicker selectedRowInComponent:2]];
+	if ([Mpicker selectedRowInComponent:0] <= 0 
+	 OR [Mpicker selectedRowInComponent:1] <= 0 
+	 OR [Mpicker selectedRowInComponent:2] <= 0) {
+		// 0=Debit(自動引落し)
+		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:-1];
+		Re1edit.nPayDay = [NSNumber numberWithInteger:0];
+	} else {
+		// 締め支払
+		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]-1];
+		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
+	}
 
-//	(*PPiClosingDay) = (NSInteger)(1 + [Mpicker selectedRowInComponent:0]);
-//	(*PPiPayMonth) = (NSInteger)([Mpicker selectedRowInComponent:1]);
-//	(*PPiPayDay) = (NSInteger)(1 + [Mpicker selectedRowInComponent:2]);
-	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 

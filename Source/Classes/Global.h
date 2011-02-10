@@ -24,9 +24,8 @@
 #endif
 
 
-#define GD_PRODUCTNAME	@"AzCredit"	// IMPORTANT PRODUCT NAME  和名「クレメモ」
+#define GD_PRODUCTNAME	@"AzCredit"  // IMPORTANT PRODUCT NAME  和名「クレメモ」
 /*----- GD_PRODUCTNAME を変更するときに必要となる作業の覚書 -------------------------------
-
  ＊ソース変更
 	AppDelegete.m にて NSBundle名に GD_PRODUCTNAME が渡されている。以下適切に変更しなければ、ここでフリーズする
 
@@ -75,8 +74,8 @@
 // Option SettingTVC Plist KEY     初期値定義は、<applicationDidFinishLaunching>内
 #define GD_OptBootTopView					@"OptBootTopView"		// 起動時トップ
 #define GD_OptAntirotation					@"OptAntirotation"		// 画面回転
-#define GD_OptEnableSchedule				@"OptEnableSchedule"	// 支払予定
-#define GD_OptEnableCategory				@"OptEnableCategory"	// 分類
+//#define GD_OptEnableSchedule				@"OptEnableSchedule"	// 支払予定
+//#define GD_OptEnableCategory				@"OptEnableCategory"	// 分類
 #define GD_OptEnableInstallment				@"OptEnableInstallment"	// 分割払い
 #define GD_OptNumAutoShow					@"OptNumAutoShow"		// ＜保留＞ テンキー自動表示
 #define GD_OptFixedPriority					@"OptFixedPriority"		// ＜保留＞ 修正を優先
@@ -97,6 +96,8 @@ NSString *GstringMonth( NSInteger PiMonth ) ;
 NSString *GstringDay( NSInteger PlDay ) ;
 
 NSString *GstringYearMMDD(NSInteger PlYearMMDD );
+
+NSInteger GiYearMMDD( NSDate *dt );
 
 NSInteger GlAddYearMM(NSInteger lYearMM, 
 					  NSInteger lMonth );

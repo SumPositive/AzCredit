@@ -62,7 +62,7 @@ NSString *GstringDay( NSInteger PlDay )
 			return NSLocalizedString(@"3rd",nil);
 			break;
 		default:
-			if (28 <= PlDay) {
+			if (28 < PlDay) {
 				return NSLocalizedString(@"EndDay",nil); // 末日
 			}
 			else if (3 < PlDay) {
@@ -79,11 +79,18 @@ NSString *GstringYearMMDD( NSInteger PlYearMMDD )
 	long lYear = PlYearMMDD / 10000;
 	long lMM = (PlYearMMDD - (lYear * 10000)) / 100;
 	long lDD = PlYearMMDD - (lYear * 10000) - (lMM * 100);
-//	if (28 < lDD) {
-//		return [NSString stringWithFormat:NSLocalizedString(@"FormatYearMMEnd",nil), lYear, lMM];
-//	} else {
-		return [NSString stringWithFormat:NSLocalizedString(@"FormatYearMMDD",nil), lYear, lMM, lDD];
-//	}
+	return [NSString stringWithFormat:NSLocalizedString(@"FormatYearMMDD",nil), lYear, lMM, lDD];
+}
+
+// NSDate --> lYearMMDD
+NSInteger GiYearMMDD( NSDate *dt )
+{
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSDateComponents *comp = [cal components:unitFlags fromDate:dt];
+	NSInteger iYearMMDD = comp.year * 10000 + comp.month * 100 + comp.day;
+	//[comp release]; autorelease
+	return iYearMMDD;
 }
 
 // lYearMM を lMonth ヶ月 (+)進める (-)戻す
@@ -124,9 +131,12 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 		comp.day = (iDay - 1) + iAddDD;
 	}
 	NSDate *dateNew = [cal dateByAddingComponents:comp toDate:date1st options:0];
-	[comp release];
+	[comp release]; // alloc生成しているので必要
+	
 	comp = [cal components:unitFlags fromDate:dateNew];
-	return comp.year * 10000 + comp.month * 100 + comp.day;
+	NSInteger iRet = comp.year * 10000 + comp.month * 100 + comp.day;
+	//[comp release];　こちらはautorelease
+	return iRet;
 }
 
 
@@ -173,7 +183,8 @@ NSDate *GdateYearMMDD( NSInteger PiMinYearMMDD, int PiHour, int PiMinute, int Pi
 	NSInteger iMM = iDD / 100;
 	iDD -= (iMM * 100);
 	
-	NSString *dateStr = [NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", 
+	//NSString *dateStr = [NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", 
+	NSString *dateStr = [[NSString alloc] initWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", 
 							(int)iYear,(int)iMM,(int)iDD, PiHour,PiMinute,PiSecond];
 	// strをNSDate型に変換
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];  
@@ -181,5 +192,6 @@ NSDate *GdateYearMMDD( NSInteger PiMinYearMMDD, int PiHour, int PiMinute, int Pi
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];  
 	NSDate *datetime = [dateFormatter dateFromString:dateStr];  
 	[dateFormatter release];  	
+	[dateStr release];
 	return datetime;
 }

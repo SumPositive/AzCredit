@@ -15,6 +15,7 @@
 // クラスメソッド（グローバル関数）
 + (void)commit;
 + (void)rollBack;
++ (void)allReset;
 
 + (E0root *)e0root;
 
@@ -33,5 +34,6 @@
 + (void)e6payNextMonth:(E6part *)e6obj;
 
 + (void)e7paid:(E7payment *)e7obj inE6payNextMonth:(BOOL)bE6payNextMonth;
++ (void)e7e2clean;
 
 @end

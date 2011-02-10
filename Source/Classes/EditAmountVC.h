@@ -20,29 +20,6 @@
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UITextField	*MtfAmount; // self.viewがOwner   // 将来的には外貨対応
 	UILabel		*MlbAmount;
-/*	//--------------Calc----------
-	UIButton	*MbuCalcN0;
-	UIButton	*MbuCalcN1;
-	UIButton	*MbuCalcN2;
-	UIButton	*MbuCalcN3;
-	UIButton	*MbuCalcN4;
-	UIButton	*MbuCalcN5;
-	UIButton	*MbuCalcN6;
-	UIButton	*MbuCalcN7;
-	UIButton	*MbuCalcN8;
-	UIButton	*MbuCalcN9;
-	UIButton	*MbuCalc00;
-	UIButton	*MbuCalcAdd;
-	UIButton	*MbuCalcSubtraction;
-	UIButton	*MbuCalcMultiplication;
-	UIButton	*MbuCalcDivision;
-	UIButton	*MbuCalcEqual;
-	UIButton	*MbuCalcBack;
-	UIButton	*MbuCalcClear;
-	UIButton	*MbuCalcDecimal;
-	UIButton	*MbuCalcTaxAdd;
-	UIButton	*MbuCalcTaxSubtraction;
-*/
 	//----------------------------------------------assign
 	BOOL MbOptAntirotation;
 }

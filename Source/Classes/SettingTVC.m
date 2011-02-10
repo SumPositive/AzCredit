@@ -31,55 +31,27 @@
 	[super dealloc];
 }
 
-- (void)viewDidUnload {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-//	[MsliderStock release];		MsliderStock = nil;
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"SettingTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
-													 message:@"SettingTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-    [super didReceiveMemoryWarning];
-}
-
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
+		// OK
 	}
 	return self;
 }
 
+/*
 // viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
-	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
-
-/*	// DONEボタンを右側に追加する
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-											   target:self action:@selector(done:)] autorelease];
-*/
 }
+
+- (void)viewDidUnload {
+	AzLOG(@"MEMORY! SettingTVC: viewDidUnload");
+}
+*/
 
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -108,7 +80,7 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-	
+
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [userDefaults boolForKey:GD_OptAntirotation];
@@ -161,7 +133,7 @@
 {
 	switch (section) {
 		case 0: // 
-			return 5;
+			return 3;
 			break;
 	}
     return 0;
@@ -241,36 +213,6 @@
 				}
 					break;
 				case 2:
-				{ // OptEnableSchedule
-					cell.textLabel.text = NSLocalizedString(@"OptEnableSchedule",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptEnableSchedule msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptEnableSchedule];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptEnableSchedule;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw];
-					[sw release];
-				}
-					break;
-				case 3:
-				{ // OptEnableCategory
-					cell.textLabel.text = NSLocalizedString(@"OptEnableCategory",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptEnableCategory msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptEnableCategory];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptEnableCategory;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw];
-					[sw release];
-				}
-					break;
-				case 4:
 				{ // OptEnableInstallment
 					cell.textLabel.text = NSLocalizedString(@"OptEnableInstallment",nil);
 					cell.detailTextLabel.text = NSLocalizedString(@"OptEnableInstallment msg",nil);
@@ -285,6 +227,36 @@
 					[sw release];
 				}
 					break;
+/*				case 2:
+				{ // OptEnableSchedule
+					cell.textLabel.text = NSLocalizedString(@"OptEnableSchedule",nil);
+					cell.detailTextLabel.text = NSLocalizedString(@"OptEnableSchedule msg",nil);
+					// add UISwitch
+					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
+					BOOL bOpt = [userDefaults boolForKey:GD_OptEnableSchedule];
+					[sw setOn:bOpt animated:NO]; // 初期値セット
+					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+					sw.tag = TAG_GD_OptEnableSchedule;
+					sw.backgroundColor = [UIColor clearColor]; //背景透明
+					[cell.contentView  addSubview:sw];
+					[sw release];
+				}
+					break;*/
+/*				case 3:
+					 { // OptEnableCategory
+					 cell.textLabel.text = NSLocalizedString(@"OptEnableCategory",nil);
+					 cell.detailTextLabel.text = NSLocalizedString(@"OptEnableCategory msg",nil);
+					 // add UISwitch
+					 UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
+					 BOOL bOpt = [userDefaults boolForKey:GD_OptEnableCategory];
+					 [sw setOn:bOpt animated:NO]; // 初期値セット
+					 [sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+					 sw.tag = TAG_GD_OptEnableCategory;
+					 sw.backgroundColor = [UIColor clearColor]; //背景透明
+					 [cell.contentView  addSubview:sw];
+					 [sw release];
+					 }
+					 break; */
 /*				case 5:
 				{ // OptNumAutoShow
 					cell.textLabel.text = NSLocalizedString(@"OptNumAutoShow",nil);
@@ -339,15 +311,16 @@
 			MbOptAntirotation = [sender isOn];  // このViewでも反映させるため。
 			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
 			break;
-		case TAG_GD_OptEnableSchedule:
+/*		case TAG_GD_OptEnableSchedule:
 			[defaults setBool:[sender isOn] forKey:GD_OptEnableSchedule];
-			break;
-		case TAG_GD_OptEnableCategory:
-			[defaults setBool:[sender isOn] forKey:GD_OptEnableCategory];
-			break;
+			break;*/
 		case TAG_GD_OptEnableInstallment:
 			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
 			break;
+
+/*		case TAG_GD_OptEnableCategory:
+			[defaults setBool:[sender isOn] forKey:GD_OptEnableCategory];
+			break;*/
 /*		case TAG_GD_OptNumAutoShow:
 			[defaults setBool:[sender isOn] forKey:GD_OptNumAutoShow];
 			break;

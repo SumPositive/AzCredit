@@ -11,10 +11,17 @@
 
 //---------------------------------------------------------------------------------------E0
 @implementation E0root
-@dynamic e7paids;		// E0 <-->> E7
-@dynamic e7unpaids;		// E0 <-->> E7
+@dynamic e7paids;
+@dynamic e7unpaids;
 @end
 
+//---------------------------------------------------------------------------------------E8 [0.3]New
+@implementation E8bank
+@dynamic nRow;
+@dynamic zName;
+@dynamic zNote;
+@dynamic e1cards;
+@end
 
 //---------------------------------------------------------------------------------------E1 
 @implementation E1card
@@ -24,14 +31,22 @@
 @dynamic nPayDay;
 @dynamic nPayMonth;
 @dynamic nRow;
-//@dynamic zBank;
-//@dynamic zContact;
-//@dynamic zEmergency;
 @dynamic zName;
 @dynamic zNote;
 @dynamic e2paids;
 @dynamic e2unpaids;
 @dynamic e3records;
+@dynamic e8bank;
+@end
+
+//---------------------------------------------------------------------------------------E7
+@implementation E7payment
+@dynamic nYearMMDD;
+@dynamic sumAmount;
+@dynamic sumNoCheck;
+@dynamic e2invoices;	// E7 <-->> E2
+@dynamic e0paid;		// E7 <<--> E0
+@dynamic e0unpaid;		// E7 <<--> E0
 @end
 
 //---------------------------------------------------------------------------------------E2 
@@ -43,21 +58,6 @@
 @dynamic e1unpaid;
 @dynamic e6parts;
 @dynamic e7payment;
-@end
-
-//---------------------------------------------------------------------------------------E3
-@implementation E3record
-@dynamic dateUse;
-@dynamic nAmount;
-@dynamic nAnnual;		// Float 年利
-@dynamic nPayType;
-@dynamic sumNoCheck;
-@dynamic zName;
-@dynamic zNote;
-@dynamic e1card;
-@dynamic e4shop;
-@dynamic e5category;
-@dynamic e6parts;
 @end
 
 //---------------------------------------------------------------------------------------E4shop
@@ -82,6 +82,22 @@
 @dynamic e3records;
 @end
 
+//---------------------------------------------------------------------------------------E3
+@implementation E3record
+@dynamic dateUse;
+@dynamic nAmount;
+@dynamic nAnnual;
+@dynamic nPayType;
+@dynamic nReservType;
+@dynamic sumNoCheck;
+@dynamic zName;
+@dynamic zNote;
+@dynamic e1card;
+@dynamic e4shop;
+@dynamic e5category;
+@dynamic e6parts;
+@end
+
 //---------------------------------------------------------------------------------------E6
 @implementation E6part
 @dynamic nAmount;
@@ -90,16 +106,6 @@
 @dynamic nPartNo;
 @dynamic e2invoice;		// E6 <<--> E2
 @dynamic e3record;		// E6 <<--> E3
-@end
-
-//---------------------------------------------------------------------------------------E7
-@implementation E7payment
-@dynamic nYearMMDD;
-@dynamic sumAmount;
-@dynamic sumNoCheck;
-@dynamic e2invoices;	// E7 <-->> E2
-@dynamic e0paid;		// E7 <<--> E0
-@dynamic e0unpaid;		// E7 <<--> E0
 @end
 
 // END

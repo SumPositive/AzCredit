@@ -36,20 +36,9 @@
 	AzRETAIN_CHECK(@"E1cardTVC Re0root", Re0root, 0)
 	[Re0root release];
 	[Re3edit release];
+	[MautoreleasePool release];
 	[super dealloc];
 }
-
-- (void)viewDidUnload {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-	[Me1cards release];		Me1cards = nil;
-
-	// @property (retain) は解放しない。
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 
 #pragma mark View lifecycle
 
@@ -57,46 +46,27 @@
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
 
-- (void)barButtonAdd {
-	// Add Card
-	[self e1cardDatail:nil]; // :(nil)Add mode
-}
-
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonUntitled {
-	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
-		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
-		return;
-	}
-	// E3配下なし（新規追加中である） 未定(nil)にする
-	Re3edit.e1card = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView 
 {
-    [super viewDidLoad];
-	Me1cards = nil;
-
-	// ここは、alloc直後に呼ばれるため、パラは未セット状態である。==>> viewWillAppearで参照すること
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MbuTop = nil;	// ここ(loadView)で生成
+	MbuAdd = nil;	// ここ(loadView)で生成
 	
 	// Set up NEXT Left [Back] buttons.
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
-		   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
-		   style:UIBarButtonItemStylePlain  target:nil  action:nil];
+									   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
 	self.navigationItem.backBarButtonItem = backButtonItem;
 	[backButtonItem release];
-
+	
 	if (Re3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
@@ -106,7 +76,7 @@
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
 	MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
+														   target:self action:@selector(barButtonAdd)];
 	if (Re3edit && [Re3edit.e6parts count] <= 0) {  // !=nil:選択モード
 		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
@@ -127,9 +97,27 @@
 	}
 	[MbuAdd release];
 	[buFlex release];
-	
-	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
+}
+
+
+- (void)barButtonAdd {
+	// Add Card
+	[self e1cardDatail:nil]; // :(nil)Add mode
+}
+
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)barButtonUntitled {
+	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
+		return;
+	}
+	// E3配下なし（新規追加中である） 未定(nil)にする
+	Re3edit.e1card = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
 // 回転サポート
@@ -411,12 +399,15 @@ static UIImage* GimageFromString(NSString* str)
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-//		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-//		[formatter setLocale:localeJP];
-//		[localeJP release];
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
-									 GstringDay([e1obj.nPayDay intValue]),	// 支払日
-									 [formatter stringFromNumber:sumAmount]];
+		if ([e1obj.nPayDay intValue] < 1) {
+			// Debit
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"Debit %@",
+										 [formatter stringFromNumber:sumAmount]];
+		} else {
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
+										 GstringDay([e1obj.nPayDay intValue]),	// 支払日
+										 [formatter stringFromNumber:sumAmount]];
+		}
 		[formatter release];
 		
 		if (Re3edit == nil) {
@@ -486,6 +477,7 @@ static UIImage* GimageFromString(NSString* str)
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
 			tvc.title = e1obj.zName;
 			tvc.Re1select = e1obj;
+			tvc.Re8select = nil;
 			[self.navigationController pushViewController:tvc animated:YES];
 			[tvc release];
 		}

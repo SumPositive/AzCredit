@@ -21,49 +21,18 @@
 @end
 
 @implementation E6partTVC
-//@synthesize Re2invoices;
 @synthesize Pe2select;
 @synthesize Pe7select;
-//@synthesize PiMode;
+@synthesize	Pe2invoices; // E8bank-->>E1-->>E2
 @synthesize PiFirstSection;
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[Me2invoices release];
 	[Me6parts release];
-	
 	// @property (retain)
-//	[Re2invoices release];
+	[MautoreleasePool release];
 	[super dealloc];
-}
-
-- (void)viewDidUnload 
-{
-	// メモリ不足時、裏側にある場合に呼び出されるので、Private Allocで生成したObjを解放する。
-	[Me2invoices release];		Me2invoices = nil;
-	[Me6parts release];			Me6parts = nil;
-	
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"E6partTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
-													 message:@"E6partTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-    [super didReceiveMemoryWarning];
 }
 
 
@@ -71,29 +40,23 @@
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		MiForTheFirstSection = (-1);  // viewWillAppearにてMe2invoices Reload時にセット
+		Me2e1card = nil;
+		Me7e0root = nil;
+		MbFirstOne = YES;
 	}
-	// 初期化
-	Me2e1card = nil;
-	Me7e0root = nil;
-	MbFirstOne = YES;
 	return self;
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-	Me2invoices = nil;
-	Me6parts = nil;
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	// なし
 	
-
-	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
-
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
@@ -109,7 +72,7 @@
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
-    [super viewWillAppear:YES];
+    [super viewWillAppear:animated];
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -133,8 +96,12 @@
 	}
 	Me6parts = [[NSMutableArray alloc] init];
 
+	//[0.3]E7E2クリーンアップ
+	//禁止 [EntityRelation e7e2clean] ここではまだ削除してはダメ！上層に戻ってから。
+	// Pe2invoices には、上層でセットされたE2が削除後も含まれているため。
+
 	if (Pe7select) {
-		Pe2select = nil; // 他方は必ずnil
+		assert(Pe2select==nil); // 他方は必ずnil
 		// E3修正にてカード変更などによりE7,E2,E6が削除されて戻ってきたときに対応するための処理
 		// この処理が無ければ、ここからドリルダウンしたE3修正にて、「カード変更」「利用日変更」などするとFreezeする
 		if (Me7e0root == nil) {
@@ -178,7 +145,7 @@
 		}
 	}
 	else if (Pe2select) {
-		Pe7select = nil; // 他方は必ずnil
+		assert(Pe7select==nil); // 他方は必ずnil
 		// E3修正にてカード変更などによりE2,E6が削除されて戻ってきたときに対応するための処理
 		// この処理が無ければ、ここからドリルダウンしたE3修正にて、「カード変更」「利用日変更」などするとFreezeする
 		if (Me2e1card == nil) {
@@ -197,7 +164,7 @@
 				break;
 			}
 		}
-		if ([Me2invoices count] <= 0) {
+		if (bAlive==NO && [Me2invoices count] <= 0) {
 			for (E2invoice *e2 in Me2e1card.e2paids) {
 				if (Pe2select == e2) {
 					bAlive = YES; // Pe2selectは、e2paids に存在する
@@ -238,13 +205,38 @@
 			}
 		}
 	}
+	else if (Pe2invoices) {  // E8bank追加により新設
+		// 注意！E6削除の結果、その親E2も削除されたとき、Pe2invoicesには「その親E2」(根無し）が残っている！
+		// [0.3]この解決のため、e3delete処理では、E2を削除しないようにした。
+		[Me2invoices setArray:[Pe2invoices allObjects]];
+		if (2 <= [Me2invoices count]) {
+			E2invoice *e2 = [Me2invoices objectAtIndex:0];
+			// E2.e1card.nRow 昇順ソート
+			NSSortDescriptor *sort1;
+			if (e2.e1paid) {
+				sort1 = [[NSSortDescriptor alloc] initWithKey:@"e1paid.nRow" ascending:YES];
+			} else {
+				sort1 = [[NSSortDescriptor alloc] initWithKey:@"e1unpaid.nRow" ascending:YES];
+			}
+			NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+			[sort1 release];
+			[Me2invoices sortUsingDescriptors:sortArray];
+			[sortArray release];
+		}
+	}
+	else {
+		AzLOG(@"LOGIC ERROR: Pe2select,Pe7select,Pe2invoices == nil");
+		exit(-1);  // Fail
+	}
 
+	
 	if (0 < [Me2invoices count]) {
 		// E6.e3record.dateUse 昇順ソート
 		NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"e3record.dateUse" ascending:YES];
 		NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 		// muE2list配下の全E6抽出＆ソート
 		for (E2invoice *e2 in Me2invoices) {
+			//assert(0 < [e2.e6parts count]) ！選択月の前後月も表示するため0行の場合がある。
 			NSMutableArray *e6arry = [[NSMutableArray alloc] initWithArray:[e2.e6parts allObjects]];
 			[e6arry sortUsingDescriptors:sortArray];
 			[Me6parts addObject:e6arry]; [e6arry release];
@@ -274,6 +266,10 @@
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
+}
+
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
 // 回転サポート

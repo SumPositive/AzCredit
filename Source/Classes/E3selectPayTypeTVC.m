@@ -27,52 +27,31 @@ BOOL MbOptAntirotation;
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
-{
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"E3selectPayTypeTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
-													 message:@"E3selectPayTypeTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-    [super didReceiveMemoryWarning];
-}
-
-
 - (id)initWithStyle:(UITableViewStyle)style {
     if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+		// OK
     }
     return self;
 }
 
+/*
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
+{
+	[super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+}
 
-- (void)viewDidLoad 
+ - (void)viewDidUnload 
+ {
+	[super viewDidUnload];
+ }
+ 
+ - (void)viewDidLoad 
 {
     [super viewDidLoad];
 }
-
-// 回転サポート
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
+*/
 
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
 {
@@ -92,6 +71,13 @@ BOOL MbOptAntirotation;
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
 
+// 回転サポート
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
 
 #pragma mark Table view methods
 
@@ -103,7 +89,7 @@ BOOL MbOptAntirotation;
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // セクションは1つだけ section==0
-	return 2;  // [0.1] ボーナス未対応
+	return 2;  //4;  // [0.3] (101)ボーナス　(201)支払日指定
 }
 /*
 // セルの高さを指示する
@@ -156,11 +142,11 @@ BOOL MbOptAntirotation;
 			if ([Re3edit.nPayType integerValue] == 101)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
-//		case 3:
-//			cell.textLabel.text = NSLocalizedString(@"PayType 102", nil);
-//			if ([Re3edit.nPayType integerValue] == 102)
-//				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
-//			break;
+		case 3:
+			cell.textLabel.text = NSLocalizedString(@"PayType 201", nil);
+			if ([Re3edit.nPayType integerValue] == 201)
+				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
+			break;
 		default:
 			break;
 	}
@@ -184,7 +170,7 @@ BOOL MbOptAntirotation;
 			Re3edit.nPayType = [NSNumber numberWithInt:101];
 			break;
 		case 3:
-			Re3edit.nPayType = [NSNumber numberWithInt:102];
+			Re3edit.nPayType = [NSNumber numberWithInt:201];
 			break;
 		default:
 			Re3edit.nPayType = [NSNumber numberWithInt:1];

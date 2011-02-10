@@ -33,35 +33,8 @@
 	
 	// @property (retain)
 	[Re0root release];
+	[MautoreleasePool release];
 	[super dealloc];
-}
-
-- (void)viewDidUnload 
-{
-	// メモリ不足時、裏側にある場合に呼び出されるので、Private Allocで生成したObjを解放する。
-	[Me7list release];		Me7list = nil;
-	
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"E2invoiceTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
-													 message:@"E2invoiceTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-    [super didReceiveMemoryWarning];
 }
 
 static UIColor *MpColorBlue(float percent) {
@@ -79,25 +52,19 @@ static UIColor *MpColorBlue(float percent) {
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
-		//self.tableView.backgroundColor = MpColorBlue(0.3f);
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
-	MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	return self;
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-	Me7list = nil;
-
-	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	// なし
 
 	// Set up NEXT Left [Back] buttons.
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
@@ -119,16 +86,6 @@ static UIColor *MpColorBlue(float percent) {
 	[buFlex release];
 }
 
-/*static long addYearMM( long lYearMM, long lMonth )
-{
-	long lYear = lYearMM / 100;
-	long lMM = lYearMM - (lYear * 100);
-	lMM += lMonth;
-	lYear += (lMM / 12);
-	lMM = lMM - ((lMM / 12) * 12);
-	return lYear * 100 + lMM;
-}*/
-
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
@@ -144,6 +101,9 @@ static UIColor *MpColorBlue(float percent) {
 		[Me7list release];
 		Me7list = nil;
 	}
+	
+	//[0.3]E7E2クリーンアップ
+	[EntityRelation e7e2clean];
 
 	// E2 Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
@@ -175,6 +135,11 @@ static UIColor *MpColorBlue(float percent) {
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
 }
+
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
 
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -239,8 +204,7 @@ static UIColor *MpColorBlue(float percent) {
 	// (0)TopMenu >> (1)E1card >> (2)This >> (3)E6partTVC へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	tvc.title = GstringYearMMDD( [e7obj.nYearMMDD integerValue] );
-	tvc.Pe2select = nil;	// 一方は必ずnilであること。
-	tvc.Pe7select = e7obj;
+	tvc.Pe7select = e7obj;	// カード別明細一覧（支払日の変更はできない）
 	tvc.PiFirstSection = 0;
 	[self.navigationController pushViewController:tvc animated:NO];
 	// viewComeback を呼び出す
@@ -599,8 +563,7 @@ static UIImage* GimageFromString(NSString* str)
 	E7payment *e7obj = [[Me7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	// (0)TopMenu >> (1)E7payment >> (2)E6part(CardMixMode) へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
-	tvc.Pe2select = nil;	// 一方は必ずnilであること。
-	tvc.Pe7select = e7obj;
+	tvc.Pe7select = e7obj;	// カード別明細一覧（支払日の変更はできない）
 	tvc.PiFirstSection = 0;
 	// セルから取得してタイトル名にする
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];

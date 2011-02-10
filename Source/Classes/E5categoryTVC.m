@@ -36,18 +36,8 @@
 	AzRETAIN_CHECK(@"E5categoryTVC Re0root", Re0root, 0)
 	[Re0root release];
     
+	[MautoreleasePool release];
 	[super dealloc];
-}
-
-- (void)viewDidUnload {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-	[Me5categorys release];		Me5categorys = nil;
-
-	// @property (retain) は解放しない。
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 
@@ -57,41 +47,18 @@
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonAdd {
-	// Add Shop
-	[self e5categoryDatail:(-1)]; // :(-1)Add mode
-}
-
-- (void)barButtonUntitled {
-	// 未定(nil)にする
-	Pe3edit.e5category = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-- (void)barSegmentSort:(id)sender {
-	MiOptE5SortMode = [sender selectedSegmentIndex];
-	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE5SortMode forKey:GD_OptE5SortMode];
-	// Requery
-	[self requeryMe5categorys:nil];
-}
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-	Me5categorys = nil;
-	
-	// ここは、alloc直後に呼ばれるため、パラは未セット状態である。==>> viewWillAppearで参照すること
+	[super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MbuTop = nil;		// ここ(loadView)で生成
 	
 	// Set up NEXT Left [Back] buttons.
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
@@ -159,6 +126,24 @@
 	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
+
+- (void)viewWillAppear:(BOOL)animated 
+{
+	[super viewWillAppear:animated];
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	
+	if (MbuTop) {
+		// hasChanges時にTop戻りボタンを無効にする
+		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
+	}
+	
+	// Requery
+	[self requeryMe5categorys:nil];
+}
+
 
 - (void)requeryMe5categorys:(NSString *)zSearch 
 {
@@ -234,6 +219,29 @@
 	[searchBar resignFirstResponder]; // キーボードを非表示にする
 }
 
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)barButtonAdd {
+	// Add Shop
+	[self e5categoryDatail:(-1)]; // :(-1)Add mode
+}
+
+- (void)barButtonUntitled {
+	// 未定(nil)にする
+	Pe3edit.e5category = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+- (void)barSegmentSort:(id)sender {
+	MiOptE5SortMode = [sender selectedSegmentIndex];
+	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE5SortMode forKey:GD_OptE5SortMode];
+	// Requery
+	[self requeryMe5categorys:nil];
+}
+
+
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -268,23 +276,6 @@
 	// SerchBar
 	self.tableView.tableHeaderView.frame = CGRectMake(0,0, self.tableView.bounds.size.width,0);
 	[self.tableView.tableHeaderView sizeToFit];
-}
-
-- (void)viewWillAppear:(BOOL)animated 
-{
-	[super viewWillAppear:animated];
-	
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-	
-	if (MbuTop) {
-		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
-	}
-	
-	// Requery
-	[self requeryMe5categorys:nil];
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる

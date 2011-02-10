@@ -9,25 +9,30 @@
 #import <UIKit/UIKit.h>
 
 @class E1card;
+@class E2temp;
 
 @interface E2invoiceTVC : UITableViewController
 {
 	//----------------------------------------------retain
-	E1card		*Re1select;		// 必須
+	E1card		*Re1select;		// どちらか必須
+	E8bank		*Re8select;		// どちらか必須
 	//----------------------------------------------assign
 	
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSMutableArray	*Me2list;
+	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*Me2list;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
-	E2invoice	*Me2cellButton; // cellLeftButton:にて button.tag をセットして、alertView:にて参照。
+	E2temp		*Me2cellButton;		// cellLeftButton:にて button.tag をセットして、alertView:にて参照。
 }
 
-@property (nonatomic, retain) E1card  *Re1select;
+@property (nonatomic, retain) E1card	*Re1select;
+@property (nonatomic, retain) E8bank	*Re8select;
 
 - (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 
 @end
+

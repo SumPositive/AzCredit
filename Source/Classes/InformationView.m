@@ -103,23 +103,25 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];	
 	
 	//------------------------------------------免責
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 260, 280, 100)];
-	label.text = NSLocalizedString(@"Disclaimer",@"免責 max10行");
+	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 300, 300, 50)];
+	label.text = NSLocalizedString(@"Disclaimer",nil);
 	label.textAlignment = UITextAlignmentLeft;
-	label.numberOfLines = 10;
+	label.numberOfLines = 4;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Courier" size:10];
 	[self addSubview:label]; [label release];	
 	
-/*	//------------------------------------------GO to Support Site
-	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // autorelease
-	bu.frame = CGRectMake(50,400, 100,25);
-	[bu addTarget:self action:@selector(openWebSite) forControlEvents:UIControlEventTouchUpInside];
-	//bu.backgroundColor = [UIColor clearColor]; //背景透明
-	//bu.showsTouchWhenHighlighted = YES;
-	[self addSubview:bu]; // bu autorelease
-*/
+	//------------------------------------------注意
+	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 360, 300, 65)];
+	label.text = NSLocalizedString(@"Security Alert",nil);
+	label.textAlignment = UITextAlignmentLeft;
+	label.numberOfLines = 5;
+	label.textColor = [UIColor whiteColor];
+	label.backgroundColor = [UIColor clearColor]; //背景透明
+	label.font = [UIFont fontWithName:@"Courier" size:10];
+	[self addSubview:label]; [label release];	
+
 	
 	//------------------------------------------CLOSE
 	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 450, 280, 25)];

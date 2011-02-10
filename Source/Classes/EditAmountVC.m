@@ -26,28 +26,14 @@
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
+
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"EditAmountVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
-{
-    [super viewDidLoad];
-	MtfAmount = nil;	
-	MlbAmount = nil;
+	[super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MtfAmount = nil;	// ここ(loadView)で生成
+	MlbAmount = nil;	// ここ(loadView)で生成
 
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
@@ -100,6 +86,22 @@
 */	
 }
 
+// viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
+- (void)viewWillAppear:(BOOL)animated 
+{
+	[super viewWillAppear:animated];
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+
+	MtfAmount.text = nil;
+	MtfAmount.placeholder = [NSString stringWithFormat:@"%ld", (long)[[Rentity valueForKey:RzKey] integerValue]];
+
+	[self viewDesign];
+	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
+}
+
 - (void)viewDesign
 {
 	CGRect rect;
@@ -117,15 +119,15 @@
 		rect.size.height = 40;
 		MtfAmount.frame = rect;	
 		
-/*		rect.size.width = 30;
-		rect.size.height = 30;
-		rect.origin.y = 200;
-		rect.origin.x = 50;
-		MbuCalcN0.frame = rect;
-		rect.origin.x = 100;
-		MbuCalcN1.frame = rect;
-		rect.origin.x = 150;
-		MbuCalcN2.frame = rect;*/
+		/*		rect.size.width = 30;
+		 rect.size.height = 30;
+		 rect.origin.y = 200;
+		 rect.origin.x = 50;
+		 MbuCalcN0.frame = rect;
+		 rect.origin.x = 100;
+		 MbuCalcN1.frame = rect;
+		 rect.origin.x = 150;
+		 MbuCalcN2.frame = rect;*/
 	}
 	else {	// ヨコ
 		//NSInteger iGapX = (self.view.bounds.size.width - 120 - 120 - 160) / 4;
@@ -138,35 +140,20 @@
 		rect.origin.y = 40;
 		rect.size.height = 40;
 		MtfAmount.frame = rect;	
-
-/*		rect.size.width = 30;
-		rect.size.height = 30;
-		rect.origin.y = 200;
-		rect.origin.x = 50;
-		MbuCalcN0.frame = rect;
-		rect.origin.x = 100;
-		MbuCalcN1.frame = rect;
-		rect.origin.x = 150;
-		MbuCalcN2.frame = rect;*/
+		
+		/*		rect.size.width = 30;
+		 rect.size.height = 30;
+		 rect.origin.y = 200;
+		 rect.origin.x = 50;
+		 MbuCalcN0.frame = rect;
+		 rect.origin.x = 100;
+		 MbuCalcN1.frame = rect;
+		 rect.origin.x = 150;
+		 MbuCalcN2.frame = rect;*/
 	}
 	
 }	
 
-// viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
-- (void)viewWillAppear:(BOOL)animated 
-{
-	[super viewWillAppear:animated];
-	
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-
-	MtfAmount.text = nil;
-	MtfAmount.placeholder = [NSString stringWithFormat:@"%ld", (long)[[Rentity valueForKey:RzKey] integerValue]];
-
-	[self viewDesign];
-	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
-}
 
 // 画面表示された直後に呼び出される
 - (void)viewDidAppear:(BOOL)animated 

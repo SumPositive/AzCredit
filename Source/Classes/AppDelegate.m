@@ -45,7 +45,9 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application
+//<iOS4> - (void)applicationDidFinishLaunching:(UIApplication *)application
+- (BOOL)application:(UIApplication *)application 
+					didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -61,8 +63,8 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 	NSDictionary *azOptDef = [NSDictionary dictionaryWithObjectsAndKeys: // コンビニエンスコンストラクタにつきrelease不要
 							  @"NO",	GD_OptBootTopView,			// TopView
 							  @"NO",	GD_OptAntirotation,			// 回転防止
-							  @"NO",	GD_OptEnableSchedule,		// 支払予定
-							  @"NO",	GD_OptEnableCategory,		// 分類
+						//	  @"YES",	GD_OptEnableSchedule,		// 支払予定
+						//	  @"YES",	GD_OptEnableCategory,		// 分類
 							  @"NO",	GD_OptEnableInstallment,	// 分割払い
 							  @"NO",	GD_OptUseDateTime,			// 利用日：時刻なし
 							  @"NO",	GD_OptNumAutoShow,			// ＜保留＞ テンキー自動表示
@@ -168,12 +170,57 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 																  forKey:kComebackIndexKey];
 	[userDefaults registerDefaults:indexComebackDict];
 	[userDefaults synchronize]; // plistへ書き出す
+
+	return YES;  //iOS4
 }
 
-// applicationWillTerminate: saves changes in the application's managed object context before the application terminates.
+- (void)applicationWillResignActive:(UIApplication *)application 
+{	//iOS4: アプリケーションがアクティブでなくなる直前に呼ばれる
+	/*
+	 Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+	 Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+	 */
+	AzLOG(@"applicationWillResignActive");
+}
+
+
+- (void)applicationDidEnterBackground:(UIApplication *)application 
+{	//iOS4: アプリケーションがバックグラウンドになったら呼ばれる
+	/*
+	 Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+	 If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
+	 */
+	AzLOG(@"applicationDidEnterBackground");
+	
+	[self applicationWillTerminate:application]; //iOS3以前の終了処理
+}
+
+
+- (void)applicationWillEnterForeground:(UIApplication *)application 
+{	//iOS4: アプリケーションがバックグラウンドから復帰する直前に呼ばれる
+	/*
+	 Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
+	 */
+	AzLOG(@"applicationWillEnterForeground");
+}
+
+
+- (void)applicationDidBecomeActive:(UIApplication *)application 
+{	//iOS4: アプリケーションがアクティブになったら呼ばれる
+	/*
+	 Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+	 */
+	AzLOG(@"applicationDidBecomeActive");
+}
+
+
+// saves changes in the application's managed object context before the application terminates.
 - (void)applicationWillTerminate:(UIApplication *)application 
-{
-    //NSError *error;
+{	// バックグラウンド実行中にアプリが終了された場合に呼ばれる。
+	// ただしアプリがサスペンド状態の場合アプリを終了してもこのメソッドは呼ばれない。
+
+	// iOS3互換のためにはここが必要。　iOS4以降、applicationDidEnterBackground から呼び出される。
+
     if (managedObjectContext != nil) {
         /***** 新規登録途中に閉じた場合など、保存しないため。 RollBackする
 		 if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {

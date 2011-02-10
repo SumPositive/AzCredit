@@ -28,8 +28,5 @@
 }
 
 @property (nonatomic, retain) E1card		*Re1edit;
-//@property NSInteger	*PPiClosingDay;
-//@property NSInteger	*PPiPayMonth;
-//@property NSInteger	*PPiPayDay;
 
 @end

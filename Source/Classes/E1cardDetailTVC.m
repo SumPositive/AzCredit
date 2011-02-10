@@ -13,7 +13,8 @@
 #import "E1cardDetailTVC.h"
 #import "EditTextVC.h"
 #import "E1editPayDayVC.h"
-
+#import "E1editBonusVC.h"
+#import "E8bankTVC.h"
 
 #define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（10行）
 
@@ -28,56 +29,28 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	//--------------------------------Private Alloc
-//	[Me1zName release];
 	//--------------------------------@property (retain)
 	[Re1edit release];
+	[MautoreleasePool release];
 	[super dealloc];
-}
-
-- (void)viewDidUnload 
-{
-	// メモリ不足時、裏側にある場合に呼び出されるので、Private Allocで生成したObjを解放する。
-	//[Me1zName release]; 途中release禁止
-	
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"E1cardDetailTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
-													 message:@"E1cardDetailTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-    [super didReceiveMemoryWarning];
 }
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
-		//self.tableView.backgroundColor = MpColorBlue(0.3f);
+		// 初期化成功
+		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
   	}
 	return self;
 }
 
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-	MlbNote = nil;
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MlbNote = nil;		// cellForRowAtIndexPathにて生成
 
 	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
 
@@ -99,6 +72,14 @@
 											   target:self action:@selector(save:)] autorelease];
 }
 
+/*
+- (void)viewDidUnload 
+{
+	[super viewDidUnload];
+	AzLOG(@"MEMORY! E1cardDetailTVC: viewDidUnload");
+}
+*/
+
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
@@ -108,16 +89,6 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
-/*	//----------------------------------------------assign - Entity fields
-	if (Me1zName == nil) {
-		if (Re1edit.zName == nil) Re1edit.zName = @""; // Add時
-		Me1zName = [[NSMutableString alloc] initWithString:Re1edit.zName];
-		//
-		Me1iClosingDay = [Re1edit.nClosingDay integerValue];
-		Me1iPayMonth= [Re1edit.nPayMonth integerValue];
-		Me1iPayDay = [Re1edit.nPayDay integerValue];
-	}*/
-	
 	[self viewDesign]; // 下層で回転して戻ったときに再描画が必要
 	// テーブルビューを更新します。
     [self.tableView reloadData];
@@ -201,7 +172,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	switch (section) {
-		case 0:	return 2;
+		case 0:	return 4;
 			break;
 		case 1:	return 1;  // [0.1] ボーナス未対応
 			break;
@@ -265,25 +236,56 @@
 				{
 					cell.textLabel.text = NSLocalizedString(@"PayDay",nil);
 					
-					//NSString *zClosing = GstringDay(Me1iClosingDay);
-					//NSString *zPay = GstringDay(Me1iPayDay);
-					//
-					NSString *zPayMonth;
-					switch ([Re1edit.nPayMonth integerValue]) {
-						case 0:
-							zPayMonth = NSLocalizedString(@"This month",nil);
-							break;
-						case 1:
-							zPayMonth = NSLocalizedString(@"Next month",nil);
-							break;
-						case 2:
-							zPayMonth = NSLocalizedString(@"Twice months",nil);
-							break;
+					if ([Re1edit.nClosingDay integerValue] <= 0) {
+						cell.detailTextLabel.text = NSLocalizedString(@"Closing-Debit",nil);
+					} else {
+						NSString *zPayMonth = nil;
+						switch ([Re1edit.nPayMonth integerValue]) {
+							case 0:
+								zPayMonth = NSLocalizedString(@"This month",nil);
+								break;
+							case 1:
+								zPayMonth = NSLocalizedString(@"Next month",nil);
+								break;
+							case 2:
+								zPayMonth = NSLocalizedString(@"Twice months",nil);
+								break;
+							default:
+								zPayMonth = @"ERR:Debit?";
+								break;
+						}
+						cell.detailTextLabel.text = [NSString stringWithFormat:
+													 NSLocalizedString(@"Closing-Payment",nil),
+													 GstringDay([Re1edit.nClosingDay integerValue]), 
+													 zPayMonth, GstringDay([Re1edit.nPayDay integerValue])];
 					}
-					//
-					cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Closing-Payment",nil),
-												 GstringDay([Re1edit.nClosingDay integerValue]), 
-												 zPayMonth, GstringDay([Re1edit.nPayDay integerValue])];
+				}
+					break;
+				case 2: // Bonus
+				{
+					cell.textLabel.text = NSLocalizedString(@"CardBonus",nil);
+					NSInteger iB1 = [Re1edit.nBonus1 integerValue];
+					NSInteger iB2 = [Re1edit.nBonus2 integerValue];
+					if (1 <= iB1 && iB1 <= 12) {
+						if (1 <= iB2 && iB2 <= 12 && iB1 != iB2) {
+							cell.detailTextLabel.text = [NSString stringWithFormat:@"%@  %@", 
+														 GstringMonth( iB1 ), 
+														 GstringMonth( iB2 )];
+						} else {
+							cell.detailTextLabel.text = GstringMonth( iB1 );
+						}
+					} else {
+						cell.detailTextLabel.text = NSLocalizedString(@"Unused", nil);
+					}
+				}
+					break;
+				case 3: // Bank
+				{
+					cell.textLabel.text = NSLocalizedString(@"CardBank",nil);
+					if (Re1edit.e8bank)
+						cell.detailTextLabel.text = Re1edit.e8bank.zName;
+					else
+						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
 				}
 					break;
 			}
@@ -375,6 +377,27 @@
 					[e1ed release];
 				}
 					break;
+				case 2: // Bonus
+				{
+					E1editBonusVC *e1ed = [[E1editBonusVC alloc] init];
+					e1ed.title = NSLocalizedString(@"CardBonus", nil);
+					e1ed.Re1edit = Re1edit;
+					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
+					[self.navigationController pushViewController:e1ed animated:YES];
+					[e1ed release];
+				}
+					break;
+				case 3: // Bank
+				{
+					// E8bankTVC へ
+					E8bankTVC *tvc = [[E8bankTVC alloc] init];
+					tvc.title = NSLocalizedString(@"Bank choice",nil);
+					tvc.Re0root = [EntityRelation e0root];
+					tvc.Pe1card = Re1edit;
+					[self.navigationController pushViewController:tvc animated:YES];
+					[tvc release];
+				}
+					break;
 			}
 			break;
 		case 1: //--------------------------------------Option
@@ -452,11 +475,7 @@
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
 		[contx deleteObject:Re1edit];
 		// SAVE
-		NSError *err = nil;
-		if (![contx save:&err]) {
-			NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-			abort();
-		}
+		[EntityRelation commit];
 	}
 	else {
 		[contx rollback]; // 前回のSAVE以降を取り消す

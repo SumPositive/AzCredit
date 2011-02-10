@@ -17,7 +17,8 @@
 
 @private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSMutableArray			*Me4shops;
+	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*Me4shops;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	//----------------------------------------------------------------assign

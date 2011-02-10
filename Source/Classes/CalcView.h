@@ -13,24 +13,25 @@
 	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
 	id			Rentity;		// NSNumber
 	NSString	*RzKey;			// @"nAmount"
+	//----------------------------------------------assign
+	UITableView	*AparentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
 
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
+	NSMutableString		*MzCalc;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-//	UILabel				*MlbCalcValue;
-//	UILabel				*MlbCalcFunc;
-	NSMutableArray		*MaObjects;
+	UILabel				*MlbCalc;
+	//NSMutableArray		*MaObjects;
 	//----------------------------------------------assign
 	BOOL				MbShow;
-	NSMutableString		*MzCalc;
-//	double				MdCalcAns; // 演算ボタンを押す度に記録される回答値
-//	int					MiFunc;		// (0)Non (1)+ (2)- (3)* (4)/
-	//NSString			*MzCalcAns;
+	double				MdRegister; // 演算ボタンを押す度に記録される回答値
+	int					MiFunc;		// (0)Non (-4)+ (-5)- (-6)* (-7)/
 }
 
 @property (nonatomic, retain) UILabel		*Rlabel;
 @property (nonatomic, retain) id			Rentity;
 @property (nonatomic, retain) NSString		*RzKey;	
+@property (nonatomic, assign) UITableView	*AparentTableView;
 
 // 公開メソッド
 - (id)initWithFrame:(CGRect)rect;

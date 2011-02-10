@@ -9,6 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
+#import "EntityRelation.h"
 #import "E5categoryDetailTVC.h"
 #import "EditTextVC.h"
 
@@ -33,51 +34,24 @@
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
-{
-	// メモリ不足時、裏側にある場合に呼び出されるので、Private Allocで生成したObjを解放する。
-	
-	// @property (retain) は解放しない。
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
-													 message:@"E5categoryDetailTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-}
-
-- (void)didReceiveMemoryWarning {
-#ifdef AzDEBUG
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
-													 message:@"E5categoryDetailTVC" 
-													delegate:nil 
-										   cancelButtonTitle:nil 
-										   otherButtonTitles:@"OK", nil] autorelease];
-	[alert show];
-#endif	
-    [super didReceiveMemoryWarning];
-}
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
-		//self.tableView.backgroundColor = MpColorBlue(0.3f);
+		// 初期値
+		PbAdd = NO;
+		Pe3edit = nil;
 	}
-	// 初期値
-	PbAdd = NO;
-	Pe3edit = nil;
 	return self;
 }
 
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-
-	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
+	[super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	// なし
 
 	// Set up NEXT Left [Back] buttons.
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
@@ -108,7 +82,7 @@
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
-    [super viewWillAppear:YES];
+    [super viewWillAppear:animated];
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -319,11 +293,7 @@
 
 		if (PbSave) {
 			// SAVE
-			NSError *err = nil;
-			if (![contx save:&err]) {
-				NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-				abort();
-			}
+			[EntityRelation commit];
 		}
 	}
 	else if (PbSave) {
@@ -375,10 +345,11 @@
 	
 	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
 		// SAVE
-		if (![contx save:&err]) {
-			NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-			abort();
-		}
+		//if (![contx save:&err]) {
+		//	NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
+		//	abort();
+		//}
+		[EntityRelation commit];
 	}
 
 	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理

@@ -20,68 +20,70 @@
 #import "E4shopTVC.h"
 #import "E5categoryTVC.h"
 #import "E7paymentTVC.h"
+#import "E8bankTVC.h"
 #import "WebSiteVC.h"
+#import "EntityRelation.h"
+#import "HttpServerView.h"
+
+#define VIEW_TAG_HttpServer			101
+#define ALERT_TAG_SupportSite		118
 
 
 @interface TopMenuTVC (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
 - (void)azInformationView;
 - (void)azSettingView;
 - (void)e3recordAdd;
+- (void)iAdOn;
+- (void)iAdOff;
 @end
 
 @implementation TopMenuTVC
 @synthesize Re0root;
 
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-
+	//[MbannerView release];  addSubviewしているので不要
 	// @property (retain)
 	AzRETAIN_CHECK(@"TopMenuTVC Re0root", Re0root, 0)
 	[Re0root release];
 	[super dealloc];
 }
 
-- (void)viewDidUnload 
-{
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-
-	// @property (retain) は解放しない。
-}
-
+/* iOS3.0以降では、viewDidUnload を使うようになった。
 - (void)didReceiveMemoryWarning {
+	AzLOG(@"MEMORY! TopMenuTVC: didReceiveMemoryWarning");
     [super didReceiveMemoryWarning];
 }
-
+*/
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
-		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		//self.tableView.allowsSelectionDuringEditing = YES;
+		// 初期化成功
 	}
 	return self;
 }
 
-- (void)barButtonAdd {
-	// Add Card
-	[self e3recordAdd];
-}
-
-- (void)viewDidLoad 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
 {
-    [super viewDidLoad];
-//	MfetchE1card = nil;
+	[super loadView];
+	AzLOG(@"------- TopMenuTVC: loadView");    
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	MbannerView = nil;			// ここ(loadView)で生成
+	MinformationView = nil;		// azInformationViewにて生成
 
-	MiE1cardCount = 0;
-
+	MiE1cardCount = 0;			// viewWillAppearにてセット
+	
 	// Set up NEXT Left [Back] buttons.
 	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"simpleLeft-icon16.png"]
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
 	self.navigationItem.backBarButtonItem = backButtonItem;
 	[backButtonItem release];
-
+	
 #ifndef AzMAKE_SPLASHFACE
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -101,13 +103,137 @@
 	[buSet release];
 	[buFlex release];
 #endif	
-	
+
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
+	
+	// iAd
+	MbannerIsVisible = NO;
+	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
+		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectMake(0,480, 0,0)];
+		MbannerView.delegate = self;
+		MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, 
+													  ADBannerContentSizeIdentifier480x32, nil];
+		//[self.view addSubview:MbannerView];
+		[self.navigationController.view addSubview:MbannerView];
+		[MbannerView release];
+		MbannerEnabled = NO;
+	}
 }
+
+/*
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	[super viewDidUnload];
+	AzLOG(@"MEMORY! TopMenuTVC: viewDidUnload");
+	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoad, viewWillAppear で生成したObjを解放する。
+	
+	// この後に viewDidLoad, viewWillAppear がコールされる
+}
+
+- (void)viewDidLoad 
+{
+    [super viewDidLoad];
+}
+*/
+
+
+- (void)barButtonAdd {
+	// Add Card
+	[self e3recordAdd];
+}
+
+
+- (void)iAdOn
+{
+	//AzLOG(@"=== iAdOn ===");
+	if (MbannerView==nil) return;
+	if (MbannerEnabled==NO OR MbannerIsVisible==YES) return;
+	MbannerIsVisible = YES;
+
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:3.0];
+	
+	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) { // ヨコ
+		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+		MbannerView.frame = CGRectMake(0, 320 - 32, 0,0);
+	} else {
+		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+		MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
+	}
+	
+	[UIView commitAnimations];
+}
+
+- (void)iAdOff
+{
+	//AzLOG(@"=== iAdOff ===");
+	if (MbannerView==nil) return;
+	if (MbannerIsVisible==NO) return;
+	MbannerIsVisible = NO;
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:1.0];
+	
+	CGRect theBannerFrame = self.view.frame;
+	theBannerFrame.origin.y = self.navigationController.view.frame.size.height; // viewの外へ出す
+	MbannerView.frame = theBannerFrame;	
+	
+	[UIView commitAnimations];
+}
+
+
+// iAd取得できたときに呼ばれる　⇒　表示する
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner
+{
+	//AzLOG(@"=== bannerViewDidLoadAd ===");
+	if (MbannerEnabled) {
+		[self iAdOn];
+	}
+}
+
+// iAd取得できなかったときに呼ばれる　⇒　非表示にする
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+{
+	AzLOG(@"=== didFailToReceiveAdWithError ===");
+	[self iAdOff];
+}
+
+/*
+ // MARK: iAd 広告表示を閉じて元に戻る前に呼ばれる
+ - (void)bannerViewActionDidFinish:(ADBannerView *)banner
+ {
+ AzLOG(@"===== bannerViewActionDidFinish =====");
+ //[self iAdOff];  一度見れば消えるようにする
+ }
+ */
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+								duration:(NSTimeInterval)duration
+{
+	if (MbannerView && MbannerIsVisible) {
+		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) { // ヨコ
+			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+			MbannerView.frame = CGRectMake(0, 320 - 32, 0,0);
+		} else {
+			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+			MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
+		}
+	}
+}
+
+
 
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	if ([self.view viewWithTag:VIEW_TAG_HttpServer]) {
+		// HttpServerView が表示中なので回転禁止
+		return NO; // 回転禁止
+	}
+	
 	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面（ホームボタンが画面の下側にある状態）
 		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
@@ -129,6 +255,7 @@
 	// 現在の向きは、self.interfaceOrientation で取得できる
 }
 
+
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
 {
     [super viewWillAppear:animated];
@@ -136,8 +263,8 @@
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-	MbOptEnableSchedule = [defaults boolForKey:GD_OptEnableSchedule];
-	MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
+	//MbOptEnableSchedule = [defaults boolForKey:GD_OptEnableSchedule];
+	//MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
 	
 	self.title = NSLocalizedString(@"Product Title",nil);
 	
@@ -158,12 +285,25 @@
 	MiE1cardCount = [arFetch count];
 	[fetchRequest release];
 	
-	
 	// TableView Reflesh
 	[self.tableView reloadData];
+	
+#ifdef AzMAKE_SPLASHFACE
+	MbannerEnabled = NO;
+#else
+	MbannerEnabled = YES; // TopMenuView画面が表示されたのでiAd許可する
+#endif
 }
 
+// この画面が非表示になる直前に呼ばれる
+- (void)viewWillDisappear:(BOOL)animated 
+{
+	[super viewWillDisappear:animated];
+	[self iAdOff];  // iAdを非表示にする
+	MbannerEnabled = NO; // TopMenuView以外の画面に移るのでiAd禁止にする
+}
 
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated {	// ＜＜魅せる処理＞＞
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
@@ -301,15 +441,13 @@
 #else
 	switch (section) {
 		case 0:			// 利用明細
-			if (MbOptEnableSchedule) return 3;
-			else					 return 2;
+			return 3;
 			break;
 		case 1:			// 集計
-			if (MbOptEnableCategory) return 3;
-			else					 return 2;
+			return 4;
 			break;
 		case 2:			// 機能
-			return 2;
+			return 3;
 			break;
 	}
 	return 0;
@@ -329,49 +467,61 @@
 {
 #ifndef AzMAKE_SPLASHFACE
 	switch (section) {
-		case 0: // 未払い総額を表示する
-			// E7 未払い総額
-			if ([Re0root.e7unpaids count] <= 0) {
-				return NSLocalizedString(@"No unpaid",nil);
-			} else {
-				NSNumber *nUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
-				// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
-				NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-				[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-				NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-				[formatter setLocale:localeJP];
-				[localeJP release];
-				NSString *str = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Unpaid",nil), 
-								 [formatter stringFromNumber:nUnpaid]];
-				[formatter release];
-				return str;
-			}
-			break;
 		case 2:
 			return	@"AzukiSoft Project\n"
-					@"©2000-2010 Azukid";
+					@"©2000-2010 Azukid\n\n"; // iAdが表示されているとき最終セルが隠れないようにする
 			break;
 	}
 #endif
 	return nil;
 }
 
-
- // セルの高さを指示する
+/*
+// セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	NSInteger iHeight = 58;
-	if (MbOptEnableSchedule) iHeight -= 7;
-	if (MbOptEnableCategory) iHeight -= 7;
-	return iHeight; // デフォルト：44ピクセル
+	if (indexPath.section==1) { // 分類
+		return 44; // デフォルト：44ピクセル
+	}
+	return 44; // デフォルト：44ピクセル
 }
-
+*/
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
     static NSString *CellIdentifier = @"CellMenu";
-    
+    //static NSString *zCelliAd = @"CelliAd";
+
+/*	if (indexPath.section==2)
+	{	// iAd行セル
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:zCelliAd];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+										   reuseIdentifier:zCelliAd] autorelease];
+			cell.textLabel.text = @"iAd";
+			cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
+			cell.showsReorderControl = NO; // Move禁止
+			
+			if (NSClassFromString(@"ADBannerView")) {
+				// iAd
+				MbannerView = [[ADBannerView alloc] initWithFrame:CGRectZero];
+				//MbannerView.delegate = self;
+				MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, 
+															  ADBannerContentSizeIdentifier480x32, nil];
+				if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+					MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+				} else {
+					MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+				}
+				MbannerView.frame = CGRectZero;
+				[cell addSubview:MbannerView];
+				[MbannerView release];
+			}
+		}
+		return cell;
+	}*/
+	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -402,7 +552,27 @@
 					break;
 				case 2:
 					cell.imageView.image = [UIImage imageNamed:@"PaySchedule32.png"];
-					cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
+					//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
+					// E7 未払い総額
+					cell.detailTextLabel.textAlignment = UITextAlignmentRight;
+					if ([Re0root.e7unpaids count] <= 0) {
+						cell.textLabel.text = [NSString stringWithFormat:@"%@   (%@)",
+											   NSLocalizedString(@"Payment list",nil), 
+											   NSLocalizedString(@"No unpaid",nil)];
+					} else {
+						NSNumber *nUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
+						// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
+						NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+						[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
+						NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
+						[formatter setLocale:localeJP];
+						[localeJP release];
+						cell.textLabel.text = [NSString stringWithFormat:@"%@   (%@%@)", 
+											   NSLocalizedString(@"Payment list",nil), 
+											   NSLocalizedString(@"Unpaid",nil), 
+												[formatter stringFromNumber:nUnpaid]];
+						[formatter release];
+					}
 					break;
 			}
 		}
@@ -415,14 +585,16 @@
 					cell.textLabel.text = NSLocalizedString(@"Card list", nil);
 					break;
 				case 1:
-					cell.imageView.image = [UIImage imageNamed:@"Shop32.png"];
-					cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
-					cell.detailTextLabel.text = nil;
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Bank.png"];
+					cell.textLabel.text = NSLocalizedString(@"Bank list", nil);
 					break;
 				case 2:
+					cell.imageView.image = [UIImage imageNamed:@"Shop32.png"];
+					cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
+					break;
+				case 3:
 					cell.imageView.image = [UIImage imageNamed:@"Category32.png"];
 					cell.textLabel.text = NSLocalizedString(@"Category list", nil);
-					cell.detailTextLabel.text = nil;
 					break;
 			}
 		}
@@ -432,13 +604,13 @@
 			switch (indexPath.row) {
 				case 0:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
-					cell.textLabel.text = NSLocalizedString(@"Backup Restore", nil);
+					cell.textLabel.text = NSLocalizedString(@"Communicate with Google", nil);
 					break;
-//				case 1:
-//					cell.imageView.image = [UIImage imageNamed:@"Check32-Circle.png"];
-//					cell.textLabel.text = NSLocalizedString(@"CSV File", nil);
-//					break;
 				case 1:
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-NearPC.png"];
+					cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
+					break;
+				case 2:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-WebSafari.png"];
 					cell.textLabel.text = NSLocalizedString(@"Support Site", nil);
 					break;
@@ -470,11 +642,11 @@
 				case 0: // Add Record
 					[self e3recordAdd]; // E3record 新規追加
 					break;
-				case 1: // 利用日一覧　E3 < E3detail
+				case 1: // 最近の明細　E3 < E3detail
 				{
 					// E3records へ
 					E3recordTVC *tvc = [[E3recordTVC alloc] init];
-					tvc.title =  cell.textLabel.text;
+					tvc.title = cell.textLabel.text;
 					tvc.Re0root = Re0root;
 					//tvc.Pe1card = nil;  // =nil:最近の全E3表示モード　　=e1obj:指定E1以下を表示することができる
 					tvc.Pe4shop = nil;
@@ -483,11 +655,11 @@
 					[tvc release];
 				}
 					break;
-				case 2: // 支払日一覧　E7 < E2 < E6 < E3detail
+				case 2: // 支払予定　E7 < E2 < E6 < E3detail
 				{
 					// E7paymentTVC へ
 					E7paymentTVC *tvc = [[E7paymentTVC alloc] init];
-					tvc.title =  cell.textLabel.text;
+					tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
 					tvc.Re0root = Re0root;
 					[self.navigationController pushViewController:tvc animated:YES];
 					[tvc release];
@@ -510,7 +682,18 @@
 					[tvc release];
 				}
 					break;
-				case 1: // 利用店一覧  E4 < E3 < E3detail
+				case 1: // 銀行等口座一覧  E8 
+				{
+					// E8bank へ
+					E8bankTVC *tvc = [[E8bankTVC alloc] init];
+					tvc.title = cell.textLabel.text;
+					tvc.Re0root = Re0root;
+					tvc.Pe1card = nil;
+					[self.navigationController pushViewController:tvc animated:YES];
+					[tvc release];
+				}
+					break;
+				case 2: // 利用店一覧  E4 < E3 < E3detail
 				{
 					E4shopTVC *tvc = [[E4shopTVC alloc] init];
 					tvc.title = cell.textLabel.text;
@@ -520,7 +703,7 @@
 					[tvc release];
 				}
 					break;
-				case 2: // 分類一覧  E4 < E3 < E3detail
+				case 3: // 分類一覧  E4 < E3 < E3detail
 				{
 					E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
 					tvc.title = cell.textLabel.text;
@@ -533,11 +716,11 @@
 			}
 		}
 			break;
-		case 2:
+		case 2: // Function
 		{
 			switch (indexPath.row) {
-				case 0: // Google Document
-				{
+				case 0:
+				{ // Google Document
 					GooDocsTVC *goodocs = [[GooDocsTVC alloc] init];
 					// 以下は、GooDocsViewの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
 					goodocs.title = cell.textLabel.text;
@@ -548,13 +731,28 @@
 				}
 					break;
 				case 1:
+				{  // Backup/Restore for YourPC
+					[self iAdOff];
+					MbannerEnabled = NO;
+					//
+					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
+					vi.Re0root = Re0root;
+					vi.tag = VIEW_TAG_HttpServer; // 表示中は回転禁止にするために参照している
+					[self.view addSubview:vi];
+					[vi show];
+					[vi release];
+				}
+					break;
+				case 2:
 				{  // サポートWebサイトへ
-					WebSiteVC *webSite = [[WebSiteVC alloc] init];
-					webSite.title = cell.textLabel.text;
-					webSite.hidesBottomBarWhenPushed = NO; // 次画面にToolBarが無い場合にはYES、ある場合にはNO（YESにすると次画面のToolBarが背面に残るようだ）
-					[self.navigationController pushViewController:webSite animated:YES];
-					[webSite release];
-				} 
+					UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Go to support",nil)
+																	 message:NSLocalizedString(@"SupportSite message",nil)
+																	delegate:self 
+														   cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
+														   otherButtonTitles:@"OK", nil] autorelease];
+					alert.tag = ALERT_TAG_SupportSite;
+					[alert show];
+				}
 					break;
 			}
 		}
@@ -577,6 +775,17 @@
 	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
 	[view release];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	switch (alertView.tag) {
+		case ALERT_TAG_SupportSite:
+			if (buttonIndex == 1) { // OK
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/"]];
+			}
+			break;
+	}
 }
 
 - (void)e3recordAdd
