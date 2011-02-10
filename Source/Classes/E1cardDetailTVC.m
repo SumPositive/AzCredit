@@ -1,0 +1,479 @@
+//
+//  E1cardDetailTVC.m
+//  AzCredit
+//
+//  Created by 松山 和正 on 10/01/29.
+//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//
+
+#import "Global.h"
+#import "AppDelegate.h"
+#import "Entity.h"
+#import "EntityRelation.h"
+#import "E1cardDetailTVC.h"
+#import "EditTextVC.h"
+#import "E1editPayDayVC.h"
+
+
+#define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（10行）
+
+@interface E1cardDetailTVC (PrivateMethods)
+- (void)viewDesign;
+@end
+
+@implementation E1cardDetailTVC
+@synthesize Re1edit;
+@synthesize PiAddRow;
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	//--------------------------------Private Alloc
+//	[Me1zName release];
+	//--------------------------------@property (retain)
+	[Re1edit release];
+	[super dealloc];
+}
+
+- (void)viewDidUnload 
+{
+	// メモリ不足時、裏側にある場合に呼び出されるので、Private Allocで生成したObjを解放する。
+	//[Me1zName release]; 途中release禁止
+	
+	// @property (retain) は解放しない。
+#ifdef AzDEBUG
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
+													 message:@"E1cardDetailTVC" 
+													delegate:nil 
+										   cancelButtonTitle:nil 
+										   otherButtonTitles:@"OK", nil] autorelease];
+	[alert show];
+#endif	
+}
+
+- (void)didReceiveMemoryWarning {
+#ifdef AzDEBUG
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"didReceiveMemoryWarning" 
+													 message:@"E1cardDetailTVC" 
+													delegate:nil 
+										   cancelButtonTitle:nil 
+										   otherButtonTitles:@"OK", nil] autorelease];
+	[alert show];
+#endif	
+    [super didReceiveMemoryWarning];
+}
+
+// UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
+- (id)initWithStyle:(UITableViewStyle)style 
+{
+	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+		//self.navigationItem.rightBarButtonItem = self.editButtonItem;
+		//self.tableView.allowsSelectionDuringEditing = YES;
+		//self.tableView.backgroundColor = MpColorBlue(0.3f);
+  	}
+	return self;
+}
+
+// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
+- (void)viewDidLoad 
+{
+    [super viewDidLoad];
+	MlbNote = nil;
+
+	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
+
+	// Set up NEXT Left [Back] buttons.
+	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
+	self.navigationItem.backBarButtonItem = backButtonItem;
+	[backButtonItem release];		
+
+	
+	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+											  target:self action:@selector(cancel:)] autorelease];
+	// SAVEボタンを右側に追加する
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+											   target:self action:@selector(save:)] autorelease];
+}
+
+// 他のViewやキーボードが隠れて、現れる都度、呼び出される
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:YES];
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+
+/*	//----------------------------------------------assign - Entity fields
+	if (Me1zName == nil) {
+		if (Re1edit.zName == nil) Re1edit.zName = @""; // Add時
+		Me1zName = [[NSMutableString alloc] initWithString:Re1edit.zName];
+		//
+		Me1iClosingDay = [Re1edit.nClosingDay integerValue];
+		Me1iPayMonth= [Re1edit.nPayMonth integerValue];
+		Me1iPayDay = [Re1edit.nPayDay integerValue];
+	}*/
+	
+	[self viewDesign]; // 下層で回転して戻ったときに再描画が必要
+	// テーブルビューを更新します。
+    [self.tableView reloadData];
+}
+
+// 回転サポート
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
+		// 正面（ホームボタンが画面の下側にある状態）
+		//[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
+		return YES; // この方向だけは常に許可する
+	} 
+	else if (!MbOptAntirotation) {
+		// 横方向や逆向きのとき
+		//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+	}
+	// 現在の向きは、self.interfaceOrientation で取得できる
+	return !MbOptAntirotation;
+}
+
+// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
+													   duration:(NSTimeInterval)duration
+{
+	//[self.tableView reloadData];
+	[self viewDesign]; // cell生成の後
+}
+
+- (void)viewDesign
+{
+	// 回転によるリサイズ
+	CGRect rect;
+	float fWidth = self.tableView.frame.size.width;
+	
+	rect = MlbNote.frame;
+	rect.size.width = fWidth - 60;
+	MlbNote.frame = rect;
+}
+
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+}
+
+/*
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+}
+*/
+/*
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+}
+*/
+
+/*
+// Override to allow orientations other than the default portrait orientation.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+*/
+
+
+#pragma mark Table view methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+
+// Customize the number of rows in the table view.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+{
+	switch (section) {
+		case 0:	return 2;
+			break;
+		case 1:	return 1;  // [0.1] ボーナス未対応
+			break;
+	}
+	return 0;
+}
+
+// TableView セクションタイトルを応答
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{
+	switch (section) {
+		case 0:
+			return nil; //NSLocalizedString(@"Indispensable",nil);
+			break;
+		case 1:
+			return NSLocalizedString(@"Note",nil);
+			break;
+	}
+	return nil;
+}
+
+ // セルの高さを指示する
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	if (indexPath.section==1 && indexPath.row==0) return 200; // Note
+	return 44; // デフォルト：44ピクセル
+}
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+    NSString *zCellIndex = [NSString stringWithFormat:@"E1detail%d:%d", (int)indexPath.section, (int)indexPath.row];
+	UITableViewCell *cell = nil;
+
+	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+									   reuseIdentifier:zCellIndex] autorelease];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+		cell.showsReorderControl = NO; // Move禁止
+
+		cell.textLabel.font = [UIFont systemFontOfSize:12];
+		cell.textLabel.textAlignment = UITextAlignmentCenter;
+		cell.textLabel.textColor = [UIColor grayColor];
+		
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+		cell.detailTextLabel.textColor = [UIColor blackColor];
+	}
+	
+	switch (indexPath.section) {
+		case 0: //-------------------------------------Indispensable
+			switch (indexPath.row) {
+				case 0: // Card name
+				{
+					cell.textLabel.text = NSLocalizedString(@"CardName",nil);
+					cell.detailTextLabel.text = Re1edit.zName;
+				}
+					break;
+				case 1: // PayDay
+				{
+					cell.textLabel.text = NSLocalizedString(@"PayDay",nil);
+					
+					//NSString *zClosing = GstringDay(Me1iClosingDay);
+					//NSString *zPay = GstringDay(Me1iPayDay);
+					//
+					NSString *zPayMonth;
+					switch ([Re1edit.nPayMonth integerValue]) {
+						case 0:
+							zPayMonth = NSLocalizedString(@"This month",nil);
+							break;
+						case 1:
+							zPayMonth = NSLocalizedString(@"Next month",nil);
+							break;
+						case 2:
+							zPayMonth = NSLocalizedString(@"Twice months",nil);
+							break;
+					}
+					//
+					cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Closing-Payment",nil),
+												 GstringDay([Re1edit.nClosingDay integerValue]), 
+												 zPayMonth, GstringDay([Re1edit.nPayDay integerValue])];
+				}
+					break;
+			}
+			break;
+		case 1: //--------------------------------------Option
+			switch (indexPath.row) {
+				case 0: // Card note
+				{
+					//cell.textLabel.text = NSLocalizedString(@"CardNote",nil);
+					//cell.detailTextLabel.text = Re1edit.zNote;
+					if (MlbNote == nil) {
+						MlbNote = [[UILabel alloc] initWithFrame:
+								   CGRectMake(20,10, self.tableView.frame.size.width-60,180)];
+						MlbNote.numberOfLines = 0;
+						MlbNote.lineBreakMode = UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
+						//MlbNote.textAlignment = UITextAlignmentLeft; // 左寄せ(Default)
+						MlbNote.font = [UIFont systemFontOfSize:14];
+#ifdef AzDEBUG
+						//MlbNote.backgroundColor = [UIColor grayColor]; //範囲チェック用
+#endif
+						[cell.contentView addSubview:MlbNote]; [MlbNote release];
+					}
+					if (Re1edit.zNote == nil) {
+						MlbNote.text = @"";  // TextViewは、(nil) と表示されるので、それを消すため。
+					} else {
+						MlbNote.text = [NSString stringWithFormat:@"%@%@", 
+										Re1edit.zNote, LABEL_NOTE_SUFFIX]; //上寄せするため
+					}
+				}
+					break;
+				case 1: // 
+				{
+					cell.textLabel.text = NSLocalizedString(@"Bonus1",nil);
+					if ([Re1edit.nBonus1 integerValue] <= 0) {
+						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
+					} else {
+						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2d月 %@", 
+													 [Re1edit.nBonus1 integerValue],
+													 GstringMonth([Re1edit.nBonus1 integerValue])];
+					}
+				}
+					break;
+				case 2: // 
+				{
+					cell.textLabel.text = NSLocalizedString(@"Bonus2",nil);
+					if ([Re1edit.nBonus2 integerValue] <= 0) {
+						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
+					} else {
+						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2d月 %@", 
+													 [Re1edit.nBonus2 integerValue],
+													 GstringMonth([Re1edit.nBonus2 integerValue])];
+					}
+				}
+					break;
+			}
+			break;
+	}
+    return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+
+	switch (indexPath.section) {
+		case 0: //-------------------------------------Indispensable
+			switch (indexPath.row) {
+				case 0: // Card name
+				{
+					EditTextVC *evc = [[EditTextVC alloc] init];
+					evc.title = NSLocalizedString(@"CardName", nil);
+					evc.Rentity = Re1edit;
+					evc.RzKey = @"zName";
+					evc.PiMaxLength = AzMAX_NAME_LENGTH;
+					evc.PiSuffixLength = 0;
+					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
+					[self.navigationController pushViewController:evc animated:YES];
+					[evc release];
+				}
+					break;
+				case 1: // PayDay
+				{
+					E1editPayDayVC *e1ed = [[E1editPayDayVC alloc] init];
+					e1ed.title = NSLocalizedString(@"PayDay", nil);
+					e1ed.Re1edit = Re1edit;
+					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
+					[self.navigationController pushViewController:e1ed animated:YES];
+					[e1ed release];
+				}
+					break;
+			}
+			break;
+		case 1: //--------------------------------------Option
+			switch (indexPath.row) {
+				case 0: // Card note
+				{
+					EditTextVC *evc = [[EditTextVC alloc] init];
+					evc.title = NSLocalizedString(@"CardNote", nil);
+					evc.Rentity = Re1edit;
+					evc.RzKey = @"zNote";
+					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
+					evc.PiSuffixLength = 0;
+					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
+					[self.navigationController pushViewController:evc animated:YES];
+					[evc release];
+				}
+					break;
+				case 1: // 
+				{
+				}
+					break;
+				case 2: // 
+				{
+				}
+					break;
+			}
+			break;
+	}
+}
+
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+}
+*/
+
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
+
+- (void)cancel:(id)sender 
+{
+	NSManagedObjectContext *contx = Re1edit.managedObjectContext;
+	if (0 <= PiAddRow) { // Add
+		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
+		[contx deleteObject:Re1edit];
+		// SAVE
+		NSError *err = nil;
+		if (![contx save:&err]) {
+			NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
+			abort();
+		}
+	}
+	else {
+		[contx rollback]; // 前回のSAVE以降を取り消す
+	}
+
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+// 編集フィールドの値を self.e3target にセットする
+- (void)save:(id)sender 
+{
+	if (0 <= PiAddRow) { // Add
+		Re1edit.nRow = [NSNumber numberWithInteger:PiAddRow];
+	}
+	
+	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
+	[EntityRelation e1update:Re1edit];
+	[EntityRelation commit];
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+		
+@end
+
