@@ -260,17 +260,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		E2invoice *e2 = e6.e2invoice;
 		E7payment *e7 = nil;
 		if (e2) {
-			e7 = e2.e7payment;
-			if (e7) {
-				// E6 が属する E7 配下のE2数を調べる
-				if ([e7.e2invoices count] <= 1) {
-					// E7 削除： E7配下のE2が自身だけなので削除する
-					e7.e0paid = nil;
-					e7.e0unpaid = nil;
-					[moc deleteObject:e7];
-					e7 = nil;
-				}
-			}
+			e7 = e2.e7payment; // 次でe2が削除される場合があるので先にe7保持する
 			if ([e2.e6parts count] <= 1) {
 				// E2 削除： E2配下のE6が自身だけなので削除する
 				e2.e1paid = nil;
@@ -283,6 +273,16 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				// E2 sum
 				e2.sumAmount = [e2 valueForKeyPath:@"e6parts.@sum.nAmount"];
 				e2.sumNoCheck = [e2 valueForKeyPath:@"e6parts.@sum.nNoCheck"];
+			}
+			if (e7) {
+				// E6 が属する E7 配下のE2数を調べる
+				if ([e7.e2invoices count] <= 1) {
+					// E7 削除： E7配下のE2が自身だけなので削除する
+					e7.e0paid = nil;
+					e7.e0unpaid = nil;
+					[moc deleteObject:e7];
+					e7 = nil;
+				}
 			}
 			if (e7 && e7.e0paid) {	// E7.paids sum
 				for (E7payment *e7sum in e7.e0paid.e7paids) {

@@ -147,8 +147,8 @@
 	E3record *e3new = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
 													inManagedObjectContext:Re3edit.managedObjectContext];
 	// Copy
-	e3new.nAmount		= [NSNumber numberWithInt:0]; // Re3edit.nAmount;
-	//e3new.nAnnual		= Re3edit.nAnnual;
+	e3new.nAmount		= Re3edit.nAmount;
+	e3new.nAnnual		= Re3edit.nAnnual;
 	e3new.nPayType		= Re3edit.nPayType;
 	e3new.zName			= Re3edit.zName;
 	e3new.zNote			= Re3edit.zNote;
@@ -159,6 +159,11 @@
 	e3new.dateUse		= [NSDate date];
 	e3new.sumNoCheck	= [NSNumber numberWithInt:1];
 	e3new.e6parts		= nil;
+	// Replace
+	[Re3edit release];
+	Re3edit = nil;
+	Re3edit = [e3new retain];  // retain 必須！ この後、deallocにてreleaseされますから。
+	MbE6paid = NO;	//[0.3] NO = 配下のE6にPAIDは1つも無い ⇒ 主要項目も修正可能
 	// Replace
 	[Re3edit release];
 	Re3edit = nil;
@@ -177,7 +182,7 @@
 	// テーブルビューを更新
 	[self.tableView reloadData];
 
-//	// rollbackされたので、改めてマスクセット
+	//	// rollbackされたので、改めてマスクセット
 //	[self e3editMaskSet];
 
 /*	if (MbOptNumAutoShow) { // viewDidAppearを通らないので、ここで表示
