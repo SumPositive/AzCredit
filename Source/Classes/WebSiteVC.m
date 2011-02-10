@@ -98,7 +98,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return !MbOptAntirotation OR interfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -125,7 +125,7 @@
     [super viewDidAppear:animated];
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:
-							 [NSURL URLWithString:@"http://azpacking.azukid.com/"]];
+							 [NSURL URLWithString:@"http://azcredit.azukid.com/"]];
 	[MwebView loadRequest:request];
 	[self updateToolBar];
 }
@@ -152,7 +152,7 @@
 - (void)close:(id)sender 
 {
 	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WebSite Close",nil)
-													 message:NSLocalizedString(@"WebSite Close message",nil)
+													 message:nil  //NSLocalizedString(@"WebSite Close message",nil)
 													delegate:self 
 										   cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
 										   otherButtonTitles:@"OK", nil] autorelease];

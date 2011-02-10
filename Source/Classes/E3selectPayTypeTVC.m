@@ -112,6 +112,17 @@ BOOL MbOptAntirotation;
 	return 44; // デフォルト：44ピクセル
 }*/
 
+// TableView セクションフッタを応答
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
+{
+	switch (section) {
+		case 0:
+			return	NSLocalizedString(@"PayType Footer", nil);
+			break;
+	}
+	return nil;
+}
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -145,11 +156,11 @@ BOOL MbOptAntirotation;
 			if ([Re3edit.nPayType integerValue] == 101)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
-		case 3:
-			cell.textLabel.text = NSLocalizedString(@"PayType 102", nil);
-			if ([Re3edit.nPayType integerValue] == 102)
-				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
-			break;
+//		case 3:
+//			cell.textLabel.text = NSLocalizedString(@"PayType 102", nil);
+//			if ([Re3edit.nPayType integerValue] == 102)
+//				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
+//			break;
 		default:
 			break;
 	}

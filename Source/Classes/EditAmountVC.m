@@ -81,7 +81,76 @@
 	[self.view addSubview:MtfAmount]; [MtfAmount release];
 	[MtfAmount resignFirstResponder];  // 初期キーボード表示しない　viewDidAppearにて表示
 	
+/*	//------------------------------------------------------Calc
+	//-----------------[0]
+	MbuCalcN0 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[MbuCalcN0 setTitle:NSLocalizedString(@"0",nil) forState:UIControlStateNormal];
+	[MbuCalcN0 addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:MbuCalcN0]; //[bu release]; autoreleaseされるため
+	//-----------------[1]
+	MbuCalcN1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[MbuCalcN1 setTitle:NSLocalizedString(@"1",nil) forState:UIControlStateNormal];
+	[MbuCalcN1 addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:MbuCalcN1]; //[bu release]; autoreleaseされるため
+	//-----------------[2]
+	MbuCalcN2 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[MbuCalcN2 setTitle:NSLocalizedString(@"2",nil) forState:UIControlStateNormal];
+	[MbuCalcN2 addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:MbuCalcN2]; //[bu release]; autoreleaseされるため
+*/	
 }
+
+- (void)viewDesign
+{
+	CGRect rect;
+	
+	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
+		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	{	// タテ
+		// Amount
+		rect.size.width = 230; // 99999999
+		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width/2;
+		rect.origin.y = 60;
+		rect.size.height = 20;
+		MlbAmount.frame = rect;
+		rect.origin.y = 80;
+		rect.size.height = 40;
+		MtfAmount.frame = rect;	
+		
+/*		rect.size.width = 30;
+		rect.size.height = 30;
+		rect.origin.y = 200;
+		rect.origin.x = 50;
+		MbuCalcN0.frame = rect;
+		rect.origin.x = 100;
+		MbuCalcN1.frame = rect;
+		rect.origin.x = 150;
+		MbuCalcN2.frame = rect;*/
+	}
+	else {	// ヨコ
+		//NSInteger iGapX = (self.view.bounds.size.width - 120 - 120 - 160) / 4;
+		// Amount
+		rect.size.width = 230; // 999
+		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width/2;
+		rect.origin.y = 20;
+		rect.size.height = 20;
+		MlbAmount.frame = rect;
+		rect.origin.y = 40;
+		rect.size.height = 40;
+		MtfAmount.frame = rect;	
+
+/*		rect.size.width = 30;
+		rect.size.height = 30;
+		rect.origin.y = 200;
+		rect.origin.x = 50;
+		MbuCalcN0.frame = rect;
+		rect.origin.x = 100;
+		MbuCalcN1.frame = rect;
+		rect.origin.x = 150;
+		MbuCalcN2.frame = rect;*/
+	}
+	
+}	
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 
@@ -124,38 +193,6 @@
 	//[self viewWillAppear:NO];没：これを呼ぶと、回転の都度、編集がキャンセルされてしまう。
 	[self viewDesign]; // これで回転しても編集が継続されるようになった。
 }
-
-- (void)viewDesign
-{
-	CGRect rect;
-	
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-	 OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
-	{	// タテ
-		// Amount
-		rect.size.width = 230; // 99999999
-		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width/2;
-		rect.origin.y = 60;
-		rect.size.height = 20;
-		MlbAmount.frame = rect;
-		rect.origin.y = 80;
-		rect.size.height = 40;
-		MtfAmount.frame = rect;	
-	}
-	else {	// ヨコ
-		//NSInteger iGapX = (self.view.bounds.size.width - 120 - 120 - 160) / 4;
-		// Amount
-		rect.size.width = 230; // 999
-		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width/2;
-		rect.origin.y = 20;
-		rect.size.height = 20;
-		MlbAmount.frame = rect;
-		rect.origin.y = 40;
-		rect.size.height = 40;
-		MtfAmount.frame = rect;	
-	}
-
-}	
 
 //テキストフィールドの文字変更のイベント処理
 // UITextFieldオブジェクトから1文字入力の都度呼び出されることにより入力文字数制限を行っている。
@@ -200,5 +237,19 @@
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
+/*
+- (void)buttonCalc:(id)sender
+{
+	if (sender == MbuCalcN0) {
+		AzLOG(@"[0]");
+	}
+	else if (sender == MbuCalcN1) {
+		AzLOG(@"[1]");
+	}
+	else if (sender == MbuCalcN2) {
+		AzLOG(@"[2]");
+	}
+}
+*/
 
 @end

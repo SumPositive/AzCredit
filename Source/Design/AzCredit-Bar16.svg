@@ -14,8 +14,8 @@
    id="svg3640"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="WebSite-icon16.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzPacking/Design/WebSite-Forward16.png"
+   sodipodi:docname="AzCredit-Bar16.svg"
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit-0/Source/Design/Bar16-Left.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -48,6 +48,20 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3632"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective4268"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -59,14 +73,14 @@
      inkscape:zoom="36.0625"
      inkscape:cx="8"
      inkscape:cy="8"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer4"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
      inkscape:window-width="1147"
      inkscape:window-height="863"
-     inkscape:window-x="57"
-     inkscape:window-y="29"
+     inkscape:window-x="105"
+     inkscape:window-y="26"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata3645">
@@ -76,7 +90,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -85,7 +99,7 @@
      inkscape:label="Back"
      inkscape:groupmode="layer"
      sodipodi:insensitive="true"
-     style="display:inline">
+     style="display:none">
     <g
        id="g2851"
        transform="matrix(1.5922784,0,0,1.0790276,-4.0867339,-1.1466281)"
@@ -135,5 +149,75 @@
          y="-4.3770409"
          transform="matrix(0.72887742,0.68464422,0.79472503,-0.60696963,0,0)" />
     </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Stop"
+     style="display:none"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke:none"
+       id="rect2844"
+       width="16"
+       height="16"
+       x="0"
+       y="8.8817842e-16" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Left"
+     style="display:inline">
+    <path
+       sodipodi:type="star"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none"
+       id="path3621"
+       sodipodi:sides="3"
+       sodipodi:cx="4.4367418"
+       sodipodi:cy="5.35182"
+       sodipodi:r1="8.1802893"
+       sodipodi:r2="4.0901446"
+       sodipodi:arg1="-0.0033898175"
+       sodipodi:arg2="1.0438077"
+       inkscape:flatsided="true"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 12.616984,5.3240904 0.37063526,12.449982 0.32260613,-1.7186128 12.616984,5.3240904 z"
+       transform="matrix(-1.0347201,0.00350042,0.00401777,0.89634895,16.305753,3.1753958)" />
+    <text
+       xml:space="preserve"
+       style="font-size:19.82410049px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Ayuthaya;-inkscape-font-specification:Ayuthaya"
+       x="-1.0920124"
+       y="15.509756"
+       id="text7480"
+       sodipodi:linespacing="100%"><tspan
+         sodipodi:role="line"
+         id="tspan7482"
+         x="-1.0920124"
+         y="15.509756">C</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Right"
+     style="display:none"
+     sodipodi:insensitive="true">
+    <path
+       sodipodi:type="star"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;display:inline"
+       id="path3621-7"
+       sodipodi:sides="3"
+       sodipodi:cx="4.4367418"
+       sodipodi:cy="5.35182"
+       sodipodi:r1="8.1802893"
+       sodipodi:r2="4.0901446"
+       sodipodi:arg1="-0.0033898175"
+       sodipodi:arg2="1.0438077"
+       inkscape:flatsided="true"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 12.616984,5.3240904 0.37063526,12.449982 0.32260613,-1.7186128 12.616984,5.3240904 z"
+       transform="matrix(1.3035666,0.00440992,-0.00506169,1.1292431,-0.4201298,1.9393088)" />
   </g>
 </svg>

@@ -99,7 +99,7 @@
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar16-TopView.png"]
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
 															 target:self action:@selector(barButtonTop)];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
@@ -332,7 +332,7 @@
 
 		cellLabel = [[UILabel alloc] init];
 		cellLabel.textAlignment = UITextAlignmentRight;
-		cellLabel.textColor = [UIColor blackColor];
+		//cellLabel.textColor = [UIColor blackColor];
 		//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
 		cellLabel.font = [UIFont systemFontOfSize:14];
 		cellLabel.tag = -1;
@@ -366,12 +366,17 @@
 	}
 
 	// 金額
+	if ([e2obj.sumAmount integerValue] <= 0) {
+		cellLabel.textColor = [UIColor blueColor];
+	} else {
+		cellLabel.textColor = [UIColor blackColor];
+	}
 	// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
-	NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-	[formatter setLocale:localeJP];
-	[localeJP release];
+//	NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
+//	[formatter setLocale:localeJP];
+//	[localeJP release];
 	cellLabel.text = [formatter stringFromNumber:e2obj.sumAmount];
 	[formatter release];
 	

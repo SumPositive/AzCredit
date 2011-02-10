@@ -146,7 +146,7 @@
 		[buUntitled release];
 	}
 	else {
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar16-TopView.png"]
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buSort, buFlex, buAdd, nil];
@@ -239,15 +239,20 @@
 {
 	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
 		return YES; // この方向だけは常に許可する
 	} 
-	else if (!MbOptAntirotation) {
+	else if (MbOptAntirotation) return NO; // 回転禁止
+	
+	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// 逆面（ホームボタンが画面の上側にある状態）
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
+	} else {
 		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
 	}
+	return YES;
 	// 現在の向きは、self.interfaceOrientation で取得できる
-	return !MbOptAntirotation;
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -447,7 +452,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = nil;
+		cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // MOVE
 		cell.textLabel.text = NSLocalizedString(@"Add Category",nil);
@@ -458,11 +463,8 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me5categorys count]) {
-		return UITableViewCellEditingStyleDelete;
-	} else {
-		return UITableViewCellEditingStyleInsert;
-	}
+	if (indexPath.row < [Me5categorys count]) return UITableViewCellEditingStyleDelete;
+	return UITableViewCellEditingStyleNone;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 

@@ -10,10 +10,12 @@
 #import "AppDelegate.h"
 #import "Entity.h"
 #import "EntityRelation.h"
+#import "SettingTVC.h"
 #import "E3recordTVC.h"
 #import "E3recordDetailTVC.h"
 
 @interface E3recordTVC (PrivateMethods)
+- (void)azSettingView;
 - (void)e3detailView:(NSIndexPath *)indexPath;
 - (void)cellButton: (UIButton *)button;
 @end
@@ -72,6 +74,14 @@
 	return self;
 }
 
+- (void)azSettingView
+{
+	SettingTVC *view = [[SettingTVC alloc] init];
+	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:view animated:YES];
+	[view release];
+}
+
 - (void)barButtonTop {
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
@@ -93,13 +103,17 @@
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar16-TopView.png"]
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
 															 target:self action:@selector(barButtonTop)];
 	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																		   target:self action:@selector(barButtonAdd)];
-	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, nil];
+	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Setting-icon16.png"]
+															  style:UIBarButtonItemStylePlain  //Bordered
+															 target:self action:@selector(azSettingView)];
+	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
+	[buSet release];
 	[buAdd release];
 	[buTop release];
 	[buFlex release];
@@ -109,11 +123,6 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:YES];
-	
-//	if (Pe1card != nil) {
-//		self.navigationItem.rightBarButtonItem = self.editButtonItem;
-//		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
-//	}
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -133,13 +142,6 @@
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:YES];
 	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 
-/*	if (Pe1card) {
-		// Pe1card以下、最近の全E3
-		Me3list = [[NSMutableArray alloc] initWithArray:[Pe1card.e3records allObjects]];
-		[Me3list sortUsingDescriptors:sortArray];
-	}
-	else */
-	
 	if (Pe4shop) {
 		// Pe4shop以下、最近の全E3
 		Me3list = [[NSMutableArray alloc] initWithArray:[Pe4shop.e3records allObjects]];
@@ -188,15 +190,20 @@
 {
 	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
 		return YES; // この方向だけは常に許可する
 	} 
-	else if (!MbOptAntirotation) {
+	else if (MbOptAntirotation) return NO; // 回転禁止
+	
+	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// 逆面（ホームボタンが画面の上側にある状態）
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
+	} else {
 		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
 	}
+	return YES;
 	// 現在の向きは、self.interfaceOrientation で取得できる
-	return !MbOptAntirotation;
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -243,7 +250,15 @@
 		// (0)TopMenu >> (1)This clear
 		lRow = [[selectionArray objectAtIndex:1] integerValue];
 	}
-	if (lRow < 0) return; // この画面に留まる
+	if (lRow < 0) { // この画面に留まる
+/*		if (1 <= [Me3list count]) {
+			// 最新行（最終ページ）を表示する　＜＜最終行を画面下部に表示する＞＞  +Add行まで表示するためMiddleにした。
+			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[Me3list count]-1 inSection:0];
+			[self.tableView scrollToRowAtIndexPath:indexPath 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
+		}*/
+		return;
+	}
 	NSInteger lSec = lRow / GD_SECTION_TIMES;
 	lRow -= (lSec * GD_SECTION_TIMES);
 	
@@ -259,7 +274,7 @@
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
 	e3detail.title = self.title;
 	e3detail.Re3edit = [Me3list objectAtIndex:lRow];
-	e3detail.PbAdd = NO;
+	e3detail.PiAdd = 0; // (0)Edit mode
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:NO];
 	// 末尾につき viewComeback なし
@@ -329,14 +344,14 @@
 			//cell.textLabel.textColor = [UIColor blackColor];
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 			cell.detailTextLabel.textAlignment = UITextAlignmentLeft; //金額が欠けないように左寄せにした
-			cell.detailTextLabel.textColor = [UIColor blackColor];
+			//cell.detailTextLabel.textColor = [UIColor blackColor];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // ＞
 			//cell.showsReorderControl = YES; // Move可能
 			cell.showsReorderControl = NO; // Move禁止
 
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = UITextAlignmentRight;
-			cellLabel.textColor = [UIColor blackColor];
+			//cellLabel.textColor = [UIColor blackColor];
 			//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
 			cellLabel.font = [UIFont systemFontOfSize:14];
 			cellLabel.tag = -1;
@@ -360,29 +375,34 @@
 
 		E3record *e3obj = [Me3list objectAtIndex:indexPath.row];
 		
-		BOOL bPaid = YES;
-		for (E6part *e6node in e3obj.e6parts) {
-			if (e6node.e2invoice.e7payment.e0unpaid) {
-				bPaid = NO; // 1つでも未払いがあればNO
-				break;
+		if (e3obj.e1card && 0 < [e3obj.e6parts count]) {
+			BOOL bPaid = YES;
+			for (E6part *e6node in e3obj.e6parts) {
+				if (e6node.e2invoice.e7payment.e0unpaid) {
+					bPaid = NO; // 1つでも未払いがあればNO
+					break;
+				}
 			}
-		}
-		if (bPaid) {
-			cell.imageView.image = [UIImage imageNamed:@"Paid32.png"]; // PAID
-		}
-		else if (1 < [e3obj.e6parts count]) {
-			if ([e3obj.sumNoCheck intValue]==0) {
-				cell.imageView.image = [UIImage imageNamed:@"Check32.png"];
-			} else {
-				cell.imageView.image = nil; //[UIImage imageNamed:@"CircleW32.png"];
+			if (bPaid) {
+				cell.imageView.image = [UIImage imageNamed:@"Paid32.png"]; // PAID
 			}
-		}
-		else {
-			if ([e3obj.sumNoCheck intValue]==0) {
-				cell.imageView.image = [UIImage imageNamed:@"Check32.png"];
-			} else {
-				cell.imageView.image = nil; //[UIImage imageNamed:@"Circle32.png"];
+			else if (1 < [e3obj.e6parts count]) {
+				if ([e3obj.sumNoCheck intValue]==0) {
+					cell.imageView.image = [UIImage imageNamed:@"Check32.png"];
+				} else {
+					cell.imageView.image = nil; //[UIImage imageNamed:@"CircleW32.png"];
+				}
 			}
+			else {
+				if ([e3obj.sumNoCheck intValue]==0) {
+					cell.imageView.image = [UIImage imageNamed:@"Check32.png"];
+				} else {
+					cell.imageView.image = nil; //[UIImage imageNamed:@"Circle32.png"];
+				}
+			}
+		} else {
+			// クイック追加にてカード(未定)のとき
+			cell.imageView.image = nil;
 		}
 		
 		// zDate 利用日
@@ -397,21 +417,39 @@
 		// Cell 1行目
 		cell.textLabel.text = [NSString stringWithFormat:@"%@　%@", zDate, zName];
 		// 金額
-		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];  // CurrencyStyle]; // 通貨スタイル
-		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-		[formatter setLocale:localeJP];
-		[localeJP release];
-		cellLabel.text = [formatter stringFromNumber:e3obj.nAmount];
-		[formatter release];
+		if ([e3obj.nAmount integerValue] == 0) {
+			cellLabel.textColor = [UIColor redColor]; // これだけは赤にした。
+			cellLabel.text = @"Zero! 0";
+		} else {
+			if ([e3obj.nAmount integerValue] <= 0) {
+				cellLabel.textColor = [UIColor blueColor];
+			} else {
+				cellLabel.textColor = [UIColor blackColor];
+			}
+			// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
+			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+			[formatter setNumberStyle:NSNumberFormatterDecimalStyle];  // CurrencyStyle]; // 通貨スタイル
+			//NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
+			//[formatter setLocale:localeJP];
+			//[localeJP release];
+			cellLabel.text = [formatter stringFromNumber:e3obj.nAmount];
+			[formatter release];
+		}
 
 		// Cell 2行目
 		NSString *zShop = @"";
 		NSString *zCategory = @"";
 		if (e3obj.e4shop != nil) zShop = e3obj.e4shop.zName;
 		if (e3obj.e5category != nil) zCategory = e3obj.e5category.zName;
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@.%@.%@", e3obj.e1card.zName, zShop, zCategory];
+		if (e3obj.e1card) {
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@.%@.%@", e3obj.e1card.zName, 
+										 zShop, zCategory];
+			cell.detailTextLabel.textColor = [UIColor blackColor];
+		} else {
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@.%@.%@", NSLocalizedString(@"Card Undecided",nil), 
+										 zShop, zCategory];
+			cell.detailTextLabel.textColor = [UIColor redColor];
+		}
 	}
 	else {
 		// [Add行]セル
@@ -424,7 +462,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = nil;
+		cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
 		cell.accessoryType = UITableViewCellEditingStyleInsert; // (+)
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
@@ -489,12 +527,13 @@
 		// Edit Item
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
 		e3detail.Re3edit = [Me3list objectAtIndex:indexPath.row];
-		e3detail.PbAdd = NO;
+		e3detail.PiAdd = 0; // (0)Edit mode
 	}
 	else {
 		// Add E3
 		E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
 														   inManagedObjectContext:Re0root.managedObjectContext];
+		e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
 		e3obj.e1card = nil;
 		e3obj.e4shop = Pe4shop;
 		e3obj.e5category = Pe5category;
@@ -502,7 +541,13 @@
 		// Args
 		e3detail.title = NSLocalizedString(@"Add Record", nil);
 		e3detail.Re3edit = e3obj;
-		e3detail.PbAdd = YES; // Add mode
+		if (Pe4shop) {
+			e3detail.PiAdd = 3; // (3)Shop固定
+		} else if (Pe5category) {
+			e3detail.PiAdd = 4; // (4)Category固定
+		} else {
+			e3detail.PiAdd = 1; // (1)New Add
+		}
 	}
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];

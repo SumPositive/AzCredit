@@ -14,8 +14,8 @@
 //---------------------------------------------------------------------------------------E0
 @interface E0root : NSManagedObject {	// applicationDidFinishLaunchingにて1個だけ生成
 }
-@property (nonatomic, retain) NSSet		*e7paids;		// E8 <-->> E7
-@property (nonatomic, retain) NSSet		*e7unpaids;		// E8 <-->> E7
+@property (nonatomic, retain) NSSet				*e7paids;		// E0 <-->> E7
+@property (nonatomic, retain) NSSet				*e7unpaids;		// E0 <-->> E7
 @end
 
 

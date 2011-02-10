@@ -72,6 +72,16 @@
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
+- (void)barButtonUntitled {
+	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
+		return;
+	}
+	// E3配下なし（新規追加中である） 未定(nil)にする
+	Re3edit.e1card = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
 // viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
 - (void)viewDidLoad 
 {
@@ -95,16 +105,29 @@
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
-	MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar16-TopView.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(barButtonTop)];
 	MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																		   target:self action:@selector(barButtonAdd)];
-	NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
-	[self setToolbarItems:buArray animated:YES];
+	if (Re3edit && [Re3edit.e6parts count] <= 0) {  // !=nil:選択モード
+		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
+		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
+									   initWithTitle:NSLocalizedString(@"Untitled",nil)
+									   style:UIBarButtonItemStyleBordered
+									   target:self action:@selector(barButtonUntitled)];
+		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, MbuAdd, nil];
+		[self setToolbarItems:buArray animated:YES];
+		[buUntitled release];
+	}
+	else {
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
+												  style:UIBarButtonItemStylePlain  //Bordered
+												 target:self action:@selector(barButtonTop)];
+		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
+		[self setToolbarItems:buArray animated:YES];
+		[MbuTop release];
+	}
 	[MbuAdd release];
-	[MbuTop release];
 	[buFlex release];
+	
 	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
@@ -114,15 +137,20 @@
 {
 	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
 		return YES; // この方向だけは常に許可する
 	} 
-	else if (!MbOptAntirotation) {
+	else if (MbOptAntirotation) return NO; // 回転禁止
+	
+	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// 逆面（ホームボタンが画面の上側にある状態）
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
+	} else {
 		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
 	}
+	return YES;
 	// 現在の向きは、self.interfaceOrientation で取得できる
-	return !MbOptAntirotation;
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -373,15 +401,22 @@ static UIImage* GimageFromString(NSString* str)
 		else
 			cell.textLabel.text = e1obj.zName;
 #endif
+		// 金額
+		NSNumber *sumAmount = [e1obj valueForKeyPath:@"e2unpaids.@sum.sumAmount"];
+		if ([sumAmount integerValue] <= 0) {
+			cell.detailTextLabel.textColor = [UIColor blueColor];
+		} else {
+			cell.detailTextLabel.textColor = [UIColor blackColor];
+		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-		[formatter setLocale:localeJP];
-		[localeJP release];
+//		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
+//		[formatter setLocale:localeJP];
+//		[localeJP release];
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
 									 GstringDay([e1obj.nPayDay intValue]),	// 支払日
-									 [formatter stringFromNumber:[e1obj valueForKeyPath:@"e2unpaids.@sum.sumAmount"]]];
+									 [formatter stringFromNumber:sumAmount]];
 		[formatter release];
 		
 		if (Re3edit == nil) {
@@ -399,7 +434,7 @@ static UIImage* GimageFromString(NSString* str)
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = nil;
+		cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO;
 		if (rows == 0) {
@@ -419,9 +454,9 @@ static UIImage* GimageFromString(NSString* str)
 	if (0 < rows) {
 		return UITableViewCellEditingStyleDelete;
     }
-	else if (rows <= 0) {
-		return UITableViewCellEditingStyleInsert;
-	}
+//	else if (rows <= 0) {
+//		return UITableViewCellEditingStyleInsert;
+//	}
     return UITableViewCellEditingStyleNone;
 }
 

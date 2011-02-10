@@ -78,6 +78,9 @@
 #define GD_OptEnableSchedule				@"OptEnableSchedule"	// 支払予定
 #define GD_OptEnableCategory				@"OptEnableCategory"	// 分類
 #define GD_OptEnableInstallment				@"OptEnableInstallment"	// 分割払い
+#define GD_OptNumAutoShow					@"OptNumAutoShow"		// ＜保留＞ テンキー自動表示
+#define GD_OptFixedPriority					@"OptFixedPriority"		// ＜保留＞ 修正を優先
+
 
 // Option Other Plist KEY
 #define GD_OptPasswordSave					@"OptPasswordSave"

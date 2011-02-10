@@ -323,7 +323,9 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 // E6に1つでもPAIDがあれば拒否returnする
 + (BOOL)e3makeE6:(E3record *)e3obj inFirstYearMMDD:(NSInteger)iFirstYearMMDD
 {
-	if (e3obj==nil) return NO;
+	if (e3obj == nil) return NO;
+	if (e3obj.e1card == nil) return YES; // クイック追加時、カード(未定)許可のため　
+										 // クイック追加時、＜この時点で配下のE6は無い。また、E6が追加された後に.e1card==nilになることは無い＞
 	// 締め支払条件に変化があったか調べる
 	NSInteger iYearMMDD = iFirstYearMMDD; // 支払日
 	if (iFirstYearMMDD < AzMIN_YearMMDD) {

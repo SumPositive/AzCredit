@@ -93,7 +93,7 @@ static UIColor *MpColorBlue(float percent) {
 					@"AzCredit\n"
 					@"Born on March 26\n"
 					@"© 2000-2010  Azukid\n"
-					@"Creator Sunsho.Osho\n"
+					@"Creator Sum Positive\n"
 					@"All Rights Reserved.";
 	label.numberOfLines = 6;
 	label.textAlignment = UITextAlignmentCenter;

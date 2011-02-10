@@ -97,7 +97,7 @@
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar16-TopView.png"]
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
 															   style:UIBarButtonItemStylePlain  //Bordered
 															  target:self action:@selector(barButtonTop)];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
@@ -354,7 +354,7 @@
 	e3detail.title = self.title;
 	// Edit Item
 	e3detail.Re3edit = e6obj.e3record;
-	e3detail.PbAdd = NO;
+	e3detail.PiAdd = 0; // (0)Edit mode
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:NO];
 	// 末尾につき viewComeback なし
@@ -465,7 +465,7 @@
 
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = UITextAlignmentRight;
-			cellLabel.textColor = [UIColor blackColor];
+			//cellLabel.textColor = [UIColor blackColor];
 			//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
 			cellLabel.font = [UIFont systemFontOfSize:14];
 			cellLabel.tag = -1;
@@ -526,12 +526,17 @@
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", zShop, zCategory];
 		
 		// 金額
+		if ([e6obj.nAmount integerValue] <= 0) {
+			cellLabel.textColor = [UIColor blueColor];
+		} else {
+			cellLabel.textColor = [UIColor blackColor];
+		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
-		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-		[formatter setLocale:localeJP];
-		[localeJP release];
+//		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
+//		[formatter setLocale:localeJP];
+//		[localeJP release];
 		cellLabel.text = [formatter stringFromNumber:e6obj.nAmount];
 		[formatter release];
 	}
@@ -621,7 +626,7 @@
 		// Edit Item
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
 		e3detail.Re3edit = e6obj.e3record;
-		e3detail.PbAdd = NO;
+		e3detail.PiAdd = 0; // (0)Edit mode
 	}
 	else {
 		// Add E3
@@ -647,7 +652,7 @@
 						  GstringYearMMDD([e2obj.nYearMMDD integerValue]), 
 						  NSLocalizedString(@"Due", nil)];
 		e3detail.Re3edit = e3obj;
-		e3detail.PbAdd = YES; // Add mode
+		e3detail.PiAdd = 2; // (2)Card固定Add
 		e3detail.PiFirstYearMMDD = [e2obj.nYearMMDD integerValue]; // E2,E7配下から追加されるとき、支払日をこのE2に合わせるため。
 	}
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする

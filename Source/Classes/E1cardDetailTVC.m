@@ -128,15 +128,20 @@
 {
 	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面（ホームボタンが画面の下側にある状態）
-		//[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
 		return YES; // この方向だけは常に許可する
 	} 
-	else if (!MbOptAntirotation) {
+	else if (MbOptAntirotation) return NO; // 回転禁止
+	
+	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// 逆面（ホームボタンが画面の上側にある状態）
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
+	} else {
 		// 横方向や逆向きのとき
-		//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
 	}
+	return YES;
 	// 現在の向きは、self.interfaceOrientation で取得できる
-	return !MbOptAntirotation;
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる

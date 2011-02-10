@@ -14,6 +14,9 @@
 #define TAG_GD_OptEnableSchedule		974
 #define TAG_GD_OptEnableCategory		965
 #define TAG_GD_OptEnableInstallment		956
+/*#define TAG_GD_OptNumAutoShow			947
+#define TAG_GD_OptFixedPriority			938 */
+
 
 @interface SettingTVC (PrivateMethods)
 - (void)switchAction:(UISwitch *)sender;
@@ -158,11 +161,7 @@
 {
 	switch (section) {
 		case 0: // 
-#ifdef AzDEBUG
 			return 5;
-#else
-			return 4;	// リリースは「分割払い」を除く
-#endif
 			break;
 	}
     return 0;
@@ -286,6 +285,36 @@
 					[sw release];
 				}
 					break;
+/*				case 5:
+				{ // OptNumAutoShow
+					cell.textLabel.text = NSLocalizedString(@"OptNumAutoShow",nil);
+					cell.detailTextLabel.text = NSLocalizedString(@"OptNumAutoShow msg",nil);
+					// add UISwitch
+					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
+					BOOL bOpt = [userDefaults boolForKey:GD_OptNumAutoShow];
+					[sw setOn:bOpt animated:NO]; // 初期値セット
+					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+					sw.tag = TAG_GD_OptNumAutoShow;
+					sw.backgroundColor = [UIColor clearColor]; //背景透明
+					[cell.contentView  addSubview:sw];
+					[sw release];
+				}
+					break;
+				case 6:
+				{ // OptFixedPriority
+					cell.textLabel.text = NSLocalizedString(@"OptFixedPriority",nil);
+					cell.detailTextLabel.text = NSLocalizedString(@"OptFixedPriority msg",nil);
+					// add UISwitch
+					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
+					BOOL bOpt = [userDefaults boolForKey:GD_OptFixedPriority];
+					[sw setOn:bOpt animated:NO]; // 初期値セット
+					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+					sw.tag = TAG_GD_OptFixedPriority;
+					sw.backgroundColor = [UIColor clearColor]; //背景透明
+					[cell.contentView  addSubview:sw];
+					[sw release];
+				}
+					break;*/
 			}
 			break;
 	}
@@ -304,25 +333,27 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	switch (sender.tag) {  // .tag は UIView にて NSInteger で存在する、　
 		case TAG_GD_OptBootTopView:
-			MbOptAntirotation = [sender isOn];
-			[defaults setBool:MbOptAntirotation forKey:GD_OptBootTopView];
+			[defaults setBool:[sender isOn] forKey:GD_OptBootTopView];
 			break;
 		case TAG_GD_OptAntirotation:
-			MbOptAntirotation = [sender isOn];
+			MbOptAntirotation = [sender isOn];  // このViewでも反映させるため。
 			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
 			break;
 		case TAG_GD_OptEnableSchedule:
-			MbOptAntirotation = [sender isOn];
-			[defaults setBool:MbOptAntirotation forKey:GD_OptEnableSchedule];
+			[defaults setBool:[sender isOn] forKey:GD_OptEnableSchedule];
 			break;
 		case TAG_GD_OptEnableCategory:
-			MbOptAntirotation = [sender isOn];
-			[defaults setBool:MbOptAntirotation forKey:GD_OptEnableCategory];
+			[defaults setBool:[sender isOn] forKey:GD_OptEnableCategory];
 			break;
 		case TAG_GD_OptEnableInstallment:
-			MbOptAntirotation = [sender isOn];
-			[defaults setBool:MbOptAntirotation forKey:GD_OptEnableInstallment];
+			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
 			break;
+/*		case TAG_GD_OptNumAutoShow:
+			[defaults setBool:[sender isOn] forKey:GD_OptNumAutoShow];
+			break;
+		case TAG_GD_OptFixedPriority:
+			[defaults setBool:[sender isOn] forKey:GD_OptFixedPriority];
+			break;*/
 	}
 }
 

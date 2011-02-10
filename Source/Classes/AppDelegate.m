@@ -65,10 +65,12 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 							  @"NO",	GD_OptEnableCategory,		// 分類
 							  @"NO",	GD_OptEnableInstallment,	// 分割払い
 							  @"NO",	GD_OptUseDateTime,			// 利用日：時刻なし
+							  @"NO",	GD_OptNumAutoShow,			// ＜保留＞ テンキー自動表示
+							  @"NO",	GD_OptFixedPriority,		// ＜保留＞ 修正を優先
 							  nil];
 
 	[userDefaults registerDefaults:azOptDef];	// 未定義のKeyのみ更新される
-	[userDefaults synchronize]; // plistへ書き出す
+	[userDefaults synchronize]; // plistへ書き出す ＜＜通常は一定の間隔で自動的に保存されるので、特別に保存したいときにこのメソッドを使う＞＞
 	
 	//-------------------------------------------------E0（固有ノード）が無ければ追加する
 	E0root *e0node = nil;

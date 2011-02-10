@@ -18,10 +18,17 @@
 #import "E3selectPayTypeTVC.h"
 #import "E4shopTVC.h"
 #import "E5categoryTVC.h"
+#import "CalcView.h"
 
 #define ACTIONSEET_TAG_DELETE		190
 
-#define TAG_BAR_BUTTON_TOPVIEW		901
+#define TAG_BAR_BUTTON_TOPVIEW		901		// barButtonCopyAdd:にて、これ以上のものを無効にしている
+#define TAG_BAR_BUTTON_DEL			902
+#define TAG_BAR_BUTTON_ADD			903
+
+#define TAG_BAR_BUTTON_NEW			911		// 新規
+#define TAG_BAR_BUTTON_PAST			912		// 過去へ
+#define TAG_BAR_BUTTON_RETURN		913		// 戻す
 
 
 @interface E3recordDetailTVC (PrivateMethods)
@@ -30,19 +37,23 @@
 - (void)viewDesign;
 - (void)alertAmountOver;
 - (void)cellButtonE6check: (UIButton *)button;
+- (void)barButton: (UIButton *)button;
+- (void)showCalcAmount;
 @end
 
 @implementation E3recordDetailTVC
 @synthesize Re3edit;
-@synthesize PbAdd;
+//@synthesize PbAdd;
+@synthesize PiAdd;
 @synthesize PiFirstYearMMDD;
 
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	//[Me0root release];NG Arreyじゃない！からrelese不要
+//	[Me3editMask release]; // save: or cancel: にて deleteObject: されていること
 	[Me6parts release];
-
+	[Me3lasts release];
+	
 	// @property (retain)
 	[Re3edit release];
 	[super dealloc];
@@ -51,11 +62,8 @@
 - (void)viewDidUnload 
 {
 	// メモリ不足時、裏側にある場合に呼び出されるので、Private Allocで生成したObjを解放する。
-	//[Me0root release]; NG		Me0root = nil; Arreyじゃない！からrelese不要
 	[Me6parts release];		Me6parts = nil;
-	//[Me3zDateUse release]; NG 修正値が入っているから途中解放禁止
-	//[Me3zName release]; NG
-	
+	[Me3lasts release];		Me3lasts = nil;
 	// @property (retain) は解放しない。
 #ifdef AzDEBUG
 	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"viewDidUnload" 
@@ -87,6 +95,8 @@
 		//self.tableView.allowsSelectionDuringEditing = YES;
 		//self.tableView.backgroundColor = MpColorBlue(0.3f);
 	}
+	MbCopyAdd = NO;
+	MiIndexE3lasts = (-1); // (-2)過去コピー機能無効
 	return self;
 }
 
@@ -105,7 +115,80 @@
 	}
 }
 
-- (void)barButtonDelete {
+/*
+- (void)e3editMaskSet	// これ以降、変更された項目を検出するために用いる
+{
+	if (Me3editMask == nil) {
+		// retain すること。
+		Me3editMask = [[NSEntityDescription insertNewObjectForEntityForName:@"E3record"
+													 inManagedObjectContext:Re3edit.managedObjectContext] retain];
+		Me3editMask.dateUse = [NSDate date]; // 迷子にならないように念のため
+	}
+	//
+	Me3editMask.nAmount		= Re3edit.nAmount;
+	Me3editMask.nPayType	= Re3edit.nPayType;
+	Me3editMask.zName		= Re3edit.zName;
+	Me3editMask.zNote		= Re3edit.zNote;
+	Me3editMask.e1card		= Re3edit.e1card;
+	Me3editMask.e4shop		= Re3edit.e4shop;
+	Me3editMask.e5category	= Re3edit.e5category;
+
+	//Me3editMask.nAnnual = Re3edit.nAnnual;
+}*/
+
+- (void)barButtonCopyAdd 
+{
+	[McalcView hide]; // Calcが出てれば隠す
+
+	// もし修正していた場合、それが保存されてしまわないように、まずrollBackする　＜＜Re3edit生成直後までrollBackされる＞＞
+	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
+	
+	// E3を新規追加し、コピー後、Re3editを置き換える。
+	E3record *e3new = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
+													inManagedObjectContext:Re3edit.managedObjectContext];
+	// Copy
+	e3new.nAmount		= [NSNumber numberWithInt:0]; // Re3edit.nAmount;
+	//e3new.nAnnual		= Re3edit.nAnnual;
+	e3new.nPayType		= Re3edit.nPayType;
+	e3new.zName			= Re3edit.zName;
+	e3new.zNote			= Re3edit.zNote;
+	e3new.e1card		= Re3edit.e1card;
+	e3new.e4shop		= Re3edit.e4shop;
+	e3new.e5category	= Re3edit.e5category;
+	// Initial
+	e3new.dateUse		= [NSDate date];
+	e3new.sumNoCheck	= [NSNumber numberWithInt:1];
+	e3new.e6parts		= nil;
+	// Replace
+	[Re3edit release];
+	Re3edit = nil;
+	Re3edit = [e3new retain];  // retain 必須！ この後、deallocにてreleaseされますから。
+	// Args
+	//self.title = NSLocalizedString(@"Add Record", nil);
+	self.title = NSLocalizedString(@"CopyAdd Record", nil);
+	PiAdd = (1); // (1)New Add
+	MbCopyAdd = YES; // YES:既存明細をコピーして新規追加している状態
+	// Tool Bar ボタンを無効にする
+	for (id obj in self.toolbarItems) {
+		if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
+			[obj setEnabled:NO];
+		}
+	}
+	// テーブルビューを更新
+	[self.tableView reloadData];
+
+//	// rollbackされたので、改めてマスクセット
+//	[self e3editMaskSet];
+
+/*	if (MbOptNumAutoShow) { // viewDidAppearを通らないので、ここで表示
+		[self showCalcAmount]; // 自動テンキー
+	}*/
+}
+
+- (void)barButtonDelete 
+{
+	[McalcView hide]; // Calcが出てれば隠す
+
 	// 削除コマンド警告　==>> (void)actionSheet にて処理  ＜＜PAIDでも削除する＞＞
 	UIActionSheet *action = [[UIActionSheet alloc] 
 							 initWithTitle:NSLocalizedString(@"DELETE Record", nil)
@@ -125,13 +208,167 @@
 	[action release];
 }
 
+
+- (void)barButton:(UIButton *)button
+{
+	[McalcView hide]; // Calcが出てれば隠す
+
+	E3record *e3obj = nil;
+	switch (button.tag) {
+		case TAG_BAR_BUTTON_NEW:
+			// New
+			MiIndexE3lasts = (-1);
+			// 両方向の Tool Bar ボタンを有効にする
+			for (id obj in self.toolbarItems) {
+				switch ([[obj valueForKey:@"tag"] intValue]) {
+					case TAG_BAR_BUTTON_PAST:	[obj setEnabled:YES];	break;
+					case TAG_BAR_BUTTON_RETURN:	[obj setEnabled:NO];	break;
+				}
+			}
+			break;
+
+		case TAG_BAR_BUTTON_PAST:
+			if (MiIndexE3lasts < -1) {
+				// Min under
+				MiIndexE3lasts = (-1);
+			}
+			else if ([Me3lasts count] <= MiIndexE3lasts + 1) {  // [Me3lasts count]-1 とするとエラー
+				// Max over
+				MiIndexE3lasts = [Me3lasts count] - 1;
+				button.enabled = NO;
+			}
+			else {
+				MiIndexE3lasts++;
+				e3obj = [Me3lasts objectAtIndex:MiIndexE3lasts];
+				// 対向の Tool Bar ボタンを有効にする
+				for (id obj in self.toolbarItems) {
+					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_RETURN) [obj setEnabled:YES];
+				}
+				if ([Me3lasts count] <= MiIndexE3lasts + 1) {  // さらに前回でオーバーするならばボタン無効にする
+					// Max
+					button.enabled = NO;
+				}
+			}
+			break;
+		
+		case TAG_BAR_BUTTON_RETURN:
+			if (MiIndexE3lasts <= 0) {
+				// Min under
+				MiIndexE3lasts = (-1);
+				button.enabled = NO;
+			}
+			else if ([Me3lasts count] <= MiIndexE3lasts) {
+				// Max over
+				MiIndexE3lasts = [Me3lasts count] - 1;
+			}
+			else {
+				MiIndexE3lasts--;
+				e3obj = [Me3lasts objectAtIndex:MiIndexE3lasts];
+				// 対向の Tool Bar ボタンを有効にする
+				for (id obj in self.toolbarItems) {
+					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_PAST) [obj setEnabled:YES];
+				}
+				if (MiIndexE3lasts <= 0) {  // さらに戻してオーバーするならばボタン無効にする
+					// Max
+					button.enabled = NO;
+				}
+			}
+			break;
+			
+		default:
+			return;
+	}
+
+/*	if (e3obj) { // Copy
+		// マスクと同値ならば変化なし(入力なし）なので、コピー上書きする
+		if (!MbOptFixedPriority OR [Me3editMask.nAmount integerValue] == [Re3edit.nAmount integerValue]) {
+			Re3edit.nAmount = e3obj.nAmount;
+			Me3editMask.nAmount = Re3edit.nAmount; // マスク更新：改めて、これ以降に入力や選択されたものを検出するため
+		}
+		if (!MbOptFixedPriority OR [Me3editMask.nPayType integerValue] == [Re3edit.nPayType integerValue]) {
+			Re3edit.nPayType = e3obj.nPayType;
+			Me3editMask.nPayType = Re3edit.nPayType;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.zName == Re3edit.zName) {
+			Re3edit.zName = e3obj.zName;
+			Me3editMask.zName = Re3edit.zName;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.e1card == Re3edit.e1card) {
+			Re3edit.e1card = e3obj.e1card;
+			Me3editMask.e1card = Re3edit.e1card;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.e4shop == Re3edit.e4shop) {
+			Re3edit.e4shop = e3obj.e4shop;
+			Me3editMask.e4shop = Re3edit.e4shop;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.e5category == Re3edit.e5category) {
+			Re3edit.e5category = e3obj.e5category;
+			Me3editMask.e5category = Re3edit.e5category;
+		}
+	}
+	else { // New
+		// マスクと同値ならば変化なし(入力なし）なので、初期化（未定）にする
+		if (!MbOptFixedPriority OR [Me3editMask.nAmount integerValue] == [Re3edit.nAmount integerValue]) {
+			Re3edit.nAmount = [NSNumber numberWithInt:0];
+			Me3editMask.nAmount = Re3edit.nAmount; // マスク更新：改めて、これ以降に入力や選択されたものを検出するため
+		}
+		if (!MbOptFixedPriority OR [Me3editMask.nPayType integerValue] == [Re3edit.nPayType integerValue]) {
+			Re3edit.nPayType = [NSNumber numberWithInt:1];
+			Me3editMask.nPayType = Re3edit.nPayType;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.zName == Re3edit.zName) {
+			Re3edit.zName = @"";
+			Me3editMask.zName = Re3edit.zName;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.e1card == Re3edit.e1card && PiFirstYearMMDD == 0) {
+			Re3edit.e1card = nil;			  // && ↑ Card選択時、消さないようにするため
+			Me3editMask.e1card = Re3edit.e1card;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.e4shop == Re3edit.e4shop) {
+			Re3edit.e4shop = nil;
+			Me3editMask.e4shop = Re3edit.e4shop;
+		}
+		if (!MbOptFixedPriority OR Me3editMask.e5category == Re3edit.e5category) {
+			Re3edit.e5category = nil;
+			Me3editMask.e5category = Re3edit.e5category;
+		}
+	}*/
+
+	if (e3obj) { // Copy
+		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば過去コピーする
+			Re3edit.nAmount = e3obj.nAmount;
+		}
+		Re3edit.nPayType	= e3obj.nPayType;
+		Re3edit.zName		= e3obj.zName;
+		Re3edit.e1card		= e3obj.e1card;
+		Re3edit.e4shop		= e3obj.e4shop;
+		Re3edit.e5category  = e3obj.e5category;
+	}
+	else { // New
+		// 初期化（未定）にする
+		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば初期化する
+			Re3edit.nAmount		= [NSNumber numberWithInt:0];
+		}
+		Re3edit.nPayType	= [NSNumber numberWithInt:1];
+		Re3edit.zName		= @"";
+		if (PiAdd != 2) Re3edit.e1card = nil; // (2)Card固定時、消さない
+		if (PiAdd != 3) Re3edit.e4shop = nil;
+		if (PiAdd != 4) Re3edit.e5category = nil;
+	}
+	// テーブルビューを更新します。
+	[self.tableView reloadData];
+}
+
+
 // viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
 	Me0root = nil;
 	Me6parts = nil;
-
+	MbuTop = nil;
+	MsegAddPrevious = nil;
+	
 	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
 
 	// Set up NEXT Left [Back] buttons.
@@ -151,22 +388,61 @@
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
 											   target:self action:@selector(save:)] autorelease];
 
-	// Tool Bar Button   ＜＜ cancel:YES<<--TopView ＞＞
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buDel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-														   target:self action:@selector(barButtonDelete)];
-	MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar16-TopView.png"]
-															style:UIBarButtonItemStylePlain  //Bordered
-															target:self action:@selector(cancel:)];
-	MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancel:にて判断に使用
 
-	NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buFlex, buFlex, buDel, buFlex, nil];
-	[self setToolbarItems:buArray animated:YES];
-	[MbuTop release];
-	[buDel release];
-	[buFlex release];
+	// Tool Bar Button
+	if (0 < PiAdd) {
+		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																				target:nil action:nil];
+		
+		UIBarButtonItem *buNew = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-CopyStop.png"]
+																  style:UIBarButtonItemStylePlain
+																 target:self action:@selector(barButton:)];
+		buNew.tag = TAG_BAR_BUTTON_NEW;
 
+		UIBarButtonItem *buPast = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-CopyLeft.png"]
+																  style:UIBarButtonItemStylePlain
+																 target:self action:@selector(barButton:)];
+		buPast.tag = TAG_BAR_BUTTON_PAST;
+		
+		UIBarButtonItem *buReturn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-CopyRight.png"]
+																   style:UIBarButtonItemStylePlain
+																  target:self action:@selector(barButton:)];
+		buReturn.tag = TAG_BAR_BUTTON_RETURN;
+		buReturn.enabled = NO; // 最初、戻るは無効
+		
+		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buPast, buFlex, buNew, buFlex, buReturn, buFlex, nil];
+		[self setToolbarItems:buArray animated:YES];
+		[buReturn release];
+		[buPast release];
+		[buNew release];
+		[buFlex release];
+	} 
+	else {
+		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																				target:nil action:nil];
+		
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
+												  style:UIBarButtonItemStylePlain  //Bordered
+												 target:self action:@selector(cancel:)]; // ＜＜ cancel:YES<<--TopView ＞＞
+		MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancel:にて判断に使用
+		
+		UIBarButtonItem *buCopyAdd = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-CopyAdd.png"]
+																	  style:UIBarButtonItemStylePlain  //Bordered
+																	 target:self action:@selector(barButtonCopyAdd)];
+		buCopyAdd.tag = TAG_BAR_BUTTON_ADD;
+		
+		UIBarButtonItem *buDelete = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+																				  target:self action:@selector(barButtonDelete)];
+		buDelete.tag = TAG_BAR_BUTTON_DEL;
+
+		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buCopyAdd, buFlex, buDelete, nil];
+		[self setToolbarItems:buArray animated:YES];
+		[MbuTop release];
+		[buCopyAdd release];
+		[buDelete release];
+		[buFlex release];
+	}
+	
 	// 初回処理のため
 	MiE1cardRow = (-1);
 }
@@ -182,9 +458,13 @@
 	MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
 	MbOptEnableInstallment = [defaults boolForKey:GD_OptEnableInstallment];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
+//	MbOptNumAutoShow = [defaults boolForKey:GD_OptNumAutoShow];
+//	MbOptFixedPriority = [defaults boolForKey:GD_OptFixedPriority];
 	
-	// hasChanges時にTop戻りボタンを無効にする
-	MbuTop.enabled = ![Re3edit.managedObjectContext hasChanges]; // YES:contextに変更あり
+	if (MbuTop) {
+		// hasChanges時にTop戻りボタンを無効にする
+		MbuTop.enabled = ![Re3edit.managedObjectContext hasChanges]; // YES:contextに変更あり
+	}
 	
 	//--------------------------------------------------------------------------------.
 	// Me0root はArreyじゃない！からrelese不要
@@ -232,6 +512,55 @@
 		}
 	}
 	
+	//--------------------------------------------------Me3lasts: 前回引用するための直近3件
+	if (Me3lasts != nil) {
+		[Me3lasts release];
+		Me3lasts = nil;
+	}
+	// Sorting
+	sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:NO]; // NO=降順
+	sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+	[sort1 release];
+
+	if (Re3edit.e1card) {
+		// e1card以下、最近の全E3
+		Me3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e1card.e3records allObjects]];
+		[Me3lasts sortUsingDescriptors:sortArray];
+	}
+	else if (Re3edit.e4shop) {
+		// e4shop以下、最近の全E3
+		Me3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e4shop.e3records allObjects]];
+		[Me3lasts sortUsingDescriptors:sortArray];
+	}
+	else if (Re3edit.e5category) {
+		// e5category以下、最近の全E3
+		Me3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e5category.e3records allObjects]];
+		[Me3lasts sortUsingDescriptors:sortArray];
+	}
+	else {
+		//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		// 利用明細一覧用：最近の全E3
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"E3record" 
+												  inManagedObjectContext:Re3edit.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		[fetchRequest setSortDescriptors:sortArray];
+		// Fitch
+		NSError *error = nil;
+		NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		if (error) {
+			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			exit(-1);  // Fail
+		}
+		[fetchRequest release];
+		Me3lasts = [[NSMutableArray alloc] initWithArray:arFetch];
+	}
+	[sortArray release];
+	// 重要！Me3lastsには、新規追加されたRe3editが含まれているので、ここで除外する。
+	[Me3lasts removeObject:Re3edit];
+//	[Me3lasts removeObject:Me3editMask]; // Me3editMaskも含まれている場合があるので除外する
+
+	
 	// 初期値
 	if (Re3edit.dateUse == nil) {
 		Re3edit.dateUse = [NSDate date]; // Now
@@ -241,13 +570,18 @@
 		// Re3edit.e1card = 最上行のカードにする
 	}
 	
-	if (!PbAdd OR PiFirstYearMMDD < AzMIN_YearMMDD) {
+	if (PiAdd==0 OR PiFirstYearMMDD < AzMIN_YearMMDD) {
 		PiFirstYearMMDD = 0;
 	}
 	
 	[self viewDesign]; // 下層で回転して戻ったときに再描画が必要
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
+	
+//	if (PbAdd && Me3editMask == nil) {
+//		// 比較項目のみコピー　（初期値）
+//		[self e3editMaskSet];
+//	}
 }
 
 // 回転サポート
@@ -255,23 +589,61 @@
 {
 	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー非表示
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
 		return YES; // この方向だけは常に許可する
 	} 
-	else if (!MbOptAntirotation) {
+	else if (MbOptAntirotation) return NO; // 回転禁止
+	
+	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// 逆面（ホームボタンが画面の上側にある状態）
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
+	} else {
 		// 横方向や逆向きのとき
 		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
 	}
+	return YES;
 	// 現在の向きは、self.interfaceOrientation で取得できる
-	return !MbOptAntirotation;
 }
 
-// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
-													   duration:(NSTimeInterval)duration
+// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜OS 3.0以降は非推奨＞＞
+//- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)orientation 
+//													   duration:(NSTimeInterval)duration
+
+// ユーザインタフェースの回転を始める前にこの処理が呼ばれる。 ＜＜OS 3.0以降の推奨メソッド＞＞
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
 {
-	//[self.tableView reloadData];
-	[self viewDesign]; // cell生成の後
+	// この開始時に消す。　　この時点で self.view.frame は回転していない。
+	if (McalcView && [McalcView isShow]) {
+		[McalcView hide]; //　ここでは隠すだけ。 removeFromSuperviewするとアニメ無く即消えてしまう。
+		MbRotatShowCalc = YES;
+	} else {
+		MbRotatShowCalc = NO;
+	}
+}
+// ユーザインタフェースが回転した後この処理が呼ばれる。
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation
+{
+	// この完了時に再表示する。　　この時点で self.view.frame は回転済み。
+	[self viewDesign];
+
+	[self showCalcAmount]; // 再表示
+}
+
+- (void)showCalcAmount
+{
+	if (McalcView) {
+		[McalcView hide];
+		[McalcView removeFromSuperview];
+		McalcView = nil;
+	}
+	McalcView = [[CalcView alloc] initWithFrame:[self.tableView bounds]];
+	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
+	McalcView.Rentity = Re3edit;
+	McalcView.RzKey = @"nAmount";
+	//[self.tableView addSubview:McalcView];
+	[self.view addSubview:McalcView];
+	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
+	[McalcView show];
 }
 
 - (void)viewDesign
@@ -284,6 +656,10 @@
 {
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+/*	if (MbOptNumAutoShow && [Re3edit.nAmount integerValue] == 0) { // viewWillAppearだとタイミングが早すぎてダメ
+		[self showCalcAmount]; // 自動テンキー
+	}*/
 }
 
 /*
@@ -310,7 +686,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	if (PbAdd) return 2; // 新規追加時、支払明細なし
+	if (0 < PiAdd) return 2; // 新規追加時、支払明細なし
     return 3;
 }
 
@@ -341,7 +717,7 @@
 			//return NSLocalizedString(@"Indispensable",nil);
 			break;
 		case 1:
-			if (PbAdd) return NSLocalizedString(@"Option",nil);
+			//if (PbAdd) return NSLocalizedString(@"Option",nil);
 			break;
 		case 2:
 			return NSLocalizedString(@"Payment Details",nil);
@@ -350,9 +726,36 @@
 	return nil;
 }
 
+// TableView セクションフッタを応答
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
+{
+	switch (section) {
+		case 0:
+			if (MbCopyAdd) {
+					return NSLocalizedString(@"CopyAdd Msg", nil);
+			}
+			else if	(0 <= MiIndexE3lasts) {
+				return [NSString stringWithFormat:@"%@%ld%@", 
+						NSLocalizedString(@"PastCopyPre",nil),
+						1 + MiIndexE3lasts, 
+						NSLocalizedString(@"PastCopySuf",nil)];
+			}
+			break;
+
+		case 1:
+			if (0 < PiAdd && !MbCopyAdd && (-1) <= MiIndexE3lasts) {
+				return NSLocalizedString(@"E3AddBar Help",nil);
+			}
+			break;
+	}
+	return nil;
+}
+
+
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	//if (indexPath.section==1 && indexPath.row==2) return 200; // zNote
 	return 44; // デフォルト：44ピクセル
 }
 
@@ -405,18 +808,36 @@
 //					[dt release];
 					break;
 				case 1: // Amount
+					if (MlbAmount == nil) {
+						MlbAmount = [[UILabel alloc] initWithFrame:CGRectMake(70,5, 180,35)];
+						MlbAmount.lineBreakMode = UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
+						MlbAmount.textAlignment = UITextAlignmentRight;
+						MlbAmount.tag = 0; // Calc入力された数値(long)を記録する
+#ifdef AzDEBUG
+						//MlbAmount.backgroundColor = [UIColor grayColor]; //範囲チェック用
+#endif
+						MlbAmount.font = [UIFont systemFontOfSize:30];
+						[cell.contentView addSubview:MlbAmount]; [MlbAmount release];
+					}
 					cell.textLabel.text = NSLocalizedString(@"Use Amount",nil);
+
+					if ([Re3edit.nAmount integerValue] <= 0) {
+						MlbAmount.textColor = [UIColor blueColor];
+					} else {
+						MlbAmount.textColor = [UIColor blackColor];
+					}
 					// JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 					NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 					//[formatter setFormatterBehavior:NSNumberFormatterBehavior10_4]; MACOSに必要な定義
-					[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
+					[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
 					//[formatter setLocale:[NSLocale currentLocale]];
-					NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-					[formatter setLocale:localeJP];
-					[localeJP release];
-//					cell.detailTextLabel.text = [formatter stringFromNumber:[NSNumber numberWithInteger:Me3iAmount]];
-					cell.detailTextLabel.text = [formatter stringFromNumber:Re3edit.nAmount];
+					//NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
+					//[formatter setLocale:localeJP];
+					//[localeJP release];
+					//cell.detailTextLabel.text = [formatter stringFromNumber:Re3edit.nAmount];
+					MlbAmount.text = [formatter stringFromNumber:Re3edit.nAmount];
 					[formatter release];
+					cell.accessoryType = UITableViewCellAccessoryNone; // なし
 					break;
 				case 2: // Card
 					cell.textLabel.text = NSLocalizedString(@"Use Card",nil);
@@ -424,6 +845,10 @@
 						cell.detailTextLabel.text = Re3edit.e1card.zName;
 					} else {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
+					}
+					if (PiAdd == 2) { // Card固定
+						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+						cell.accessoryType = UITableViewCellAccessoryNone; // なし
 					}
 					break;
 				case 3: // nPayType
@@ -474,6 +899,11 @@
 						cell.detailTextLabel.text = Re3edit.e4shop.zName;
 					else
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
+
+					if (PiAdd == 3) { // Shop固定Add時
+						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+						cell.accessoryType = UITableViewCellAccessoryNone; // なし
+					}
 				}
 					break;
 				case 1: // Category
@@ -484,6 +914,11 @@
 							cell.detailTextLabel.text = Re3edit.e5category.zName;
 						else
 							cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
+
+						if (PiAdd == 4) { // Category固定Add時
+							cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+							cell.accessoryType = UITableViewCellAccessoryNone; // なし
+						}
 						break;
 					}
 					//break ↓ MbOptEnableCategory==NO ならばメモ(Name)を表示
@@ -609,6 +1044,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+	[McalcView hide]; // Calcが出てれば隠す
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
 	switch (indexPath.section) {
@@ -639,18 +1075,14 @@
 					break;
 				case 1: // Amount
 					if (!MbE6paid) {
-						// 変更あれば[DONE]にて配下E6全削除すること
-						EditAmountVC *evc = [[EditAmountVC alloc] init];
-						evc.title = NSLocalizedString(@"Use Amount", nil);
-						evc.Rentity = Re3edit;
-						evc.RzKey = @"nAmount";
-						evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
-						[self.navigationController pushViewController:evc animated:YES];
-						[evc release];
+						[self showCalcAmount];
+						return; // Tool Bar ボタンを無効にしない！ため
 					}
 					break;
 				case 2: // Card
-					if (!MbE6paid) {
+					if (PiAdd == 2) return; // (2)Card固定
+					if (!MbE6paid) 
+					{
 						// 変更あれば[DONE]にて配下E6全削除すること
 						E1cardTVC *tvc = [[E1cardTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Card choice",nil);
@@ -678,17 +1110,20 @@
 		case 1:
 			switch (indexPath.row) {
 				case 0: // Shop
-				{
-					// E4shop へ
-					E4shopTVC *tvc = [[E4shopTVC alloc] init];
-					tvc.title = NSLocalizedString(@"Shop choice",nil);
-					tvc.Re0root = Me0root;
-					tvc.Pe3edit = Re3edit;
-					[self.navigationController pushViewController:tvc animated:YES];
-					[tvc release];
-				}
-					break;
+						if (PiAdd == 3) return; // (3)Shop固定
+						else 
+						{
+							// E4shop へ
+							E4shopTVC *tvc = [[E4shopTVC alloc] init];
+							tvc.title = NSLocalizedString(@"Shop choice",nil);
+							tvc.Re0root = Me0root;
+							tvc.Pe3edit = Re3edit;
+							[self.navigationController pushViewController:tvc animated:YES];
+							[tvc release];
+						}
+						break;
 				case 1: // Category
+					if (PiAdd == 4) return; // (4)Category固定
 					if (MbOptEnableCategory)
 					{
 						E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
@@ -719,13 +1154,26 @@
 			
 			break;
 	}
+
+	// 修正をはじめたら、Tool Bar ボタンを無効にする & Footerのコピーメッセージを消す
+	for (id obj in self.toolbarItems) {
+		if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
+			[obj setEnabled:NO];
+		}
+	}
+	MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
 }
 
 
 - (void)cancel:(id)sender
 {
+	[McalcView hide]; // Calcが出てれば隠す
+	
 	NSManagedObjectContext *contx = Re3edit.managedObjectContext;
-	if (PbAdd) {
+	if (0 < PiAdd) {  // MbCopyAdd=YES:のRe3editも同様に削除してコミットしておく。
+//		if (Me3editMask) {
+//			[contx deleteObject:Me3editMask];
+//		}
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
 		[contx deleteObject:Re3edit];
 		// SAVE
@@ -750,18 +1198,17 @@
 // 編集フィールドの値を self.e3target にセットする
 - (void)save:(id)sender 
 {
-/*＜＜E2,E7配下のE6一覧から追加するとき、支払日が指定されるが、それより前の利用日ならば禁止する＞＞
- ＜＜日付ピッカーにて PiYearMMDD 以前入力できないようにした。＞＞
-	 if (Re3edit.e2invoice && [Re3edit.dateUse  [Re3edit.e2invoice.nYearMMDD integerValue]  ) {
-		<#statements#>
-	 }
-*/
-	 if (AzMAX_AMOUNT < [Re3edit.nAmount integerValue]) {
+	if (McalcView) {
+		[McalcView save]; // Calcが出てれば保存してから、
+		[McalcView hide]; // Calcが出てれば隠す
+	}
+
+	if (AzMAX_AMOUNT < [Re3edit.nAmount integerValue]) {
 		[self alertAmountOver]; // 2カ所から呼び出しているので関数化
 		return;
 	}
 
-	if ([Re3edit.nAmount integerValue] <= 0) {
+	if ([Re3edit.nAmount integerValue] == 0) {  // マイナス対応
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AmountZero",nil)
 														 message:NSLocalizedString(@"AmountZero msg",nil)
 														delegate:nil 
@@ -776,6 +1223,7 @@
 		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
 	
+/*カード未定許可
 	if (Re3edit.e1card == nil) {
 		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoCardSelect",nil)
 														 message:NSLocalizedString(@"NoCardSelect msg",nil)
@@ -784,16 +1232,13 @@
 											   otherButtonTitles:@"OK", nil] autorelease];
 		[alert show];
 		return;
-	}
+	}*/
 	
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// 主要条件（利用日、金額、支払条件）が変更されると配下の E6(unpaid) は全削除される　＜＜PAIDが無い前提＞＞
-	if (!MbE6paid) 
-	{	// 配下のE6にPAIDなし ＜＜全てunpaidである＞＞
-		// E1,E2,E3,E6,E7,E0 の関係を保ちながら更新する
-		// E3配下のE6(unpaid)を再生成する
-		// PiYearMMDD =0:E1,E3の支払条件に合わせて生成する
-		// PiYearMMDD >=AzMIN_YearMMDD:E2.nYearMMDDが PiYearMMDD以降になるように生成する
+	// クイック追加時、＜この時点で配下のE6は無い。また、E6が追加された後に.e1card==nilになることは無い＞
+	if (!MbE6paid && Re3edit.e1card)  // クイック追加時、カード未定(.e1card==nil)許可のため　
+	{	// 配下のE6を生成または更新する
 		if ([EntityRelation e3makeE6:Re3edit inFirstYearMMDD:PiFirstYearMMDD]==NO) return;
 	}
 
@@ -813,8 +1258,16 @@
 		e5node.sortCount = [e5node valueForKeyPath:@"e3records.@count"];
 	}
 	
+	NSManagedObjectContext *contx = Re3edit.managedObjectContext;
+//	if (Me3editMask) {
+//		[contx deleteObject:Me3editMask];
+//	}
 	// SAVE
-	[EntityRelation commit];
+	NSError *err = nil;
+	if (![contx save:&err]) {
+		NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
+		abort();
+	}
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }

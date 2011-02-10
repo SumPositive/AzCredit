@@ -20,6 +20,7 @@
 #import "E4shopTVC.h"
 #import "E5categoryTVC.h"
 #import "E7paymentTVC.h"
+#import "WebSiteVC.h"
 
 
 @interface TopMenuTVC (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
@@ -93,7 +94,7 @@
 	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Setting-icon16.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
 															 target:self action:@selector(azSettingView)];
-	NSArray *buArray = [NSArray arrayWithObjects: buInfo, buFlex, buSet, buFlex, buAdd, nil];
+	NSArray *buArray = [NSArray arrayWithObjects: buInfo, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
 	[buInfo release];
 	[buAdd release];
@@ -112,15 +113,20 @@
 		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
 		return YES; // この方向だけは常に許可する
 	} 
-	else if (!MbOptAntirotation) {
+	else if (MbOptAntirotation) return NO; // 回転禁止
+
+	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// 逆面（ホームボタンが画面の上側にある状態）
+		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
+	} else {
 		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
+		if (MinformationView) {
+			[MinformationView hide]; // 正面でなければhide
+		}
 	}
+	return YES;
 	// 現在の向きは、self.interfaceOrientation で取得できる
-	if (MinformationView) {
-		[MinformationView hide]; // 正面でなければhide
-	}
-	return !MbOptAntirotation;
 }
 
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
@@ -132,7 +138,7 @@
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptEnableSchedule = [defaults boolForKey:GD_OptEnableSchedule];
 	MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
-
+	
 	self.title = NSLocalizedString(@"Product Title",nil);
 	
 
@@ -197,9 +203,12 @@
 						tvc.Pe4shop = nil;
 						tvc.Pe5category = nil;
 						[self.navigationController pushViewController:tvc animated:NO];
-						// viewComeback を呼び出す
-						[tvc viewWillAppear:NO]; // Fechデータセットさせるため
-						[tvc viewComeback:selectionArray];
+						lRow = [[selectionArray objectAtIndex:1] integerValue];
+						if (0 <= lRow) { // lRow<0:ならば「最近の明細：末尾」を表示する
+							// viewComeback を呼び出す
+							[tvc viewWillAppear:NO]; // Fechデータセットさせるため
+							[tvc viewComeback:selectionArray];
+						}
 						[tvc release];
 					}
 					break;
@@ -300,7 +309,7 @@
 			else					 return 2;
 			break;
 		case 2:			// 機能
-			return 1;
+			return 2;
 			break;
 	}
 	return 0;
@@ -384,7 +393,7 @@
 		{
 			switch (indexPath.row) {
 				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"SalesSlip32.png"];
+					cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
 					cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
 					break;
 				case 1:
@@ -422,11 +431,15 @@
 		{
 			switch (indexPath.row) {
 				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Check32-Circle.png"];
-					cell.textLabel.text = NSLocalizedString(@"Google Document", nil);
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
+					cell.textLabel.text = NSLocalizedString(@"Backup Restore", nil);
 					break;
+//				case 1:
+//					cell.imageView.image = [UIImage imageNamed:@"Check32-Circle.png"];
+//					cell.textLabel.text = NSLocalizedString(@"CSV File", nil);
+//					break;
 				case 1:
-					cell.imageView.image = [UIImage imageNamed:@"Check32-Over.png"];
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-WebSafari.png"];
 					cell.textLabel.text = NSLocalizedString(@"Support Site", nil);
 					break;
 			}
@@ -535,8 +548,13 @@
 				}
 					break;
 				case 1:
-				{
-				}
+				{  // サポートWebサイトへ
+					WebSiteVC *webSite = [[WebSiteVC alloc] init];
+					webSite.title = cell.textLabel.text;
+					webSite.hidesBottomBarWhenPushed = NO; // 次画面にToolBarが無い場合にはYES、ある場合にはNO（YESにすると次画面のToolBarが背面に残るようだ）
+					[self.navigationController pushViewController:webSite animated:YES];
+					[webSite release];
+				} 
 					break;
 			}
 		}
@@ -575,6 +593,7 @@
 	
 	E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
 													inManagedObjectContext:Re0root.managedObjectContext];
+	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
 	e3obj.e1card = nil;
 	e3obj.e4shop = nil;
 	e3obj.e5category = nil;
@@ -583,7 +602,7 @@
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	e3detail.title = NSLocalizedString(@"Add Record", nil);
 	e3detail.Re3edit = e3obj;
-	e3detail.PbAdd = YES; // Add mode
+	e3detail.PiAdd = (1); // (1)New Add
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
 	[e3detail release]; // self.navigationControllerがOwnerになる
