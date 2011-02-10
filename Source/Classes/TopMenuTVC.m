@@ -109,8 +109,13 @@
 	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
 		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectMake(0,480, 0,0)];
 		MbannerView.delegate = self;
-		MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, 
-													  ADBannerContentSizeIdentifierLandscape, nil];
+		MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+													  ADBannerContentSizeIdentifier320x50,
+													  ADBannerContentSizeIdentifier480x32, nil];
+		// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
+		//MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+		//											  ADBannerContentSizeIdentifierPortrait, 
+		//											  ADBannerContentSizeIdentifierLandscape, nil];
 		MbannerView.hidden = YES;
 		//[self.view addSubview:MbannerView];
 		[self.navigationController.view addSubview:MbannerView];
@@ -157,10 +162,10 @@
 	[UIView setAnimationDuration:3.0];
 	
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) { // ヨコ
-		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
 		MbannerView.frame = CGRectMake(0, 320 - 32, 0,0);
 	} else {
-		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
 		MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
 	}
 	
@@ -218,10 +223,10 @@
 {
 	if (MbannerView && !MbannerView.hidden) { //MbannerIsVisible) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) { // ヨコ
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
 			MbannerView.frame = CGRectMake(0, 320 - 32, 0,0);
 		} else {
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
 			MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
 		}
 	}
