@@ -10,12 +10,12 @@
 
 @interface EditAmountVC : UIViewController <UITextFieldDelegate>
 {
+@private
 	//--------------------------retain
 	id			Rentity;
 	NSString	*RzKey;			// @"zName"
 	//--------------------------assign
 
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UITextField	*MtfAmount; // self.viewがOwner   // 将来的には外貨対応

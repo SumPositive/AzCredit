@@ -70,12 +70,12 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[Me2list release];
+	[RaE2list release];
 	
 	// @property (retain)
 	[Re1select release];
 	[Re8select release];
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -84,7 +84,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
 	return self;
@@ -98,12 +98,9 @@
 	// なし
 
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"simpleLeft3-icon16.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];		
-
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -132,9 +129,9 @@
 	}
 	
 	// Me2list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
-	if (Me2list != nil) {
-		[Me2list release];
-		Me2list = nil;
+	if (RaE2list != nil) {
+		[RaE2list release];
+		RaE2list = nil;
 	}
 
 	//[0.3]E7E2クリーンアップ
@@ -159,7 +156,7 @@
 			[e2t release];
 		}
 		[muE2tmp sortUsingDescriptors:sortArray];
-		Me2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
+		RaE2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
 		[muE2tmp release];
 		// E2unpaid 支払済
 		muE2tmp = [NSMutableArray new];
@@ -172,7 +169,7 @@
 			[e2t release];
 		}
 		[muE2tmp sortUsingDescriptors:sortArray];
-		[Me2list addObject:muE2tmp]; // 一次元追加
+		[RaE2list addObject:muE2tmp]; // 一次元追加
 		[muE2tmp release];
 		[sortArray release];
 	}
@@ -213,7 +210,7 @@
 			[muE2tmp addObject:e2t];
 			[e2t release];
 		}
-		Me2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
+		RaE2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
 		[muE2tmp release];
 		[muE2paid release];
 		// Paid
@@ -235,7 +232,7 @@
 			[muE2tmp addObject:e2t];
 			[e2t release];
 		}
-		[Me2list addObject:muE2tmp]; // 一次元追加
+		[RaE2list addObject:muE2tmp]; // 一次元追加
 		[muE2tmp release];
 		[muE2unpaid release];
 	}
@@ -247,9 +244,9 @@
 	// テーブルビューを更新します。
     [self.tableView reloadData];
 
-	if (!MbFirstAppear OR [Me2list count] < 2) return;
+	if (!MbFirstAppear OR [RaE2list count] < 2) return;
 
-	if (1 <= [[Me2list objectAtIndex:1] count]) {  
+	if (1 <= [[RaE2list objectAtIndex:1] count]) {  
 		// Unpaid の先頭へ
 		MbFirstAppear = NO;
 		// 未払いの先頭を画面中央に表示する
@@ -257,11 +254,11 @@
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
-	else if (1 <= [[Me2list objectAtIndex:0] count]) {
+	else if (1 <= [[RaE2list objectAtIndex:0] count]) {
 		// PAID の末尾へ
 		MbFirstAppear = NO;
 		// 未払いの先頭を画面中央に表示する
-		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[Me2list objectAtIndex:0] count]-1 inSection:0];
+		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[RaE2list objectAtIndex:0] count]-1 inSection:0];
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
@@ -325,7 +322,7 @@
 	// Comback (-1)にして未選択状態にする
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// (0)TopMenu >> (1)E1card/E7payment >> (2)This clear
-	[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 }
 
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -337,15 +334,15 @@
 	NSInteger lSec = lRow / GD_SECTION_TIMES;
 	lRow -= (lSec * GD_SECTION_TIMES);
 
-	if ([Me2list count] <= lSec) return; // section OVER
-	if ([[Me2list objectAtIndex:lSec] count] <= lRow) return; // row OVER（Addや削除されたとか）
+	if ([RaE2list count] <= lSec) return; // section OVER
+	if ([[RaE2list objectAtIndex:lSec] count] <= lRow) return; // row OVER（Addや削除されたとか）
 
 	// 選択行を画面中央付近に表示する
 	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
 	[self.tableView scrollToRowAtIndexPath:indexPath 
 						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 
-	E2temp *e2t = [[Me2list objectAtIndex:lSec] objectAtIndex:lRow];
+	E2temp *e2t = [[RaE2list objectAtIndex:lSec] objectAtIndex:lRow];
 	if ([e2t.e2invoices count] <= 0) return;
 
 	// (0)TopMenu >> (1)E1card >> (2)This >> (3)E6partTVC へ
@@ -381,14 +378,14 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [Me2list count];  // Me2listは、(0)e2paids (1)e2unpaids の二次元配列
+	return [RaE2list count];  // Me2listは、(0)e2paids (1)e2unpaids の二次元配列
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[Me2list objectAtIndex:section] count];
+	return [[RaE2list objectAtIndex:section] count];
 }
 
 // TableView セクション名を応答
@@ -401,7 +398,7 @@
 		case 1:
 			// E2 未払い総額
 			//if ([Re1select.e2unpaids count] <= 0) {
-			if ([[Me2list objectAtIndex:1] count] <= 0) {  // Index: 0=Paid 1=Unpaid
+			if ([[RaE2list objectAtIndex:1] count] <= 0) {  // Index: 0=Paid 1=Unpaid
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			} 
 			else {
@@ -498,7 +495,7 @@
 	// 左ボタン ------------------------------------------------------------------
 
 	//E2invoice *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	E2temp *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E2temp *e2obj = [[RaE2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 
 	// 支払日
 /*	if (e2obj.e1paid) {
@@ -571,11 +568,11 @@
 	//AzLOG(@"button.tag=%ld", (long)button.tag);
 	if (button.tag < 0) return;
 	NSInteger iSec = button.tag / GD_SECTION_TIMES;
-	if ([Me2list count] <= iSec) return;
+	if ([RaE2list count] <= iSec) return;
 	NSInteger iRow = button.tag - (iSec * GD_SECTION_TIMES);
-	if ([[Me2list objectAtIndex:iSec] count] <= iRow) return;
+	if ([[RaE2list objectAtIndex:iSec] count] <= iRow) return;
 	// E2temp : Paid <<<CHANGE>>> Unpaid
-	Me2cellButton = [[Me2list objectAtIndex:iSec] objectAtIndex:iRow]; 
+	Me2cellButton = [[RaE2list objectAtIndex:iSec] objectAtIndex:iRow]; 
 	
 	//if (Me2cellButton.e1paid) {
 	if (Me2cellButton.bPaid) {
@@ -594,7 +591,7 @@
 #endif
 		// これより後に paid があれば禁止		"最下行から PAY に戻せます"
 		//for (E2invoice *e2 in Me2cellButton.e1paid.e2paids) {
-		for (E2temp *e2t in [Me2list objectAtIndex:0]) {
+		for (E2temp *e2t in [RaE2list objectAtIndex:0]) {
 			if (Me2cellButton.iYearMMDD < e2t.iYearMMDD) {
 				UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E2 to PAY NG",nil) 
 																 message:NSLocalizedString(@"E2 to PAY NG msg",nil) 
@@ -629,7 +626,7 @@
 #endif
 		// "最上行から PAID にできます"
 		//for (E2invoice *e2 in Me2cellButton.e1unpaid.e2unpaids) {
-		for (E2temp *e2t in [Me2list objectAtIndex:1]) {
+		for (E2temp *e2t in [RaE2list objectAtIndex:1]) {
 			//if ([e2.nYearMMDD integerValue] < [Me2cellButton.nYearMMDD integerValue]) {
 			if (e2t.iYearMMDD < Me2cellButton.iYearMMDD) {
 				// これより前に unpaid があるので禁止
@@ -725,11 +722,11 @@
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 	// (0)TopMenu >> (1)E1card/E7payment >> (2)This >> (3)Clear
-	[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
-	[appDelegate.comebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
 
 	//E2invoice *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	E2temp *e2t = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E2temp *e2t = [[RaE2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	if ([e2t.e2invoices count] <= 0) return;
 	// E6parts へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];

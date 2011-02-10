@@ -9,16 +9,16 @@
 
 
 @interface CalcView : UIView {
+@private
 	//--------------------------retain
 	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
 	id			Rentity;		// NSNumber
 	NSString	*RzKey;			// @"nAmount"
 	//----------------------------------------------assign
-	UITableView	*AparentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
+	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
 
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSMutableString		*MzCalc;
+	NSMutableString		*RzCalc;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel				*MlbCalc;
 	//NSMutableArray		*MaObjects;
@@ -31,7 +31,7 @@
 @property (nonatomic, retain) UILabel		*Rlabel;
 @property (nonatomic, retain) id			Rentity;
 @property (nonatomic, retain) NSString		*RzKey;	
-@property (nonatomic, assign) UITableView	*AparentTableView;
+@property (nonatomic, assign) UITableView	*PoParentTableView;
 
 // 公開メソッド
 - (id)initWithFrame:(CGRect)rect;

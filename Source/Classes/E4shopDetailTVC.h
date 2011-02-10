@@ -11,6 +11,7 @@
 
 @interface E4shopDetailTVC : UITableViewController 
 {
+@private
 	//----------------------------------------------retain
 	E4shop		*Re4edit;
 	//----------------------------------------------assign
@@ -18,7 +19,6 @@
 	BOOL		PbSave;		//
 	E3record	*Pe3edit;	// =nil:マスタモード  !=nil:選択モード
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign

@@ -13,6 +13,7 @@
 
 @interface E3recordTVC : UITableViewController <UIActionSheetDelegate>
 {
+@private
 	//----------------------------------------------retain
 	E0root			*Re0root;
 	//----------------------------------------------assign
@@ -20,23 +21,21 @@
 	E5category		*Pe5category;	// 
 	E8bank			*Pe8bank;		//[0.3]New
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray		*Me3list;
-	NSMutableArray		*Msection;
-	NSMutableArray		*Mindex;
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*RaE3list;
+	NSMutableArray		*RaSection;
+	NSMutableArray		*RaIndex;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//ADBannerView		*MbannerView;
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
 	NSInteger	MiForTheFirstSection;		// viewDidAppear内で最初に1回だけ画面スクロール位置調整するため
-	NSIndexPath *MindexPathActionDelete;
+	//NSIndexPath *MindexPathActionDelete;
 }
 
 @property (nonatomic, retain) E0root			*Re0root;
-//@property (nonatomic, assign) E1card			*Pe1card;
 @property (nonatomic, assign) E4shop			*Pe4shop;
 @property (nonatomic, assign) E5category		*Pe5category;
 @property (nonatomic, assign) E8bank			*Pe8bank;

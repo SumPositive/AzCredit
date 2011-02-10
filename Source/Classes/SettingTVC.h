@@ -15,7 +15,7 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
-	BOOL MbOptBootTopView;
+	//BOOL MbOptBootTopView;
 	BOOL MbOptAntirotation;
 }
 

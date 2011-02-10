@@ -21,13 +21,13 @@
 
 @interface GooDocsTVC : UITableViewController <UITextFieldDelegate, UIActionSheetDelegate> 
 {
-	E0root		*Re0root;
-
 @private
+	E0root				*Re0root;
+
 	//-------------------------------------------------------viewDidLoadでnil, retain > release必要
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	UITextField			*MtfUsername;
-	UITextField			*MtfPassword;
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	UITextField			*RtfUsername;
+	UITextField			*RtfPassword;
 	GDataFeedDocList	*mDocListFeed;
 	NSError				*mDocListFetchError;
 	GDataServiceTicket	*mDocListFetchTicket;
@@ -37,15 +37,14 @@
 	BOOL			MbOptAntirotation;
 	BOOL			MbUpload;
 	NSInteger		MiRowDownload;		// Download対象行
-	NSInteger		PiSelectedRow;
+	NSInteger		MiSelectedRow;
 	NSString		*MzOldUsername;
-	GDataHTTPFetcher *fetcherActive;  // STOPのため保持
-	UIActionSheet	*actionProgress;
+	GDataHTTPFetcher *MfetcherActive;  // STOPのため保持
+	UIActionSheet	*MactionProgress;
 	UIProgressView	*MprogressView;
 }
 
 @property (nonatomic, retain) E0root		*Re0root;
-//@property BOOL	 PbUpload; 
 
 @end
 

@@ -28,14 +28,14 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	AzRETAIN_CHECK(@"E8bankTVC Me8banks", Me8banks, 0)
-	[Me8banks release];
+	AzRETAIN_CHECK(@"E8bankTVC RaE8banks", RaE8banks, 0)
+	[RaE8banks release];
 	
 	// @property (retain)
 	AzRETAIN_CHECK(@"E8bankTVC Re0root", Re0root, 0)
 	[Re0root release];
 
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -46,7 +46,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -61,11 +61,9 @@
 	
 	
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 		   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
-		   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];
+		   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 
 	if (Pe1card == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -116,9 +114,9 @@
 	
 	// Me8banks Requery. 
 	//--------------------------------------------------------------------------------
-	if (Me8banks != nil) {
-		[Me8banks release];
-		Me8banks = nil;
+	if (RaE8banks != nil) {
+		[RaE8banks release];
+		RaE8banks = nil;
 	}
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E8bank" 
@@ -139,7 +137,7 @@
 	}
 	[fetchRequest release];
 	//
-	Me8banks = [[NSMutableArray alloc] initWithArray:arFetch];
+	RaE8banks = [[NSMutableArray alloc] initWithArray:arFetch];
 	
 	// TableView Reflesh
 	[self.tableView reloadData];
@@ -200,7 +198,7 @@
 		// Comback (-1)にして未選択状態にする
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
 
@@ -215,7 +213,7 @@
 	if (1 <= lSec) return; // 無効セクション
 	
 	lRow -= (lSec * GD_SECTION_TIMES);
-	if ([Me8banks count] <= lRow) return; // 無効セル（削除されたとか）
+	if ([RaE8banks count] <= lRow) return; // 無効セル（削除されたとか）
 
 	// 次、 E3recordTVC だが、これ以上戻しても見難いだけなので、ここまでで止めることにした。
 	// 前回選択行を画面中央にする。
@@ -242,15 +240,18 @@
 														inManagedObjectContext:Re0root.managedObjectContext];
 		// Add
 		e8detail.title = NSLocalizedString(@"Add Bank",nil);
-		e8detail.PiAddRow = [Me8banks count]; // 追加モード
+		e8detail.PiAddRow = [RaE8banks count]; // 追加モード
 		e8detail.Re8edit = e8obj;
 		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
 	} 
 	else {
-		if ([Me8banks count] <= indexPath.row) return;  // Addボタン行などの場合パスする
+		if ([RaE8banks count] <= indexPath.row) {
+			[e8detail release];
+			return;  // Addボタン行などの場合パスする
+		}
 		e8detail.title = NSLocalizedString(@"Edit Bank",nil);
 		e8detail.PiAddRow = (-1); // 修正モード
-		e8detail.Re8edit = [Me8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
+		e8detail.Re8edit = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
 	}
 	
 	if (Pe1card) {
@@ -271,14 +272,14 @@
 	if (actionSheet.tag == ACTIONSEET_TAG_DELETE && buttonIndex == 0) {
 		//========== E1 削除実行 ==========
 		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E8bank *e8objDelete = [Me8banks objectAtIndex:MindexPathActionDelete.row];
+		E8bank *e8objDelete = [RaE8banks objectAtIndex:MindexPathActionDelete.row];
 		// E8bank 削除
-		[Me8banks removeObjectAtIndex:MindexPathActionDelete.row];
+		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
 		[Re0root.managedObjectContext deleteObject:e8objDelete];
 		// 削除行の次の行以下 E8.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [Me8banks count] ; i++) 
+		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE8banks count] ; i++) 
 		{  // .nRow + 1 削除行の次から
-			E8bank *e8obj = [Me8banks objectAtIndex:i];
+			E8bank *e8obj = [RaE8banks objectAtIndex:i];
 			e8obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
 		}
 		// Commit
@@ -303,9 +304,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	if (MbuAdd.enabled) {
-		return [Me8banks count] + 1; // (+1)Add
+		return [RaE8banks count] + 1; // (+1)Add
 	}
-	return [Me8banks count]; 
+	return [RaE8banks count]; 
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -314,7 +315,7 @@
 	static NSString *zCellAdd = @"CellAdd";
     UITableViewCell *cell = nil;
 
-	NSInteger rows = [Me8banks count] - indexPath.row;
+	NSInteger rows = [RaE8banks count] - indexPath.row;
 	if (0 < rows) {
 		// E8bank セル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellCard];
@@ -332,7 +333,7 @@
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 		}
 		
-		E8bank *e8obj = [Me8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
+		E8bank *e8obj = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
 		
 #ifdef AzDEBUG
 		if ([e8obj.zName length] <= 0) 
@@ -389,7 +390,7 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	NSInteger rows = [Me8banks count] - indexPath.row;
+	NSInteger rows = [RaE8banks count] - indexPath.row;
 	if (0 < rows) {
 		return UITableViewCellEditingStyleDelete;
     }
@@ -400,10 +401,10 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 
-	if (indexPath.row < [Me8banks count]) {
+	if (indexPath.row < [RaE8banks count]) {
 		if (Pe1card) {
 			// 選択モード
-			Pe1card.e8bank = [Me8banks objectAtIndex:indexPath.row]; 
+			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		}
 		else if (self.editing) {
@@ -414,11 +415,11 @@
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This
-			[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 			
 			// E2invoice へ
-			E8bank *e8obj = [Me8banks objectAtIndex:indexPath.row];
+			E8bank *e8obj = [RaE8banks objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
 			tvc.title = e8obj.zName;
 			tvc.Re1select = nil;
@@ -490,7 +491,7 @@
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if (indexPath.row < [Me8banks count]) return YES;
+	if (indexPath.row < [RaE8banks count]) return YES;
 	return NO;  // 最終行のAdd行は移動禁止
 }
 
@@ -499,7 +500,7 @@
 															toProposedIndexPath:(NSIndexPath *)newPath {
     NSIndexPath *target = newPath;
     // Add行が異動先になった場合、その1つ前の通常行を返すことにより、Add行への移動禁止となる。
-	NSInteger rows = [Me8banks count] - 1; // 移動可能な行数（Add行を除く）
+	NSInteger rows = [RaE8banks count] - 1; // 移動可能な行数（Add行を除く）
 	// セクション０限定仕様
 	if (newPath.section != 0 || rows < newPath.row  ) {
         target = [NSIndexPath indexPathForRow:rows inSection:0];
@@ -514,10 +515,10 @@
 	// この 属性"ascend"の値を行異動後に更新するための処理
 
 	// RE8banks 更新 ==>> なんと、managedObjectContextも更新される。 ただし、削除や挿入は反映されない！！！
-	E8bank *e8obj = [Me8banks objectAtIndex:oldPath.row]; //[MfetchE8bank objectAtIndexPath:oldPath];
+	E8bank *e8obj = [RaE8banks objectAtIndex:oldPath.row]; //[MfetchE8bank objectAtIndexPath:oldPath];
 
-	[Me8banks removeObjectAtIndex:oldPath.row];
-	[Me8banks insertObject:e8obj atIndex:newPath.row];
+	[RaE8banks removeObjectAtIndex:oldPath.row];
+	[RaE8banks insertObject:e8obj atIndex:newPath.row];
 	
 	NSInteger start = oldPath.row;
 	NSInteger end = newPath.row;
@@ -526,7 +527,7 @@
 		end = oldPath.row;
 	}
 	for (NSInteger i = start; i <= end; i++) {
-		e8obj = [Me8banks objectAtIndex:i];
+		e8obj = [RaE8banks objectAtIndex:i];
 		e8obj.nRow = [NSNumber numberWithInteger:i];
 	}
 	

@@ -10,7 +10,6 @@
 
 
 @interface InformationView : UIView {
-
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要

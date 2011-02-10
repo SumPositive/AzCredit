@@ -9,9 +9,10 @@
 
 @interface MyHTTPConnection : HTTPConnection
 {
-	int dataStartIndex;
-	NSMutableArray* multipartData;
-	BOOL postHeaderOK;
+@private
+	NSMutableArray* RaMultipartData;
+	int MiDataStartIndex;
+	BOOL MbPostHeaderOK;
 }
 
 - (BOOL)isBrowseable:(NSString *)path;

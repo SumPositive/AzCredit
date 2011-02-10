@@ -29,14 +29,14 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[Me3list release];
-	[Msection release];
-	[Mindex release];
+	[RaE3list release];
+	[RaSection release];
+	[RaIndex release];
 	
 	// @property (retain)
 	[Re0root release];
 
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -45,7 +45,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		MiForTheFirstSection = (-1);  // viewWillAppearにてMe2list Reload時にセット
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
@@ -171,25 +171,25 @@
 	[sortArray release];
 	
 	//---------------------------------Me3list 生成
-	if (Me3list != nil) {
-		[Me3list release];
-		Me3list = nil;
+	if (RaE3list != nil) {
+		[RaE3list release];
+		RaE3list = nil;
 	}
-	Me3list = [NSMutableArray new];
+	RaE3list = [NSMutableArray new];
 	//---------------------------------Msection, Mindex 生成
-	if (Msection != nil) {
-		[Msection release];
-		Msection = nil;
+	if (RaSection != nil) {
+		[RaSection release];
+		RaSection = nil;
 	}
-	if (Mindex != nil) {
-		[Mindex release];
-		Mindex = nil;
+	if (RaIndex != nil) {
+		[RaIndex release];
+		RaIndex = nil;
 	}
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	[df setDateFormat:@"yyyy-M"];
-	Msection = [[NSMutableArray alloc] initWithObjects:[df stringFromDate:dtTop], nil];
+	RaSection = [[NSMutableArray alloc] initWithObjects:[df stringFromDate:dtTop], nil];
 	[df setDateFormat:@"M"];
-	Mindex = [[NSMutableArray alloc] initWithObjects:[df stringFromDate:dtTop], nil];
+	RaIndex = [[NSMutableArray alloc] initWithObjects:[df stringFromDate:dtTop], nil];
 	[df release];
 	//
 	// mE3array --> Me3list 年月分類
@@ -201,12 +201,12 @@
 			// セクション
 			NSDateFormatter *df = [[NSDateFormatter alloc] init];
 			[df setDateFormat:@"yyyy-M"];
-			[Msection addObject:[df stringFromDate:dtNext]]; // セクションタイトルに使う
+			[RaSection addObject:[df stringFromDate:dtNext]]; // セクションタイトルに使う
 			[df setDateFormat:@"M"];
-			[Mindex addObject:[df stringFromDate:dtNext]]; // セクションタイトルに使う
+			[RaIndex addObject:[df stringFromDate:dtNext]]; // セクションタイトルに使う
 			[df release];
 			//
-			[Me3list addObject:e3days];
+			[RaE3list addObject:e3days];
 			[e3days release]; // Me3list にaddしたものを切り離してMe3listに任せる。
 			e3days = [NSMutableArray new]; // 新しい領域を確保する。
 			//
@@ -217,39 +217,39 @@
 		}
 		[e3days addObject:e3];
 	}
-	[Me3list addObject:e3days]; // 2次元配列
+	[RaE3list addObject:e3days]; // 2次元配列
 	[e3days release];
 	// End of line. セクションインデックスのために必要
-	[Msection addObject:NSLocalizedString(@"Bottom line",nil)]; // セクションタイトルに使う
-	[Mindex addObject:NSLocalizedString(@"index End",nil)]; // End「末」
+	[RaSection addObject:NSLocalizedString(@"Bottom line",nil)]; // セクションタイトルに使う
+	[RaIndex addObject:NSLocalizedString(@"index End",nil)]; // End「末」
 	e3days = [NSMutableArray new]; // 新しい領域を確保する。
-	[Me3list addObject:e3days]; // End & iAdセクション
+	[RaE3list addObject:e3days]; // End & iAdセクション
 	[e3days release];
 	//
 	[mE3array release];
 #ifdef AzDEBUG
-	AzLOG(@"[Msection count]=%d  [Me3list count]=%d", [Msection count], [Me3list count]);
-	for (int i=0 ; i<[Me3list count] && i<[Msection count] ; i++) {
-		AzLOG(@"Msection=(%@) Me3list=[%d][%d]", 
-			  [Msection objectAtIndex:i],
+	AzLOG(@"[RaSection count]=%d  [RaE3list count]=%d", [RaSection count], [RaE3list count]);
+	for (int i=0 ; i<[RaE3list count] && i<[RaSection count] ; i++) {
+		AzLOG(@"RaSection=(%@) RaE3list=[%d][%d]", 
+			  [RaSection objectAtIndex:i],
 			  i,
-			  [[Me3list objectAtIndex:i] count]);
+			  [[RaE3list objectAtIndex:i] count]);
 	}
 #endif
 	
 	// テーブルビューを更新します。
     [self.tableView reloadData];
 
-	if ([Me3list count] <= 0) {
+	if ([RaE3list count] <= 0) {
 		// 明細なし ＞ 前画面へ戻る
 		[self.navigationController dismissModalViewControllerAnimated:YES]; // 現モーダルViewを閉じて前に戻る
 	}
-	else if (MbFirstAppear && 0 < [Me3list count]) {
+	else if (MbFirstAppear && 0 < [RaE3list count]) {
 		MbFirstAppear = NO;
 		// 最新行（最終ページ）を表示する　＜＜最終行を画面下部に表示する＞＞  +Add行まで表示するためMiddleにした。
 		//NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[Me3list count]-1 inSection:0];
 		// Bottom section : iAd Line
-		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[Me3list count]-1];
+		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[RaE3list count]-1];
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
@@ -324,18 +324,18 @@
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (Pe4shop OR Pe5category OR Pe8bank) {
 		// (0)TopMenu >> (1)E4/E5 >> (2)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 	} else {
 		// (0)TopMenu >> (1)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 
 	if (0 <= MiForTheFirstSection) {
-		if (0 < [Me3list count]) {
+		if (0 < [RaE3list count]) {
 			// 最近の利用明細一覧：末尾を表示
 			//NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[Me3list count]-1 inSection:0];
 			// Bottom section : iAd Line
-			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[Me3list count]-1];
+			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[RaE3list count]-1];
 			[self.tableView scrollToRowAtIndexPath:indexPath 
 								  atScrollPosition:UITableViewScrollPositionBottom animated:NO];  // 実機検証結果:NO
 		}
@@ -360,8 +360,8 @@
 	NSInteger lSec = lRow / GD_SECTION_TIMES;
 	lRow -= (lSec * GD_SECTION_TIMES);
 	
-	if ([Me3list count]-1 <= lSec) return;  // -1 : 行末(iAd)セクションを除くため
-	if ([[Me3list objectAtIndex:lSec] count] <= lRow) return; // OVER
+	if ([RaE3list count]-1 <= lSec) return;  // -1 : 行末(iAd)セクションを除くため
+	if ([[RaE3list objectAtIndex:lSec] count] <= lRow) return; // OVER
 	
 	// 選択行を画面中央付近に表示する
 	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
@@ -371,7 +371,7 @@
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
 	e3detail.title = self.title;
-	e3detail.Re3edit = [[Me3list objectAtIndex:lSec] objectAtIndex:lRow]; ;
+	e3detail.Re3edit = [[RaE3list objectAtIndex:lSec] objectAtIndex:lRow]; ;
 	e3detail.PiAdd = 0; // (0)Edit mode
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:NO];
@@ -383,15 +383,15 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [Me3list count]; // 末尾は、行末(iAd)セクション
+	return [RaE3list count]; // 末尾は、行末(iAd)セクション
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if (section < [Me3list count]-1) {  // -1 : 行末(iAd)セクションを除くため
-		return [[Me3list objectAtIndex:section] count];
+	if (section < [RaE3list count]-1) {  // -1 : 行末(iAd)セクションを除くため
+		return [[RaE3list objectAtIndex:section] count];
 	} else {
 		return 1; // iAd
 	}
@@ -402,7 +402,7 @@
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
 	// NSMutableArray を NSArray にする
-	NSArray *ar = [[Mindex copy] autorelease];
+	NSArray *ar = [[RaIndex copy] autorelease];
 	return ar;
 }
 
@@ -410,24 +410,24 @@
 // TableView セクション名を応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (section < [Me3list count])
+	if (section < [RaE3list count])
 	{
-		if (0 < [[Me3list objectAtIndex:section] count]) {
+		if (0 < [[RaE3list objectAtIndex:section] count]) {
 			// 年-月  月計 99,999,999
 			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 			[formatter setNumberStyle:NSNumberFormatterDecimalStyle];  // CurrencyStyle]; // 通貨スタイル
-			NSString *zSum = [formatter stringFromNumber:[[Me3list objectAtIndex:section] 
+			NSString *zSum = [formatter stringFromNumber:[[RaE3list objectAtIndex:section] 
 														  valueForKeyPath:@"@sum.nAmount"]];
 			[formatter release];
 			//
 			NSString *zHeader = [NSString stringWithFormat:@"%@   %@ %@",
-								 [Msection objectAtIndex:section], 
+								 [RaSection objectAtIndex:section], 
 								 NSLocalizedString(@"Monthly total",nil), zSum];
 			return zHeader; // autoreleseされる
 		}
 		else {
 			// 年-月
-			return [Msection objectAtIndex:section];
+			return [RaSection objectAtIndex:section];
 		}
 	}
 	return nil;
@@ -437,7 +437,7 @@
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if ([Me3list count]-1 <= indexPath.section) {
+	if ([RaE3list count]-1 <= indexPath.section) {
 		return 5; // End of line
 	}
 	return 44; // デフォルト：44ピクセル
@@ -453,7 +453,7 @@
 	UILabel *cellLabel = nil;
 	
 	
-	if (indexPath.section < [Me3list count]-1) 
+	if (indexPath.section < [RaE3list count]-1) 
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellE3record];
 		if (cell == nil) {
@@ -477,7 +477,7 @@
 		// 回転対応のため
 		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
 
-		E3record *e3obj = [[Me3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		E3record *e3obj = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		
 		if ([e3obj.nReservType integerValue] == 0) {	// [0.3]
 			cell.textLabel.textColor = [UIColor blackColor];	// 利用明細
@@ -594,19 +594,19 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
-	if (indexPath.section < [Me3list count]-1) 
+	if (indexPath.section < [RaE3list count]-1) 
 	{
 		// Comback-L3 記録
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 		if (Pe4shop OR Pe5category OR Pe8bank) {
 			// (0)TopMenu >> (1)E4/E5 >> (2)This clear
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
 		} else {
 			// (0)TopMenu >> (1)This clear
-			[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 		}
 		// E3詳細画面へ
 		[self e3detailView:indexPath]; // この中でAddにも対応
@@ -618,11 +618,11 @@
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
 	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
-	if (indexPath != nil && indexPath.section < [Me3list count]-1  
-						 && indexPath.row < [[Me3list objectAtIndex:indexPath.section] count]) {
+	if (indexPath != nil && indexPath.section < [RaE3list count]-1  
+						 && indexPath.row < [[RaE3list objectAtIndex:indexPath.section] count]) {
 		// Edit Item
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
-		e3detail.Re3edit = [[Me3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		e3detail.Re3edit = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		e3detail.PiAdd = 0; // (0)Edit mode
 	}
 	else {

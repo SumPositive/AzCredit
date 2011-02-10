@@ -12,11 +12,11 @@
 
 @interface E1editBonusVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 {
+@private
 	//--------------------------retain
 	E1card		*Re1edit;
 	//--------------------------assign
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIPickerView	*Mpicker;

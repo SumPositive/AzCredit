@@ -13,6 +13,7 @@
 
 @interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate>
 {
+@private
 	//--------------------------retain
 	E3record	*Re3edit;
 	//--------------------------assign
@@ -20,11 +21,10 @@
 									//		     (1)New (2)Card固定 (3)Shop固定 (4)Category固定
 	NSInteger	PiFirstYearMMDD;	// PbAdd=YESのとき、E2がこの支払日以降になるように追加する
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray		*Me6parts;
-	NSMutableArray		*Me3lasts;		// 前回引用するための直近3件
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*RaE6parts;
+	NSMutableArray		*RaE3lasts;		// 前回引用するための直近3件
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	E0root				*Me0root;		// Arrayではない！単独　release不要（するとFreeze）
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
@@ -36,7 +36,7 @@
 	BOOL			MbOptEnableInstallment;
 	BOOL			MbOptUseDateTime;
 	BOOL			MbOptAmountCalc;
-	BOOL			MbAddmode;			// cancel:
+	//BOOL			MbAddmode;			// cancel:
 	NSInteger		MiE1cardRow;
 	BOOL			MbE6paid;			// YES:PAIDあり、主要条件の変更禁止！
 	BOOL			MbCopyAdd;			// YES:既存明細をコピーして新規追加している状態

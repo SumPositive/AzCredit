@@ -13,6 +13,7 @@
 
 @interface E6partTVC : UITableViewController // <UIActionSheetDelegate> 
 {
+@private
 	//----------------------------------------------retain
 	//----------------------------------------------assign
 	E2invoice		*Pe2select;		// E2配下のE6一覧　　どちらか一方だけセット、他方はnilにする  
@@ -21,16 +22,15 @@
 	//--------------------------------
 	NSInteger		PiFirstSection;	// 初期画面中央に表示するE2セクション
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray	*Me2invoices;
-	NSMutableArray	*Me6parts;		// (Pe2invoices,E6parts) 二次元
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray	*RaE2invoices;
+	NSMutableArray	*RaE6parts;		// (Pe2invoices,E6parts) 二次元
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	E1card		*Me2e1card;
 	E0root		*Me7e0root;
-	E6part		*Me6actionDelete;		// commitEditingStyle:にてセット、actionSheet:にて削除実行
+	//E6part		*Me6actionDelete;		// commitEditingStyle:にてセット、actionSheet:にて削除実行
 	BOOL		MbOptAntirotation;
 	BOOL		MbFirstOne;
 	NSInteger	MiForTheFirstSection;		// viewDidAppear内で最初に1回だけ画面スクロール位置調整するため

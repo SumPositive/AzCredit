@@ -18,15 +18,15 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 @implementation AppDelegate
 @synthesize window;
 @synthesize navigationController;
-@synthesize comebackIndex;
+@synthesize RaComebackIndex;
 //@synthesize RentityRelation;
 
 - (void)dealloc 
 {
 //	AzRETAIN_CHECK(@"AppDelegate RentityRelation", RentityRelation, 1)
 //	[RentityRelation release];
-	AzRETAIN_CHECK(@"AppDelegate comebackIndex", comebackIndex, 1)
-	[comebackIndex release];
+	AzRETAIN_CHECK(@"AppDelegate comebackIndex", RaComebackIndex, 1)
+	[RaComebackIndex release];
 	AzRETAIN_CHECK(@"AppDelegate navigationController", navigationController, 1)
 	[navigationController release];
 	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
@@ -126,22 +126,22 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 #else
 	if ([userDefaults boolForKey:GD_OptBootTopView]) {
 		// 起動時、TopView　　（前回復帰しない）
-		self.comebackIndex = nil;
+		self.RaComebackIndex = nil;
 	} else {
 		// [Comeback] 前回の画面表示に復帰させる
 		// load the stored preference of the user's last location from a previous launch
 		NSMutableArray *tempMutableCopy = [[userDefaults objectForKey:kComebackIndexKey] mutableCopy];
-		self.comebackIndex = tempMutableCopy;
+		self.RaComebackIndex = tempMutableCopy;
 		AzRETAIN_CHECK(@"AppDelegate tempMutableCopy", tempMutableCopy, 2)
 		[tempMutableCopy release];
 	}
 #endif
 	
-	if (self.comebackIndex == nil)
+	if (self.RaComebackIndex == nil)
 	{
 		// 新規起動時
 		// user has not launched this app nor navigated to a particular level yet, start at level 1, with no selection
-		self.comebackIndex = [[NSMutableArray arrayWithObjects:	// (long型／intではOverflow)
+		self.RaComebackIndex = [[NSMutableArray arrayWithObjects:	// (long型／intではOverflow)
 							   [NSNumber numberWithLong:-1],	//L0: TopMenu
 							   [NSNumber numberWithLong:-1],	//L1: E1card, E3record, E4shop, E5category, E7payment
 							   [NSNumber numberWithLong:-1],	//L2: E2invoice, E3record, E6part
@@ -152,11 +152,11 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 	else
 	{
 		// 復帰
-		NSInteger idx = [[self.comebackIndex objectAtIndex:0] integerValue]; // read the saved selection at level 1
+		NSInteger idx = [[self.RaComebackIndex objectAtIndex:0] integerValue]; // read the saved selection at level 1
 		if (idx != -1)
 		{
 			[topMenuTvc viewWillAppear:NO]; // Fech データセットさせるため
-			[topMenuTvc viewComeback:self.comebackIndex];
+			[topMenuTvc viewComeback:self.RaComebackIndex];
 		}
 		else
 		{
@@ -167,7 +167,7 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
 	[window makeKeyAndVisible];	// 表示開始
 	
 	// register our preference selection data to be archived
-	NSDictionary *indexComebackDict = [NSDictionary dictionaryWithObject:self.comebackIndex 
+	NSDictionary *indexComebackDict = [NSDictionary dictionaryWithObject:self.RaComebackIndex 
 																  forKey:kComebackIndexKey];
 	[userDefaults registerDefaults:indexComebackDict];
 	[userDefaults synchronize]; // plistへ書き出す
@@ -236,7 +236,7 @@ static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obta
     }
 
 	// save the drill-down hierarchy of selections to preferences
-	[[NSUserDefaults standardUserDefaults] setObject:self.comebackIndex forKey:kComebackIndexKey];
+	[[NSUserDefaults standardUserDefaults] setObject:self.RaComebackIndex forKey:kComebackIndexKey];
 	// この時点ではメモリ上で更新されただけ。
 	[[NSUserDefaults standardUserDefaults] synchronize]; // plistへ書き出す
 }

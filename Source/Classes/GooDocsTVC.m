@@ -51,10 +51,10 @@
 {
 	[MprogressView release];
 
-	AzRETAIN_CHECK(@"GooDocs MtfPassword", MtfPassword, 3) // (1)alloc (2)addSubView (3)TableViewCell
-	[MtfPassword release];
-	AzRETAIN_CHECK(@"GooDocs MtfUsername", MtfUsername, 3)
-	[MtfUsername release];
+	AzRETAIN_CHECK(@"GooDocs MtfPassword", RtfPassword, 3) // (1)alloc (2)addSubView (3)TableViewCell
+	[RtfPassword release];
+	AzRETAIN_CHECK(@"GooDocs MtfUsername", RtfUsername, 3)
+	[RtfUsername release];
 	
 	[mUploadTicket cancelTicket]; // キャンセルするため
 	[mDocListFetchTicket cancelTicket]; // キャンセルするため
@@ -74,7 +74,7 @@
 	AzRETAIN_CHECK(@"GooDocs Re0root", Re0root, 1)
 	[Re0root release];
 	
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
     [super dealloc];
 }
 
@@ -83,7 +83,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブルにする
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		self.tableView.allowsSelectionDuringEditing = YES;
 		MbLogin = NO; // 未ログイン
 		MbUpload = NO;
@@ -91,42 +91,43 @@
 	return self;
 }
 
-// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う
+//（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
 {
     [super loadView];
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MtfUsername = nil;		// ここ(loadView)で生成
-	MtfPassword = nil;		// ここ(loadView)で生成
+	RtfUsername = nil;		// ここ(loadView)で生成
+	RtfPassword = nil;		// ここ(loadView)で生成
 	
 
 	// ユーザが既に設定済みであればその情報を表示する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	// Username
-	MtfUsername = [[UITextField alloc] init]; // viewDesignにてrect決定
-	MtfUsername.placeholder = NSLocalizedString(@"@gmail.com Optional",nil);
-	MtfUsername.text = [defaults objectForKey:GD_DefUsername];
-	MtfUsername.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
-	MtfUsername.keyboardType = UIKeyboardTypeASCIICapable;
-	MtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
-	MtfUsername.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
-	MtfUsername.delegate = self;
-	[MzOldUsername initWithString:MtfUsername.text];
+	RtfUsername = [[UITextField alloc] init]; // viewDesignにてrect決定
+	RtfUsername.placeholder = NSLocalizedString(@"@gmail.com Optional",nil);
+	RtfUsername.text = [defaults objectForKey:GD_DefUsername];
+	RtfUsername.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
+	RtfUsername.keyboardType = UIKeyboardTypeASCIICapable;
+	RtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
+	RtfUsername.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
+	RtfUsername.delegate = self;
+	[MzOldUsername initWithString:RtfUsername.text];
 	
 	// Password
-	MtfPassword = [[UITextField alloc] init]; // viewDesignにてrect決定
+	RtfPassword = [[UITextField alloc] init]; // viewDesignにてrect決定
 	// ラッパークラスを利用してKeyChainから保存しているパスワードを取得する処理
 	NSError *error; // nilを渡すと異常終了するので注意
-	MtfPassword.text = [SFHFKeychainUtils 
-						getPasswordForUsername:MtfUsername.text 
+	RtfPassword.text = [SFHFKeychainUtils 
+						getPasswordForUsername:RtfUsername.text 
 								andServiceName:GD_PRODUCTNAME error:&error];
 
-	MtfPassword.secureTextEntry = YES;    // パスワードを画面に表示しないようにする
-	MtfPassword.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
-	MtfPassword.keyboardType = UIKeyboardTypeASCIICapable;
-	MtfPassword.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
-	MtfPassword.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
-	MtfPassword.delegate = self;
+	RtfPassword.secureTextEntry = YES;    // パスワードを画面に表示しないようにする
+	RtfPassword.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
+	RtfPassword.keyboardType = UIKeyboardTypeASCIICapable;
+	RtfPassword.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
+	RtfPassword.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
+	RtfPassword.delegate = self;
 
 	// 注意！ この時点では、まだ self.managedObjectContext などはセットされていない！
 }
@@ -163,11 +164,11 @@
 {
     [super viewDidAppear:animated];
 
-	if ([MtfUsername.text length] <= 0) {
-		[MtfUsername becomeFirstResponder];  // キーボード表示
+	if ([RtfUsername.text length] <= 0) {
+		[RtfUsername becomeFirstResponder];  // キーボード表示
 	}
-	else if ([MtfPassword.text length] <= 0) {
-			[MtfPassword becomeFirstResponder];  // キーボード表示
+	else if ([RtfPassword.text length] <= 0) {
+			[RtfPassword becomeFirstResponder];  // キーボード表示
 	}
 		
 }
@@ -176,18 +177,18 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
-	if (fetcherActive) {
+	if (MfetcherActive) {
 		// Cancel the fetch of the request that's currently in progress
-		[fetcherActive stopFetching];
-		fetcherActive = nil;
+		[MfetcherActive stopFetching];
+		MfetcherActive = nil;
 	}
 	// 進捗サインOFF
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 	
 	// 戻る前にキーボードを消さないと、次に最初から現れた状態になってしまう。
 	// キーボードを消すために全てのコントロールへresignFirstResponderを送る ＜表示中にしか効かない＞
-	[MtfUsername resignFirstResponder];
-	[MtfPassword resignFirstResponder];
+	[RtfUsername resignFirstResponder];
+	[RtfPassword resignFirstResponder];
 }
 /*
  // ビューが非表示にされたり解放された時にこの処理が呼ばれる
@@ -215,8 +216,8 @@
 	rect.origin.y = 12;
 	rect.size.width = self.view.frame.size.width - 100 - 30;
 	rect.size.height = 30;
-	MtfUsername.frame = rect;
-	MtfPassword.frame = rect;
+	RtfUsername.frame = rect;
+	RtfPassword.frame = rect;
 }
 
 
@@ -245,9 +246,9 @@
 	//	NSString *username = @"ipack.info@gmail.com";  // [mUsernameField stringValue];
 	//	NSString *password = @"enjiSmei";  // [mPasswordField stringValue];
 	
-	if ([MtfUsername.text length] && [MtfPassword.text length]) {
-		[service setUserCredentialsWithUsername:MtfUsername.text
-									   password:MtfPassword.text];
+	if ([RtfUsername.text length] && [RtfPassword.text length]) {
+		[service setUserCredentialsWithUsername:RtfUsername.text
+									   password:RtfPassword.text];
 	} else {
 		[service setUserCredentialsWithUsername:nil
 									   password:nil];
@@ -300,9 +301,9 @@
 	[self.tableView reloadData];  // [mDocListTable reloadData];
 	
 	// show the doclist feed fetch result error or the selected entry
-	NSString *docResultStr = @"";
+	//NSString *docResultStr = @"";
 	if (mDocListFetchError) {
-		docResultStr = [mDocListFetchError description];
+		//docResultStr = [mDocListFetchError description];
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Login Fail",nil)
 														message:NSLocalizedString(@"Please check your Username and Password",nil)
@@ -327,7 +328,7 @@
 //	[self.actionProgress release];
 
 	// 進捗サインOFF
-	if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 
 	if (error == nil) {
@@ -411,22 +412,22 @@
 	// 進捗サインON
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
 	{
-		actionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
+		MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
 													 delegate:self 
 											cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
 									   destructiveButtonTitle:nil
 											otherButtonTitles:nil];
 		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-		[actionProgress setMessage:NSLocalizedString(@"Downloading...",nil)];
-		actionProgress.tag = TAG_ACTION_DOWNLOAD_CANCEL;
+		[MactionProgress setMessage:NSLocalizedString(@"Downloading...",nil)];
+		MactionProgress.tag = TAG_ACTION_DOWNLOAD_CANCEL;
 		[ai setCenter:CGPointMake(160.0f, 90.0f)];
 		[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		[ai startAnimating];
-		[actionProgress addSubview:ai];
+		[MactionProgress addSubview:ai];
 		[ai release];
 		//[actionProgress showInView:self.view.window]; windowでは回転非対応
-		[actionProgress showInView:self.view]; // ToolBarが無い場合
-		[actionProgress release];
+		[MactionProgress showInView:self.view]; // ToolBarが無い場合
+		[MactionProgress release];
 	}
 	
 	// the content src attribute is used for downloading
@@ -449,7 +450,7 @@
 		[fetcher beginFetchWithDelegate:self
 					  didFinishSelector:@selector(downloadFile:finishedWithData:)
 						didFailSelector:@selector(downloadFile:failedWithError:)];
-		fetcherActive = fetcher;
+		MfetcherActive = fetcher;
 	}
 }
 
@@ -461,10 +462,10 @@
 							  options:NSAtomicWrite
 								error:&error];
 	
-	if (fetcherActive) {
+	if (MfetcherActive) {
 		// Cancel the fetch of the request that's currently in progress
-		[fetcherActive stopFetching];
-		fetcherActive = nil;
+		[MfetcherActive stopFetching];
+		MfetcherActive = nil;
 	}
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 
@@ -509,7 +510,7 @@
 		}
 	}
 	// 進捗サインOFF
-	if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 }
 
 - (void)alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -536,13 +537,13 @@
 										  otherButtonTitles:@"OK", nil];
 	[alert show];
 	[alert release];
-	if (fetcherActive) {
+	if (MfetcherActive) {
 		// Cancel the fetch of the request that's currently in progress
-		[fetcherActive stopFetching];
-		fetcherActive = nil;
+		[MfetcherActive stopFetching];
+		MfetcherActive = nil;
 	}
 	// 進捗サインOFF
-	if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 }
 
@@ -619,7 +620,7 @@
 			[alert show];
 			[alert release];
 			// 進捗サインOFF
-			if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+			if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 		}
 	}
@@ -682,21 +683,21 @@
 	// リスト取得開始、進捗サインON
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
 	{
-		actionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
+		MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
 													 delegate:self 
 											cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
 									   destructiveButtonTitle:nil
 											otherButtonTitles:nil];
-		[actionProgress setMessage:NSLocalizedString(@"Google Login...",nil)];
-		actionProgress.tag = TAG_ACTION_FETCH_CANCEL;
+		[MactionProgress setMessage:NSLocalizedString(@"Google Login...",nil)];
+		MactionProgress.tag = TAG_ACTION_FETCH_CANCEL;
 		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 		[ai setCenter:CGPointMake(160.0f, 90.0f)];
 		[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		[ai startAnimating];
-		[actionProgress addSubview:ai];
+		[MactionProgress addSubview:ai];
 		[ai release];
-		[actionProgress showInView:self.view];
-		[actionProgress release];
+		[MactionProgress showInView:self.view];
+		[MactionProgress release];
 	}
 	
 	// フィードの取得要求を開始
@@ -730,13 +731,13 @@
 	[self refreshView];
 	
 	// 進捗サインOFF
-	if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 }
 
 - (GDataEntryDocBase *)selectedDoc {
-	if (0 <= PiSelectedRow && PiSelectedRow < [[mDocListFeed entries] count]) {
-		GDataEntryDocBase *doc = [mDocListFeed entryAtIndex:PiSelectedRow];
+	if (0 <= MiSelectedRow && MiSelectedRow < [[mDocListFeed entries] count]) {
+		GDataEntryDocBase *doc = [mDocListFeed entryAtIndex:MiSelectedRow];
 		return doc;
 	}
 	return nil;
@@ -825,7 +826,7 @@
 {
 	switch (section) {
 		case 0:
-			if ([MtfUsername.text length] && [MtfPassword.text length]) {
+			if ([RtfUsername.text length] && [RtfPassword.text length]) {
 				return 3;  // Username, Password, Login
 			}
 			else {
@@ -916,26 +917,26 @@
 	NSError *error; // nilを渡すと異常終了するので注意
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-	if (textField == MtfUsername) { //Password変更時に同時に保存するように改めた
-		if (![MzOldUsername isEqualToString:MtfUsername.text]) {
-			[defaults setObject:MtfUsername.text forKey:GD_DefUsername];
-			MtfPassword.text = @"";
+	if (textField == RtfUsername) { //Password変更時に同時に保存するように改めた
+		if (![MzOldUsername isEqualToString:RtfUsername.text]) {
+			[defaults setObject:RtfUsername.text forKey:GD_DefUsername];
+			RtfPassword.text = @"";
 			if (MzOldUsername != nil) {
 				// ユーザ名が変更になっていた場合は、古いユーザ名で保存したパスワードを削除
 				[SFHFKeychainUtils deleteItemForUsername:MzOldUsername andServiceName:GD_PRODUCTNAME 
 												   error:&error];
 			}
-			[MzOldUsername initWithString:MtfUsername.text];
+			[MzOldUsername initWithString:RtfUsername.text];
 		}
-		if (0 < [MtfUsername.text length]) {
-			[MtfPassword becomeFirstResponder]; // パスワードへフォーカス移動
+		if (0 < [RtfUsername.text length]) {
+			[RtfPassword becomeFirstResponder]; // パスワードへフォーカス移動
 		}
 	}
-	else if (textField == MtfPassword) {
+	else if (textField == RtfPassword) {
 		// Passwordは Remember Password == YES のときだけ保存
 		if ([defaults boolForKey:GD_OptPasswordSave]) {
 			// PasswordをKeyChainに保存する
-			[SFHFKeychainUtils storeUsername:MtfUsername.text andPassword:MtfPassword.text 
+			[SFHFKeychainUtils storeUsername:RtfUsername.text andPassword:RtfPassword.text 
 										forServiceName:GD_PRODUCTNAME updateExisting:YES error:&error];
 		}
 	}
@@ -944,11 +945,11 @@
 // UITextField Return(DONE)キーが押された
 - (BOOL)textFieldShouldReturn:(UITextField *)textField 
 {
-	if (textField == MtfUsername && 0 < [MtfUsername.text length]) {
-		[MtfPassword becomeFirstResponder]; // パスワードへフォーカス移動
+	if (textField == RtfUsername && 0 < [RtfUsername.text length]) {
+		[RtfPassword becomeFirstResponder]; // パスワードへフォーカス移動
 	}
-	else if (textField == MtfPassword && 0 < [MtfUsername.text length] && 0 < [MtfPassword.text length]) {
-		[MtfPassword resignFirstResponder]; // キーボードを消す
+	else if (textField == RtfPassword && 0 < [RtfUsername.text length] && 0 < [RtfPassword.text length]) {
+		[RtfPassword resignFirstResponder]; // キーボードを消す
 		// ログイン開始
 		MbLogin = NO; // 未ログイン ==>> 成功時にYES
 		[self fetchDocList];
@@ -968,12 +969,12 @@
 	NSError *error; // nilを渡すと異常終了するので注意
 	if (passwordSave) {
 		// PasswordをKeyChainに保存する
-		[SFHFKeychainUtils storeUsername:MtfUsername.text andPassword:MtfPassword.text 
+		[SFHFKeychainUtils storeUsername:RtfUsername.text andPassword:RtfPassword.text 
 							forServiceName:GD_PRODUCTNAME updateExisting:YES error:&error];
 	}
 	else {
 		// パスワードをKeyChainから削除する
-		[SFHFKeychainUtils deleteItemForUsername:MtfUsername.text
+		[SFHFKeychainUtils deleteItemForUsername:RtfUsername.text
 							andServiceName:GD_PRODUCTNAME error:&error];
 	}
 }
@@ -993,7 +994,7 @@
 					cell = [tableView dequeueReusableCellWithIdentifier:zCellUser];
 					if (cell == nil) {
 						cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:zCellUser] autorelease];
-						[cell addSubview:MtfUsername]; // retain +1=> 2
+						[cell addSubview:RtfUsername]; // retain +1=> 2
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.textLabel.font = [UIFont systemFontOfSize:12];
 					}
@@ -1004,7 +1005,7 @@
 					cell = [tableView dequeueReusableCellWithIdentifier:zCellPass];
 					if (cell == nil) {
 						cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:zCellPass] autorelease];
-						[cell addSubview:MtfPassword]; // retain +1=> 2
+						[cell addSubview:RtfPassword]; // retain +1=> 2
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.textLabel.font = [UIFont systemFontOfSize:12];
 					}
@@ -1052,6 +1053,7 @@
 				dateFormatter.dateFormat = @"yyyy/MM/dd";
 				// これがUploadファイル名として渡される
 				cell.detailTextLabel.text = [NSString stringWithFormat:@"AzCredit %@", [dateFormatter stringFromDate:[NSDate date]]];
+				[dateFormatter release];
 			}
 			return cell;
 			break;
@@ -1077,8 +1079,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// [DONE]キーを押さなかったとき、キーボードを消すための処理　＜＜アクティブフィールドのレスポンダ解除＞＞
-	if ([MtfUsername canResignFirstResponder]) [MtfUsername resignFirstResponder];
-	if ([MtfPassword canResignFirstResponder]) [MtfPassword resignFirstResponder];
+	if ([RtfUsername canResignFirstResponder]) [RtfUsername resignFirstResponder];
+	if ([RtfPassword canResignFirstResponder]) [RtfPassword resignFirstResponder];
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 	
@@ -1097,13 +1099,13 @@
 				// リスト取得開始、進捗サインON
 				[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
 				{
-					actionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
+					MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
 																 delegate:self 
 														cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
 												   destructiveButtonTitle:nil
 														otherButtonTitles:nil];
-					[actionProgress setMessage:NSLocalizedString(@"Uploading...",nil)];
-					actionProgress.tag = TAG_ACTION_UPLOAD_CANCEL;
+					[MactionProgress setMessage:NSLocalizedString(@"Uploading...",nil)];
+					MactionProgress.tag = TAG_ACTION_UPLOAD_CANCEL;
 					// アクティビティインジケータ
 					CGPoint indicatorPoint;
 					indicatorPoint.y = 90.0;
@@ -1118,7 +1120,7 @@
 					[ai setCenter:indicatorPoint];
 					[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
 					[ai startAnimating];
-					[actionProgress addSubview:ai];
+					[MactionProgress addSubview:ai];
 					[ai release];
 					// プログレスバー
 					if (!MprogressView) {
@@ -1128,9 +1130,9 @@
 					MprogressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
 					MprogressView.center = indicatorPoint;
 					MprogressView.progress = 0.0;
-					[actionProgress addSubview:MprogressView];
-					[actionProgress showInView:self.view];
-					[actionProgress release];
+					[MactionProgress addSubview:MprogressView];
+					[MactionProgress showInView:self.view];
+					[MactionProgress release];
 				}
 
 				// Upload直前にファイル iPack へ書き出す
@@ -1139,7 +1141,7 @@
 				//[filecsv release];
 				if (zErr) {
 					// 進捗サインOFF
-					if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+					if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 					[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 					UIAlertView *alert = [[UIAlertView alloc] 
 										  initWithTitle:NSLocalizedString(@"Upload Fail",nil)
@@ -1201,7 +1203,7 @@
 					//[filecsv release];
 					if (zErr) {
 						// 進捗サインOFF
-						if (actionProgress) [actionProgress dismissWithClickedButtonIndex:0 animated:YES];
+						if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
 						[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
 						UIAlertView *alert = [[UIAlertView alloc] 
 											  initWithTitle:NSLocalizedString(@"Download Fail",nil)
@@ -1320,10 +1322,10 @@
 	// actionSheet.tag = 選択行(indexPath.row)が代入されている
 	if (actionSheet.tag < 0) {
 		// actionProgress CANCEL
-		if (fetcherActive) {
+		if (MfetcherActive) {
 			// Cancel the fetch of the request that's currently in progress
-			[fetcherActive stopFetching];
-			fetcherActive = nil;
+			[MfetcherActive stopFetching];
+			MfetcherActive = nil;
 		}
 		[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
 		return;

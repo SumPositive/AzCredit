@@ -10,15 +10,15 @@
 
 @interface E1cardTVC : UITableViewController <UIActionSheetDelegate> 
 {
+@private
 	//--------------------------retain
 	E0root		*Re0root;
 	E3record	*Re3edit;		// =nil:マスタモード  !=nil:選択モード
 	//--------------------------assign
 	
-@private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray		*Me1cards;
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*RaE1cards;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;

@@ -11,18 +11,18 @@
 @class HTTPServer;
 
 @interface HttpServerView : UIView {
-	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	HTTPServer			*httpServer;
-	UIAlertView			*MalertHttpServer;
-	//----------------------------------------------assign
-	E0root				*Re0root;
-
 @private
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
+	HTTPServer			*RhttpServer;
+	UIAlertView			*RalertHttpServer;
+	//----------------------------------------------assign
+	E0root				*Pe0root;
+
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	NSDictionary		*MdicAddresses;
 }
 
-@property (nonatomic, assign) E0root		*Re0root;
+@property (nonatomic, assign) E0root		*Pe0root;
 
 // 公開メソッド
 - (void)show;

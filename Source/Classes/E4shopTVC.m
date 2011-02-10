@@ -29,14 +29,14 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	AzRETAIN_CHECK(@"TopMenuTVC Re4shop", Me4shops, 0)
-	[Me4shops release];
+	AzRETAIN_CHECK(@"TopMenuTVC RaE4shops", RaE4shops, 0)
+	[RaE4shops release];
 	
 	// @property (retain)
 	AzRETAIN_CHECK(@"TopMenuTVC Re0root", Re0root, 0)
 	[Re0root release];
     
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -48,7 +48,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -61,11 +61,10 @@
 	MbuTop = nil;		// ここ(loadView)で生成
 	
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
-		   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
-		   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+											  initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
+											  style:UIBarButtonItemStylePlain  
+											  target:nil  action:nil] autorelease];
 
 	if (Pe3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -150,9 +149,9 @@
 {
 	// Me4shops Requery. 
 	//--------------------------------------------------------------------------------
-	if (Me4shops != nil) {
-		[Me4shops release];
-		Me4shops = nil;
+	if (RaE4shops != nil) {
+		[RaE4shops release];
+		RaE4shops = nil;
 	}
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E4shop" 
@@ -203,7 +202,7 @@
 	}
 	[fetchRequest release];
 	//
-	Me4shops = [[NSMutableArray alloc] initWithArray:arFetch];
+	RaE4shops = [[NSMutableArray alloc] initWithArray:arFetch];
 	// 
 	[self viewDesign];
 	[self.tableView reloadData];
@@ -298,7 +297,7 @@
 		// Comback (-1)にして未選択状態にする
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
 
@@ -313,7 +312,7 @@
 	if (1 <= lSec) return; // 無効セクション
 	
 	lRow -= (lSec * GD_SECTION_TIMES);
-	if ([Me4shops count] <= lRow) return; // 無効セル（削除されたとか）
+	if ([RaE4shops count] <= lRow) return; // 無効セル（削除されたとか）
 
 	// 次、 E3recordTVC だが、これ以上戻しても見難いだけなので、ここまでで止めることにした。
 	// 前回選択行を画面中央にする。
@@ -344,12 +343,13 @@
 		e4detail.PbAdd = YES;
 		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
 	}
-	else if ([Me4shops count] <= iE4index) {
+	else if ([RaE4shops count] <= iE4index) {
+		[e4detail release];
 		return; // Add行以降、パスする
 	}
 	else {
 		e4detail.title = NSLocalizedString(@"Edit Shop",nil);
-		e4detail.Re4edit = [Me4shops objectAtIndex:iE4index]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e4detail.Re4edit = [RaE4shops objectAtIndex:iE4index]; //[MfetchE1card objectAtIndexPath:indexPath];
 		e4detail.PbAdd = NO;
 		//e4detail.Pe3edit = nil;
 	}
@@ -371,12 +371,12 @@
 	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
 	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
 		//========== E4 削除実行 ==========
-		E4shop *e4objDelete = [Me4shops objectAtIndex:MindexPathActionDelete.row];
+		E4shop *e4objDelete = [RaE4shops objectAtIndex:MindexPathActionDelete.row];
 		
 		// E3は、削除せずに E4-E3 リンクを断つだけ
 		// E4-E3 リンクは、以下のE4削除すれば全てnilされる
 		// E4shop 削除
-		[Me4shops removeObjectAtIndex:MindexPathActionDelete.row];
+		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
 		[Re0root.managedObjectContext deleteObject:e4objDelete];
 		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
 		NSError *error = nil;
@@ -398,7 +398,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-    return [Me4shops count] + 1; // (+1)Add
+    return [RaE4shops count] + 1; // (+1)Add
 }
 
 /*
@@ -418,7 +418,7 @@
     UITableViewCell *cell = nil;
 
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me4shops count]) 
+	if (indexPath.row < [RaE4shops count]) 
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellNode];
 		if (cell == nil) {
@@ -440,7 +440,7 @@
 			}
 		}
 		
-		E4shop *e4obj = [Me4shops objectAtIndex:indexPath.row];
+		E4shop *e4obj = [RaE4shops objectAtIndex:indexPath.row];
 		
 		if ([e4obj.zName length] <= 0) 
 			cell.textLabel.text = NSLocalizedString(@"(Untitled)", nil);
@@ -468,7 +468,7 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me4shops count]) return UITableViewCellEditingStyleDelete;
+	if (indexPath.row < [RaE4shops count]) return UITableViewCellEditingStyleDelete;
 	return UITableViewCellEditingStyleNone;
 }
 
@@ -477,10 +477,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me4shops count]) {
+	if (indexPath.row < [RaE4shops count]) {
 		if (Pe3edit) {
 			// 選択モード
-			Pe3edit.e4shop = [Me4shops objectAtIndex:indexPath.row]; 
+			Pe3edit.e4shop = [RaE4shops objectAtIndex:indexPath.row]; 
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		}
 		else if (self.editing) {
@@ -490,12 +490,12 @@
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This >> (2)Clear
-			[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 			
 			// E3records へ
 			E3recordTVC *tvc = [[E3recordTVC alloc] init];
-			E4shop *e4obj = [Me4shops objectAtIndex:indexPath.row];
+			E4shop *e4obj = [RaE4shops objectAtIndex:indexPath.row];
 			tvc.title =  e4obj.zName;
 			tvc.Re0root = Re0root;
 			//tvc.Pe1card = nil;  

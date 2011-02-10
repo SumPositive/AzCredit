@@ -29,14 +29,14 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	AzRETAIN_CHECK(@"E5categoryTVC Me5categorys", Me5categorys, 0)
-	[Me5categorys release];
+	AzRETAIN_CHECK(@"E5categoryTVC RaE5categorys", RaE5categorys, 0)
+	[RaE5categorys release];
 	
 	// @property (retain)
 	AzRETAIN_CHECK(@"E5categoryTVC Re0root", Re0root, 0)
 	[Re0root release];
     
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -48,7 +48,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -61,11 +61,9 @@
 	MbuTop = nil;		// ここ(loadView)で生成
 	
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 		   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
-		   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];
+		   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 
 	if (Pe3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -149,9 +147,9 @@
 {
 	// Me5categorys Requery. 
 	//--------------------------------------------------------------------------------
-	if (Me5categorys != nil) {
-		[Me5categorys release];
-		Me5categorys = nil;
+	if (RaE5categorys != nil) {
+		[RaE5categorys release];
+		RaE5categorys = nil;
 	}
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E5category" 
@@ -202,7 +200,7 @@
 	}
 	[fetchRequest release];
 	//
-	Me5categorys = [[NSMutableArray alloc] initWithArray:arFetch];
+	RaE5categorys = [[NSMutableArray alloc] initWithArray:arFetch];
 	//
 	[self viewDesign];
 	[self.tableView reloadData];
@@ -296,7 +294,7 @@
 		// Comback (-1)にして未選択状態にする
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
 
@@ -311,7 +309,7 @@
 	if (1 <= lSec) return; // 無効セクション
 	
 	lRow -= (lSec * GD_SECTION_TIMES);
-	if ([Me5categorys count] <= lRow) return; // 無効セル（削除されたとか）
+	if ([RaE5categorys count] <= lRow) return; // 無効セル（削除されたとか）
 
 	// 次、 E3recordTVC だが、これ以上戻しても見難いだけなので、ここまでで止めることにした。
 	// 前回選択行を画面中央にする。
@@ -342,12 +340,13 @@
 		e5detail.PbAdd = YES;
 		e5detail.Pe3edit = Pe3edit;
 	}
-	else if ([Me5categorys count] <= iE5index) {
+	else if ([RaE5categorys count] <= iE5index) {
+		[e5detail release];
 		return; // Add行以降、パスする
 	}
 	else {
 		e5detail.title = NSLocalizedString(@"Edit Category",nil);
-		e5detail.Re5edit = [Me5categorys objectAtIndex:iE5index]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e5detail.Re5edit = [RaE5categorys objectAtIndex:iE5index]; //[MfetchE1card objectAtIndexPath:indexPath];
 		e5detail.PbAdd = NO;
 		e5detail.Pe3edit = nil;
 	}
@@ -369,10 +368,10 @@
 	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
 	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
 		//========== 削除実行 ==========
-		E5category *e5objDelete = [Me5categorys objectAtIndex:MindexPathActionDelete.row];
+		E5category *e5objDelete = [RaE5categorys objectAtIndex:MindexPathActionDelete.row];
 		
 		// 削除
-		[Me5categorys removeObjectAtIndex:MindexPathActionDelete.row];
+		[RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
 		[Re0root.managedObjectContext deleteObject:e5objDelete];
 		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
 		NSError *error = nil;
@@ -394,7 +393,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-    return [Me5categorys count] + 1; // (+1)Add
+    return [RaE5categorys count] + 1; // (+1)Add
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -404,7 +403,7 @@
     UITableViewCell *cell = nil;
 
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me5categorys count]) 
+	if (indexPath.row < [RaE5categorys count]) 
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellNode];
 		if (cell == nil) {
@@ -426,7 +425,7 @@
 			}
 		}
 		
-		E5category *e5obj = [Me5categorys objectAtIndex:indexPath.row];
+		E5category *e5obj = [RaE5categorys objectAtIndex:indexPath.row];
 		
 		if ([e5obj.zName length] <= 0) 
 			cell.textLabel.text = NSLocalizedString(@"(Untitled)", nil);
@@ -454,7 +453,7 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me5categorys count]) return UITableViewCellEditingStyleDelete;
+	if (indexPath.row < [RaE5categorys count]) return UITableViewCellEditingStyleDelete;
 	return UITableViewCellEditingStyleNone;
 }
 
@@ -463,10 +462,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 
 	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [Me5categorys count]) {
+	if (indexPath.row < [RaE5categorys count]) {
 		if (Pe3edit) {
 			// 選択モード
-			Pe3edit.e5category = [Me5categorys objectAtIndex:indexPath.row]; 
+			Pe3edit.e5category = [RaE5categorys objectAtIndex:indexPath.row]; 
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		}
 		else if (self.editing) {
@@ -476,12 +475,12 @@
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This >> (2)Clear
-			[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 			
 			// E3records へ
 			E3recordTVC *tvc = [[E3recordTVC alloc] init];
-			E5category *e5obj = [Me5categorys objectAtIndex:indexPath.row];
+			E5category *e5obj = [RaE5categorys objectAtIndex:indexPath.row];
 			tvc.title =  e5obj.zName;
 			tvc.Re0root = Re0root;
 			//tvc.Pe1card = nil;  

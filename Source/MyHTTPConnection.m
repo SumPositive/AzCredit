@@ -166,9 +166,9 @@
 {
 //	NSLog(@"POST:%@", path);
 	
-	dataStartIndex = 0;
-	multipartData = [[NSMutableArray alloc] init];
-	postHeaderOK = FALSE;
+	MiDataStartIndex = 0;
+	RaMultipartData = [[NSMutableArray alloc] init];
+	MbPostHeaderOK = FALSE;
 	
 	return YES;
 }
@@ -185,19 +185,20 @@
 {
 	NSLog(@"httpResponseForURI: method:%@ path:%@", method, path);
 	
+#ifdef AzDEBUG
 	NSData *requestData = [(NSData *)CFHTTPMessageCopySerializedMessage(request) autorelease];
-	
 	NSString *requestStr = [[[NSString alloc] initWithData:requestData encoding:NSASCIIStringEncoding] autorelease];
 	NSLog(@"\n=== Request ====================\n%@\n================================", requestStr);
+#endif
 	
 	if (requestContentLength > 0)  // Process POST data
 	{
 		NSLog(@"processing post data: %i", requestContentLength);
 		
-		if ([multipartData count] < 2) return nil;
+		if ([RaMultipartData count] < 2) return nil;
 		
-		NSString* postInfo = [[NSString alloc] initWithBytes:[[multipartData objectAtIndex:1] bytes]
-													  length:[[multipartData objectAtIndex:1] length]
+		NSString* postInfo = [[NSString alloc] initWithBytes:[[RaMultipartData objectAtIndex:1] bytes]
+													  length:[[RaMultipartData objectAtIndex:1] length]
 													encoding:NSUTF8StringEncoding];
 		
 		NSArray* postInfoComponents = [postInfo componentsSeparatedByString:@"; filename="];
@@ -210,11 +211,11 @@
 		{
 			UInt16 separatorBytes = 0x0A0D;
 			NSMutableData* separatorData = [NSMutableData dataWithBytes:&separatorBytes length:2];
-			[separatorData appendData:[multipartData objectAtIndex:0]];
+			[separatorData appendData:[RaMultipartData objectAtIndex:0]];
 			int l = [separatorData length];
 			int count = 2;	//number of times the separator shows up at the end of file data
 			
-			NSFileHandle* dataToTrim = [multipartData lastObject];
+			NSFileHandle* dataToTrim = [RaMultipartData lastObject];
 			NSLog(@"data: %@", dataToTrim);
 			
 			for (unsigned long long i = [dataToTrim offsetInFile] - l; i > 0; i--)
@@ -233,15 +234,16 @@
 		} 
 		else {
 			// ファイル名が "*.CSV" でない
+			[postInfo release];
 			NSData *browseData = [[self postResponseNG:@"No! *.CSV file"] dataUsingEncoding:NSUTF8StringEncoding];
 			return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
 		}
 		
-		for (int n = 1; n < [multipartData count] - 1; n++)
-			NSLog(@"%@", [[NSString alloc] initWithBytes:[[multipartData objectAtIndex:n] bytes] length:[[multipartData objectAtIndex:n] length] encoding:NSUTF8StringEncoding]);
+		for (int n = 1; n < [RaMultipartData count] - 1; n++)
+			NSLog(@"%@", [[NSString alloc] initWithBytes:[[RaMultipartData objectAtIndex:n] bytes] length:[[RaMultipartData objectAtIndex:n] length] encoding:NSUTF8StringEncoding]);
 		
 		[postInfo release];
-		[multipartData release];
+		[RaMultipartData release];
 		requestContentLength = 0;
 		
 		// ダウンロード成功
@@ -300,7 +302,7 @@
 	
 	//NSLog(@"processPostDataChunk");
 	
-	if (!postHeaderOK)
+	if (!MbPostHeaderOK)
 	{
 		UInt16 separatorBytes = 0x0A0D;
 		NSData* separatorData = [NSData dataWithBytes:&separatorBytes length:2];
@@ -313,31 +315,31 @@
 
 			if ([[postDataChunk subdataWithRange:searchRange] isEqualToData:separatorData])
 			{
-				NSRange newDataRange = {dataStartIndex, i - dataStartIndex};
-				dataStartIndex = i + l;
+				NSRange newDataRange = {MiDataStartIndex, i - MiDataStartIndex};
+				MiDataStartIndex = i + l;
 				i += l - 1;
 				NSData *newData = [postDataChunk subdataWithRange:newDataRange];
 
 				if ([newData length])
 				{
-					[multipartData addObject:newData];
+					[RaMultipartData addObject:newData];
 				}
 				else
 				{
-					postHeaderOK = TRUE;
+					MbPostHeaderOK = TRUE;
 					
-					if ([multipartData count] < 2) {
+					if ([RaMultipartData count] < 2) {
 						AzLOG(@"ERR: [multipartData count] < 2");
 						return;
 					}
-					NSString* postInfo = [[NSString alloc] initWithBytes:[[multipartData objectAtIndex:1] bytes] length:[[multipartData objectAtIndex:1] length] encoding:NSUTF8StringEncoding];
-					NSArray* postInfoComponents = [postInfo componentsSeparatedByString:@"; filename="];
-					postInfoComponents = [[postInfoComponents lastObject] componentsSeparatedByString:@"\""];
-					postInfoComponents = [[postInfoComponents objectAtIndex:1] componentsSeparatedByString:@"\\"];
+					//NSString* postInfo = [[NSString alloc] initWithBytes:[[RaMultipartData objectAtIndex:1] bytes] length:[[RaMultipartData objectAtIndex:1] length] encoding:NSUTF8StringEncoding];
+					//NSArray* postInfoComponents = [postInfo componentsSeparatedByString:@"; filename="];
+					//postInfoComponents = [[postInfoComponents lastObject] componentsSeparatedByString:@"\""];
+					//postInfoComponents = [[postInfoComponents objectAtIndex:1] componentsSeparatedByString:@"\\"];
 					//NSString* filename = [[[server documentRoot] path] stringByAppendingPathComponent:[postInfoComponents lastObject]];
 					// ファイル名は常に GD_CSVFILENAME にする。
 					NSString* filename = [[[server documentRoot] path] stringByAppendingPathComponent:GD_CSVFILENAME];
-					NSRange fileDataRange = {dataStartIndex, [postDataChunk length] - dataStartIndex};
+					NSRange fileDataRange = {MiDataStartIndex, [postDataChunk length] - MiDataStartIndex};
 					
 					[[NSFileManager defaultManager] createFileAtPath:filename contents:[postDataChunk subdataWithRange:fileDataRange] attributes:nil];
 					NSFileHandle *file = [[NSFileHandle fileHandleForUpdatingAtPath:filename] retain];
@@ -345,10 +347,11 @@
 					if (file)
 					{
 						[file seekToEndOfFile];
-						[multipartData addObject:file];
+						[RaMultipartData addObject:file];
 					}
+					[file release];
 					
-					[postInfo release];
+					//[postInfo release];
 					
 					break;
 				}
@@ -357,7 +360,7 @@
 	}
 	else
 	{
-		[(NSFileHandle*)[multipartData lastObject] writeData:postDataChunk];
+		[(NSFileHandle*)[RaMultipartData lastObject] writeData:postDataChunk];
 	}
 }
 

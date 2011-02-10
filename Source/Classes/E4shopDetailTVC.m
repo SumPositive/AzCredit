@@ -55,12 +55,9 @@
 	// なし
 
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];		
-
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]

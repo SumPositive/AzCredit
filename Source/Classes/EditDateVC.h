@@ -12,6 +12,7 @@
 
 @interface EditDateVC : UIViewController
 {
+@private
 	//--------------------------retain
 	id			Rentity;
 	NSString	*RzKey;			// @"dateUse"
@@ -19,7 +20,6 @@
 	NSInteger	PiMinYearMMDD;
 	NSInteger	PiMaxYearMMDD;
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIDatePicker	*MdatePicker;

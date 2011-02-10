@@ -10,15 +10,15 @@
 
 @interface E5categoryTVC : UITableViewController <UIActionSheetDelegate, UISearchBarDelegate> 
 {
+@private
 	//--------------------------retain
 	E0root		*Re0root;
 	//--------------------------assign
 	E3record	*Pe3edit;		// =nil:マスタモード  !=nil:選択モード
 
-@private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray			*Me5categorys;
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray			*RaE5categorys;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	//----------------------------------------------------------------assign

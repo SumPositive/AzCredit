@@ -13,19 +13,19 @@
 
 @interface TopMenuTVC : UITableViewController <ADBannerViewDelegate>
 {
+@private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	E0root				*Re0root;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	InformationView		*MinformationView;
 	ADBannerView		*MbannerView;
 	//----------------------------------------------assign
 	BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
-	BOOL		MbannerIsVisible;	// YES=iAd 今表示されている
+	//.hidden利用//BOOL MbannerIsVisible;	// YES=iAd 今表示されている
 	NSInteger	MiE1cardCount;
 	BOOL		MbOptAntirotation;
 }

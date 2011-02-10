@@ -18,17 +18,17 @@
 
 
 @implementation HttpServerView
-@synthesize Re0root;
+@synthesize Pe0root;
 
 
 - (void)dealloc {
-	if (MalertHttpServer) {
-		[MalertHttpServer release];
+	if (RalertHttpServer) {
+		[RalertHttpServer release];
 	}
 
-	if (httpServer) {
-		[httpServer stop];
-		[httpServer release];
+	if (RhttpServer) {
+		[RhttpServer stop];
+		[RhttpServer release];
 	}
 
 	[MdicAddresses release];
@@ -50,10 +50,10 @@
 {
 	switch (alertView.tag) {
 		case ALERT_TAG_HTTPServerStop:
-			if (httpServer) {
-				[httpServer stop];
-				[httpServer release];
-				httpServer = nil;
+			if (RhttpServer) {
+				[RhttpServer stop];
+				[RhttpServer release];
+				RhttpServer = nil;
 			}
 			[[NSNotificationCenter defaultCenter] removeObserver:self 
 															name:@"LocalhostAdressesResolved" 
@@ -83,14 +83,14 @@
 	[self addSubview:imgView];
 	[imgView release];
 	
-	if (MalertHttpServer == nil) {
-		MalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HttpSv Title", nil) 
+	if (RalertHttpServer == nil) {
+		RalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HttpSv Title", nil) 
 													  message:NSLocalizedString(@"HttpSv Wait", nil) 
 													 delegate:self 
 											cancelButtonTitle:nil  //@"CANCEL" 
 											otherButtonTitles:NSLocalizedString(@"HttpSv stop", nil) , nil];
-		MalertHttpServer.tag = ALERT_TAG_HTTPServerStop;
-		[MalertHttpServer show];
+		RalertHttpServer.tag = ALERT_TAG_HTTPServerStop;
+		[RalertHttpServer show];
 		//[MalertHttpServer release];
 	}
 }
@@ -111,7 +111,7 @@
 	// if (httpServer) return; <<< didSelectRowAtIndexPath:直後に配置してダブルクリック回避している。
 
 	// CSV SAVE ＜＜先にCSVファイル書き出しする
-	NSString *zErr = [FileCsv zSave:Re0root toLocalFileName:GD_CSVFILENAME];
+	NSString *zErr = [FileCsv zSave:Pe0root toLocalFileName:GD_CSVFILENAME];
 	if (zErr) {
 		UIAlertView *alert = [[UIAlertView alloc] 
 							  initWithTitle:NSLocalizedString(@"Upload Fail",nil)
@@ -122,33 +122,33 @@
 		return;
 	}
 	//
-	if (httpServer) {
-		[httpServer stop];
-		[httpServer release];
-		httpServer = nil;
+	if (RhttpServer) {
+		[RhttpServer stop];
+		[RhttpServer release];
+		RhttpServer = nil;
 	}
 	//
 	NSString *root = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
-	httpServer = [HTTPServer new];
-	[httpServer setType:@"_http._tcp."];
-	[httpServer setConnectionClass:[MyHTTPConnection class]];
-	[httpServer setDocumentRoot:[NSURL fileURLWithPath:root]];
+	RhttpServer = [HTTPServer new];
+	[RhttpServer setType:@"_http._tcp."];
+	[RhttpServer setConnectionClass:[MyHTTPConnection class]];
+	[RhttpServer setDocumentRoot:[NSURL fileURLWithPath:root]];
 	[[NSNotificationCenter defaultCenter] addObserver:self 
 											 selector:@selector(httpInfoUpdate:) 
 												 name:@"LocalhostAdressesResolved" 
 											   object:nil];
 	[localhostAddresses performSelectorInBackground:@selector(list) withObject:nil];
-	[httpServer setPort:8080];
+	[RhttpServer setPort:8080];
 	//[httpServer setBackup:NO]; // RESTORE Mode
 	//[httpServer setManagedObjectContext:Re0root.managedObjectContext];
 	//[httpServer setAddRow:MiSection0Rows];
-	[httpServer setPe0root:Re0root];
+	[RhttpServer setPe0root:Pe0root];
 	NSError *error;
-	if(![httpServer start:&error])
+	if(![RhttpServer start:&error])
 	{
 		NSLog(@"Error starting HTTP Server: %@", error);
-		[httpServer release];
-		httpServer = nil;
+		[RhttpServer release];
+		RhttpServer = nil;
 	}
 	// Upload成功後、CSV LOAD する  ＜＜連続リストアできるように httpResponseForMethod 内で処理＞＞
 }
@@ -172,7 +172,7 @@
 	}
 	
 	NSString *info;
-	UInt16 port = [httpServer port];
+	UInt16 port = [RhttpServer port];
 	
 	NSString *localIP = nil;
 	localIP = [MdicAddresses objectForKey:@"en0"];
@@ -194,9 +194,9 @@
 	 info = [info stringByAppendingString:@"Web: Unable to determine external IP\n"]; */
 	
 	//displayInfo.text = info;
-	if (MalertHttpServer) {
-		MalertHttpServer.message = info;
-		[MalertHttpServer show];
+	if (RalertHttpServer) {
+		RalertHttpServer.message = info;
+		[RalertHttpServer show];
 	}
 }
 

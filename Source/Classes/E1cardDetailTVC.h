@@ -12,14 +12,14 @@
 
 @interface E1cardDetailTVC : UITableViewController 
 {
+@private
 	//----------------------------------------------retain
 	E1card		*Re1edit;
 	//----------------------------------------------assign
 	NSInteger	PiAddRow;	// (-1)Edit
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields

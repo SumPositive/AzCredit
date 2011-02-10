@@ -10,11 +10,11 @@
 
 @interface E3selectPayTypeTVC : UITableViewController 
 {
+@private
 	//--------------------------retain
 	E3record		*Re3edit;
 	//--------------------------assign
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign

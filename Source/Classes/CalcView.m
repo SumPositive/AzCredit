@@ -17,10 +17,10 @@
 @synthesize Rlabel;
 @synthesize Rentity;
 @synthesize RzKey;
-@synthesize AparentTableView;
+@synthesize PoParentTableView;
 
 - (void)dealloc {
-	[MzCalc release];
+	[RzCalc release];
 	
 	[RzKey release];
 	[Rentity release];
@@ -239,7 +239,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self viewDesign:self.frame];  //.bounds]; // コントロール配置
 
 	// Calc 初期化
-	MzCalc = [[NSMutableString alloc] init];
+	RzCalc = [[NSMutableString alloc] init];
 	MdRegister = 0.0;
 	MiFunc = 0;
 	
@@ -250,12 +250,12 @@ static UIColor *MpColorBlue(float percent) {
 {
 	AzLOG(@"[%@](%d)", button.titleLabel.text, (int)button.tag);
 
-	if (0 <= button.tag && [MzCalc length] < 50) { // 99999999, -9999999 Over
+	if (0 <= button.tag && [RzCalc length] < 50) { // 99999999, -9999999 Over
 		//if (button.tag == 12) {	//[.]
 		//	NSRange rg = [MzCalc rangeOfString:@"."];
 		//	if (rg.location != NSNotFound) return; // 既に[.]が含まれているからパスする
 		//}
-		[MzCalc appendString:button.titleLabel.text];
+		[RzCalc appendString:button.titleLabel.text];
 		
 		if (30 <= button.tag) {	//演算子ボタンが押された
 			// [Done] ⇒ [=]
@@ -271,7 +271,7 @@ static UIColor *MpColorBlue(float percent) {
 		// Functions
 		switch (button.tag) {
 			case -1: { // [Clear]
-				[MzCalc setString:@""]; // All Clear
+				[RzCalc setString:@""]; // All Clear
 				// [=] ⇒ [Done]
 				UIButton *bu = (UIButton *)[self viewWithTag:-8]; //[=]
 				if (bu) {
@@ -281,9 +281,9 @@ static UIColor *MpColorBlue(float percent) {
 				}
 			} break;
 			case -2: { // [Back]
-				int iLen = [MzCalc length];
+				int iLen = [RzCalc length];
 				if (0 < iLen) {
-					[MzCalc deleteCharactersInRange:NSMakeRange(iLen-1, 1)]; 
+					[RzCalc deleteCharactersInRange:NSMakeRange(iLen-1, 1)]; 
 				}
 				if (iLen <= 1) {
 					// [=] ⇒ [Done]
@@ -298,42 +298,42 @@ static UIColor *MpColorBlue(float percent) {
 			case -3: { // [税込み]
 				if ([self viewWithTag:-9]) {
 					// [Done] 即計算
-					[MzCalc setString:[NSString stringWithFormat:@"%.3f", [MzCalc doubleValue] * 1.05]];
+					[RzCalc setString:[NSString stringWithFormat:@"%.3f", [RzCalc doubleValue] * 1.05]];
 				} else {
 					// [=] 計算式に関数挿入
-					[MzCalc setString:[NSString stringWithFormat:@"T(%@)", MzCalc]];
+					[RzCalc setString:[NSString stringWithFormat:@"T(%@)", RzCalc]];
 				}
 			} break;
 			case -4: { // [税抜き]
 				if ([self viewWithTag:-9]) {
 					// [Done] 即計算
-					[MzCalc setString:[NSString stringWithFormat:@"%.3f", [MzCalc doubleValue] / 1.05]];
+					[RzCalc setString:[NSString stringWithFormat:@"%.3f", [RzCalc doubleValue] / 1.05]];
 				} else {
 					// [=] 計算式に関数挿入
-					[MzCalc setString:[NSString stringWithFormat:@"N(%@)", MzCalc]];
+					[RzCalc setString:[NSString stringWithFormat:@"N(%@)", RzCalc]];
 				}
 			} break;
 			case -5: { // [四捨五入]
 				if ([self viewWithTag:-9]) {
 					// [Done] 即計算
-					[MzCalc setString:[NSString stringWithFormat:@"%.0f", round([MzCalc doubleValue])]];
+					[RzCalc setString:[NSString stringWithFormat:@"%.0f", round([RzCalc doubleValue])]];
 				} else {
 					// [=] 計算式に関数挿入
-					[MzCalc setString:[NSString stringWithFormat:@"R(%@)", MzCalc]];
+					[RzCalc setString:[NSString stringWithFormat:@"R(%@)", RzCalc]];
 				}
 			} break;
 			case -8: { // [=]
 				// MzCalc 計算式を処理して答えを改めて MzCalc にセットする
-				NSString *zAns = [[NSString alloc] initWithString:[self zRpnCalc:MzCalc]];
+				NSString *zAns = [[NSString alloc] initWithString:[self zRpnCalc:RzCalc]];
 				if (0 < [zAns length]) {
-					[MzCalc setString:zAns];
+					[RzCalc setString:zAns];
 					// 
-					if (AzMAX_AMOUNT < fabs([MzCalc doubleValue])) {
+					if (AzMAX_AMOUNT < fabs([RzCalc doubleValue])) {
 						Rlabel.text = @"Over";
 					} else {
 						NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 						[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-						Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[MzCalc integerValue]]];
+						Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[RzCalc integerValue]]];
 						[formatter release];
 					}
 					// [=] ⇒ [Done]
@@ -347,16 +347,16 @@ static UIColor *MpColorBlue(float percent) {
 				[zAns release];
 			} break;
 			case -9: { // [Dome]
-				if ([MzCalc length] <= 0) {
+				if ([RzCalc length] <= 0) {
 					// Rlabel.text 変更なし
 				} 
-				else if (AzMAX_AMOUNT < fabs([MzCalc doubleValue])) {
+				else if (AzMAX_AMOUNT < fabs([RzCalc doubleValue])) {
 					Rlabel.text = @"Over";
 				} 
 				else {
 					NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 					[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-					Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[MzCalc integerValue]]];
+					Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[RzCalc integerValue]]];
 					[formatter release];
 				}
 				[self save];
@@ -381,7 +381,7 @@ static UIColor *MpColorBlue(float percent) {
 
 //	Rlabel.text = MzCalc;
 
-	MlbCalc.text = MzCalc;
+	MlbCalc.text = RzCalc;
 }
 
 
@@ -660,15 +660,15 @@ static UIColor *MpColorBlue(float percent) {
 
 - (void)save
 {
-	if (Rentity && RzKey && 0 < [MzCalc length]) {
-		[Rentity setValue:[NSNumber numberWithInteger:[MzCalc integerValue]]  forKey:RzKey];
+	if (Rentity && RzKey && 0 < [RzCalc length]) {
+		[Rentity setValue:[NSNumber numberWithInteger:[RzCalc integerValue]]  forKey:RzKey];
 	}
 }
 
 - (void)hide
 {
-	if (AparentTableView) {
-		[AparentTableView setScrollEnabled:YES]; //[0.3]元画面のスクロール許可
+	if (PoParentTableView) {
+		[PoParentTableView setScrollEnabled:YES]; //[0.3]元画面のスクロール許可
 //		AparentTableView.userInteractionEnabled = YES; //[0.3]タッチイベントやキーイベントを有効
 	}
 
@@ -689,18 +689,18 @@ static UIColor *MpColorBlue(float percent) {
 
 	//if ([Rlabel.text integerValue] <= 0) {
 	//if (Rlabel.tag <= 0) {
-	if ([MzCalc doubleValue] <= 0.0) {
+	if ([RzCalc doubleValue] <= 0.0) {
 		Rlabel.textColor = [UIColor blueColor];
 	} else {
 		Rlabel.textColor = [UIColor blackColor];
 	}
-	[self.AparentTableView reloadData]; // Footer表示を消すため
+	[self.PoParentTableView reloadData]; // Footer表示を消すため
 }
 
 - (void)show
 {
-	if (AparentTableView) {
-		[AparentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
+	if (PoParentTableView) {
+		[PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
 	}
 	
 	// Scroll in the overlay

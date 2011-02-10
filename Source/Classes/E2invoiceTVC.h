@@ -13,15 +13,15 @@
 
 @interface E2invoiceTVC : UITableViewController
 {
+@private
 	//----------------------------------------------retain
 	E1card		*Re1select;		// どちらか必須
 	E8bank		*Re8select;		// どちらか必須
 	//----------------------------------------------assign
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray		*Me2list;
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*RaE2list;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;

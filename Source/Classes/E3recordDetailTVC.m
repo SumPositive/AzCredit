@@ -49,13 +49,13 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[Me6parts release];
-	[Me3lasts release];
+	[RaE6parts release];
+	[RaE3lasts release];
 	
 	// @property (retain)
 	[Re3edit release];
 
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -64,7 +64,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -87,11 +87,9 @@
 	MbModified = NO;
 	
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];		
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
@@ -219,21 +217,21 @@
 	}
 	
 	//--------------------------------------------------Pe3select.e6parts
-	if (Me6parts != nil) {
-		[Me6parts release];
-		Me6parts = nil;
+	if (RaE6parts != nil) {
+		[RaE6parts release];
+		RaE6parts = nil;
 	}
 	// Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
 	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 	[sort1 release];
 	// 
-	Me6parts = [[NSMutableArray alloc] initWithArray:[Re3edit.e6parts allObjects]];
-	[Me6parts sortUsingDescriptors:sortArray];
+	RaE6parts = [[NSMutableArray alloc] initWithArray:[Re3edit.e6parts allObjects]];
+	[RaE6parts sortUsingDescriptors:sortArray];
 	[sortArray release];
 	
 	MbE6paid = NO;
-	for (E6part *e6 in Me6parts) {
+	for (E6part *e6 in RaE6parts) {
 		if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
 			MbE6paid = YES; // YES:PAIDあり、主要条件の変更禁止！
 			break;
@@ -245,9 +243,9 @@
 	}
 	
 	//--------------------------------------------------Me3lasts: 前回引用するため
-	if (Me3lasts != nil) {
-		[Me3lasts release];
-		Me3lasts = nil;
+	if (RaE3lasts != nil) {
+		[RaE3lasts release];
+		RaE3lasts = nil;
 	}
 	// Sorting
 	sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:NO]; // NO=降順
@@ -256,18 +254,18 @@
 
 	if (Re3edit.e1card) {
 		// e1card以下、最近の全E3
-		Me3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e1card.e3records allObjects]];
-		[Me3lasts sortUsingDescriptors:sortArray];
+		RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e1card.e3records allObjects]];
+		[RaE3lasts sortUsingDescriptors:sortArray];
 	}
 	else if (Re3edit.e4shop) {
 		// e4shop以下、最近の全E3
-		Me3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e4shop.e3records allObjects]];
-		[Me3lasts sortUsingDescriptors:sortArray];
+		RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e4shop.e3records allObjects]];
+		[RaE3lasts sortUsingDescriptors:sortArray];
 	}
 	else if (Re3edit.e5category) {
 		// e5category以下、最近の全E3
-		Me3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e5category.e3records allObjects]];
-		[Me3lasts sortUsingDescriptors:sortArray];
+		RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e5category.e3records allObjects]];
+		[RaE3lasts sortUsingDescriptors:sortArray];
 	}
 	else {
 		//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -285,11 +283,11 @@
 			exit(-1);  // Fail
 		}
 		[fetchRequest release];
-		Me3lasts = [[NSMutableArray alloc] initWithArray:arFetch];
+		RaE3lasts = [[NSMutableArray alloc] initWithArray:arFetch];
 	}
 	[sortArray release];
 	// 重要！Me3lastsには、新規追加されたRe3editが含まれているので、ここで除外する。
-	[Me3lasts removeObject:Re3edit];
+	[RaE3lasts removeObject:Re3edit];
 //	[Me3lasts removeObject:Me3editMask]; // Me3editMaskも含まれている場合があるので除外する
 
 	
@@ -365,9 +363,10 @@
 	e3new.e6parts		= nil;
 	MbE6paid = NO;	//[0.3] NO = 配下のE6にPAIDは1つも無い ⇒ 主要項目も修正可能
 	// Replace
-	[Re3edit release];
+	[e3new retain];		//先に確保！ Re3editの要素が含まれている可能性があるから。
+	[Re3edit release];	//それから解放
 	Re3edit = nil;
-	Re3edit = [e3new retain];  // retain 必須！ この後、deallocにてreleaseされますから。
+	Re3edit = e3new;  // retain済み。この後、deallocにてreleaseされますから。
 	// Args
 	//self.title = NSLocalizedString(@"Add Record", nil);
 	self.title = NSLocalizedString(@"CopyAdd Record", nil);
@@ -439,19 +438,19 @@
 				// Min under
 				MiIndexE3lasts = (-1);
 			}
-			else if ([Me3lasts count] <= MiIndexE3lasts + 1) {  // [Me3lasts count]-1 とするとエラー
+			else if ([RaE3lasts count] <= MiIndexE3lasts + 1) {  // [Me3lasts count]-1 とするとエラー
 				// Max over
-				MiIndexE3lasts = [Me3lasts count] - 1;
+				MiIndexE3lasts = [RaE3lasts count] - 1;
 				button.enabled = NO;
 			}
 			else {
 				MiIndexE3lasts++;
-				e3obj = [Me3lasts objectAtIndex:MiIndexE3lasts];
+				e3obj = [RaE3lasts objectAtIndex:MiIndexE3lasts];
 				// 対向の Tool Bar ボタンを有効にする
 				for (id obj in self.toolbarItems) {
 					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_RETURN) [obj setEnabled:YES];
 				}
-				if ([Me3lasts count] <= MiIndexE3lasts + 1) {  // さらに前回でオーバーするならばボタン無効にする
+				if ([RaE3lasts count] <= MiIndexE3lasts + 1) {  // さらに前回でオーバーするならばボタン無効にする
 					// Max
 					button.enabled = NO;
 				}
@@ -464,13 +463,13 @@
 				MiIndexE3lasts = (-1);
 				button.enabled = NO;
 			}
-			else if ([Me3lasts count] <= MiIndexE3lasts) {
+			else if ([RaE3lasts count] <= MiIndexE3lasts) {
 				// Max over
-				MiIndexE3lasts = [Me3lasts count] - 1;
+				MiIndexE3lasts = [RaE3lasts count] - 1;
 			}
 			else {
 				MiIndexE3lasts--;
-				e3obj = [Me3lasts objectAtIndex:MiIndexE3lasts];
+				e3obj = [RaE3lasts objectAtIndex:MiIndexE3lasts];
 				// 対向の Tool Bar ボタンを有効にする
 				for (id obj in self.toolbarItems) {
 					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_PAST) [obj setEnabled:YES];
@@ -590,7 +589,7 @@
 	//[self.view.window addSubview:McalcView]; NG
 	//[self.tableView   addSubview:McalcView]; NG
 	[self.view addSubview:McalcView];
-	McalcView.AparentTableView = self.tableView;
+	McalcView.PoParentTableView = self.tableView;
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
 }
@@ -957,7 +956,7 @@
 				[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
 				// 左ボタン ------------------------------------------------------------------
 				
-				E6part *e6obj = [Me6parts objectAtIndex:indexPath.row];
+				E6part *e6obj = [RaE6parts objectAtIndex:indexPath.row];
 				
 				if (e6obj.e2invoice.e7payment.e0paid) {
 					cell.imageView.image = [UIImage imageNamed:@"Paid32.png"]; // PAID 変更禁止
@@ -1013,9 +1012,9 @@
 	NSInteger iSec = button.tag / GD_SECTION_TIMES;
 	if (iSec != 2) return;
 	NSInteger iRow = button.tag - (iSec * GD_SECTION_TIMES);
-	if (iRow < 0 OR [Me6parts count] <= iRow) return;
+	if (iRow < 0 OR [RaE6parts count] <= iRow) return;
 	
-	E6part *e6obj = [Me6parts objectAtIndex:iRow];
+	E6part *e6obj = [RaE6parts objectAtIndex:iRow];
 	// E6 Check
 	if (0 < [e6obj.nNoCheck intValue]) {
 		[EntityRelation e6check:YES inE6obj:e6obj inAlert:YES];

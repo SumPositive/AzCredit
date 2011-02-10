@@ -12,6 +12,7 @@
 
 @interface E8bankDetailTVC : UITableViewController 
 {
+@private
 	//----------------------------------------------retain
 	E8bank		*Re8edit;
 	//----------------------------------------------assign
@@ -19,9 +20,8 @@
 	BOOL		PbSave;		//
 	E1card		*Pe1edit;	// =nil:マスタモード  !=nil:選択モード
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields

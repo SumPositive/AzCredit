@@ -29,11 +29,11 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[Me7list release];
+	[RaE7list release];
 	
 	// @property (retain)
 	[Re0root release];
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -53,7 +53,7 @@ static UIColor *MpColorBlue(float percent) {
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
 	return self;
@@ -67,12 +67,9 @@ static UIColor *MpColorBlue(float percent) {
 	// なし
 
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];		
-
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -97,9 +94,9 @@ static UIColor *MpColorBlue(float percent) {
 
 
 	// Me7list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
-	if (Me7list != nil) {
-		[Me7list release];
-		Me7list = nil;
+	if (RaE7list != nil) {
+		[RaE7list release];
+		RaE7list = nil;
 	}
 	
 	//[0.3]E7E2クリーンアップ
@@ -113,13 +110,13 @@ static UIColor *MpColorBlue(float percent) {
 	// E7支払済
 	muE7tmp = [[NSMutableArray alloc] initWithArray:[Re0root.e7paids allObjects]];
 	[muE7tmp sortUsingDescriptors:sortArray];
-	Me7list = [[NSMutableArray alloc] initWithObjects:muE7tmp,nil]; // 一次元追加
+	RaE7list = [[NSMutableArray alloc] initWithObjects:muE7tmp,nil]; // 一次元追加
 	[muE7tmp release];
 
 	// E7未払い
 	muE7tmp = [[NSMutableArray alloc] initWithArray:[Re0root.e7unpaids allObjects]];
 	[muE7tmp sortUsingDescriptors:sortArray];
-	[Me7list addObject:muE7tmp];	// 二次元追加
+	[RaE7list addObject:muE7tmp];	// 二次元追加
 	[muE7tmp release];
 	[sortArray release];
 	[sort1 release];
@@ -127,7 +124,7 @@ static UIColor *MpColorBlue(float percent) {
 	// テーブルビューを更新します。
     [self.tableView reloadData];
 
-	if (MbFirstAppear && 2 <= [Me7list count] && 1 <= [[Me7list objectAtIndex:1] count]) {
+	if (MbFirstAppear && 2 <= [RaE7list count] && 1 <= [[RaE7list objectAtIndex:1] count]) {
 		MbFirstAppear = NO;
 		// 未払いの先頭を画面中央に表示する
 		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
@@ -180,7 +177,7 @@ static UIColor *MpColorBlue(float percent) {
 	// Comback (-1)にして未選択状態にする
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// (0)TopMenu >> (1)This clear
-	[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 }
 
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -192,15 +189,15 @@ static UIColor *MpColorBlue(float percent) {
 	NSInteger lSec = lRow / GD_SECTION_TIMES;
 	lRow -= (lSec * GD_SECTION_TIMES);
 
-	if ([Me7list count] <= lSec) return; // section OVER
-	if ([[Me7list objectAtIndex:lSec] count] <= lRow) return; // row OVER（Addや削除されたとか）
+	if ([RaE7list count] <= lSec) return; // section OVER
+	if ([[RaE7list objectAtIndex:lSec] count] <= lRow) return; // row OVER（Addや削除されたとか）
 
 	// 選択行を画面中央付近に表示する
 	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
 	[self.tableView scrollToRowAtIndexPath:indexPath 
 						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 
-	E7payment *e7obj = [[Me7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	// (0)TopMenu >> (1)E1card >> (2)This >> (3)E6partTVC へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	tvc.title = GstringYearMMDD( [e7obj.nYearMMDD integerValue] );
@@ -217,14 +214,14 @@ static UIColor *MpColorBlue(float percent) {
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [Me7list count];  // Me7listは、(0)e2paids (1)e2unpaids の二次元配列
+	return [RaE7list count];  // Me7listは、(0)e2paids (1)e2unpaids の二次元配列
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[Me7list objectAtIndex:section] count];
+	return [[RaE7list objectAtIndex:section] count];
 }
 
 // TableView セクション名を応答
@@ -360,7 +357,7 @@ static UIImage* GimageFromString(NSString* str)
 	[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
 	// 左ボタン ------------------------------------------------------------------
 	
-	E7payment *e7obj = [[Me7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 
 	// 支払日
 	if (e7obj.e0paid) {
@@ -429,11 +426,11 @@ static UIImage* GimageFromString(NSString* str)
 	if (button.tag < 0) return;
 	
 	NSInteger iSec = button.tag / GD_SECTION_TIMES;
-	if ([Me7list count] <= iSec) return;
+	if ([RaE7list count] <= iSec) return;
 	NSInteger iRow = button.tag - (iSec * GD_SECTION_TIMES);
-	if ([[Me7list objectAtIndex:iSec] count] <= iRow) return;
+	if ([[RaE7list objectAtIndex:iSec] count] <= iRow) return;
 
-	Me7cellButton = [[Me7list objectAtIndex:iSec] objectAtIndex:iRow];
+	Me7cellButton = [[RaE7list objectAtIndex:iSec] objectAtIndex:iRow];
 	
 	if (Me7cellButton.e0paid) {
 		// E2 PAID -->> PAYに戻す
@@ -557,10 +554,10 @@ static UIImage* GimageFromString(NSString* str)
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 	// (0)TopMenu >> (1)This >> (2)Clear
-	[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-	[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 
-	E7payment *e7obj = [[Me7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	// (0)TopMenu >> (1)E7payment >> (2)E6part(CardMixMode) へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	tvc.Pe7select = e7obj;	// カード別明細一覧（支払日の変更はできない）

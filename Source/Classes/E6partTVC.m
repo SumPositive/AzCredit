@@ -28,10 +28,10 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[Me2invoices release];
-	[Me6parts release];
+	[RaE2invoices release];
+	[RaE6parts release];
 	// @property (retain)
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -41,7 +41,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		MiForTheFirstSection = (-1);  // viewWillAppearにてMe2invoices Reload時にセット
 		Me2e1card = nil;
 		Me7e0root = nil;
@@ -83,18 +83,18 @@
 
 	//----------------------------------------------------------------------------CoreData Loading
 	//---------------------------------Me2invoices 生成
-	if (Me2invoices) {
-		[Me2invoices release];
-		Me2invoices = nil;
+	if (RaE2invoices) {
+		[RaE2invoices release];
+		RaE2invoices = nil;
 	}
-	Me2invoices = [[NSMutableArray alloc] init];
+	RaE2invoices = [[NSMutableArray alloc] init];
 	
 	//---------------------------------Me6parts 生成
-	if (Me6parts != nil) {
-		[Me6parts release];
-		Me6parts = nil;
+	if (RaE6parts != nil) {
+		[RaE6parts release];
+		RaE6parts = nil;
 	}
-	Me6parts = [[NSMutableArray alloc] init];
+	RaE6parts = [[NSMutableArray alloc] init];
 
 	//[0.3]E7E2クリーンアップ
 	//禁止 [EntityRelation e7e2clean] ここではまだ削除してはダメ！上層に戻ってから。
@@ -119,7 +119,7 @@
 				break;
 			}
 		}
-		if ([Me2invoices count] <= 0) {
+		if ([RaE2invoices count] <= 0) {
 			for (E7payment *e7 in Me7e0root.e7paids) {
 				if (Pe7select == e7) {
 					bAlive = YES; // Pe7selectは、e7paids に存在する
@@ -130,7 +130,7 @@
 		// ここでようやく Pe7select が有効ならば、配下のE2を抽出している
 		if (bAlive) { // Pe7select が存在（有効）であるとき
 			// E7配下のE2
-			[Me2invoices setArray:[Pe7select.e2invoices allObjects]];
+			[RaE2invoices setArray:[Pe7select.e2invoices allObjects]];
 			// E2.e1card.nRow 昇順ソート
 			NSSortDescriptor *sort1;
 			if (Pe7select.e0paid) {
@@ -139,7 +139,7 @@
 				sort1 = [[NSSortDescriptor alloc] initWithKey:@"e1unpaid.nRow" ascending:YES];
 			}
 			NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
-			[Me2invoices sortUsingDescriptors:sortArray];
+			[RaE2invoices sortUsingDescriptors:sortArray];
 			[sortArray release];
 			[sort1 release];
 		}
@@ -164,7 +164,7 @@
 				break;
 			}
 		}
-		if (bAlive==NO && [Me2invoices count] <= 0) {
+		if (bAlive==NO && [RaE2invoices count] <= 0) {
 			for (E2invoice *e2 in Me2e1card.e2paids) {
 				if (Pe2select == e2) {
 					bAlive = YES; // Pe2selectは、e2paids に存在する
@@ -175,7 +175,7 @@
 		// ここでようやく Pe2select が有効ならば、E2を抽出している
 		if (bAlive) { // Pe2select が存在（有効）であるとき
 			if (Pe2select.e1paid) {
-				[Me2invoices addObject:Pe2select];
+				[RaE2invoices addObject:Pe2select];
 			}
 			else if (Pe2select.e1unpaid) {
 				{	// E6一覧の編集モードで移動により支払日を変更できるようにするため。
@@ -190,11 +190,11 @@
 					// 最終的に未使用のE2は、viewWillDisappear:にて削除している。
 				}
 				// E1配下のE2
-				[Me2invoices setArray:[Pe2select.e1unpaid.e2unpaids allObjects]];
+				[RaE2invoices setArray:[Pe2select.e1unpaid.e2unpaids allObjects]];
 				// E2.nYearMMDD 昇順ソート
 				NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
 				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
-				[Me2invoices sortUsingDescriptors:sortArray];
+				[RaE2invoices sortUsingDescriptors:sortArray];
 				[sortArray release];
 				[sort1 release];
 			}
@@ -208,9 +208,9 @@
 	else if (Pe2invoices) {  // E8bank追加により新設
 		// 注意！E6削除の結果、その親E2も削除されたとき、Pe2invoicesには「その親E2」(根無し）が残っている！
 		// [0.3]この解決のため、e3delete処理では、E2を削除しないようにした。
-		[Me2invoices setArray:[Pe2invoices allObjects]];
-		if (2 <= [Me2invoices count]) {
-			E2invoice *e2 = [Me2invoices objectAtIndex:0];
+		[RaE2invoices setArray:[Pe2invoices allObjects]];
+		if (2 <= [RaE2invoices count]) {
+			E2invoice *e2 = [RaE2invoices objectAtIndex:0];
 			// E2.e1card.nRow 昇順ソート
 			NSSortDescriptor *sort1;
 			if (e2.e1paid) {
@@ -220,7 +220,7 @@
 			}
 			NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 			[sort1 release];
-			[Me2invoices sortUsingDescriptors:sortArray];
+			[RaE2invoices sortUsingDescriptors:sortArray];
 			[sortArray release];
 		}
 	}
@@ -230,16 +230,16 @@
 	}
 
 	
-	if (0 < [Me2invoices count]) {
+	if (0 < [RaE2invoices count]) {
 		// E6.e3record.dateUse 昇順ソート
 		NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"e3record.dateUse" ascending:YES];
 		NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 		// muE2list配下の全E6抽出＆ソート
-		for (E2invoice *e2 in Me2invoices) {
+		for (E2invoice *e2 in RaE2invoices) {
 			//assert(0 < [e2.e6parts count]) ！選択月の前後月も表示するため0行の場合がある。
 			NSMutableArray *e6arry = [[NSMutableArray alloc] initWithArray:[e2.e6parts allObjects]];
 			[e6arry sortUsingDescriptors:sortArray];
-			[Me6parts addObject:e6arry]; [e6arry release];
+			[RaE6parts addObject:e6arry]; [e6arry release];
 		}
 		[sortArray release];
 		[sort1 release];
@@ -255,10 +255,10 @@
     [self.tableView reloadData];
 	
 	// 指定位置までテーブルビューの行をスクロールさせる初期処理　＜＜レコードセット後でなければならないので、この位置になった＞＞
-	if (MbFirstOne && Pe2select && 1 < [Me2invoices count]) {
+	if (MbFirstOne && Pe2select && 1 < [RaE2invoices count]) {
 		MbFirstOne = NO; // 最初に1度だけ通すため  (initWithStyle:にてYESに初期化している）
 		NSInteger iSec = 0;
-		for (E2invoice *e2 in Me2invoices) {
+		for (E2invoice *e2 in RaE2invoices) {
 			if (e2 == Pe2select) break;
 			iSec++;
 		}
@@ -306,13 +306,13 @@
 	// PiMode: (0)E1<E2<E6:同カードの支払日違い  (1)E7<E2<E6:同支払日のカード違い
 	if (Pe2select) {
 		// (0)TopMenu >> (1)E1card >> (2)E2invoice >> (3)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
 	} else {
 		// (0)TopMenu >> (1)E7payment >> (2)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 	}
 	
-	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < [Me6parts count]) {
+	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < [RaE6parts count]) {
 		// 選択行を画面中央付近に表示する
 		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:PiFirstSection];
 		[self.tableView scrollToRowAtIndexPath:indexPath 
@@ -320,7 +320,7 @@
 		MiForTheFirstSection = (-2);  // 最初一度だけ通り、二度と通らないようにするため
 	}
 
-	if ([Me2invoices count] <= 0) {
+	if ([RaE2invoices count] <= 0) {
 		// 最終的にE2が無い場合、前画面に戻る。　　E3にて利用日を変更した場合などに発生する可能性あり
 		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		return;
@@ -336,15 +336,15 @@
 	NSInteger lSec = lRow / GD_SECTION_TIMES;
 	lRow -= (lSec * GD_SECTION_TIMES);
 
-	if ([Me6parts count] <= lSec) return; // section OVER
-	if ([[Me6parts objectAtIndex:lSec] count] <= lRow) return; // row OVER（Addや削除されたとか）
+	if ([RaE6parts count] <= lSec) return; // section OVER
+	if ([[RaE6parts objectAtIndex:lSec] count] <= lRow) return; // row OVER（Addや削除されたとか）
 	
 	// 選択行を画面中央付近に表示する
 	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
 	[self.tableView scrollToRowAtIndexPath:indexPath 
 						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	
-	E6part *e6obj = [[Me6parts objectAtIndex:lSec] objectAtIndex:lRow];
+	E6part *e6obj = [[RaE6parts objectAtIndex:lSec] objectAtIndex:lRow];
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
 	e3detail.title = self.title;
@@ -376,18 +376,18 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [Me6parts count];  // Me6partsは、[E2invoices]×[E3records] の二次元配列
+	return [RaE6parts count];  // Me6partsは、[E2invoices]×[E3records] の二次元配列
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	E2invoice *e2obj = [Me2invoices objectAtIndex:section];
+	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
 	if (e2obj.e1paid) {
-		return [[Me6parts objectAtIndex:section] count]; // PAIDにつきAdd行なし
+		return [[RaE6parts objectAtIndex:section] count]; // PAIDにつきAdd行なし
 	} else {
-		return [[Me6parts objectAtIndex:section] count] + 1; // +1:Add行
+		return [[RaE6parts objectAtIndex:section] count] + 1; // +1:Add行
 	}
 }
 
@@ -395,7 +395,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
 	//E6part *e6obj = [[Me6parts objectAtIndex:section] objectAtIndex:0]; ＜＜E6が空の場合がある＞＞
-	E2invoice *e2obj = [Me2invoices objectAtIndex:section];
+	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
 	
 	// JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -428,7 +428,7 @@
  // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if ([[Me6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
+	if ([[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
 		return 30; // Add Record
 	}
 	return 44; // デフォルト：44ピクセル
@@ -443,7 +443,7 @@
 	UITableViewCell *cell = nil;
 	UILabel *cellLabel = nil;
 	
-	if (indexPath.row < [[Me6parts objectAtIndex:indexPath.section] count]) 
+	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellE6part];
 		if (cell == nil) {
@@ -483,7 +483,7 @@
 		[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
 		// 左ボタン ------------------------------------------------------------------
 		
-		E6part *e6obj = [[Me6parts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		E6part *e6obj = [[RaE6parts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		E3record *e3obj = e6obj.e3record;
 		
 		if (e6obj.e2invoice.e7payment.e0paid) {
@@ -562,7 +562,7 @@
 	NSInteger iSec = button.tag / GD_SECTION_TIMES;
 	NSInteger iRow = button.tag - (iSec * GD_SECTION_TIMES);
 	
-	E6part *e6obj = [[Me6parts objectAtIndex:iSec] objectAtIndex:iRow];
+	E6part *e6obj = [[RaE6parts objectAtIndex:iSec] objectAtIndex:iRow];
 	// E6 Check
 	if (0 < [e6obj.nNoCheck intValue]) {
 		[EntityRelation e6check:YES inE6obj:e6obj inAlert:YES];
@@ -579,7 +579,7 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	if (Pe2select) {
-		if (indexPath.row < [[Me6parts objectAtIndex:indexPath.section] count]) {
+		if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) {
 			return UITableViewCellEditingStyleNone;  //Delete;
 		}
 		return UITableViewCellEditingStyleInsert;
@@ -592,19 +592,19 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
-	if (indexPath.row < [[Me6parts objectAtIndex:indexPath.section] count]) 
+	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
 	{
 		// Comback 記録
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 		if (Pe2select) {
 			// (0)TopMenu >> (1)E1card >> (2)E2invoice >> (3)This >> (4)Clear
-			[appDelegate.comebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:4 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:4 withObject:[NSNumber numberWithLong:-1]];
 		} else {
 			// (0)TopMenu >> (1)E7payment >> (2)This >> (3)Clear
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
 		}
 	}
 	// E3詳細画面へ
@@ -616,9 +616,9 @@
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
 	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
-	if (indexPath.row < [[Me6parts objectAtIndex:indexPath.section] count]) 
+	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
 	{
-		E6part *e6obj = [[Me6parts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		E6part *e6obj = [[RaE6parts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		// Edit Item
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
 		e3detail.Re3edit = e6obj.e3record;
@@ -631,12 +631,13 @@
 														   inManagedObjectContext:appDelegate.managedObjectContext];
 		//E6part *e6obj = [[Me6parts objectAtIndex:indexPath.section] objectAtIndex:0];
 		//E6が無い場合あり、E2だけでも処理可能にする
-		E2invoice *e2obj = [Me2invoices objectAtIndex:indexPath.section];
+		E2invoice *e2obj = [RaE2invoices objectAtIndex:indexPath.section];
 		if (e2obj.e1paid) {
 			e3obj.e1card = e2obj.e1paid;
 		} else if (e2obj.e1unpaid) {
 			e3obj.e1card = e2obj.e1unpaid;
 		} else {
+			[e3detail release];
 			AzLOG(@"LOGIC ERR: e2obj-->E1 Nothing");
 			return;
 		}
@@ -711,7 +712,7 @@
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if ([[Me6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
+	if ([[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
 		return NO;  // Add行
 	}
 	return YES;  // Add行なしにつき、すべて移動可能
@@ -729,7 +730,7 @@
 			OR (oldPath.section == newPath.section && oldPath.row < newPath.row)) {
 		// 繰り越し移動
 		NSInteger iSec = oldPath.section + 1;
-		if (iSec < [Me6parts count]) {
+		if (iSec < [RaE6parts count]) {
 			return [NSIndexPath indexPathForRow:0 inSection:iSec]; // 翌月
 		}
 	}
@@ -737,7 +738,7 @@
 		// 前月へ移動
 		NSInteger iSec = oldPath.section - 1;
 		if (0 <= iSec) {
-			NSInteger iRow = [[Me6parts objectAtIndex:iSec] count];  // 移動可能な行数==>末尾になる
+			NSInteger iRow = [[RaE6parts objectAtIndex:iSec] count];  // 移動可能な行数==>末尾になる
 			return [NSIndexPath indexPathForRow:iRow inSection:iSec]; // 前月
 		}
 	}
@@ -764,13 +765,13 @@
 {
 	// セクションを跨いだ移動に対応
 	//--------------------------------------------------(1)MutableArrayの移動
-	E6part *e6obj = [[Me6parts objectAtIndex:oldPath.section] objectAtIndex:oldPath.row];
+	E6part *e6obj = [[RaE6parts objectAtIndex:oldPath.section] objectAtIndex:oldPath.row];
 	// 移動元から削除
-	[[Me6parts objectAtIndex:oldPath.section] removeObjectAtIndex:oldPath.row];
+	[[RaE6parts objectAtIndex:oldPath.section] removeObjectAtIndex:oldPath.row];
 	// 移動先へ挿入　＜＜newPathは、targetIndexPathForMoveFromRowAtIndexPath にて[Gray]行の回避処理した行である＞＞
-	[[Me6parts objectAtIndex:newPath.section] insertObject:e6obj atIndex:newPath.row];
+	[[RaE6parts objectAtIndex:newPath.section] insertObject:e6obj atIndex:newPath.row];
 	// E2-E3 リンク更新
-	e6obj.e2invoice = [Me2invoices objectAtIndex:newPath.section];
+	e6obj.e2invoice = [RaE2invoices objectAtIndex:newPath.section];
 	
 	//---------------------------------------------------------------
 	// E6には.nRow は無いので、セクション(E2支払)間移動のために実装した。
@@ -779,14 +780,14 @@
 	//-----------------------------------E2セクション間移動のとき、新旧sum項目の再集計
 	if (oldPath.section != newPath.section) {
 		// 旧 E2,E7 sum 更新
-		E2invoice *e2obj = [Me2invoices objectAtIndex:oldPath.section];
+		E2invoice *e2obj = [RaE2invoices objectAtIndex:oldPath.section];
 		e2obj.sumNoCheck = [e2obj valueForKeyPath:@"e6parts.@sum.nNoCheck"];
 		e2obj.sumAmount = [e2obj valueForKeyPath:@"e6parts.@sum.nAmount"];
 		E7payment *e7obj = e2obj.e7payment;
 		e7obj.sumNoCheck = [e7obj valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
 		e7obj.sumAmount = [e7obj valueForKeyPath:@"e2invoices.@sum.sumAmount"];
 		// 新 E2,E7 sum 更新
-		e2obj = [Me2invoices objectAtIndex:newPath.section];
+		e2obj = [RaE2invoices objectAtIndex:newPath.section];
 		e2obj.sumNoCheck = [e2obj valueForKeyPath:@"e6parts.@sum.nNoCheck"];
 		e2obj.sumAmount = [e2obj valueForKeyPath:@"e6parts.@sum.nAmount"];
 		e7obj = e2obj.e7payment;

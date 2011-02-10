@@ -34,7 +34,7 @@
 	//--------------------------------@property (retain)
 	[Re8edit release];
 
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -44,7 +44,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		Pe1edit = nil;
   	}
 	return self;
@@ -58,12 +58,9 @@
 	MlbNote = nil;		// cellForRowAtIndexPathにて生成
 
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];		
-
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]

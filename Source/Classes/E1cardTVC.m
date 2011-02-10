@@ -29,14 +29,14 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	AzRETAIN_CHECK(@"E1cardTVC Me1cards", Me1cards, 0)
-	[Me1cards release];
+	AzRETAIN_CHECK(@"E1cardTVC RaE1cards", RaE1cards, 0)
+	[RaE1cards release];
 	
 	// @property (retain)
 	AzRETAIN_CHECK(@"E1cardTVC Re0root", Re0root, 0)
 	[Re0root release];
 	[Re3edit release];
-	[MautoreleasePool release];
+	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -47,7 +47,7 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -61,11 +61,9 @@
 	MbuAdd = nil;	// ここ(loadView)で生成
 	
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	if (Re3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -155,9 +153,9 @@
 	
 	// Me1cards Requery. 
 	//--------------------------------------------------------------------------------
-	if (Me1cards != nil) {
-		[Me1cards release];
-		Me1cards = nil;
+	if (RaE1cards != nil) {
+		[RaE1cards release];
+		RaE1cards = nil;
 	}
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E1card" 
@@ -178,7 +176,7 @@
 	}
 	[fetchRequest release];
 	//
-	Me1cards = [[NSMutableArray alloc] initWithArray:arFetch];
+	RaE1cards = [[NSMutableArray alloc] initWithArray:arFetch];
 
 	// TableView Reflesh
 	[self.tableView reloadData];
@@ -201,7 +199,7 @@
 	if (Re3edit == nil) {
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
-		[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
 
@@ -216,10 +214,10 @@
 	if (1 <= lSec) return; // 無効セクション
 	
 	lRow -= (lSec * GD_SECTION_TIMES);
-	if ([Me1cards count] <= lRow) return; // 無効セル（削除されたとか）
+	if ([RaE1cards count] <= lRow) return; // 無効セル（削除されたとか）
 
 	// E2invoice へ
-	E1card *e1obj = [Me1cards objectAtIndex:lRow];
+	E1card *e1obj = [RaE1cards objectAtIndex:lRow];
 	E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
 	tvc.title = e1obj.zName;
 	tvc.Re1select = e1obj;
@@ -248,13 +246,16 @@
 														inManagedObjectContext:Re0root.managedObjectContext];
 		// Add
 		e1detail.title = NSLocalizedString(@"Add Card",nil);
-		e1detail.PiAddRow = [Me1cards count]; // 追加モード
+		e1detail.PiAddRow = [RaE1cards count]; // 追加モード
 		e1detail.Re1edit = e1obj;
 	} else {
-		if ([Me1cards count] <= indexPath.row) return;  // Addボタン行などの場合パスする
+		if ([RaE1cards count] <= indexPath.row) {
+			[e1detail release];
+			return;  // Addボタン行などの場合パスする
+		}
 		e1detail.title = NSLocalizedString(@"Edit Card",nil);
 		e1detail.PiAddRow = (-1); // 修正モード
-		e1detail.Re1edit = [Me1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
 	
 	e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
@@ -269,19 +270,19 @@
 	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_CARD && buttonIndex == 0) {
 		//========== E1 削除実行 ==========
 		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E1card *e1objDelete = [Me1cards objectAtIndex:MindexPathActionDelete.row];
+		E1card *e1objDelete = [RaE1cards objectAtIndex:MindexPathActionDelete.row];
 		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
 		[EntityRelation e1delete:e1objDelete];
 		// 削除行の次の行以下 E1.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [Me1cards count] ; i++) 
+		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE1cards count] ; i++) 
 		{  // .nRow + 1 削除行の次から
-			E1card *e1obj = [Me1cards objectAtIndex:i];
+			E1card *e1obj = [RaE1cards objectAtIndex:i];
 			e1obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
 		}
 		// Commit
 		[EntityRelation commit];
 		// 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
-		[Me1cards removeObjectAtIndex:MindexPathActionDelete.row];
+		[RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
 		[self.tableView reloadData];
 	}
 }
@@ -297,9 +298,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	if (MbuAdd.enabled) {
-		return [Me1cards count] + 1; // (+1)Add
+		return [RaE1cards count] + 1; // (+1)Add
 	}
-	return [Me1cards count]; 
+	return [RaE1cards count]; 
 }
 
 /*
@@ -356,7 +357,7 @@ static UIImage* GimageFromString(NSString* str)
 	static NSString *zCellAdd = @"CellAdd";
     UITableViewCell *cell = nil;
 
-	NSInteger rows = [Me1cards count] - indexPath.row;
+	NSInteger rows = [RaE1cards count] - indexPath.row;
 	if (0 < rows) {
 		// E1card セル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellCard];
@@ -374,7 +375,7 @@ static UIImage* GimageFromString(NSString* str)
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 		}
 		
-		E1card *e1obj = [Me1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
+		E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 		
 #ifdef AzDEBUG
 		if ([e1obj.zName length] <= 0) 
@@ -441,7 +442,7 @@ static UIImage* GimageFromString(NSString* str)
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	NSInteger rows = [Me1cards count] - indexPath.row;
+	NSInteger rows = [RaE1cards count] - indexPath.row;
 	if (0 < rows) {
 		return UITableViewCellEditingStyleDelete;
     }
@@ -455,10 +456,10 @@ static UIImage* GimageFromString(NSString* str)
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 
-	if (indexPath.row < [Me1cards count]) {
+	if (indexPath.row < [RaE1cards count]) {
 		if (Re3edit) {
 			// 選択モード
-			Re3edit.e1card = [Me1cards objectAtIndex:indexPath.row]; 
+			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		}
 		else if (self.editing) {
@@ -469,11 +470,11 @@ static UIImage* GimageFromString(NSString* str)
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This
-			[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.comebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 			
 			// E2invoice へ
-			E1card *e1obj = [Me1cards objectAtIndex:indexPath.row];
+			E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
 			tvc.title = e1obj.zName;
 			tvc.Re1select = e1obj;
@@ -545,7 +546,7 @@ static UIImage* GimageFromString(NSString* str)
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if (indexPath.row < [Me1cards count]) return YES;
+	if (indexPath.row < [RaE1cards count]) return YES;
 	return NO;  // 最終行のAdd行は移動禁止
 }
 
@@ -554,7 +555,7 @@ static UIImage* GimageFromString(NSString* str)
 															toProposedIndexPath:(NSIndexPath *)newPath {
     NSIndexPath *target = newPath;
     // Add行が異動先になった場合、その1つ前の通常行を返すことにより、Add行への移動禁止となる。
-	NSInteger rows = [Me1cards count] - 1; // 移動可能な行数（Add行を除く）
+	NSInteger rows = [RaE1cards count] - 1; // 移動可能な行数（Add行を除く）
 	// セクション０限定仕様
 	if (newPath.section != 0 || rows < newPath.row  ) {
         target = [NSIndexPath indexPathForRow:rows inSection:0];
@@ -569,10 +570,10 @@ static UIImage* GimageFromString(NSString* str)
 	// この 属性"ascend"の値を行異動後に更新するための処理
 
 	// Re1cards 更新 ==>> なんと、managedObjectContextも更新される。 ただし、削除や挿入は反映されない！！！
-	E1card *e1obj = [Me1cards objectAtIndex:oldPath.row]; //[MfetchE1card objectAtIndexPath:oldPath];
+	E1card *e1obj = [RaE1cards objectAtIndex:oldPath.row]; //[MfetchE1card objectAtIndexPath:oldPath];
 
-	[Me1cards removeObjectAtIndex:oldPath.row];
-	[Me1cards insertObject:e1obj atIndex:newPath.row];
+	[RaE1cards removeObjectAtIndex:oldPath.row];
+	[RaE1cards insertObject:e1obj atIndex:newPath.row];
 	
 	NSInteger start = oldPath.row;
 	NSInteger end = newPath.row;
@@ -581,7 +582,7 @@ static UIImage* GimageFromString(NSString* str)
 		end = oldPath.row;
 	}
 	for (NSInteger i = start; i <= end; i++) {
-		e1obj = [Me1cards objectAtIndex:i];
+		e1obj = [RaE1cards objectAtIndex:i];
 		e1obj.nRow = [NSNumber numberWithInteger:i];
 	}
 	

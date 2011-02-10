@@ -29,12 +29,13 @@
 	if (![appDelegate.managedObjectContext  save:&err]) {
 		NSLog(@"MOC commit error %@, %@", err, [err userInfo]);
 		//exit(-1);  // Fail
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"MOC CommitErr",nil)
-														 message:NSLocalizedString(@"MOC CommitErrMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"MOC CommitErr",nil)
+														message:NSLocalizedString(@"MOC CommitErrMsg",nil)
+													   delegate:nil 
+												cancelButtonTitle:nil 
+												otherButtonTitles:@"OK", nil];
 		[alert show];
+		[alert release];
 		return;
 	}
 }
@@ -63,6 +64,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E6 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -82,6 +84,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E2 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -101,6 +104,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E3 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -118,6 +122,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E1 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -138,6 +143,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E4 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -151,6 +157,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E5 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -164,6 +171,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E4 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -177,6 +185,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E7 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -195,6 +204,7 @@
 	error = nil;
 	arFetch = [moc executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"allReset E0 Error: %@, %@", error, [error userInfo]);
 		return;
 	}
@@ -203,6 +213,7 @@
 		if (0 < [e0.e7paids count]) AzLOG(@"allReset: E0.e7paids NoClear");
 		if (0 < [e0.e7unpaids count]) AzLOG(@"allReset: E0.e7unpaids NoClear");
 	} else {
+		[fetchRequest release];
 		AzLOG(@"LOGIC ERR: E0root Nothing");
 		assert(NO);
 	}
@@ -227,6 +238,7 @@
 	NSArray *arFetch = [appDelegate.managedObjectContext
 						executeFetchRequest:fetchRequest error:&error]; // autorelease
 	if (error) {
+		[fetchRequest release];
 		AzLOG(@"Error: %@, %@", error, [error userInfo]);
 		return nil;
 	}
@@ -489,18 +501,6 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 					e7.sumNoCheck = [e7 valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
 				}
 			}
-	/*[0.3]	if (e7 && e7.e0paid) {	// E7.paids sum
-				for (E7payment *e7sum in e7.e0paid.e7paids) {
-					e7sum.sumAmount = [e7sum valueForKeyPath:@"e2invoices.@sum.sumAmount"];
-					e7sum.sumNoCheck = [e7sum valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
-				}
-			}
-			if (e7 && e7.e0unpaid) { // E7.unpaids sum
-				for (E7payment *e7sum in e7.e0unpaid.e7unpaids) {
-					e7sum.sumAmount = [e7sum valueForKeyPath:@"e2invoices.@sum.sumAmount"];
-					e7sum.sumNoCheck = [e7sum valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
-				}
-			} [0.3]*/
 		}
 		// E6 削除
 		e6.e2invoice = nil;
@@ -732,12 +732,13 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 	if (e6obj.e2invoice.e1paid) {
 		// 支払済につきチェック変更できません
 		if (bAlert) { // E3から一括処理されたときアラート表示しないため
-			UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NotNoCheck",nil) 
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NotNoCheck",nil) 
 															 message:NSLocalizedString(@"NotNoCheck msg",nil) 
 															delegate:nil 
 												   cancelButtonTitle:nil 
-												   otherButtonTitles:@"OK", nil] autorelease];
+												   otherButtonTitles:@"OK", nil];
 			[alert show];
+			[alert release];
 		}
 		return;
 	}

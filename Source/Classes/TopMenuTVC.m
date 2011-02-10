@@ -78,11 +78,9 @@
 	MiE1cardCount = 0;			// viewWillAppearにてセット
 	
 	// Set up NEXT Left [Back] buttons.
-	UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"simpleLeft-icon16.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
-	self.navigationItem.backBarButtonItem = backButtonItem;
-	[backButtonItem release];
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 #ifndef AzMAKE_SPLASHFACE
 	// Tool Bar Button
@@ -107,12 +105,13 @@
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 	
 	// iAd
-	MbannerIsVisible = NO;
+	//MbannerIsVisible = NO;
 	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
 		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectMake(0,480, 0,0)];
 		MbannerView.delegate = self;
-		MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, 
-													  ADBannerContentSizeIdentifier480x32, nil];
+		MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, 
+													  ADBannerContentSizeIdentifierLandscape, nil];
+		MbannerView.hidden = YES;
 		//[self.view addSubview:MbannerView];
 		[self.navigationController.view addSubview:MbannerView];
 		[MbannerView release];
@@ -148,18 +147,20 @@
 {
 	//AzLOG(@"=== iAdOn ===");
 	if (MbannerView==nil) return;
-	if (MbannerEnabled==NO OR MbannerIsVisible==YES) return;
-	MbannerIsVisible = YES;
+	//if (MbannerEnabled==NO OR MbannerIsVisible==YES) return;
+	//MbannerIsVisible = YES;
+	if (!MbannerEnabled OR !MbannerView.hidden) return;
+	MbannerView.hidden = NO;
 
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	[UIView setAnimationDuration:3.0];
 	
 	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) { // ヨコ
-		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
 		MbannerView.frame = CGRectMake(0, 320 - 32, 0,0);
 	} else {
-		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+		MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
 		MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
 	}
 	
@@ -170,8 +171,9 @@
 {
 	//AzLOG(@"=== iAdOff ===");
 	if (MbannerView==nil) return;
-	if (MbannerIsVisible==NO) return;
-	MbannerIsVisible = NO;
+	//if (MbannerIsVisible==NO) return;
+	//MbannerIsVisible = NO;
+	if (MbannerView.hidden) return;
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -180,6 +182,7 @@
 	CGRect theBannerFrame = self.view.frame;
 	theBannerFrame.origin.y = self.navigationController.view.frame.size.height; // viewの外へ出す
 	MbannerView.frame = theBannerFrame;	
+	MbannerView.hidden = YES;
 	
 	[UIView commitAnimations];
 }
@@ -213,12 +216,12 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
 {
-	if (MbannerView && MbannerIsVisible) {
+	if (MbannerView && !MbannerView.hidden) { //MbannerIsVisible) {
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) { // ヨコ
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
 			MbannerView.frame = CGRectMake(0, 320 - 32, 0,0);
 		} else {
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
 			MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
 		}
 	}
@@ -311,7 +314,7 @@
 	// Comback (-1)にして未選択状態にする
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// (0)This clear
-	[appDelegate.comebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:-1]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:-1]];
 }
 
 // カムバック処理（復帰再現）：AppDelegate から呼ばれる
@@ -630,8 +633,8 @@
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 	// (0)This >> (1)Clear
-	[appDelegate.comebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:lPos]];
-	[appDelegate.comebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:lPos]];
+	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
@@ -736,7 +739,7 @@
 					MbannerEnabled = NO;
 					//
 					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
-					vi.Re0root = Re0root;
+					vi.Pe0root = Re0root;
 					vi.tag = VIEW_TAG_HttpServer; // 表示中は回転禁止にするために参照している
 					[self.view addSubview:vi];
 					[vi show];
@@ -782,7 +785,8 @@
 	switch (alertView.tag) {
 		case ALERT_TAG_SupportSite:
 			if (buttonIndex == 1) { // OK
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/"]];
+				[[UIApplication sharedApplication] 
+				 openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/category/9034665-1.html"]];
 			}
 			break;
 	}

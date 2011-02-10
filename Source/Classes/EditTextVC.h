@@ -12,6 +12,7 @@
 
 @interface EditTextVC : UIViewController <UITextViewDelegate>
 {
+@private
 	//--------------------------retain
 	id			Rentity;
 	NSString	*RzKey;			// @"zName"
@@ -19,7 +20,6 @@
 	NSInteger	PiMaxLength;	// 最大文字数　==nil:無制限
 	NSInteger	PiSuffixLength; // 末尾の改行の数（UILabel複数行で上寄せするために入っている）
 
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UITextView	*MtextView; // self.viewがOwner

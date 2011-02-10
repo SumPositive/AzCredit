@@ -12,14 +12,14 @@
 
 @interface E7paymentTVC : UITableViewController 
 {
+@private
 	//----------------------------------------------retain
 	E0root				*Re0root;
 	//----------------------------------------------assign
 	
-@private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
-	NSMutableArray	*Me7list;
+	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
+	NSMutableArray		*RaE7list;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
