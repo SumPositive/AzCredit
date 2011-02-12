@@ -114,9 +114,9 @@
 	// テーブルソース セット
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE3list==nil || app.Me3dateUse) {
-		NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
-			[self setMe3list:app.Me3dateUse];
-		[autoPool release];
+		//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+		[self setMe3list:[app.Me3dateUse retain]]; [app.Me3dateUse release];
+		//0.5//[autoPool release];
 	}
 }
 
@@ -726,9 +726,9 @@
 	{	//「さらに前へ」
 		id datePrev = [[RaE3list objectAtIndex:0] objectAtIndex:0];
 		if (datePrev != [NSNull null]) {
-			NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
-				[self setMe3list:[datePrev retain]]; [datePrev release]; // retain必要
-			[autoPool release];
+			//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+			[self setMe3list:[datePrev retain]]; [datePrev release]; // retain必要
+			//0.5//[autoPool release];
 		}
 		return;
 	}
@@ -736,9 +736,9 @@
 	{	//「さらに次へ」
 		id dateNext = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:0];
 		if (dateNext != [NSNull null]) {
-			NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
-				[self setMe3list:[dateNext retain]]; [dateNext release]; // retain必要
-			[autoPool release];
+			//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+			[self setMe3list:[dateNext retain]]; [dateNext release]; // retain必要
+			//0.5//[autoPool release];
 		}
 		return;
 	}

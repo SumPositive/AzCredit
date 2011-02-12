@@ -100,9 +100,9 @@
 	// テーブルソース セット
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE6parts==nil || app.Me3dateUse) {  // 最初 または E3recordDetailTVCにてSAVEされたとき
-		NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
-			[self MtableSource];
-		[autoPool release];
+		//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+		[self MtableSource];
+		//0.5//[autoPool release];
 	}
 }
 

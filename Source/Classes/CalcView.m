@@ -599,7 +599,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	NSDecimalNumber *decAns = nil;
 
 	//-------------------------------------------------localPool BEGIN >>> @finaly release
-	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+	//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init]; autoreleaseは、イベント（タッチ）毎に解放されるので不要だ！
 	@try {
 		NSString *zTokn;
 		NSString *zz;
@@ -790,7 +790,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			//NSLog(@"**********1 decAns=%@", decAns);
 			decAns = [decAns decimalNumberByRoundingAccordingToBehavior:MbehaviorCalc]; // 計算結果の丸め処理
 			//NSLog(@"**********2 decAns=%@", decAns);
-			[decAns retain]; // localPool release されないように retain しておく。
+			//0.5//[decAns retain]; // localPool release されないように retain しておく。
 		}
 		else {
 			@throw @"zRpnCalc:ERROR: [maStack count] != 1";
@@ -805,7 +805,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		decAns = nil;
 	}
 	@finally {
-		[autoPool release];
+		//0.5//[autoPool release];
 		//-------------------------------------------------localPool END
 		[maRpn release];
 		[maStack release];
