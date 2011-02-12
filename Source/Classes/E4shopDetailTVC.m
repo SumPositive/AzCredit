@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E4shopDetailTVC.h"
 #import "EditTextVC.h"
 
@@ -64,12 +64,12 @@
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 											  target:self action:@selector(cancel:)] autorelease];
 	if (PbSave) {
-		// SAVEボタンを右側に追加する
+		// SAVE「保存」ボタンを右側に追加する
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
 												   target:self action:@selector(save:)] autorelease];
 	} else {
-		// DONEボタンを右側に追加する　＜＜E3recordDetailTVCから呼び出されたとき＞＞
+		// DONE「完了」ボタンを右側に追加する　＜＜E3recordDetailTVCから呼び出されたとき＞＞
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 												   target:self action:@selector(save:)] autorelease];
@@ -81,6 +81,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+	// 呼び出し側(親)にてツールバーを常に非表示にしているが、念のため
+	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -91,10 +93,9 @@
     [self.tableView reloadData];
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
+{	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -119,25 +120,6 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
-
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 
 #pragma mark Table view methods
@@ -284,19 +266,15 @@
 
 - (void)cancel:(id)sender 
 {
-	NSManagedObjectContext *contx = Re4edit.managedObjectContext;
+	if (PbSave) {
+		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	}
+
 	if (PbAdd) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[contx deleteObject:Re4edit];
+		[MocFunctions deleteEntity:Re4edit];
+	}
 
-		if (PbSave) {
-			// SAVE
-			[EntityRelation commit];
-		}
-	}
-	else if (PbSave) {
-		[contx rollback]; // 前回のSAVE以降を取り消す
-	}
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
@@ -309,12 +287,9 @@
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
 	NSString *zName = [Re4edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([zName length] <= 0) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E4zNameLess",nil)
-														 message:NSLocalizedString(@"E4zNameLessMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
-		[alert show];
+		alertBox(NSLocalizedString(@"E4zNameLess",nil),
+				 NSLocalizedString(@"E4zNameLessMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	// 重複が無いか調べる
@@ -331,12 +306,9 @@
 	NSInteger iCnt = 2;
 	if (PbAdd) iCnt = 1;
 	if (iCnt < [aRes count]) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E4zNameDups",nil)
-														 message:NSLocalizedString(@"E4zNameDupsMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
-		[alert show];
+		alertBox(NSLocalizedString(@"E4zNameDups",nil),
+				 NSLocalizedString(@"E4zNameDupsMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	// OK トリム済み＆重複なし
@@ -344,11 +316,7 @@
 	
 	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
 		// SAVE
-		//if (![contx save:&err]) {
-		//	NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-		//	abort();
-		//}
-		[EntityRelation commit];
+		[MocFunctions commit];
 	}
 
 	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理

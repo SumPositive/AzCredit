@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E1cardTVC.h"
 #import "E1cardDetailTVC.h"
 #import "E2invoiceTVC.h"
@@ -36,7 +36,6 @@
 	AzRETAIN_CHECK(@"E1cardTVC Re0root", Re0root, 0)
 	[Re0root release];
 	[Re3edit release];
-	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -47,7 +46,6 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -62,7 +60,7 @@
 	
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-									   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
+									   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"] // <<
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
 	if (Re3edit == nil) {
@@ -86,7 +84,7 @@
 		[buUntitled release];
 	}
 	else {
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
@@ -118,30 +116,17 @@
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-		return YES; // この方向だけは常に許可する
-	} 
-	else if (MbOptAntirotation) return NO; // 回転禁止
-	
-	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		// 逆面（ホームボタンが画面の上側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
-	}
-	return YES;
-	// 現在の向きは、self.interfaceOrientation で取得できる
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -188,21 +173,13 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// ホームボタンが画面の下側にある状態。通常
-		[self.navigationController setToolbarHidden:NO animated:NO]; // ツールバー表示する
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
-	}
-	
 	if (Re3edit == nil) {
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+	//	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
-
+/*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
 {
@@ -227,7 +204,7 @@
 	[tvc viewComeback:selectionArray];
 	[tvc release];
 }
-
+*/
 
 #pragma mark Local methods
 
@@ -272,7 +249,7 @@
 		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
 		E1card *e1objDelete = [RaE1cards objectAtIndex:MindexPathActionDelete.row];
 		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
-		[EntityRelation e1delete:e1objDelete];
+		[MocFunctions e1delete:e1objDelete];
 		// 削除行の次の行以下 E1.row 更新
 		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE1cards count] ; i++) 
 		{  // .nRow + 1 削除行の次から
@@ -280,7 +257,7 @@
 			e1obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
 		}
 		// Commit
-		[EntityRelation commit];
+		[MocFunctions commit];
 		// 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
 		[RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
 		[self.tableView reloadData];
@@ -391,18 +368,23 @@ static UIImage* GimageFromString(NSString* str)
 			cell.textLabel.text = e1obj.zName;
 #endif
 		// 金額
-		NSNumber *sumAmount = [e1obj valueForKeyPath:@"e2unpaids.@sum.sumAmount"];
-		if ([sumAmount integerValue] <= 0) {
-			cell.detailTextLabel.textColor = [UIColor blueColor];
-		} else {
+		//NSNumber *sumAmount = [e1obj valueForKeyPath:@"e2unpaids.@sum.sumAmount"];
+		NSDecimalNumber *sumAmount = [e1obj valueForKeyPath:@"e2unpaids.@sum.sumAmount"];
+		//if ([sumAmount integerValue] <= 0) 
+		if ([sumAmount compare:[NSDecimalNumber zero]] == NSOrderedDescending)	// sumAmount > 0
+		{
 			cell.detailTextLabel.textColor = [UIColor blackColor];
+		} else {
+			cell.detailTextLabel.textColor = [UIColor blueColor];
 		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		if ([e1obj.nPayDay intValue] < 1) {
+		[formatter setLocale:[NSLocale currentLocale]]; 
+		if ([e1obj.nClosingDay intValue] <= 0) {
 			// Debit
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"Debit %@",
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
+										 NSLocalizedString(@"Debit", nil),
 										 [formatter stringFromNumber:sumAmount]];
 		} else {
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
@@ -426,7 +408,7 @@ static UIImage* GimageFromString(NSString* str)
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
+		cell.imageView.image = [UIImage imageNamed:@"Icon32-Add.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO;
 		if (rows == 0) {
@@ -466,17 +448,21 @@ static UIImage* GimageFromString(NSString* str)
 			[self e1cardDatail:indexPath];
 		} 
 		else {
-			// Comback-L1 E1card 記録
+/*			// Comback-L1 E1card 記録
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This
 			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
 			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-			
+*/			
 			// E2invoice へ
 			E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
+#ifdef AzDEBUG
+			tvc.title = [NSString stringWithFormat:@"E2 %@", e1obj.zName];
+#else
 			tvc.title = e1obj.zName;
+#endif
 			tvc.Re1select = e1obj;
 			tvc.Re8select = nil;
 			[self.navigationController pushViewController:tvc animated:YES];

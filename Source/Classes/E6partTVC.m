@@ -9,13 +9,15 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E6partTVC.h"
 #import "E3recordDetailTVC.h"
+#import "AdMobView.h"
 
 #define ACTIONSEET_TAG_DELETE	199
 
 @interface E6partTVC (PrivateMethods)
+- (void)MtableSource;
 - (void)e3detailView:(NSIndexPath *)indexPath;
 - (void)cellButton: (UIButton *)button;
 @end
@@ -28,10 +30,16 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef GD_AdMob_ENABLED
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release];
+		//NG//RoAdMobView = nil; これすると cell更新あれば落ちる。cell側での破棄に任せる。
+	}
+#endif
 	[RaE2invoices release];
 	[RaE6parts release];
 	// @property (retain)
-	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -41,11 +49,13 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		MiForTheFirstSection = (-1);  // viewWillAppearにてMe2invoices Reload時にセット
+		RaE2invoices = nil;
+		RaE6parts = nil;
 		Me2e1card = nil;
 		Me7e0root = nil;
 		MbFirstOne = YES;
+		RoAdMobView = nil;
 	}
 	return self;
 }
@@ -60,28 +70,44 @@
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															   style:UIBarButtonItemStylePlain  //Bordered
 															  target:self action:@selector(barButtonTop)];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
 	[buTop release];
 	[buFlex release];
+
+#ifdef GD_AdMob_ENABLED
+	if (RoAdMobView==nil) {
+		RoAdMobView = [AdMobView requestAdWithDelegate:self];
+		[RoAdMobView retain];
+	}
+#endif
 }
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-	
-	//没 AzPackingのE3同様に、全E2セクション表示かつ全E3表示　＜没：E2支払済みが大量になる危険性および必要性が低く複雑になりすぎるため没＞
-	//以上から、Pe2selectの前後1ノード計3ノードだけで十分と判断した。
 
-	//----------------------------------------------------------------------------CoreData Loading
+	// テーブルソース セット
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (RaE6parts==nil || app.Me3dateUse) {  // 最初 または E3recordDetailTVCにてSAVEされたとき
+		NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+			[self MtableSource];
+		[autoPool release];
+	}
+}
+
+- (void)MtableSource
+{
 	//---------------------------------Me2invoices 生成
 	if (RaE2invoices) {
 		[RaE2invoices release];
@@ -179,14 +205,17 @@
 			}
 			else if (Pe2select.e1unpaid) {
 				{	// E6一覧の編集モードで移動により支払日を変更できるようにするため。
-					// 前月が無ければ追加する
+					// 選択日の前月が無ければ追加する
 					NSInteger iYearMMDD = GiAddYearMMDD([Pe2select.nYearMMDD integerValue], 0, -1, 0); // 前月へ
-					[EntityRelation e2invoice:Me2e1card inYearMMDD:iYearMMDD]; // E2無ければ追加する
+					[MocFunctions e2invoice:Me2e1card inYearMMDD:iYearMMDD]; // E2無ければ追加する
+				/*[0.4.18]直ぐにE2削除しないようにしたため、これで増え続けてしまう	
 					// E2最終のさらに翌月が無ければ追加する
 					iYearMMDD = [[Pe2select.e1unpaid valueForKeyPath:@"e2unpaids.@max.nYearMMDD"] integerValue];
-					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
-					[EntityRelation e2invoice:Me2e1card inYearMMDD:iYearMMDD]; // E2無ければ追加する
-					[EntityRelation commit]; //--------------SAVE
+					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ　*/
+					// 選択日の翌月が無ければ追加する
+					iYearMMDD = GiAddYearMMDD([Pe2select.nYearMMDD integerValue], 0, +1, 0); // 翌月へ
+					[MocFunctions e2invoice:Me2e1card inYearMMDD:iYearMMDD]; // E2無ければ追加する
+					[MocFunctions commit]; //--------------SAVE
 					// 最終的に未使用のE2は、viewWillDisappear:にて削除している。
 				}
 				// E1配下のE2
@@ -194,9 +223,9 @@
 				// E2.nYearMMDD 昇順ソート
 				NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
 				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+				[sort1 release];
 				[RaE2invoices sortUsingDescriptors:sortArray];
 				[sortArray release];
-				[sort1 release];
 			}
 			if (Pe2select.e1unpaid) {
 				// Unpaidならば [編集]モードＯＮ
@@ -208,6 +237,8 @@
 	else if (Pe2invoices) {  // E8bank追加により新設
 		// 注意！E6削除の結果、その親E2も削除されたとき、Pe2invoicesには「その親E2」(根無し）が残っている！
 		// [0.3]この解決のため、e3delete処理では、E2を削除しないようにした。
+		// [0.4.15]さらに e3makeE6 にて、E6再生成時にE2を削除しないようにした。
+		//NSLog(@"***Pe2invoices=%@", Pe2invoices);
 		[RaE2invoices setArray:[Pe2invoices allObjects]];
 		if (2 <= [RaE2invoices count]) {
 			E2invoice *e2 = [RaE2invoices objectAtIndex:0];
@@ -226,7 +257,7 @@
 	}
 	else {
 		AzLOG(@"LOGIC ERROR: Pe2select,Pe7select,Pe2invoices == nil");
-		exit(-1);  // Fail
+		return; // Fail
 	}
 
 	
@@ -234,15 +265,16 @@
 		// E6.e3record.dateUse 昇順ソート
 		NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"e3record.dateUse" ascending:YES];
 		NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+		[sort1 release];
 		// muE2list配下の全E6抽出＆ソート
+		//NSLog(@"***RaE2invoices=%@", RaE2invoices);
 		for (E2invoice *e2 in RaE2invoices) {
-			//assert(0 < [e2.e6parts count]) ！選択月の前後月も表示するため0行の場合がある。
+			// 選択月の前後月も表示するため0行の場合がある。
 			NSMutableArray *e6arry = [[NSMutableArray alloc] initWithArray:[e2.e6parts allObjects]];
 			[e6arry sortUsingDescriptors:sortArray];
 			[RaE6parts addObject:e6arry]; [e6arry release];
 		}
 		[sortArray release];
-		[sort1 release];
 	}
 /*	else {    ＜＜ここでpopすると早すぎて戻るボタンに不具合発生するため、viewDidAppear:で処理するように改めた。
 		// 最終的にE2が無い場合、前画面に戻る。　　E3にて利用日を変更した場合などに発生する可能性あり
@@ -272,20 +304,10 @@
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示する
-		return YES; // この方向だけは常に許可する
-	} 
-	else if (!MbOptAntirotation) {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
-	}
-	// 現在の向きは、self.interfaceOrientation で取得できる
-	return !MbOptAntirotation;
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -302,14 +324,14 @@
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 
 	// Comback (-1)にして未選択状態にする
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// PiMode: (0)E1<E2<E6:同カードの支払日違い  (1)E7<E2<E6:同支払日のカード違い
 	if (Pe2select) {
 		// (0)TopMenu >> (1)E1card >> (2)E2invoice >> (3)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
+//		[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
 	} else {
 		// (0)TopMenu >> (1)E7payment >> (2)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+//		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 	}
 	
 	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < [RaE6parts count]) {
@@ -320,13 +342,35 @@
 		MiForTheFirstSection = (-2);  // 最初一度だけ通り、二度と通らないようにするため
 	}
 
-	if ([RaE2invoices count] <= 0) {
-		// 最終的にE2が無い場合、前画面に戻る。　　E3にて利用日を変更した場合などに発生する可能性あり
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-		return;
+	//NSLog(@"***viewDidAppear:RaE2invoices=%@\n", RaE2invoices);
+	BOOL bPreview = YES;
+	for (E2invoice *e2 in RaE2invoices) {
+		if (0 < [e2.e6parts count]) {
+			bPreview = NO; // E6あり
+			break;
+		}
+	}
+	if (bPreview) {
+		// E2配下のE6なし、前画面に戻る。
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Payment changed",nil)
+														message:NSLocalizedString(@"Payment changed msg",nil)
+													   delegate:self 
+											  cancelButtonTitle:nil
+											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
+		[alert show];
+		[alert release];
+		//[self.navigationController popViewControllerAnimated:YES]; 	alertデリゲートにて、前のViewへ戻る
 	}
 }
 
+// アラートボタンが押されたときに呼び出される
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
+}
+
+
+/*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
 {
@@ -356,12 +400,16 @@
 	// 末尾につき viewComeback なし
 	[e3detail release];
 }
-
+*/
 // ビューが非表示にされる前や解放される前ににこの処理が呼ばれる。
 // 次(前)画面が表示される前に処理される。
 - (void)viewWillDisappear:(BOOL)animated 
 {
     [super viewWillDisappear:animated];
+	
+	
+/*[0.4.18]E3detailから Cancel で戻ったときに再読み込みしないようにしたため、ここでE2を削除すると落ちる場合あり。残しておくことにする。
+  [0.4.18]レス向上のためTopMenu:viewDidAppearにて[EntityRelation e7e2clean]している。
 	// E2(Unpaid)配下のE6が無ければ削除する。　　viewWillAppear:にて追加された前月と翌月のE2を削除するのが目的。
 	NSArray *aE2 = [NSArray arrayWithArray:[Me2e1card.e2unpaids allObjects]];
 	for (E2invoice *e2 in aE2) {
@@ -370,19 +418,30 @@
 		}
 	}
 	[EntityRelation commit]; //--------------SAVE----------MOVE結果もこれにて保存される
+ */
 }
 
 
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#ifdef GD_AdMob_ENABLED
+	return [RaE6parts count] + 1; // AdMob
+#else
 	return [RaE6parts count];  // Me6partsは、[E2invoices]×[E3records] の二次元配列
+#endif
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= section) {
+		return 1; // AdMob
+	}
+#endif
+
 	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
 	if (e2obj.e1paid) {
 		return [[RaE6parts objectAtIndex:section] count]; // PAIDにつきAdd行なし
@@ -394,15 +453,16 @@
 // TableView セクション名を応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	//E6part *e6obj = [[Me6parts objectAtIndex:section] objectAtIndex:0]; ＜＜E6が空の場合がある＞＞
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= section) {
+		return @"End"; // AdMob
+	}
+#endif
+
 	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
-	
-	// JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-	NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-	[formatter setLocale:localeJP];
-	[localeJP release];
+	[formatter setLocale:[NSLocale currentLocale]];
 	NSString *zSum = [formatter stringFromNumber:e2obj.sumAmount];
 	[formatter release];
 	
@@ -428,8 +488,14 @@
  // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= indexPath.section) {
+		return 48; // AdMob
+	}
+#endif
+
 	if ([[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
-		return 30; // Add Record
+		return 33; // Add Record
 	}
 	return 44; // デフォルト：44ピクセル
 }
@@ -443,6 +509,24 @@
 	UITableViewCell *cell = nil;
 	UILabel *cellLabel = nil;
 	
+#ifdef GD_AdMob_ENABLED
+    static NSString *zCellAdMob = @"CellAdMob";
+	if ([RaE6parts count] <= indexPath.section) {
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:zCellAdMob];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+										   reuseIdentifier:zCellAdMob] autorelease];
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.showsReorderControl = NO; // Move禁止
+			cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+			if (RoAdMobView) { // Request an AdMob ad for this table view cell
+				[cell.contentView addSubview:RoAdMobView];
+			}
+		}
+		return cell; // AdMob
+	}
+#endif
+
 	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellE6part];
@@ -487,15 +571,15 @@
 		E3record *e3obj = e6obj.e3record;
 		
 		if (e6obj.e2invoice.e7payment.e0paid) {
-			cell.imageView.image = [UIImage imageNamed:@"Paid32.png"]; // PAID 変更禁止
+			cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID.png"]; // PAID 変更禁止
 			cellButton.enabled = NO;
 		}
 		else if ([e6obj.nNoCheck intValue] == 1) {
-			cell.imageView.image = [UIImage imageNamed:@"Circle32.png"]; // No check
+			cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"]; // No check
 			cellButton.enabled = YES;
 		} 
 		else if ([e6obj.nNoCheck intValue] == 0) {
-			cell.imageView.image = [UIImage imageNamed:@"Circle32-check.png"]; // Checked
+			cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"]; // Checked
 			cellButton.enabled = YES;
 		} 
 		else {
@@ -517,22 +601,22 @@
 		// Cell 2行目    ＜＜E6ではカード名不要：セクションタイトルに表示されるため＞＞
 		NSString *zShop = @"";
 		NSString *zCategory = @"";
+		NSString *zRepeat = @"";
 		if (e3obj.e4shop != nil) zShop = e3obj.e4shop.zName;
 		if (e3obj.e5category != nil) zCategory = e3obj.e5category.zName;
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", zShop, zCategory];
+		if (0 < [e3obj.nRepeat integerValue]) zRepeat = @"〃 ";
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@ %@", zRepeat, zShop, zCategory];
 		
 		// 金額
-		if ([e6obj.nAmount integerValue] <= 0) {
+		if ([e6obj.nAmount doubleValue] < 0) {
 			cellLabel.textColor = [UIColor blueColor];
 		} else {
 			cellLabel.textColor = [UIColor blackColor];
 		}
-		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
+		// Amount
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
-//		NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-//		[formatter setLocale:localeJP];
-//		[localeJP release];
+		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		[formatter setLocale:[NSLocale currentLocale]]; 
 		cellLabel.text = [formatter stringFromNumber:e6obj.nAmount];
 		[formatter release];
 	}
@@ -555,6 +639,16 @@
 	return cell;
 }
 
+// AdMob
+- (NSString *)publisherIdForAd:(AdMobView *)adView {
+	return @"a14d4c11a95320e"; // クレメモ　パブリッシャー ID
+}
+// AdMob
+- (UIViewController *)currentViewControllerForAd:(AdMobView *)adView {
+	return self;
+}
+
+
 - (void)cellButton: (UIButton *)button 
 {
 	if (button.tag < 0) return;
@@ -565,14 +659,17 @@
 	E6part *e6obj = [[RaE6parts objectAtIndex:iSec] objectAtIndex:iRow];
 	// E6 Check
 	if (0 < [e6obj.nNoCheck intValue]) {
-		[EntityRelation e6check:YES inE6obj:e6obj inAlert:YES];
+		[MocFunctions e6check:YES inE6obj:e6obj inAlert:YES];
 	} else {
-		[EntityRelation e6check:NO inE6obj:e6obj inAlert:YES];
+		[MocFunctions e6check:NO inE6obj:e6obj inAlert:YES];
 	}
 	// SAVE & Commit!
-	[EntityRelation commit];
-
-	[self.tableView reloadData];
+	[MocFunctions commit];
+	
+	//[self.tableView reloadData];
+	//[0.4.18] レス向上のため、このセルだけ再描画
+	NSArray *aIndex = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:iRow inSection:iSec]];
+	[self.tableView reloadRowsAtIndexPaths:aIndex withRowAnimation:NO];
 }
 
 // TableView Editボタンスタイル
@@ -590,23 +687,14 @@
 // TableView 行選択時の動作
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= indexPath.section) {
+		return; // AdMob
+	}
+#endif
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
-	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
-	{
-		// Comback 記録
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-		if (Pe2select) {
-			// (0)TopMenu >> (1)E1card >> (2)E2invoice >> (3)This >> (4)Clear
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:4 withObject:[NSNumber numberWithLong:-1]];
-		} else {
-			// (0)TopMenu >> (1)E7payment >> (2)This >> (3)Clear
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
-		}
-	}
 	// E3詳細画面へ
 	[self e3detailView:indexPath]; // この中でAddにも対応
 }
@@ -623,9 +711,10 @@
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
 		e3detail.Re3edit = e6obj.e3record;
 		e3detail.PiAdd = 0; // (0)Edit mode
+		e3detail.PiFirstYearMMDD = 0;
 	}
 	else {
-		// Add E3
+		// Add E3　「この支払日になるように利用明細を追加」
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
 														   inManagedObjectContext:appDelegate.managedObjectContext];
@@ -706,12 +795,22 @@
 
 // Editモード時の行Edit可否
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= indexPath.section) {
+		return NO; // AdMob
+	}
+#endif
 	return YES; // 行編集許可
 }
 
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= indexPath.section) {
+		return NO; // AdMob
+	}
+#endif
 	if ([[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
 		return NO;  // Add行
 	}
@@ -723,6 +822,12 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)oldPath 
 																		 toProposedIndexPath:(NSIndexPath *)newPath 
 {
+#ifdef GD_AdMob_ENABLED
+	if ([RaE6parts count] <= newPath.section) {
+		return oldPath; // AdMob: 移動なし
+	}
+#endif
+
 	if (oldPath.section == newPath.section && oldPath.row == newPath.row) {
 		return newPath; // 元の位置
 	}

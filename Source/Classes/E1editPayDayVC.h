@@ -20,9 +20,11 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIPickerView	*Mpicker;
-	UILabel *MlbClosing;
-	UILabel *MlbPayMonth;
-	UILabel *MlbPayDay;
+	UILabel			*MlbClosing;
+	UILabel			*MlbPayMonth;
+	UILabel			*MlbPayDay;
+	UIButton		*MbuDebit;
+	UILabel			*MlbDebit;
 	//----------------------------------------------assign
 	BOOL MbOptAntirotation;
 }

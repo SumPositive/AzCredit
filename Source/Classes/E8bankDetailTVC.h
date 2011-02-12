@@ -21,7 +21,6 @@
 	E1card		*Pe1edit;	// =nil:マスタモード  !=nil:選択モード
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields

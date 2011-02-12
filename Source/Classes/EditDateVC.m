@@ -64,22 +64,28 @@
 	[self.view addSubview:MbuYearTime]; //[MbuYearTime release]; autoreleaseされるため
 	//------------------------------------------------------
 	MdatePicker = [[UIDatePicker alloc] init];
-	//MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;  viewWillAppear にてセット
+	//[MdatePicker addTarget:self action:@selector(datePickerDidChange:) forControlEvents:UIControlEventValueChanged]; //[0.4]
 	if (AzMIN_YearMMDD < PiMinYearMMDD) {
 		MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
 	} else {
-		MdatePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-60*60*24*360];	// 約1年前から
+		MdatePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-365*24*60*60];	// 約1年前から
 	}
 	if (PiMaxYearMMDD < AzMAX_YearMMDD) {
 		MdatePicker.maximumDate = GdateYearMMDD(PiMaxYearMMDD, 23,59,59); 
 	} else {
-		MdatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:60*60*24*120];	// 約3ヶ月先まで
+		MdatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:+31*6*24*60*60];	// 約6ヶ月先まで
 	}
 	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
 	MdatePicker.locale = locale; [locale release];
 	[self.view addSubview:MdatePicker]; [MdatePicker release];
+	MintervalPrev = [MdatePicker.date timeIntervalSinceReferenceDate]; // 2001/1/1からの秒数
 	//------------------------------------------------------
 }
+/*
+- (void)datePickerDidChange:(UIDatePicker *)sender
+{
+}
+*/
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 
@@ -99,10 +105,11 @@
 		MdatePicker.datePickerMode = UIDatePickerModeDate;
 	}
 	
-	if ([Rentity valueForKey:RzKey] == nil) {
-		MdatePicker.date = [NSDate date]; // Now
-	} else {
+	if ([Rentity valueForKey:RzKey]) {
 		MdatePicker.date = [Rentity valueForKey:RzKey];
+	}
+	else {
+		MdatePicker.date = [NSDate date]; // Now
 	}
 	
 	[self viewDesign];
@@ -118,10 +125,9 @@
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
+{	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -197,7 +203,14 @@
 - (void)done:(id)sender
 {
 	[Rentity setValue:MdatePicker.date forKey:RzKey];
+
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+
+	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
+		alertBox(NSLocalizedString(@"DateUse Over",nil),
+				 NSLocalizedString(@"DateUse Over msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+	}
 }
 
 

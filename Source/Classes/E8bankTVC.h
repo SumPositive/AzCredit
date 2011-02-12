@@ -17,7 +17,6 @@
 	E1card		*Pe1card;		// =nil:マスタモード  !=nil:選択モード
 	
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	NSMutableArray		*RaE8banks;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
@@ -30,5 +29,5 @@
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, assign) E1card	*Pe1card;
 
-- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
+//- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "FileCsv.h"
 
 
@@ -103,12 +103,12 @@ static NSString *csvToStr( NSString *inCsv ) {
 					if (e4node.zNote == nil) e4node.zNote = @"";
 					// E4,zName,zNote,sortDate,sortCount,sortAmount,sortName,
 					//str = [NSString stringWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n",   autoreleseを減らすため
-					str = [[NSString alloc] initWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n", 
+					str = [[NSString alloc] initWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%@,\"%@\",\n", 
 						   strToCsv(zName), 
 						   strToCsv(e4node.zNote), 
 						   [e4node.sortDate description], 
 						   (long)[e4node.sortCount integerValue], 
-						   (long)[e4node.sortAmount integerValue], 
+						   [e4node.sortAmount descriptionWithLocale:nil],  //(long)[e4node.sortAmount integerValue], 
 						   strToCsv(e4node.sortName)];
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
 					[str release];
@@ -134,12 +134,12 @@ static NSString *csvToStr( NSString *inCsv ) {
 				NSString *zName = [e5node.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 				if (0 < [zName length]) {
 					// E5,zName,zNote,sortDate,sortCount,sortAmount,sortName,
-					str = [[NSString alloc] initWithFormat:@"Cat,\"%@\",\"%@\",%@,%ld,%ld,\"%@\",\n", 
+					str = [[NSString alloc] initWithFormat:@"Cat,\"%@\",\"%@\",%@,%ld,%@,\"%@\",\n", 
 						   strToCsv(zName), 
 						   strToCsv(e5node.zNote), 
 						   [e5node.sortDate description], 
 						   (long)[e5node.sortCount integerValue], 
-						   (long)[e5node.sortAmount integerValue], 
+						   [e5node.sortAmount descriptionWithLocale:nil],  //(long)[e5node.sortAmount integerValue], 
 						   strToCsv(e5node.sortName)];
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
 					[str release];
@@ -210,17 +210,19 @@ static NSString *csvToStr( NSString *inCsv ) {
 				if (e3node.e4shop && e3node.e4shop.zName) zShop = e3node.e4shop.zName;
 				NSString *zCategory = @"";
 				if (e3node.e5category && e3node.e5category.zName) zCategory = e3node.e5category.zName;
-				// E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,
+				// E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,nRepeat,
 				//str = [NSString stringWithFormat:@"Rec,%@,%ld,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",\n", 
-				str = [[NSString alloc] initWithFormat:@"Rec,%@,%ld,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",\n", 
+				str = [[NSString alloc] initWithFormat:@"Rec,%@,%@,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",%d,\n", 
 					   [e3node.dateUse description], 
-					   (long)[e3node.nAmount integerValue], 
+					   [e3node.nAmount descriptionWithLocale:nil],  //(long)[e3node.nAmount integerValue],	// [-99999999.99 〜 +99999999.99]
 					   [e3node.nPayType intValue], 
 					   [e3node.nAnnual floatValue], 
 					   strToCsv(zShop), 
 					   strToCsv(zCategory),
 					   strToCsv(e3node.zName),
-					   strToCsv(e3node.zNote)];
+					   strToCsv(e3node.zNote),
+					   [e3node.nRepeat intValue]]; //[0.4] nRepeat
+				
 				[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
 				[str release]; // autorelease使用せず！
 				
@@ -236,11 +238,11 @@ static NSString *csvToStr( NSString *inCsv ) {
 					if (0 < [e6node.nNoCheck intValue]) zCheck = @""; // 未Check
 					
 					// E6,iYearMMDD,zPaid,lAmount,fInterest,bChecked,
-					str = [[NSString alloc] initWithFormat:@"Pay,%ld,%@,%ld,%ld,%@,\n", 
+					str = [[NSString alloc] initWithFormat:@"Pay,%ld,%@,%@,%@,%@,\n", 
 						   iYearMMDD, 
 						   zPaid, 
-						   [e6node.nAmount longValue], 
-						   [e6node.nInterest longValue], 
+						   [e6node.nAmount descriptionWithLocale:nil],    //[e6node.nAmount longValue], 
+						   [e6node.nInterest descriptionWithLocale:nil],  //[e6node.nInterest longValue], 
 						   zCheck];
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
 					[str release]; // autorelease使用せず！
@@ -289,8 +291,10 @@ static NSString *csvToStr( NSString *inCsv ) {
 		}
 		// ["]文字列区間にあるCRやLFは無視するための処理
 		if ([one isEqualToData:dDQ]) bDQSection = !bDQSection; // ["]区間判定　トグルになる
-		// 文字列区間でないところに、CRやLFがあれば行末と判断する
-		if (!bDQSection && ([one isEqualToData:MdLF] || [one isEqualToData:MdCR])) break; // 行末
+		if (!bDQSection && ([one isEqualToData:MdLF] || [one isEqualToData:MdCR])) {
+			// 文字列区間でないところに、CRやLFがあれば行末と判断する
+			break; // 行末
+		}
 	}
 	
 	MulEnd = [fileHandle offsetInFile]; // [LF]または[CR]の次の位置を示す
@@ -307,19 +311,34 @@ static NSString *csvToStr( NSString *inCsv ) {
 	[fileHandle seekToFileOffset:MulStart];
 
 	NSData *data = [fileHandle readDataOfLength:(MulEnd - MulStart - 1)];  // 1行分読み込み
-	NSString *csvStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	[MzCsvStr setString:csvStr];
+	NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	[MzCsvStr setString:strData];
+	[strData release];
 	[MzCsvStr appendString:@",,,,,,,,,,"]; // 最大項目数以上追加しておく
-	[csvStr release];	// 行毎に生成＆破棄
 	AzLOG(@"%@", MzCsvStr);
-	[MaCsv setArray:[MzCsvStr componentsSeparatedByString:@","]];
-	
-	//NSString *csvSplit = [csvStr stringByAppendingString:@",,,,,,,,,,"]; // 最大項目数以上追加しておく
-	//[csvStr release];	// 行毎に生成＆破棄
-	//AzLOG(@"%@", csvSplit);
-	// さらに、切り出した文字列をCSV区切りで配列に切り出す
-	//NSArray *csvArray = [csvSplit componentsSeparatedByString:@","];
-	//[MaCsv setArray:[csvSplit componentsSeparatedByString:@","]];
+	[MaCsv setArray:[MzCsvStr componentsSeparatedByString:@","]]; // コンマ[,]区切り
+	//NSLog(@"***1*** MaCsv=%@", MaCsv);
+	//[0.4.19] "文字列区間" にコンマ[,]が入っている場合の処理
+	BOOL bFlag = NO;
+	for (NSInteger iNo = 0; iNo < [MaCsv count]; iNo++)
+	{
+		NSString *str = [MaCsv objectAtIndex:iNo];
+		if (bFlag) {
+			assert(1<=iNo);
+			// 文字列区間が終わらないまま次項目になった ＞＞＞ コンマ[,]が入っていた ＞＞＞ [,]を入れて結合する
+			NSString *s1 = [MaCsv objectAtIndex:iNo-1];
+			[MaCsv replaceObjectAtIndex:iNo-1 withObject:[s1 stringByAppendingFormat:@",%@", str]]; // retain
+			[MaCsv removeObjectAtIndex:iNo];
+			iNo--;
+		}
+		if ([str hasPrefix:@"\""]) { // 先頭が["] 文字列区間の始まり
+			bFlag = YES;
+		}
+		if ([str hasSuffix:@"\""]) { // 末尾が["] 文字列区間の終わり
+			bFlag = NO;
+		}
+	}
+	//NSLog(@"***2*** MaCsv=%@", MaCsv);
 	
 	AzLOG(@"%ld(%@,%@,%@)", MlCsvLine, [MaCsv objectAtIndex:0], [MaCsv objectAtIndex:1], [MaCsv objectAtIndex:2]);
 	
@@ -372,7 +391,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	NSFileHandle *csvHandle = [NSFileHandle fileHandleForReadingAtPath:csvPath];
 	@try {
 		// 全データをクリアする　＜ E0root だけが残る＞
-		[EntityRelation allReset];
+		[MocFunctions allReset];
 		// ここではSAVEしない。CSV読み込み成功時にSAVEする
 
 		while (1) {
@@ -400,7 +419,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e4node.zNote = csvToStr([MaCsv objectAtIndex:2]);
 					e4node.sortDate = [dateFormatter dateFromString:[MaCsv objectAtIndex:3]];
 					e4node.sortCount = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:4] integerValue]];
-					e4node.sortAmount = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:5] integerValue]];
+					e4node.sortAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:5]];
 					e4node.sortName = csvToStr([MaCsv objectAtIndex:6]);
 				}
 			} 
@@ -415,7 +434,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e5node.zNote = csvToStr([MaCsv objectAtIndex:2]);
 					e5node.sortDate = [dateFormatter dateFromString:[MaCsv objectAtIndex:3]];
 					e5node.sortCount = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:4] integerValue]];
-					e5node.sortAmount = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:5] integerValue]];
+					e5node.sortAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:5]];
 					e5node.sortName = csvToStr([MaCsv objectAtIndex:6]);
 				}
 			} 
@@ -476,29 +495,38 @@ static NSString *csvToStr( NSString *inCsv ) {
 			} 
 			//--------------------------------------------------------------------------------[Rec] E3
 			else if ([[MaCsv objectAtIndex:0] isEqualToString:@"Rec"] && ActE1card) 
-			{ // E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,
+			{	//  0,      1,      2,       3,      4,    5,        6,    7,    8,      9,
+				// E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,nRepeat,
 				ActE3record = nil;
 				NSDate *dateUse = [dateFormatter dateFromString:[MaCsv objectAtIndex:1]];
 				// AzLOG(@"(2)'%@'  (3)'%@'", [MaCsv objectAtIndex:2], [MaCsv objectAtIndex:3]);
-				NSInteger lAmount = [[MaCsv objectAtIndex:2] integerValue];  // longValueだとFreeze
+				//NSInteger lAmount = [[MaCsv objectAtIndex:2] integerValue];  // longValueだとFreeze
+				NSDecimalNumber *decAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:2]]; //[0.4]
 				NSInteger lPayType = [[MaCsv objectAtIndex:3] integerValue];	// NSString に longValue は無い
 				NSInteger lAnnual = [[MaCsv objectAtIndex:4] integerValue];
 				NSString *zShop = [csvToStr([MaCsv objectAtIndex:5]) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 				NSString *zCategory = [csvToStr([MaCsv objectAtIndex:6]) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				//[0.4](9)nRepeat
+				NSInteger lRepeat = [[MaCsv objectAtIndex:9] integerValue];
 				// CHECK
-				if (lAmount <= 0 OR 99999999 < lAmount) {
+				//if (lAmount < -99999999 OR 99999999 < lAmount) 
+				if ([decAmount compare:[NSDecimalNumber decimalNumberWithString:@"99999999.99"]]==NSOrderedDescending	// >
+				 || [decAmount compare:[NSDecimalNumber decimalNumberWithString:@"-99999999.99"]]==NSOrderedAscending)	// <
+				{
 					@throw NSLocalizedString(@"STOP E3nAmountNG",nil);
 				}
 				if (lPayType < 1 OR 102 < lPayType) {
 					@throw NSLocalizedString(@"STOP E3nPayTypeNG",nil);
 				}
 
-				E3record *e3node = [NSEntityDescription insertNewObjectForEntityForName:@"E3record" inManagedObjectContext:context];
+				E3record *e3node = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
+																 inManagedObjectContext:context];
 				e3node.e1card = ActE1card;
 				e3node.dateUse = dateUse;
-				e3node.nAmount = [NSNumber numberWithLong:lAmount];
+				e3node.nAmount = decAmount; //[NSNumber numberWithLong:lAmount];
 				e3node.nPayType = [NSNumber numberWithLong:lPayType];
 				e3node.nAnnual = [NSNumber numberWithLong:lAnnual];
+				e3node.nRepeat = [NSNumber numberWithLong:lRepeat];
 				// E4shop
 				if (![zShop isEqualToString:@""]) {
 					// 検索して、あればリンク、無ければ追加してリンク
@@ -553,6 +581,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 				iPrevE6YearMMDD = 0;
 				iE6partNo = 1;
 			}
+			
 			//--------------------------------------------------------------------------------[Pay] E6
 			else if ([[MaCsv objectAtIndex:0] isEqualToString:@"Pay"] && ActE3record) 
 			{ // E6,iYearMMDD,zPaid,lAmount,fInterest,bChecked,
@@ -569,13 +598,25 @@ static NSString *csvToStr( NSString *inCsv ) {
 				BOOL bPaid = YES;
 				if ([zPaid isEqualToString:@""]) bPaid = NO;
 				
-				NSInteger iAmount = [[MaCsv objectAtIndex:3] integerValue];
-				if (iAmount < 1 OR 99999999 < iAmount) {
+				//NSInteger iAmount = [[MaCsv objectAtIndex:3] integerValue];
+				//if (iAmount < -99999999 OR 99999999 < iAmount) {
+				//	@throw NSLocalizedString(@"STOP E6iAmountNG",nil);
+				//}
+				NSDecimalNumber *decAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:3]]; //[0.4]
+				if ([decAmount compare:[NSDecimalNumber decimalNumberWithString:@"99999999.99"]]==NSOrderedDescending	// >
+				 || [decAmount compare:[NSDecimalNumber decimalNumberWithString:@"-99999999.99"]]==NSOrderedAscending)	// <
+				{
 					@throw NSLocalizedString(@"STOP E6iAmountNG",nil);
 				}
 
-				float fInterest = [[MaCsv objectAtIndex:4] floatValue];
-				if (fInterest < 0 OR 90 < fInterest) {
+				//float fInterest = [[MaCsv objectAtIndex:4] floatValue];
+				//if (fInterest < 0 OR 90 < fInterest) {
+				//	@throw NSLocalizedString(@"STOP E6fInterestNG",nil);
+				//}
+				NSDecimalNumber *decInterest = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:4]];
+				if ([decInterest compare:[NSDecimalNumber decimalNumberWithString:@"9999999.99"]]==NSOrderedDescending	// >
+				 || [decInterest compare:[NSDecimalNumber decimalNumberWithString:@"-9999999.99"]]==NSOrderedAscending)	// <
+				{
 					@throw NSLocalizedString(@"STOP E6fInterestNG",nil);
 				}
 				
@@ -586,8 +627,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 				// Add E6
 				E6part *e6node = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:context];
 				e6node.nPartNo = [NSNumber numberWithInteger:(iE6partNo++)]; // 代入してからインクリメント
-				e6node.nAmount = [NSNumber numberWithInteger:iAmount];
-				e6node.nInterest =  [NSNumber numberWithFloat:fInterest];
+				e6node.nAmount = decAmount; //[NSNumber numberWithInteger:iAmount];
+				e6node.nInterest = decInterest; //[NSNumber numberWithFloat:fInterest];
 				e6node.nNoCheck = [NSNumber numberWithInteger:iNoCheck];
 				e6node.e3record = ActE3record;
 				// E3 sum

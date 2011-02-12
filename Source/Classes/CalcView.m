@@ -8,9 +8,36 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "CalcView.h"
+#import "E3recordDetailTVC.h"
+
+
+//----------------------------------------------------------NSMutableArray Stack Method
+@interface NSMutableArray (StackAdditions)
+- (void)push:(id)obj;
+- (id)pop;
+@end
+
+@implementation NSMutableArray (StackAdditions)
+- (void)push:(id)obj
+{
+	[self addObject: obj];
+}
+
+- (id)pop
+{
+    // nil if [self count] == 0
+    id lastObject = [[[self lastObject] retain] autorelease];
+    if (lastObject)
+        [self removeLastObject];
+    return lastObject;
+}
+@end
+//----------------------------------------------------------NSMutableArray Stack Method
+
 
 @interface CalcView (PrivateMethods)
-- (NSString *)zRpnCalc:(NSString *)zCalcString;	// 計算式 ⇒ 逆ポーランド記法(Reverse Polish Notation) ⇒ 答え
+//- (void)MtextFieldDidChange:(UITextField *)textField;
+- (NSDecimalNumber *)decimalAnswerFomula:(NSString *)strFomula;	// autorelease
 @end
 
 @implementation CalcView
@@ -19,719 +46,530 @@
 @synthesize RzKey;
 @synthesize PoParentTableView;
 
-- (void)dealloc {
-	[RzCalc release];
+- (void)dealloc 
+{
+	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
+	if (MdecAnswer) {
+		[MdecAnswer release];
+	}
 	
+	[MbehaviorCalc release];
+	[MbehaviorDefault release];
+	[RaKeyButtons release];
 	[RzKey release];
 	[Rentity release];
 	[Rlabel release];
-    
 	[super dealloc];
 }
-
-/*
-static UIColor *MpColorBlue(float percent) {
-	float red = percent * 255.0f;
-	float green = (red + 20.0f) / 255.0f;
-	float blue = (red + 45.0f) / 255.0f;
-	if (green > 1.0) green = 1.0f;
-	if (blue > 1.0f) blue = 1.0f;
-	
-	return [UIColor colorWithRed:percent green:green blue:blue alpha:0.5f]; // 背景
-}*/
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
 	//self.userInteractionEnabled = YES; //タッチの可否  どこでもDone
 }
 
-- (id)initWithFrame:(CGRect)rect 
+- (id)initWithFrame:(CGRect)rect
 {
-	MbShow = NO;
-
+	NSLog(@"CalcView: rect=(%f,%f)-(%f,%f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+	
 	// アニメションの開始位置
 	//rect.origin.y = 20.0f - rect.size.height;
-	rect.origin.y = rect.size.height; // 最初、下部に隠れている状態
-									// ↓
+	MrectInit = rect;		// 表示位置を記録　showにて復元に使う
+	rect.origin.y += 500;	//rect.size.height; // 最初、下部に隠れている状態
+
 	if (!(self = [super initWithFrame:rect])) return self;
 
-	self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0]; // 背景透明
+	self.backgroundColor = [UIColor clearColor];	// 透明でもTouchイベントが受け取れるようだ。
+	self.userInteractionEnabled = YES; // このViewがタッチを受けるか
+	MbShow = NO;
+	MdecAnswer = nil;
 	
-	self.userInteractionEnabled = YES; //タッチの可否  どこでもDone
-	
-	//------------------------------------------電卓背景画像
-	UIImageView *iv = [[UIImageView alloc] init];
-	[iv setImage:[UIImage imageNamed:@"Calc-Back.png"]];
-	iv.tag = 91;
-	[self addSubview:iv]; [iv release];
 	//------------------------------------------
-	MlbCalc = [[UILabel alloc] init];
-	//lb.tag = 92;
-	MlbCalc.textAlignment = UITextAlignmentCenter;
-	MlbCalc.backgroundColor = [UIColor clearColor];
-	MlbCalc.textColor = [UIColor whiteColor];
-	MlbCalc.font = [UIFont systemFontOfSize:26];
-	MlbCalc.text = @"";  //@"123456.001÷5×2+3.200001";
-	MlbCalc.adjustsFontSizeToFitWidth = YES;
-	MlbCalc.minimumFontSize = 8;
-	MlbCalc.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-	[self addSubview:MlbCalc]; [MlbCalc release];
+	MtextField = [[UITextField alloc] init];
+	MtextField.borderStyle = UITextBorderStyleBezel;
+	MtextField.backgroundColor = [UIColor brownColor];
+	MtextField.textColor = [UIColor whiteColor];
+	MtextField.text = @"";
+  	MtextField.textAlignment = UITextAlignmentLeft;		// 演算子が入と、左寄書式なし2行表示
+	MtextField.font = [UIFont boldSystemFontOfSize:22];
+	MtextField.hidden = YES;
+	MtextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+	MtextField.autocorrectionType = NO;
+	MtextField.returnKeyType = UIReturnKeyDone;
+	MtextField.delegate = self;	// UITextFieldDelegate には、変更「前」のイベントしか無い
+	[MtextField addTarget:self	// UITextFieldDelegate に、 変更「後」イベント textFieldDidChange を追加する
+				   action:@selector(textFieldDidChange:) // 変更「後」に呼び出される
+		 forControlEvents:UIControlEventEditingChanged];
+	[self addSubview:MtextField]; [MtextField release];
 	
-
 	//------------------------------------------
-	UIButton *bu;
+	MscrollView = [[UIScrollView alloc] init];
+	MscrollView.pagingEnabled = NO;
+	MscrollView.showsVerticalScrollIndicator = NO;
+	MscrollView.showsHorizontalScrollIndicator = NO;
+	MscrollView.scrollsToTop = NO;
+	MscrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	MscrollView.backgroundColor = [UIColor blackColor];
+	[self addSubview:MscrollView]; [MscrollView release];
+	
+	//------------------------------------------
+	NSMutableArray *maBu = [NSMutableArray new];
+	int iIndex = 0;
+	for (int iCol=0; iCol<6; iCol++)
+	{
+		for (int iRow=0; iRow<4; iRow++)
+		{
+			UIButton *bu = [UIButton buttonWithType:UIButtonTypeCustom];
+			bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
+			[bu setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+			
+			switch (iIndex) // bu.tag=1:数値　2:演算子　3:関数　4:Ac 5:BS 6:+/-   9:=
+			{
+				case  0: bu.tag=4; [bu setTitle:@"AC" forState:UIControlStateNormal];  
+					bu.titleLabel.font = [UIFont boldSystemFontOfSize:24]; 
+					[bu setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+					break;
 
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  1;	[bu setTitle:@"1" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	[bu becomeFirstResponder];
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  2;	[bu setTitle:@"2" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  3;	[bu setTitle:@"3" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  4;	[bu setTitle:@"4" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  5;	[bu setTitle:@"5" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  6;	[bu setTitle:@"6" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  7;	[bu setTitle:@"7" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  8;	[bu setTitle:@"8" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag =  9;	[bu setTitle:@"9" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 10;	[bu setTitle:@"0" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 11;	[bu setTitle:@"00" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:24];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 12;	[bu setTitle:@"000" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 13;	[bu setTitle:@"." forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	//----------------------------------------------------------------------[0.3]演算子
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 30;	[bu setTitle:@"+" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:30];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 31;	[bu setTitle:@"-" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:32];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 32;	[bu setTitle:@"×" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:30];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 33;	[bu setTitle:@"÷" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:30];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 34;	[bu setTitle:@"(" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:26];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = 35;	[bu setTitle:@")" forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:26];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	//--------------------------------------------------------------------------------Function
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = -1;	[bu setTitle:@"AC" forState:UIControlStateNormal]; //NSLocalizedString(@"Clear",nil)
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = -2;	[bu setTitle:@"BS" forState:UIControlStateNormal];	//NSLocalizedString(@"Back",nil)
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = -3;	[bu setTitle:NSLocalizedString(@"Including tax",nil) forState:UIControlStateNormal]; // T(税込)
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
+				case  1: bu.tag=5; [bu setTitle:@"BS" forState:UIControlStateNormal];  
+					bu.titleLabel.font = [UIFont boldSystemFontOfSize:24]; 
+					[bu setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+					break;
+				
+				case  2: bu.tag=6; [bu setTitle:@"+/-" forState:UIControlStateNormal]; break;
+				case  3: bu.tag=1; [bu setTitle:@"00" forState:UIControlStateNormal]; break;
+				
+					
+				case  4: bu.tag=1; [bu setTitle:@"7" forState:UIControlStateNormal]; break;
+				case  5: bu.tag=1; [bu setTitle:@"4" forState:UIControlStateNormal]; break;
+				case  6: bu.tag=1; [bu setTitle:@"1" forState:UIControlStateNormal]; break;
+				case  7: bu.tag=1; [bu setTitle:@"0" forState:UIControlStateNormal]; break;
 
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = -4;	[bu setTitle:NSLocalizedString(@"Net of tax",nil) forState:UIControlStateNormal]; // N(税抜)
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
+				case  8: bu.tag=1; [bu setTitle:@"8" forState:UIControlStateNormal]; break;
+				case  9: bu.tag=1; [bu setTitle:@"5" forState:UIControlStateNormal]; break;
+				case 10: bu.tag=1; [bu setTitle:@"2" forState:UIControlStateNormal]; break;
+				case 11: bu.tag=1; [bu setTitle:@"." forState:UIControlStateNormal]; break;
 
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = -5;	[bu setTitle:NSLocalizedString(@"Rounding",nil) forState:UIControlStateNormal]; // R(四捨五入)
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
+				case 12: bu.tag=1; [bu setTitle:@"9" forState:UIControlStateNormal]; break;
+				case 13: bu.tag=1; [bu setTitle:@"6" forState:UIControlStateNormal]; break;
+				case 14: bu.tag=1; [bu setTitle:@"3" forState:UIControlStateNormal]; break;
+				case 15: bu.tag=9; 
+					[bu setTitle:NSLocalizedString(@"Calc Done",nil) forState:UIControlStateNormal];
+					bu.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+					[bu setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+					break;
+					
+				case 16: bu.tag=2; [bu setTitle:@"÷" forState:UIControlStateNormal]; break;
+				case 17: bu.tag=2; [bu setTitle:@"×" forState:UIControlStateNormal]; break;
+				case 18: bu.tag=2; [bu setTitle:@"-" forState:UIControlStateNormal]; break;
+				case 19: bu.tag=2; [bu setTitle:@"+" forState:UIControlStateNormal]; break;
+
+				case 20: bu.tag=2; [bu setTitle:@"(" forState:UIControlStateNormal]; break;
+				case 21: bu.tag=2; [bu setTitle:@")" forState:UIControlStateNormal]; break;
+				
+				case 22: bu.tag=7; 
+					[bu setTitle:NSLocalizedString(@"Calc NoTax",nil) forState:UIControlStateNormal]; 
+					bu.titleLabel.font = [UIFont boldSystemFontOfSize:18]; 
+					break;
+
+				case 23: bu.tag=8; 
+					[bu setTitle:NSLocalizedString(@"Calc InTax",nil) forState:UIControlStateNormal]; 
+					bu.titleLabel.font = [UIFont boldSystemFontOfSize:18]; 
+					break;
+			}
+			
+			if (1 < bu.tag)	bu.alpha = 0.8;
+			else			bu.alpha = 1.0;
+
+			[bu setBackgroundImage:[UIImage imageNamed:@"Icon-Drum.png"] forState:UIControlStateNormal];
+			[bu setBackgroundImage:[UIImage imageNamed:@"Icon-DrumPush.png"] forState:UIControlStateHighlighted];
+			[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchUpInside];
+			[maBu addObject:bu];
+			[MscrollView addSubview:bu]; //[bu release]; autoreleaseされるため
+			iIndex++;
+		}
+	}
 	
+	RaKeyButtons = [[NSArray alloc] initWithArray:maBu];
+	[maBu release];
 	
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.tag = -9;	[bu setTitle:NSLocalizedString(@"Calc Done",nil) forState:UIControlStateNormal];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchDown];
-	[self addSubview:bu]; //[bu release]; autoreleaseされるため
-	// 演算ボタンを押せば -8 [=] に変化する
-	
-	[self viewDesign:self.frame];  //.bounds]; // コントロール配置
+	[self viewDesign:self.bounds]; // コントロール配置
 
 	// Calc 初期化
-	RzCalc = [[NSMutableString alloc] init];
-	MdRegister = 0.0;
+	//RzCalc = [[NSMutableString alloc] init];
+	//MdRegister = [NSDecimalNumber zero]; // 0.0;
 	MiFunc = 0;
 	
+	// 丸め方法
+	NSUInteger uiRound = NSRoundPlain; //　四捨五入
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:GD_OptRoundBankers]) {
+		uiRound = NSRoundBankers; // 偶数丸め
+	}
+	// 通貨型に合った丸め位置を取得
+	if ([[[NSLocale currentLocale] objectForKey:NSLocaleIdentifier] isEqualToString:@"ja_JP"]) { // 言語 + 国、地域
+		MiRoundingScale = 0;
+	} else {
+		MiRoundingScale = 2;
+	}
+	// 計算結果の丸め設定　show にてデフォルト設定
+	MbehaviorCalc = [[NSDecimalNumberHandler alloc] initWithRoundingMode:uiRound				// 丸め
+																   scale:MiRoundingScale + 2	// 丸めた後の桁数
+														raiseOnExactness:YES					// 精度
+														 raiseOnOverflow:YES					// オーバーフロー
+														raiseOnUnderflow:YES					// アンダーフロー
+													 raiseOnDivideByZero:YES ];					// アンダーフロー
+
+	// 答えの丸め　hide にてデフォルト設定
+	MbehaviorDefault = [[NSDecimalNumberHandler alloc] initWithRoundingMode:uiRound			// 丸め
+																	  scale:MiRoundingScale	// 丸めた後の桁数
+														   raiseOnExactness:YES				// 精度
+															raiseOnOverflow:YES				// オーバーフロー
+														   raiseOnUnderflow:YES				// アンダーフロー
+														raiseOnDivideByZero:YES ];			// アンダーフロー
     return self;
 }
 
-- (void)buttonCalc:(UIButton *)button
+// UITextFieldDelegate：変更「前」に呼び出される
+- (BOOL)textField:(UITextField *)textField 
+shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString *)text
 {
-	AzLOG(@"[%@](%d)", button.titleLabel.text, (int)button.tag);
+	const NSString *zList = @" 0123456789.+-×÷*/()";  // 許可文字
+	
+	NSLog(@"textField-----[%@]", text);
+	if ([text length]<=0) return YES; // [BS]
+	
+	NSRange rg = [zList rangeOfString:text];
+	if (rg.length==1) return YES;
+	//
+	if ([text hasPrefix:@"\n"]) {
+		[textField resignFirstResponder]; // キーボードを隠す 
+	}
+	//[self MtextFieldDidChange:textField];
+	return NO;
+}
 
-	if (0 <= button.tag && [RzCalc length] < 50) { // 99999999, -9999999 Over
-		//if (button.tag == 12) {	//[.]
-		//	NSRange rg = [MzCalc rangeOfString:@"."];
-		//	if (rg.location != NSNotFound) return; // 既に[.]が含まれているからパスする
-		//}
-		[RzCalc appendString:button.titleLabel.text];
-		
-		if (30 <= button.tag) {	//演算子ボタンが押された
-			// [Done] ⇒ [=]
-			UIButton *bu = (UIButton *)[self viewWithTag:-9]; //[Done]
-			if (bu) {
-				[bu setTitle:@"=" forState:UIControlStateNormal];
-				bu.titleLabel.font = [UIFont boldSystemFontOfSize:26];
-				bu.tag = -8; //[=]
-			}
+// zFomula を計算し、答えを MdecAnswer に保持しながら Rlabel.text に表示する
+- (void)finalAnswer:(NSString *)zFomula
+{
+	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer1", MdecAnswer, 9);
+	MdecAnswer = [self decimalAnswerFomula:zFomula]; // retain
+	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer2", MdecAnswer, 9);
+	//NSLog(@"**********1 MdecAnswer=%@", MdecAnswer);
+	if (MdecAnswer) {
+		if (ANSWER_MAX < fabs([MdecAnswer doubleValue])) {
+			Rlabel.text = @"Game Over";
+			[MdecAnswer release];
+			MdecAnswer = [[NSDecimalNumber alloc] initWithString:@"0.0"];
+			// textField.text は、そのままなので計算続行可能。
+			return;
 		}
+		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+		[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // ＜＜計算途中、通貨小数＋2桁表示するため
+		//[formatter setLocale:[NSLocale currentLocale]]; 
+		[formatter setPositiveFormat:@"#,##0.####"];
+		[formatter setNegativeFormat:@"-#,##0.####"];
+		// 表示のみ　Rentity更新はしない
+		Rlabel.text = [formatter stringFromNumber:MdecAnswer];
+		[formatter release];
 	}
 	else {
-		// Functions
-		switch (button.tag) {
-			case -1: { // [Clear]
-				[RzCalc setString:@""]; // All Clear
-				// [=] ⇒ [Done]
-				UIButton *bu = (UIButton *)[self viewWithTag:-8]; //[=]
-				if (bu) {
-					[bu setTitle:NSLocalizedString(@"Calc Done",nil) forState:UIControlStateNormal];
-					bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-					bu.tag = -9; //[Done]
-				}
-			} break;
-			case -2: { // [Back]
-				int iLen = [RzCalc length];
-				if (0 < iLen) {
-					[RzCalc deleteCharactersInRange:NSMakeRange(iLen-1, 1)]; 
-				}
-				if (iLen <= 1) {
-					// [=] ⇒ [Done]
-					UIButton *bu = (UIButton *)[self viewWithTag:-8]; //[=]
-					if (bu) {
-						[bu setTitle:NSLocalizedString(@"Calc Done",nil) forState:UIControlStateNormal];
-						bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-						bu.tag = -9; //[Done]
-					}
-				}
-			} break;
-			case -3: { // [税込み]
-				if ([self viewWithTag:-9]) {
-					// [Done] 即計算
-					[RzCalc setString:[NSString stringWithFormat:@"%.3f", [RzCalc doubleValue] * 1.05]];
-				} else {
-					// [=] 計算式に関数挿入
-					[RzCalc setString:[NSString stringWithFormat:@"T(%@)", RzCalc]];
-				}
-			} break;
-			case -4: { // [税抜き]
-				if ([self viewWithTag:-9]) {
-					// [Done] 即計算
-					[RzCalc setString:[NSString stringWithFormat:@"%.3f", [RzCalc doubleValue] / 1.05]];
-				} else {
-					// [=] 計算式に関数挿入
-					[RzCalc setString:[NSString stringWithFormat:@"N(%@)", RzCalc]];
-				}
-			} break;
-			case -5: { // [四捨五入]
-				if ([self viewWithTag:-9]) {
-					// [Done] 即計算
-					[RzCalc setString:[NSString stringWithFormat:@"%.0f", round([RzCalc doubleValue])]];
-				} else {
-					// [=] 計算式に関数挿入
-					[RzCalc setString:[NSString stringWithFormat:@"R(%@)", RzCalc]];
-				}
-			} break;
-			case -8: { // [=]
-				// MzCalc 計算式を処理して答えを改めて MzCalc にセットする
-				NSString *zAns = [[NSString alloc] initWithString:[self zRpnCalc:RzCalc]];
-				if (0 < [zAns length]) {
-					[RzCalc setString:zAns];
-					// 
-					if (AzMAX_AMOUNT < fabs([RzCalc doubleValue])) {
-						Rlabel.text = @"Over";
-					} else {
-						NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-						[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-						Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[RzCalc integerValue]]];
-						[formatter release];
-					}
-					// [=] ⇒ [Done]
-					UIButton *bu = (UIButton *)[self viewWithTag:-8]; //[=]
-					if (bu) {
-						[bu setTitle:NSLocalizedString(@"Calc Done",nil) forState:UIControlStateNormal];
-						bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-						bu.tag = -9; //[Done]
-					}
-				}
-				[zAns release];
-			} break;
-			case -9: { // [Dome]
-				if ([RzCalc length] <= 0) {
-					// Rlabel.text 変更なし
-				} 
-				else if (AzMAX_AMOUNT < fabs([RzCalc doubleValue])) {
-					Rlabel.text = @"Over";
-				} 
-				else {
-					NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-					[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-					Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[RzCalc integerValue]]];
-					[formatter release];
-				}
-				[self save];
-				[self hide];
-			} break;
+		Rlabel.text = @"?";
+	}
+}
+
+// UITextFieldDelegate に無い、 変更「後」イベント。 initWithFrameにてaddTarget追加実装。
+- (void)textFieldDidChange:(UITextField *)textField
+{
+	if (0 < [textField.text length]) {
+		if (MdecAnswer) {
+			[MdecAnswer release];
+			MdecAnswer = nil;
 		}
+		if (MtextField.hidden) {  // 数値文字列
+			MdecAnswer = [[NSDecimalNumber alloc] initWithString:textField.text];
+			if (12 < [textField.text length]) {
+				textField.text = [textField.text substringToIndex:12-1];
+				Rlabel.text = @"Game Over";
+			} else {
+				Rlabel.text = textField.text; // 小数以下[0]を入れたとき表示されるように、入力のままにした。
+			}
+		}
+		else {	// 計算式文字列 <<< 演算子が入った
+			if (100 < [textField.text length]) {
+				textField.text = [textField.text substringToIndex:100-1];
+				Rlabel.text = @"Game Over";
+			} else {
+				// 計算し、答えを MdecAnswer に保持しながら Rlabel.text に表示する
+				[self finalAnswer:textField.text];
+			}
+		}
+	} else {
+		Rlabel.text = @"";
+	}
+}
+
+
+- (void)buttonCalc:(UIButton *)button
+{
+	AzLOG(@"buttonCalc: text[%@] tag(%d)", button.titleLabel.text, (int)button.tag);
+
+	switch (button.tag) 
+	{
+		case 1: // 数値
+			MtextField.text = [MtextField.text stringByAppendingString:button.titleLabel.text];
+			break;
+
+		case 2: { // 演算子
+			//[RzCalc appendString:button.titleLabel.text];
+			MtextField.text = [MtextField.text stringByAppendingString:button.titleLabel.text];
+			MtextField.hidden = NO;
+		} break;
+
+		case 4: { // AC
+			if (MdecAnswer) {
+				[MdecAnswer release];
+				MdecAnswer = nil;
+			}
+			//MdecAnswer = nil;
+			MtextField.text = @"";
+			Rlabel.text = @"";
+			MtextField.hidden = YES;
+		} break;
+		
+		case 5: { // BS
+			int iLen = [MtextField.text length];
+			if (1 <= iLen) {
+				//[RzCalc deleteCharactersInRange:NSMakeRange(iLen-1, 1)]; 
+				MtextField.text = [MtextField.text substringToIndex:iLen-1];
+			}
+			else { // [AC]状態
+				if (MdecAnswer) {
+					[MdecAnswer release];
+					MdecAnswer = nil;
+				}
+				//MdecAnswer = nil;
+				MtextField.text = @"";
+				Rlabel.text = @"";
+				MtextField.hidden = YES;
+			}
+		} break;
+			
+		case 6: // +/-
+			if (MtextField.hidden) {
+				if ([MtextField.text hasPrefix:@"-"]) {
+					MtextField.text = [MtextField.text substringFromIndex:1];
+				} else {
+					MtextField.text = [NSString stringWithFormat:@"-%@", MtextField.text];
+				}
+			} else {
+				// 計算式
+				if ([MtextField.text hasPrefix:@"-"]) {
+					MtextField.text = [MtextField.text substringFromIndex:1];
+				} else {
+					MtextField.text = [NSString stringWithFormat:@"-(%@)", MtextField.text];
+				}
+			}
+			break;
+
+		case 7: { // [NoTax]
+			float fRate = [[NSUserDefaults standardUserDefaults] floatForKey:GD_OptTaxRate]; // 税率(%)
+			if (0.0 < fRate && fRate < 100.0) {
+				fRate = (100.0 + fRate) / 100.0;
+				MtextField.text = [NSString stringWithFormat:@"(%@)÷%.2f", MtextField.text, fRate];
+				MtextField.hidden = NO;
+			}
+		} break;
+			
+		case 8: { // [InTax]
+			float fRate = [[NSUserDefaults standardUserDefaults] floatForKey:GD_OptTaxRate]; // 税率(%)
+			if (0.0 < fRate && fRate < 100.0) {
+				fRate = (100.0 + fRate) / 100.0;
+				MtextField.text = [NSString stringWithFormat:@"(%@)×%.2f", MtextField.text, fRate];
+				MtextField.hidden = NO;
+			}
+		} break;
+			
+		case 9: // [Done]
+			AzRETAIN_CHECK(@"[Done]: MdecAnswer", MdecAnswer, 0);
+			NSLog(@"[Done] MdecAnswer=%@", MdecAnswer);
+			if (MdecAnswer) [self save]; // MdecAnswer を Rentity へ保存する
+			[self hide];
+			break;
+			
+		default:
+			NSLog(@"ERROR");
+			break;
 	}
 
-
-	//Rlabel.tag = [MzCalc integerValue]; // Rlabel.tag にはCalc入力された数値(long)を記録する
-	//if (Rlabel.tag <= 0) {
-/*	if ([MzCalc doubleValue] <= 0.0) {
-		Rlabel.textColor = [UIColor blueColor];
-	} else {
-		Rlabel.textColor = [UIColor blackColor];
-	}*/
-/*	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-	//Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithInteger:Rlabel.tag]];
-	Rlabel.text = [formatter stringFromNumber:[NSNumber numberWithDouble:[MzCalc doubleValue]]];
-	[formatter release];*/
-
-//	Rlabel.text = MzCalc;
-
-	MlbCalc.text = RzCalc;
+	AzRETAIN_CHECK(@"buttonCalc: MdecAnswer", MdecAnswer, 0);
+	//MtextView.text = RzCalc;
+	[self textFieldDidChange:MtextField];
 }
 
 
 /***** UIView には回転は無い！！！
-// 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES; // この方向だけは常に許可する
-}
-
-// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
-													   duration:(NSTimeInterval)duration
-{
-	[self viewDesign:self.bounds]; // コントロール配置
-}
-
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)orientation
-{
-	CGRect rect;
-	rect.origin = CGPointMake(0,0);
-	
-	if (orientation == UIInterfaceOrientationLandscapeLeft OR orientation == UIInterfaceOrientationLandscapeRight) {
-		// ヨコ
-		rect.size = CGSizeMake(480, 300);
-	} else {
-		// タテ
-		rect.size = CGSizeMake(320, 460);
-	}
-	[self viewDesign:rect]; // コントロール配置
-}
 */
 
 
 - (void)viewDesign:(CGRect)rect 
 {
-	//CGRect rect = self.bounds;
-//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//	CGRect rect = appDelegate.window.bounds;
-
 	AzLOG(@"viewDesign:rect (x,y)=(%f,%f) (w,h)=(%f,%f)", rect.origin.x,rect.origin.y, rect.size.width,rect.size.height);
+
+	float fxGap = 2;	// Xボタン間隔
+	float fyGap;		// Yボタン間隔
+	float fx = fxGap;
+	float fy;
+	float fyTop;
+	float fW;
+	float fH;
 
 	if (rect.size.width < rect.size.height)
 	{	// タテ
-		float fLabelHeight = 30; // 上下の余白を含む高さ
-		float fWidth = 310;
-		float fLeft = (rect.size.width - fWidth) / 2;
-		float fTop = 40;
-		float fHeight = rect.size.height - fTop - 64;
-		float fWaku = 12;		// 枠の幅
-		float fGap = 2;		// ボタン間隔
-		float fxButtons = 5;
-		float fyButtons = 5;
-		float fBuWidth = (fWidth - fWaku*2 - fGap *(fxButtons-1)) / fxButtons;
-		float fBuHeight = (fHeight - fWaku*2 - fLabelHeight - fGap *(fyButtons-1)) / fyButtons;
-		
-		// 回転によるリサイズ
-		UIImageView *iv = (UIImageView *)[self viewWithTag:91];
-		iv.frame = CGRectMake(fLeft, fTop, fWidth, fHeight);
-
-		//UILabel *lb = (UILabel *)[self viewWithTag:92];
-		MlbCalc.frame = CGRectMake(fLeft+fWaku*2, fTop+fWaku-2, fWidth-fWaku*4, fLabelHeight-fGap);
-
-		//------------------------------------------------------------------------Line 1
-		float fy = fTop + fWaku + fLabelHeight;
-		float fx = fLeft + fWaku;
-		UIButton *bu;
-		bu = (UIButton *)[self viewWithTag:-1]; // Clear
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-2]; // Back
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-3]; // [税込]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-4]; // [税抜]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-5]; // [四捨五入]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		
-		//------------------------------------------------------------------------Line 2
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		bu = (UIButton *)[self viewWithTag:7];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:8];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:9];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:34]; // [(]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:35]; // [)]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		
-		//------------------------------------------------------------------------Line 3
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		bu = (UIButton *)[self viewWithTag:4];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:5];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:6];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:31]; // [-]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:33]; // [÷]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		
-		//------------------------------------------------------------------------Line 4
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		bu = (UIButton *)[self viewWithTag:1];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:2];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:3];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:30]; // [+]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:32]; // [×]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		
-		//------------------------------------------------------------------------Line 5
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		bu = (UIButton *)[self viewWithTag:10]; // [0]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:11]; // [00]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:12]; // [000]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:13]; // [.]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-8]; // [=]
-		if (!bu) bu = (UIButton *)[self viewWithTag:-9]; // [Done]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
+		//MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
+		fy = 170;
+		MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
+		fy += MtextField.frame.size.height;
+		MscrollView.frame = CGRectMake(0,fy, 320,480-20-44-fy);
+		fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
+		MscrollView.contentSize = CGSizeMake(320+(fW+fxGap)*2, MscrollView.frame.size.height);
+		// 以下、MscrollView座標
+		fyGap = 5;	// Yボタン間隔
+		fy = 0;
+		//fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
+		fH = fW / GOLDENPER; // 黄金比
+		fyTop = fy + fyGap;
 	}
 	else {	// ヨコ
-		float fLabelHeight = 25; // 上下の余白を含む高さ
-		float fWidth = 470;
-		float fLeft = (rect.size.width - fWidth) / 2;
-		float fTop = 44;
-		float fHeight = rect.size.height - fTop;
-		float fWaku = 12;		// 枠の幅
-		float fGap = 2;		// ボタン間隔
-		float fxButtons = 7;
-		float fyButtons = 4;
-		float fBuWidth = (fWidth - fWaku*2 - fGap *(fxButtons-1)) / fxButtons;
-		float fBuHeight = (fHeight - fWaku*2 - fLabelHeight - fGap *(fyButtons-1)) / fyButtons;
-		
-		// 回転によるリサイズ
-		UIImageView *iv = (UIImageView *)[self viewWithTag:91];
-		iv.frame = CGRectMake(fLeft, fTop, fWidth, fHeight);
-		
-		MlbCalc.frame = CGRectMake(fLeft+fWaku*2, fTop+fWaku-2, fWidth-fWaku*4, fLabelHeight-fGap);
+		//MlbCalc.frame = CGRectMake(fx,fy, 480-fx-fx,20);	// 1行
+		fy = 75;
+		MtextField.frame = CGRectMake(5,fy, 480-10,30);	// 1行
+		fy += MtextField.frame.size.height;
+		MscrollView.frame = CGRectMake(0,fy, 480,320-20-32-fy);
+		//fW = (480 - fxGap) / 5 - fxGap; // 5列まで表示
+		MscrollView.contentSize = MscrollView.frame.size;
+		// 以下、MscrollView座標
+		fyGap = 4;	// Yボタン間隔
+		fy = 0;
+		fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
+		fW = fH * GOLDENPER; // 黄金比
+		fx = (480 - (fxGap + (fW+fxGap)*6 + fxGap)) / 2;
+		fx += fxGap;
+		fyTop = fy + fyGap;
+	}
 
-		//------------------------------------------------------------------------Line 1
-		float fy = fTop + fWaku + fLabelHeight;
-		float fx = fLeft + fWaku;
-		UIButton *bu;
-		bu = (UIButton *)[self viewWithTag:-1]; // Clear
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-2]; // Back
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:7];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:8];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:9];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:34]; // [(]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:35]; // [)]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		
-		//------------------------------------------------------------------------Line 2
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		bu = (UIButton *)[self viewWithTag:-3]; // [税込]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-4]; // [税抜]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:4];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:5];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:6];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:31]; // [-]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:33]; // [÷]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		
-		//------------------------------------------------------------------------Line 3
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		bu = (UIButton *)[self viewWithTag:-5]; // [四捨五入]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		//bu = (UIButton *)[self viewWithTag:1];
-		//bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:1];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:2];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:3];
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:30]; // [+]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:32]; // [×]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-
-		//------------------------------------------------------------------------Line 4
-		fy += (fBuHeight + fGap);
-		fx = fLeft + fWaku;
-		//bu = (UIButton *)[self viewWithTag:-5]; // [四捨五入]
-		//bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		//bu = (UIButton *)[self viewWithTag:1];
-		//bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:10]; // [0]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:11]; // [00]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:12]; // [000]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:13]; // [.]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
-		fx += (fBuWidth + fGap);
-		bu = (UIButton *)[self viewWithTag:-8]; // [=]
-		if (!bu) bu = (UIButton *)[self viewWithTag:-9]; // [Done]
-		bu.frame = CGRectMake(fx, fy, fBuWidth, fBuHeight);
+	NSInteger iIndex = 0;
+	for (int iCol=0; iCol<6; iCol++)
+	{
+		fy = fyTop;
+		for (int iRow=0; iRow<4; iRow++)
+		{
+			UIButton *bu = [RaKeyButtons objectAtIndex:iIndex++];
+			if (bu) {
+				bu.frame = CGRectMake(fx,fy, fW,fH);
+				//[bu setFrame:CGRectMake(fx,fy, fW,fH)];
+			}
+			fy += (fH + fyGap);
+		}
+		fx += (fW + fxGap);
 	}
 }
 
 
-- (void)save
+- (void)save	// E3recordDetailTVCの中から呼び出されることがある
 {
-	if (Rentity && RzKey && 0 < [RzCalc length]) {
-		[Rentity setValue:[NSNumber numberWithInteger:[RzCalc integerValue]]  forKey:RzKey];
+	if (Rentity && RzKey && MdecAnswer)
+	{
+		AzRETAIN_CHECK(@"save: MdecAnswer", MdecAnswer, 0);
+		//NSDecimalNumber *dec = [NSDecimalNumber decimalNumberWithString:MzAnswer];
+		NSLog(@"Calc: MdecAnswer=%@", MdecAnswer);
+
+		if (MdecAnswer==nil) {
+			[Rentity setValue:[NSDecimalNumber zero]  forKey:RzKey];
+		} else { // デフォルト丸め処理
+			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
+		}
 	}
 }
 
 - (void)hide
 {
-	if (PoParentTableView) {
-		[PoParentTableView setScrollEnabled:YES]; //[0.3]元画面のスクロール許可
+	if (!MbShow) return;
+	MbShow = NO;
+
+	if (MdecAnswer) {
+		[MdecAnswer release];
+		MdecAnswer = nil;
+	}
+	if (self.PoParentTableView) {
+		[self.PoParentTableView setScrollEnabled:YES]; //[0.3]元画面のスクロール許可
 //		AparentTableView.userInteractionEnabled = YES; //[0.3]タッチイベントやキーイベントを有効
 	}
-
+	
 	// Scroll away the overlay
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
 	[UIView setAnimationDuration:0.8];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
-	CGRect rect = [self frame];
-	rect.origin.y = 700;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
+	CGRect rect = MrectInit;
+	rect.origin.y += 500;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
 
 	[self setFrame:rect];
 	
 	// Complete the animation
 	[UIView commitAnimations];
-	MbShow = NO;
 
-	//if ([Rlabel.text integerValue] <= 0) {
-	//if (Rlabel.tag <= 0) {
-	if ([RzCalc doubleValue] <= 0.0) {
-		Rlabel.textColor = [UIColor blueColor];
-	} else {
-		Rlabel.textColor = [UIColor blackColor];
-	}
 	[self.PoParentTableView reloadData]; // Footer表示を消すため
+
+	// 丸め設定
+	[NSDecimalNumber setDefaultBehavior:MbehaviorDefault];
 }
 
 - (void)show
 {
-	if (PoParentTableView) {
-		[PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
+	if (MbShow) return;
+	MbShow = YES;
+
+	if (MdecAnswer) {
+		[MdecAnswer release];
+		MdecAnswer = nil;
+	}
+	if (self.PoParentTableView) {
+		[self.PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
 	}
 	
 	// Scroll in the overlay
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationDuration:0.15]; //　出は早く
+	[UIView setAnimationDuration:0.2]; // 0.15 出は早く
 
-	CGRect rect = [self frame];
-	rect.origin.y = 64; //＝ アプリケーションエリア上端 ＝ ステータスバー(20) ＋ ナビゲーションバー(44)
+	//CGRect rect = self.frame;
+	//rect.origin.y -= 500; //＝ アプリケーションエリア上端 ＝ ステータスバー(20) ＋ ナビゲーションバー(44)
 
-	[self setFrame:rect];
+	[self setFrame:MrectInit];
 	
 	// Complete the animation
 	[UIView commitAnimations];
-	MbShow = YES;
-	Rlabel.textColor = [UIColor grayColor];
+	Rlabel.textColor = [UIColor brownColor];	// 電卓中は、ずっと茶色！ 文字色指定は、ここだけ。
+
+	// 丸め設定
+	[NSDecimalNumber setDefaultBehavior:MbehaviorCalc];	// 計算途中の丸め
 }
 
 - (BOOL)isShow {
 	return MbShow;
 }
 
-/*
 // タッチイベント
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
 {
 	//[self save];
-	//[self hide];
+	[self hide];
 }
-*/
+
+
+
 
 /*
 	計算式		⇒　逆ポーランド記法
@@ -741,226 +579,238 @@ static UIColor *MpColorBlue(float percent) {
  
 	"T ( 5 + 2 )" ⇒ "5 2 + T"
  */
-- (NSString *)zRpnCalc:(NSString *)zCalcString	// 計算式 ⇒ 逆ポーランド記法(Reverse Polish Notation) ⇒ 答え
+int levelOperator( NSString *zOpe )  // 演算子の優先順位
 {
-	NSString *zAnswer = @""; // 戻り値になるため、localPoolの前（親のlocalPool内）で確保すること
+	if ([zOpe isEqualToString:@"*"] || [zOpe isEqualToString:@"/"]) {
+		return 1;
+	}
+	else if ([zOpe isEqualToString:@"+"] || [zOpe isEqualToString:@"-"]) {
+		return 2;
+	}
+	return 99;
+}
+
+- (NSDecimalNumber *)decimalAnswerFomula:(NSString *)strFomula	// 計算式 ⇒ 逆ポーランド記法(Reverse Polish Notation) ⇒ 答え
+{
+	if ([strFomula length] <= 0) return nil;
 	
-	// これ以降、localPool管理エリア
-	NSAutoreleasePool *localPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
-
-	// [-]を数値符号とするための処理　[+]演算子に置き換える
-	NSString *zTemp = [zCalcString stringByReplacingOccurrencesOfString:@"-" withString:@"+(-1)×"];
-	// [+]を挿入した結果、おかしくなる組み合わせを補正する
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"×+" withString:@"×"];
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"÷+" withString:@"÷"];
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"++" withString:@"+"];
-	// 演算子の両側にスペース挿入
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"×" withString:@" * "]; // 半角文字化
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"÷" withString:@" / "]; // 半角文字化
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"+" withString:@" + "]; // [-]は演算子ではない
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"(" withString:@" ( "];
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@")" withString:@" ) "];
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"T" withString:@" T "];
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"N" withString:@" N "];
-	zTemp = [zTemp stringByReplacingOccurrencesOfString:@"R" withString:@" R "];
-
-	// スペースで区切られたコンポーネント(部分文字列)を切り出す
-	NSArray *arComp = [zTemp componentsSeparatedByString:@" "];
-
-	NSInteger iCapLeft = 0;
-	NSInteger iCapRight = 0;
-	NSInteger iCntOperator = 0;	// 演算子の数　（関数は除外）
-	NSInteger iCntNumber = 0;	// 数値の数
-	
-	NSMutableArray *maStack = [NSMutableArray new];
-	NSInteger iStackIdx = 0;
+	NSMutableArray *maStack = [NSMutableArray new];	// - Stack Method
 	NSMutableArray *maRpn = [NSMutableArray new]; // 逆ポーランド記法結果
-	
-	for (int index = 0; index < [arComp count]; index++) 
-	{
-		NSString *zTokn = [arComp objectAtIndex:index];
-		AzLOG(@"arComp[%d]='%@'", index, zTokn);
+	NSDecimalNumber *decAns = nil;
+
+	//-------------------------------------------------localPool BEGIN >>> @finaly release
+	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+	@try {
+		NSString *zTokn;
+		NSString *zz;
 		
-		if ([zTokn isEqualToString:@""] OR [zTokn isEqualToString:@" "]) {
-			// スペースならばパス
+		NSString *zTemp = [strFomula stringByReplacingOccurrencesOfString:@" " withString:@""]; // [ ]スペース除去
+		NSString *zFlag = nil;
+		if ([zTemp hasPrefix:@"-"] || [zTemp hasPrefix:@"+"]) {		// 先頭が[-]や[+]ならば符号として処理する
+			zFlag = [zTemp substringToIndex:1]; // 先頭の1字
+			zTemp = [zTemp substringFromIndex:1]; // 先頭の1字を除く
 		}
-		else if ([zTokn isEqualToString:@"T"] OR [zTokn isEqualToString:@"N"] OR [zTokn isEqualToString:@"R"]) {
-			[maStack addObject:zTokn];  iStackIdx++; // スタックPUSH
+		// マイナス符号 ⇒ " -"
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"×-" withString:@"× s"];  
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"÷-" withString:@"÷ s"];
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"+-" withString:@"+ s"];
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"--" withString:@"- s"];
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"(-" withString:@"( s"];
+		// マイナス演算子 ⇒ " - "
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@")-" withString:@") s "]; 
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"-(" withString:@" s ("];
+		// 残った "-" を演算子になるように " s " にする
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"-" withString:@" s "];  
+		// "s" を "-" に戻す
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"s" withString:@"-"];
+
+		// [+]を挿入した結果、おかしくなる組み合わせを補正する
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"×+" withString:@"×"];
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"÷+" withString:@"÷"];
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"++" withString:@"+"];
+		// 演算子の両側にスペース挿入
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"*" withString:@" * "]; // 前後スペース
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"/" withString:@" / "]; // 前後スペース
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"×" withString:@" * "]; // 半角文字化
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"÷" withString:@" / "]; // 半角文字化
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"+" withString:@" + "]; // [-]は演算子ではない
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@"(" withString:@" ( "];
+		zTemp = [zTemp stringByReplacingOccurrencesOfString:@")" withString:@" ) "];
+		
+		if (zFlag) {
+			zTemp = [zFlag stringByAppendingString:zTemp]; // 先頭に符号を付ける
 		}
-		else if ([zTokn isEqualToString:@"*"] OR [zTokn isEqualToString:@"/"]) {
-			iCntOperator++;
-			[maStack addObject:zTokn];  iStackIdx++; // スタックPUSH
-		}
-		else if ([zTokn isEqualToString:@"+"]) { // [-]は演算子ではない
-			iCntOperator++;
-			while (0 < iStackIdx) {
-				NSString *zz = [maStack objectAtIndex:iStackIdx-1]; // スタック最上位のトークン
-				if ([zz isEqualToString:@"*"] OR [zz isEqualToString:@"/"]) {
-					[maRpn addObject:zz]; // 逆ポーランドへPUSH
-					[maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				} else {
-					break;
+		// スペースで区切られたコンポーネント(部分文字列)を切り出す
+		NSArray *arComp = [zTemp componentsSeparatedByString:@" "];
+		NSLog(@"arComp[]=%@", arComp);
+		
+		NSInteger iCapLeft = 0;
+		NSInteger iCapRight = 0;
+		NSInteger iCntOperator = 0;	// 演算子の数　（関数は除外）
+		NSInteger iCntNumber = 0;	// 数値の数
+		
+		for (int index = 0; index < [arComp count]; index++) 
+		{
+			zTokn = [arComp objectAtIndex:index];
+			AzLOG(@"arComp[%d]='%@'", index, zTokn);
+			
+			if ([zTokn length] < 1 || [zTokn hasPrefix:@" "]) {
+				// パス
+			}
+			else if ([zTokn doubleValue] != 0.0 || [zTokn hasSuffix:@"0"]) {		// 数値ならば
+				iCntNumber++;
+				[maRpn push:zTokn];
+			}
+			else if ([zTokn isEqualToString:@")"]) {	// "("までスタックから取り出してRPNへ追加、両括弧は破棄する
+				iCapRight++;
+				while (zz = [maStack pop]) {
+					if ([zz isEqualToString:@"("]) break; // 両カッコは、破棄する
+					[maRpn push:zz];
 				}
 			}
-			[maStack addObject:zTokn];  iStackIdx++; // スタックへPUSH
-		}
-		else if ([zTokn isEqualToString:@"("]) {
-			iCapLeft++;
-			[maStack addObject:zTokn];  iStackIdx++; // スタックへPUSH
-		}
-		else if ([zTokn isEqualToString:@")"]) {
-			iCapRight++;
-			while (0 < iStackIdx) {
-				NSString *zz = [maStack objectAtIndex:iStackIdx-1]; // スタックからPOP
-				[maStack removeLastObject]; iStackIdx--; // スタックPOP
-				if ([zz isEqualToString:@"("]) break; // 両カッコは、maRpnには不要
-				[maRpn addObject:zz]; // 逆ポーランドPUSH
+			else if ([zTokn isEqualToString:@"("]) {
+				iCapLeft++;
+				[maStack push:zTokn];
+			}
+			else {
+				while (0 < [maStack count]) {
+					//			 スタック最上位の演算子優先順位 ＜ トークンの演算子優先順位
+					if (levelOperator([maStack lastObject]) <= levelOperator(zTokn)) {
+						[maRpn push:[maStack pop]];  // スタックから取り出して、それをRPNへ追加
+					} else {
+						break;
+					}
+				}
+				// スタックが空ならばトークンをスタックへ追加する
+				iCntOperator++;
+				[maStack push:zTokn];
 			}
 		}
-		else { // 数字　先頭が[-]の場合あり
-			iCntNumber++;
-			[maRpn addObject:zTokn]; // 逆ポーランドPUSH
+		// スタックに残っているトークンを全て逆ポーランドPUSH
+		while (zz = [maStack pop]) {
+			[maRpn push:zz];
 		}
-	}
-	
-	// 数値と演算子の数チェック
-	if (iCntNumber < iCntOperator + 1) {
-		zAnswer = NSLocalizedString(@"Too many operators", nil); // 演算子が多すぎる
-	} else if (iCntNumber > iCntOperator + 1) {
-		zAnswer = NSLocalizedString(@"Insufficient operator", nil); // 演算子が足らない
-	}
-	// 括弧チェック
-	if (iCapLeft < iCapRight) {
-		zAnswer = NSLocalizedString(@"Closing parenthesis is excessive", nil); // 括弧が閉じ過ぎ
-	} else if (iCapLeft > iCapRight) {
-		zAnswer = NSLocalizedString(@"Unclosed parenthesis", nil); // 括弧が閉じていない
-	}
-	if (0 < [zAnswer length]) {
-		[maRpn release];
-		[localPool release]; // localPool解放　　zAnswerが解放されないように注意すること
-		[maStack release];
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to compute", nil)
-														message:zAnswer
-													   delegate:nil
-											  cancelButtonTitle:nil
-											  otherButtonTitles:@"OK", nil];
-		[alert show];
-		[alert release];
-		return @""; // ERROR
-	}
-	
-	// スタックに残っているトークンを全て逆ポーランドPUSH
-	while (0 < iStackIdx) {
-		NSString *zz = [maStack objectAtIndex:--iStackIdx]; // スタックからPOP  この後、PUSHすること無いので削除処理をしていない
-		[maRpn addObject:zz]; // 逆ポーランドへPUSH
-	}
+		
+		// 数値と演算子の数チェック
+		if (iCntNumber < iCntOperator + 1) {
+			@throw NSLocalizedString(@"Too many operators", nil); // 演算子が多すぎる
+		}
+		else if (iCntNumber > iCntOperator + 1) {
+			@throw NSLocalizedString(@"Insufficient operator", nil); // 演算子が足らない
+		}
+		// 括弧チェック
+		if (iCapLeft < iCapRight) {
+			@throw NSLocalizedString(@"Closing parenthesis is excessive", nil); // 括弧が閉じ過ぎ
+		}
+		else if (iCapLeft > iCapRight) {
+			@throw NSLocalizedString(@"Unclosed parenthesis", nil); // 括弧が閉じていない
+		}
+		
 #ifdef AzDEBUG
-	for (int index = 0; index < [maRpn count]; index++) 
-	{
-		AzLOG(@"maRpn[%d]='%@'", index, [maRpn objectAtIndex:index]);
-	}
+		for (int index = 0; index < [maRpn count]; index++) 
+		{
+			AzLOG(@"maRpn[%d]='%@'", index, [maRpn objectAtIndex:index]);
+		}
 #endif
-	
-	// スタック クリア
-	[maStack removeAllObjects]; iStackIdx = 0;
-	//-------------------------------------------------------------------------------------
-	// maRpn 逆ポーランド記法を計算する
-	double	d1, d2;
-	
-	for (int index = 0; index < [maRpn count]; index++) 
-	{
-		NSString *zTokn = [maRpn objectAtIndex:index];
 		
-		if ([zTokn isEqualToString:@"T"]) {
-			if (1 <= iStackIdx) {
-				d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				[maStack addObject:[NSString stringWithFormat:@"%f", d1*1.05]];  iStackIdx++; // スタックPUSH
-			}
-		}
-		else if ([zTokn isEqualToString:@"N"]) {
-			if (1 <= iStackIdx) {
-				d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				[maStack addObject:[NSString stringWithFormat:@"%f", d1/1.05]];  iStackIdx++; // スタックPUSH
-			}
-		}
-		else if ([zTokn isEqualToString:@"R"]) {
-			if (1 <= iStackIdx) {
-				d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				[maStack addObject:[NSString stringWithFormat:@"%f", round(d1)]];  iStackIdx++; // スタックPUSH
-			}
-		}
-		else if ([zTokn isEqualToString:@"*"]) {
-			if (2 <= iStackIdx) {
-				d2 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				[maStack addObject:[NSString stringWithFormat:@"%f", d1*d2]];  iStackIdx++; // スタックPUSH
-			}
-		}
-		else if ([zTokn isEqualToString:@"/"]) {
-			if (2 <= iStackIdx) {
-				d2 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				if (d1==0) { // 0割
-					[maRpn release];
-					[localPool release]; // localPool解放　　zAnswerが解放されないように注意すること
-					[maStack release];
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to compute", nil)
-																	message:NSLocalizedString(@"How do you divide by zero", nil)
-																   delegate:nil
-														  cancelButtonTitle:nil
-														  otherButtonTitles:@"OK", nil];
-					[alert show];
-					[alert release];
-					return @""; // ERROR
-					break;
+		// スタック クリア
+		[maStack removeAllObjects]; //iStackIdx = 0;
+		//-------------------------------------------------------------------------------------
+		// maRpn 逆ポーランド記法を計算する
+		NSDecimalNumber *d1, *d2;
+		
+		// この内部だけの丸め指定
+		NSDecimalNumberHandler *behavior = [[NSDecimalNumberHandler alloc]
+											initWithRoundingMode:NSRoundBankers		// 偶数丸め
+											scale:MiRoundingScale + 12	// 丸めた後の桁数
+											raiseOnExactness:YES		// 精度
+											raiseOnOverflow:YES			// オーバーフロー
+											raiseOnUnderflow:YES		// アンダーフロー
+											raiseOnDivideByZero:YES ];	// アンダーフロー
+		[NSDecimalNumber setDefaultBehavior:behavior];	// 計算途中の丸め
+		[behavior release];
+
+		for (int index = 0; index < [maRpn count]; index++) 
+		{
+			NSString *zTokn = [maRpn objectAtIndex:index];
+
+			if ([zTokn isEqualToString:@"*"]) {
+				if (2 <= [maStack count]) {
+					d2 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					d1 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					d1 = [d1 decimalNumberByMultiplyingBy:d2]; // d1 * d2
+					[maStack push:[d1 description]];
 				}
-				[maStack addObject:[NSString stringWithFormat:@"%f", d1/d2]];  iStackIdx++; // スタックPUSH
+			}
+			else if ([zTokn isEqualToString:@"/"]) {
+				if (2 <= [maStack count]) {
+					d2 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					d1 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					if ([d2 doubleValue] == 0.0) { // 0割
+						@throw NSLocalizedString(@"How do you divide by zero", nil);
+					}
+					d1 = [d1 decimalNumberByDividingBy:d2]; // d1 / d2
+					[maStack push:[d1 description]];
+				}
+			}
+			else if ([zTokn isEqualToString:@"-"]) {
+				if (1 <= [maStack count]) {
+					d2 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					if (1 <= [maStack count]) {
+						d1 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					} else {
+						d1 = [NSDecimalNumber zero]; // 0.0;
+					}
+					d1 = [d1 decimalNumberBySubtracting:d2]; // d1 - d2
+					[maStack push:[d1 description]];
+				}
+			}
+			else if ([zTokn isEqualToString:@"+"]) {
+				if (1 <= [maStack count]) {
+					d2 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					if (1 <= [maStack count]) {
+						d1 = [NSDecimalNumber decimalNumberWithString:[maStack pop]]; // スタックからPOP
+					} else {
+						d1 = [NSDecimalNumber zero]; // 0.0;
+					}
+					d1 = [d1 decimalNumberByAdding:d2]; // d1 + d2
+					[maStack push:[d1 description]];
+				}
+			}
+			else {
+				//[maStack addObject:zTokn];  iStackIdx++; // スタックPUSH
+				[maStack push:zTokn]; // 数値をスタックへPUSH
 			}
 		}
-		else if ([zTokn isEqualToString:@"-"]) {
-			if (1 <= iStackIdx) {
-				d2 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				if (1 <= iStackIdx) {
-					d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				} else {
-					d1 = 0.0;
-				}
-				[maStack addObject:[NSString stringWithFormat:@"%f", d1-d2]];  iStackIdx++; // スタックPUSH
-			}
-		}
-		else if ([zTokn isEqualToString:@"+"]) {
-			if (1 <= iStackIdx) {
-				d2 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				if (1 <= iStackIdx) {
-					d1 = [[maStack objectAtIndex:iStackIdx-1] doubleValue]; [maStack removeLastObject]; iStackIdx--; // スタックからPOP
-				} else {
-					d1 = 0.0;
-				}
-				[maStack addObject:[NSString stringWithFormat:@"%f", d1+d2]];  iStackIdx++; // スタックPUSH
-			}
+		
+		// スタックに残った最後が答え
+		if ([maStack count] == 1) {
+			//計算途中精度を通貨小数＋2桁にする
+			decAns = [NSDecimalNumber decimalNumberWithString:[maStack pop]];
+			//NSLog(@"**********1 decAns=%@", decAns);
+			decAns = [decAns decimalNumberByRoundingAccordingToBehavior:MbehaviorCalc]; // 計算結果の丸め処理
+			//NSLog(@"**********2 decAns=%@", decAns);
+			[decAns retain]; // localPool release されないように retain しておく。
 		}
 		else {
-			[maStack addObject:zTokn];  iStackIdx++; // スタックPUSH
+			@throw @"zRpnCalc:ERROR: [maStack count] != 1";
 		}
 	}
-	
-	[maRpn release];
-	[localPool release];
-	// ここまでが、localPool管理エリア　　zAnswerが解放されないように注意すること
-
-	// スタックに残った最後が答え
-	if (iStackIdx == 1) {
-		//zAnswer = [NSString stringWithString:[maStack objectAtIndex:iStackIdx-1]];
-		//計算途中精度を小数以下3桁にする
-		zAnswer = [NSString stringWithFormat:@"%.3f", [[maStack objectAtIndex:iStackIdx-1] doubleValue]];
-		if ([zAnswer hasSuffix:@".000"]) {
-			zAnswer = [zAnswer stringByReplacingOccurrencesOfString:@".000" withString:@""];
-		}
-	} else {
-		AzLOG(@"zRpnCalc:ERROR: iStackIdx != 1");
+	@catch (NSException * errEx) {
+		NSLog(@"Calc: error %@ : %@\n", [errEx name], [errEx reason]);
+		decAns = nil;
 	}
-	[maStack release];
-	return zAnswer; // これは、localPool解放対象外である
+	@catch (NSString *errMsg) {
+		NSLog(@"Calc: error=", errMsg);
+		decAns = nil;
+	}
+	@finally {
+		[autoPool release];
+		//-------------------------------------------------localPool END
+		[maRpn release];
+		[maStack release];
+	}
+	return decAns;
 }
 
 

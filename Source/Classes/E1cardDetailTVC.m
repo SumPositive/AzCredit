@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E1cardDetailTVC.h"
 #import "EditTextVC.h"
 #import "E1editPayDayVC.h"
@@ -31,7 +31,6 @@
 	//--------------------------------Private Alloc
 	//--------------------------------@property (retain)
 	[Re1edit release];
-	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -40,7 +39,6 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
   	}
 	return self;
 }
@@ -53,6 +51,8 @@
 	MlbNote = nil;		// cellForRowAtIndexPathにて生成
 
 	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
+
+	//self.tableView.backgroundColor = [UIColor brownColor];
 
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
@@ -81,6 +81,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:YES];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -91,25 +93,10 @@
     [self.tableView reloadData];
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-		return YES; // この方向だけは常に許可する
-	} 
-	else if (MbOptAntirotation) return NO; // 回転禁止
-	
-	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		// 逆面（ホームボタンが画面の上側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
-	}
-	return YES;
-	// 現在の向きは、self.interfaceOrientation で取得できる
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる
@@ -137,25 +124,6 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
-
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 
 #pragma mark Table view methods
@@ -232,10 +200,19 @@
 				case 1: // PayDay
 				{
 					cell.textLabel.text = NSLocalizedString(@"PayDay",nil);
-					
+
 					if ([Re1edit.nClosingDay integerValue] <= 0) {
-						cell.detailTextLabel.text = NSLocalizedString(@"Closing-Debit",nil);
-					} else {
+						if ([Re1edit.nPayDay integerValue] <= 0) {
+							//[0.4]当日締 ⇒ 当日払
+							cell.detailTextLabel.text = NSLocalizedString(@"Closing-Debit",nil);
+						} else {
+							//[0.4]当日締 ⇒ ○○日後払
+							cell.detailTextLabel.text = [NSString stringWithFormat:
+														 NSLocalizedString(@"Closing-DebitAfter",nil),
+														 GstringDay([Re1edit.nPayDay integerValue])];
+						}
+					} 
+					else {
 						NSString *zPayMonth = nil;
 						switch ([Re1edit.nPayMonth integerValue]) {
 							case 0:
@@ -393,7 +370,7 @@
 					// E8bankTVC へ
 					E8bankTVC *tvc = [[E8bankTVC alloc] init];
 					tvc.title = NSLocalizedString(@"Bank choice",nil);
-					tvc.Re0root = [EntityRelation e0root];
+					tvc.Re0root = [MocFunctions e0root];
 					tvc.Pe1card = Re1edit;
 					[self.navigationController pushViewController:tvc animated:YES];
 					[tvc release];
@@ -471,15 +448,11 @@
 
 - (void)cancel:(id)sender 
 {
-	NSManagedObjectContext *contx = Re1edit.managedObjectContext;
+	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+
 	if (0 <= PiAddRow) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[contx deleteObject:Re1edit];
-		// SAVE
-		[EntityRelation commit];
-	}
-	else {
-		[contx rollback]; // 前回のSAVE以降を取り消す
+		[MocFunctions deleteEntity:Re1edit];
 	}
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -493,8 +466,8 @@
 	}
 	
 	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
-	[EntityRelation e1update:Re1edit];
-	[EntityRelation commit];
+	[MocFunctions e1update:Re1edit];
+	[MocFunctions commit];
 	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }

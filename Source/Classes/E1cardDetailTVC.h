@@ -19,7 +19,6 @@
 	NSInteger	PiAddRow;	// (-1)Edit
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields

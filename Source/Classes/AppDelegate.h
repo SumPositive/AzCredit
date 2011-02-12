@@ -6,9 +6,17 @@
 //  Copyright __MyCompanyName__ 2009. All rights reserved.
 //
 
-@class EntityRelation;
+//#import "AdMobDelegateProtocol.h"
+//#import "AdMobInterstitialDelegateProtocol.h"
+//#import "AdMobInterstitialAd.h"
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> 
+#define VIEW_TAG_LOGINPASS			9001
+#define VIEW_TAG_HttpServer			9010
+
+@class MocFunctions;
+
+@interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate>
+											// AdMobDelegate, AdMobInterstitialDelegate>
 {
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;	    
@@ -17,7 +25,7 @@
     UIWindow *window;
     UINavigationController *navigationController;
 
-	NSMutableArray		*RaComebackIndex;	// an array of selections for each drill level
+//	NSMutableArray		*RaComebackIndex;	// an array of selections for each drill level
 	// i.e.
 	// [0, 100002, 300015] =	at level 1 drill/ section=0 row=0, (section=100002 / GD_SECTION_TIMES)
 	//							at level 2 drill/ section=1 row=2,
@@ -27,19 +35,28 @@
 	//						no selection at level 2 (it's -1) so stay at level 2
 
 //	EntityRelation *RentityRelation;
+	
+@private
+	//BOOL	bDidBecomeActive; // YES=起動または復帰した ⇒ ログイン処理する
+	UIView				*MviewLogin;
+	NSDate				*Me3dateUse;
+	BOOL				MbLoginShow;
+	//AdMobInterstitialAd *interstitialAd;
 }
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) NSMutableArray *RaComebackIndex;  // 外部から参照されるため
-//@property (nonatomic, retain, readonly) EntityRelation *RentityRelation;
+@property (nonatomic, retain) UIWindow					*window;
+@property (nonatomic, retain) UINavigationController	*navigationController;
+//@property (nonatomic, retain) NSMutableArray			*RaComebackIndex;  // 外部から参照されるため
+@property (nonatomic, assign) NSDate					*Me3dateUse;
 
-@property (nonatomic, assign, readonly) NSString *applicationDocumentsDirectory;
+@property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
+@property (nonatomic, assign, readonly) BOOL			MbLoginShow;
 
 - (IBAction)saveAction:sender;
+//- (BOOL)appDidBecomeActive;
 
 @end
 

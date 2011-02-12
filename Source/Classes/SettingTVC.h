@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingTVC : UITableViewController 
+@interface SettingTVC : UITableViewController  <UITextFieldDelegate>
 {
 
 @private
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+	UITextField  *MtfPass1;
+	UITextField  *MtfPass2;
+	//UITextField  *MtfTaxRate;
+	UILabel		*MlbTaxRate;
 	//----------------------------------------------assign
 	//BOOL MbOptBootTopView;
 	BOOL MbOptAntirotation;

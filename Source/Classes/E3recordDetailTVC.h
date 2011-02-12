@@ -8,21 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+@class E0root;
 @class E3record;
+@class E3recordTVC;
 @class CalcView;
 
 @interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate>
 {
 @private
 	//--------------------------retain
-	E3record	*Re3edit;
+	E3record		*Re3edit;
 	//--------------------------assign
 	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する
 									//		     (1)New (2)Card固定 (3)Shop固定 (4)Category固定
-	NSInteger	PiFirstYearMMDD;	// PbAdd=YESのとき、E2がこの支払日以降になるように追加する
+	NSInteger	PiFirstYearMMDD;	// 「この支払日になるように利用明細を追加」のとき、支払日が渡される
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	NSMutableArray		*RaE6parts;
 	NSMutableArray		*RaE3lasts;		// 前回引用するための直近3件
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -35,7 +36,7 @@
 	BOOL			MbOptAntirotation;
 	BOOL			MbOptEnableInstallment;
 	BOOL			MbOptUseDateTime;
-	BOOL			MbOptAmountCalc;
+	//BOOL			MbOptAmountCalc;
 	//BOOL			MbAddmode;			// cancel:
 	NSInteger		MiE1cardRow;
 	BOOL			MbE6paid;			// YES:PAIDあり、主要条件の変更禁止！
@@ -43,10 +44,11 @@
 	BOOL			MbRotatShowCalc;	// YES:回転前に表示されていたので、回転後再表示する。
 	NSInteger		MiIndexE3lasts;
 	BOOL			MbModified;			// YES:変更された ⇒ ToolBarを無効にする
+	BOOL			MbSaved;			// YES:保存ボタンが押されて、前のViewへ戻る途中。E6が削除されている可能性があるので再描画禁止にする。
 }
 
-@property (nonatomic, retain) E3record	*Re3edit;
-@property NSInteger						PiAdd;
-@property NSInteger						PiFirstYearMMDD;	
+@property (nonatomic, retain) E3record		*Re3edit;
+@property NSInteger							PiAdd;
+@property NSInteger							PiFirstYearMMDD;	
 
 @end

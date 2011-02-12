@@ -12,6 +12,7 @@
 
 @interface E1editPayDayVC (PrivateMethods)
 - (void)viewDesign;
+- (void)buttonDebit;
 - (void)done:(id)sender;
 @end
 
@@ -76,6 +77,17 @@
 	MlbPayDay.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbPayDay]; [MlbPayDay release];
 	//------------------------------------------------------
+	MbuDebit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[MbuDebit setTitle:NSLocalizedString(@"PayDay Debit",nil) forState:UIControlStateNormal];
+	[MbuDebit addTarget:self action:@selector(buttonDebit) forControlEvents:UIControlEventTouchDown];
+	[self.view addSubview:MbuDebit]; //[MbuDebit release]; autoreleaseされるため
+	//------------------------------------------------------
+	MlbDebit = [[UILabel alloc] init];
+	MlbDebit.text = NSLocalizedString(@"PayDay Debit msg",nil);
+	MlbDebit.font = [UIFont systemFontOfSize:12];
+	MlbDebit.backgroundColor = [UIColor clearColor];
+	[self.view addSubview:MlbDebit]; [MlbDebit release];
+	//------------------------------------------------------
 }
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
@@ -114,10 +126,9 @@
 //	[MtfAmount becomeFirstResponder];  // キーボード表示
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
+{	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -132,32 +143,63 @@
 - (void)viewDesign
 {
 	CGRect rect = self.view.bounds;
-	
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-	 OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
-	{	// タテ
-		rect.origin.y = self.view.bounds.size.height/2 - GD_PickerHeight/2;
-	}
-	else {	// ヨコ
-		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
-	}
+
+	rect.origin.x = 0;
+	//---------------------------- Picker
+	rect.origin.y = 25;
 	rect.size.height = GD_PickerHeight;
+	rect.size.width = 320;
 	Mpicker.frame = rect;
 
+	//---------------------------- Picker見出しラベル
+	rect.origin.y = 5;
 	rect.size.width = 80;
 	rect.size.height = 20;
-	rect.origin.y -= rect.size.height;
-	float fcx = self.view.bounds.size.width / 2;
-	// 中央
-	rect.origin.x = fcx - (rect.size.width / 2);
-	MlbPayMonth.frame = rect;
+	//float fcx = 320 / 2;
 	// 左
-	rect.origin.x = fcx - (rect.size.width * 1.5) - 20;
+	rect.origin.x = 10; //fcx - (rect.size.width * 1.5) - 20;
 	MlbClosing.frame = rect;
+	// 中央
+	rect.origin.x = 100; //fcx - (rect.size.width / 2);
+	MlbPayMonth.frame = rect;
 	// 右
-	rect.origin.x = fcx + (rect.size.width / 2) + 20;
+	rect.origin.x = 200; //fcx + (rect.size.width / 2) + 20;
 	MlbPayDay.frame = rect;
-	
+
+	//---------------------------- Debit
+	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+	{	// タテ
+		// 中央
+		rect.origin.y += GD_PickerHeight + 80;
+		rect.size.width = 80;
+		rect.origin.x = 160 - (rect.size.width / 2);
+		rect.size.height = 30;
+		MbuDebit.frame = rect;
+		// 中央
+		rect.origin.y += rect.size.height;
+		rect.size.width = 300;
+		rect.origin.x = 160 - (rect.size.width / 2);
+		rect.size.height = 50;
+		MlbDebit.frame = rect;
+		MlbDebit.textAlignment = UITextAlignmentCenter;
+		MlbDebit.numberOfLines = 3;
+	}
+	else {	// ヨコ
+		// Pickerの右
+		rect.origin.x = 320 + 40;
+		rect.size.width = 80;
+		rect.origin.y = 80;
+		rect.size.height = 30;
+		MbuDebit.frame = rect;
+		// 下
+		rect.origin.x = 320 + 10;
+		rect.size.width = 150;
+		rect.origin.y = 110;
+		rect.size.height = 100;
+		MlbDebit.frame = rect;
+		MlbDebit.textAlignment = UITextAlignmentLeft;
+		MlbDebit.numberOfLines = 6;
+	}
 }	
 
 
@@ -183,11 +225,11 @@
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
 	switch (component) {
-		case 0: return 100;
+		case 0: return 80;
 			break;
 		case 1: return 100;
 			break;
-		case 2: return 100;
+		case 2: return 120;
 			break;
 	}
 	return 0;
@@ -198,7 +240,7 @@
 	switch (component) {
 		case 0:
 			if (row <= 0) {
-				return NSLocalizedString(@"Debit", nil); // 0=Debit(自動引落し)	
+				return NSLocalizedString(@"Debit", nil); // 0=Debit(利用日⇒支払日)	
 			} else {
 				return [NSString stringWithFormat:@"%@%@", 
 						GstringDay( row ), 
@@ -206,53 +248,78 @@
 			}
 			break;
 		case 1:
-			switch (row) {
-				case 0:
-					return NSLocalizedString(@"Debit",nil);
-					break;
-				case 1:
-					return NSLocalizedString(@"This month",nil);
-					break;
-				case 2:
-					return NSLocalizedString(@"Next month",nil);
-					break;
-				case 3:
-					return NSLocalizedString(@"Twice months",nil);
-					break;
+			if ([Mpicker selectedRowInComponent:0] <= 0) { // 当日締
+				if (row==0) {
+					return @"⇒ ⇒ ⇒";
+				}
+			}
+			else {
+				switch (row) {
+					case 0:
+						//return @"";
+						break;
+					case 1:
+						return NSLocalizedString(@"This month",nil);
+						break;
+					case 2:
+						return NSLocalizedString(@"Next month",nil);
+						break;
+					case 3:
+						return NSLocalizedString(@"Twice months",nil);
+						break;
+				}
 			}
 			break;
 		case 2:
-			if (row <= 0) {
-				return NSLocalizedString(@"Debit", nil); // 0=Debit(自動引落し)	
+			if ([Mpicker selectedRowInComponent:0] <= 0) { 
+				if (row <= 0) {
+					return NSLocalizedString(@"Debit day", nil); // 当日払
+				} else if (row <= 28) {
+					return [NSString stringWithFormat:@"%@%@", 
+							GstringDay( row ), 
+							NSLocalizedString(@"Debit After", nil)];
+				}
 			} else {
-				return [NSString stringWithFormat:@"%@%@", 
-						GstringDay( row ), 
-						NSLocalizedString(@"Due", nil)];
+				if (0 < row && row <= 29) {
+					return [NSString stringWithFormat:@"%@%@", 
+							GstringDay( row ), 
+							NSLocalizedString(@"Due", nil)];
+				}
 			}
 			break;
 	}
-	return 0;
+	return @"";
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-	if ([Mpicker selectedRowInComponent:1] <= 0) {
+	[Mpicker reloadAllComponents];
+	
+	if ([Mpicker selectedRowInComponent:0] <= 0) {
 		// 0=Debit(自動引落し)
-		[pickerView selectRow:0 inComponent:0 animated:YES];
-		[pickerView selectRow:0 inComponent:2 animated:YES];
+		[Mpicker selectRow:0 inComponent:1 animated:YES];
+		if (28<[Mpicker selectedRowInComponent:2]) {
+			[Mpicker selectRow:28 inComponent:2 animated:YES];
+		}
 	} 
-	else if ([Mpicker selectedRowInComponent:0] <= 0 
-		  OR [Mpicker selectedRowInComponent:2] <= 0) {
-		NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
-		if (iDay < 1 OR 29 < iDay) iDay = 20;
-		[pickerView selectRow:iDay inComponent:0 animated:YES];
-		
-		iDay = [Re1edit.nPayDay integerValue];
-		if (iDay < 1 OR 29 < iDay) iDay = 20;
-		[pickerView selectRow:iDay inComponent:2 animated:YES];
+	else {
+		if ([Mpicker selectedRowInComponent:1]<=0) {
+			[Mpicker selectRow:1 inComponent:1 animated:YES];
+		}
+		if ([Mpicker selectedRowInComponent:2]<=0) {
+			[Mpicker selectRow:1 inComponent:2 animated:YES];
+		}
 	}
 }
 
+- (void)buttonDebit		// [Debit]ボタンが押されたとき
+{
+	[Mpicker selectRow:0 inComponent:0 animated:YES];	//「当日締」
+	[Mpicker reloadAllComponents];						// 再描画
+	[Mpicker selectRow:0 inComponent:0 animated:YES];	// 2回目だが、こうしないと再描画されない
+	[Mpicker selectRow:0 inComponent:1 animated:YES];	//「⇒⇒⇒」
+	[Mpicker selectRow:0 inComponent:2 animated:YES];	//「当日払」
+}
 
 // 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
 // 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
@@ -261,12 +328,11 @@
 {
 	// 結果更新
 	if ([Mpicker selectedRowInComponent:0] <= 0 
-	 OR [Mpicker selectedRowInComponent:1] <= 0 
-	 OR [Mpicker selectedRowInComponent:2] <= 0) {
+	 OR [Mpicker selectedRowInComponent:1] <= 0) {
 		// 0=Debit(自動引落し)
 		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
 		Re1edit.nPayMonth = [NSNumber numberWithInteger:-1];
-		Re1edit.nPayDay = [NSNumber numberWithInteger:0];
+		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]]; // 日後払い
 	} else {
 		// 締め支払
 		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];

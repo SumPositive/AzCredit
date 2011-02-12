@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E5categoryDetailTVC.h"
 #import "EditTextVC.h"
 
@@ -80,6 +80,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+	// 呼び出し側(親)にてツールバーを常に非表示にしているが、念のため
+	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -90,10 +92,9 @@
     [self.tableView reloadData];
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
+{	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -118,25 +119,6 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
-
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 
 #pragma mark Table view methods
@@ -283,19 +265,15 @@
 
 - (void)cancel:(id)sender 
 {
-	NSManagedObjectContext *contx = Re5edit.managedObjectContext;
+	if (PbSave) {
+		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	}
+	
 	if (PbAdd) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[contx deleteObject:Re5edit];
+		[MocFunctions deleteEntity:Re5edit];
+	}
 
-		if (PbSave) {
-			// SAVE
-			[EntityRelation commit];
-		}
-	}
-	else if (PbSave) {
-		[contx rollback]; // 前回のSAVE以降を取り消す
-	}
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
@@ -309,12 +287,9 @@
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
 	NSString *zName = [Re5edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([zName length] <= 0) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E5zNameLess",nil)
-														 message:NSLocalizedString(@"E5zNameLessMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
-		[alert show];
+		alertBox(NSLocalizedString(@"E5zNameLess",nil),
+				 NSLocalizedString(@"E5zNameLessMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	// 重複が無いか調べる
@@ -329,12 +304,9 @@
 	NSInteger iCnt = 2;
 	if (PbAdd) iCnt = 1;
 	if (iCnt < [aRes count]) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E5zNameDups",nil)
-														 message:NSLocalizedString(@"E5zNameDupsMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
-		[alert show];
+		alertBox(NSLocalizedString(@"E5zNameDups",nil),
+				 NSLocalizedString(@"E5zNameDupsMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	// OK トリム済み＆重複なし
@@ -342,11 +314,7 @@
 	
 	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
 		// SAVE
-		//if (![contx save:&err]) {
-		//	NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-		//	abort();
-		//}
-		[EntityRelation commit];
+		[MocFunctions commit];
 	}
 
 	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理

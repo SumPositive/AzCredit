@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E8bankTVC.h"
 #import "E8bankDetailTVC.h"
 #import "E2invoiceTVC.h"
@@ -34,8 +34,6 @@
 	// @property (retain)
 	AzRETAIN_CHECK(@"E8bankTVC Re0root", Re0root, 0)
 	[Re0root release];
-
-	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -46,7 +44,6 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -62,7 +59,7 @@
 	
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-		   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
+		   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"] // <<
 		   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 
 	if (Pe1card == nil) {
@@ -86,7 +83,7 @@
 		[buUntitled release];
 	}
 	else {
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
@@ -101,6 +98,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -114,29 +113,21 @@
 	
 	// Me8banks Requery. 
 	//--------------------------------------------------------------------------------
-	if (RaE8banks != nil) {
-		[RaE8banks release];
-		RaE8banks = nil;
-	}
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E8bank" 
-											  inManagedObjectContext:Re0root.managedObjectContext];
-	[fetchRequest setEntity:entity];
 	// Sorting
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nRow" ascending:YES];
 	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1, nil];
-	[fetchRequest setSortDescriptors:sortArray];
-	[sortArray release];
 	[sort1 release];
-	// Fitch
-	NSError *error = nil;
-	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (error) {
-		AzLOG(@"Error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
+	
+	NSArray *arFetch = [MocFunctions select:@"E8bank" 
+										limit:0
+									   offset:0
+										where:nil
+										 sort:sortArray];
+	[sortArray release];
+	
+	if (RaE8banks != nil) {
+		[RaE8banks release];
 	}
-	[fetchRequest release];
-	//
 	RaE8banks = [[NSMutableArray alloc] initWithArray:arFetch];
 	
 	// TableView Reflesh
@@ -159,25 +150,10 @@
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-		return YES; // この方向だけは常に許可する
-	} 
-	else if (MbOptAntirotation) return NO; // 回転禁止
-	
-	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		// 逆面（ホームボタンが画面の上側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
-	}
-	return YES;
-	// 現在の向きは、self.interfaceOrientation で取得できる
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
@@ -186,22 +162,14 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// ホームボタンが画面の下側にある状態。通常
-		[self.navigationController setToolbarHidden:NO animated:NO]; // ツールバー表示する
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
-	}
-	
-	if (Pe1card == nil) {
+/*	if (Pe1card == nil) {
 		// Comback (-1)にして未選択状態にする
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
 		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}
+	}*/
 }
-
+/*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
 {
@@ -221,7 +189,7 @@
 	[self.tableView scrollToRowAtIndexPath:indexPath 
 						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 }
-
+*/
 
 #pragma mark Local methods
 
@@ -260,7 +228,9 @@
 		e8detail.PbSave = YES;	// マスタモード：
 	}
 
+	// 呼び出し側(親)にてツールバーを常に非表示にする
 	e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+
 	[self.navigationController pushViewController:e8detail animated:YES];
 	[e8detail release]; // self.navigationControllerがOwnerになる
 }
@@ -349,15 +319,18 @@
 			cell.textLabel.text = e8obj.zName;
 #endif
 		// 未払い金額
-		NSNumber *sumAmount = [e8obj valueForKeyPath:@"e1cards.@sum.e2unpaids.@sum.sumAmount"];
-		if ([sumAmount integerValue] <= 0) {
-			cell.detailTextLabel.textColor = [UIColor blueColor];
-		} else {
+		//NSNumber *sumAmount = [e8obj valueForKeyPath:@"e1cards.@sum.e2unpaids.@sum.sumAmount"];
+		NSDecimalNumber *sumAmount = [e8obj valueForKeyPath:@"e1cards.@sum.e2unpaids.@sum.sumAmount"];
+		if ([sumAmount compare:[NSDecimalNumber zero]] == NSOrderedDescending)	// e7obj.sumAmount > 0
+		{
 			cell.detailTextLabel.textColor = [UIColor blackColor];
+		} else {
+			cell.detailTextLabel.textColor = [UIColor blueColor];
 		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		[formatter setLocale:[NSLocale currentLocale]]; 
 		cell.detailTextLabel.text = [formatter stringFromNumber:sumAmount];
 		[formatter release];
 		
@@ -376,7 +349,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
+		cell.imageView.image = [UIImage imageNamed:@"Icon32-Add.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO;
 		if (rows == 0) {
@@ -411,17 +384,21 @@
 			[self E8bankDatail:indexPath];
 		} 
 		else {
-			// Comback-L1 E8bank 記録
+/*			// Comback-L1 E8bank 記録
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This
 			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
 			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-			
+*/			
 			// E2invoice へ
 			E8bank *e8obj = [RaE8banks objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
+#ifdef AzDEBUG
+			tvc.title = [NSString stringWithFormat:@"E2 %@", e8obj.zName];
+#else
 			tvc.title = e8obj.zName;
+#endif
 			tvc.Re1select = nil;
 			tvc.Re8select = e8obj;
 			[self.navigationController pushViewController:tvc animated:YES];

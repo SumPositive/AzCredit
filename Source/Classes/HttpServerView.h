@@ -17,8 +17,6 @@
 	UIAlertView			*RalertHttpServer;
 	//----------------------------------------------assign
 	E0root				*Pe0root;
-
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	NSDictionary		*MdicAddresses;
 }
 

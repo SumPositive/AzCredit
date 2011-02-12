@@ -8,7 +8,6 @@
 
 #import "Global.h"
 
-
 UIColor *GcolorBlue(float percent) 
 {
 	float red = percent * 255.0f;
@@ -143,15 +142,16 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 // 文字列から画像を生成する
 UIImage *GimageFromString(NSString* str)
 {
-    UIFont* font = [UIFont systemFontOfSize:12.0];
+    UIFont* font = [UIFont systemFontOfSize:24]; //12.0; [0.4.17]Retina対応
     CGSize size = [str sizeWithFont:font];
-    int width = 32;
-    int height = 32;
+    int width = 64; //32; [0.4.17]Retina対応
+    int height = 64; //32;
     int pitch = width * 4;
+	
 	
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     // 第一引数を NULL にすると、適切なサイズの内部イメージを自動で作ってくれる
-    CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, pitch, 
+	CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, pitch, 
 												 colorSpace, kCGImageAlphaPremultipliedLast);
     CGColorSpaceRelease(colorSpace);
 	CGAffineTransform transform = CGAffineTransformMake(1.0,0.0,0.0, -1.0,0.0,0.0); // 上下転置行列
@@ -161,7 +161,8 @@ UIImage *GimageFromString(NSString* str)
     UIGraphicsPushContext(context);
     
 	CGContextSetRGBFillColor(context, 255, 0, 0, 1.0f);
-	[str drawAtPoint:CGPointMake(16.0f - (size.width / 2.0f), -23.5f) withFont:font];
+	//[str drawAtPoint:CGPointMake(16.0f - (size.width / 2.0f), -23.5f) withFont:font];
+	[str drawAtPoint:CGPointMake(32.0f - (size.width / 2.0f), -47.0f) withFont:font]; //[0.4.17]Retina対応
 	
 	// 描画終了
 	UIGraphicsPopContext();
@@ -193,5 +194,16 @@ NSDate *GdateYearMMDD( NSInteger PiMinYearMMDD, int PiHour, int PiMinute, int Pi
 	NSDate *datetime = [dateFormatter dateFromString:dateStr];  
 	[dateFormatter release];  	
 	[dateStr release];
-	return datetime;
+	return datetime; // NSDateは、常にUTC(+0000)協定世界時間である。
+}
+
+void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton )
+{
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:zTitle
+													message:zMsg
+												   delegate:nil
+										  cancelButtonTitle:nil
+										  otherButtonTitles:zButton, nil];
+	[alert show];
+	[alert release];
 }

@@ -12,10 +12,12 @@
 #import "SFHFKeychainUtils.h"
 #import "FileCsv.h"
 
-#define TAG_ACTION_DOWNLOAD_START	900
-#define TAG_ACTION_FETCH_CANCEL		901
-#define TAG_ACTION_DOWNLOAD_CANCEL	902
-#define TAG_ACTION_UPLOAD_CANCEL	903
+#define TAG_ACTION_UPLOAD_START		109
+#define TAG_ACTION_DOWNLOAD_START	118
+#define TAG_ACTION_FETCH_CANCEL		127
+#define TAG_ACTION_DOWNLOAD_CANCEL	136
+#define TAG_ACTION_UPLOAD_CANCEL	145
+
 
 @interface GooDocsTVC (PrivateMethods)
 	// Google GData Access Methods
@@ -39,6 +41,8 @@
 
 	- (void)viewDesign;
 	- (void)switchAction:(id)sender;
+	- (void)indicatorOn;  // 進捗サインON
+	- (void)indicatorOff; // 進捗サインOFF
 @end
 @interface UIActionSheet (extended)
 	- (void)setMessage:(NSString *)message;
@@ -49,7 +53,7 @@
 
 - (void)dealloc 
 {
-	[MprogressView release];
+	[self indicatorOff]; // 念のため（リークしないように）入れた。
 
 	AzRETAIN_CHECK(@"GooDocs MtfPassword", RtfPassword, 3) // (1)alloc (2)addSubView (3)TableViewCell
 	[RtfPassword release];
@@ -74,7 +78,6 @@
 	AzRETAIN_CHECK(@"GooDocs Re0root", Re0root, 1)
 	[Re0root release];
 	
-	//[MautoreleasePool release];
     [super dealloc];
 }
 
@@ -83,7 +86,6 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブルにする
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		self.tableView.allowsSelectionDuringEditing = YES;
 		MbLogin = NO; // 未ログイン
 		MbUpload = NO;
@@ -108,7 +110,7 @@
 	RtfUsername.placeholder = NSLocalizedString(@"@gmail.com Optional",nil);
 	RtfUsername.text = [defaults objectForKey:GD_DefUsername];
 	RtfUsername.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
-	RtfUsername.keyboardType = UIKeyboardTypeASCIICapable;
+	RtfUsername.keyboardType = UIKeyboardTypeEmailAddress;
 	RtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
 	RtfUsername.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
 	RtfUsername.delegate = self;
@@ -149,6 +151,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
 
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -182,8 +186,7 @@
 		[MfetcherActive stopFetching];
 		MfetcherActive = nil;
 	}
-	// 進捗サインOFF
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+	[self indicatorOff]; // 進捗サインOFF
 	
 	// 戻る前にキーボードを消さないと、次に最初から現れた状態になってしまう。
 	// キーボードを消すために全てのコントロールへresignFirstResponderを送る ＜表示中にしか効かない＞
@@ -197,9 +200,9 @@
 }
 */
 
-// 回転サポート
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// 回転禁止でも万一ヨコからはじまった場合、タテにはなるようにしてある。
+// 回転の許可　ここでは許可、禁止の判定だけする
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
@@ -323,13 +326,11 @@
 	[self setUploadTicket:nil];
 
 	//	[mUploadProgressIndicator setDoubleValue:0.0];
-	MprogressView.progress = 0.0;
+	//MprogressView.progress = 0.0;
 	// 進捗表示を消す
 //	[self.actionProgress release];
 
-	// 進捗サインOFF
-	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+	[self indicatorOff]; // 進捗サインOFF
 
 	if (error == nil) {
 		// refetch the current doc list
@@ -338,7 +339,7 @@
 		// tell the user that the add worked
 		// 成功アラート
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploaded Compleat!",nil)
-														message:nil
+														message:NSLocalizedString(@"Uploaded Compleat!msg",nil)
 													   delegate:self 
 											  cancelButtonTitle:nil 
 											  otherButtonTitles:@"OK", nil];
@@ -409,7 +410,8 @@
 					exportFormat:(NSString *)exportFormat
 					authService:(GDataServiceGoogle *)service 
 {
-	// 進捗サインON
+	[self indicatorOn];	// 進捗サインON
+/*	// 進捗サインON
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
 	{
 		MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
@@ -417,10 +419,15 @@
 											cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
 									   destructiveButtonTitle:nil
 											otherButtonTitles:nil];
-		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 		[MactionProgress setMessage:NSLocalizedString(@"Downloading...",nil)];
 		MactionProgress.tag = TAG_ACTION_DOWNLOAD_CANCEL;
-		[ai setCenter:CGPointMake(160.0f, 90.0f)];
+		// アクティビティインジケータ
+		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+		CGPoint point;
+		point.y = 50.0;
+		if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) point.x = 480.0 / 2.0; // ヨコ
+		else															  point.x = 320.0 / 2.0; // タテ
+		[ai setCenter:point];
 		[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		[ai startAnimating];
 		[MactionProgress addSubview:ai];
@@ -428,7 +435,7 @@
 		//[actionProgress showInView:self.view.window]; windowでは回転非対応
 		[MactionProgress showInView:self.view]; // ToolBarが無い場合
 		[MactionProgress release];
-	}
+	}*/
 	
 	// the content src attribute is used for downloading
 	NSURL *exportURL = [[entry content] sourceURL];
@@ -467,7 +474,7 @@
 		[MfetcherActive stopFetching];
 		MfetcherActive = nil;
 	}
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+	[self indicatorOff]; // 進捗サインOFF
 
 	if (!didWrite) {
 		NSLog(@"Error saving file: %@", error);
@@ -510,7 +517,8 @@
 		}
 	}
 	// 進捗サインOFF
-	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
+	//if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
+	[self indicatorOff];
 }
 
 - (void)alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -542,22 +550,25 @@
 		[MfetcherActive stopFetching];
 		MfetcherActive = nil;
 	}
-	// 進捗サインOFF
-	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+	[self indicatorOff]; // 進捗サインOFF
 }
 
 
 #pragma mark UPLOAD
 
-- (void)uploadFile: (NSString *)docName {
-    
+- (void)uploadFile: (NSString *)docName 
+{
 	NSString *dir1 = NSHomeDirectory();
 	NSString *dir2 = [dir1 stringByAppendingPathComponent:@"Documents"];
 	NSString *pathLocal = [dir2 stringByAppendingPathComponent:GD_CSVFILENAME]; // ローカルファイル名
 	// ローカルファイル名も .csv を付けないこと。さもなくばExcelタイプで登録されてしまい、ダウンロードしても読めなくなる。
 	@try {
-		NSString *errorMsg = nil;
+		// Upload直前にCSVファイルへ書き出す
+		NSString *zCsvErr = [FileCsv zSave:Re0root toLocalFileName:GD_CSVFILENAME]; // この間、待たされるのが問題になるかも！！
+		if (zCsvErr) {
+			@throw zCsvErr;
+		}
+		
 		NSString *mimeType = @"text/csv";  //@"text/plain";
 		
 		Class entryClass = NSClassFromString(@"GDataEntryStandardDoc");
@@ -579,8 +590,7 @@
 
 		NSFileHandle *uploadFileHandle = [NSFileHandle fileHandleForReadingAtPath:pathLocal];
 		if (!uploadFileHandle) {
-			//errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
-			errorMsg = NSLocalizedString(@"Cannot read file.",nil);
+			@throw NSLocalizedString(@"Cannot read file.",nil);
 		}
 		else {
 			[newEntry setUploadFileHandle:uploadFileHandle];
@@ -608,35 +618,21 @@
 			
 			[self setUploadTicket:ticket];
 		}
-		
-		if (errorMsg) {
-			// 経過表示 ＆ 中断ボタンを消す
-			//[self.actionProgress release];
-			// エラーメッセージ表示
-			UIAlertView *alert = [[UIAlertView alloc] 
-								  initWithTitle:NSLocalizedString(@"Upload Fail",nil)
-								  message:errorMsg
-								  delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-			[alert show];
-			[alert release];
-			// 進捗サインOFF
-			if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
-		}
 	}
 	@catch (NSException *errEx) {
-		NSString *name = [errEx name];
-		NSLog(@"◆ %@ : %@\n", name, [errEx reason]);
-		if ([name isEqualToString:NSRangeException]) {
-			NSLog(@"Exception was caught successfully.\n");
-		} else {
-			[errEx raise];
-		}
+		NSLog(@"***uploadFile: error: %@ : %@\n", [errEx name], [errEx reason]);
+		alertBox(NSLocalizedString(@"Upload Fail",nil), [errEx name], NSLocalizedString(@"Roger",nil));
+		[self indicatorOff]; // 進捗サインOFF
+	}
+	@catch (NSString *throw) {
+		NSLog(@"***uploadFile: throw: %@\n", throw);
+		alertBox(NSLocalizedString(@"Upload Fail",nil), throw, NSLocalizedString(@"Roger",nil));
+		[self indicatorOff]; // 進捗サインOFF
 	}
 	@finally {
-		// Upload進行中
+		// 進捗サインONのまま、Upload進行中
 	}
-	[self refreshView];
+	//[self refreshView];
 }
 
 
@@ -648,9 +644,9 @@
 	//	[mUploadProgressIndicator setMinValue:0.0];
 	//	[mUploadProgressIndicator setMaxValue:(double)dataLength];
 	//	[mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
-	if (MprogressView && 0 < dataLength) {
-		MprogressView.progress = (double)numberOfBytesRead / (double)dataLength;
-	}
+	//if (MprogressView && 0 < dataLength) {
+	//	MprogressView.progress = (double)numberOfBytesRead / (double)dataLength;
+	//}
 }
 
 
@@ -672,7 +668,7 @@
 	
 	// ドキュメントの一覧の、フィードを取得するためのURLを生成  
     // GDataServiceGoogleDocs.hに、定数定義されている
-	NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURLUsingHTTPS:YES];
+	NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
 	
 	// 一覧を取得するための条件を指定
 	GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
@@ -680,7 +676,8 @@
 	[query setShouldShowFolders:NO];	// フォルダを表示するか
 	[query setFullTextQueryString:GD_GDOCS_EXT];	// この文字列が含まれるものを抽出する
 
-	// リスト取得開始、進捗サインON
+	[self indicatorOn];	// 進捗サインON
+/*	// リスト取得開始、進捗サインON
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
 	{
 		MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
@@ -690,15 +687,20 @@
 											otherButtonTitles:nil];
 		[MactionProgress setMessage:NSLocalizedString(@"Google Login...",nil)];
 		MactionProgress.tag = TAG_ACTION_FETCH_CANCEL;
+		// アクティビティインジケータ
 		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-		[ai setCenter:CGPointMake(160.0f, 90.0f)];
+		CGPoint point;
+		point.y = 50.0;
+		if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) point.x = 480.0 / 2.0; // ヨコ
+		else															  point.x = 320.0 / 2.0; // タテ
+		[ai setCenter:point];
 		[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		[ai startAnimating];
 		[MactionProgress addSubview:ai];
 		[ai release];
 		[MactionProgress showInView:self.view];
 		[MactionProgress release];
-	}
+	}*/
 	
 	// フィードの取得要求を開始
     // didFinishSelectorで指定しているのが、レスポンスを処理するためのコールバックメソッド  
@@ -730,9 +732,7 @@
 
 	[self refreshView];
 	
-	// 進捗サインOFF
-	if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+	[self indicatorOff]; // 進捗サインOFF
 }
 
 - (GDataEntryDocBase *)selectedDoc {
@@ -1050,7 +1050,7 @@
 				
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 				//dateFormatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
-				dateFormatter.dateFormat = @"yyyy/MM/dd";
+				dateFormatter.dateFormat = @"yyyy/MM/dd HH:mm";
 				// これがUploadファイル名として渡される
 				cell.detailTextLabel.text = [NSString stringWithFormat:@"AzCredit %@", [dateFormatter stringFromDate:[NSDate date]]];
 				[dateFormatter release];
@@ -1077,6 +1077,44 @@
     return cell;
 }
 
+- (void)indicatorOn { // 進捗サインON
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
+	if (MactionProgress==nil) {
+		MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
+													  delegate:self 
+											 cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
+										destructiveButtonTitle:nil
+											 otherButtonTitles:nil];
+		[MactionProgress setMessage:NSLocalizedString(@"Uploading...",nil)];
+		MactionProgress.tag = TAG_ACTION_UPLOAD_CANCEL;
+		// アクティビティインジケータ
+		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+		CGPoint point;
+		point.y = 50.0;
+		if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) point.x = 480.0 / 2.0; // ヨコ
+		else															  point.x = 320.0 / 2.0; // タテ
+		[ai setCenter:point];
+		[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		[ai startAnimating];
+		[MactionProgress addSubview:ai];
+		[ai release];
+		[MactionProgress showInView:self.view];	
+		//[MactionProgress release]; indicatorOffにて非表示＆破棄する
+	}
+	//[self refreshView];
+}
+
+- (void)indicatorOff { // 進捗サインOFF    念のためにdeallocにも入れておく。
+	if (MactionProgress) {
+		[MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
+		[MactionProgress release];
+		MactionProgress = nil;
+		
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+	}
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// [DONE]キーを押さなかったとき、キーボードを消すための処理　＜＜アクティブフィールドのレスポンダ解除＞＞
 	if ([RtfUsername canResignFirstResponder]) [RtfUsername resignFirstResponder];
@@ -1096,86 +1134,31 @@
 
 		case 1: // Upload Section
 			if (MbLogin) {
-				// リスト取得開始、進捗サインON
-				[UIApplication sharedApplication].networkActivityIndicatorVisible = YES; // NetworkアクセスサインON
-				{
-					MactionProgress = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Please Wait",nil) 
-																 delegate:self 
-														cancelButtonTitle:NSLocalizedString(@"Cancel",nil) 
-												   destructiveButtonTitle:nil
-														otherButtonTitles:nil];
-					[MactionProgress setMessage:NSLocalizedString(@"Uploading...",nil)];
-					MactionProgress.tag = TAG_ACTION_UPLOAD_CANCEL;
-					// アクティビティインジケータ
-					CGPoint indicatorPoint;
-					indicatorPoint.y = 90.0;
-					if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-						// 横方向のとき
-						indicatorPoint.x = 480.0 / 2.0;
-					} else {
-						indicatorPoint.x = 320.0 / 2.0;
-					}
-					// アクティビティインジケータ
-					UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-					[ai setCenter:indicatorPoint];
-					[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
-					[ai startAnimating];
-					[MactionProgress addSubview:ai];
-					[ai release];
-					// プログレスバー
-					if (!MprogressView) {
-						[MprogressView release];
-						MprogressView = nil;
-					}
-					MprogressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-					MprogressView.center = indicatorPoint;
-					MprogressView.progress = 0.0;
-					[MactionProgress addSubview:MprogressView];
-					[MactionProgress showInView:self.view];
-					[MactionProgress release];
-				}
-
-				// Upload直前にファイル iPack へ書き出す
-				//FileCsv *filecsv = [[FileCsv alloc] init];
-				NSString *zErr = [FileCsv zSave:Re0root toLocalFileName:GD_CSVFILENAME]; // この間、待たされるのが問題になるかも！！
-				//[filecsv release];
-				if (zErr) {
-					// 進捗サインOFF
-					if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
-					[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
-					UIAlertView *alert = [[UIAlertView alloc] 
-										  initWithTitle:NSLocalizedString(@"Upload Fail",nil)
-										  message:zErr
-										  delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-					[alert show];
-					[alert release];
-					break;
-				}
 				// セルからドキュメント名を取得してUploadドキュメント名として渡す
 				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-				// Upload開始
-				//[self uploadFile:cell.detailTextLabel.text];
-				//[self performSelectorOnMainThread:@selector(uploadFile:)
-				//					   withObject:cell.detailTextLabel.text ＜＜これがバグ！処理中に破棄されてしまう
-				//					waitUntilDone:NO];
-				// cell.detailTextLabel.text は、cell表示次第で破棄されるから stringWithString で保持したものを渡す必要がある。
-				[self performSelectorOnMainThread:@selector(uploadFile:)
-									   withObject:[NSString stringWithString:cell.detailTextLabel.text] // autorelease任せ
-									waitUntilDone:NO];
+				MzUploadName = [NSString stringWithString:cell.detailTextLabel.text]; // autorelease
+				UIActionSheet *sheet = [[UIActionSheet alloc] 
+										initWithTitle:MzUploadName
+										delegate:self 
+										cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
+										destructiveButtonTitle:nil
+										otherButtonTitles:NSLocalizedString(@"Upload START",nil), nil];
+				sheet.tag = TAG_ACTION_UPLOAD_START;
+				[sheet showInView:self.view];
+				[sheet release];
 			}
 			break;
 
 		case 2: // Document list Section
-			if (MbUpload)
-			{
+			if (MbUpload) {
 				MiRowDownload = indexPath.row; // Download対象行
 				GDataEntryDocBase *doc = [mDocListFeed entryAtIndex:MiRowDownload];
 				UIActionSheet *sheet = [[UIActionSheet alloc] 
 										initWithTitle:[[doc title] stringValue]
 											delegate:self 
 									cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
-								   destructiveButtonTitle:nil
-								   otherButtonTitles:NSLocalizedString(@"Download START",nil), nil];
+								   destructiveButtonTitle:NSLocalizedString(@"Download START",nil)
+								   otherButtonTitles:nil];
 				sheet.tag = TAG_ACTION_DOWNLOAD_START;
 				[sheet showInView:self.view];
 				[sheet release];
@@ -1194,6 +1177,16 @@
 {
 	switch (actionSheet.tag) 
 	{
+		case TAG_ACTION_UPLOAD_START:
+			if (MbLogin && MzUploadName && buttonIndex==0) {  // UPLOAD START  actionSheetの上から順に(0〜)
+				[self indicatorOn];	// 進捗サインON
+				// Csv変換 ＆ Upload開始
+				[self performSelectorOnMainThread:@selector(uploadFile:)
+									   withObject:[NSString stringWithString:MzUploadName] // autorelease
+									waitUntilDone:NO];
+			}
+			break;
+			
 		case TAG_ACTION_DOWNLOAD_START:
 			if (buttonIndex == 0 && 0 <= MiRowDownload) {  // START  actionSheetの上から順に(0〜)
 				if (Re0root.e7paids != nil OR Re0root.e7unpaids != nil) {
@@ -1202,9 +1195,9 @@
 					NSString *zErr = [FileCsv zSave:Re0root toLocalFileName:GD_CSVBACKFILENAME];
 					//[filecsv release];
 					if (zErr) {
-						// 進捗サインOFF
-						if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
-						[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+						//if (MactionProgress) [MactionProgress dismissWithClickedButtonIndex:0 animated:YES];
+						//[UIApplication sharedApplication].networkActivityIndicatorVisible = NO; // NetworkアクセスサインOFF
+						[self indicatorOff]; // 進捗サインOFF
 						UIAlertView *alert = [[UIAlertView alloc] 
 											  initWithTitle:NSLocalizedString(@"Download Fail",nil)
 											  message:zErr
@@ -1311,7 +1304,7 @@
 			[mUploadTicket cancelTicket];
 			[self setUploadTicket:nil];
 			//[mUploadProgressIndicator setDoubleValue:0.0];
-			MprogressView.progress = 0.0;
+			//MprogressView.progress = 0.0;
 			[self refreshView];
 			break;
 

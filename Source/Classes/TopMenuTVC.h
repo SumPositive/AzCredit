@@ -23,6 +23,8 @@
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	InformationView		*MinformationView;
 	ADBannerView		*MbannerView;
+	//UIView				*MviewLogin;
+	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
 	BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
 	//.hidden利用//BOOL MbannerIsVisible;	// YES=iAd 今表示されている
@@ -32,5 +34,5 @@
 
 @property (nonatomic, retain) E0root				*Re0root;
 
-- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
+//- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

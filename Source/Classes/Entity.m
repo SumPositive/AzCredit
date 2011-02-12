@@ -88,7 +88,7 @@
 @dynamic nAmount;
 @dynamic nAnnual;
 @dynamic nPayType;
-@dynamic nReservType;
+@dynamic nRepeat;
 @dynamic sumNoCheck;
 @dynamic zName;
 @dynamic zNote;

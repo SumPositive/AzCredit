@@ -5,9 +5,12 @@
 //  Created by 松山 和正 on 09/12/03.
 //  Copyright __MyCompanyName__ 2009. All rights reserved.
 //
+//#define AzDEBUG  プロジェクト設定にて"GCC_PREPROCESSOR_DEFINITIONS"定義した
 
 //#define AzMAKE_SPLASHFACE  // 起動画面 Default.png を作るための作業オプション
-//#define AzDEBUG  プロジェクト設定にて"GCC_PREPROCESSOR_DEFINITIONS"定義した
+
+#define GD_iAd_ENABLED
+#define GD_AdMob_ENABLED
 
 #define OR  ||
 
@@ -24,6 +27,9 @@
 
 
 #define GD_PRODUCTNAME	@"AzCredit"  // IMPORTANT PRODUCT NAME  和名「クレメモ」
+												//↑↑変更禁止！！Keychainの'ServiceName'に使っているので読み出せなくなる。
+#define GD_KEY_LOGINPASS  @"AzCreditLoginPass"  //←変更禁止！！Keychainの'Username'に使っているので読み出せなくなる。
+
 /*----- GD_PRODUCTNAME を変更するときに必要となる作業の覚書 -------------------------------
  ＊ソース変更
 	AppDelegete.m にて NSBundle名に GD_PRODUCTNAME が渡されている。以下適切に変更しなければ、ここでフリーズする
@@ -71,14 +77,16 @@
 #define GD_DefUsername						@"DefUsername"
 
 // Option SettingTVC Plist KEY     初期値定義は、<applicationDidFinishLaunching>内
-#define GD_OptBootTopView					@"OptBootTopView"		// 起動時トップ
+//#define GD_OptBootTopView					@"OptBootTopView"		// 起動時トップ  [0.4]以降廃止(バックグランド復帰のとき無意味になるため）
 #define GD_OptAntirotation					@"OptAntirotation"		// 画面回転
 //#define GD_OptEnableSchedule				@"OptEnableSchedule"	// 支払予定
 //#define GD_OptEnableCategory				@"OptEnableCategory"	// 分類
 #define GD_OptEnableInstallment				@"OptEnableInstallment"	// 分割払い
 #define GD_OptNumAutoShow					@"OptNumAutoShow"		// ＜保留＞ テンキー自動表示
 #define GD_OptFixedPriority					@"OptFixedPriority"		// ＜保留＞ 修正を優先
-#define GD_OptAmountCalc					@"OptAmountCalc"		//[0.3.1] 電卓使用
+//#define GD_OptAmountCalc					@"OptAmountCalc"		// [0.3.1] 電卓使用
+#define GD_OptRoundBankers					@"OptRoundBankers"		// [0.4] 偶数丸め
+#define GD_OptTaxRate						@"OptTaxRate"			// [0.4] float 消費税率(%)
 
 
 // Option Other Plist KEY
@@ -86,6 +94,10 @@
 #define GD_OptUseDateTime					@"OptUseDateTime"
 #define GD_OptE4SortMode					@"OptE4SortMode"
 #define GD_OptE5SortMode					@"OptE5SortMode"
+
+
+#define GD_PAIDLIST_MAX			20		// E2,E7一覧で表示するPAID側の最大件数、Unpaid側は全件
+#define GD_E3_SELECT_LIMIT		50		// 明細一覧で中央日付から前後抽出する件数(Limit)
 
 
 //----------------------------------------------- Global.m グローバル関数
@@ -113,5 +125,7 @@ NSDate *GdateYearMMDD(NSInteger PiMinYearMMDD,
 					  NSInteger PiHour, 
 					  NSInteger PiMinute, 
 					  NSInteger PiSecond );
+
+void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton );
 
 

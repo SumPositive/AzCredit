@@ -32,15 +32,12 @@
 	}
 
 	[MdicAddresses release];
-	
-	//[MautoreleasePool release];
     [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init]; これを有効にすると2回置きくらいにFreezする
     }
     return self;
 }
@@ -91,7 +88,15 @@
 											otherButtonTitles:NSLocalizedString(@"HttpSv stop", nil) , nil];
 		RalertHttpServer.tag = ALERT_TAG_HTTPServerStop;
 		[RalertHttpServer show];
-		//[MalertHttpServer release];
+		// アクティビティインジケータ
+		UIActivityIndicatorView *ai = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+		CGPoint point;
+		point.y = 65.0;
+		point.x = 320.0 / 2.0 - 32/2; // タテ
+		[ai setCenter:point];
+		[ai setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		[ai startAnimating];
+		[RalertHttpServer addSubview:ai]; [ai release];
 	}
 }
 

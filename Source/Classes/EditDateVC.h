@@ -23,11 +23,12 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIDatePicker	*MdatePicker;
-	UIButton		*MbuToday;		// Todayにリセットする
+	UIButton		*MbuToday;			// Todayにリセットする
 	UIButton		*MbuYearTime;		// UIDatePickerModeDate, UIDatePickerModeDateAndTime を切り替える
 	//----------------------------------------------assign
 	BOOL MbOptAntirotation;
 	BOOL MbOptUseDateTime;
+	NSTimeInterval	MintervalPrev;
 }
 
 @property (nonatomic, retain) id			Rentity;

@@ -18,7 +18,6 @@
 	//----------------------------------------------assign
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	NSMutableArray		*RaE7list;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
@@ -29,6 +28,6 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 
-- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
+//- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 
 @end

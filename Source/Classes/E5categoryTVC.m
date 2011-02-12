@@ -9,6 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
+#import "MocFunctions.h"
 #import "E5categoryTVC.h"
 #import "E5categoryDetailTVC.h"
 #import "E3recordTVC.h"
@@ -35,8 +36,6 @@
 	// @property (retain)
 	AzRETAIN_CHECK(@"E5categoryTVC Re0root", Re0root, 0)
 	[Re0root release];
-    
-	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -48,7 +47,6 @@
 {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 	}
 	return self;
 }
@@ -62,7 +60,7 @@
 	
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-		   initWithImage:[UIImage imageNamed:@"simpleLeft2-icon16.png"] // <<
+		   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"] // <<
 		   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 
 	if (Pe3edit == nil) {
@@ -86,9 +84,8 @@
 					   NSLocalizedString(@"Sort Index",nil), nil]; // release不要
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
 	segment.frame = CGRectMake(0,0, 210,30);
-	//segment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
-	MiOptE5SortMode = [[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE5SortMode];
+	MiOptE5SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE5SortMode];
 	segment.selectedSegmentIndex = MiOptE5SortMode;
 	// .selectedSegmentIndex 代入より後に addTarget:指定すること。 逆になると代入によりaction:コールされてしまう。
 	[segment addTarget:self action:@selector(barSegmentSort:) forControlEvents:UIControlEventValueChanged];
@@ -111,7 +108,7 @@
 		[buUntitled release];
 	}
 	else {
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bar32-Top.png"]
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buSort, buFlex, buAdd, nil];
@@ -128,6 +125,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -144,62 +143,38 @@
 
 
 - (void)requeryMe5categorys:(NSString *)zSearch 
-{
-	// Me5categorys Requery. 
-	//--------------------------------------------------------------------------------
-	if (RaE5categorys != nil) {
-		[RaE5categorys release];
-		RaE5categorys = nil;
+{	// Me5categorys Requery. 
+
+	// Where
+	NSPredicate *predicate = nil;
+	if (zSearch && 0 < [zSearch length]) {  // NSPredicateを使って、検索条件式を設定する
+		predicate = [NSPredicate predicateWithFormat:
+					 @"(sortName contains %@) OR (zName contains %@)", zSearch, zSearch];
 	}
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E5category" 
-											  inManagedObjectContext:Re0root.managedObjectContext];
-	[fetchRequest setEntity:entity];
-	if (zSearch != nil && 0 < [zSearch length]) {
-		// NSPredicateを使って、検索条件式を設定する
-		[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(%K contains %@) OR (%K contains %@)",
-									@"sortName", zSearch, @"zName", zSearch]];
-	}
+	
 	// Sorting
-	MiOptE5SortMode = [[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE5SortMode];
 	NSString *zKey;
 	BOOL bAsc;
 	switch (MiOptE5SortMode) {
-		case 0: // 最近
-			zKey = @"sortDate";
-			bAsc = NO;
-			break;
-		case 1: // 回数
-			zKey = @"sortCount";
-			bAsc = NO;
-			break;
-		case 2: // 金額
-			zKey = @"sortAmount";
-			bAsc = NO;
-			break;
-		case 3: // かな　＜＜入力が面倒で使われない可能性が高いと思うから優先度を下げた＞＞
-			zKey = @"sortName";
-			bAsc = YES;
-			break;
-		default: // 最近
-			zKey = @"sortDate";
-			bAsc = NO;
-			break;
+		case 1:  zKey = @"sortCount";	bAsc = NO;	break; // 回数
+		case 2:  zKey = @"sortAmount";	bAsc = NO;	break; // 金額
+		case 3:  zKey = @"sortName";	bAsc = YES;	break; // かな　＜＜入力が面倒で使われない可能性が高いと思うから優先度を下げた＞＞
+		default: zKey = @"sortDate";	bAsc = NO;	break; // 最近
 	}
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:zKey ascending:bAsc];
 	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1, nil];
-	[fetchRequest setSortDescriptors:sortArray];
-	[sortArray release];
 	[sort1 release];
-	// Fitch
-	NSError *error = nil;
-	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (error) {
-		AzLOG(@"Error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
-	[fetchRequest release];
+	
+	NSArray *arFetch = [MocFunctions select:@"E5category" 
+										limit:0
+									   offset:0
+										where:predicate
+										 sort:sortArray];
+	[sortArray release];
 	//
+	if (RaE5categorys) {
+		[RaE5categorys release];
+	}
 	RaE5categorys = [[NSMutableArray alloc] initWithArray:arFetch];
 	//
 	[self viewDesign];
@@ -234,31 +209,15 @@
 
 - (void)barSegmentSort:(id)sender {
 	MiOptE5SortMode = [sender selectedSegmentIndex];
-	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE5SortMode forKey:GD_OptE5SortMode];
 	// Requery
 	[self requeryMe5categorys:nil];
 }
 
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-		return YES; // この方向だけは常に許可する
-	} 
-	else if (MbOptAntirotation) return NO; // 回転禁止
-	
-	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		// 逆面（ホームボタンが画面の上側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
-	}
-	return YES;
-	// 現在の向きは、self.interfaceOrientation で取得できる
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -282,22 +241,22 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// ホームボタンが画面の下側にある状態。通常
-		[self.navigationController setToolbarHidden:NO animated:NO]; // ツールバー表示する
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
-	}
-	
-	if (Pe3edit == nil) {
+/*	if (Pe3edit == nil) {
 		// Comback (-1)にして未選択状態にする
 		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
 		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}
+	}*/
 }
-
+/*
+// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// ソート条件を保存する　＜＜切り替えの都度、保存していたが[0.4]にてフリーズ症状発生＞＞
+	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE5SortMode forKey:GD_OptE5SortMode];
+}
+*/
+/*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
 {
@@ -317,7 +276,7 @@
 	[self.tableView scrollToRowAtIndexPath:indexPath 
 						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 }
-
+*/
 
 #pragma mark Local methods
 
@@ -357,7 +316,9 @@
 		e5detail.PbSave = YES;	// マスタモード：
 	}
 	
+	// 呼び出し側(親)にてツールバーを常に非表示にする
 	e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+
 	[self.navigationController pushViewController:e5detail animated:YES];
 	[e5detail release]; // self.navigationControllerがOwnerになる
 }
@@ -442,7 +403,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = [UIImage imageNamed:@"Cell32-Add.png"];
+		cell.imageView.image = [UIImage imageNamed:@"Icon32-Add.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // MOVE
 		cell.textLabel.text = NSLocalizedString(@"Add Category",nil);
@@ -471,17 +432,21 @@
 		else if (self.editing) {
 			[self e5categoryDatail:indexPath.row];
 		} else {
-			// Comback-L1 E4shop 記録
+/*			// Comback-L1 E4shop 記録
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 			// (0)TopMenu >> (1)This >> (2)Clear
 			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
 			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-			
+*/			
 			// E3records へ
 			E3recordTVC *tvc = [[E3recordTVC alloc] init];
 			E5category *e5obj = [RaE5categorys objectAtIndex:indexPath.row];
+#ifdef AzDEBUG
+			tvc.title = [NSString stringWithFormat:@"E3 %@", e5obj.zName];
+#else
 			tvc.title =  e5obj.zName;
+#endif
 			tvc.Re0root = Re0root;
 			//tvc.Pe1card = nil;  
 			tvc.Pe4shop = nil;  // e4obj以下の全E3表示モード

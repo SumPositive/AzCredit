@@ -25,13 +25,13 @@
 	E0root				*Re0root;
 
 	//-------------------------------------------------------viewDidLoadでnil, retain > release必要
-	//NSAutoreleasePool	*MautoreleasePool;		// [0.3]autorelease独自解放のため
 	UITextField			*RtfUsername;
 	UITextField			*RtfPassword;
 	GDataFeedDocList	*mDocListFeed;
 	NSError				*mDocListFetchError;
 	GDataServiceTicket	*mDocListFetchTicket;
 	GDataServiceTicket	*mUploadTicket;
+	NSString			*MzUploadName;
 	//----------------------------------------------------------------assign
 	BOOL			MbLogin;
 	BOOL			MbOptAntirotation;
@@ -41,7 +41,7 @@
 	NSString		*MzOldUsername;
 	GDataHTTPFetcher *MfetcherActive;  // STOPのため保持
 	UIActionSheet	*MactionProgress;
-	UIProgressView	*MprogressView;
+	//UIProgressView	*MprogressView;
 }
 
 @property (nonatomic, retain) E0root		*Re0root;

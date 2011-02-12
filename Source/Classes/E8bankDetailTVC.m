@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
-#import "EntityRelation.h"
+#import "MocFunctions.h"
 #import "E8bankDetailTVC.h"
 #import "EditTextVC.h"
 //#import "E1editPayDayVC.h"
@@ -33,8 +33,6 @@
 	//--------------------------------Private Alloc
 	//--------------------------------@property (retain)
 	[Re8edit release];
-
-	//[MautoreleasePool release];
 	[super dealloc];
 }
 
@@ -44,7 +42,6 @@
 {
 	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
 		// 初期化成功
-		//MautoreleasePool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
 		Pe1edit = nil;
   	}
 	return self;
@@ -83,6 +80,8 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+	// 呼び出し側(親)にてツールバーを常に非表示にしているが、念のため
+	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -93,25 +92,10 @@
     [self.tableView reloadData];
 }
 
-// 回転サポート
+// 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	if (interfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面（ホームボタンが画面の下側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-		return YES; // この方向だけは常に許可する
-	} 
-	else if (MbOptAntirotation) return NO; // 回転禁止
-	
-	if (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		// 逆面（ホームボタンが画面の上側にある状態）
-		[self.navigationController setToolbarHidden:NO animated:YES]; // ツールバー表示
-	} else {
-		// 横方向や逆向きのとき
-		[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー非表示=YES
-	}
-	return YES;
-	// 現在の向きは、self.interfaceOrientation で取得できる
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる
@@ -139,25 +123,6 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
-
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 
 #pragma mark Table view methods
@@ -361,18 +326,13 @@
 
 - (void)cancel:(id)sender 
 {
-	NSManagedObjectContext *contx = Re8edit.managedObjectContext;
+	if (PbSave) {
+		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	}
+	
 	if (0 <= PiAddRow) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[contx deleteObject:Re8edit];
-
-		if (PbSave) {
-			// SAVE
-			[EntityRelation commit];
-		}
-	}
-	else if (PbSave) {
-		[contx rollback]; // 前回のSAVE以降を取り消す
+		[MocFunctions deleteEntity:Re8edit];
 	}
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -395,12 +355,9 @@
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
 	NSString *zName = [Re8edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([zName length] <= 0) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E8zNameLess",nil)
-														 message:NSLocalizedString(@"E8zNameLessMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
-		[alert show];
+		alertBox(NSLocalizedString(@"E8zNameLess",nil),
+				 NSLocalizedString(@"E8zNameLessMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	
@@ -416,12 +373,9 @@
 	NSInteger iCnt = 2;
 	if (0 <= PiAddRow) iCnt = 1;
 	if (iCnt < [aRes count]) {
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E8zNameDups",nil)
-														 message:NSLocalizedString(@"E8zNameDupsMsg",nil)
-														delegate:nil 
-											   cancelButtonTitle:nil 
-											   otherButtonTitles:@"OK", nil] autorelease];
-		[alert show];
+		alertBox(NSLocalizedString(@"E8zNameDups",nil),
+				 NSLocalizedString(@"E8zNameDupsMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	// OK トリム済み＆重複なし
@@ -429,11 +383,7 @@
 	
 	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
 		// SAVE
-		//if (![contx save:&err]) {
-		//	NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
-		//	abort();
-		//}
-		[EntityRelation commit];
+		[MocFunctions commit];
 	}
 	
 	if (Pe1edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
