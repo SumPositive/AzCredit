@@ -422,8 +422,13 @@ static UIImage* GimageFromString(NSString* str)
 			UIImageView *imageView2 = [[UIImageView alloc] init];
 			imageView1.image = [UIImage imageNamed:@"Icon32-CircleUnpaid.png"];	// Unpaid
 			imageView2.image = GimageFromString([NSString stringWithFormat:@"%ld", (long)lNoCheck]);
-			//UIGraphicsBeginImageContext(imageView1.image.size);
-			UIGraphicsBeginImageContextWithOptions(imageView1.image.size, NO, 0.0); //[0.4.18]Retina対応
+			
+			if (UIGraphicsBeginImageContextWithOptions != NULL) { // iOS4.0以上
+				UIGraphicsBeginImageContextWithOptions(imageView1.image.size, NO, 0.0); //[0.4.18]Retina対応
+			} else { // Old
+				UIGraphicsBeginImageContext(imageView1.image.size);
+			}			
+			
 			CGRect rect = CGRectMake(0, 0, imageView1.image.size.width, imageView1.image.size.height);
 			[imageView1.image drawInRect:rect];  
 			[imageView2.image drawInRect:rect blendMode:kCGBlendModeMultiply alpha:1.0];  
