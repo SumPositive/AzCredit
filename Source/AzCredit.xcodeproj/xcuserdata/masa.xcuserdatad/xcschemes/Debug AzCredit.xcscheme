@@ -9,28 +9,14 @@
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "YES"
+            buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
                BuildableName = "AzCredit.app"
                BlueprintName = "AzCredit"
-               ReferencedContainer = "container:AzCredit-0.5.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-               BuildableName = "AzCredit.app"
-               BlueprintName = "AzCredit"
-               ReferencedContainer = "container:AzCredit-0.4.xcodeproj">
+               ReferencedContainer = "container:AzCredit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -57,7 +43,7 @@
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "AzCredit.app"
             BlueprintName = "AzCredit"
-            ReferencedContainer = "container:AzCredit-0.4.xcodeproj">
+            ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -67,16 +53,16 @@
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = ""
+      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Leaks.tracetemplate"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release">
+      buildConfiguration = "Debug">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
             BuildableName = "AzCredit.app"
             BlueprintName = "AzCredit"
-            ReferencedContainer = "container:AzCredit-0.4.xcodeproj">
+            ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
@@ -84,7 +70,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Distribution"
-      revealArchiveInOrganizer = "YES">
+      buildConfiguration = "Debug"
+      revealArchiveInOrganizer = "NO">
    </ArchiveAction>
 </Scheme>

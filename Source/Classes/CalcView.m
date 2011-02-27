@@ -599,7 +599,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	NSDecimalNumber *decAns = nil;
 
 	//-------------------------------------------------localPool BEGIN >>> @finaly release
-	//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init]; autoreleaseは、イベント（タッチ）毎に解放されるので不要だ！
+	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init]; //イベント（タッチ）毎の解放では不足(落ちる)なので独自に解放する
 	@try {
 		NSString *zTokn;
 		NSString *zz;
@@ -663,7 +663,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			}
 			else if ([zTokn isEqualToString:@")"]) {	// "("までスタックから取り出してRPNへ追加、両括弧は破棄する
 				iCapRight++;
-				while (zz = [maStack pop]) {
+				while ((zz = [maStack pop])) {
 					if ([zz isEqualToString:@"("]) break; // 両カッコは、破棄する
 					[maRpn push:zz];
 				}
@@ -687,7 +687,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			}
 		}
 		// スタックに残っているトークンを全て逆ポーランドPUSH
-		while (zz = [maStack pop]) {
+		while ((zz = [maStack pop])) {
 			[maRpn push:zz];
 		}
 		
@@ -790,7 +790,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			//NSLog(@"**********1 decAns=%@", decAns);
 			decAns = [decAns decimalNumberByRoundingAccordingToBehavior:MbehaviorCalc]; // 計算結果の丸め処理
 			//NSLog(@"**********2 decAns=%@", decAns);
-			//0.5//[decAns retain]; // localPool release されないように retain しておく。
+			[decAns retain]; // localPool release されないように retain しておく。
 		}
 		else {
 			@throw @"zRpnCalc:ERROR: [maStack count] != 1";
@@ -801,11 +801,11 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		decAns = nil;
 	}
 	@catch (NSString *errMsg) {
-		NSLog(@"Calc: error=", errMsg);
+		NSLog(@"Calc: error=%@", errMsg);
 		decAns = nil;
 	}
 	@finally {
-		//0.5//[autoPool release];
+		[autoPool release];
 		//-------------------------------------------------localPool END
 		[maRpn release];
 		[maStack release];

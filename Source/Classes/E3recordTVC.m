@@ -55,7 +55,7 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
+	if ((self = [super initWithStyle:UITableViewStylePlain])) {  // セクションなしテーブル
 		// 初期化成功
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		app.Me3dateUse = nil;

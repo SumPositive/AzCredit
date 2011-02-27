@@ -135,17 +135,5 @@
          startingLineNumber = "407"
          endingLineNumber = "407">
       </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/CalcView.m"
-         timestampString = "319217500.1278719"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "534"
-         endingLineNumber = "534">
-      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
