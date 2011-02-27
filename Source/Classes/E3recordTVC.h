@@ -22,22 +22,15 @@
 	E4shop			*Pe4shop;		// 
 	E5category		*Pe5category;	// 
 	E8bank			*Pe8bank;		//[0.3]New
-	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
 	AdMobView			*RoAdMobView;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	//ADBannerView		*MbannerView;
 	//----------------------------------------------assign
-	//BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
-	//NSInteger	MiForTheFirstSection;		// viewDidAppear内で最初に1回だけ画面スクロール位置調整するため
-	//NSIndexPath *MindexPathActionDelete;
-	//NSDate		*MdateTop;	// Me3list に読み込まれている先頭の日付
-	//NSDate		*MdateNext;
-	//NSDate		*MdateTarget;  // !=nil;この日付位置を中央に表示する、クリックした明細の日付を記録する
+	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
 @property (nonatomic, retain) E0root			*Re0root;

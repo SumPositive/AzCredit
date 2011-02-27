@@ -61,7 +61,7 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {  // セクションありテーブル
 		// 初期化成功
 		MbSaved = NO;
 	}
@@ -340,9 +340,8 @@
 	if (Re3edit && actionSheet.tag == ACTIONSEET_TAG_DELETE) { // Re3edit 削除
 		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		app.Me3dateUse = [Re3edit.dateUse copy];  // 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
-		// E1,E2,E3,E6,E7 の関係を保ちながら E3削除 する
-		//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
+		app.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
 		[MocFunctions e3delete:Re3edit];
 		[MocFunctions commit];
 		//
@@ -1160,6 +1159,7 @@
 
 	//[0.4]
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.Me3dateUse release];  // Me3dateUse retainプロパティにしたため
 	app.Me3dateUse = nil; // Cancel
 
 	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
@@ -1210,7 +1210,7 @@
 
 	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	app.Me3dateUse = Re3edit.dateUse;
+	app.Me3dateUse = [Re3edit.dateUse copy];
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }

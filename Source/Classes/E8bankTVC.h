@@ -24,6 +24,7 @@
 	//----------------------------------------------------------------assign
 	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath
 	BOOL MbOptAntirotation;
+	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
 @property (nonatomic, retain) E0root	*Re0root;

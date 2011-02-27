@@ -163,6 +163,11 @@ static UIColor *MpColorBlue(float percent) {
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
+	else if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
 }
 
 - (void)barButtonTop {
@@ -575,6 +580,9 @@ static UIImage* GimageFromString(NSString* str)
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
+	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
+	McontentOffsetDidSelect = [tableView contentOffset];
+	
 /*	// Comback-L2 E2invoice 記録
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;

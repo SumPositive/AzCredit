@@ -26,6 +26,7 @@
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
 	E2temp		*Me2cellButton;		// cellLeftButton:にて button.tag をセットして、alertView:にて参照。
+	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
 @property (nonatomic, retain) E1card	*Re1select;

@@ -47,7 +47,7 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
+	if ((self = [super initWithStyle:UITableViewStylePlain])) {  // セクションなしテーブル
 		// 初期化成功
 		MiForTheFirstSection = (-1);  // viewWillAppearにてMe2invoices Reload時にセット
 		RaE2invoices = nil;
@@ -103,6 +103,11 @@
 		//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 		[self MtableSource];
 		//0.5//[autoPool release];
+	}
+	else if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 }
 
@@ -694,6 +699,9 @@
 #endif
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+
+	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
+	McontentOffsetDidSelect = [tableView contentOffset];
 
 	// E3詳細画面へ
 	[self e3detailView:indexPath]; // この中でAddにも対応

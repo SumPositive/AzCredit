@@ -132,6 +132,12 @@
 	
 	// TableView Reflesh
 	[self.tableView reloadData];
+
+	if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
 }
 
 
@@ -349,7 +355,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.imageView.image = [UIImage imageNamed:@"Icon32-Add.png"];
+		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO;
 		if (rows == 0) {
@@ -373,6 +379,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
+
+	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
+	McontentOffsetDidSelect = [tableView contentOffset];
 
 	if (indexPath.row < [RaE8banks count]) {
 		if (Pe1card) {

@@ -34,6 +34,7 @@
 	BOOL		MbOptAntirotation;
 	BOOL		MbFirstOne;
 	NSInteger	MiForTheFirstSection;		// viewDidAppear内で最初に1回だけ画面スクロール位置調整するため
+	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
 @property (nonatomic, assign) E2invoice		*Pe2select;

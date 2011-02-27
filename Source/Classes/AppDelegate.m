@@ -36,7 +36,7 @@
 
 - (void)dealloc 
 {
-	//[interstitialAd release];
+	[Me3dateUse release];
 
 	AzRETAIN_CHECK(@"AppDelegate navigationController", navigationController, 1)
 	[navigationController release];

@@ -58,6 +58,7 @@
 	if ((self = [super initWithStyle:UITableViewStylePlain])) {  // セクションなしテーブル
 		// 初期化成功
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		[app.Me3dateUse release];  // Me3dateUse retainプロパティにしたため
 		app.Me3dateUse = nil;
 		//
 		RoAdMobView = nil;
@@ -115,8 +116,14 @@
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE3list==nil || app.Me3dateUse) {
 		//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
-		[self setMe3list:[app.Me3dateUse retain]]; [app.Me3dateUse release];
+		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
+		[self setMe3list:app.Me3dateUse];
 		//0.5//[autoPool release];
+	}
+	else if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 }
 
@@ -128,10 +135,10 @@
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
 											| NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
 	
+	NSLog(@"setMe3list: dateMiddle=%@", dateMiddle);
 	if (dateMiddle==nil) {
 		dateMiddle = [NSDate dateWithTimeIntervalSinceNow: -12 * 60 * 60]; //UTC 現在の12時間前
 	}
-	AzLOG(@"setMe3list: dateMiddle=[%@]", dateMiddle);
 	// ＜＜＜dateUse は,UTC(+0000)記録されている。比較や抽出などUTCで行うこと＞＞＞
 	// NSDateは、常にUTC(+0000)協定世界時間である。
 
@@ -340,7 +347,7 @@
 	
 	[df_section release];
 	[df_index release];
-	// テーブルビューを更新します。
+	// テーブルビューを更新
     [self.tableView reloadData];
 
 	if (3 <= [RaE3list count]) { // 少なくとも、Top + Monthly + End の3セクションある
@@ -722,6 +729,10 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
+	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
+	McontentOffsetDidSelect = [tableView contentOffset];
+	//NSLog(@"***didSelectRowAtIndexPath: McontentOffsetDidSelect=(%f,%f)", McontentOffsetDidSelect.x, McontentOffsetDidSelect.y);
+	
 	if (indexPath.section <=0)
 	{	//「さらに前へ」
 		id datePrev = [[RaE3list objectAtIndex:0] objectAtIndex:0];
@@ -773,6 +784,11 @@
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
 		e3detail.Re3edit = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		e3detail.PiAdd = 0; // (0)Edit mode
+		
+		//[0.4.2]Fix:
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		app.Me3dateUse = [e3detail.Re3edit.dateUse copy];
+		NSLog(@"app.Me3dateUse=%@", app.Me3dateUse);
 	}
 	else {
 		// Add E3  【注意】同じE3Addが、TopMenuTVC内にもある。

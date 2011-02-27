@@ -558,7 +558,7 @@
 		{
 			switch (indexPath.row) {
 				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Add.png"];
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 					cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
 					break;
 				case 1:
@@ -593,8 +593,8 @@
 		{
 			switch (indexPath.row) {
 				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Card.png"];
-					cell.textLabel.text = NSLocalizedString(@"Card list", nil);
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Recipient.png"];
+					cell.textLabel.text = NSLocalizedString(@"Recipient list", nil);
 					break;
 				case 1:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Bank.png"];

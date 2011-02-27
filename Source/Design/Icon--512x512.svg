@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="Icon.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon32-Card.png"
-   inkscape:export-xdpi="5.6199999"
-   inkscape:export-ydpi="5.6199999">
+   sodipodi:docname="Icon--512x512.svg"
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon57@2x.png"
+   inkscape:export-xdpi="20.040001"
+   inkscape:export-ydpi="20.040001">
   <defs
      id="defs4">
     <linearGradient
@@ -716,7 +716,7 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3125"
-     inkscape:cx="163.80952"
+     inkscape:cx="256"
      inkscape:cy="256"
      inkscape:document-units="px"
      inkscape:current-layer="layer6"
@@ -741,7 +741,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer6"
-     inkscape:label="Backgraund"
+     inkscape:label="AzCredit --- Backgraund"
      style="display:inline"
      sodipodi:insensitive="true">
     <rect
@@ -759,50 +759,55 @@
      style="display:inline"
      sodipodi:insensitive="true">
     <rect
-       rx="6.7905393"
+       rx="6.6056075"
        ry="4.9652233"
        y="47.552448"
        x="49.098499"
        height="53.691387"
        width="84.691383"
        id="rect2990"
-       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.30861452px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3984)" />
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.30438316px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3984)"
+       transform="matrix(1.0279962,0,0,1,-1.2555855,0)" />
     <rect
-       style="fill:#808080;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.40470991px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3956)"
+       style="fill:#808080;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.39916116px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3956)"
        id="rect2992"
        width="111.06231"
        height="70.409637"
        x="85.652794"
        y="66.766273"
        ry="10.441161"
-       rx="12.266479" />
+       rx="11.932426"
+       transform="matrix(1.0279953,0,0,1,-2.2418469,0)" />
     <rect
-       rx="12.266478"
+       rx="11.932458"
        ry="10.441161"
        y="95.146423"
        x="133.19872"
        height="100.96368"
        width="159.25745"
        id="rect2994"
-       style="fill:#b87333;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.58033252px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3928)" />
+       style="fill:#b87333;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.57237667px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3928)"
+       transform="matrix(1.0279925,0,0,1,-3.5048517,0)" />
     <rect
-       style="fill:#c0c0c0;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.87524593px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3872)"
+       style="fill:#c0c0c0;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.86324692px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3872)"
        id="rect2996"
        width="240.18892"
        height="152.27141"
        x="210.00928"
        y="142.75198"
        ry="10.441161"
-       rx="12.266477" />
+       rx="11.932452"
+       transform="matrix(1.027993,0,0,1,-5.5413792,0)" />
     <rect
-       rx="12.266477"
+       rx="11.93263"
        ry="10.44116"
        y="233.2822"
        x="73.288139"
        height="213.95598"
        width="337.48856"
        id="rect2998"
-       style="fill:#dcb830;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.22980475px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3844)" />
+       style="fill:#dcb830;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.21295404px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3844)"
+       transform="matrix(1.0279777,0,0,1,-1.5766033,0)" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot4012"
@@ -824,7 +829,7 @@
        xml:space="preserve"
        id="flowRoot4021"
        style="font-size:39.73376083px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#97504d;fill-opacity:1;stroke:none;display:inline;font-family:Charcoal CY;-inkscape-font-specification:Charcoal CY"
-       transform="matrix(2.3185774,0,0,2.3185774,-271.19925,-402.74052)"><flowRegion
+       transform="matrix(2.4995923,0,0,2.3185842,-303.38664,-404.74294)"><flowRegion
          id="flowRegion4023"><rect
            id="rect4025"
            width="207.17291"

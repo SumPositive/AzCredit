@@ -37,11 +37,11 @@
 //	EntityRelation *RentityRelation;
 	
 @private
-	//BOOL	bDidBecomeActive; // YES=起動または復帰した ⇒ ログイン処理する
-	UIView				*MviewLogin;
+	//-------------------------------------retain
 	NSDate				*Me3dateUse;
+	//-------------------------------------assign
+	UIView				*MviewLogin;
 	BOOL				MbLoginShow;
-	//AdMobInterstitialAd *interstitialAd;
 }
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
@@ -49,8 +49,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) UIWindow					*window;
 @property (nonatomic, retain) UINavigationController	*navigationController;
-//@property (nonatomic, retain) NSMutableArray			*RaComebackIndex;  // 外部から参照されるため
-@property (nonatomic, assign) NSDate					*Me3dateUse;
+@property (nonatomic, retain) NSDate					*Me3dateUse;
 
 @property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
 @property (nonatomic, assign, readonly) BOOL			MbLoginShow;
