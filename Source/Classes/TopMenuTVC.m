@@ -1,5 +1,5 @@
 //
-//  selectGroupTVC.m
+//  TopMenuTVC.m
 //  AzCredit
 //
 //  Created by 松山 和正 on 10/02/02.
@@ -41,18 +41,34 @@
 @synthesize Re0root;
 
 
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- TopMenuTVC");
+	if (MbannerView) {
+		MbannerView.delegate = nil;	//[0.4.1]メモリ不足時に落ちた原因除去
+		[MbannerView release], MbannerView = nil;
+	}
+	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
+}
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	if (MbannerView) {
-		MbannerView.delegate = nil; //[0.4.20]受信STOP
-		[MbannerView release];
-		//NG//MbannerView = nil; これは、View側での破棄に任せる。
-	}
+	[self unloadRelease];
 	// @property (retain)
-	AzRETAIN_CHECK(@"TopMenuTVC Re0root", Re0root, 0)
-	[Re0root release];
+	[Re0root release], Re0root = nil;
 	[super dealloc];
 }
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
 
 /* iOS3.0以降では、viewDidUnload を使うようになった。
 - (void)didReceiveMemoryWarning {
@@ -64,11 +80,10 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
+	if (self) {
 		// 初期化成功
-		MinformationView = nil;
 		MbannerEnabled = NO;
-		MbannerView = nil;
 	}
 	return self;
 }
@@ -76,21 +91,8 @@
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
 {
+	NSLog(@"--- loadView ---");
 	[super loadView];
-	AzLOG(@"------- TopMenuTVC: loadView");    
-	// メモリ不足時に self.viewが破棄されると同時に破棄される addSubview されたオブジェクトを初期化する
-	MinformationView = nil;		// azInformationViewにて生成
-	MbannerView = nil;			// ここ(loadView)で生成
-
-	MiE1cardCount = 0;			// viewWillAppearにてセット
-	
-	/* 好みの問題が生じるので背景着色は止めました。　デフォルトの縦縞とする。
-	//self.tableView.backgroundColor = [UIColor brownColor];
-	self.tableView.backgroundColor = [UIColor colorWithRed:151.0/255.0 
-													 green:80.0/255.0 
-													  blue:77.0/255.0 
-													 alpha:1.0]; // Azukid Color
-	*/
 	
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
@@ -148,22 +150,15 @@
 #endif
 }
 
-/*
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	[super viewDidUnload];
-	AzLOG(@"MEMORY! TopMenuTVC: viewDidUnload");
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoad, viewWillAppear で生成したObjを解放する。
-	
-	// この後に viewDidLoad, viewWillAppear がコールされる
-}
-
+// loadView の次に呼び出される
 - (void)viewDidLoad 
 {
+	NSLog(@"--- viewDidLoad ---");
+	MiE1cardCount = 0;			// viewWillAppearにてセット
     [super viewDidLoad];
 }
-*/
+
+
 
 
 - (void)barButtonAdd {
@@ -810,7 +805,7 @@
 	if (MinformationView==nil) {
 		MinformationView = [[InformationView alloc] initWithFrame:[self.view.window bounds]];
 		[self.view.window addSubview:MinformationView]; //回転しないが、.viewから出すとToolBarが隠れない
-		[MinformationView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
+		//NG//[MinformationView release] viewDidUnloadにて解放
 	}
 	[MinformationView show];
 }

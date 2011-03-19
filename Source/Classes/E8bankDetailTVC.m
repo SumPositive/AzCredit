@@ -30,7 +30,6 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	//--------------------------------Private Alloc
 	//--------------------------------@property (retain)
 	[Re8edit release];
 	[super dealloc];
@@ -40,7 +39,8 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
+	if (self) {
 		// 初期化成功
 		Pe1edit = nil;
   	}

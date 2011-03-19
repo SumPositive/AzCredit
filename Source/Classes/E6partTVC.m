@@ -28,26 +28,43 @@
 @synthesize	Pe2invoices; // E8bank-->>E1-->>E2
 @synthesize PiFirstSection;
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
+	NSLog(@"--- unloadRelease --- E6partTVC");
 #ifdef GD_AdMob_ENABLED
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release];
-		//NG//RoAdMobView = nil; これすると cell更新あれば落ちる。cell側での破棄に任せる。
+		[RoAdMobView release],	RoAdMobView = nil;
 	}
 #endif
-	[RaE2invoices release];
-	[RaE6parts release];
-	// @property (retain)
+	[RaE2invoices release], RaE2invoices = nil;
+	[RaE6parts release],	RaE6parts = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if ((self = [super initWithStyle:UITableViewStylePlain])) {  // セクションなしテーブル
+	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
+	if (self) {
 		// 初期化成功
 		MiForTheFirstSection = (-1);  // viewWillAppearにてMe2invoices Reload時にセット
 		RaE2invoices = nil;
@@ -115,15 +132,13 @@
 {
 	//---------------------------------Me2invoices 生成
 	if (RaE2invoices) {
-		[RaE2invoices release];
-		RaE2invoices = nil;
+		[RaE2invoices release], RaE2invoices = nil;
 	}
 	RaE2invoices = [[NSMutableArray alloc] init];
 	
 	//---------------------------------Me6parts 生成
-	if (RaE6parts != nil) {
-		[RaE6parts release];
-		RaE6parts = nil;
+	if (RaE6parts) {
+		[RaE6parts release], RaE6parts = nil;
 	}
 	RaE6parts = [[NSMutableArray alloc] init];
 

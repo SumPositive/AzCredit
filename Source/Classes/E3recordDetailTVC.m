@@ -48,20 +48,37 @@
 @synthesize PiFirstYearMMDD;
 
 
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E3recordDetailTVC");
+	[RaE6parts release], RaE6parts = nil;
+	[RaE3lasts release], RaE3lasts = nil;
+}
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[RaE6parts release];
-	[RaE3lasts release];
-	
-	// @property (retain)
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[Re3edit release];
 	[super dealloc];
 }
 
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
+
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {  // セクションありテーブル
+	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
+	if (self) {
 		// 初期化成功
 		MbSaved = NO;
 	}
@@ -71,8 +88,8 @@
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
 {
+	//NSLog(@"--- loadView --- E3recordDetailTVC");
 	[super loadView];
-	AzLOG(@"------- E3recordDetailTVC: loadView");    
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
 	MbuTop = nil;		// ここ(loadView)で生成
 	MbuDelete = nil;	// ここ(loadView)で生成
@@ -159,31 +176,11 @@
 	MiE1cardRow = (-1);
 }
 
-/*
-- (void)viewDidUnload 
-{
-	[super viewDidUnload];
-	AzLOG(@"MEMORY! E3recordDetailTVC: viewDidUnload");
-	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoad, viewWillAppear で生成したObjを解放する。
-	[Me6parts release];		Me6parts = nil;
-	[Me3lasts release];		Me3lasts = nil;
-	// この後に viewDidLoad, viewWillAppear がコールされる
-}
-
-// viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う
-// viewDidLoadメソッドは，TableViewContorllerオブジェクトが生成された後，実際に表示される際に呼び出されるメソッド
-- (void)viewDidLoad 
-{
-    [super viewDidLoad];
-	AzLOG(@"------- E3recordDetailTVC: viewDidLoad");
-}
-*/
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:YES];
-	AzLOG(@"------- E3recordDetailTVC: viewWillAppear");
 	
 	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止。
 
@@ -223,9 +220,8 @@
 	}
 	
 	//--------------------------------------------------Pe3select.e6parts
-	if (RaE6parts != nil) {
-		[RaE6parts release];
-		RaE6parts = nil;
+	if (RaE6parts) {
+		[RaE6parts release], RaE6parts = nil;
 	}
 	// Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
@@ -249,9 +245,8 @@
 	}
 	
 	//--------------------------------------------------Me3lasts: 前回引用するため
-	if (RaE3lasts != nil) {
-		[RaE3lasts release];
-		RaE3lasts = nil;
+	if (RaE3lasts) {
+		[RaE3lasts release], RaE3lasts = nil;
 	}
 	// Sorting
 	sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:NO]; // NO=降順
@@ -582,7 +577,7 @@
 	//[self.view.window addSubview:McalcView]; //NG:ヨコ向きができなくなる
 	//[self.tableView   addSubview:McalcView]; NG
 	[self.view addSubview:McalcView];
-	McalcView.PoParentTableView = self.tableView;
+	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
 }

@@ -33,29 +33,43 @@
 //@synthesize MdateTarget;
 
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
+	NSLog(@"--- unloadRelease --- E3recordTVC");
 #ifdef GD_AdMob_ENABLED
 	if (RoAdMobView) {
-		AzRETAIN_CHECK(@"E3recordTVC -3- RoAdMobView", RoAdMobView, 0)
 		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release];
-		//NG//RoAdMobView = nil; これすると cell更新あれば落ちる。cell側での破棄に任せる。
+		[RoAdMobView release], RoAdMobView = nil;
 	}
 #endif
-	[RaE3list release];
-	[RaSection release];
-	[RaIndex release];
-	
-	// @property (retain)
+	[RaE3list release],		RaE3list = nil;
+	[RaSection release],	RaSection = nil;
+	[RaIndex release],		RaIndex = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if ((self = [super initWithStyle:UITableViewStylePlain])) {  // セクションなしテーブル
+	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
+	if (self) {
 		// 初期化成功
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		[app.Me3dateUse release];  // Me3dateUse retainプロパティにしたため
@@ -566,7 +580,7 @@
 				cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 				cell.showsReorderControl = NO; // Move禁止
 				if (RoAdMobView) { // Request an AdMob ad for this table view cell
-					[cell.contentView addSubview:RoAdMobView];
+					[cell.contentView addSubview:RoAdMobView]; // unloadReleaseにて解放
 				}
 			}
 		} else {

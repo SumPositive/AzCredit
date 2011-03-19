@@ -26,13 +26,17 @@
 @synthesize Re0root;
 @synthesize Pe1card;
 
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E8bankTVC");
+	[RaE8banks release], RaE8banks = nil;
+}
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	AzRETAIN_CHECK(@"E8bankTVC RaE8banks", RaE8banks, 0)
-	[RaE8banks release];
-	
-	// @property (retain)
-	AzRETAIN_CHECK(@"E8bankTVC Re0root", Re0root, 0)
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
 }
@@ -42,7 +46,8 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
+	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
+	if (self) {
 		// 初期化成功
 	}
 	return self;
@@ -125,8 +130,8 @@
 										 sort:sortArray];
 	[sortArray release];
 	
-	if (RaE8banks != nil) {
-		[RaE8banks release];
+	if (RaE8banks) {
+		[RaE8banks release], RaE8banks = nil;
 	}
 	RaE8banks = [[NSMutableArray alloc] initWithArray:arFetch];
 	

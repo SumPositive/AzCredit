@@ -53,7 +53,7 @@
 	//	[outdata appendFormat:@"<a href=\"..\">..</a><br />\n"];
 	//for (NSString *fname in array)
 	NSString *fname;
-	while (fname = [dirEnum nextObject])
+	while ((fname = [dirEnum nextObject]))
 	{
 		//NSDictionary *fileDict = [[NSFileManager defaultManager] fileAttributesAtPath:[path stringByAppendingPathComponent:fname] traverseLink:NO];
 		//if ([[fileDict objectForKey:NSFileType] isEqualToString: @"NSFileTypeDirectory"]) {
@@ -239,8 +239,11 @@
 			return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
 		}
 		
-		for (int n = 1; n < [RaMultipartData count] - 1; n++)
-			NSLog(@"%@", [[NSString alloc] initWithBytes:[[RaMultipartData objectAtIndex:n] bytes] length:[[RaMultipartData objectAtIndex:n] length] encoding:NSUTF8StringEncoding]);
+	//	for (int n = 1; n < [RaMultipartData count] - 1; n++) {
+	//		NSLog(@"%@", [[NSString alloc] initWithBytes:[[RaMultipartData objectAtIndex:n] bytes] 
+	//											  length:[[RaMultipartData objectAtIndex:n] length] 
+	//											encoding:NSUTF8StringEncoding]);
+	//	}
 		
 		[postInfo release];
 		[RaMultipartData release];

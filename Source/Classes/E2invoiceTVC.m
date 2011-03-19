@@ -71,20 +71,37 @@
 @synthesize Re1select;
 @synthesize Re8select;
 
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E2invoiceTVC");
+	[RaE2list release], RaE2list = nil;
+}
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[RaE2list release];
-	
-	// @property (retain)
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[Re1select release];
 	[Re8select release];
 	[super dealloc];
 }
 
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
+	if (self) {
 		// 初期化成功
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
@@ -135,8 +152,7 @@
 	
 	// Me2list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
 	if (RaE2list != nil) {
-		[RaE2list release];
-		RaE2list = nil;
+		[RaE2list release], RaE2list = nil;
 	}
 
 	//[0.3]E7E2クリーンアップ

@@ -28,16 +28,24 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	//--------------------------------Private Alloc
 	//--------------------------------@property (retain)
 	[Re1edit release];
 	[super dealloc];
 }
 
+/*
+- (void)viewDidUnload 
+{
+	[super viewDidUnload];
+	AzLOG(@"MEMORY! E1cardDetailTVC: viewDidUnload");
+}
+*/
+
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
+	if (self) {
 		// 初期化成功
   	}
 	return self;
@@ -69,13 +77,6 @@
 											   target:self action:@selector(save:)] autorelease];
 }
 
-/*
-- (void)viewDidUnload 
-{
-	[super viewDidUnload];
-	AzLOG(@"MEMORY! E1cardDetailTVC: viewDidUnload");
-}
-*/
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 

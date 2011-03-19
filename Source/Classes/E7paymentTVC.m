@@ -1,5 +1,5 @@
 //
-//  E2invoiceTVC.m
+//  E7paymentTVC.m
 //  AzCredit
 //
 //  Created by 松山 和正 on 10/01/29.
@@ -27,14 +27,30 @@
 @synthesize Re0root;
 
 
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E7paymentTVC");
+	[RaE7list release], RaE7list = nil;
+}
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[RaE7list release];
-	
-	// @property (retain)
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
 }
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
 
 static UIColor *MpColorBlue(float percent) {
 	float red = percent * 255.0f;
@@ -50,7 +66,8 @@ static UIColor *MpColorBlue(float percent) {
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
+	if (self) {
 		// 初期化成功
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
@@ -96,9 +113,8 @@ static UIColor *MpColorBlue(float percent) {
 
 
 	// Me7list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
-	if (RaE7list != nil) {
-		[RaE7list release];
-		RaE7list = nil;
+	if (RaE7list) {
+		[RaE7list release], RaE7list = nil;
 	}
 	
 	//[0.3]E7E2クリーンアップ
@@ -112,27 +128,6 @@ static UIColor *MpColorBlue(float percent) {
 	sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:NO];
 	NSArray *sortDesc = [[NSArray alloc] initWithObjects:sort1,nil]; // 支払日降順：Limit抽出に使用
 	[sort1 release];
-	
-/*	// E7支払済　（全て）
-	muE7tmp = [[NSMutableArray alloc] initWithArray:[Re0root.e7paids allObjects]];
-	[muE7tmp sortUsingDescriptors:sortArray];
-	RaE7list = [[NSMutableArray alloc] initWithObjects:muE7tmp,nil]; // 一次元追加
-	[muE7tmp release];*/
-	// E7支払済　（直近の20件）
-/*	NSFetchRequest *req = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E7payment" 
-											  inManagedObjectContext:Re0root.managedObjectContext];
-	[req setEntity:entity];
-	[req setPredicate:[NSPredicate predicateWithFormat:@"(e0paid == %@)", Re0root]];
-	[req setSortDescriptors:sortDesc];
-	[req setFetchLimit:20];  // 抽出件数制限
-	NSError *error = nil;
-	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:req error:&error];
-	if (error) {
-		AzLOG(@"Error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
-	[req release];*/
 	
 	NSArray *arFetch = [MocFunctions select:@"E7payment" 
 										limit:GD_PAIDLIST_MAX

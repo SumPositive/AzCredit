@@ -28,16 +28,29 @@
 @synthesize Re0root;
 @synthesize Pe3edit;
 
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E4shopTVC");
+	[RaE4shops release], RaE4shops = nil;
+}
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	AzRETAIN_CHECK(@"TopMenuTVC RaE4shops", RaE4shops, 0)
-	[RaE4shops release];
-	
-	// @property (retain)
-	AzRETAIN_CHECK(@"TopMenuTVC Re0root", Re0root, 0)
+	[self unloadRelease];
+	//--------------------------------@property (retain)
 	[Re0root release];
-    
 	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 
@@ -46,7 +59,8 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStylePlain]) {  // セクションなしテーブル
+	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
+	if (self) {
 		// 初期化成功
 	}
 	return self;
@@ -182,7 +196,7 @@
 	[sortArray release];
 	//
 	if (RaE4shops) {
-		[RaE4shops release];
+		[RaE4shops release], RaE4shops = nil;
 	}
 	RaE4shops = [[NSMutableArray alloc] initWithArray:arFetch];
 	// 
