@@ -45,8 +45,10 @@
 {
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
 	if (MbannerView) {
-		MbannerView.delegate = nil;	//[0.4.1]メモリ不足時に落ちた原因除去
-		[MbannerView release], MbannerView = nil;
+		[MbannerView cancelBannerViewAction];	// 停止
+		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
+		[MbannerView removeFromSuperview];		// 解放
+		[MbannerView release], MbannerView = nil;	// 解放
 	}
 	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
 }
@@ -120,34 +122,32 @@
 #endif	
 
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
-	
-#ifdef GD_iAd_ENABLED
-	// iAd
-	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
-		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectZero];
-		MbannerView.delegate = self;
-		
+}
+
+- (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
+{
+	if (MbannerView) {
 		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
 			// iOS4.2より前
-			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
-														  ADBannerContentSizeIdentifier320x50,
-														  ADBannerContentSizeIdentifier480x32, nil];
+			if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+			} else {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+			}
 		} else {
 			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
-														  ADBannerContentSizeIdentifierPortrait,
-														  ADBannerContentSizeIdentifierLandscape, nil];
+			if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+			} else {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+			}
 		}
-		// 最初、左端に隠しておく
-		MbannerView.hidden = YES;
-		CGRect rc = MbannerView.frame;
-		rc.origin.x = -480; // 左端に隠す（次に左から迫り出させるため）
-		MbannerView.frame = rc;	
-		//[self.view addSubview:MbannerView];
-		[self.navigationController.view addSubview:MbannerView];
-		//Fix//[MbannerView release]; dealloc:にて .delegate = nil; & release する。
+		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+			MbannerView.frame = CGRectMake(0, 320 - 32 - 32,  0,0);  // ヨコもToolbarあり
+		} else {
+			MbannerView.frame = CGRectMake(0, 480 - 44 - 50,  0,0);
+		}
 	}
-#endif
 }
 
 // loadView の次に呼び出される
@@ -159,8 +159,6 @@
 }
 
 
-
-
 - (void)barButtonAdd {
 	// Add Card
 	[self e3recordAdd];
@@ -170,15 +168,24 @@
 - (void)iAdOn
 {
 	NSLog(@"=== iAdOn ===");
-	//if (MbannerView==nil || !MbannerEnabled || !MbannerView.hidden) return;
-	if (MbannerView==nil || !MbannerEnabled) return;
-	MbannerView.hidden = NO;
+	if (MbannerActive==NO) return;
+	if (MbannerEnabled==NO) return;
+	if (MbannerView==nil) return;
+	if (MbannerView.alpha==1) return;
 
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationDuration:2.5];
+	[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きによりY座標修正
+	CGRect rc = MbannerView.frame;
+	rc.origin.x -= 500;
+	MbannerView.frame = rc;
+	MbannerView.alpha = 0;
 	
-	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
+	[UIView setAnimationDuration:0.8];
+	
+	MbannerView.alpha = 1;
+	rc.origin.x = 0;
+	MbannerView.frame = rc;
 	
 	[UIView commitAnimations];
 }
@@ -186,27 +193,28 @@
 - (void)iAdOff
 {
 	NSLog(@"=== iAdOff ===");
-	if (MbannerView==nil || MbannerView.hidden) return;
+	if (MbannerView==nil) return;
+	if (MbannerView.alpha==0) return;
 	
 	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
 	[UIView setAnimationDuration:0.8];
-
+	
 	CGRect rc = MbannerView.frame;
-	//rc.origin.y = self.navigationController.view.frame.size.height; // viewの外へ出す
-	rc.origin.x = -480; // 左端に隠す //self.navigationController.view.frame.size.width; // viewの外へ出す
-	MbannerView.frame = rc;	
+	rc.origin.x -= 500;
+	MbannerView.frame = rc;
+	MbannerView.alpha = 0;
 	
 	[UIView commitAnimations];
-	MbannerView.hidden = YES;
 }
 
 
 // iAd取得できたときに呼ばれる　⇒　表示する
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
-	AzLOG(@"=== bannerViewDidLoadAd ===");
-	if (MbannerEnabled) {
+	if (MbannerView && MbannerActive==NO) {
+		AzLOG(@"=== bannerViewDidLoadAd ===");
+		MbannerActive = YES;	// YESになるのは、ここだけ。
 		[self iAdOn];
 	}
 }
@@ -214,8 +222,11 @@
 // iAd取得できなかったときに呼ばれる　⇒　非表示にする
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
 {
-	AzLOG(@"=== didFailToReceiveAdWithError ===");
-	[self iAdOff];
+	if (MbannerView && MbannerActive) {
+		AzLOG(@"=== didFailToReceiveAdWithError ===");
+		MbannerActive = NO;
+		[self iAdOff];
+	}
 }
 
 // iAdバナーをタップしたときに呼ばれる
@@ -262,36 +273,8 @@
 		}
 	}
 
-	if (MbannerView && !MbannerView.hidden) {
-		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) { // ヨコ
-			NSLog(@"=== Rotate ヨコ ===");
-			if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
-				// iOS4.2より前
-				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
-			} else {
-				// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
-			}
-			MbannerView.frame = CGRectMake(0, 320 - 32 - 32, 0,0);
-		} else {
-			NSLog(@"=== Rotate タテ ===");
-			if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
-				// iOS4.2より前
-				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
-			} else {
-				// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-			}
-			MbannerView.frame = CGRectMake(0, 480 - 44 - 50, 0,0);
-		}
-	}
+	[self bannerViewWillRotate:toInterfaceOrientation];
 }
-
-// shouldAutorotateToInterfaceOrientation で YES を返すと、回転後に呼び出される
-// didRotateFromInterfaceOrientation
-
-
-
 
 
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
@@ -328,12 +311,38 @@
 	// TableView Reflesh
 	[self.tableView reloadData];
 	
+	
+#ifdef GD_iAd_ENABLED
+	// iAd
+	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
+		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectZero];
+		MbannerView.delegate = self;
+		
+		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
+			// iOS4.2より前
+			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+														  ADBannerContentSizeIdentifier320x50,
+														  ADBannerContentSizeIdentifier480x32, nil];
+		} else {
+			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
+			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape, nil];
+		}
+		[self bannerViewWillRotate:self.interfaceOrientation];
+		MbannerView.delegate = self; // viewWillAppearにてセット
+		MbannerView.alpha = 0;
+		MbannerActive = NO;
+		[self.navigationController.view addSubview:MbannerView];
+		//[MbannerView release]// unloadReleaseにて.delegate=nilしてからreleaseするため、自己管理する。
+	}
+#endif
 #ifdef AzMAKE_SPLASHFACE
 	MbannerEnabled = NO;
 #else
 	MbannerEnabled = YES; // TopMenuView画面が表示されたのでiAd許可する
-	[self iAdOn];
 #endif
+	[self iAdOn];
 }
 
 // この画面が非表示になる直前に呼ばれる
@@ -341,6 +350,7 @@
 {
 	[self iAdOff];  // iAdを非表示にする
 	MbannerEnabled = NO; // TopMenuView以外の画面に移るのでiAd禁止にする
+	// MbannerViewの解放&破棄はしない。iAdクリック時にもここを通るため
 	[super viewWillDisappear:animated];
 }
 

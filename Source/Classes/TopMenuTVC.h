@@ -27,6 +27,7 @@
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
 	BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
+	BOOL		MbannerActive;
 	//.hidden利用//BOOL MbannerIsVisible;	// YES=iAd 今表示されている
 	NSInteger	MiE1cardCount;
 	BOOL		MbOptAntirotation;
