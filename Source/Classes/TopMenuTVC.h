@@ -22,12 +22,14 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	InformationView		*MinformationView;
+#ifdef GD_iAd_ENABLED
 	ADBannerView		*MbannerView;
+	BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
+	BOOL		MbannerActive;
+#endif
 	//UIView				*MviewLogin;
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
-	BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
-	BOOL		MbannerActive;
 	//.hidden利用//BOOL MbannerIsVisible;	// YES=iAd 今表示されている
 	NSInteger	MiE1cardCount;
 	BOOL		MbOptAntirotation;

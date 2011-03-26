@@ -44,12 +44,14 @@
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
+#ifdef GD_iAd_ENABLED
 	if (MbannerView) {
 		[MbannerView cancelBannerViewAction];	// 停止
 		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
 		[MbannerView removeFromSuperview];		// 解放
 		[MbannerView release], MbannerView = nil;	// 解放
 	}
+#endif
 	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
 }
 
@@ -85,7 +87,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化成功
+#ifdef GD_iAd_ENABLED
 		MbannerEnabled = NO;
+#endif
 	}
 	return self;
 }
@@ -126,6 +130,7 @@
 
 - (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
 {
+#ifdef GD_iAd_ENABLED
 	if (MbannerView) {
 		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
 			// iOS4.2より前
@@ -148,6 +153,7 @@
 			MbannerView.frame = CGRectMake(0, 480 - 44 - 50,  0,0);
 		}
 	}
+#endif
 }
 
 // loadView の次に呼び出される
@@ -165,6 +171,7 @@
 }
 
 
+#ifdef GD_iAd_ENABLED
 - (void)iAdOn
 {
 	NSLog(@"=== iAdOn ===");
@@ -208,7 +215,6 @@
 	[UIView commitAnimations];
 }
 
-
 // iAd取得できたときに呼ばれる　⇒　表示する
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
@@ -243,6 +249,7 @@
  //[self iAdOff];  一度見れば消えるようにする
  }
  */
+#endif
 
 //---------------------------------------------------------------------------回転
 // YES を返すと、回転と同時に willRotateToInterfaceOrientation が呼び出され、
@@ -336,20 +343,22 @@
 		[self.navigationController.view addSubview:MbannerView];
 		//[MbannerView release]// unloadReleaseにて.delegate=nilしてからreleaseするため、自己管理する。
 	}
-#endif
 #ifdef AzMAKE_SPLASHFACE
 	MbannerEnabled = NO;
 #else
 	MbannerEnabled = YES; // TopMenuView画面が表示されたのでiAd許可する
 #endif
 	[self iAdOn];
+#endif
 }
 
 // この画面が非表示になる直前に呼ばれる
 - (void)viewWillDisappear:(BOOL)animated 
 {
+#ifdef GD_iAd_ENABLED
 	[self iAdOff];  // iAdを非表示にする
 	MbannerEnabled = NO; // TopMenuView以外の画面に移るのでiAd禁止にする
+#endif
 	// MbannerViewの解放&破棄はしない。iAdクリック時にもここを通るため
 	[super viewWillDisappear:animated];
 }
@@ -774,8 +783,10 @@
 					break;
 				case 1:
 				{  // Backup/Restore for YourPC
+#ifdef GD_iAd_ENABLED
 					[self iAdOff];
 					MbannerEnabled = NO;
+#endif
 					//NG//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
 					//NG//ツールバーを消したいが、戻ったとき表示する方法が未定。
 					

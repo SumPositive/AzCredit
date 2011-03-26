@@ -9,7 +9,8 @@
 
 //#define AzMAKE_SPLASHFACE  // 起動画面 Default.png を作るための作業オプション
 
-#define GD_iAd_ENABLED
+//[0.4.3]//#define GD_iAd_ENABLED     下部クリックできない不具合発生のため除去
+
 #define GD_AdMob_ENABLED
 
 #define OR  ||
