@@ -4,17 +4,19 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Debug AzCredit.xcscheme</key>
+		<key>AzCredit Debug.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>Distribution AzCredit.xcscheme</key>
+		<key>AzCredit Distribution.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>Release AzCredit.xcscheme</key>
+		<key>TsCredit TestFlight.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -23,6 +25,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>1D6058900D05DD3D006BFB54</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>44B01168133EF773005AD0EA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -99,7 +99,7 @@
 {
 	NSLog(@"--- loadView ---");
 	[super loadView];
-	
+
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
@@ -287,6 +287,14 @@
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
 {
     [super viewWillAppear:animated];
+
+#ifdef AzTESTFLIGHT
+	self.title = @"- TEST -";
+	self.tableView.backgroundColor = [UIColor purpleColor];
+#else
+	self.title = NSLocalizedString(@"Product Title",nil);
+#endif
+	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
 
@@ -296,7 +304,6 @@
 	//MbOptEnableSchedule = [defaults boolForKey:GD_OptEnableSchedule];
 	//MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
 	
-	self.title = NSLocalizedString(@"Product Title",nil);
 	
 
 	//-----------------------------------------------------------------------------

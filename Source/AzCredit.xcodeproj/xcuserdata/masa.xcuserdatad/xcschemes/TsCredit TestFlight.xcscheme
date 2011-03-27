@@ -9,13 +9,13 @@
             buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
-            buildForArchiving = "NO"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-               BuildableName = "AzCredit.app"
-               BlueprintName = "AzCredit"
+               BlueprintIdentifier = "44B01168133EF773005AD0EA"
+               BuildableName = "TsCredit.app"
+               BlueprintName = "TsCredit"
                ReferencedContainer = "container:AzCredit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -25,7 +25,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      buildConfiguration = "TestFlight">
       <Testables>
       </Testables>
    </TestAction>
@@ -36,13 +36,13 @@
       displayScale = "1.00"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug">
+      buildConfiguration = "TestFlight">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "AzCredit.app"
-            BlueprintName = "AzCredit"
+            BlueprintIdentifier = "44B01168133EF773005AD0EA"
+            BuildableName = "TsCredit.app"
+            BlueprintName = "TsCredit"
             ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -55,22 +55,23 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Leaks.tracetemplate"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug">
+      buildConfiguration = "TestFlight">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-            BuildableName = "AzCredit.app"
-            BlueprintName = "AzCredit"
+            BlueprintIdentifier = "44B01168133EF773005AD0EA"
+            BuildableName = "TsCredit.app"
+            BlueprintName = "TsCredit"
             ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "TestFlight">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
-      revealArchiveInOrganizer = "NO">
+      buildConfiguration = "TestFlight"
+      customArchiveName = "TsCredit"
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

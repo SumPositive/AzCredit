@@ -10,7 +10,6 @@
 //#define AzMAKE_SPLASHFACE  // 起動画面 Default.png を作るための作業オプション
 
 //[0.4.3]//#define GD_iAd_ENABLED     下部クリックできない不具合発生のため除去
-
 #define GD_AdMob_ENABLED
 
 #define OR  ||
@@ -28,7 +27,7 @@
 
 
 #define GD_PRODUCTNAME	@"AzCredit"  // IMPORTANT PRODUCT NAME  和名「クレメモ」
-												//↑↑変更禁止！！Keychainの'ServiceName'に使っているので読み出せなくなる。
+													//↑↑変更禁止！！Keychainの'ServiceName'に使っているので読み出せなくなる。
 #define GD_KEY_LOGINPASS  @"AzCreditLoginPass"  //←変更禁止！！Keychainの'Username'に使っているので読み出せなくなる。
 
 /*----- GD_PRODUCTNAME を変更するときに必要となる作業の覚書 -------------------------------
@@ -53,25 +52,25 @@
  *XCODE＞ビルド＞すべてのターゲットをクリーニング
 
  *XCODE＞ビルドして進行
-
  -----------------------------------------------------------------------*/
+
 #define AzMIN_YearMMDD		20000326
 #define AzMAX_YearMMDD		21001231
-#define AzMAX_AMOUNT		99999999	// Max99,999,999円
+#define AzMAX_AMOUNT			99999999	// Max99,999,999円
 #define AzMAX_NAME_LENGTH		50		//[0.2c] .name 最大文字数
 #define AzMAX_NOTE_LENGTH		200		//[0.2c] .note 最大文字数
 
 #define GD_COREDATANAME		@"AzCredit.sqlite"	// CoreData Saved SQLlite File name
-#define GD_GDOCS_EXT		@".AzCredit"		// Google Document Spredseet.拡張子
-#define GD_CSVFILENAME		@"AzCredit.csv"		// Local Save file name
+#define GD_GDOCS_EXT				@".AzCredit"			// Google Document Spredseet.拡張子
+#define GD_CSVFILENAME				@"AzCredit.csv"		// Local Save file name
 #define GD_CSVBACKFILENAME	@"AzCreditBack.csv"	// Local Save file name 直前バックアップ
 
 #define GD_SECTION_TIMES	100000				// .tag = .section * GD_SECTION_TIMES + .row に使用
 #define GD_E2SORTLIST_COUNT		3				// E2 Sort Listの有効行数
 
-#define GD_KeyboardHeightPortrait	216.0f	// タテ向きのときのキーボード高さ
-#define GD_KeyboardHeightLandscape	160.0f	// ヨコ向きのときのキーボード高さ
-#define GD_PickerHeight				216.0f	// PICKERの高さ
+#define GD_KeyboardHeightPortrait			216.0f		// タテ向きのときのキーボード高さ
+#define GD_KeyboardHeightLandscape	160.0f		// ヨコ向きのときのキーボード高さ
+#define GD_PickerHeight							216.0f		// PICKERの高さ
 
 // standardUserDefaults Setting Plist KEY
 #define GD_DefPassword						@"DefPassword"
