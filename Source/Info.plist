@@ -8,8 +8,8 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Icon.png</string>
-		<string>Icon@2x.png</string>
+		<string>Icon57Test.png</string>
+		<string>Icon57Test@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}</string>
@@ -24,11 +24,11 @@
 	<key>CFBundleURLTypes</key>
 	<array/>
 	<key>CFBundleVersion</key>
-	<string>0.4.4</string>
+	<string>0.5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<string>YES</string>
 	<key>UIPrerenderedIcon</key>
-	<true/>
+	<false/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

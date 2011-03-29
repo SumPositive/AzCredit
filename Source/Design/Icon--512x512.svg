@@ -13,11 +13,11 @@
    height="512"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.0 r9654"
+   inkscape:version="0.48.1 r9760"
    sodipodi:docname="Icon--512x512.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon57@2x.png"
-   inkscape:export-xdpi="20.040001"
-   inkscape:export-ydpi="20.040001">
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon57Test.png"
+   inkscape:export-xdpi="10.02"
+   inkscape:export-ydpi="10.02">
   <defs
      id="defs4">
     <linearGradient
@@ -719,7 +719,7 @@
      inkscape:cx="256"
      inkscape:cy="256"
      inkscape:document-units="px"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:window-width="1232"
      inkscape:window-height="929"
@@ -839,4 +839,22 @@
            style="font-size:39.73376083px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#97504d;fill-opacity:1;font-family:Charcoal CY;-inkscape-font-specification:Charcoal CY" /></flowRegion><flowPara
          id="flowPara4027">GOOD</flowPara><flowPara
          id="flowPara4029">THRU</flowPara></flowRoot>  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="TEST"
+     sodipodi:insensitive="true">
+    <text
+       xml:space="preserve"
+       style="font-size:174.62402344px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
+       x="-328.5029"
+       y="395.50052"
+       id="text3109"
+       sodipodi:linespacing="100%"
+       transform="matrix(0.59297071,-0.71641074,0.86124408,0.64589276,0,0)"><tspan
+         sodipodi:role="line"
+         id="tspan3111"
+         x="-328.5029"
+         y="395.50052">TEST</tspan></text>
+  </g>
 </svg>

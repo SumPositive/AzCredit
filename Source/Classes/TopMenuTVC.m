@@ -289,8 +289,7 @@
     [super viewWillAppear:animated];
 
 #ifdef AzTESTFLIGHT
-	self.title = @"- TEST -";
-	self.tableView.backgroundColor = [UIColor purpleColor];
+	self.title = [NSString stringWithFormat:@"%@ TEST", NSLocalizedString(@"Product Title",nil)];
 #else
 	self.title = NSLocalizedString(@"Product Title",nil);
 #endif

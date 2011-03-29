@@ -92,7 +92,7 @@ static UIColor *MpColorBlue(float percent) {
 	label.text =	@"AzukiSoft Project\n"
 					@"AzCredit\n"
 					@"Born on March 26\n"
-					@"© 2000-2010  Azukid\n"
+					@"© 2000-2011  Azukid\n"
 					@"Creator Sum Positive\n"
 					@"All Rights Reserved.";
 	label.numberOfLines = 6;
