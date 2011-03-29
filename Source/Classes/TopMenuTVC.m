@@ -288,10 +288,10 @@
 {
     [super viewWillAppear:animated];
 
-#ifdef AzTESTFLIGHT
-	self.title = [NSString stringWithFormat:@"%@ TEST", NSLocalizedString(@"Product Title",nil)];
-#else
+#ifdef STABLE_VERSION
 	self.title = NSLocalizedString(@"Product Title",nil);
+#else
+	self.title = [NSString stringWithFormat:@"%@ Free", NSLocalizedString(@"Product Title",nil)];
 #endif
 	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。

@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="Icon--512x512.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon57Test.png"
-   inkscape:export-xdpi="10.02"
-   inkscape:export-ydpi="10.02">
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon57Free@2x.png"
+   inkscape:export-xdpi="20.040001"
+   inkscape:export-ydpi="20.040001">
   <defs
      id="defs4">
     <linearGradient
@@ -842,19 +842,36 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="TEST"
+     inkscape:label="Free"
      sodipodi:insensitive="true">
-    <text
-       xml:space="preserve"
-       style="font-size:174.62402344px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
-       x="-328.5029"
-       y="395.50052"
-       id="text3109"
-       sodipodi:linespacing="100%"
-       transform="matrix(0.59297071,-0.71641074,0.86124408,0.64589276,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan3111"
-         x="-328.5029"
-         y="395.50052">TEST</tspan></text>
+    <g
+       id="g3888"
+       transform="matrix(0.70752576,-0.70668755,0.70668755,0.70752576,-164.15163,356.9139)">
+      <path
+         transform="matrix(1.2355212,0,0,1.3738318,-95.97353,346.80196)"
+         sodipodi:open="true"
+         sodipodi:end="6.271214"
+         sodipodi:start="0"
+         d="m 475.42857,75.047623 a 98.666664,40.761906 0 1 1 -0.007,-0.487962"
+         sodipodi:ry="40.761906"
+         sodipodi:rx="98.666664"
+         sodipodi:cy="75.047623"
+         sodipodi:cx="376.7619"
+         id="path3111"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.83776259;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <flowRoot
+         transform="matrix(1.6191997,0,0,2.2274646,-217.53713,301.98864)"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
+         id="flowRoot3889"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3891"><rect
+             style="font-size:40px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
+             y="57.904762"
+             x="313.14285"
+             height="36.57143"
+             width="123.42857"
+             id="rect3893" /></flowRegion><flowPara
+           id="flowPara3901">Free</flowPara></flowRoot>    </g>
   </g>
 </svg>

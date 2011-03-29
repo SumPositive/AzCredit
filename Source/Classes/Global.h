@@ -9,8 +9,12 @@
 
 //#define AzMAKE_SPLASHFACE  // 起動画面 Default.png を作るための作業オプション
 
+#ifdef STABLE_VERSION
+// 広告なし
+#else
 #define GD_iAd_ENABLED				//[0.4.2]にて、電卓の下部ボタンがクリックできない不具合が発生した
 #define GD_AdMob_ENABLED
+#endif
 
 #define OR  ||
 

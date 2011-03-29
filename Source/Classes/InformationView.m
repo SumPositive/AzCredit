@@ -49,7 +49,11 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------アイコン
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 100, 57, 57)];
-	[iv setImage:[UIImage imageNamed:@"Icon.png"]];
+#ifdef STABLE_VERSION
+	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
+#else
+	[iv setImage:[UIImage imageNamed:@"Icon57Free.png"]];
+#endif
 	[self addSubview:iv]; [iv release];
 	
 	UILabel *label;
@@ -64,8 +68,13 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 130, 200, 20)];
-	label.text = [NSString stringWithFormat:@"Version %@", zVersion];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 130, 200, 30)];
+	label.numberOfLines = 2;
+#ifdef STABLE_VERSION
+	label.text = [NSString stringWithFormat:@"Version %@ Stable", zVersion];
+#else
+	label.text = [NSString stringWithFormat:@"Version %@ Free\nNEWEST TRIAL", zVersion];
+#endif
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
@@ -88,7 +97,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 158, 200, 100)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 168, 200, 100)];
 	label.text =	@"AzukiSoft Project\n"
 					@"AzCredit\n"
 					@"Born on March 26\n"

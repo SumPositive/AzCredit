@@ -102,8 +102,8 @@
 		44AD488C1132B6B900FB19FB /* E6partTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD488A1132B6B900FB19FB /* E6partTVC.h */; };
 		44AF152E1341D8E80019F55C /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF152D1341D8E80019F55C /* Icon57.png */; };
 		44AF15301341D9000019F55C /* Icon57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF152F1341D9000019F55C /* Icon57@2x.png */; };
-		44AF15321341D9310019F55C /* Icon57Test.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF15311341D9300019F55C /* Icon57Test.png */; };
-		44AF15341341D9390019F55C /* Icon57Test@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF15331341D9390019F55C /* Icon57Test@2x.png */; };
+		44AF15321341D9310019F55C /* Icon57Free.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF15311341D9300019F55C /* Icon57Free.png */; };
+		44AF15341341D9390019F55C /* Icon57Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF15331341D9390019F55C /* Icon57Free@2x.png */; };
 		44AFB15511D5113A007CBFC9 /* Icon32-NearPC.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AFB15411D5113A007CBFC9 /* Icon32-NearPC.png */; };
 		44B0116A133EF773005AD0EA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
 		44B0116B133EF773005AD0EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4434B831111F0A3900CCF7EE /* InfoPlist.strings */; };
@@ -1048,6 +1048,11 @@
 		44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
 		44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
+		44EC041213422E79005071AC /* Info-Stable.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44EC041113422E79005071AC /* Info-Stable.plist */; };
+		44EC0415134237B0005071AC /* Icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF152D1341D8E80019F55C /* Icon57.png */; };
+		44EC0416134237B6005071AC /* Icon57@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF152F1341D9000019F55C /* Icon57@2x.png */; };
+		44EC041713423B7A005071AC /* Icon57Free.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF15311341D9300019F55C /* Icon57Free.png */; };
+		44EC041813423B88005071AC /* Icon57Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AF15331341D9390019F55C /* Icon57Free@2x.png */; };
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 /* End PBXBuildFile section */
 
@@ -1156,11 +1161,11 @@
 		44AD488A1132B6B900FB19FB /* E6partTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E6partTVC.h; sourceTree = "<group>"; };
 		44AF152D1341D8E80019F55C /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57.png; sourceTree = "<group>"; };
 		44AF152F1341D9000019F55C /* Icon57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon57@2x.png"; sourceTree = "<group>"; };
-		44AF15311341D9300019F55C /* Icon57Test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57Test.png; sourceTree = "<group>"; };
-		44AF15331341D9390019F55C /* Icon57Test@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon57Test@2x.png"; sourceTree = "<group>"; };
+		44AF15311341D9300019F55C /* Icon57Free.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon57Free.png; sourceTree = "<group>"; };
+		44AF15331341D9390019F55C /* Icon57Free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon57Free@2x.png"; sourceTree = "<group>"; };
 		44AFB12211D4DC4E007CBFC9 /* AzCredit 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AzCredit 3.xcdatamodel"; sourceTree = "<group>"; };
 		44AFB15411D5113A007CBFC9 /* Icon32-NearPC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-NearPC.png"; path = "Design/Icon32-NearPC.png"; sourceTree = "<group>"; };
-		44B0137B133EF773005AD0EA /* TsCredit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TsCredit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44B0137B133EF773005AD0EA /* AzCredit_Stable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCredit_Stable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B332CE1123B6AA007D3A15 /* TopMenuTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopMenuTVC.m; sourceTree = "<group>"; };
 		44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopMenuTVC.h; sourceTree = "<group>"; };
 		44B332D21123B756007D3A15 /* E1cardTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1cardTVC.h; sourceTree = "<group>"; };
@@ -1587,6 +1592,7 @@
 		44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E3selectRepeatTVC.h; sourceTree = "<group>"; };
 		44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E3selectRepeatTVC.m; sourceTree = "<group>"; };
 		44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CircleUnpaid.png"; path = "Design/Icon32-CircleUnpaid.png"; sourceTree = "<group>"; };
+		44EC041113422E79005071AC /* Info-Stable.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Stable.plist"; sourceTree = "<group>"; };
 		44FB5C5911512063008DEC3E /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1654,7 +1660,7 @@
 			isa = PBXGroup;
 			children = (
 				448694E610F5A84300AD02D8 /* AzCredit.app */,
-				44B0137B133EF773005AD0EA /* TsCredit.app */,
+				44B0137B133EF773005AD0EA /* AzCredit_Stable.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1678,8 +1684,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				44AF15331341D9390019F55C /* Icon57Test@2x.png */,
-				44AF15311341D9300019F55C /* Icon57Test.png */,
+				44AF15331341D9390019F55C /* Icon57Free@2x.png */,
+				44AF15311341D9300019F55C /* Icon57Free.png */,
 				44AF152F1341D9000019F55C /* Icon57@2x.png */,
 				44AF152D1341D8E80019F55C /* Icon57.png */,
 				44AD363D113ECC7E00E40BD0 /* Default.png */,
@@ -1688,6 +1694,7 @@
 				4434B831111F0A3900CCF7EE /* InfoPlist.strings */,
 				4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				44EC041113422E79005071AC /* Info-Stable.plist */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
 				44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */,
 			);
@@ -3149,9 +3156,9 @@
 			productReference = 448694E610F5A84300AD02D8 /* AzCredit.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44B01168133EF773005AD0EA /* TsCredit */ = {
+		44B01168133EF773005AD0EA /* AzCredit_Stable */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "TsCredit" */;
+			buildConfigurationList = 44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "AzCredit_Stable" */;
 			buildPhases = (
 				44B01169133EF773005AD0EA /* Resources */,
 				44B011AB133EF773005AD0EA /* Sources */,
@@ -3162,9 +3169,9 @@
 			);
 			dependencies = (
 			);
-			name = TsCredit;
+			name = AzCredit_Stable;
 			productName = iPack;
-			productReference = 44B0137B133EF773005AD0EA /* TsCredit.app */;
+			productReference = 44B0137B133EF773005AD0EA /* AzCredit_Stable.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3188,7 +3195,7 @@
 			projectRoot = AzukiSoft;
 			targets = (
 				1D6058900D05DD3D006BFB54 /* AzCredit */,
-				44B01168133EF773005AD0EA /* TsCredit */,
+				44B01168133EF773005AD0EA /* AzCredit_Stable */,
 			);
 		};
 /* End PBXProject section */
@@ -3263,6 +3270,9 @@
 				44A10FC8131A16E0000AE46F /* Icon32-Recipient@2x.png in Resources */,
 				44AF152E1341D8E80019F55C /* Icon57.png in Resources */,
 				44AF15301341D9000019F55C /* Icon57@2x.png in Resources */,
+				44EC041213422E79005071AC /* Info-Stable.plist in Resources */,
+				44EC041713423B7A005071AC /* Icon57Free.png in Resources */,
+				44EC041813423B88005071AC /* Icon57Free@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3333,8 +3343,10 @@
 				44B011A6133EF773005AD0EA /* Icon32-GreenPlus.png in Resources */,
 				44B011A7133EF773005AD0EA /* Icon32-Recipient.png in Resources */,
 				44B011A8133EF773005AD0EA /* Icon32-Recipient@2x.png in Resources */,
-				44AF15321341D9310019F55C /* Icon57Test.png in Resources */,
-				44AF15341341D9390019F55C /* Icon57Test@2x.png in Resources */,
+				44AF15321341D9310019F55C /* Icon57Free.png in Resources */,
+				44AF15341341D9390019F55C /* Icon57Free@2x.png in Resources */,
+				44EC0415134237B0005071AC /* Icon57.png in Resources */,
+				44EC0416134237B6005071AC /* Icon57@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3530,7 +3542,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "385564A1-58F4-478F-B9A9-55B44919E0E3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "663117FB-C8A9-4BF9-A217-5FD37BD770A1";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -3556,63 +3568,11 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "385564A1-58F4-478F-B9A9-55B44919E0E3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "663117FB-C8A9-4BF9-A217-5FD37BD770A1";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		44B01136133E5612005AD0EA /* TestFlight */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_PREPROCESSOR_DEFINITIONS = AzTESTFLIGHT;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = "";
-				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
-				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "";
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "510577A6-3842-49B3-8C79-7B69AD0B7689";
-				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = TestFlight;
-		};
-		44B01137133E5612005AD0EA /* TestFlight */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../admob_iphone_sdk/AdMob\"",
-					"\"$(SRCROOT)\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = TsCredit;
-				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
-			};
-			name = TestFlight;
 		};
 		44B01377133EF773005AD0EA /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3625,8 +3585,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "STABLE_VERSION=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = "Info-Stable.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = (
@@ -3636,8 +3597,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = TsCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CE34FA7A-5B88-4F4E-A308-02B724D962EF";
+				PRODUCT_NAME = AzCredit_Stable;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "663117FB-C8A9-4BF9-A217-5FD37BD770A1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -3654,8 +3615,9 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "STABLE_VERSION=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = "Info-Stable.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3664,41 +3626,13 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = TsCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CE34FA7A-5B88-4F4E-A308-02B724D962EF";
+				PRODUCT_NAME = AzCredit_Stable;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "663117FB-C8A9-4BF9-A217-5FD37BD770A1";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
-		};
-		44B01379133EF773005AD0EA /* TestFlight */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../admob_iphone_sdk/AdMob\"",
-					"\"$(SRCROOT)\"",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "";
-				PRODUCT_NAME = TsCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "510577A6-3842-49B3-8C79-7B69AD0B7689";
-				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = TestFlight;
 		};
 		44B0137A133EF773005AD0EA /* Distribution */ = {
 			isa = XCBuildConfiguration;
@@ -3709,8 +3643,9 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "STABLE_VERSION=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = "Info-Stable.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3719,8 +3654,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = TsCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1893AB87-581D-4805-AC98-ACB8D632500B";
+				PRODUCT_NAME = AzCredit_Stable;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF34D7D5-B962-4103-9CD8-1A0F299594C0";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -3740,14 +3675,14 @@
 				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1893AB87-581D-4805-AC98-ACB8D632500B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF34D7D5-B962-4103-9CD8-1A0F299594C0";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -3772,7 +3707,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1893AB87-581D-4805-AC98-ACB8D632500B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF34D7D5-B962-4103-9CD8-1A0F299594C0";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 			};
@@ -3791,13 +3726,13 @@
 				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "385564A1-58F4-478F-B9A9-55B44919E0E3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "663117FB-C8A9-4BF9-A217-5FD37BD770A1";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -3817,14 +3752,14 @@
 				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
 				);
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "385564A1-58F4-478F-B9A9-55B44919E0E3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "663117FB-C8A9-4BF9-A217-5FD37BD770A1";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -3838,18 +3773,16 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
-				44B01137133E5612005AD0EA /* TestFlight */,
 				44D60250111EF2F3004F27CC /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "TsCredit" */ = {
+		44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "AzCredit_Stable" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44B01377133EF773005AD0EA /* Debug */,
 				44B01378133EF773005AD0EA /* Release */,
-				44B01379133EF773005AD0EA /* TestFlight */,
 				44B0137A133EF773005AD0EA /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3860,7 +3793,6 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
-				44B01136133E5612005AD0EA /* TestFlight */,
 				44D6024F111EF2F3004F27CC /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
