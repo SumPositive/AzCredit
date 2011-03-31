@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "44B01168133EF773005AD0EA"
-               BuildableName = "TsCredit.app"
+               BuildableName = "AzCredit_Stable.app"
                BlueprintName = "AzCredit_Stable"
                ReferencedContainer = "container:AzCredit.xcodeproj">
             </BuildableReference>
@@ -41,7 +41,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "44B01168133EF773005AD0EA"
-            BuildableName = "TsCredit.app"
+            BuildableName = "AzCredit_Stable.app"
             BlueprintName = "AzCredit_Stable"
             ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
@@ -53,14 +53,14 @@
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = "/Developer/Applications/Instruments.app/Contents/Resources/templates/Leaks.tracetemplate"
+      savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "44B01168133EF773005AD0EA"
-            BuildableName = "TsCredit.app"
+            BuildableName = "AzCredit_Stable.app"
             BlueprintName = "AzCredit_Stable"
             ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
