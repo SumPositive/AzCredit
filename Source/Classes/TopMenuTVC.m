@@ -180,18 +180,20 @@
 	if (MbannerView==nil) return;
 	if (MbannerView.alpha==1) return;
 
-	[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きによりY座標修正
+	[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きにより座標修正
 	CGRect rc = MbannerView.frame;
-	rc.origin.x -= 500;
+	//NG//rc.origin.x -= 500;
+	rc.origin.y += 100; // 隠す
 	MbannerView.frame = rc;
 	MbannerView.alpha = 0;
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
-	[UIView setAnimationDuration:0.8];
+	[UIView setAnimationDuration:1.2];
 	
 	MbannerView.alpha = 1;
-	rc.origin.x = 0;
+	//NG//rc.origin.x = 0; // 出現
+	rc.origin.y -= 100; // 出現
 	MbannerView.frame = rc;
 	
 	[UIView commitAnimations];
@@ -204,11 +206,12 @@
 	if (MbannerView.alpha==0) return;
 	
 	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
-	[UIView setAnimationDuration:0.8];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseIn]; // slow at start
+	[UIView setAnimationDuration:0.7];
 	
 	CGRect rc = MbannerView.frame;
-	rc.origin.x -= 500;
+	//NG//rc.origin.x -= 500;
+	rc.origin.y += 100;
 	MbannerView.frame = rc;
 	MbannerView.alpha = 0;
 	
