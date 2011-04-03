@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="Icon--512x512.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon57Free@2x.png"
-   inkscape:export-xdpi="20.040001"
-   inkscape:export-ydpi="20.040001">
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Icon512.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -716,15 +716,15 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3125"
-     inkscape:cx="256"
+     inkscape:cx="163.80952"
      inkscape:cy="256"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:window-width="1232"
      inkscape:window-height="929"
-     inkscape:window-x="120"
-     inkscape:window-y="39"
+     inkscape:window-x="233"
+     inkscape:window-y="106"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
@@ -787,7 +787,7 @@
        width="159.25745"
        id="rect2994"
        style="fill:#b87333;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.57237667px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3928)"
-       transform="matrix(1.0279925,0,0,1,-3.5048517,0)" />
+       transform="matrix(1.0279925,0,0,1,-3.5048517,-2)" />
     <rect
        style="fill:#c0c0c0;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.86324692px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3872)"
        id="rect2996"
@@ -797,17 +797,7 @@
        y="142.75198"
        ry="10.441161"
        rx="11.932452"
-       transform="matrix(1.027993,0,0,1,-5.5413792,0)" />
-    <rect
-       rx="11.93263"
-       ry="10.44116"
-       y="233.2822"
-       x="73.288139"
-       height="213.95598"
-       width="337.48856"
-       id="rect2998"
-       style="fill:#dcb830;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.21295404px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3844)"
-       transform="matrix(1.0279777,0,0,1,-1.5766033,0)" />
+       transform="matrix(1.027993,0,0,1,6.4586208,4)" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot4012"
@@ -825,53 +815,89 @@
      inkscape:label="Text"
      style="display:inline"
      sodipodi:insensitive="true">
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4021"
-       style="font-size:39.73376083px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#97504d;fill-opacity:1;stroke:none;display:inline;font-family:Charcoal CY;-inkscape-font-specification:Charcoal CY"
-       transform="matrix(2.4995923,0,0,2.3185842,-303.38664,-404.74294)"><flowRegion
-         id="flowRegion4023"><rect
-           id="rect4025"
-           width="207.17291"
-           height="93.090912"
-           x="115.90731"
-           y="284.74866"
-           style="font-size:39.73376083px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#97504d;fill-opacity:1;font-family:Charcoal CY;-inkscape-font-specification:Charcoal CY" /></flowRegion><flowPara
-         id="flowPara4027">GOOD</flowPara><flowPara
-         id="flowPara4029">THRU</flowPara></flowRoot>  </g>
+    <g
+       id="g3116"
+       transform="translate(10,8)">
+      <rect
+         transform="matrix(1.0279777,0,0,1,-1.5766033,0)"
+         style="fill:#dcb830;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.21295404px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline;filter:url(#filter3844)"
+         id="rect2998"
+         width="337.48856"
+         height="213.95598"
+         x="73.288139"
+         y="233.2822"
+         ry="10.44116"
+         rx="11.93263" />
+      <flowRoot
+         transform="matrix(2.4995923,0,0,2.3185842,-303.38664,-404.74294)"
+         style="font-size:39.73376083px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#97504d;fill-opacity:1;stroke:none;display:inline;font-family:Charcoal CY;-inkscape-font-specification:Charcoal CY"
+         id="flowRoot4021"
+         xml:space="preserve"><flowRegion
+           id="flowRegion4023"><rect
+             style="font-size:39.73376083px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#97504d;fill-opacity:1;font-family:Charcoal CY;-inkscape-font-specification:Charcoal CY"
+             y="284.74866"
+             x="115.90731"
+             height="93.090912"
+             width="207.17291"
+             id="rect4025" /></flowRegion><flowPara
+           id="flowPara4027">GOOD</flowPara><flowPara
+           id="flowPara4029">THRU</flowPara></flowRoot>    </g>
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Free"
+     style="display:inline"
      sodipodi:insensitive="true">
-    <g
-       id="g3888"
-       transform="matrix(0.70752576,-0.70668755,0.70668755,0.70752576,-164.15163,356.9139)">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3121"
+       style="font-size:11.29564381px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"><flowRegion
+         id="flowRegion3123"><rect
+           id="rect3125"
+           width="12.952381"
+           height="38.857143"
+           x="128"
+           y="440.38095" /></flowRegion><flowPara
+         id="flowPara3127">ree</flowPara></flowRoot>    <g
+       id="g3179">
       <path
-         transform="matrix(1.2355212,0,0,1.3738318,-95.97353,346.80196)"
+         transform="matrix(0.67279413,0,0,0.66997907,-163.45379,347.73023)"
          sodipodi:open="true"
          sodipodi:end="6.271214"
          sodipodi:start="0"
-         d="m 475.42857,75.047623 a 98.666664,40.761906 0 1 1 -0.007,-0.487962"
-         sodipodi:ry="40.761906"
-         sodipodi:rx="98.666664"
-         sodipodi:cy="75.047623"
-         sodipodi:cx="376.7619"
-         id="path3111"
-         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.83776259;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         d="m 454.85715,124.57143 a 90.666664,91.047623 0 1 1 -0.006,-1.08994"
+         sodipodi:ry="91.047623"
+         sodipodi:rx="90.666664"
+         sodipodi:cy="124.57143"
+         sodipodi:cx="364.19049"
+         id="path3923"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:11.91566658;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
          sodipodi:type="arc" />
       <flowRoot
-         transform="matrix(1.6191997,0,0,2.2274646,-217.53713,301.98864)"
-         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
+         transform="matrix(24.872336,0.02505895,-0.04579659,25.755493,-7742.2289,-1088.3276)"
+         style="font-size:4.03380632px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
          id="flowRoot3889"
          xml:space="preserve"><flowRegion
            id="flowRegion3891"><rect
-             style="font-size:40px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
+             style="font-size:4.03380632px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
              y="57.904762"
              x="313.14285"
              height="36.57143"
              width="123.42857"
              id="rect3893" /></flowRegion><flowPara
-           id="flowPara3901">Free</flowPara></flowRoot>    </g>
+           id="flowPara3925">F</flowPara></flowRoot>      <flowRoot
+         transform="matrix(1.83012,0,0,1.6113402,-412.83907,142.48257)"
+         style="font-size:11.29564381px;font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Ultra-Bold"
+         id="flowRoot3131"
+         xml:space="preserve"><flowRegion
+           id="flowRegion3133"><rect
+             style="fill:#ffffff"
+             y="199.61905"
+             x="268.19049"
+             height="31.238094"
+             width="80"
+             id="rect3135" /></flowRegion><flowPara
+           id="flowPara3137">ree</flowPara></flowRoot>    </g>
   </g>
 </svg>

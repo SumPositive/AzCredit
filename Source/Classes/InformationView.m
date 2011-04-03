@@ -49,10 +49,10 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------アイコン
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 100, 57, 57)];
-#ifdef STABLE_VERSION
-	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
-#else
+#ifdef AzFREE
 	[iv setImage:[UIImage imageNamed:@"Icon57Free.png"]];
+#else
+	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
 	[self addSubview:iv]; [iv release];
 	
@@ -69,12 +69,12 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
 	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 130, 200, 30)];
-	label.numberOfLines = 2;
-#ifdef STABLE_VERSION
-	label.text = [NSString stringWithFormat:@"Version %@ Stable", zVersion];
+#ifdef AzFREE
+	label.text = [NSString stringWithFormat:@"Version %@\n%@", zVersion, NSLocalizedString(@"VER FREE",nil)];
 #else
-	label.text = [NSString stringWithFormat:@"Version %@ Free\nNEWEST TRIAL", zVersion];
+	label.text = [NSString stringWithFormat:@"Version %@\n%@", zVersion, NSLocalizedString(@"VER STABLE",nil)];
 #endif
+	label.numberOfLines = 2;
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明

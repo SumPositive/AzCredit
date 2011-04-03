@@ -105,6 +105,15 @@
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
+#ifdef AzFREE
+	// Set up Left [Free] buttons.
+	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free"]];
+	UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
+	self.navigationItem.leftBarButtonItem	= bui;
+	[bui release];
+	[iv release];
+#endif
+
 #ifndef AzMAKE_SPLASHFACE
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -291,11 +300,7 @@
 {
     [super viewWillAppear:animated];
 
-#ifdef STABLE_VERSION
 	self.title = NSLocalizedString(@"Product Title",nil);
-#else
-	self.title = [NSString stringWithFormat:@"%@ Free", NSLocalizedString(@"Product Title",nil)];
-#endif
 	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
@@ -545,8 +550,11 @@
 #ifndef AzMAKE_SPLASHFACE
 	switch (section) {
 		case 2:
-			return	@"AzukiSoft Project\n"
-					@"©2000-2010 Azukid\n\n"; // iAdが表示されているとき最終セルが隠れないようにする
+#ifdef AzFREE
+			return NSLocalizedString(@"Top Footer FREE",nil);
+#else
+			return	@"AzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
+#endif
 			break;
 	}
 #endif
