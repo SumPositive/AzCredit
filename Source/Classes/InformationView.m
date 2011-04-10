@@ -49,8 +49,8 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------アイコン
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 100, 57, 57)];
-#ifdef AzFREE
-	[iv setImage:[UIImage imageNamed:@"Icon57Free.png"]];
+#ifdef AzSTABLE
+	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
 #else
 	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
@@ -69,10 +69,10 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
 	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 130, 200, 30)];
-#ifdef AzFREE
-	label.text = [NSString stringWithFormat:@"Version %@\n%@", zVersion, NSLocalizedString(@"VER FREE",nil)];
+#ifdef AzSTABLE
+	label.text = [NSString stringWithFormat:@"Version %@ Stable\n%@", zVersion, NSLocalizedString(@"VER STABLE",nil)];
 #else
-	label.text = [NSString stringWithFormat:@"Version %@\n%@", zVersion, NSLocalizedString(@"VER STABLE",nil)];
+	label.text = [NSString stringWithFormat:@"Version %@ Free\n%@", zVersion, NSLocalizedString(@"VER FREE",nil)];
 #endif
 	label.numberOfLines = 2;
 	label.textAlignment = UITextAlignmentCenter;

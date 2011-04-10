@@ -105,9 +105,8 @@
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-#ifdef AzFREE
-	// Set up Left [Free] buttons.
-	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free"]];
+#ifdef AzSTABLE
+	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-S1.png"]];
 	UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
 	self.navigationItem.leftBarButtonItem	= bui;
 	[bui release];
@@ -550,10 +549,10 @@
 #ifndef AzMAKE_SPLASHFACE
 	switch (section) {
 		case 2:
-#ifdef AzFREE
-			return NSLocalizedString(@"Top Footer FREE",nil);
-#else
+#ifdef AzSTABLE
 			return	@"AzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
+#else
+			return NSLocalizedString(@"Top Footer FREE",nil);
 #endif
 			break;
 	}
