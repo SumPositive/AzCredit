@@ -18,9 +18,9 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="Icon--512x512.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Icon512.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Icon57@2x.png"
+   inkscape:export-xdpi="20.040001"
+   inkscape:export-ydpi="20.040001">
   <defs
      id="defs4">
     <linearGradient
@@ -1490,16 +1490,6 @@
        y1="-25.137907"
        x2="-49.86356"
        y2="11.338114" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#SVGID_7_-9"
-       id="linearGradient3389"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.71746327,0,0,0.71746327,76.038847,43.372374)"
-       x1="-86.815941"
-       y1="-25.137907"
-       x2="-49.86356"
-       y2="11.338114" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -1508,11 +1498,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.5351562"
-     inkscape:cx="256"
+     inkscape:zoom="1.4941406"
+     inkscape:cx="175.01699"
      inkscape:cy="256"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer5"
      showgrid="false"
      inkscape:window-width="1643"
      inkscape:window-height="1042"
@@ -2283,8 +2273,7 @@
      style="display:inline"
      sodipodi:insensitive="true">
     <g
-       id="g4508"
-       transform="translate(0,-18)">
+       id="g4508">
       <rect
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#ffd700;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter4214)"
          id="rect4226"
@@ -2314,7 +2303,7 @@
        y="142.75198"
        ry="17.553404"
        rx="18.36171"
-       transform="matrix(0.66804663,0,0,0.59482254,-30.662436,-27.898631)" />
+       transform="matrix(0.66804663,0,0,0.59482254,-30.662436,-9.8986315)" />
     <rect
        rx="13.436817"
        ry="11.437347"
@@ -2324,9 +2313,9 @@
        width="175.76656"
        id="rect4234"
        style="fill:#c0c0c0;fill-opacity:1;fill-rule:evenodd;stroke:#ffd700;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter4450)"
-       transform="matrix(0.91290058,0,0,0.91290058,14.962619,-22.043511)" />
+       transform="matrix(0.91290058,0,0,0.91290058,14.962619,-2.0435109)" />
     <rect
-       transform="matrix(0.82546954,0,0,0.73499044,5.0979956,-17.626634)"
+       transform="matrix(0.82546954,0,0,0.73499044,5.0979956,0.37336572)"
        rx="14.860002"
        ry="14.205848"
        y="142.75198"
@@ -2344,7 +2333,7 @@
        y="116.15089"
        ry="12.104216"
        rx="14.220266"
-       transform="matrix(0.86260543,0,0,0.86260543,45.078359,-15.778721)" />
+       transform="matrix(0.86260543,0,0,0.86260543,45.078359,-1.7787214)" />
     <g
        id="g4520"
        transform="matrix(0.94005511,0,0,0.94005511,25.159164,-10.611826)">
@@ -2372,7 +2361,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="Card snow"
+     inkscape:label="Card snow / deepskyblue"
      style="display:inline"
      sodipodi:insensitive="true">
     <flowRoot
@@ -2408,69 +2397,65 @@
          id="rect3945"
          style="fill:#000000;fill-rule:evenodd;stroke:#808080;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
+    <rect
+       ry="18.314003"
+       rx="17.785852"
+       y="212.48904"
+       x="66.053703"
+       height="233.84999"
+       width="379"
+       id="rect3987"
+       style="fill:#fffafa;fill-rule:evenodd;stroke:#fffafa;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter4410)"
+       transform="matrix(0.90553838,0,0,0.90553838,24.509195,44.148275)" />
     <g
-       id="g3378"
-       transform="translate(3.3486005,-20.147583)">
-      <rect
-         transform="matrix(0.90553838,0,0,0.90553838,24.509195,44.148275)"
-         style="fill:#fffafa;fill-rule:evenodd;stroke:#fffafa;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;filter:url(#filter4410)"
-         id="rect3987"
-         width="379"
-         height="233.84999"
-         x="66.053703"
-         y="212.48904"
-         rx="17.785852"
-         ry="18.314003" />
-      <g
-         transform="matrix(1.3937994,0,0,1.3937994,88.672163,245.06446)"
-         id="g8102-9"
-         style="display:inline">
-        <linearGradient
-           gradientTransform="matrix(0.58428817,0,0,0.58428817,90.369907,79.214443)"
-           id="linearGradient10140"
-           gradientUnits="userSpaceOnUse"
-           x1="31.279301"
-           y1="55.624001"
-           x2="55.279301"
-           y2="88.290497">
-          <stop
-             offset="0.1319"
-             style="stop-color:#FFE8A7"
-             id="stop10142" />
-          <stop
-             offset="0.4725"
-             style="stop-color:#FFD13B"
-             id="stop10144" />
-        </linearGradient>
-        <path
-           style="fill:url(#linearGradient3389)"
-           inkscape:connector-curvature="0"
-           d="M 53.425,50.828 H 26.36 c -2.774,0 -5.024,2.249 -5.024,5.024 v 22.993 c 0,2.774 2.25,5.024 5.024,5.024 h 27.064 c 2.775,0 5.024,-2.25 5.024,-5.024 V 55.852 C 58.449,53.077 56.2,50.828 53.425,50.828 z"
-           id="path8109-2" />
-        <path
-           inkscape:connector-curvature="0"
-           d="M 53.425,50.828 H 39.055 26.36 c -2.774,0 -5.024,2.249 -5.024,5.024 v 4.077 7.186 7.652 4.078 c 0,2.774 2.25,5.024 5.024,5.024 h 14.371 12.693 c 2.775,0 5.024,-2.25 5.024,-5.024 V 74.767 67.115 59.929 55.852 C 58.449,53.077 56.2,50.828 53.425,50.828 z m -31.62,5.024 c 0,-2.517 2.04,-4.556 4.556,-4.556 l 9.707,0 c -2.008,0.76 -2.939,2.42 -2.995,4.801 v 3.832 H 21.805 v -4.077 z m 0,4.544 h 11.268 v 6.718 H 21.805 v -6.718 z m 0,7.186 h 11.268 v 6.716 H 21.805 V 67.582 z M 26.36,83.4 c -2.516,0 -4.556,-2.04 -4.556,-4.556 V 74.766 H 33.54 V 67.114 56.565 H 46.245 V 78.13 H 33.307 c -0.312,0 -0.312,0.468 0,0.468 H 46.242 C 46.167,81.669 44.585,83.4 40.732,83.4 H 26.36 z m 31.62,-4.556 c 0,2.516 -2.04,4.556 -4.556,4.556 h -9.707 c 2.009,-0.761 2.938,-2.42 2.996,-4.802 V 78.364 74.766 H 57.98 v 4.078 z m 0,-4.546 H 46.714 V 67.582 H 57.98 v 6.716 z m 0,-7.184 H 46.714 V 60.396 H 57.98 v 6.718 z m 0,-7.185 H 46.714 v -3.832 h -13.17 c 0.075,-3.071 1.658,-4.801 5.511,-4.801 h 14.37 c 2.516,0 4.556,2.039 4.556,4.556 v 4.077 z"
-           id="path8111-9" />
-      </g>
-      <text
-         transform="scale(0.88011403,1.1362164)"
-         sodipodi:linespacing="100%"
-         id="text4480"
-         y="320.10141"
-         x="200.44144"
-         style="font-size:66.31623077px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
-         xml:space="preserve"><tspan
-           y="320.10141"
-           x="200.44144"
-           id="tspan4482"
-           sodipodi:role="line">Payment</tspan></text>
+       style="display:inline"
+       id="g8102-9"
+       transform="matrix(1.3937994,0,0,1.3937994,88.672163,245.06446)">
+      <linearGradient
+         y2="88.290497"
+         x2="55.279301"
+         y1="55.624001"
+         x1="31.279301"
+         gradientUnits="userSpaceOnUse"
+         id="linearGradient10140"
+         gradientTransform="matrix(0.58428817,0,0,0.58428817,90.369907,79.214443)">
+        <stop
+           id="stop10142"
+           style="stop-color:#FFE8A7"
+           offset="0.1319" />
+        <stop
+           id="stop10144"
+           style="stop-color:#FFD13B"
+           offset="0.4725" />
+      </linearGradient>
+      <path
+         id="path8109-2"
+         d="M 53.425,50.828 H 26.36 c -2.774,0 -5.024,2.249 -5.024,5.024 v 22.993 c 0,2.774 2.25,5.024 5.024,5.024 h 27.064 c 2.775,0 5.024,-2.25 5.024,-5.024 V 55.852 C 58.449,53.077 56.2,50.828 53.425,50.828 z"
+         inkscape:connector-curvature="0"
+         style="fill:url(#linearGradient4538)" />
+      <path
+         id="path8111-9"
+         d="M 53.425,50.828 H 39.055 26.36 c -2.774,0 -5.024,2.249 -5.024,5.024 v 4.077 7.186 7.652 4.078 c 0,2.774 2.25,5.024 5.024,5.024 h 14.371 12.693 c 2.775,0 5.024,-2.25 5.024,-5.024 V 74.767 67.115 59.929 55.852 C 58.449,53.077 56.2,50.828 53.425,50.828 z m -31.62,5.024 c 0,-2.517 2.04,-4.556 4.556,-4.556 l 9.707,0 c -2.008,0.76 -2.939,2.42 -2.995,4.801 v 3.832 H 21.805 v -4.077 z m 0,4.544 h 11.268 v 6.718 H 21.805 v -6.718 z m 0,7.186 h 11.268 v 6.716 H 21.805 V 67.582 z M 26.36,83.4 c -2.516,0 -4.556,-2.04 -4.556,-4.556 V 74.766 H 33.54 V 67.114 56.565 H 46.245 V 78.13 H 33.307 c -0.312,0 -0.312,0.468 0,0.468 H 46.242 C 46.167,81.669 44.585,83.4 40.732,83.4 H 26.36 z m 31.62,-4.556 c 0,2.516 -2.04,4.556 -4.556,4.556 h -9.707 c 2.009,-0.761 2.938,-2.42 2.996,-4.802 V 78.364 74.766 H 57.98 v 4.078 z m 0,-4.546 H 46.714 V 67.582 H 57.98 v 6.716 z m 0,-7.184 H 46.714 V 60.396 H 57.98 v 6.718 z m 0,-7.185 H 46.714 v -3.832 h -13.17 c 0.075,-3.071 1.658,-4.801 5.511,-4.801 h 14.37 c 2.516,0 4.556,2.039 4.556,4.556 v 4.077 z"
+         inkscape:connector-curvature="0" />
     </g>
+    <text
+       xml:space="preserve"
+       style="font-size:66.31623077px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
+       x="200.44144"
+       y="320.10141"
+       id="text4480"
+       sodipodi:linespacing="100%"
+       transform="scale(0.88011403,1.1362164)"><tspan
+         sodipodi:role="line"
+         id="tspan4482"
+         x="200.44144"
+         y="320.10141">Payment</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Free"
-     style="display:inline"
+     inkscape:label="S1 snow"
+     style="display:none"
      sodipodi:insensitive="true">
     <flowRoot
        xml:space="preserve"
@@ -2485,15 +2470,15 @@
          id="flowPara3127">ree</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot3949"
-       style="font-size:16.64641953px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffdab9;fill-opacity:1;stroke:none;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Bold Italic"
-       transform="matrix(7.0229515,0,0,5.4199627,-324.5818,256.9818)"><flowRegion
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#fffafa;fill-opacity:1;stroke:none;font-family:Georgia;-inkscape-font-specification:Georgia"
+       transform="matrix(2.402919,0,0,2.402919,235.53198,-58.266842)"><flowRegion
          id="flowRegion3951"><rect
            id="rect3953"
            width="67.571556"
            height="56.053677"
            x="59.892971"
            y="36.69553"
-           style="font-size:16.64641953px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#ffdab9;font-family:Hiragino Kaku Gothic Std;-inkscape-font-specification:Hiragino Kaku Gothic Std Bold Italic" /></flowRegion><flowPara
-         id="flowPara3374">Free</flowPara><flowPara
-         id="flowPara3376" /></flowRoot>  </g>
+           style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#fffafa;font-family:Georgia;-inkscape-font-specification:Georgia" /></flowRegion><flowPara
+         id="flowPara3955">S1</flowPara><flowPara
+         id="flowPara3957" /></flowRoot>  </g>
 </svg>

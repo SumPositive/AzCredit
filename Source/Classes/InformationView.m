@@ -7,7 +7,10 @@
 //
 
 #import "Global.h"
+#import "AppDelegate.h"
 #import "InformationView.h"
+#import "UIDevice-Hardware.h"
+
 
 @interface InformationView (PrivateMethods)
 @end
@@ -32,6 +35,82 @@ static UIColor *MpColorBlue(float percent) {
     // Drawing code
 }
 
+-(void)sendmail:(UIButton*)sender 
+{
+	//メール送信可能かどうかのチェック　　＜＜＜MessageUI.framework が必要＞＞＞
+    if (![MFMailComposeViewController canSendMail]) {
+		//[self setAlert:@"メールが起動出来ません！":@"メールの設定をしてからこの機能は使用下さい。"];
+		alertBox( NSLocalizedString(@"Contact NoMail",nil), NSLocalizedString(@"Contact NoMail msg",nil), @"OK" );
+        return;
+    }
+    
+	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+    picker.mailComposeDelegate = self;
+	
+	// To: 宛先
+	NSArray *toRecipients = [NSArray arrayWithObject:@"AzCredit@azukid.com"];
+	[picker setToRecipients:toRecipients];
+    //[picker setCcRecipients:nil];
+	//[picker setBccRecipients:nil];
+	
+	// Subject: 件名
+	NSString* zSubj = [NSString stringWithFormat:@"%@ %@ ", 
+					   NSLocalizedString(@"Product Title",nil), 
+					   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+#ifdef AzSTABLE
+	zSubj = [zSubj stringByAppendingString:@"Stable"];
+#else
+	zSubj = [zSubj stringByAppendingString:@"Free"];
+#endif
+	
+	UIDevice *device = [UIDevice currentDevice];
+	NSString* deviceID = [device platform];	
+	zSubj = [zSubj stringByAppendingFormat:@" [%@-%@]", 
+			 deviceID, 
+			 [[ UIDevice currentDevice ] systemVersion]]; // OSの現在のバージョン
+	
+	[picker setSubject:zSubj];  
+	
+	// Attach: 添付画像
+	/* UIImage *temp   = [UIImage imageNamed:@"temp.png"];
+	 NSData *myData  = [[[NSData alloc] initWithData:UIImagePNGRepresentation(temp)] autorelease];
+	 [picker addAttachmentData:myData mimeType:@"image/png" fileName:@"temp"];
+	 */	
+    // Body: 本文
+    [picker setMessageBody:NSLocalizedString(@"Contact message",nil) isHTML:NO];
+	
+	[self hide];
+    //[self presentModalViewController:picker animated:YES];
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.navigationController presentModalViewController:picker animated:YES];
+    [picker release];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    switch (result){
+        case MFMailComposeResultCancelled:
+            //キャンセルした場合
+            break;
+        case MFMailComposeResultSaved:
+            //保存した場合
+            break;
+        case MFMailComposeResultSent:
+            //送信した場合
+			alertBox( NSLocalizedString(@"Contact Sent",nil), nil, @"OK" );
+            break;
+        case MFMailComposeResultFailed:
+            //[self setAlert:@"メール送信失敗！":@"メールの送信に失敗しました。ネットワークの設定などを確認して下さい"];
+			alertBox( NSLocalizedString(@"Contact Failed",nil), NSLocalizedString(@"Contact Failed msg",nil), @"OK" );
+            break;
+        default:
+            break;
+    }
+	// [self dismissModalViewControllerAnimated:YES];
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.navigationController dismissModalViewControllerAnimated:YES];
+}
+
+
 - (id)initWithFrame:(CGRect)rect 
 {
 	// アニメションの開始位置
@@ -48,7 +127,7 @@ static UIColor *MpColorBlue(float percent) {
 	self.userInteractionEnabled = YES; //タッチの可否
 	
 	//------------------------------------------アイコン
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 100, 57, 57)];
+	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 70, 57, 57)];
 #ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
 #else
@@ -58,7 +137,7 @@ static UIColor *MpColorBlue(float percent) {
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 100, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 70, 200, 30)];
 	label.text = NSLocalizedString(@"Product Title",nil);
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
@@ -68,11 +147,11 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 130, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 110, 200, 30)];
 #ifdef AzSTABLE
-	label.text = [NSString stringWithFormat:@"Version %@ Stable\n%@", zVersion, NSLocalizedString(@"VER STABLE",nil)];
+	label.text = [NSString stringWithFormat:@"Version %@\nStable", zVersion];
 #else
-	label.text = [NSString stringWithFormat:@"Version %@ Free\n%@", zVersion, NSLocalizedString(@"VER FREE",nil)];
+	label.text = [NSString stringWithFormat:@"Version %@\nAd - Free", zVersion];
 #endif
 	label.numberOfLines = 2;
 	label.textAlignment = UITextAlignmentCenter;
@@ -82,7 +161,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];
 
 	//------------------------------------------Lable:Azuki Color
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 158, 100, 77)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 100, 77)];
 	label.text = @"Azukid Color\n"
 				 @"RGB(151,80,77)\n"
 				 @"Code#97504D\n"
@@ -97,7 +176,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 168, 200, 100)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 150, 200, 100)];
 	label.text =	@"AzukiSoft Project\n"
 					@"AzCredit\n"
 					@"Born on March 26\n"
@@ -110,6 +189,14 @@ static UIColor *MpColorBlue(float percent) {
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont systemFontOfSize:12];
 	[self addSubview:label]; [label release];	
+	
+	//------------------------------------------メールで問い合わせ
+	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+	bu.frame = CGRectMake(110, 260, 180,30);
+	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
+	[bu addTarget:self action:@selector(sendmail:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:bu];  //autorelease
 	
 	//------------------------------------------免責
 	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 300, 300, 50)];

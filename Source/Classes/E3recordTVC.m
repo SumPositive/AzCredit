@@ -72,8 +72,7 @@
 	if (self) {
 		// 初期化成功
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		[app.Me3dateUse release];  // Me3dateUse retainプロパティにしたため
-		app.Me3dateUse = nil;
+		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 		//
 		RoAdMobView = nil;
 	}
@@ -129,10 +128,10 @@
 	// テーブルソース セット
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE3list==nil || app.Me3dateUse) {
-		//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+		//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
 		[self setMe3list:app.Me3dateUse];
-		//0.5//[autoPool release];
+		//[autoPool release];
 	}
 	else if (0 < McontentOffsetDidSelect.y) {
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
@@ -801,6 +800,7 @@
 		
 		//[0.4.2]Fix:
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 		app.Me3dateUse = [e3detail.Re3edit.dateUse copy];
 		NSLog(@"app.Me3dateUse=%@", app.Me3dateUse);
 	}

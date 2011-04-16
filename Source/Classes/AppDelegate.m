@@ -36,7 +36,8 @@
 
 - (void)dealloc 
 {
-	[Me3dateUse release];
+	AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
+	[Me3dateUse release], Me3dateUse = nil;
 
 	AzRETAIN_CHECK(@"AppDelegate navigationController", navigationController, 1)
 	[navigationController release];

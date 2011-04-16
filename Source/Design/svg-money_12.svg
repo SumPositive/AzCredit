@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 10.0, SVG Export Plug-In . SVG Version: 3.0.0 Build 76)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+	<!ENTITY ns_flows "http://ns.adobe.com/Flows/1.0/">
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+	<!ENTITY ns_svg "http://www.w3.org/2000/svg">
+	<!ENTITY ns_xlink "http://www.w3.org/1999/xlink">
+]>
+<svg 
+	 xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;" i:viewOrigin="101.6235 699.1904" i:rulerOrigin="0 0" i:pageBounds="0 792 612 0"
+	 xmlns="&ns_svg;" xmlns:xlink="&ns_xlink;" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 width="397.684" height="281.065" viewBox="0 0 397.684 281.065" overflow="visible" enable-background="new 0 0 397.684 281.065"
+	 xml:space="preserve">
+	<metadata>
+<rdf:RDF
+      xmlns="http://web.resource.org/cc/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <Work rdf:about="">
+         <dc:title>Money</dc:title>
+         <dc:description>Money</dc:description>
+         <dc:subject>
+          <rdf:Bag>
+            <rdf:li>work</rdf:li>
+            <rdf:li>equipment</rdf:li>
+            <rdf:li>money</rdf:li>
+          </rdf:Bag>
+         </dc:subject>
+         <dc:publisher><Agent rdf:about="http://www.openclipart.org/"><dc:title>Open Clip Art Project</dc:title></Agent></dc:publisher>
+         <dc:creator><Agent rdf:about=""><dc:title>ArtFavor</dc:title></Agent></dc:creator>
+         <dc:rights><Agent rdf:about="http://web.resource.org/cc/PublicDomain"><dc:title>Public Domain</dc:title></Agent></dc:rights>
+         <dc:date>2005/10/03</dc:date>
+         <dc:format>image/svg+xml</dc:format>
+         <dc:type>http://purl.org/dc/dcmitype/StillImage</dc:type>
+         <license rdf:resource="http://web.resource.org/cc/PublicDomain" />
+      </Work>
+      <License rdf:about="http://web.resource.org/cc/PublicDomain">
+         <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+         <permits rdf:resource="http://web.resource.org/cc/Distribution" />
+         <permits rdf:resource="http://web.resource.org/cc/DerivativeWorks" />
+      </License>
+   </rdf:RDF>
+		<variableSets  xmlns="&ns_vars;">
+			<variableSet  varSetName="binding1" locked="none">
+				<variables></variables>
+				<v:sampleDataSets  xmlns="&ns_custom;" xmlns:v="&ns_vars;"></v:sampleDataSets>
+			</variableSet>
+		</variableSets>
+		<sfw  xmlns="&ns_sfw;">
+			<slices></slices>
+			<sliceSourceBounds  y="418.125" x="101.624" width="397.684" height="281.065" bottomLeftOrigin="true"></sliceSourceBounds>
+		</sfw>
+	</metadata>
+	<switch>
+		<foreignObject requiredExtensions="&ns_ai;" x="0" y="0" width="1" height="1">
+			<i:pgfRef  xlink:href="#adobe_illustrator_pgf">
+			</i:pgfRef>
+		</foreignObject>
+		<g i:extraneous="self">
+			<g id="Layer_1" i:layer="yes" i:dimmedPercent="50" i:rgbTrio="#4F008000FFFF">
+				<g>
+					
+						<linearGradient id="XMLID_1_" gradientUnits="userSpaceOnUse" x1="68.6563" y1="926.4805" x2="68.6562" y2="692.3711" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#FEE0A5"/>
+						<stop  offset="1" style="stop-color:#E6E6E6"/>
+						<a:midPointStop  offset="0" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="1" style="stop-color:#E6E6E6"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_1_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M1.665,136.643l119.718,79.681l276.062-183.67l-23.198-1.906L1.665,136.643z"/>
+					
+						<linearGradient id="XMLID_2_" gradientUnits="userSpaceOnUse" x1="-2.4492" y1="862.9424" x2="-2.4492" y2="839.3916" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#3E7966"/>
+						<stop  offset="1" style="stop-color:#3E7966"/>
+						<a:midPointStop  offset="0" style="stop-color:#3E7966"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#3E7966"/>
+						<a:midPointStop  offset="1" style="stop-color:#3E7966"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_2_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M185.414,147.289l-39.324,18.668l-45.123-8.659L185.414,147.289z"/>
+					
+						<linearGradient id="XMLID_3_" gradientUnits="userSpaceOnUse" x1="68.2041" y1="1007.6582" x2="68.2041" y2="696.0781" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#FEE0A5"/>
+						<stop  offset="1" style="stop-color:#E6E6E6"/>
+						<a:midPointStop  offset="0" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="1" style="stop-color:#E6E6E6"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_3_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M1.665,136.882l-0.239-0.159v78.567l145.061,65.381L396.73,101.927l0.237-68.241L145.375,174.537L1.665,136.882z"/>
+					
+						<linearGradient id="XMLID_4_" gradientUnits="userSpaceOnUse" x1="-4.1523" y1="853.3203" x2="-4.1523" y2="819.6475" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#FEE0A5"/>
+						<stop  offset="1" style="stop-color:#F2F2F2"/>
+						<a:midPointStop  offset="0" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="1" style="stop-color:#F2F2F2"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_4_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M83.967,155.153l6.276,1.032l8.976,0.954l11.837,0.635l17.716,0.556l16.445-1.588l11.519-1.431l13.982-3.495l7.229-1.668
+						l6.276-1.51l5.958-2.542l6.435-3.019l3.099-1.825l-68.162-9.614L83.967,155.153z"/>
+					
+						<linearGradient id="XMLID_5_" gradientUnits="userSpaceOnUse" x1="66.3506" y1="850.3145" x2="66.3506" y2="654.0879" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#FEE0A5"/>
+						<stop  offset="1" style="stop-color:#E6E6E6"/>
+						<a:midPointStop  offset="0" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="1" style="stop-color:#E6E6E6"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_5_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M0.234,127.984l7.865,5.085l6.912,3.178l9.136,3.177l15.491,4.846l17,4.529l18.192,4.369l15.65,2.78l10.646-0.238l15.094-1.112
+						l12.313-2.463l11.758-4.209l7.945-4.052l5.958,2.383l8.659,1.271l13.029-0.079l7.944-0.795l6.435-1.191l6.195-2.384
+						l18.511-7.388L372.182,47.35l10.963-8.897l6.594-5.8l3.734-4.369l1.746-2.145l-7.784,0.238l-7.23,0.398l-11.2,0.158
+						l-9.295-1.827l-20.178-4.29l-10.487-3.177l-9.057-1.192l-15.332-1.748l-16.364-1.43l-15.016-2.542l-10.804-2.622l-7.865-2.304
+						l-9.056-3.176l-5.562-2.224l-6.673,5.163l-6.673,3.973l-14.697,9.533L76.34,94.141l-21.052,10.645l-18.431,8.501l-12.313,6.594
+						l-7.865,3.098l-6.276,2.224l-4.052,0.954l-3.018,0.238L0.234,127.984z"/>
+					
+						<linearGradient id="XMLID_6_" gradientUnits="userSpaceOnUse" x1="71.0605" y1="849.0127" x2="71.0605" y2="670.9238" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#FEE0A5"/>
+						<stop  offset="1" style="stop-color:#E6E6E6"/>
+						<a:midPointStop  offset="0" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#FEE0A5"/>
+						<a:midPointStop  offset="1" style="stop-color:#E6E6E6"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_6_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M113.757,154.916l-77.774-25.104l161.903-88.42l44.646-27.646L366.938,38.85L182.951,147.208l-8.978,0.239l-8.5,0.079
+						l-7.388-0.476l-5.243-1.272l-4.21-1.747l-4.449,2.224l-8.659,3.416l-9.931,3.098l-7.15,1.192L113.757,154.916z"/>
+					
+						<linearGradient id="XMLID_7_" gradientUnits="userSpaceOnUse" x1="74.1182" y1="849.8135" x2="74.1182" y2="664.6104" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#3E7966"/>
+						<stop  offset="1" style="stop-color:#328570"/>
+						<a:midPointStop  offset="0" style="stop-color:#3E7966"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#3E7966"/>
+						<a:midPointStop  offset="1" style="stop-color:#328570"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_7_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M23.511,129.017l76.661-40.356l80.236-43.853l52.908-30.109l4.767-3.813l2.304-2.145l9.533,1.589l44.249,8.739l19.464,1.747
+						l17.158,2.78l26.297,6.118l14.854,2.304l12.314-0.953l-5.562,5.005l-7.149,5.64l-17.636,11.837l-35.353,19.384l-82.223,48.3
+						l-22.243,11.124l-12.235,6.354l-11.597,4.528l-6.197,2.463l-5.402,1.509h-5.084l-5.958,0.398h-2.146l9.056-1.907l7.229-3.416
+						l19.702-10.328l126.074-70.543l19.066-9.692l-0.237-3.021l1.033-6.75l1.27-3.258l1.192-1.033l-18.352-4.21L312.6,28.919
+						l-25.581-2.78l-29.473-4.528l-2.939,2.383l-3.415,2.939l-4.528,3.337l-4.211,1.43l-5.72,0.159l-6.037-0.794l-4.291-1.351
+						l-1.27-0.953L60.69,122.582l1.429,0.953l1.907,1.43l1.906,2.225l1.271,2.542l0.636,3.813v4.131l2.702,2.384l11.359,3.574
+						l9.375,3.575l10.009,2.622l8.818,2.145l4.529,0.793l8.5,0.398l-3.654,0.874l-5.958,0.713l-6.435,0.795l-4.607-0.239
+						l-11.201-1.986l-17.557-4.687l-19.622-6.117l-18.907-7.627l-8.421-3.733L23.511,129.017z"/>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.216,174.458v105.021v0.795"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,182.561L396.889,38.77"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,193.127L396.73,42.822"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,201.468L397.048,46.874"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.692,209.173L395.935,52.593"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.692,215.451L397.207,57.757"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,223.792L396.889,64.51"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.692,232.132L396.889,71.897"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,239.838L396.492,79.126"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.216,248.974L396.73,84.848"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.375,256.283L396.889,88.819"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.692,262.877L396.492,92.87"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,268.994L396.889,95.969"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.931,275.507l251.118-175.408"/>
+					
+						<linearGradient id="XMLID_8_" gradientUnits="userSpaceOnUse" x1="82.5859" y1="924.9795" x2="82.5859" y2="700.8887" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#FDC07F"/>
+						<stop  offset="1" style="stop-color:#CCCCCC"/>
+						<a:midPointStop  offset="0" style="stop-color:#FDC07F"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#FDC07F"/>
+						<a:midPointStop  offset="1" style="stop-color:#CCCCCC"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_8_)" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M88.176,87.151l149.907,36.226l-0.238,91.756l95.172-67.129V69.355L179.058,37.499L88.176,87.151z"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.216,181.607L1.426,142.364"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,191.697L1.823,149.354"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.216,200.594L1.426,154.676"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.216,208.062L1.108,159.84"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M144.898,222.837L1.823,170.485"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.216,230.94L1.665,175.808"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,238.726L1.823,181.051"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M144.898,247.941L1.426,186.612"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.375,255.33L1.665,192.888"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.375,262.479L1.982,198.846"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.375,267.405L1.426,204.406"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,274.316L1.665,209.729"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M237.845,123.695l94.615-53.307"/>
+					
+						<path i:knockout="Off" fill="none" stroke="#000000" stroke-width="0.864" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M145.534,214.894L1.426,165.321"/>
+					
+						<linearGradient id="XMLID_9_" gradientUnits="userSpaceOnUse" x1="83.9893" y1="776.9541" x2="83.9893" y2="723.2373" gradientTransform="matrix(0.7927 0 0 0.7927 145.1319 -518.0858)">
+						<stop  offset="0" style="stop-color:#000000"/>
+						<stop  offset="1" style="stop-color:#000000"/>
+						<a:midPointStop  offset="0" style="stop-color:#000000"/>
+						<a:midPointStop  offset="0.5" style="stop-color:#000000"/>
+						<a:midPointStop  offset="1" style="stop-color:#000000"/>
+					</linearGradient>
+					
+						<path i:knockout="Off" fill-rule="evenodd" clip-rule="evenodd" fill="url(#XMLID_9_)" stroke="#000000" stroke-width="0" stroke-linejoin="bevel" stroke-miterlimit="2.4142" d="
+						M212.821,90.806l30.506,6.989l2.384-2.621l-1.431-0.397l-0.794-0.556l-0.557-0.557l0.478-0.794l1.827-1.112l2.462-1.51
+						l1.51-1.19l0.953-0.953l23.595,5.402l7.705-4.449l-26.692-6.197l0.557-1.271l0.477-1.351l-0.238-1.826l-0.636-1.669
+						l-1.351-1.668l-1.589-1.43l-2.78-1.748l-3.019-1.509l-3.813-1.271l-5.323-1.431l-2.621-0.317l-5.878-0.397h-3.894l-3.893,0.158
+						l-2.78,0.479l-3.893,0.873l-3.178,1.112l-4.688,2.384l-4.21,1.986l-6.117,2.701l-2.781,0.874l-2.859,0.318h-1.907l-2.303-0.08
+						l-2.543-0.476l-1.509-0.398l-2.86-1.033l-1.828-1.509l-1.033-1.669l-0.238-1.826l1.271-2.145l1.51-1.351l1.906-0.953
+						l3.177-1.51l3.417-1.033l3.257-0.238l3.813,0.08l3.337,0.476l1.986-2.383l-29.235-6.594l-1.985,2.304l1.907,0.556l1.43,0.715
+						l0.794,0.556v0.477l-0.397,0.556l-1.827,0.873l-2.622,1.272l-1.431,0.874l-16.126-3.654l-8.262,4.369l19.78,4.448l-0.477,1.431
+						l-0.079,1.35l0.396,2.384l1.748,2.383l1.748,1.43l1.987,1.271l2.542,1.112l3.257,1.191l2.939,0.954l3.416,1.033l2.701,0.556
+						l2.78,0.397l3.019,0.318l4.052,0.238l3.416-0.079l4.37-0.556l5.005-1.113l3.893-1.827l9.215-4.369l4.926-1.669l1.986-0.874
+						l2.859-0.318l2.622-0.158l2.463,0.158h1.032l2.463,0.874l1.43,0.398l1.59,1.033l1.032,0.794l0.397,1.351l-0.08,1.827
+						l-1.35,2.145l-1.748,1.986l-1.986,1.51l-3.495,2.144l-2.383,0.795l-3.099,0.793l-3.416,0.238l-4.29-0.238l-4.29-0.793
+						L212.821,90.806z"/>
+				</g>
+			</g>
+		</g>
+	</switch>
+</svg>

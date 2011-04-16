@@ -59,7 +59,7 @@
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-	[Re3edit release];
+	[Re3edit release], Re3edit = nil;
 	[super dealloc];
 }
 
@@ -336,6 +336,7 @@
 		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
+		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 		app.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
 		[MocFunctions e3delete:Re3edit];
 		[MocFunctions commit];
@@ -1154,8 +1155,7 @@
 
 	//[0.4]
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.Me3dateUse release];  // Me3dateUse retainプロパティにしたため
-	app.Me3dateUse = nil; // Cancel
+	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 
 	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
 		[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
@@ -1205,6 +1205,7 @@
 
 	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 	app.Me3dateUse = [Re3edit.dateUse copy];
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

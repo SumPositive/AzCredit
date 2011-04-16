@@ -69,8 +69,9 @@ static NSManagedObjectContext *scMoc = nil;
 			   sort:(NSArray *)arSort 
 {
 	assert(scMoc);
+	NSFetchRequest *req = nil;
 	@try {
-		NSFetchRequest *req = [[NSFetchRequest alloc] init];
+		req = [[NSFetchRequest alloc] init];
 		
 		// select
 		NSEntityDescription *entity = [NSEntityDescription entityForName:zEntity 
@@ -99,7 +100,7 @@ static NSManagedObjectContext *scMoc = nil;
 		
 		NSError *error = nil;
 		NSArray *arFetch = [scMoc executeFetchRequest:req error:&error];
-		[req release];	
+		[req release], req = nil;
 		if (error) {
 			AzLOG(@"select: Error %@, %@", error, [error userInfo]);
 			return nil;
@@ -109,8 +110,8 @@ static NSManagedObjectContext *scMoc = nil;
 	@catch (NSException *errEx) {
 		NSLog(@"select @catch:NSException: %@ : %@", [errEx name], [errEx reason]);
 	}
-	@catch (NSString *errMsg) {
-		NSLog(@"select @catch: ", errMsg);
+	@finally {
+		[req release], req = nil;
 	}
 	return nil;
 }

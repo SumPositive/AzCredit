@@ -26,8 +26,8 @@
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
 	// 生成とは逆順に解放するのが好ましい
-	[RzKey release];
-	[Rentity release];
+	[RzKey release], RzKey = nil;
+	[Rentity release], Rentity = nil;
 	[super dealloc];
 }
 
@@ -63,7 +63,7 @@
 	[MbuYearTime addTarget:self action:@selector(buttonYearTime) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuYearTime]; //[MbuYearTime release]; autoreleaseされるため
 	//------------------------------------------------------
-	MdatePicker = [[UIDatePicker alloc] init];
+	MdatePicker = [[[UIDatePicker alloc] init] autorelease];
 	//[MdatePicker addTarget:self action:@selector(datePickerDidChange:) forControlEvents:UIControlEventValueChanged]; //[0.4]
 	if (AzMIN_YearMMDD < PiMinYearMMDD) {
 		MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
@@ -77,7 +77,7 @@
 	}
 	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
 	MdatePicker.locale = locale; [locale release];
-	[self.view addSubview:MdatePicker]; [MdatePicker release];
+	[self.view addSubview:MdatePicker];  //auto//[MdatePicker release];
 	MintervalPrev = [MdatePicker.date timeIntervalSinceReferenceDate]; // 2001/1/1からの秒数
 	//------------------------------------------------------
 }

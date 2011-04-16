@@ -499,6 +499,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 				// E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,nRepeat,
 				ActE3record = nil;
 				NSDate *dateUse = [dateFormatter dateFromString:[MaCsv objectAtIndex:1]];
+				assert(dateUse);
 				// AzLOG(@"(2)'%@'  (3)'%@'", [MaCsv objectAtIndex:2], [MaCsv objectAtIndex:3]);
 				//NSInteger lAmount = [[MaCsv objectAtIndex:2] integerValue];  // longValueだとFreeze
 				NSDecimalNumber *decAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:2]]; //[0.4]

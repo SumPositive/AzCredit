@@ -22,8 +22,6 @@
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
 		4454C98E114941930063621D /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
 		4457518410C7A65900419205 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4457518310C7A65900419205 /* Entity.m */; };
-		446551411350AAF2008C5190 /* Icon24-S1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4465513F1350AAF2008C5190 /* Icon24-S1.png */; };
-		446551421350AAF2008C5190 /* Icon24-S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 446551401350AAF2008C5190 /* Icon24-S1@2x.png */; };
 		4470718A12FC4F0B00C053D2 /* AdMobDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4470718512FC4F0B00C053D2 /* AdMobDelegateProtocol.h */; };
 		4470718B12FC4F0B00C053D2 /* AdMobInterstitialAd.h in Headers */ = {isa = PBXBuildFile; fileRef = 4470718612FC4F0B00C053D2 /* AdMobInterstitialAd.h */; };
 		4470718C12FC4F0B00C053D2 /* AdMobInterstitialDelegateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4470718712FC4F0B00C053D2 /* AdMobInterstitialDelegateProtocol.h */; };
@@ -640,6 +638,12 @@
 		44BA33F511D78FAA00856A35 /* akihiro-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA33F411D78FAA00856A35 /* akihiro-320.jpg */; };
 		44BA346F11D79C0D00856A35 /* azuki-480.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA346E11D79C0D00856A35 /* azuki-480.jpg */; };
 		44BA9AC012FEC11400DB704F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BA9ABD12FEC11400DB704F /* Default@2x.png */; };
+		44BC4BD613594552009B995C /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BC4BD413594552009B995C /* UIDevice-Hardware.h */; };
+		44BC4BD713594552009B995C /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BC4BD413594552009B995C /* UIDevice-Hardware.h */; };
+		44BC4BD813594552009B995C /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BC4BD513594552009B995C /* UIDevice-Hardware.m */; };
+		44BC4BD913594552009B995C /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BC4BD513594552009B995C /* UIDevice-Hardware.m */; };
+		44BC4C2C13599FE4009B995C /* Icon24-Free.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC4C2A13599FE4009B995C /* Icon24-Free.png */; };
+		44BC4C2D13599FE4009B995C /* Icon24-Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC4C2B13599FE4009B995C /* Icon24-Free@2x.png */; };
 		44BC6E7F12FD49E900703AEC /* Icon32-Top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7312FD49E900703AEC /* Icon32-Top@2x.png */; };
 		44BC6E8012FD49E900703AEC /* Icon32-NearPC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7412FD49E900703AEC /* Icon32-NearPC@2x.png */; };
 		44BC6E8112FD49E900703AEC /* Icon32-Bank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7512FD49E900703AEC /* Icon32-Bank@2x.png */; };
@@ -1078,8 +1082,6 @@
 		4457518210C7A65900419205 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		4457518310C7A65900419205 /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Entity.m; sourceTree = "<group>"; };
 		445C662711678D2C00DE811D /* AzCredit 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AzCredit 2.xcdatamodel"; sourceTree = "<group>"; };
-		4465513F1350AAF2008C5190 /* Icon24-S1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon24-S1.png"; path = "Design/Icon24-S1.png"; sourceTree = "<group>"; };
-		446551401350AAF2008C5190 /* Icon24-S1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon24-S1@2x.png"; path = "Design/Icon24-S1@2x.png"; sourceTree = "<group>"; };
 		4470718512FC4F0B00C053D2 /* AdMobDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdMobDelegateProtocol.h; sourceTree = "<group>"; };
 		4470718612FC4F0B00C053D2 /* AdMobInterstitialAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdMobInterstitialAd.h; sourceTree = "<group>"; };
 		4470718712FC4F0B00C053D2 /* AdMobInterstitialDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdMobInterstitialDelegateProtocol.h; sourceTree = "<group>"; };
@@ -1185,6 +1187,10 @@
 		44BA346E11D79C0D00856A35 /* azuki-480.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "azuki-480.jpg"; path = "Design/azuki-480.jpg"; sourceTree = "<group>"; };
 		44BA9ABE12FEC11400DB704F /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Japanese; path = "Japanese.lproj/Default@2x.png"; sourceTree = "<group>"; };
 		44BA9ABF12FEC11400DB704F /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default@2x.png"; sourceTree = "<group>"; };
+		44BC4BD413594552009B995C /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
+		44BC4BD513594552009B995C /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
+		44BC4C2A13599FE4009B995C /* Icon24-Free.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon24-Free.png"; path = "Design/Icon24-Free.png"; sourceTree = "<group>"; };
+		44BC4C2B13599FE4009B995C /* Icon24-Free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon24-Free@2x.png"; path = "Design/Icon24-Free@2x.png"; sourceTree = "<group>"; };
 		44BC6E7312FD49E900703AEC /* Icon32-Top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Top@2x.png"; path = "Design/Icon32-Top@2x.png"; sourceTree = "<group>"; };
 		44BC6E7412FD49E900703AEC /* Icon32-NearPC@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-NearPC@2x.png"; path = "Design/Icon32-NearPC@2x.png"; sourceTree = "<group>"; };
 		44BC6E7512FD49E900703AEC /* Icon32-Bank@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Bank@2x.png"; path = "Design/Icon32-Bank@2x.png"; sourceTree = "<group>"; };
@@ -1648,6 +1654,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				44BC4BD413594552009B995C /* UIDevice-Hardware.h */,
+				44BC4BD513594552009B995C /* UIDevice-Hardware.m */,
 				44B87D86112A1DDA00ABF916 /* Main */,
 				44B87D87112A1E3200ABF916 /* TopMenu */,
 				44B87D89112A1E4500ABF916 /* E1card */,
@@ -2307,8 +2315,8 @@
 				44BC6F5812FDABBB00703AEC /* Icon32-CopyStop@2x.png */,
 				44A3D0E71174AEFA00460EC2 /* Icon32-Top.png */,
 				44BC6E7312FD49E900703AEC /* Icon32-Top@2x.png */,
-				4465513F1350AAF2008C5190 /* Icon24-S1.png */,
-				446551401350AAF2008C5190 /* Icon24-S1@2x.png */,
+				44BC4C2A13599FE4009B995C /* Icon24-Free.png */,
+				44BC4C2B13599FE4009B995C /* Icon24-Free@2x.png */,
 				44BC6ECC12FDA27F00703AEC /* Icon16-Return1.png */,
 				44BC6EC912FDA27F00703AEC /* Icon16-Return1@2x.png */,
 				44BC6ECB12FDA27F00703AEC /* Icon16-Return2.png */,
@@ -2743,6 +2751,7 @@
 				44DB9F84130CE150000304BA /* GDataYouTubePublicationState.h in Headers */,
 				44DB9F85130CE150000304BA /* GDataYouTubeRating.h in Headers */,
 				44DB9F86130CE150000304BA /* GDataYouTubeStatistics.h in Headers */,
+				44BC4BD613594552009B995C /* UIDevice-Hardware.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3138,6 +3147,7 @@
 				44B01373133EF773005AD0EA /* GDataYouTubePublicationState.h in Headers */,
 				44B01374133EF773005AD0EA /* GDataYouTubeRating.h in Headers */,
 				44B01375133EF773005AD0EA /* GDataYouTubeStatistics.h in Headers */,
+				44BC4BD713594552009B995C /* UIDevice-Hardware.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3279,6 +3289,8 @@
 				44EC041213422E79005071AC /* InfoS1.plist in Resources */,
 				44D88BFA1350942E008CEAF6 /* Icon57s1.png in Resources */,
 				44D88BFC1350942E008CEAF6 /* Icon57s1@2x.png in Resources */,
+				44BC4C2C13599FE4009B995C /* Icon24-Free.png in Resources */,
+				44BC4C2D13599FE4009B995C /* Icon24-Free@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3353,8 +3365,6 @@
 				44EC0416134237B6005071AC /* Icon57@2x.png in Resources */,
 				44D88BFB1350942E008CEAF6 /* Icon57s1.png in Resources */,
 				44D88BFD1350942E008CEAF6 /* Icon57s1@2x.png in Resources */,
-				446551411350AAF2008C5190 /* Icon24-S1.png in Resources */,
-				446551421350AAF2008C5190 /* Icon24-S1@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3420,6 +3430,7 @@
 				44BF48801300F090006F70FF /* DDRange.m in Sources */,
 				44BF48821300F090006F70FF /* DDNumber.m in Sources */,
 				44BF48841300F090006F70FF /* DDData.m in Sources */,
+				44BC4BD813594552009B995C /* UIDevice-Hardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3482,6 +3493,7 @@
 				44B011E0133EF773005AD0EA /* DDRange.m in Sources */,
 				44B011E1133EF773005AD0EA /* DDNumber.m in Sources */,
 				44B011E2133EF773005AD0EA /* DDData.m in Sources */,
+				44BC4BD913594552009B995C /* UIDevice-Hardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3538,7 +3550,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzFREE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
@@ -3567,7 +3579,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzFREE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
@@ -3707,7 +3719,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "";
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzFREE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.2;

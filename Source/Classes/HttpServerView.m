@@ -142,7 +142,10 @@
 											 selector:@selector(httpInfoUpdate:) 
 												 name:@"LocalhostAdressesResolved" 
 											   object:nil];
+	
 	[localhostAddresses performSelectorInBackground:@selector(list) withObject:nil];
+	//[localhostAddresses performSelector:@selector(list) withObject:nil afterDelay:0.0];  //16ByteLeak対策
+	
 	[RhttpServer setPort:8080];
 	//[httpServer setBackup:NO]; // RESTORE Mode
 	//[httpServer setManagedObjectContext:Re0root.managedObjectContext];
