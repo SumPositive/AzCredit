@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <iAd/iAd.h>
-#import "AdMobDelegateProtocol.h"
-
+#import "GADBannerView.h"
 
 //@class E2invoice;
 
-@interface E3recordTVC : UITableViewController <UIActionSheetDelegate, AdMobDelegate>
+@interface E3recordTVC : UITableViewController <UIActionSheetDelegate>
 {
 @private
 	//----------------------------------------------retain
@@ -26,7 +24,9 @@
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
-	AdMobView			*RoAdMobView;
+#ifdef GD_Ad_ENABLED
+	GADBannerView		*RoAdMobView;
+#endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	BOOL		MbOptAntirotation;

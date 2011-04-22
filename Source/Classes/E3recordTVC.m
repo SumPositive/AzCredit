@@ -13,7 +13,6 @@
 #import "SettingTVC.h"
 #import "E3recordTVC.h"
 #import "E3recordDetailTVC.h"
-#import "AdMobView.h"
 
 #define ALERT_TAG_NoMore		109
 
@@ -36,9 +35,9 @@
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
 	NSLog(@"--- unloadRelease --- E3recordTVC");
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
 		[RoAdMobView release], RoAdMobView = nil;
 	}
 #endif
@@ -104,13 +103,26 @@
 	[buTop release];
 	[buFlex release];
 	
-#ifdef GD_AdMob_ENABLED
-	if (RoAdMobView==nil) {
-		RoAdMobView = [AdMobView requestAdWithDelegate:self];
-		AzRETAIN_CHECK(@"E3recordTVC -1- RoAdMobView", RoAdMobView, 0)
-		[RoAdMobView retain];
-		AzRETAIN_CHECK(@"E3recordTVC -2- RoAdMobView", RoAdMobView, 0)
-	}
+#ifdef GD_Ad_ENABLED
+	RoAdMobView = [[GADBannerView alloc]
+                   initWithFrame:CGRectMake(0, 0,			// TableCell用
+                                            GAD_SIZE_320x50.width,
+                                            GAD_SIZE_320x50.height)];
+	//RoAdMobView.delegate = self;
+	RoAdMobView.delegate = nil; //Delegateなし
+	
+	// Specify the ad's "unit identifier." This is your AdMob Publisher ID.
+	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+	
+	// Let the runtime know which UIViewController to restore after taking
+	// the user wherever the ad goes and add it to the view hierarchy.
+	RoAdMobView.rootViewController = self;
+	
+	// Initiate a generic request to load it with an ad.
+	//[RoAdMobView loadRequest:[GADRequest request]];
+	GADRequest *request = [GADRequest request];
+	//[request setTesting:YES];
+	[RoAdMobView loadRequest:request];	
 #endif
 }
 
@@ -399,6 +411,23 @@
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#ifdef GD_Ad_ENABLED
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+								duration:(NSTimeInterval)duration
+{
+	if (RoAdMobView) {
+		CGRect rc = RoAdMobView.frame;
+		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+		{	// タテ
+			rc.origin.x = 0;
+		} else {
+			rc.origin.x += (480 - GAD_SIZE_320x50.width)/2.0;		// ヨコのとき中央にする
+		}	
+		RoAdMobView.frame = rc;
+	}
+}
+#endif
+
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
 - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
 													   duration:(NSTimeInterval)duration
@@ -548,7 +577,7 @@
 //		return 50; //「さらに前へ」「さらに次へ」
 //	}
 	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) {
-		return 48; // AdMob
+		return GAD_SIZE_320x50.height; // AdMob
 	}
 	return 44; // デフォルト：44ピクセル
 }
@@ -557,10 +586,11 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *zCellAdMob = @"CellAdMob";
     static NSString *zCellTopEnd = @"CellTopEnd";
     static NSString *zCellE3record = @"CellE3record";
-    //static NSString *zCellEnd = @"CellEnd";
+#ifdef GD_Ad_ENABLED
+	static NSString *zCellAdMob = @"CellAdMob";
+#endif
 	UITableViewCell *cell = nil;
 	UILabel *cellLabel = nil;
 	
@@ -573,16 +603,33 @@
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 											   reuseIdentifier:zCellAdMob] autorelease];
+				
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+				cell.showsReorderControl = NO;		// Move禁止
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
-				cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
-				cell.showsReorderControl = NO; // Move禁止
+#ifdef GD_Ad_ENABLED
 				if (RoAdMobView) { // Request an AdMob ad for this table view cell
 					[cell.contentView addSubview:RoAdMobView]; // unloadReleaseにて解放
 				}
+#endif
 			}
-		} else {
+#ifdef GD_Ad_ENABLED
+			if (RoAdMobView) {
+				CGRect rc = RoAdMobView.frame;
+				if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+				{	// タテ
+					rc.origin.x = 0;
+				} else {
+					rc.origin.x = (480 - rc.size.width) / 2.0;		// ヨコのとき中央にする
+				}	
+				RoAdMobView.frame = rc;
+			}
+#endif
+		}
+		else {
 			// More...
 			cell = [tableView dequeueReusableCellWithIdentifier:zCellTopEnd];
 			if (cell == nil) {
@@ -702,6 +749,7 @@
 	return cell;
 }
 
+/*
 //=================================================================AdMob delegate
 // 必要なFramework
 // AudioToolbox.framework
@@ -724,7 +772,7 @@
 - (void)didFailToReceiveAd:(AdMobView *)adView {
 	NSLog(@"AdMob: Did fail to receive ad");
 }
-
+*/
 
 // TableView Editボタンスタイル
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -830,104 +878,6 @@
 	[self.navigationController pushViewController:e3detail animated:YES];
 	[e3detail release];
 }
-
-/*
-// TableView Editモード処理
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-											forRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-
-}
-
-// Editモード時の行Edit可否
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return YES; // 行編集許可
-}
-
-// Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-	// E3recordTVC は、利用明細を利用日順に表示するため移動はなし。　E2間移動（支払日変更）は、E6partTVC で行う。
-//	if (indexPath.row < [Me3list count]) {
-//		return YES; // Move 対象
-//	}
-	
-	return NO;  // 移動禁止
-}
-*/
-
-/*E3recordTVC は、利用明細を利用日順に表示するため移動はなし。　E2間移動（支払日変更）は、E6partTVC で行う。
-// Editモード時の行移動「先」を応答　　＜＜最終行のAdd行への移動ならば1つ前の行を応答している＞＞
-- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)oldPath 
-																		 toProposedIndexPath:(NSIndexPath *)newPath 
-{
-	// Add行が異動先になった場合、その1つ前の通常行を返すことにより、Add行への移動禁止となる。
-	NSInteger rows = [Me3list count];  // 移動可能な行数（Add行を除く）
-	if (oldPath.section == newPath.section && 0 < rows) rows--; // 同セクション内では元行が減るため (beginUpdates-endUpdatesを使う方法もある）
-	if (rows <= newPath.row) {
-		// Add行ならば、E3ノードの最終行(row-1)を応答する
-		newPath = [NSIndexPath indexPathForRow:rows inSection:newPath.section];
-	}
-    return newPath;
-}
-*/
-
-/*
-// 編集モードに出入りするときとスワイプして削除モードに出入りするときに呼ばれる
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated 
-{
-	if (editing) {
-		// 編集モードに入るとき
-	}
-	else {
-		// 編集モードを出るとき
-		[self.tableView reloadData]; // セクション間移動があったとき、セクションタイトルの再表示が必要
-	}
-	[super setEditing:editing animated:YES];
-}
-*/
-
-/*E3recordTVC は、利用明細を利用日順に表示するため移動はなし。　E2間移動（支払日変更）は、E6partTVC で行う。
-// Editモード時の行移動処理　　＜＜CoreDataにつきArrayのように削除＆挿入ではダメ。ソート属性(row)を書き換えることにより並べ替えている＞＞
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)oldPath 
-											  	  toIndexPath:(NSIndexPath *)newPath 
-{
-	// セクションを跨いだ移動に対応
-	//--------------------------------------------------(1)MutableArrayの移動
-	E3record *e3obj = [Me3list objectAtIndex:oldPath.row];
-	// 移動元から削除
-	[Me3list removeObjectAtIndex:oldPath.row];
-	// 移動先へ挿入　＜＜newPathは、targetIndexPathForMoveFromRowAtIndexPath にて[Gray]行の回避処理した行である＞＞
-	[Me3list insertObject:e3obj atIndex:newPath.row];
-	// E2-E3 リンク更新
-	e3obj.e2invoice = [Me2list objectAtIndex:newPath.section];
-	
-	//---------------------------------------------------------------
-	// E3には.nRow は無いので、セクション(E2支払)間移動のために実装した。
-	//---------------------------------------------------------------
-	
-	//-----------------------------------E2セクション間移動のとき、新旧sum項目の再集計
-	if (oldPath.section != newPath.section) {
-		// 旧 E2 sum 更新
-		E2invoice *e2obj = [Me2list objectAtIndex:oldPath.section];
-		e2obj.sumNoCheck = [e2obj valueForKeyPath:@"e3records.@sum.nNoCheck"];
-		e2obj.sumAmount = [e2obj valueForKeyPath:@"e3records.@sum.nAmount"];
-		// 新 E2 sum 更新
-		e2obj = [Me2list objectAtIndex:newPath.section];
-		e2obj.sumNoCheck = [e2obj valueForKeyPath:@"e3records.@sum.nNoCheck"];
-		e2obj.sumAmount = [e2obj valueForKeyPath:@"e3records.@sum.nAmount"];
-		// E1 に影響は無いのでなにもしない
-		// ここで再表示したいがreloadDataするとFreezeなので、editing:にて編集完了時にreloadしている
-	}
-	
-	// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針である＞＞
-	NSError *error = nil;
-	if (![Pe2select.managedObjectContext save:&error]) {
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
-}
-*/
 
 
 @end

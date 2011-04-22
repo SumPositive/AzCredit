@@ -48,7 +48,7 @@ static UIColor *MpColorBlue(float percent) {
     picker.mailComposeDelegate = self;
 	
 	// To: 宛先
-	NSArray *toRecipients = [NSArray arrayWithObject:@"AzCredit@azukid.com"];
+	NSArray *toRecipients = [NSArray arrayWithObject:@"PayNote@azukid.com"];
 	[picker setToRecipients:toRecipients];
     //[picker setCcRecipients:nil];
 	//[picker setBccRecipients:nil];
@@ -142,7 +142,8 @@ static UIColor *MpColorBlue(float percent) {
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
-	label.font = [UIFont boldSystemFontOfSize:25];
+	//label.font = [UIFont boldSystemFontOfSize:25];
+	label.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:25];
 	[self addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:Version
@@ -151,7 +152,7 @@ static UIColor *MpColorBlue(float percent) {
 #ifdef AzSTABLE
 	label.text = [NSString stringWithFormat:@"Version %@\nStable", zVersion];
 #else
-	label.text = [NSString stringWithFormat:@"Version %@\nAd - Free", zVersion];
+	label.text = [NSString stringWithFormat:@"Version %@\nFree", zVersion];
 #endif
 	label.numberOfLines = 2;
 	label.textAlignment = UITextAlignmentCenter;
@@ -176,14 +177,13 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 150, 200, 100)];
-	label.text =	@"AzukiSoft Project\n"
-					@"AzCredit\n"
-					@"Born on March 26\n"
-					@"© 2000-2011  Azukid\n"
-					@"Creator Sum Positive\n"
-					@"All Rights Reserved.";
-	label.numberOfLines = 6;
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 150, 200, 80)];
+	label.text =	@"PayNote\n"
+						@"Born on March 26\n"
+						@"© 2000-2011  Azukid\n"
+						@"Creator Sum Positive\n"
+						@"All Rights Reserved.";
+	label.numberOfLines = 5;
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
@@ -193,7 +193,7 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------メールで問い合わせ
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	bu.frame = CGRectMake(110, 260, 180,30);
+	bu.frame = CGRectMake(110, 240, 180,30);
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(sendmail:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:bu];  //autorelease

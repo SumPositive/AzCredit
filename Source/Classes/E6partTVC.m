@@ -12,7 +12,7 @@
 #import "MocFunctions.h"
 #import "E6partTVC.h"
 #import "E3recordDetailTVC.h"
-#import "AdMobView.h"
+
 
 #define ACTIONSEET_TAG_DELETE	199
 
@@ -32,7 +32,7 @@
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
 	NSLog(@"--- unloadRelease --- E6partTVC");
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
 		[RoAdMobView release],	RoAdMobView = nil;
@@ -95,11 +95,25 @@
 	[buTop release];
 	[buFlex release];
 
-#ifdef GD_AdMob_ENABLED
-	if (RoAdMobView==nil) {
-		RoAdMobView = [AdMobView requestAdWithDelegate:self];
-		[RoAdMobView retain];
-	}
+#ifdef GD_Ad_ENABLED
+	RoAdMobView = [[GADBannerView alloc]
+                   initWithFrame:CGRectMake(0, 0,			// TableCell用
+                                            GAD_SIZE_320x50.width,
+                                            GAD_SIZE_320x50.height)];
+	//RoAdMobView.delegate = self;
+	RoAdMobView.delegate = nil; //Delegateなし
+	
+	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+	
+	// Let the runtime know which UIViewController to restore after taking
+	// the user wherever the ad goes and add it to the view hierarchy.
+	RoAdMobView.rootViewController = self;
+	//	[self.view addSubview:RoAdMobView];
+	
+	// Initiate a generic request to load it with an ad.
+	GADRequest *request = [GADRequest request];
+	//[request setTesting:YES];
+	[RoAdMobView loadRequest:request];	
 #endif
 }
 
@@ -330,6 +344,23 @@
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#ifdef GD_Ad_ENABLED
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+								duration:(NSTimeInterval)duration
+{
+	if (RoAdMobView) {
+		CGRect rc = RoAdMobView.frame;
+		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+		{	// タテ
+			rc.origin.x = 0;
+		} else {
+			rc.origin.x += (480 - GAD_SIZE_320x50.width)/2.0;		// ヨコのとき中央にする
+		}	
+		RoAdMobView.frame = rc;
+	}
+}
+#endif
+
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
 - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
 													   duration:(NSTimeInterval)duration
@@ -445,7 +476,7 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	return [RaE6parts count] + 1; // AdMob
 #else
 	return [RaE6parts count];  // Me6partsは、[E2invoices]×[E3records] の二次元配列
@@ -456,7 +487,7 @@
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= section) {
 		return 1; // AdMob
 	}
@@ -473,7 +504,7 @@
 // TableView セクション名を応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= section) {
 		return @"End"; // AdMob
 	}
@@ -508,9 +539,9 @@
  // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= indexPath.section) {
-		return 48; // AdMob
+		return GAD_SIZE_320x50.height; // AdMob
 	}
 #endif
 
@@ -529,7 +560,7 @@
 	UITableViewCell *cell = nil;
 	UILabel *cellLabel = nil;
 	
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
     static NSString *zCellAdMob = @"CellAdMob";
 	if ([RaE6parts count] <= indexPath.section) {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:zCellAdMob];
@@ -542,6 +573,16 @@
 			if (RoAdMobView) { // Request an AdMob ad for this table view cell
 				[cell.contentView addSubview:RoAdMobView];
 			}
+		}
+		if (RoAdMobView) {
+			CGRect rc = RoAdMobView.frame;
+			if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+			{	// タテ
+				rc.origin.x = 0;
+			} else {
+				rc.origin.x = (480 - rc.size.width) / 2.0;		// ヨコのとき中央にする
+			}	
+			RoAdMobView.frame = rc;
 		}
 		return cell; // AdMob
 	}
@@ -659,6 +700,7 @@
 	return cell;
 }
 
+/*************************
 // AdMob
 - (NSString *)publisherIdForAd:(AdMobView *)adView {
 	return @"a14d4c11a95320e"; // クレメモ　パブリッシャー ID
@@ -667,7 +709,7 @@
 - (UIViewController *)currentViewControllerForAd:(AdMobView *)adView {
 	return self;
 }
-
+*/
 
 - (void)cellButton: (UIButton *)button 
 {
@@ -707,7 +749,7 @@
 // TableView 行選択時の動作
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= indexPath.section) {
 		return; // AdMob
 	}
@@ -818,7 +860,7 @@
 
 // Editモード時の行Edit可否
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= indexPath.section) {
 		return NO; // AdMob
 	}
@@ -829,7 +871,7 @@
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= indexPath.section) {
 		return NO; // AdMob
 	}
@@ -845,7 +887,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)oldPath 
 																		 toProposedIndexPath:(NSIndexPath *)newPath 
 {
-#ifdef GD_AdMob_ENABLED
+#ifdef GD_Ad_ENABLED
 	if ([RaE6parts count] <= newPath.section) {
 		return oldPath; // AdMob: 移動なし
 	}

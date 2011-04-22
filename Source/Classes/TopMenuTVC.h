@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <iAd/iAd.h>
+#import "GADBannerView.h"
+//#import "GADBannerViewDelegate.h"
 
 @class InformationView;
 
-@interface TopMenuTVC : UITableViewController <ADBannerViewDelegate>
+@interface TopMenuTVC : UITableViewController
+#ifdef GD_Ad_ENABLED
+	<ADBannerViewDelegate>
+#endif
 {
 @private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -22,10 +27,11 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	InformationView		*MinformationView;
-#ifdef GD_iAd_ENABLED
+#ifdef GD_Ad_ENABLED
 	ADBannerView		*MbannerView;
-	BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
-	BOOL		MbannerActive;
+	//BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
+	//BOOL		MbannerActive;
+	GADBannerView		*RoAdMobView;
 #endif
 	//UIView				*MviewLogin;
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため

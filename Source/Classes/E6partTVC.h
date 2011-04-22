@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AdMobDelegateProtocol.h"
+#import "GADBannerView.h"
 
 @class E2invoice;
 @class E7payment;
 
-@interface E6partTVC : UITableViewController <AdMobDelegate>  // <UIActionSheetDelegate> 
+@interface E6partTVC : UITableViewController // <AdMobDelegate>  // <UIActionSheetDelegate> 
 {
 @private
 	//----------------------------------------------retain
@@ -26,7 +26,9 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray	*RaE2invoices;
 	NSMutableArray	*RaE6parts;		// (Pe2invoices,E6parts) 二次元
-	AdMobView		*RoAdMobView;
+#ifdef GD_Ad_ENABLED
+	GADBannerView		*RoAdMobView;
+#endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	E1card		*Me2e1card;

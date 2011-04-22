@@ -12,8 +12,8 @@
 #ifdef AzSTABLE
 // 広告なし
 #else
-#define GD_iAd_ENABLED				//[0.4.2]にて、電卓の下部ボタンがクリックできない不具合が発生した
-#define GD_AdMob_ENABLED
+#define GD_Ad_ENABLED
+#define MY_BANNER_UNIT_ID	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free"　
 #endif
 
 #define OR  ||

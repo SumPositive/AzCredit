@@ -14,6 +14,12 @@
 
 @implementation MyHTTPConnection
 
+- (void)dealloc  //[1.0.0]Leak対策
+{
+	[RaMultipartData release], RaMultipartData = nil; //[1.0.0]Leak対策
+	[super dealloc];
+}
+
 /**
  * Returns whether or not the requested resource is browseable.
 **/
@@ -166,8 +172,13 @@
 {
 //	NSLog(@"POST:%@", path);
 	
-	MiDataStartIndex = 0;
-	RaMultipartData = [[NSMutableArray alloc] init];
+	MiDataStartIndex = 0;		//チャンクリセット
+	
+	if (RaMultipartData) {		//[1.0.0]Leak対策：ブラウザリロードする度に呼び出されることが解った。
+		[RaMultipartData release], RaMultipartData = nil;
+	}
+	RaMultipartData = [[NSMutableArray alloc] init];	//チャンクバッファ
+
 	MbPostHeaderOK = FALSE;
 	
 	return YES;
@@ -235,6 +246,8 @@
 		else {
 			// ファイル名が "*.CSV" でない
 			[postInfo release];
+			[RaMultipartData release], RaMultipartData = nil;
+			requestContentLength = 0;
 			NSData *browseData = [[self postResponseNG:@"No! *.CSV file"] dataUsingEncoding:NSUTF8StringEncoding];
 			return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
 		}
@@ -246,7 +259,7 @@
 	//	}
 		
 		[postInfo release];
-		[RaMultipartData release];
+		[RaMultipartData release], RaMultipartData = nil;
 		requestContentLength = 0;
 		
 		// ダウンロード成功
@@ -345,14 +358,14 @@
 					NSRange fileDataRange = {MiDataStartIndex, [postDataChunk length] - MiDataStartIndex};
 					
 					[[NSFileManager defaultManager] createFileAtPath:filename contents:[postDataChunk subdataWithRange:fileDataRange] attributes:nil];
-					NSFileHandle *file = [[NSFileHandle fileHandleForUpdatingAtPath:filename] retain];
+					NSFileHandle *file = [NSFileHandle fileHandleForUpdatingAtPath:filename];  // retain];
 
 					if (file)
 					{
 						[file seekToEndOfFile];
 						[RaMultipartData addObject:file];
 					}
-					[file release];
+					//[file release];
 					
 					//[postInfo release];
 					
