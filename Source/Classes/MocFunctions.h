@@ -17,7 +17,7 @@
 + (void)setMoc:(NSManagedObjectContext *)moc;
 + (id)insertAutoEntity:(NSString *)zEntityName;
 + (void)deleteEntity:(NSManagedObject *)entity;
-+ (void)commit;
++ (BOOL)commit;
 + (void)rollBack;
 + (NSArray *)select:(NSString *)zEntity
 			  limit:(NSInteger)iLimit
@@ -32,8 +32,9 @@
 + (void)e1delete:(E1card *)e1obj;
 + (void)e1update:(E1card *)e1obj;
 
-+ (void)e2delete:(E2invoice *)e2obj;
 + (E2invoice *)e2invoice:(E1card *)e1card inYearMMDD:(NSInteger)iYearMMDD;
++ (void)e2e7update:(E2invoice *)e2;
++ (void)e2delete:(E2invoice *)e2obj;
 + (void)e2paid:(E2invoice *)e2obj inE6payNextMonth:(BOOL)bE6payNextMonth;
 
 + (E3record *)replicateE3record:(E3record *)e3source;

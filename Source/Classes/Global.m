@@ -177,10 +177,10 @@ UIImage *GimageFromString(NSString* str)
     return uiImage;
 }
 
-NSDate *GdateYearMMDD( NSInteger PiMinYearMMDD, int PiHour, int PiMinute, int PiSecond )
+NSDate *GdateYearMMDD( NSInteger PiYearMMDD, int PiHour, int PiMinute, int PiSecond )
 {
-	NSInteger iYear = PiMinYearMMDD / 10000;
-	NSInteger iDD = PiMinYearMMDD - (iYear * 10000);
+	NSInteger iYear = PiYearMMDD / 10000;
+	NSInteger iDD = PiYearMMDD - (iYear * 10000);
 	NSInteger iMM = iDD / 100;
 	iDD -= (iMM * 100);
 	
@@ -191,7 +191,7 @@ NSDate *GdateYearMMDD( NSInteger PiMinYearMMDD, int PiHour, int PiMinute, int Pi
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];  
 	[dateFormatter setTimeStyle:NSDateFormatterFullStyle];  
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];  
-	NSDate *datetime = [dateFormatter dateFromString:dateStr];  
+	NSDate *datetime = [dateFormatter dateFromString:dateStr];  //autorelease
 	[dateFormatter release];  	
 	[dateStr release];
 	return datetime; // NSDateは、常にUTC(+0000)協定世界時間である。

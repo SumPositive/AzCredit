@@ -597,11 +597,12 @@ static UIImage* GimageFromString(NSString* str)
 	}
 	
 	// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-	NSError *error = nil;
+	/*NSError *error = nil;
 	if (![Re0root.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
-	}
+	}*/
+	[MocFunctions commit];
 }
 
 @end

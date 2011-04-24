@@ -54,7 +54,7 @@
 @property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
 @property (nonatomic, assign, readonly) BOOL			MbLoginShow;
 
-- (IBAction)saveAction:sender;
+//- (IBAction)saveAction:sender;
 //- (BOOL)appDidBecomeActive;
 
 @end

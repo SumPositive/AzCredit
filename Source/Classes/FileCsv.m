@@ -738,9 +738,12 @@ static NSString *csvToStr( NSString *inCsv ) {
 		// E8bank 事前集計は無い、リスト表示時に集計している
 		//
 		//--------------------------------------------------------------------------SAVE
-		if (![context save:&err]) {
+		/*if (![context save:&err]) {
 			NSLog(@"Unresolved error %@, %@", err, [err userInfo]);
 			@throw NSLocalizedString(@"Err CoreData",nil);
+		}*/
+		if (![MocFunctions commit]) {
+			@throw NSLocalizedString(@"File read error", @"CSV読み込み失敗");
 		}
 		// Compleat !!
 		zErrMsg = nil; // OK

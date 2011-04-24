@@ -8,6 +8,7 @@
 
 #import "Global.h"
 #import "Entity.h"
+#import "MocFunctions.h"
 #import "EditDateVC.h"
 
 @interface EditDateVC (PrivateMethods)
@@ -22,13 +23,38 @@
 @synthesize RzKey;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
+//@synthesize PiE6row;				//[1.0.0]E6date変更モード
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
+	[Re6edit release], Re6edit = nil;
 	// 生成とは逆順に解放するのが好ましい
 	[RzKey release], RzKey = nil;
 	[Rentity release], Rentity = nil;
 	[super dealloc];
+}
+
+// UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
+- (id)init
+{
+	self = [super init];
+	if (self) {
+		// 初期化成功
+		PiE6row = (-1);  //E6dateモードでないことを示す
+		Re6edit = nil;
+	}
+	return self;
+}
+
+- (id)initWithE6row:(NSUInteger)iRow
+{
+	self = [super init];
+	if (self) {
+		// 初期化成功
+		PiE6row = iRow;
+		Re6edit = nil;
+	}
+	return self;
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
@@ -48,8 +74,8 @@
 	// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
 	// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-											   target:self action:@selector(done:)] autorelease];
+												   initWithBarButtonSystemItem:UIBarButtonSystemItemDone  //[DONE]
+												   target:self action:@selector(done:)] autorelease];
 	
 	// とりあえず生成、位置はviewDesignにて決定
 	//------------------------------------------------------
@@ -105,8 +131,53 @@
 		MdatePicker.datePickerMode = UIDatePickerModeDate;
 	}
 	
-	if ([Rentity valueForKey:RzKey]) {
-		MdatePicker.date = [Rentity valueForKey:RzKey];
+	if (0<=PiE6row) {	//[1.0.0]E6date変更モード
+		E3record *e3 = Rentity;
+		if (0 <= PiE6row && PiE6row < [e3.e6parts count]) {
+			NSArray* e6parts = nil;
+			if ([e3.e6parts count]==1) {
+				assert(PiE6row==0);
+				e6parts = [e3.e6parts allObjects];
+				// 要素が1個だけなのでSorting不要
+			} else {
+				// Index指定するためにSortingが必要
+				NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
+				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+				[sort1 release];
+				e6parts = [[e3.e6parts allObjects] sortedArrayUsingDescriptors:sortArray];
+				[sortArray release];
+				// 分割払いの場合、前回や次回の支払があればその日までに制限する
+				if (0 < PiE6row) {
+					//前回支払あり
+					E6part *e6 = [e6parts objectAtIndex:PiE6row-1];  //前回
+					NSInteger iYearMMDD = [e6.e2invoice.e7payment.nYearMMDD integerValue];
+					//最小日付制限
+					PiMinYearMMDD = GiAddYearMMDD( iYearMMDD, 0,0,+1); // +1日＝翌日
+				}
+				else if (PiE6row < [e3.e6parts count]-1) {
+					//次回支払あり
+					E6part *e6 = [e6parts objectAtIndex:PiE6row+1];  //次回
+					NSInteger iYearMMDD = [e6.e2invoice.e7payment.nYearMMDD integerValue];
+					//最大日付制限
+					PiMaxYearMMDD = GiAddYearMMDD( iYearMMDD, 0,0,-1); // -1日＝前日
+				}
+			}
+			// Re6edit : 支払日変更対象となるE6
+			if (Re6edit) {
+				[Re6edit release], Re6edit = nil;
+			}
+			Re6edit = [[e6parts objectAtIndex:PiE6row] retain];  //SortしたのでIndex指定できる		//このモジュールで確保するためｒｅｔａｉｎしている
+			NSInteger iYearMMDD = [Re6edit.e2invoice.e7payment.nYearMMDD integerValue];
+			MdatePicker.date = GdateYearMMDD(iYearMMDD, 0, 0, 0);
+		}
+		else if ([Rentity valueForKey:RzKey]) {
+			self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  デフォルト[Save]
+				MdatePicker.date = [Rentity valueForKey:RzKey];
+		}
+		else {
+			self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  デフォルト[Save]
+			MdatePicker.date = [NSDate date]; // Now
+		}
 	}
 	else {
 		MdatePicker.date = [NSDate date]; // Now
@@ -202,7 +273,27 @@
 // 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
 - (void)done:(id)sender
 {
-	[Rentity setValue:MdatePicker.date forKey:RzKey];
+	if (0<=PiE6row) {	//[1.0.0]E6date変更モード：変更有れば即保存
+		if (Re6edit) {
+			E2invoice *e2old = Re6edit.e2invoice;  //変更前に属しているE2
+			E3record *e3 = Rentity;
+			NSInteger iYearMMDD = GiYearMMDD(MdatePicker.date);
+			E2invoice *e2new = [MocFunctions e2invoice:e3.e1card  inYearMMDD:iYearMMDD]; //変更後に属するE2
+			if (e2new != e2old) { 
+				//属するE2に変化あり
+				Re6edit.e2invoice = e2new;
+				//e2new 配下再集計
+				[MocFunctions e2e7update:e2new]; //E6増
+				//e2old 配下再集計
+				[MocFunctions e2e7update:e2old]; //E6減
+				//
+				------------------ delegate
+			}
+		}
+	} 
+	else {
+		[Rentity setValue:MdatePicker.date forKey:RzKey];
+	}
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 

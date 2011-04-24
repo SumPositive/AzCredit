@@ -951,28 +951,21 @@
 	if (oldPath.section != newPath.section) {
 		// 旧 E2,E7 sum 更新
 		E2invoice *e2obj = [RaE2invoices objectAtIndex:oldPath.section];
-		e2obj.sumNoCheck = [e2obj valueForKeyPath:@"e6parts.@sum.nNoCheck"];
-		e2obj.sumAmount = [e2obj valueForKeyPath:@"e6parts.@sum.nAmount"];
-		E7payment *e7obj = e2obj.e7payment;
-		e7obj.sumNoCheck = [e7obj valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
-		e7obj.sumAmount = [e7obj valueForKeyPath:@"e2invoices.@sum.sumAmount"];
+		[MocFunctions e2e7update:e2obj]; //E6減
 		// 新 E2,E7 sum 更新
 		e2obj = [RaE2invoices objectAtIndex:newPath.section];
-		e2obj.sumNoCheck = [e2obj valueForKeyPath:@"e6parts.@sum.nNoCheck"];
-		e2obj.sumAmount = [e2obj valueForKeyPath:@"e6parts.@sum.nAmount"];
-		e7obj = e2obj.e7payment;
-		e7obj.sumNoCheck = [e7obj valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
-		e7obj.sumAmount = [e7obj valueForKeyPath:@"e2invoices.@sum.sumAmount"];
+		[MocFunctions e2e7update:e2obj]; //E6増
 		// E1 に影響は無いのでなにもしない
 		// ここで再表示したいがreloadDataするとFreezeなので、editing:にて編集完了時にreloadしている
 	}
 	
 	// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針である＞＞
-	NSError *error = nil;
+	/*NSError *error = nil;
 	if (![e6obj.managedObjectContext save:&error]) {
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
-	}
+	}*/
+	[MocFunctions commit];
 }
 
 

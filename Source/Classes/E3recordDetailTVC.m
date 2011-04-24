@@ -47,6 +47,17 @@
 @synthesize PiAdd;
 @synthesize PiFirstYearMMDD;
 
+- (id)delegate {
+    return delegate;
+}
+
+- (void)setDelegate:(id)newDelegate {
+    delegate = newDelegate;
+}
+
+- (void)e6dateChange {
+	MbE6dateChange = YES;
+}
 
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
@@ -81,6 +92,7 @@
 	if (self) {
 		// 初期化成功
 		MbSaved = NO;
+		MbE6dateChange = NO;
 	}
 	return self;
 }
@@ -183,7 +195,7 @@
     [super viewWillAppear:YES];
 	
 	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止。
-
+	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
@@ -1120,9 +1132,20 @@
 					return;
 				} else {
 					// 支払日の変更は、カードE1配下の編集＆移動により行う
-					alertBox(NSLocalizedString(@"How to change Due",nil),
-							 NSLocalizedString(@"How to change Due msg",nil),
-							 NSLocalizedString(@"Roger",nil));
+					//alertBox(NSLocalizedString(@"How to change Due",nil),
+					//		 NSLocalizedString(@"How to change Due msg",nil),
+					//		 NSLocalizedString(@"Roger",nil));
+					//[1.0.0]ここで支払日変更ができるようにする
+					EditDateVC *evc = [[EditDateVC alloc] initWithE6row:indexPath.row]; //[1.0.0]E6date変更モード
+					evc.title = NSLocalizedString(@"Due date", nil);
+					evc.Rentity = Re3edit;
+					evc.RzKey = @"";  //[1.0.0]E6date変更モード：未使用
+					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
+					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
+					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+					[self.navigationController pushViewController:evc animated:YES];
+					[evc release];
+					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				}
 			}
 			break;
@@ -1190,6 +1213,7 @@
 		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
 	
+	if (MbE6dateChange) PiFirstYearMMDD = (-1); //E6更新しない
 	// E3配下リンク等の更新処理
 	if ([MocFunctions e3saved:Re3edit inFirstYearMMDD:PiFirstYearMMDD]==NO) {
 		//return; // 中止

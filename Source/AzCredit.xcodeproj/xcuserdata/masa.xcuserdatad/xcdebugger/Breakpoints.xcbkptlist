@@ -7,133 +7,57 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.036015"
+         isPathRelative = "1"
+         filePath = "Classes/E3recordDetailTVC.m"
+         timestampString = "325326556.418185"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "15"
-         endingLineNumber = "15">
+         startingLineNumber = "223"
+         endingLineNumber = "223"
+         landmarkName = "-viewWillAppear:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.124891"
+         isPathRelative = "1"
+         filePath = "Classes/E3recordDetailTVC.m"
+         timestampString = "325335435.1749"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "296"
-         endingLineNumber = "296">
+         startingLineNumber = "1127"
+         endingLineNumber = "1127"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.125391"
+         isPathRelative = "1"
+         filePath = "Classes/EditDateVC.m"
+         timestampString = "325335922.732002"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "171"
-         endingLineNumber = "171">
+         startingLineNumber = "284"
+         endingLineNumber = "284"
+         landmarkName = "-done:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.125652"
+         isPathRelative = "1"
+         filePath = "Classes/E3recordDetailTVC.m"
+         timestampString = "325349781.180473"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "175"
-         endingLineNumber = "175">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.125906"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "203"
-         endingLineNumber = "203">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.126165"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "349"
-         endingLineNumber = "349">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack /Classes/GooDownloadView.m"
-         timestampString = "319217500.126451"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "475"
-         endingLineNumber = "475">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/Desktop/iPack/Classes/InfoViewCon.m"
-         timestampString = "319217500.126703"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "31"
-         endingLineNumber = "31">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/AzukiSoft/AzCredit-0.1/Source/Classes/E2viewController.m"
-         timestampString = "319217500.127011"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "401"
-         endingLineNumber = "401">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/AzukiSoft/AzCredit-0.1/Source/Classes/E2viewController.m"
-         timestampString = "319217500.127305"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "399"
-         endingLineNumber = "399">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "0"
-         filePath = "/Users/masa/AzukiSoft/AzCredit-0.1/Source/Classes/E2viewController.m"
-         timestampString = "319217500.127574"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "407"
-         endingLineNumber = "407">
+         startingLineNumber = "59"
+         endingLineNumber = "59"
+         landmarkName = "-e6dateChange"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>
