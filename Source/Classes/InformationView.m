@@ -96,7 +96,7 @@ static UIColor *MpColorBlue(float percent) {
             break;
         case MFMailComposeResultSent:
             //送信した場合
-			alertBox( NSLocalizedString(@"Contact Sent",nil), nil, @"OK" );
+			alertBox( NSLocalizedString(@"Contact Sent",nil), NSLocalizedString(@"Contact Sent msg",nil), @"OK" );
             break;
         case MFMailComposeResultFailed:
             //[self setAlert:@"メール送信失敗！":@"メールの送信に失敗しました。ネットワークの設定などを確認して下さい"];

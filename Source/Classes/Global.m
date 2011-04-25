@@ -81,6 +81,11 @@ NSString *GstringYearMMDD( NSInteger PlYearMMDD )
 	return [NSString stringWithFormat:NSLocalizedString(@"FormatYearMMDD",nil), lYear, lMM, lDD];
 }
 
+NSInteger GiDay( NSInteger iYearMMDD )
+{
+	return iYearMMDD - ((iYearMMDD / 100) * 100);  // >=29:月末
+}
+
 // NSDate --> lYearMMDD
 NSInteger GiYearMMDD( NSDate *dt )
 {
@@ -105,9 +110,9 @@ NSInteger GlAddYearMM( NSInteger lYearMM, NSInteger lMonth )
 }
 
 NSInteger GiAddYearMMDD(NSInteger iYearMMDD, 
-							   NSInteger iAddYear,
-							   NSInteger iAddMM, 
-							   NSInteger iAddDD )	// iDD > 28 ならば移動先の月の末日になる 
+						NSInteger iAddYear,
+						NSInteger iAddMM, 
+						NSInteger iAddDD )	// >= 28 ならば移動先の月の末日になる 
 {
 	NSCalendar *cal = [NSCalendar currentCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
@@ -118,11 +123,11 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 	comp.day = 1; // 1日にする
 	NSDate *date1st = [cal dateFromComponents:comp]; // 年月1日
 	
-	if (28 <= iDay) {  //  2/28 の翌月を 3/31 とするため
+	if (28 <= iDay) {  //  月末指定は29だが、2/28 の翌月を 3/31 とするため
 		// 移動先の年月の「翌月の前日」にする
 		comp.year = iAddYear;
 		comp.month = iAddMM + 1;	// 移動先のさらに翌月
-		comp.day = -1;				// 1日の前日 ⇒ 末日になる
+		comp.day = (-1);					// 1日の前日 ⇒ 末日になる
 	} 
 	else {
 		comp.year = iAddYear;
@@ -138,6 +143,36 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 	return iRet;
 }
 
+NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDay )		// iDay>=29:月末
+{
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSDateComponents *comp = [[NSDateComponents alloc] init];
+	comp.year = iYearMMDD / 10000;
+	comp.month = (iYearMMDD - comp.year * 10000) / 100;
+	//NSInteger iDay = iYearMMDD - (comp.year * 10000) - (comp.month * 100);
+	comp.day = 1; // 1日にする
+	NSDate *date1st = [cal dateFromComponents:comp]; // 年月1日
+	
+	if (29 <= iDay) {  //  月末
+		// 移動先の年月の「翌月の前日」にする
+		comp.year = 0;
+		comp.month = 1;	// 翌月
+		comp.day = (-1);	// 1日の前日 ⇒ 末日になる
+	} 
+	else {
+		comp.year = 0;
+		comp.month = 0;
+		comp.day = (iDay - 1);  // 加算分を指定する
+	}
+	NSDate *dateNew = [cal dateByAddingComponents:comp toDate:date1st options:0];
+	[comp release]; // alloc生成しているので必要
+	
+	comp = [cal components:unitFlags fromDate:dateNew];
+	NSInteger iRet = comp.year * 10000 + comp.month * 100 + comp.day;
+	//[comp release];　こちらはautorelease
+	return iRet;
+}
 
 // 文字列から画像を生成する
 UIImage *GimageFromString(NSString* str)

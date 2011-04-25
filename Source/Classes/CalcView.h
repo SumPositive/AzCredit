@@ -45,9 +45,9 @@
 	CGRect				MrectInit;
 }
 
-@property (nonatomic, retain) UILabel		*Rlabel;
-@property (nonatomic, retain) id			Rentity;
-@property (nonatomic, retain) NSString		*RzKey;	
+@property (nonatomic, retain) UILabel				*Rlabel;
+@property (nonatomic, retain) id						Rentity;
+@property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
 
 // 公開メソッド

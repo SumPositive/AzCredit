@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NSObject (MyObjectDelegateMethod)
-- (void)e6dateChange;
-@end
-
 @class E0root;
 @class E3record;
 @class E3recordTVC;
@@ -37,7 +33,6 @@
 	UILabel				*MlbAmount;
 	CalcView			*McalcView;
 	//----------------------------------------------assign
-	id					delegate;
 	BOOL			MbE6dateChange;
 	
 	BOOL			MbOptAntirotation;
@@ -57,8 +52,5 @@
 @property (nonatomic, retain) E3record		*Re3edit;
 @property NSInteger							PiAdd;
 @property NSInteger							PiFirstYearMMDD;	
-
-- (id)delegate;
-- (void)setDelegate:(id)newDelegate;
 
 @end

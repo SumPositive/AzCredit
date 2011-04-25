@@ -113,7 +113,12 @@ NSString *GstringDay( NSInteger PlDay ) ;
 
 NSString *GstringYearMMDD(NSInteger PlYearMMDD );
 
+//NSInteger GiYear( NSInteger iYearMMDD );
+//NSInteger GiMonth( NSInteger iYearMMDD );
+NSInteger GiDay( NSInteger iYearMMDD );
+
 NSInteger GiYearMMDD( NSDate *dt );
+NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDD );
 
 NSInteger GlAddYearMM(NSInteger lYearMM, 
 					  NSInteger lMonth );

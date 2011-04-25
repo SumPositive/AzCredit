@@ -11,6 +11,10 @@
 #import "MocFunctions.h"
 #import "EditDateVC.h"
 
+@interface NSObject (E3recordDetailTVC_delagate_Methods)
+- (void)editDateE6change;
+@end
+
 @interface EditDateVC (PrivateMethods)
 - (void)viewDesign;
 - (void)buttonToday;
@@ -24,6 +28,8 @@
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
 //@synthesize PiE6row;				//[1.0.0]E6date変更モード
+@synthesize delegate;
+
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
@@ -287,7 +293,9 @@
 				//e2old 配下再集計
 				[MocFunctions e2e7update:e2old]; //E6減
 				//
-				------------------ delegate
+				if ([delegate respondsToSelector:@selector(editDateE6change)]) {
+					[delegate editDateE6change];
+				}
 			}
 		}
 	} 

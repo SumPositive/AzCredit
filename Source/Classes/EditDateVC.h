@@ -26,6 +26,7 @@
 	UIButton		*MbuToday;			// Todayにリセットする
 	UIButton		*MbuYearTime;		// UIDatePickerModeDate, UIDatePickerModeDateAndTime を切り替える
 	//----------------------------------------------assign
+	id					delegate;
 	NSInteger	PiE6row;				//[1.0.0]E6date変更モード
 	BOOL MbOptAntirotation;
 	BOOL MbOptUseDateTime;
@@ -36,7 +37,7 @@
 @property (nonatomic, retain) NSString		*RzKey;	
 @property (nonatomic, assign) NSInteger	PiMinYearMMDD;
 @property (nonatomic, assign) NSInteger	PiMaxYearMMDD;
-//@property (nonatomic, assign) NSInteger	PiE6row;
+@property (nonatomic, assign) id					delegate;
 
 - (id)init;	//E3.dateUser
 - (id)initWithE6row:(NSUInteger)iRow;	//[1.0.0]E6date変更モード

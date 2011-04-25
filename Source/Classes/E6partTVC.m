@@ -135,7 +135,7 @@
 		[self MtableSource];
 		//0.5//[autoPool release];
 	}
-	else if (0 < McontentOffsetDidSelect.y) {
+	else if (0 < McontentOffsetDidSelect.y) {  //.Y座標
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
@@ -239,17 +239,21 @@
 			}
 			else if (Pe2select.e1unpaid) {
 				{	// E6一覧の編集モードで移動により支払日を変更できるようにするため。
+					//[1.0.0]E3detailにて支払日を自由に変更できるようにしたため、「登録支払日」と異なる日付になる場合あるが、ここでは常に「登録支払日」だけを追加する
+					//　カード登録支払日
+					E1card* e1 = Pe2select.e1unpaid;
+					NSInteger iPayDay = [e1.nPayDay integerValue];	// 29=末日
+					NSInteger iYearMMDD = [Pe2select.nYearMMDD integerValue];
+					if (iPayDay != GiDay(iYearMMDD)) { // 「登録支払日」と違う
+						// 日を「登録支払日」にする
+						iYearMMDD = GiYearMMDD_ModifyDay( iYearMMDD, iPayDay );		// iDay>=29:月末
+					}
 					// 選択日の前月が無ければ追加する
-					NSInteger iYearMMDD = GiAddYearMMDD([Pe2select.nYearMMDD integerValue], 0, -1, 0); // 前月へ
-					[MocFunctions e2invoice:Me2e1card inYearMMDD:iYearMMDD]; // E2無ければ追加する
-				/*[0.4.18]直ぐにE2削除しないようにしたため、これで増え続けてしまう	
-					// E2最終のさらに翌月が無ければ追加する
-					iYearMMDD = [[Pe2select.e1unpaid valueForKeyPath:@"e2unpaids.@max.nYearMMDD"] integerValue];
-					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ　*/
+					[MocFunctions e2invoice:Me2e1card inYearMMDD:GiAddYearMMDD(iYearMMDD, 0, -1, 0)]; // -1 前月へ E2無ければ追加する
 					// 選択日の翌月が無ければ追加する
-					iYearMMDD = GiAddYearMMDD([Pe2select.nYearMMDD integerValue], 0, +1, 0); // 翌月へ
-					[MocFunctions e2invoice:Me2e1card inYearMMDD:iYearMMDD]; // E2無ければ追加する
-					[MocFunctions commit]; //--------------SAVE
+					[MocFunctions e2invoice:Me2e1card inYearMMDD:GiAddYearMMDD(iYearMMDD, 0, +1, 0)]; // +1 翌月へ E2無ければ追加する
+					//--------------SAVE
+					[MocFunctions commit]; 
 					// 最終的に未使用のE2は、viewWillDisappear:にて削除している。
 				}
 				// E1配下のE2

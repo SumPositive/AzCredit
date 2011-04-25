@@ -47,15 +47,7 @@
 @synthesize PiAdd;
 @synthesize PiFirstYearMMDD;
 
-- (id)delegate {
-    return delegate;
-}
-
-- (void)setDelegate:(id)newDelegate {
-    delegate = newDelegate;
-}
-
-- (void)e6dateChange {
+- (void)editDateE6change {		// delegate: EditDateVC
 	MbE6dateChange = YES;
 }
 
@@ -1142,6 +1134,7 @@
 					evc.RzKey = @"";  //[1.0.0]E6date変更モード：未使用
 					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
 					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
+					evc.delegate = self;
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
 					[evc release];
