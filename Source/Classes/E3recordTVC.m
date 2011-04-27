@@ -73,7 +73,9 @@
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 		//
+#ifdef GD_Ad_ENABLED
 		RoAdMobView = nil;
+#endif
 	}
 	return self;
 }
@@ -588,9 +590,7 @@
 {
     static NSString *zCellTopEnd = @"CellTopEnd";
     static NSString *zCellE3record = @"CellE3record";
-#ifdef GD_Ad_ENABLED
 	static NSString *zCellAdMob = @"CellAdMob";
-#endif
 	UITableViewCell *cell = nil;
 	UILabel *cellLabel = nil;
 	

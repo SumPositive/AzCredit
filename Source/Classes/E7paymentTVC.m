@@ -117,8 +117,8 @@ static UIColor *MpColorBlue(float percent) {
 		[RaE7list release], RaE7list = nil;
 	}
 	
-	//[0.3]E7E2クリーンアップ
-	//[EntityRelation e7e2clean];   [0.4.18]レス向上のためTopMenu:viewDidAppearにて[EntityRelation e7e2clean]している。
+	//E7E2クリーンアップ
+	[MocFunctions e7e2clean];		//E2配下E6が無ければE2削除する & E7配下E2が無ければE7削除する
 
 	// E2 Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];

@@ -1138,16 +1138,16 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 	NSManagedObjectContext *moc = e0root.managedObjectContext;
 
 	NSArray *aE7 = [[NSArray alloc] initWithArray:[e0root.e7unpaids allObjects]]; // Unpaid側だけ処理する
-	for (E7payment *e7 in aE7) // aE7要素は削除しないので reverseObjectEnumerator は不要 
+	for (E7payment *e7 in aE7) // aE7一時配列要素は削除しないので reverseObjectEnumerator は不要 
 	{
 		NSArray *aE2 = [[NSArray alloc] initWithArray:[e7.e2invoices allObjects]];
-		for (E2invoice *e2 in aE2) // aE2要素は削除しないので reverseObjectEnumerator は不要 
+		for (E2invoice *e2 in aE2) // aE2一時配列要素は削除しないので reverseObjectEnumerator は不要 
 		{
 			if (e2.e6parts==nil OR [e2.e6parts count]<=0) {
 				e2.e1paid = nil;
 				e2.e1unpaid = nil;
 				e2.e7payment = nil;
-				[moc deleteObject:e2]; // 削除
+				[moc deleteObject:e2]; // moc要素削除
 				e2 = nil;
 				bSave = YES;
 			}
@@ -1157,7 +1157,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		if (e7.e2invoices==nil OR [e7.e2invoices count]<=0) {
 			e7.e0paid = nil;
 			e7.e0unpaid = nil;
-			[moc deleteObject:e7];
+			[moc deleteObject:e7]; // moc要素削除
 			e7 = nil;
 			bSave = YES;
 		}

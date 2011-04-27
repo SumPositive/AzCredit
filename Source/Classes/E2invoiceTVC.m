@@ -155,8 +155,8 @@
 		[RaE2list release], RaE2list = nil;
 	}
 
-	//[0.3]E7E2クリーンアップ
-	//[EntityRelation e7e2clean]; [0.4.18]レス向上のためTopMenu:viewDidAppearにて[EntityRelation e7e2clean]している。
+	//E7E2クリーンアップ
+	[MocFunctions e7e2clean];		//E2配下E6が無ければE2削除する & E7配下E2が無ければE7削除する
 
 	// Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
@@ -177,17 +177,14 @@
 								   where:[NSPredicate predicateWithFormat:@"e1paid == %@", Re1select]
 									sort:sortDesc]; // 日付降順の先頭から20件抽出
 		muE2tmp = [NSMutableArray new];
-		//for (E2invoice *e2 in Re1select.e2paids) {
 		for (E2invoice *e2 in [arFetch reverseObjectEnumerator]) { // arFetchは降順なのでreverseしている
 			E2temp *e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:YES];
-			//e2t.iSum = [e2.sumAmount integerValue];
 			e2t.decSum = e2.sumAmount;
 			e2t.iNoCheck = [e2.sumNoCheck integerValue];
 			[e2t.e2invoices addObject:e2];
 			[muE2tmp addObject:e2t];
 			[e2t release];
 		}
-		//[muE2tmp sortUsingDescriptors:sortAsc];
 		RaE2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
 		[muE2tmp release];
 		// E2unpaid 未払い（全件）
@@ -197,47 +194,21 @@
 								   where:[NSPredicate predicateWithFormat:@"e1unpaid == %@", Re1select]
 									sort:sortAsc]; // 日付昇順で全件抽出
 		muE2tmp = [NSMutableArray new];
-		//for (E2invoice *e2 in Re1select.e2unpaids) {
 		for (E2invoice *e2 in arFetch) { // arFetchは昇順
 			E2temp *e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:NO];
-			//e2t.iSum = [e2.sumAmount integerValue];
 			e2t.decSum = e2.sumAmount;
 			e2t.iNoCheck = [e2.sumNoCheck integerValue];
 			[e2t.e2invoices addObject:e2];
 			[muE2tmp addObject:e2t];
 			[e2t release];
 		}
-		//[muE2tmp sortUsingDescriptors:sortArray];
 		[RaE2list addObject:muE2tmp]; // 一次元追加
 		[muE2tmp release];
-		//[sortArray release];
 	}
 	else if (Re8select) { //---------------------------E8bank
 		assert(Re1select==nil);
 		NSMutableArray *muE2paid = [NSMutableArray new];
 		NSMutableArray *muE2unpaid = [NSMutableArray new];
-		//for (E1card *e1 in Re8select.e1cards) {
-		//	[muE2paid addObjectsFromArray:[e1.e2paids allObjects]];
-		//	[muE2unpaid addObjectsFromArray:[e1.e2unpaids allObjects]];
-		//}
-		// 全抽出を止めて、直近20件抽出にした
-	/*	for (E1card *e1 in Re8select.e1cards) {
-			// E2paid 支払済（直近の20件）
-			arFetch = [EntityRelation select:@"E2invoice" 
-									   limit:GD_PAIDLIST_MAX
-									  offset:0
-									   where:[NSPredicate predicateWithFormat:@"e1paid == %@", e1]
-										sort:sortDesc]; // 日付降順の先頭から20件抽出
-			[muE2paid addObjectsFromArray:arFetch];
-			// E2unpaid 未払い（全件）
-			arFetch = [EntityRelation select:@"E2invoice" 
-									   limit:0 // 全件
-									  offset:0
-									   where:[NSPredicate predicateWithFormat:@"e1unpaid == %@", e1]
-										sort:sortAsc]; // 日付昇順で全件抽出
-			[muE2unpaid addObjectsFromArray:arFetch];
-		}*/
-		
 		// E2paid 支払済（直近の20件）
 		arFetch = [MocFunctions select:@"E2invoice" 
 								   limit:GD_PAIDLIST_MAX
@@ -252,12 +223,8 @@
 								   where:[NSPredicate predicateWithFormat:@"e1unpaid.e8bank == %@", Re8select]
 									sort:sortAsc]; // 日付昇順で全件抽出
 		[muE2unpaid addObjectsFromArray:arFetch];
-
 		// PAID .nYearMMDD 昇順ソート
 		[muE2paid sortUsingDescriptors:sortAsc];
-//		if (GD_PAIDLIST_MAX < [muE2paid count]) { // 20件を超えたら先頭から削除する
-//			[muE2paid removeObjectsInRange:NSMakeRange(0, [muE2paid count]-GD_PAIDLIST_MAX)];
-//		}
 		// 日付の重複を取り除く ＜＜高速列挙で削除は危険！以下のように末尾から削除すること＞＞
 		// Paid
 		NSMutableArray *muE2tmp = [NSMutableArray new];
@@ -270,7 +237,6 @@
 				}
 				e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:YES];
 			}
-			//e2t.iSum += [e2.sumAmount integerValue];
 			e2t.decSum = [e2t.decSum decimalNumberByAdding:e2.sumAmount];
 			e2t.iNoCheck += [e2.sumNoCheck integerValue];
 			[e2t.e2invoices addObject:e2];

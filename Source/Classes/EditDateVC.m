@@ -159,6 +159,7 @@
 					NSInteger iYearMMDD = [e6.e2invoice.e7payment.nYearMMDD integerValue];
 					//最小日付制限
 					PiMinYearMMDD = GiAddYearMMDD( iYearMMDD, 0,0,+1); // +1日＝翌日
+					MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
 				}
 				else if (PiE6row < [e3.e6parts count]-1) {
 					//次回支払あり
@@ -166,6 +167,7 @@
 					NSInteger iYearMMDD = [e6.e2invoice.e7payment.nYearMMDD integerValue];
 					//最大日付制限
 					PiMaxYearMMDD = GiAddYearMMDD( iYearMMDD, 0,0,-1); // -1日＝前日
+					MdatePicker.maximumDate = GdateYearMMDD(PiMaxYearMMDD, 23,59,59); 
 				}
 			}
 			// Re6edit : 支払日変更対象となるE6

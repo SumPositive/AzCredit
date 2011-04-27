@@ -72,7 +72,9 @@
 		Me2e1card = nil;
 		Me7e0root = nil;
 		MbFirstOne = YES;
+#ifdef GD_Ad_ENABLED
 		RoAdMobView = nil;
+#endif
 	}
 	return self;
 }
