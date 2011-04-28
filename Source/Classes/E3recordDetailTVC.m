@@ -938,14 +938,17 @@
 				if (e6obj.e2invoice.e7payment.e0paid) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID.png"]; // PAID 変更禁止
 					cellButton.enabled = NO;
+					cell.accessoryType = UITableViewCellAccessoryNone;
 				}
 				else if ([e6obj.nNoCheck intValue] == 1) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"];
 					cellButton.enabled = YES;
+					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 				} 
 				else {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"];
 					cellButton.enabled = YES;
+					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 				}
 				
 				// 支払日

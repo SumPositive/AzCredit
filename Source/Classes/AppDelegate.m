@@ -54,6 +54,13 @@
 	[super dealloc];
 }
 
+#ifdef AzDEBUG
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application 
+{	// メモリ不足警告があったことを知らせる
+	application.statusBarStyle = !application.statusBarStyle;	//ステータスバーが反転する
+}
+#endif
+
 #pragma mark -
 #pragma mark Application lifecycle
 
@@ -166,45 +173,6 @@
 */
 	return YES;  //iOS4
 }
-
-/*
-#pragma mark -
-#pragma mark AdMobInterstitialDelegate methods
-
-- (NSString *)publisherIdForAd:(AdMobView *)adView 
-{
-	NSLog(@"*** AdMob: publisherId");
-	return @"a14d4c11a95320e"; // クレメモ　パブリッシャー ID
-}
-
-- (UIViewController *)currentViewControllerForAd:(AdMobView *)adView
-{
-	return navigationController;
-}
-// Sent when an interstitial ad request succefully returned an ad.  At the next transition
-// point in your application call [ad show] to display the interstitial.
-- (void)didReceiveInterstitial:(AdMobInterstitialAd *)ad
-{
-	if(ad == interstitialAd)
-	{
-		[ad show];
-	}
-}
-// Sent when an interstitial ad request completed without an interstitial to show.  This is
-// common since interstitials are shown sparingly to users.
-- (void)didFailToReceiveInterstitial:(AdMobInterstitialAd *)ad
-{
-	NSLog(@"No interstitial ad retrieved.  This is ok.");
-	[interstitialAd release];
-	interstitialAd = nil;
-}
-
-- (void)interstitialDidDisappear:(AdMobInterstitialAd *)ad
-{
-	[interstitialAd release];
-	interstitialAd = nil;
-}
-*/
 
 
 - (void)applicationWillResignActive:(UIApplication *)application 
@@ -424,7 +392,11 @@
 		MviewLogin.tag = VIEW_TAG_LOGINPASS; // TopMenuTVC:shouldAutorotateToInterfaceOrientationにて参照
 		//------------------------------------------アイコン
 		UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(130, 50, 57, 57)];
-		[iv setImage:[UIImage imageNamed:@"Icon.png"]];
+#ifdef AzSTABLE
+		[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
+#else
+		[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
+#endif
 		[MviewLogin addSubview:iv]; [iv release];
 		//------------------------------------------ログイン
 		UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(83,120, 154,28)];

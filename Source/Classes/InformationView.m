@@ -11,6 +11,28 @@
 #import "InformationView.h"
 #import "UIDevice-Hardware.h"
 
+#ifdef AzDEBUG
+#import <mach/mach.h> // これを import するのを忘れずに
+@interface MemoryInfo : NSObject {
+}
++ (struct task_basic_info)used;
+@end
+
+@implementation MemoryInfo 
++ (struct task_basic_info)used {
+	struct task_basic_info basicInfo;
+	mach_msg_type_number_t basicInfoCount = TASK_BASIC_INFO_COUNT;
+	
+	if (task_info(current_task(), TASK_BASIC_INFO, (task_info_t)&basicInfo, &basicInfoCount) != KERN_SUCCESS) {
+		NSLog(@"%s", strerror(errno));
+	}
+	
+    return basicInfo;
+}
+//return info;
+@end
+#endif
+
 
 @interface InformationView (PrivateMethods)
 @end
@@ -72,6 +94,21 @@ static UIColor *MpColorBlue(float percent) {
 			 [[ UIDevice currentDevice ] systemVersion]]; // OSの現在のバージョン
 	
 	[picker setSubject:zSubj];  
+	
+#ifdef AzDEBUG
+	//struct task_basic_info {
+    //    integer_t       suspend_count;  /* suspend count for task */
+    //    vm_size_t       virtual_size;   /* virtual memory size (bytes) */
+    //    vm_size_t       resident_size;  /* resident memory size (bytes) */
+    //    time_value_t    user_time;      /* total user run time for terminated threads */
+    //    time_value_t    system_time;    /* total system run time for  terminated threads */
+	//	policy_t	policy;		/* default policy for new threads */
+	//};
+	NSLog(@"--NENORY--suspend_count=%d", [MemoryInfo used].suspend_count );
+	NSLog(@"--NENORY--virtual_size=%d", [MemoryInfo used].virtual_size);
+	NSLog(@"--NENORY--自己使用 resident_size=%d", [MemoryInfo used].resident_size);
+	// 目的は、「空きメモり容量」を報告させたい。 方法不明
+#endif
 	
 	// Attach: 添付画像
 	/* UIImage *temp   = [UIImage imageNamed:@"temp.png"];

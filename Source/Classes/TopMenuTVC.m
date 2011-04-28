@@ -51,15 +51,16 @@
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
 #ifdef GD_Ad_ENABLED
 	if (MbannerView) {
-		[MbannerView cancelBannerViewAction];	// 停止
-		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		[MbannerView removeFromSuperview];		// 解放
-		[MbannerView release], MbannerView = nil;	// 解放
+		//[MbannerView cancelBannerViewAction];	// 広告アクションの取り消し
+		MbannerView.delegate = nil;							// STOP  解放メソッドを呼び出さないようにする
+		//[MbannerView removeFromSuperview];		// 解放
+		[MbannerView release], MbannerView = nil;	// 破棄
 	}
 
-	if (RoAdMobView) {	// AdMobは、unloadReleaseすると落ちる
-		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		//[RoAdMobView removeFromSuperview];			// 解放
+		[RoAdMobView release], RoAdMobView = nil;	// 破棄
 	}
 #endif
 	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
@@ -142,11 +143,15 @@
 	
 	
 	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
-	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
+	//if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
+	//NG//float fOSversion =  [[[UIDevice currentDevice] systemVersion] floatValue];  NG// "4.2" --> 4.19999になるため
+	NSLog(@" [[UIDevice currentDevice] systemVersion]=%@", [[UIDevice currentDevice] systemVersion]);
+	if (MbannerView==nil && [[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
+		assert(NSClassFromString(@"ADBannerView"));
 		//													出現前の隠れる↓位置を指定している。
-		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectZero]; 
+		MbannerView = [[ADBannerView alloc] init];  // initWithFrame:CGRectZero]; 
 		
-		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
+		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // < "4.2"
 			// iOS4.2より前
 			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
 														  ADBannerContentSizeIdentifier320x50,
@@ -233,53 +238,6 @@
 	[self e3recordAdd];
 }
 
-/*
-- (void)iAdOn
-{
-	NSLog(@"=== iAdOn ===");
-	if (MbannerActive==NO) return;
-	if (MbannerEnabled==NO) return;
-	if (MbannerView==nil) return;
-	if (MbannerView.alpha==1) return;
-
-	[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きにより座標修正
-	CGRect rc = MbannerView.frame;
-	//NG//rc.origin.x -= 500;
-	rc.origin.y += 100; // 隠す
-	MbannerView.frame = rc;
-	MbannerView.alpha = 0;
-	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
-	[UIView setAnimationDuration:1.2];
-	
-	MbannerView.alpha = 1;
-	//NG//rc.origin.x = 0; // 出現
-	rc.origin.y -= 100; // 出現
-	MbannerView.frame = rc;
-	
-	[UIView commitAnimations];
-}
-
-- (void)iAdOff
-{
-	NSLog(@"=== iAdOff ===");
-	if (MbannerView==nil) return;
-	if (MbannerView.alpha==0) return;
-	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseIn]; // slow at start
-	[UIView setAnimationDuration:0.7];
-	
-	CGRect rc = MbannerView.frame;
-	//NG//rc.origin.x -= 500;
-	rc.origin.y += 100;
-	MbannerView.frame = rc;
-	MbannerView.alpha = 0;
-	
-	[UIView commitAnimations];
-}
-*/
 
 #ifdef GD_Ad_ENABLED
 - (void)AdShowApple:(BOOL)bApple AdMob:(BOOL)bMob
