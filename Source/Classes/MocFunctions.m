@@ -34,23 +34,29 @@ static NSManagedObjectContext *scMoc = nil;
 
 + (void)deleteEntity:(NSManagedObject *)entity
 {
-	if (entity) {
-		[scMoc deleteObject:entity];	// 即commitされる。つまり、rollbackやcommitの対象外である。
+	@synchronized(scMoc)
+	{
+		if (entity) {
+			[scMoc deleteObject:entity];	// 即commitされる。つまり、rollbackやcommitの対象外である。
+		}
 	}
 }	
 
 + (BOOL)commit
 {
 	assert(scMoc);
-	// SAVE
-	NSError *err = nil;
-	if (![scMoc  save:&err]) {
-		NSLog(@"MOC commit error %@, %@", err, [err userInfo]);
-		//exit(-1);  // Fail
-		alertBox(NSLocalizedString(@"MOC CommitErr",nil),
-				 NSLocalizedString(@"MOC CommitErrMsg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return NO;
+	@synchronized(scMoc)
+	{
+		// SAVE
+		NSError *err = nil;
+		if (![scMoc  save:&err]) {
+			NSLog(@"*** MOC commit error ***\n%@\n%@\n***\n", err, [err userInfo]);
+			//exit(-1);  // Fail
+			alertBox(NSLocalizedString(@"MOC CommitErr",nil),
+					 NSLocalizedString(@"MOC CommitErrMsg",nil),
+					 NSLocalizedString(@"Roger",nil));
+			return NO;
+		}
 	}
 	return YES;
 }
@@ -59,8 +65,11 @@ static NSManagedObjectContext *scMoc = nil;
 + (void)rollBack
 {
 	assert(scMoc);
-	// ROLLBACK
-	[scMoc rollback]; // 前回のSAVE以降を取り消す
+	@synchronized(scMoc)
+	{
+		// ROLLBACK
+		[scMoc rollback]; // 前回のSAVE以降を取り消す
+	}
 }
 
 + (NSArray *)select:(NSString *)zEntity
@@ -302,11 +311,10 @@ static NSManagedObjectContext *scMoc = nil;
 										where:nil
 										 sort:nil];
 	
-	if (arFetch==nil || [arFetch count]<1) {
+	if (arFetch==nil || [arFetch count]<1) 
+	{
 		// 無いので新規追加する
 		e0root = [NSEntityDescription insertNewObjectForEntityForName:@"E0root" inManagedObjectContext:scMoc];
-		// SAVE
-		[self commit];
 		//[0.4] ログインパスをクリアする
 		AzLOG(@"New Login pass Clear");
 		// 新規や再インストールされた場合、保存したパスワードを削除して自動ログインさせる
@@ -314,6 +322,34 @@ static NSManagedObjectContext *scMoc = nil;
 		[SFHFKeychainUtils deleteItemForUsername:GD_KEY_LOGINPASS
 								  andServiceName:GD_PRODUCTNAME 
 										   error:&error]; 
+		
+		//[1.0.0]初期E1cardを追加する
+		//(0)デビット支払
+		E1card *e1 = [NSEntityDescription insertNewObjectForEntityForName:@"E1card" inManagedObjectContext:scMoc];
+		e1.nRow = [NSNumber numberWithInt:0];
+		e1.zName = NSLocalizedString(@"Sample Debit",nil);
+		e1.zNote = NSLocalizedString(@"Sample Debit　note",nil);
+		e1.nClosingDay = [NSNumber numberWithInt:0];	// 締日 1〜28,29=末日,    0=Debit(利用日⇒支払日)	
+		e1.nPayMonth = [NSNumber numberWithInt:0];		// 支払月 (0)当月　(1)翌月　(2)翌々月
+		e1.nPayDay = [NSNumber numberWithInt:0];			// 支払日 1〜28,29=末日,  Debit(0〜99)日後支払
+		//(1)クレジット支払
+		e1 = [NSEntityDescription insertNewObjectForEntityForName:@"E1card" inManagedObjectContext:scMoc];
+		e1.nRow = [NSNumber numberWithInt:1];
+		e1.zName = NSLocalizedString(@"Sample Credit",nil);
+		e1.zNote = NSLocalizedString(@"Sample Credit　note",nil);
+		e1.nClosingDay = [NSNumber numberWithInt:20];
+		e1.nPayMonth = [NSNumber numberWithInt:1];
+		e1.nPayDay = [NSNumber numberWithInt:20];
+		//(2)家賃支払
+		e1 = [NSEntityDescription insertNewObjectForEntityForName:@"E1card" inManagedObjectContext:scMoc];
+		e1.nRow = [NSNumber numberWithInt:2];
+		e1.zName = NSLocalizedString(@"Sample Rent",nil);
+		e1.zNote = NSLocalizedString(@"Sample Rent　note",nil);
+		e1.nClosingDay = [NSNumber numberWithInt:0];	// デビットと同じ条件、家賃支払日を利用日にする
+		e1.nPayMonth = [NSNumber numberWithInt:0];
+		e1.nPayDay = [NSNumber numberWithInt:0];
+		// SAVE
+		[self commit];
 	}
 	else {
 		// あり
@@ -324,6 +360,97 @@ static NSManagedObjectContext *scMoc = nil;
 		exit(-1);  // Fail
 	}
 	return e0root;
+}
+
+// カード(Pe1card)と利用日(PtUse)から支払日を求める
+static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
+{
+	NSInteger iClosingDay = [Pe1card.nClosingDay integerValue];
+	NSInteger iPayMonth = [Pe1card.nPayMonth integerValue]; // 支払月（0=当月、1=翌月、2=翌々月）
+	NSInteger iPayDay = [Pe1card.nPayDay integerValue];
+	
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSDateComponents *compUse = [cal components:unitFlags fromDate:PtUse]; // 利用日
+	
+	if (iClosingDay<=0) { // Debit 当日締
+		if (iPayDay<=0) {
+			return GiYearMMDD( PtUse );  // 当日払
+		} else {
+			// PtUse の iPayDay 日後払
+			compUse.day += iPayDay;
+			return GiYearMMDD( [cal dateFromComponents:compUse] );
+		}
+	}
+	
+	// 支払日
+	NSInteger iYearMMDD = compUse.year * 10000 + compUse.month * 100 + iPayDay;
+	// 利用日が締日以降ならば翌月（支払月+1）になる
+	if (iClosingDay <= 28 && iClosingDay < compUse.day) {
+		// 当月の締め切りを過ぎているので（支払月+1）
+		iPayMonth++;
+	}
+	//[compUse release]; autorelease
+	// 支払月へ移動
+	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, iPayMonth, 0);	// これが支払日である
+	return iYearMMDD;
+}
+
+// E1card UPDATE　締め支払条件の変更に対応  ＜＜PAID済の E6,E2,E7 は変更しない＞＞
++ (void)e1update:(E1card *)e1obj
+{
+	if (e1obj==nil) return;
+	//NSManagedObjectContext *moc = e1obj.managedObjectContext;
+	
+	@synchronized(scMoc)
+	{
+		// 締め支払が変更された場合、Paid分は不変、Unpaid分を全て変更する
+		for (E3record *e3 in e1obj.e3records) {
+			// カード(e1obj)と利用日(e3.dateUse)から支払日を求める
+			NSInteger iYearMMDD = MiYearMMDDpayment(e1obj, e3.dateUse);
+			// E3配下のE6を取得
+			//NSMutableArray *muE6 = [NSMutableArray arrayWithArray:[e3.e6parts allObjects]];
+			NSMutableArray *muE6 = [[NSMutableArray alloc] initWithArray:[e3.e6parts allObjects]];
+			if (1 < [muE6 count]) {
+				// 2分割以上あるのでソートする
+				NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
+				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+				[muE6 sortUsingDescriptors:sortArray];
+				[sortArray release];
+				[sort1 release];
+			}
+			for (E6part *e6 in muE6) {
+				if (e6.e2invoice.e1unpaid) { // Unpaidならば変更
+					if ([e6.e2invoice.e7payment.nYearMMDD integerValue] == iYearMMDD) break; // 変更なし
+					// 支払日が iYearMMDD に変更された
+					// E2.unpaid にあるか
+					E2invoice *e2old = e6.e2invoice; // 移動元のE2 sum のため
+					assert(e2old);
+					assert(e2old.e1unpaid);
+					// e1obj配下にあるiYearMMDDのE2を取得する（無ければE7まで生成）
+					E2invoice *e2new = [MocFunctions e2invoice:e1obj inYearMMDD:iYearMMDD];
+					if (e2new==nil OR e2new.e7payment.e0paid) {
+						AzLOG(@"LOGIC ERR: e1update: e2new NG");
+						[muE6 release];
+						return;
+					}
+					if (e2new != e2old) {
+						// E2 old -->> new リンク変更
+						e6.e2invoice = e2new;
+						// E6の所属が変わったので親となるE2,E7を再集計する
+						[MocFunctions e2e7update:e2new];		//e6増
+						[MocFunctions e2e7update:e2old];		//e6減
+					}
+				}
+				// if (e6.e2invoice.e1unpaid)
+				// 次のE6のため
+				if (0 < [e1obj.nPayDay integerValue]) {	// <=0:Debitならば同じ利用日
+					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0);	// 翌月へ
+				}
+			} // e6
+			[muE6 release];
+		} // e3
+	}
 }
 
 // E1card DELETE  ＜＜PAIDも全て削除する＞＞  ＜＜注意！呼び出し側で E1.nRow の更新を行うこと＞＞
@@ -446,94 +573,6 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 }
 
-// カード(Pe1card)と利用日(PtUse)から支払日を求める
-static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
-{
-	NSInteger iClosingDay = [Pe1card.nClosingDay integerValue];
-	NSInteger iPayMonth = [Pe1card.nPayMonth integerValue]; // 支払月（0=当月、1=翌月、2=翌々月）
-	NSInteger iPayDay = [Pe1card.nPayDay integerValue];
-
-	NSCalendar *cal = [NSCalendar currentCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-	NSDateComponents *compUse = [cal components:unitFlags fromDate:PtUse]; // 利用日
-
-	if (iClosingDay<=0) { // Debit 当日締
-		if (iPayDay<=0) {
-			return GiYearMMDD( PtUse );  // 当日払
-		} else {
-			// PtUse の iPayDay 日後払
-			compUse.day += iPayDay;
-			return GiYearMMDD( [cal dateFromComponents:compUse] );
-		}
-	}
-	
-	// 支払日
-	NSInteger iYearMMDD = compUse.year * 10000 + compUse.month * 100 + iPayDay;
-	// 利用日が締日以降ならば翌月（支払月+1）になる
-	if (iClosingDay <= 28 && iClosingDay < compUse.day) {
-		// 当月の締め切りを過ぎているので（支払月+1）
-		iPayMonth++;
-	}
-	//[compUse release]; autorelease
-	// 支払月へ移動
-	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, iPayMonth, 0);	// これが支払日である
-	return iYearMMDD;
-}
-
-
-// E1card UPDATE　締め支払条件の変更に対応  ＜＜PAID済の E6,E2,E7 は変更しない＞＞
-+ (void)e1update:(E1card *)e1obj
-{
-	if (e1obj==nil) return;
-	//NSManagedObjectContext *moc = e1obj.managedObjectContext;
-
-	// 締め支払が変更された場合、Paid分は不変、Unpaid分を全て変更する
-	for (E3record *e3 in e1obj.e3records) {
-		// カード(e1obj)と利用日(e3.dateUse)から支払日を求める
-		NSInteger iYearMMDD = MiYearMMDDpayment(e1obj, e3.dateUse);
-		// E3配下のE6を取得
-		//NSMutableArray *muE6 = [NSMutableArray arrayWithArray:[e3.e6parts allObjects]];
-		NSMutableArray *muE6 = [[NSMutableArray alloc] initWithArray:[e3.e6parts allObjects]];
-		if (1 < [muE6 count]) {
-			// 2分割以上あるのでソートする
-			NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
-			NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
-			[muE6 sortUsingDescriptors:sortArray];
-			[sortArray release];
-			[sort1 release];
-		}
-		for (E6part *e6 in muE6) {
-			if (e6.e2invoice.e1unpaid) { // Unpaidならば変更
-				if ([e6.e2invoice.e7payment.nYearMMDD integerValue] == iYearMMDD) break; // 変更なし
-				// 支払日が iYearMMDD に変更された
-				// E2.unpaid にあるか
-				E2invoice *e2old = e6.e2invoice; // 移動元のE2 sum のため
-				assert(e2old);
-				assert(e2old.e1unpaid);
-				// e1obj配下にあるiYearMMDDのE2を取得する（無ければE7まで生成）
-				E2invoice *e2new = [MocFunctions e2invoice:e1obj inYearMMDD:iYearMMDD];
-				if (e2new==nil OR e2new.e7payment.e0paid) {
-					AzLOG(@"LOGIC ERR: e1update: e2new NG");
-					[muE6 release];
-					return;
-				}
-				if (e2new != e2old) {
-					// E2 old -->> new リンク変更
-					e6.e2invoice = e2new;
-					// E6の所属が変わったので親となるE2,E7を再集計する
-					[MocFunctions e2e7update:e2new];		//e6増
-					[MocFunctions e2e7update:e2old];		//e6減
-				}
-			}
-			// if (e6.e2invoice.e1unpaid)
-			// 次のE6のため
-			if (0 < [e1obj.nPayDay integerValue]) {	// <=0:Debitならば同じ利用日
-				iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0);	// 翌月へ
-			}
-		} // e6
-		[muE6 release];
-	} // e3
-}
 
 // E3record DELETE  ＜＜PAIDも全て削除する＞＞
 + (void)e3delete:(E3record *)e3obj

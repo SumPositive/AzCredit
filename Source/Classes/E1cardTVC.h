@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface E1cardTVC : UITableViewController <UIActionSheetDelegate> 
+@interface E1cardTVC : UITableViewController <UIActionSheetDelegate>
 {
 @private
 	//--------------------------retain

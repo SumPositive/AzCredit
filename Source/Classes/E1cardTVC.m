@@ -79,7 +79,7 @@
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"] // <<
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-	if (Re3edit == nil) {
+	if (Re3edit == nil) {	//編集モード
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
 	}
@@ -87,28 +87,30 @@
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
-	MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-														   target:self action:@selector(barButtonAdd)];
-	if (Re3edit && [Re3edit.e6parts count] <= 0) {  // !=nil:選択モード
-		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
-		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
-									   initWithTitle:NSLocalizedString(@"Untitled",nil)
-									   style:UIBarButtonItemStyleBordered
-									   target:self action:@selector(barButtonUntitled)];
-		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, MbuAdd, nil];
-		[self setToolbarItems:buArray animated:YES];
-		[buUntitled release];
-	}
-	else {
+	
+	if (Re3edit == nil) {	//編集モード　／ 選択モードならば、MbuAdd = MbuTop = nill;
+		MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+															   target:self action:@selector(barButtonAdd)];
 		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
 		[MbuTop release];
+		[MbuAdd release];
 	}
-	[MbuAdd release];
+	else {  //選択モード
+		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
+		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
+									   initWithTitle:NSLocalizedString(@"Untitled",nil)
+									   style:UIBarButtonItemStyleBordered
+									   target:self action:@selector(barButtonUntitled)];
+		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, nil];
+		[self setToolbarItems:buArray animated:YES];
+		[buUntitled release];
+	}
 	[buFlex release];
+
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
@@ -148,9 +150,11 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	
-	// hasChanges時にTop戻りボタンを無効にする
-	MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
-	MbuAdd.enabled = MbuTop.enabled;
+	//if (Re3edit) {			//Fix[1.0.0] 選択モードのときだけ
+	//	// hasChanges時にTop戻りボタンを無効にする
+	//	MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
+	//	MbuAdd.enabled = MbuTop.enabled;
+	//}
 	
 	// Me1cards Requery. 
 	//--------------------------------------------------------------------------------
@@ -172,12 +176,12 @@
 	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
+		//exit(-1);  // Fail
 	}
 	[fetchRequest release];
 	//
 	RaE1cards = [[NSMutableArray alloc] initWithArray:arFetch];
-
+	
 	// TableView Reflesh
 	[self.tableView reloadData];
 	
@@ -295,10 +299,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if (MbuAdd.enabled) {
-		return [RaE1cards count] + 1; // (+1)Add
+	if (Re3edit) { //選択モード
+		return [RaE1cards count]; 
 	}
-	return [RaE1cards count]; 
+	return [RaE1cards count] + 1; // (+1)Add
 }
 
 /*
@@ -355,6 +359,7 @@ static UIImage* GimageFromString(NSString* str)
 	static NSString *zCellAdd = @"CellAdd";
     UITableViewCell *cell = nil;
 
+	//NSLog(@"RaE1cards=%@", RaE1cards);
 	NSInteger rows = [RaE1cards count] - indexPath.row;
 	if (0 < rows) {
 		// E1card セル
@@ -463,8 +468,7 @@ static UIImage* GimageFromString(NSString* str)
 	McontentOffsetDidSelect = [tableView contentOffset];
 
 	if (indexPath.row < [RaE1cards count]) {
-		if (Re3edit) {
-			// 選択モード
+		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		}

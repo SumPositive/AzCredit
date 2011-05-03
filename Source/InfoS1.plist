@@ -30,7 +30,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<string>YES</string>
 	<key>UIPrerenderedIcon</key>
-	<false/>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -348,10 +348,6 @@
 	NSError *err = nil;
 	NSManagedObjectContext *contx = Re8edit.managedObjectContext;
 
-	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
-	//[EntityRelation e1update:Re8edit];
-	//[EntityRelation commit];
-
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
 	NSString *zName = [Re8edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if ([zName length] <= 0) {
@@ -379,7 +375,6 @@
 		return;
 	}
 	// OK トリム済み＆重複なし
-	//Re8edit.sortDate = [NSDate date]; // Now
 	
 	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
 		// SAVE

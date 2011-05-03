@@ -283,7 +283,7 @@
 #ifdef AzDEBUG
 						//MlbNote.backgroundColor = [UIColor grayColor]; //範囲チェック用
 #endif
-						[cell.contentView addSubview:MlbNote]; [MlbNote release];
+						[cell.contentView addSubview:MlbNote];  [MlbNote release];
 					}
 					if (Re1edit.zNote == nil) {
 						MlbNote.text = @"";  // TextViewは、(nil) と表示されるので、それを消すため。
