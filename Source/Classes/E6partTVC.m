@@ -864,28 +864,29 @@
 }
 */
 
-// Editモード時の行Edit可否
+// Editモード時の行Edit可否　　 YESを返した行は、左にスペースが入って右寄りになる
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 #ifdef GD_Ad_ENABLED
-	if ([RaE6parts count] <= indexPath.section) {
+	if ([RaE6parts count] <= indexPath.section) { //セクション
 		return NO; // AdMob
 	}
 #endif
-	return YES; // 行編集許可
+	//行
+	if ( indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) return YES; //移動対象
+	return NO;  // 最終行のAdd行以降は右寄せさせない
 }
 
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 #ifdef GD_Ad_ENABLED
-	if ([RaE6parts count] <= indexPath.section) {
+	if ([RaE6parts count] <= indexPath.section) { //セクション
 		return NO; // AdMob
 	}
 #endif
-	if ([[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
-		return NO;  // Add行
-	}
-	return YES;  // Add行なしにつき、すべて移動可能
+	//行
+	if ( indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) return YES; //移動可能
+	return NO;  // Add行以降禁止
 }
 
 

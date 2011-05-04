@@ -302,7 +302,7 @@
 	if (Re3edit) { //選択モード
 		return [RaE1cards count]; 
 	}
-	return [RaE1cards count] + 1; // (+1)Add
+	return [RaE1cards count] + 2; // (+1)Add  (+2)Help
 }
 
 /*
@@ -357,6 +357,7 @@ static UIImage* GimageFromString(NSString* str)
 {
 	static NSString *zCellCard = @"CellCard";
 	static NSString *zCellAdd = @"CellAdd";
+	static NSString *zCellHelp = @"CellHelp";
     UITableViewCell *cell = nil;
 
 	//NSLog(@"RaE1cards=%@", RaE1cards);
@@ -424,7 +425,7 @@ static UIImage* GimageFromString(NSString* str)
 			cell.showsReorderControl = YES;		// Move有効
 		}
 	} 
-	else {
+	else if (rows==0) {
 		// Add ボタンセル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellAdd];
 		if (cell == nil) {
@@ -436,14 +437,26 @@ static UIImage* GimageFromString(NSString* str)
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-		cell.showsReorderControl = NO;
-		if (rows == 0) {
-			cell.textLabel.text = NSLocalizedString(@"Add Card",nil);
-//		} else if (rows == -1) {
-//			cell.textLabel.text = NSLocalizedString(@"Add from Google", nil);
-		} else {
-			cell.textLabel.text = @"Err";
+		cell.showsReorderControl = NO; // Move禁止
+		cell.textLabel.text = NSLocalizedString(@"Add Card",nil);
+	}
+	else if (rows==(-1)) {
+		// Helpセル
+		cell = [tableView dequeueReusableCellWithIdentifier:zCellHelp];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
+										   reuseIdentifier:zCellHelp] autorelease];
 		}
+		cell.textLabel.font = [UIFont systemFontOfSize:14];
+		cell.textLabel.textAlignment = UITextAlignmentRight;
+		cell.textLabel.textColor = [UIColor grayColor];
+		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.showsReorderControl = NO; // Move禁止
+		cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+		cell.textLabel.text = NSLocalizedString(@"Card Help",nil);
+	} 
+	else {
+		cell = nil; // LOGIC ERROR
 	}
     return cell;
 }
@@ -497,8 +510,7 @@ static UIImage* GimageFromString(NSString* str)
 			[tvc release];
 		}
 	}
-	else {
-		// Add Plan
+	else if (indexPath.row == [RaE1cards count]) {	// Add Plan
 		[self e1cardDatail:nil]; // :nil = Add mode
 	}
 }
@@ -550,12 +562,12 @@ static UIImage* GimageFromString(NSString* str)
 }
 */
 
-/*
- // Editモード時の行Edit可否　　＜＜特に不要。 最終Add行は、add処理が優先されるようだ＞＞
+
+ // Editモード時の行Edit可否　　 YESを返した行は、左にスペースが入って右寄りになる
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
+	if (indexPath.row < [RaE1cards count]) return YES;
+	return NO;  // 最終行のAdd行は右寄せさせない
 }
-*/
 
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 

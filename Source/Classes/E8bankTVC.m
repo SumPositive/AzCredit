@@ -473,12 +473,11 @@
 }
 */
 
-/*
- // Editモード時の行Edit可否　　＜＜特に不要。 最終Add行は、add処理が優先されるようだ＞＞
+// Editモード時の行Edit可否　　 YESを返した行は、左にスペースが入って右寄りになる
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
+	if (indexPath.row < [RaE8banks count]) return YES;
+	return NO;  // 最終行のAdd行は、右寄せさせない
 }
-*/
 
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
