@@ -52,6 +52,8 @@
 {
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
 #ifdef GD_Ad_ENABLED
+	MbAdCanVisible = NO;  // 以後、Ad表示禁止
+
 	if (MbannerView) {
 		[MbannerView cancelBannerViewAction];	//[1.0.1]STOP
 		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
@@ -100,7 +102,7 @@
 	if (self) {
 		// 初期化成功
 #ifdef GD_Ad_ENABLED
-		//MbannerEnabled = NO;
+		MbAdCanVisible = NO;
 #endif
 	}
 	return self;
@@ -196,7 +198,7 @@
 {
 	AzLOG(@"=== AdShowApple[%d] AdMob[%d] ===", bApple, bMob);
 	// 開始位置：非表示位置
-	if (bApple && MbannerView) {
+	if (bApple && MbAdCanVisible && MbannerView) {
 		[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きによりY座標修正 ＜＜ヨコ向き表示にも対応するため＞＞
 		CGRect rc = MbannerView.frame;
 		rc.origin.y += AD_HIDDEN_OFS_Y;
@@ -209,7 +211,7 @@
 	
 	if (MbannerView) {
 		CGRect rc = MbannerView.frame;
-		if (bApple) {
+		if (bApple && MbAdCanVisible) {
 			rc.origin.y -= AD_HIDDEN_OFS_Y;
 			MbannerView.alpha = 1;
 			//MbannerView.delegate = self;
@@ -224,7 +226,7 @@
 	}
 	if (RoAdMobView) {
 		CGRect rc = RoAdMobView.frame;
-		if (bMob) {
+		if (bMob && MbAdCanVisible) {
 			rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
 			RoAdMobView.alpha = 1;
 		} else {
@@ -240,23 +242,17 @@
 // iAd取得できたときに呼ばれる　⇒　表示する
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
-	if (MbannerView) {   // && MbannerActive==NO) {
-		AzLOG(@"=== bannerViewDidLoadAd ===");
-		//MbannerActive = YES;	// YESになるのは、ここだけ。
-		//[self iAdOn];
-		if (480 < MbannerView.frame.origin.y) { // iAdが隠れているならば出現させる
-			[self AdShowApple:YES AdMob:NO];
-		}
+	AzLOG(@"=== iAd : bannerViewDidLoadAd ===");
+	if (MbAdCanVisible && MbannerView) {
+		[self AdShowApple:YES AdMob:NO];
 	}
 }
 
 // iAd取得できなかったときに呼ばれる　⇒　非表示にする
 - (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
 {
-	if (MbannerView) { // && MbannerActive) {
-		AzLOG(@"=== didFailToReceiveAdWithError ===");
-		//MbannerActive = NO;
-		//[self iAdOff];
+	AzLOG(@"=== iAd : didFailToReceiveAdWithError ===");
+	if (MbannerView) {
 		[self AdShowApple:NO AdMob:YES];
 	}
 }
@@ -349,6 +345,7 @@
 	
 	
 #ifdef GD_Ad_ENABLED 
+	MbAdCanVisible = YES;
 	//--------------------------------------------AdMob
 	if (RoAdMobView==nil) {
 		RoAdMobView = [[GADBannerView alloc]
@@ -421,17 +418,18 @@
 // この画面が非表示になる直前に呼ばれる
 - (void)viewWillDisappear:(BOOL)animated 
 {
+	[super viewWillDisappear:animated];
 #ifdef GD_Ad_ENABLED
 	// Ad非表示にする
+	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 	[self AdShowApple:NO AdMob:NO];
 #endif
-	[super viewWillDisappear:animated];
 }
+
 /*
 // この画面が非表示になった後に呼ばれる
 - (void)viewDidDisappear:(BOOL)animated
-{	//[1.0.1] Ad, Info を破棄する
-	//[self unloadRelease];これすると iAd本表示した途端にiAd終了されてしまう。
+{
 	[super viewDidDisappear:animated];
 }
 */

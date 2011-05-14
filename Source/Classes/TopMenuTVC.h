@@ -33,10 +33,10 @@
 #ifdef GD_Ad_ENABLED
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
+	BOOL						MbAdCanVisible;		//[1.0.1]=YES:表示可能　=NO:表示厳禁
 #endif
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
-	//.hidden利用//BOOL MbannerIsVisible;	// YES=iAd 今表示されている
 	NSInteger	MiE1cardCount;
 	BOOL		MbOptAntirotation;
 }
