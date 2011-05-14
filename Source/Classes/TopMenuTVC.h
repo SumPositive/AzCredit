@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <iAd/iAd.h>
 #import "GADBannerView.h"
-//#import "GADBannerViewDelegate.h"
+
+#ifdef GD_Ad_ENABLED
+#import "GADBannerViewDelegate.h"
+#endif
 
 @class InformationView;
 
@@ -29,11 +32,8 @@
 	InformationView		*MinformationView;
 #ifdef GD_Ad_ENABLED
 	ADBannerView		*MbannerView;
-	//BOOL		MbannerEnabled;		// YES=iAd 許可（TopMenuViewのときだけ）
-	//BOOL		MbannerActive;
 	GADBannerView		*RoAdMobView;
 #endif
-	//UIView				*MviewLogin;
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
 	//.hidden利用//BOOL MbannerIsVisible;	// YES=iAd 今表示されている

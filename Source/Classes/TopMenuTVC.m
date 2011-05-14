@@ -28,6 +28,8 @@
 
 #define ALERT_TAG_SupportSite		109
 
+#define AD_HIDDEN_OFS_Y		200		//iAdを非表示/表示するときのＹ軸変位
+
 
 @interface TopMenuTVC (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
 - (void)azInformationView;
@@ -51,18 +53,17 @@
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
 #ifdef GD_Ad_ENABLED
 	if (MbannerView) {
-		//[MbannerView cancelBannerViewAction];	// 広告アクションの取り消し
-		MbannerView.delegate = nil;							// STOP  解放メソッドを呼び出さないようにする
-		//[MbannerView removeFromSuperview];		// 解放
+		[MbannerView cancelBannerViewAction];	//[1.0.1]STOP
+		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
 		[MbannerView release], MbannerView = nil;	// 破棄
 	}
 
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		//[RoAdMobView removeFromSuperview];			// 解放
 		[RoAdMobView release], RoAdMobView = nil;	// 破棄
 	}
 #endif
+	[MinformationView hide];
 	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
 }
 
@@ -122,55 +123,6 @@
 	self.navigationItem.leftBarButtonItem	= bui;
 	[bui release];
 	[iv release];
-#endif
-
-#ifdef GD_Ad_ENABLED 
-	//--------------------------------------------AdMob
-	RoAdMobView = [[GADBannerView alloc]
-                   initWithFrame:CGRectMake(0.0,
-                                            480 + 10,	// 下部に隠す
-                                            GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];
-	//RoAdMobView.delegate = self;
-	
-	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
-	RoAdMobView.rootViewController = self;
-	[self.navigationController.view addSubview:RoAdMobView];
-	
-	GADRequest *request = [GADRequest request];
-	//[request setTesting:YES];
-	[RoAdMobView loadRequest:request];	
-	
-	
-	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
-	//if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
-	//NG//float fOSversion =  [[[UIDevice currentDevice] systemVersion] floatValue];  NG// "4.2" --> 4.19999になるため
-	NSLog(@" [[UIDevice currentDevice] systemVersion]=%@", [[UIDevice currentDevice] systemVersion]);
-	if (MbannerView==nil && [[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
-		assert(NSClassFromString(@"ADBannerView"));
-		//													出現前の隠れる↓位置を指定している。
-		MbannerView = [[ADBannerView alloc] init];  // initWithFrame:CGRectZero]; 
-		
-		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // < "4.2"
-			// iOS4.2より前
-			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
-														  ADBannerContentSizeIdentifier320x50,
-														  ADBannerContentSizeIdentifier480x32, nil];
-		} else {
-			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
-														  ADBannerContentSizeIdentifierPortrait,
-														  ADBannerContentSizeIdentifierLandscape, nil];
-		}
-		[self bannerViewWillRotate:self.interfaceOrientation];  // 表示位置セット
-		CGRect rc = MbannerView.frame;
-		rc.origin.y += 100;  // 下部に隠す
-		MbannerView.frame = rc;
-		MbannerView.delegate = self; // viewWillAppearにてセット
-		//MbannerActive = NO;
-		[self.navigationController.view addSubview:MbannerView];
-		//[MbannerView release]// unloadReleaseにて.delegate=nilしてからreleaseするため、自己管理する。
-	}
 #endif
 	
 #ifndef AzMAKE_SPLASHFACE
@@ -244,10 +196,10 @@
 {
 	AzLOG(@"=== AdShowApple[%d] AdMob[%d] ===", bApple, bMob);
 	// 開始位置：非表示位置
-	if (bApple && MbannerView) { // && MbannerEnabled  && MbannerActive
-		[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きによりY座標修正
+	if (bApple && MbannerView) {
+		[self bannerViewWillRotate:self.interfaceOrientation]; // この時点の向きによりY座標修正 ＜＜ヨコ向き表示にも対応するため＞＞
 		CGRect rc = MbannerView.frame;
-		rc.origin.y += 200;
+		rc.origin.y += AD_HIDDEN_OFS_Y;
 		MbannerView.frame = rc;
 	}
 	
@@ -255,26 +207,29 @@
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
 	[UIView setAnimationDuration:1.2];
 	
-	if (MbannerView) {  // && MbannerEnabled && MbannerActive
+	if (MbannerView) {
 		CGRect rc = MbannerView.frame;
 		if (bApple) {
-			rc.origin.y -= 200;
-			MbannerView.delegate = self;
+			rc.origin.y -= AD_HIDDEN_OFS_Y;
+			MbannerView.alpha = 1;
+			//MbannerView.delegate = self;
 			bMob = NO;
 		} else {
-			rc.origin.y += 200;
-			MbannerView.delegate = nil; // 割り込み禁止
+			rc.origin.y += AD_HIDDEN_OFS_Y;
+			MbannerView.alpha = 0;		//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
+			//MbannerView.delegate = nil; //NG//Unhandled error発生する。破棄直前にだけ=nilする
 		}
 		MbannerView.frame = rc;
+		//[MbannerView cancelBannerViewAction];	//[1.0.1]STOP
 	}
 	if (RoAdMobView) {
 		CGRect rc = RoAdMobView.frame;
 		if (bMob) {
-			rc.origin.y = 480 - 44 - 50;
-			//RoAdMobView.delegate = self;
+			rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+			RoAdMobView.alpha = 1;
 		} else {
 			rc.origin.y = 480 + 10; // 下部へ隠す
-			//RoAdMobView.delegate = nil; // 割り込み禁止
+			RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
 		}
 		RoAdMobView.frame = rc;
 	}
@@ -393,44 +348,94 @@
 	[self.tableView reloadData];
 	
 	
-#ifdef GD_Ad_ENABLED
-#ifdef AzMAKE_SPLASHFACE
-	//MbannerEnabled = NO;
-	[self AdShowApple:NO AdMob:NO];
-#else
-	//MbannerEnabled = YES; // TopMenuView画面が表示されたのでiAd許可する
-	//[self iAdOn];	// MbannerActive=YES ならば直ぐに再表示する
-	[self AdShowApple:YES AdMob:YES];
+#ifdef GD_Ad_ENABLED 
+	//--------------------------------------------AdMob
+	if (RoAdMobView==nil) {
+		RoAdMobView = [[GADBannerView alloc]
+					   initWithFrame:CGRectMake(0.0,
+												480 + 10,	// 下部に隠す
+												GAD_SIZE_320x50.width,
+												GAD_SIZE_320x50.height)];
+		//RoAdMobView.delegate = self;
+		
+		RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+		RoAdMobView.rootViewController = self;
+		[self.navigationController.view addSubview:RoAdMobView];
+		
+		GADRequest *request = [GADRequest request];
+		//[request setTesting:YES];
+		[RoAdMobView loadRequest:request];	
+	}
+	
+	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
+	if (MbannerView==nil) {
+		//NG//float fOSversion =  [[[UIDevice currentDevice] systemVersion] floatValue];  NG// "4.2" --> 4.19999になるため
+		//NSLog(@" [[UIDevice currentDevice] systemVersion]=%@", [[UIDevice currentDevice] systemVersion]);
+		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
+			assert(NSClassFromString(@"ADBannerView"));
+			//													出現前の隠れる↓位置を指定している。
+			MbannerView = [[ADBannerView alloc] init];  // initWithFrame:CGRectZero]; 
+			MbannerView.delegate = self;
+			
+			if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // < "4.2"
+				// iOS4.2より前
+				MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+															  ADBannerContentSizeIdentifier320x50,
+															  ADBannerContentSizeIdentifier480x32, nil];
+			} else {
+				// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
+				MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+															  ADBannerContentSizeIdentifierPortrait,
+															  ADBannerContentSizeIdentifierLandscape, nil];
+			}
+			[self bannerViewWillRotate:self.interfaceOrientation];  // 表示位置セット
+			CGRect rc = MbannerView.frame;
+			rc.origin.y += AD_HIDDEN_OFS_Y;  // 下部に隠す
+			MbannerView.frame = rc;
+			[self.navigationController.view addSubview:MbannerView];
+		}
+	}
 #endif
-#endif
-}
-
-// この画面が非表示になる直前に呼ばれる
-- (void)viewWillDisappear:(BOOL)animated 
-{
-#ifdef GD_Ad_ENABLED
-	//[self iAdOff];  // iAdを非表示にする
-	[self AdShowApple:NO AdMob:NO];
-	//MbannerEnabled = NO; // 非表示にする。
-#endif
-	// MbannerViewの解放&破棄はしない。iAdクリック時にもここを通るため
-	[super viewWillDisappear:animated];
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated {	// ＜＜魅せる処理＞＞
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
+	
+#ifdef GD_Ad_ENABLED
+	// iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
+	// AdMobは、常時開始とするためYES
+	[self AdShowApple:NO AdMob:YES];
+#endif
 	
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
 	[MocFunctions e7e2clean];  // [0.4.18]レス向上のためここで処理。バックグランド時だとE2やE7表示に戻ったとき落ちる可能性あるので没にした。
-
+	
 	// Comback (-1)にして未選択状態にする
-//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// (0)This clear
-//	[appDelegate.RaComebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:-1]];
+	//	[appDelegate.RaComebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:-1]];
 }
+
+// この画面が非表示になる直前に呼ばれる
+- (void)viewWillDisappear:(BOOL)animated 
+{
+#ifdef GD_Ad_ENABLED
+	// Ad非表示にする
+	[self AdShowApple:NO AdMob:NO];
+#endif
+	[super viewWillDisappear:animated];
+}
+/*
+// この画面が非表示になった後に呼ばれる
+- (void)viewDidDisappear:(BOOL)animated
+{	//[1.0.1] Ad, Info を破棄する
+	//[self unloadRelease];これすると iAd本表示した途端にiAd終了されてしまう。
+	[super viewDidDisappear:animated];
+}
+*/
+
 /*
 // カムバック処理（復帰再現）：AppDelegate から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray

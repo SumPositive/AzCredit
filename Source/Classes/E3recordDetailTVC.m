@@ -549,7 +549,7 @@
 
 - (void)showCalcAmount
 {
-	// ToolBar非表示
+	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
 	[self.navigationController setToolbarHidden:YES];
 
 	if (McalcView) {
@@ -565,14 +565,14 @@
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionTop	// 上端へ
 									  animated:YES];
-		rect.origin.y = 55;
+		rect.origin.y = 52; //55;
 	}
 	else {
 		// 縦
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
 									  animated:YES];
-		rect.origin.y = 0;
+		rect.origin.y = 65; //0;
 	}
 	
 	McalcView = [[CalcView alloc] initWithFrame:rect];
@@ -581,7 +581,10 @@
 	McalcView.RzKey = @"nAmount";
 	//[self.view.window addSubview:McalcView]; //NG:ヨコ向きができなくなる
 	//[self.tableView   addSubview:McalcView]; NG
-	[self.view addSubview:McalcView];
+	//[self.view addSubview:McalcView]; 3GS+4.3.3にて広告が残ってキーが押せない不具合発生。
+	[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
+	//[self.navigationController.view bringSubviewToFront:McalcView]; これは無くても後からaddSubした方が上になる
+
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
@@ -675,12 +678,15 @@
 
 		case 1:
 			if (MbE6paid) {
-				return NSLocalizedString(@"E6PAID Help",nil); // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
+				return NSLocalizedString(@"E6PAID Help",nil);
 			}
 			else if (0 < PiAdd) {
 				return	@"\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
 			}
 			break;
+
+		case 2:
+			return	@"\n\n\n"; //[1.0.1]万一広告が残ったとき、支払明細が見える所までスクロールできるようにするため
 	}
 	return nil;
 }
