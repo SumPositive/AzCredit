@@ -55,9 +55,10 @@
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 
 	if (MbannerView) {
-		[MbannerView cancelBannerViewAction];	//[1.0.1]STOP
+		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
 		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		[MbannerView release], MbannerView = nil;	// 破棄
+		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
+		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
 	}
 
 	if (RoAdMobView) {
@@ -390,6 +391,7 @@
 			rc.origin.y += AD_HIDDEN_OFS_Y;  // 下部に隠す
 			MbannerView.frame = rc;
 			[self.navigationController.view addSubview:MbannerView];
+			//retainCount +2 --> unloadRelease:にて　-2 している
 		}
 	}
 #endif
