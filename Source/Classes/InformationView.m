@@ -11,6 +11,11 @@
 #import "InformationView.h"
 #import "UIDevice-Hardware.h"
 
+#define ALERT_TAG_GoAppStore			28
+#define ALERT_TAG_PostComment		37
+#define ALERT_TAG_GoSupportSite		46
+
+
 #ifdef AzDEBUG
 #import <mach/mach.h> // これを import するのを忘れずに
 @interface MemoryInfo : NSObject {
@@ -39,10 +44,6 @@
 
 @implementation InformationView
 
-- (void)dealloc {
-    [super dealloc];
-}
-
 static UIColor *MpColorBlue(float percent) {
 	float red = percent * 255.0f;
 	float green = (red + 20.0f) / 255.0f;
@@ -53,11 +54,94 @@ static UIColor *MpColorBlue(float percent) {
 	return [UIColor colorWithRed:percent green:green blue:blue alpha:1.0f];
 }
 
+
+#pragma mark - dealloc
+
+- (void)dealloc {
+    [super dealloc];
+}
+
 - (void)drawRect:(CGRect)rect {
     // Drawing code
 }
 
--(void)sendmail:(UIButton*)sender 
+
+#pragma mark - Button functions
+
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex != 1) return; // Cancel
+	// OK
+	switch (alertView.tag) 
+	{
+		case ALERT_TAG_GoAppStore: { // Paid App Store																							 クレメモ	432458298
+			NSURL *url = [NSURL URLWithString:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+			[[UIApplication sharedApplication] openURL:url];
+		}	break;
+		
+		case ALERT_TAG_GoSupportSite: {
+			NSURL *url = [NSURL URLWithString:@"http://paynote.tumblr.com/"];
+			[[UIApplication sharedApplication] openURL:url];
+		}	break;
+			
+		case ALERT_TAG_PostComment: { // Post commens
+			MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+			picker.mailComposeDelegate = self;
+			// To: 宛先
+			NSArray *toRecipients = [NSArray arrayWithObject:@"PayNote@azukid.com"];
+			[picker setToRecipients:toRecipients];
+			// Subject: 件名
+			NSString* zSubj = [NSString stringWithFormat:@"%@ %@ ", 
+							   NSLocalizedString(@"Product Title",nil), 
+							   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+#ifdef AzSTABLE
+			zSubj = [zSubj stringByAppendingString:@"Stable"];
+#else
+			zSubj = [zSubj stringByAppendingString:@"Free"];
+#endif
+			UIDevice *device = [UIDevice currentDevice];
+			NSString* deviceID = [device platformString];	
+			zSubj = [zSubj stringByAppendingFormat:@" [%@-%@]", 
+					 deviceID, 
+					 [[ UIDevice currentDevice ] systemVersion]]; // OSの現在のバージョン
+			
+			[picker setSubject:zSubj];  
+			// Body: 本文
+			[picker setMessageBody:NSLocalizedString(@"Contact message",nil) isHTML:NO];
+			[self hide];
+			AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			[app.navigationController presentModalViewController:picker animated:YES];
+			[picker release];
+		}	break;
+	}
+}
+
+- (void)buGoAppStore:(UIButton *)button
+{
+	//alertBox( NSLocalizedString(@"Contact mail",nil), NSLocalizedString(@"Contact mail msg",nil), @"OK" );
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GoAppStore Paid",nil)
+													message:NSLocalizedString(@"GoAppStore Paid msg",nil)
+												   delegate:self		// clickedButtonAtIndexが呼び出される
+										  cancelButtonTitle:@"Cancel"
+										  otherButtonTitles:@"OK", nil];
+	alert.tag = ALERT_TAG_GoAppStore;
+	[alert show];
+	[alert autorelease];
+}
+
+- (void)buGoSupportSite:(UIButton *)button
+{
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GoSupportSite",nil)
+													message:NSLocalizedString(@"GoSupportSite msg",nil)
+												   delegate:self		// clickedButtonAtIndexが呼び出される
+										  cancelButtonTitle:@"Cancel"
+										  otherButtonTitles:@"OK", nil];
+	alert.tag = ALERT_TAG_GoSupportSite;
+	[alert show];
+	[alert autorelease];
+}
+
+-(void)buPostComment:(UIButton*)sender 
 {
 	//メール送信可能かどうかのチェック　　＜＜＜MessageUI.framework が必要＞＞＞
     if (![MFMailComposeViewController canSendMail]) {
@@ -65,67 +149,20 @@ static UIColor *MpColorBlue(float percent) {
 		alertBox( NSLocalizedString(@"Contact NoMail",nil), NSLocalizedString(@"Contact NoMail msg",nil), @"OK" );
         return;
     }
-
-	alertBox( NSLocalizedString(@"Contact mail",nil), NSLocalizedString(@"Contact mail msg",nil), @"OK" );
-    
-	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-    picker.mailComposeDelegate = self;
 	
-	// To: 宛先
-	NSArray *toRecipients = [NSArray arrayWithObject:@"PayNote@azukid.com"];
-	[picker setToRecipients:toRecipients];
-    //[picker setCcRecipients:nil];
-	//[picker setBccRecipients:nil];
-	
-	// Subject: 件名
-	NSString* zSubj = [NSString stringWithFormat:@"%@ %@ ", 
-					   NSLocalizedString(@"Product Title",nil), 
-					   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-#ifdef AzSTABLE
-	zSubj = [zSubj stringByAppendingString:@"Stable"];
-#else
-	zSubj = [zSubj stringByAppendingString:@"Free"];
-#endif
-	
-	UIDevice *device = [UIDevice currentDevice];
-	NSString* deviceID = [device platformString];	
-	zSubj = [zSubj stringByAppendingFormat:@" [%@-%@]", 
-			 deviceID, 
-			 [[ UIDevice currentDevice ] systemVersion]]; // OSの現在のバージョン
-	
-	[picker setSubject:zSubj];  
-	
-#ifdef AzDEBUG
-	//struct task_basic_info {
-    //    integer_t       suspend_count;  /* suspend count for task */
-    //    vm_size_t       virtual_size;   /* virtual memory size (bytes) */
-    //    vm_size_t       resident_size;  /* resident memory size (bytes) */
-    //    time_value_t    user_time;      /* total user run time for terminated threads */
-    //    time_value_t    system_time;    /* total system run time for  terminated threads */
-	//	policy_t	policy;		/* default policy for new threads */
-	//};
-	NSLog(@"--NENORY--suspend_count=%d", [MemoryInfo used].suspend_count );
-	NSLog(@"--NENORY--virtual_size=%d", [MemoryInfo used].virtual_size);
-	NSLog(@"--NENORY--自己使用 resident_size=%d", [MemoryInfo used].resident_size);
-	// 目的は、「空きメモり容量」を報告させたい。 方法不明
-#endif
-	
-	// Attach: 添付画像
-	/* UIImage *temp   = [UIImage imageNamed:@"temp.png"];
-	 NSData *myData  = [[[NSData alloc] initWithData:UIImagePNGRepresentation(temp)] autorelease];
-	 [picker addAttachmentData:myData mimeType:@"image/png" fileName:@"temp"];
-	 */	
-    // Body: 本文
-    [picker setMessageBody:NSLocalizedString(@"Contact message",nil) isHTML:NO];
-	
-	[self hide];
-    //[self presentModalViewController:picker animated:YES];
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.navigationController presentModalViewController:picker animated:YES];
-    [picker release];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Contact mail",nil)
+													message:NSLocalizedString(@"Contact mail msg",nil)
+												   delegate:self		// clickedButtonAtIndexが呼び出される
+										  cancelButtonTitle:@"Cancel"
+										  otherButtonTitles:@"OK", nil];
+	alert.tag = ALERT_TAG_PostComment;
+	[alert show];
+	[alert autorelease];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+		  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{
     switch (result){
         case MFMailComposeResultCancelled:
             //キャンセルした場合
@@ -150,6 +187,16 @@ static UIColor *MpColorBlue(float percent) {
 }
 
 
+#pragma mark - Touch
+
+// タッチイベント
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	[self hide];
+}
+
+
+#pragma mark - View
+
 - (id)initWithFrame:(CGRect)rect 
 {
 	// アニメションの開始位置
@@ -166,7 +213,7 @@ static UIColor *MpColorBlue(float percent) {
 	self.userInteractionEnabled = YES; //タッチの可否
 	
 	//------------------------------------------アイコン
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 70, 57, 57)];
+	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 50, 57, 57)];
 #ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
 #else
@@ -176,7 +223,7 @@ static UIColor *MpColorBlue(float percent) {
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 70, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 200, 30)];
 	label.text = NSLocalizedString(@"Product Title",nil);
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
@@ -187,7 +234,7 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 110, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 80, 200, 30)];
 #ifdef AzSTABLE
 	label.text = [NSString stringWithFormat:@"Version %@\nStable", zVersion];
 #else
@@ -201,7 +248,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];
 
 	//------------------------------------------Lable:Azuki Color
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 100, 77)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, 100, 77)];
 	label.text = @"Azukid Color\n"
 				 @"RGB(151,80,77)\n"
 				 @"Code#97504D\n"
@@ -216,7 +263,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 150, 200, 80)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 120, 200, 80)];
 	label.text =	@"PayNote\n"
 						@"Born on March 26\n"
 						@"© 2000-2011  Azukid\n"
@@ -229,12 +276,30 @@ static UIColor *MpColorBlue(float percent) {
 	label.font = [UIFont systemFontOfSize:12];
 	[self addSubview:label]; [label release];	
 	
-	//------------------------------------------メールで問い合わせ
+	//------------------------------------------Go to Support blog.
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+	bu.frame = CGRectMake(20, 210, 120,26);
+	[bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
+	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:bu];  //autorelease
+	
+#if defined(AzFREE) && !defined(AzPAD)
+	//------------------------------------------Go to App Store
+	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	bu.titleLabel.font = [UIFont boldSystemFontOfSize:10];
+	bu.frame = CGRectMake(150, 210, 150,26);
+	[bu setTitle:NSLocalizedString(@"GoAppStore Paid",nil) forState:UIControlStateNormal];
+	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:bu];  //autorelease
+#endif
+	
+	//------------------------------------------Post Comment
+	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	bu.frame = CGRectMake(110, 240, 180,30);
+	bu.frame = CGRectMake(20, 255, 280,30);
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
-	[bu addTarget:self action:@selector(sendmail:) forControlEvents:UIControlEventTouchUpInside];
+	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:bu];  //autorelease
 	
 	//------------------------------------------免責
@@ -259,8 +324,12 @@ static UIColor *MpColorBlue(float percent) {
 
 	
 	//------------------------------------------CLOSE
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 450, 280, 25)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 440, 280, 25)];
+#ifdef AzPAD
+	label.text = NSLocalizedString(@"Infomation Open Pad",nil);
+#else
 	label.text = NSLocalizedString(@"Infomation Open",nil);
+#endif
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
@@ -329,11 +398,6 @@ static UIColor *MpColorBlue(float percent) {
 	
 	// Complete the animation
 	[UIView commitAnimations];
-}
-
-// タッチイベント
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[self hide];
 }
 
 

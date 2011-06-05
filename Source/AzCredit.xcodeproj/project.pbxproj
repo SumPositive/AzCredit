@@ -1629,13 +1629,13 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				44BBEE821368558300DD6978 /* Default@2x.png */,
 				44BBEE841368558300DD6978 /* Default.png */,
 				44D88BF81350942E008CEAF6 /* Icon57s1.png */,
 				44D88BF91350942E008CEAF6 /* Icon57s1@2x.png */,
 				44AF152D1341D8E80019F55C /* Icon57.png */,
 				44AF152F1341D9000019F55C /* Icon57@2x.png */,
-				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				4434B831111F0A3900CCF7EE /* InfoPlist.strings */,
 				4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */,
 				8D1107310486CEB800E47090 /* Info.plist */,
