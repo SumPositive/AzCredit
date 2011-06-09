@@ -6,9 +6,9 @@
 //  Copyright __MyCompanyName__ 2009. All rights reserved.
 //
 
-//#import "AdMobDelegateProtocol.h"
-//#import "AdMobInterstitialDelegateProtocol.h"
-//#import "AdMobInterstitialAd.h"
+#ifdef AzPAD
+#import "padRootVC.h"
+#endif
 
 #define VIEW_TAG_LOGINPASS			9001
 #define VIEW_TAG_HttpServer			9010
@@ -23,8 +23,14 @@
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
     UIWindow *window;
-    UINavigationController *navigationController;
 
+#ifdef AzPAD
+	PadRootVC						*padRootVC;
+	UISplitViewController		*mainController;
+#else
+    UINavigationController	*mainController;
+#endif
+	
 //	NSMutableArray		*RaComebackIndex;	// an array of selections for each drill level
 	// i.e.
 	// [0, 100002, 300015] =	at level 1 drill/ section=0 row=0, (section=100002 / GD_SECTION_TIMES)
@@ -48,14 +54,16 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) UIWindow					*window;
-@property (nonatomic, retain) UINavigationController	*navigationController;
+#ifdef AzPAD
+@property (nonatomic, retain) PadRootVC						*padRootVC;  //解放されないようにretain
+@property (nonatomic, retain) UISplitViewController		*mainController;
+#else
+@property (nonatomic, retain) UINavigationController		*mainController;
+#endif
 @property (nonatomic, retain) NSDate					*Me3dateUse;
 
 @property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
 @property (nonatomic, assign, readonly) BOOL			MbLoginShow;
-
-//- (IBAction)saveAction:sender;
-//- (BOOL)appDidBecomeActive;
 
 @end
 

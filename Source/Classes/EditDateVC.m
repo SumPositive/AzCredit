@@ -31,6 +31,15 @@
 @synthesize delegate;
 
 
+#pragma mark - Source - Functions
+#pragma mark - Ad
+#pragma mark - View
+#pragma mark View 回転
+#pragma mark - TableView
+#pragma mark - Unload - dealloc
+
+
+
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
 	[Re6edit release], Re6edit = nil;

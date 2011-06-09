@@ -110,7 +110,7 @@ static UIColor *MpColorBlue(float percent) {
 			[picker setMessageBody:NSLocalizedString(@"Contact message",nil) isHTML:NO];
 			[self hide];
 			AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			[app.navigationController presentModalViewController:picker animated:YES];
+			[app.mainController presentModalViewController:picker animated:YES];
 			[picker release];
 		}	break;
 	}
@@ -183,7 +183,7 @@ static UIColor *MpColorBlue(float percent) {
     }
 	// [self dismissModalViewControllerAnimated:YES];
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.navigationController dismissModalViewControllerAnimated:YES];
+	[app.mainController dismissModalViewControllerAnimated:YES];
 }
 
 

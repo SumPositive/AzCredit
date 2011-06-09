@@ -19,6 +19,15 @@
 @synthesize Rentity;
 @synthesize RzKey;
 
+
+#pragma mark - Source - Functions
+#pragma mark - Ad
+#pragma mark - View
+#pragma mark View 回転
+#pragma mark - TableView
+#pragma mark - Unload - dealloc
+
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[RzKey release];

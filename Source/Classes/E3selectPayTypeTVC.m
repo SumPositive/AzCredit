@@ -14,10 +14,19 @@
 //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 //----------------------------------------------Owner移管につきdealloc時のrelese不要
 //----------------------------------------------assign
-BOOL MbOptAntirotation;
+//BOOL MbOptAntirotation;
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
+
+
+#pragma mark - Source - Functions
+#pragma mark - Ad
+#pragma mark - View
+#pragma mark View 回転
+#pragma mark - TableView
+#pragma mark - Unload - dealloc
+
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {

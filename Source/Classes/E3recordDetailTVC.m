@@ -47,35 +47,303 @@
 @synthesize PiAdd;
 @synthesize PiFirstYearMMDD;
 
+
+#pragma mark - Source - Func
+
 - (void)editDateE6change {		// delegate: EditDateVC
 	MbE6dateChange = YES;
 }
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+// UIActionSheetDelegate 処理部
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"--- unloadRelease --- E3recordDetailTVC");
-	[RaE6parts release], RaE6parts = nil;
-	[RaE3lasts release], RaE3lasts = nil;
+	if (buttonIndex != actionSheet.destructiveButtonIndex) return;
+	
+	if (Re3edit && actionSheet.tag == ACTIONSEET_TAG_DELETE) { // Re3edit 削除
+		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
+		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+		app.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
+		[MocFunctions e3delete:Re3edit];
+		[MocFunctions commit];
+		//
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	}
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)showCalcAmount
 {
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re3edit release], Re3edit = nil;
-	[super dealloc];
+	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
+	[self.navigationController setToolbarHidden:YES];
+	
+	if (McalcView) {
+		[McalcView hide];
+		[McalcView removeFromSuperview];
+		McalcView = nil;
+	}
+	
+	CGRect rect = self.view.bounds;
+	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0]; // 利用金額行
+	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+		// 横
+		[self.tableView scrollToRowAtIndexPath:indexPath 
+							  atScrollPosition:UITableViewScrollPositionTop	// 上端へ
+									  animated:YES];
+		rect.origin.y = 52; //55;
+	}
+	else {
+		// 縦
+		[self.tableView scrollToRowAtIndexPath:indexPath 
+							  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
+									  animated:YES];
+		rect.origin.y = 65; //0;
+	}
+	
+	McalcView = [[CalcView alloc] initWithFrame:rect];
+	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
+	McalcView.Rentity = Re3edit;
+	McalcView.RzKey = @"nAmount";
+	//[self.view.window addSubview:McalcView]; //NG:ヨコ向きができなくなる
+	//[self.tableView   addSubview:McalcView]; NG
+	//[self.view addSubview:McalcView]; 3GS+4.3.3にて広告が残ってキーが押せない不具合発生。
+	[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
+	//[self.navigationController.view bringSubviewToFront:McalcView]; これは無くても後からaddSubした方が上になる
+	
+	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
+	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
+	[McalcView show];
 }
 
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
+- (void)cancel:(id)sender
 {
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+	[McalcView hide]; // Calcが出てれば隠す
+	
+	// E4,E5で新規追加したものもcommitしていないので、ここでrollbackされる
+	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	
+	if (0 < PiAdd) {  // MbCopyAdd=YES:のRe3editも同様に削除してコミットしておく。
+		// Add mode: 呼び出し元で挿入したオブジェクトはrollbackされないので削除する
+		[MocFunctions deleteEntity:Re3edit];
+		//[MocFunctions commit]; delete後のcommit不要
+	}
+	
+	//[0.4]
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+	
+	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
+		[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	}
 }
 
+// 編集フィールドの値を self.e3target にセットする
+- (void)save:(id)sender 
+{
+	if (McalcView) {
+		[McalcView save]; // Calcが出てれば保存してから、
+		[McalcView hide]; // Calcが出てれば隠す
+	}
+	
+	if (ANSWER_MAX < fabs([Re3edit.nAmount doubleValue])) {
+		alertBox(NSLocalizedString(@"AmountOver",nil),
+				 NSLocalizedString(@"AmountOver msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	else if ([Re3edit.nAmount doubleValue]==0.0) {
+		alertBox(NSLocalizedString(@"AmountZero",nil),
+				 NSLocalizedString(@"AmountZero msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	
+	if( AzMAX_NAME_LENGTH < [Re3edit.zName length] ){
+		// 長さがAzMAX_NAME_LENGTH超ならば、0文字目から50文字を切り出して保存　＜以下で切り出すとフリーズする＞
+		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
+	}
+	
+	if (MbE6dateChange) PiFirstYearMMDD = (-1); //E6更新しない
+	// E3配下リンク等の更新処理
+	if ([MocFunctions e3saved:Re3edit inFirstYearMMDD:PiFirstYearMMDD]==NO) {
+		//return; // 中止
+		//[0.4]PAIDのときNOになるが、利用店以下変更可能にするためスルー
+		//[0.4]PAIDで変更禁止項目は、入力時に拒否するようになっている。
+	}
+	
+	[MocFunctions commit];
+	//[0.4.17]この直後、前のViewへ戻るまでの間に、cellForRowAtIndexPath「支払明細(E6)のセル再描画」を通ると落ちる。
+	//[0.4.17]（原因）E3配下の更新処理にてE6が削除されることが原因。
+	//[0.4.17]（対応）この後、MbSaved=YES にして再描画を禁止する。
+	MbSaved = YES;
+	
+	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+	app.Me3dateUse = [Re3edit.dateUse copy];
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+
+#pragma mark barButton
+
+- (void)barButtonCopyAdd 
+{
+	[McalcView hide]; // Calcが出てれば隠す
+	
+	// もし修正していた場合、それが保存されてしまわないように、まずrollBackする　＜＜Re3edit生成直後までrollBackされる＞＞
+	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
+	
+	// Re3edit のコピーを生成して、Re3edit と置き換える。
+	E3record *e3new = [MocFunctions replicateE3record:Re3edit]; //retain されているので relese が必要
+	MbE6paid = NO;	//[0.3] NO = 配下のE6にPAIDは1つも無い ⇒ 主要項目も修正可能
+	// Replace
+	[e3new retain];		// Re3editが解放される前に確保する必要あり
+	[Re3edit release];	// 解放
+	Re3edit = e3new;	// 置換　e3new から Re3edit へオーナー移管。　Re3edit は dealloc で release される。
+	// Args
+	//self.title = NSLocalizedString(@"Add Record", nil);
+	self.title = NSLocalizedString(@"CopyAdd Record", nil);
+	PiAdd = (1); // (1)New Add
+	MbCopyAdd = YES; // YES:既存明細をコピーして新規追加している状態
+	// Tool Bar ボタンを無効にする
+	for (id obj in self.toolbarItems) {
+		if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
+			[obj setEnabled:NO];
+		}
+	}
+	// テーブルビューを更新
+	[self.tableView reloadData];
+	
+	MbModified = NO;
+}
+
+- (void)barButtonDelete 
+{
+	[McalcView hide]; // Calcが出てれば隠す
+	
+	// 削除コマンド警告　==>> (void)actionSheet にて処理  ＜＜PAIDでも削除する＞＞
+	UIActionSheet *action = [[UIActionSheet alloc] 
+							 initWithTitle:NSLocalizedString(@"DELETE Record", nil)
+							 delegate:self 
+							 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+							 destructiveButtonTitle:NSLocalizedString(@"DELETE Record button", nil)
+							 otherButtonTitles:nil];
+	action.tag = ACTIONSEET_TAG_DELETE;
+	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
+		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		// タテ：ToolBar表示
+		[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
+	} else {
+		// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
+		[action showInView:self.view]; //windowから出すと回転対応しない
+	}
+	[action release];
+}
+
+
+- (void)barButton:(UIButton *)button
+{
+	[McalcView hide]; // Calcが出てれば隠す
+	
+	E3record *e3obj = nil;
+	switch (button.tag) {
+		case TAG_BAR_BUTTON_NEW:
+			// New
+			MiIndexE3lasts = (-1);
+			// 両方向の Tool Bar ボタンを有効にする
+			for (id obj in self.toolbarItems) {
+				switch ([[obj valueForKey:@"tag"] intValue]) {
+					case TAG_BAR_BUTTON_PAST:	[obj setEnabled:YES];	break;
+					case TAG_BAR_BUTTON_RETURN:	[obj setEnabled:NO];	break;
+				}
+			}
+			break;
+			
+		case TAG_BAR_BUTTON_PAST:
+			if (MiIndexE3lasts < -1) {
+				// Min under
+				MiIndexE3lasts = (-1);
+			}
+			else if ([RaE3lasts count] <= MiIndexE3lasts + 1) {  // [Me3lasts count]-1 とするとエラー
+				// Max over
+				MiIndexE3lasts = [RaE3lasts count] - 1;
+				button.enabled = NO;
+			}
+			else {
+				MiIndexE3lasts++;
+				e3obj = [RaE3lasts objectAtIndex:MiIndexE3lasts];
+				// 対向の Tool Bar ボタンを有効にする
+				for (id obj in self.toolbarItems) {
+					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_RETURN) [obj setEnabled:YES];
+				}
+				if ([RaE3lasts count] <= MiIndexE3lasts + 1) {  // さらに前回でオーバーするならばボタン無効にする
+					// Max
+					button.enabled = NO;
+				}
+			}
+			break;
+			
+		case TAG_BAR_BUTTON_RETURN:
+			if (MiIndexE3lasts <= 0) {
+				// Min under
+				MiIndexE3lasts = (-1);
+				button.enabled = NO;
+			}
+			else if ([RaE3lasts count] <= MiIndexE3lasts) {
+				// Max over
+				MiIndexE3lasts = [RaE3lasts count] - 1;
+			}
+			else {
+				MiIndexE3lasts--;
+				e3obj = [RaE3lasts objectAtIndex:MiIndexE3lasts];
+				// 対向の Tool Bar ボタンを有効にする
+				for (id obj in self.toolbarItems) {
+					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_PAST) [obj setEnabled:YES];
+				}
+				if (MiIndexE3lasts <= 0) {  // さらに戻してオーバーするならばボタン無効にする
+					// Max
+					button.enabled = NO;
+				}
+			}
+			break;
+			
+		default:
+			return;
+	}
+	
+	if (e3obj) { // Copy
+		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば過去コピーする
+			Re3edit.nAmount = e3obj.nAmount;
+		}
+		Re3edit.nPayType	= e3obj.nPayType;
+		Re3edit.zName		= e3obj.zName;
+		Re3edit.e1card		= e3obj.e1card;
+		Re3edit.e4shop		= e3obj.e4shop;
+		Re3edit.e5category  = e3obj.e5category;
+	}
+	else { // New
+		// 初期化（未定）にする
+		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば初期化する
+			Re3edit.nAmount		= [NSDecimalNumber zero];
+		}
+		Re3edit.nPayType	= [NSNumber numberWithInt:1];
+		Re3edit.zName		= @"";
+		if (PiAdd != 2) Re3edit.e1card = nil; // (2)Card固定時、消さない
+		if (PiAdd != 3) Re3edit.e4shop = nil;
+		if (PiAdd != 4) Re3edit.e5category = nil;
+	}
+	// テーブルビューを更新します。
+	[self.tableView reloadData];
+	MbModified = NO; // クリア：これ以降に変更があればYES ⇒ ToolBarボタンを無効にする
+}
+
+
+
+#pragma mark - View
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -330,177 +598,22 @@
 	}
 }
 
-
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)viewDesign
 {
-	if (buttonIndex != actionSheet.destructiveButtonIndex) return;
-	
-	if (Re3edit && actionSheet.tag == ACTIONSEET_TAG_DELETE) { // Re3edit 削除
-		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
-		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		app.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
-		[MocFunctions e3delete:Re3edit];
-		[MocFunctions commit];
-		//
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
+	// 回転によるリサイズ
+}
+
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
 
 
-- (void)barButtonCopyAdd 
-{
-	[McalcView hide]; // Calcが出てれば隠す
-	
-	// もし修正していた場合、それが保存されてしまわないように、まずrollBackする　＜＜Re3edit生成直後までrollBackされる＞＞
-	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
-	
-	// Re3edit のコピーを生成して、Re3edit と置き換える。
-	E3record *e3new = [MocFunctions replicateE3record:Re3edit]; //retain されているので relese が必要
-	MbE6paid = NO;	//[0.3] NO = 配下のE6にPAIDは1つも無い ⇒ 主要項目も修正可能
-	// Replace
-	[e3new retain];		// Re3editが解放される前に確保する必要あり
-	[Re3edit release];	// 解放
-	Re3edit = e3new;	// 置換　e3new から Re3edit へオーナー移管。　Re3edit は dealloc で release される。
-	// Args
-	//self.title = NSLocalizedString(@"Add Record", nil);
-	self.title = NSLocalizedString(@"CopyAdd Record", nil);
-	PiAdd = (1); // (1)New Add
-	MbCopyAdd = YES; // YES:既存明細をコピーして新規追加している状態
-	// Tool Bar ボタンを無効にする
-	for (id obj in self.toolbarItems) {
-		if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
-			[obj setEnabled:NO];
-		}
-	}
-	// テーブルビューを更新
-	[self.tableView reloadData];
-	
-	MbModified = NO;
-}
-
-- (void)barButtonDelete 
-{
-	[McalcView hide]; // Calcが出てれば隠す
-	
-	// 削除コマンド警告　==>> (void)actionSheet にて処理  ＜＜PAIDでも削除する＞＞
-	UIActionSheet *action = [[UIActionSheet alloc] 
-							 initWithTitle:NSLocalizedString(@"DELETE Record", nil)
-							 delegate:self 
-							 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-							 destructiveButtonTitle:NSLocalizedString(@"DELETE Record button", nil)
-							 otherButtonTitles:nil];
-	action.tag = ACTIONSEET_TAG_DELETE;
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		// タテ：ToolBar表示
-		[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
-	} else {
-		// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
-		[action showInView:self.view]; //windowから出すと回転対応しない
-	}
-	[action release];
-}
 
 
-- (void)barButton:(UIButton *)button
-{
-	[McalcView hide]; // Calcが出てれば隠す
-	
-	E3record *e3obj = nil;
-	switch (button.tag) {
-		case TAG_BAR_BUTTON_NEW:
-			// New
-			MiIndexE3lasts = (-1);
-			// 両方向の Tool Bar ボタンを有効にする
-			for (id obj in self.toolbarItems) {
-				switch ([[obj valueForKey:@"tag"] intValue]) {
-					case TAG_BAR_BUTTON_PAST:	[obj setEnabled:YES];	break;
-					case TAG_BAR_BUTTON_RETURN:	[obj setEnabled:NO];	break;
-				}
-			}
-			break;
-			
-		case TAG_BAR_BUTTON_PAST:
-			if (MiIndexE3lasts < -1) {
-				// Min under
-				MiIndexE3lasts = (-1);
-			}
-			else if ([RaE3lasts count] <= MiIndexE3lasts + 1) {  // [Me3lasts count]-1 とするとエラー
-				// Max over
-				MiIndexE3lasts = [RaE3lasts count] - 1;
-				button.enabled = NO;
-			}
-			else {
-				MiIndexE3lasts++;
-				e3obj = [RaE3lasts objectAtIndex:MiIndexE3lasts];
-				// 対向の Tool Bar ボタンを有効にする
-				for (id obj in self.toolbarItems) {
-					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_RETURN) [obj setEnabled:YES];
-				}
-				if ([RaE3lasts count] <= MiIndexE3lasts + 1) {  // さらに前回でオーバーするならばボタン無効にする
-					// Max
-					button.enabled = NO;
-				}
-			}
-			break;
-			
-		case TAG_BAR_BUTTON_RETURN:
-			if (MiIndexE3lasts <= 0) {
-				// Min under
-				MiIndexE3lasts = (-1);
-				button.enabled = NO;
-			}
-			else if ([RaE3lasts count] <= MiIndexE3lasts) {
-				// Max over
-				MiIndexE3lasts = [RaE3lasts count] - 1;
-			}
-			else {
-				MiIndexE3lasts--;
-				e3obj = [RaE3lasts objectAtIndex:MiIndexE3lasts];
-				// 対向の Tool Bar ボタンを有効にする
-				for (id obj in self.toolbarItems) {
-					if ([[obj valueForKey:@"tag"] intValue] == TAG_BAR_BUTTON_PAST) [obj setEnabled:YES];
-				}
-				if (MiIndexE3lasts <= 0) {  // さらに戻してオーバーするならばボタン無効にする
-					// Max
-					button.enabled = NO;
-				}
-			}
-			break;
-			
-		default:
-			return;
-	}
-	
-	if (e3obj) { // Copy
-		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば過去コピーする
-			Re3edit.nAmount = e3obj.nAmount;
-		}
-		Re3edit.nPayType	= e3obj.nPayType;
-		Re3edit.zName		= e3obj.zName;
-		Re3edit.e1card		= e3obj.e1card;
-		Re3edit.e4shop		= e3obj.e4shop;
-		Re3edit.e5category  = e3obj.e5category;
-	}
-	else { // New
-		// 初期化（未定）にする
-		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば初期化する
-			Re3edit.nAmount		= [NSDecimalNumber zero];
-		}
-		Re3edit.nPayType	= [NSNumber numberWithInt:1];
-		Re3edit.zName		= @"";
-		if (PiAdd != 2) Re3edit.e1card = nil; // (2)Card固定時、消さない
-		if (PiAdd != 3) Re3edit.e4shop = nil;
-		if (PiAdd != 4) Re3edit.e5category = nil;
-	}
-	// テーブルビューを更新します。
-	[self.tableView reloadData];
-	MbModified = NO; // クリア：これ以降に変更があればYES ⇒ ToolBarボタンを無効にする
-}
-
+#pragma mark View 回転
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -545,62 +658,6 @@
 		}
 		[self showCalcAmount]; // 再表示
 	}
-}
-
-- (void)showCalcAmount
-{
-	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
-	[self.navigationController setToolbarHidden:YES];
-
-	if (McalcView) {
-		[McalcView hide];
-		[McalcView removeFromSuperview];
-		McalcView = nil;
-	}
-	
-	CGRect rect = self.view.bounds;
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0]; // 利用金額行
-	if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-		// 横
-		[self.tableView scrollToRowAtIndexPath:indexPath 
-							  atScrollPosition:UITableViewScrollPositionTop	// 上端へ
-									  animated:YES];
-		rect.origin.y = 52; //55;
-	}
-	else {
-		// 縦
-		[self.tableView scrollToRowAtIndexPath:indexPath 
-							  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
-									  animated:YES];
-		rect.origin.y = 65; //0;
-	}
-	
-	McalcView = [[CalcView alloc] initWithFrame:rect];
-	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
-	McalcView.Rentity = Re3edit;
-	McalcView.RzKey = @"nAmount";
-	//[self.view.window addSubview:McalcView]; //NG:ヨコ向きができなくなる
-	//[self.tableView   addSubview:McalcView]; NG
-	//[self.view addSubview:McalcView]; 3GS+4.3.3にて広告が残ってキーが押せない不具合発生。
-	[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
-	//[self.navigationController.view bringSubviewToFront:McalcView]; これは無くても後からaddSubした方が上になる
-
-	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
-	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
-	[McalcView show];
-}
-
-
-- (void)viewDesign
-{
-	// 回転によるリサイズ
-}
-
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
 
 
@@ -1165,77 +1222,33 @@
 }
 
 
-- (void)cancel:(id)sender
+#pragma mark - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-	[McalcView hide]; // Calcが出てれば隠す
-	
-	// E4,E5で新規追加したものもcommitしていないので、ここでrollbackされる
-	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
-
-	if (0 < PiAdd) {  // MbCopyAdd=YES:のRe3editも同様に削除してコミットしておく。
-		// Add mode: 呼び出し元で挿入したオブジェクトはrollbackされないので削除する
-		[MocFunctions deleteEntity:Re3edit];
-		//[MocFunctions commit]; delete後のcommit不要
-	}
-
-	//[0.4]
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-
-	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
-		[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
+	NSLog(@"--- unloadRelease --- E3recordDetailTVC");
+	[RaE6parts release], RaE6parts = nil;
+	[RaE3lasts release], RaE3lasts = nil;
 }
 
-// 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	if (McalcView) {
-		[McalcView save]; // Calcが出てれば保存してから、
-		[McalcView hide]; // Calcが出てれば隠す
-	}
-
-	if (ANSWER_MAX < fabs([Re3edit.nAmount doubleValue])) {
-		alertBox(NSLocalizedString(@"AmountOver",nil),
-				 NSLocalizedString(@"AmountOver msg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	else if ([Re3edit.nAmount doubleValue]==0.0) {
-		alertBox(NSLocalizedString(@"AmountZero",nil),
-				 NSLocalizedString(@"AmountZero msg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	
-	if( AzMAX_NAME_LENGTH < [Re3edit.zName length] ){
-		// 長さがAzMAX_NAME_LENGTH超ならば、0文字目から50文字を切り出して保存　＜以下で切り出すとフリーズする＞
-		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
-	}
-	
-	if (MbE6dateChange) PiFirstYearMMDD = (-1); //E6更新しない
-	// E3配下リンク等の更新処理
-	if ([MocFunctions e3saved:Re3edit inFirstYearMMDD:PiFirstYearMMDD]==NO) {
-		//return; // 中止
-		//[0.4]PAIDのときNOになるが、利用店以下変更可能にするためスルー
-		//[0.4]PAIDで変更禁止項目は、入力時に拒否するようになっている。
-	}
-	
-	[MocFunctions commit];
-	//[0.4.17]この直後、前のViewへ戻るまでの間に、cellForRowAtIndexPath「支払明細(E6)のセル再描画」を通ると落ちる。
-	//[0.4.17]（原因）E3配下の更新処理にてE6が削除されることが原因。
-	//[0.4.17]（対応）この後、MbSaved=YES にして再描画を禁止する。
-	MbSaved = YES;
-
-	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-	app.Me3dateUse = [Re3edit.dateUse copy];
-
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re3edit release], Re3edit = nil;
+	[super dealloc];
 }
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
 
 
 @end

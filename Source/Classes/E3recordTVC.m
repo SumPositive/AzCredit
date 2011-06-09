@@ -32,135 +32,86 @@
 //@synthesize MdateTarget;
 
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+#pragma mark - Source - Functions
+
+- (void)azSettingView
 {
-	NSLog(@"--- unloadRelease --- E3recordTVC");
-#ifdef GD_Ad_ENABLED
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;
+	SettingTVC *view = [[SettingTVC alloc] init];
+	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:view animated:YES];
+	[view release];
+}
+
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)barButtonAdd {
+	// Add Card
+	[self e3detailView:nil]; // :(nil)Add mode
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	switch (alertView.tag) {
+		case ALERT_TAG_NoMore:
+			[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
+			break;
 	}
-#endif
-	[RaE3list release],		RaE3list = nil;
-	[RaSection release],	RaSection = nil;
-	[RaIndex release],		RaIndex = nil;
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)e3detailView:(NSIndexPath *)indexPath 
 {
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
-
-// UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
-{
-	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
-	if (self) {
-		// 初期化成功
+	// ドリルダウン
+	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
+	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
+	if (indexPath != nil && indexPath.section >= 1
+		&& indexPath.section < [RaE3list count]  
+		&& indexPath.row < [[RaE3list objectAtIndex:indexPath.section] count]) {
+		// Edit Item
+		e3detail.title = NSLocalizedString(@"Edit Record", nil);
+		e3detail.Re3edit = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		e3detail.PiAdd = 0; // (0)Edit mode
+		
+		//[0.4.2]Fix:
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		//
-#ifdef GD_Ad_ENABLED
-		RoAdMobView = nil;
-#endif
+		app.Me3dateUse = [e3detail.Re3edit.dateUse copy];
+		NSLog(@"app.Me3dateUse=%@", app.Me3dateUse);
 	}
-	return self;
-}
-
-// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
-- (void)loadView
-{
-    [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	// なし
-
-	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(barButtonTop)];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(azSettingView)];
-	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
-	[self setToolbarItems:buArray animated:YES];
-	[buSet release];
-	[buAdd release];
-	[buTop release];
-	[buFlex release];
-	
-#ifdef GD_Ad_ENABLED
-	RoAdMobView = [[GADBannerView alloc]
-                   initWithFrame:CGRectMake(0, 0,			// TableCell用
-                                            GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];
-	//RoAdMobView.delegate = self;
-	RoAdMobView.delegate = nil; //Delegateなし
-	
-	// Specify the ad's "unit identifier." This is your AdMob Publisher ID.
-	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
-	
-	// Let the runtime know which UIViewController to restore after taking
-	// the user wherever the ad goes and add it to the view hierarchy.
-	RoAdMobView.rootViewController = self;
-	
-	// Initiate a generic request to load it with an ad.
-	//[RoAdMobView loadRequest:[GADRequest request]];
-	GADRequest *request = [GADRequest request];
-	//[request setTesting:YES];
-	[RoAdMobView loadRequest:request];	
-#endif
-}
-
-// 他のViewやキーボードが隠れて、現れる都度、呼び出される
-- (void)viewWillAppear:(BOOL)animated 
-{
-    [super viewWillAppear:YES];
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
-
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-
-	// テーブルソース セット
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (RaE3list==nil || app.Me3dateUse) {
-		//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
-		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
-		[self setMe3list:app.Me3dateUse];
-		//[autoPool release];
+	else {
+		// Add E3  【注意】同じE3Addが、TopMenuTVC内にもある。
+		//E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
+		//												   inManagedObjectContext:Re0root.managedObjectContext];
+		E3record *e3obj = [MocFunctions insertAutoEntity:@"E3record"]; // autorelese
+		e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
+		//e3obj.nReservType = [NSNumber numberWithInt:0]; // (0)利用
+		e3obj.e1card = nil;
+		e3obj.e4shop = Pe4shop;
+		e3obj.e5category = Pe5category;
+		e3obj.e6parts = nil;
+		// Args
+		e3detail.title = NSLocalizedString(@"Add Record", nil);
+		e3detail.Re3edit = e3obj;
+		if (Pe4shop) {
+			e3detail.PiAdd = 3; // (3)Shop固定
+		} else if (Pe5category) {
+			e3detail.PiAdd = 4; // (4)Category固定
+		} else {
+			e3detail.PiAdd = 1; // (1)New Add
+		}
 	}
-	else if (0 < McontentOffsetDidSelect.y) {
-		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
-		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
-		self.tableView.contentOffset = McontentOffsetDidSelect;
-	}
+	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:e3detail animated:YES];
+	[e3detail release];
 }
-
 
 - (void)setMe3list:(NSDate *)dateMiddle // この日時が画面中央になるように前後最大50行読み込み表示する
 {
-
+	
 	NSCalendar *cal = [NSCalendar currentCalendar];	// 言語設定のタイムゾーンに従う
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-											| NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
+	| NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
 	
 	NSLog(@"setMe3list: dateMiddle=%@", dateMiddle);
 	if (dateMiddle==nil) {
@@ -168,7 +119,7 @@
 	}
 	// ＜＜＜dateUse は,UTC(+0000)記録されている。比較や抽出などUTCで行うこと＞＞＞
 	// NSDateは、常にUTC(+0000)協定世界時間である。
-
+	
 	// Temp Array
 	NSMutableArray *mE3array = [NSMutableArray new];
 	// Sorting
@@ -185,36 +136,36 @@
 	if (Pe4shop) {
 		// Pe4shop以下、最近の全E3
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse <= %@", Pe4shop, dateMiddle]
-									sort:sortDesc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse <= %@", Pe4shop, dateMiddle]
+								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse > %@", Pe4shop, dateMiddle]
-									sort:sortAsc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse > %@", Pe4shop, dateMiddle]
+								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
 	else if (Pe5category) {
 		// Pe5category以下、最近の全E3
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse <= %@", Pe5category, dateMiddle]
-									sort:sortDesc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse <= %@", Pe5category, dateMiddle]
+								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse > %@", Pe5category, dateMiddle]
-									sort:sortAsc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse > %@", Pe5category, dateMiddle]
+								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
@@ -222,37 +173,37 @@
 		/*******************現在の仕様では、ここは通らない*****************/
 		// Pe8bank以下、最近のE3
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse <= %@", Pe8bank, dateMiddle]
-									sort:sortDesc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse <= %@", Pe8bank, dateMiddle]
+								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse > %@", Pe8bank, dateMiddle]
-									sort:sortAsc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse > %@", Pe8bank, dateMiddle]
+								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
 	else 
 	{
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"dateUse <= %@", dateMiddle]
-									sort:sortDesc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"dateUse <= %@", dateMiddle]
+								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
-
+		
 		arFetch = [MocFunctions select:@"E3record" 
-								   limit:GD_E3_SELECT_LIMIT
-								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"dateUse > %@", dateMiddle]
-									sort:sortAsc];
+								 limit:GD_E3_SELECT_LIMIT
+								offset:0
+								 where:[NSPredicate predicateWithFormat:@"dateUse > %@", dateMiddle]
+								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
@@ -309,7 +260,7 @@
 		[RaSection addObject:@"■Top"];
 		[RaIndex addObject:@"■"];
 	}
-
+	
 	// [RaE3list addObject:e3days] は、下記ループの最初に実行される。
 	
 	// 「明細」セクション
@@ -334,7 +285,7 @@
 		}
 		
 		[e3days addObject:e3]; // 新セクションへ明細追加
-
+		
 		if (iSecMiddle < 0 && dateMiddle 
 			&& [dateMiddle compare:e3.dateUse] != NSOrderedDescending) { // dateMiddle <= e3.dateUse ( ! > )
 			iSecMiddle = iSec;
@@ -345,7 +296,7 @@
 	}
 	[RaE3list addObject:e3days]; // 最後の e3days を確定し、RaE3list へ追加する
 	[e3days release];
-
+	
 	// 最後「さらに次へ」セクション
 	e3days = [NSMutableArray new]; // 新しい領域を確保する。
 	E3record *e3last = [mE3array lastObject];
@@ -376,7 +327,7 @@
 	[df_index release];
 	// テーブルビューを更新
     [self.tableView reloadData];
-
+	
 	if (3 <= [RaE3list count]) { // 少なくとも、Top + Monthly + End の3セクションある
 		NSIndexPath *indexPath;
 		if (iSecMiddle < 0) { // 現在以降の明細が無いとき
@@ -390,22 +341,125 @@
 	}
 }
 
-- (void)azSettingView
+
+#pragma mark - Ad
+
+
+#pragma mark - View
+
+// UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
+- (id)initWithStyle:(UITableViewStyle)style 
 {
-	SettingTVC *view = [[SettingTVC alloc] init];
-	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:view animated:YES];
-	[view release];
+	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
+	if (self) {
+		// 初期化成功
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+		//
+#ifdef GD_Ad_ENABLED
+		RoAdMobView = nil;
+#endif
+	}
+	return self;
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
+{
+    [super loadView];
+	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
+	// なし
+	
+	// Tool Bar Button
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			target:nil action:nil];
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+															  style:UIBarButtonItemStylePlain  //Bordered
+															 target:self action:@selector(barButtonTop)];
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																		   target:self action:@selector(barButtonAdd)];
+	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+															  style:UIBarButtonItemStylePlain  //Bordered
+															 target:self action:@selector(azSettingView)];
+	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
+	[self setToolbarItems:buArray animated:YES];
+	[buSet release];
+	[buAdd release];
+	[buTop release];
+	[buFlex release];
+	
+#ifdef GD_Ad_ENABLED
+	RoAdMobView = [[GADBannerView alloc]
+                   initWithFrame:CGRectMake(0, 0,			// TableCell用
+                                            GAD_SIZE_320x50.width,
+                                            GAD_SIZE_320x50.height)];
+	//RoAdMobView.delegate = self;
+	RoAdMobView.delegate = nil; //Delegateなし
+	
+	// Specify the ad's "unit identifier." This is your AdMob Publisher ID.
+	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+	
+	// Let the runtime know which UIViewController to restore after taking
+	// the user wherever the ad goes and add it to the view hierarchy.
+	RoAdMobView.rootViewController = self;
+	
+	// Initiate a generic request to load it with an ad.
+	//[RoAdMobView loadRequest:[GADRequest request]];
+	GADRequest *request = [GADRequest request];
+	//[request setTesting:YES];
+	[RoAdMobView loadRequest:request];	
+#endif
 }
 
-- (void)barButtonAdd {
-	// Add Card
-	[self e3detailView:nil]; // :(nil)Add mode
+// 他のViewやキーボードが隠れて、現れる都度、呼び出される
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:YES];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	
+	// テーブルソース セット
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (RaE3list==nil || app.Me3dateUse) {
+		//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
+		[self setMe3list:app.Me3dateUse];
+		//[autoPool release];
+	}
+	else if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
 }
+
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	
+	if ([RaE3list count] < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
+		// 明細なし ＞ 前画面に戻す
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E3list NoData",nil)
+														message:NSLocalizedString(@"E3list NoData msg",nil)
+													   delegate:self 
+											  cancelButtonTitle:nil
+											  otherButtonTitles:@"Roger", nil];
+		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
+		[alert show];
+		[alert release];
+		return;
+	}
+	
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+}
+
+
+#pragma mark View 回転
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -437,96 +491,8 @@
 	[self.tableView reloadData];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	switch (alertView.tag) {
-		case ALERT_TAG_NoMore:
-			[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
-			break;
-	}
-}
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-	
-	if ([RaE3list count] < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
-		// 明細なし ＞ 前画面に戻す
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E3list NoData",nil)
-														message:NSLocalizedString(@"E3list NoData msg",nil)
-													   delegate:self 
-											  cancelButtonTitle:nil
-											  otherButtonTitles:@"Roger", nil];
-		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
-		[alert show];
-		[alert release];
-		return;
-	}
-	
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-/*	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (Pe4shop OR Pe5category OR Pe8bank) {
-		// (0)TopMenu >> (1)E4/E5 >> (2)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-	} else {
-		// (0)TopMenu >> (1)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}
-*/
-	
-/*	if (0 <= MiForTheFirstSection) {
-		if (0 < [RaE3list count]) {
-			// 最近の利用明細一覧：末尾を表示
-			//NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[Me3list count]-1 inSection:0];
-			// Bottom section : iAd Line
-			NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[RaE3list count]-1];
-			[self.tableView scrollToRowAtIndexPath:indexPath 
-								  atScrollPosition:UITableViewScrollPositionBottom animated:NO];  // 実機検証結果:NO
-		}
-		MiForTheFirstSection = (-2);  // 最初一度だけ通り、二度と通らないようにするため
-	}*/
-}
-/*
-// カムバック処理（復帰再現）：親から呼ばれる
-- (void)viewComeback:(NSArray *)selectionArray
-{
-	NSInteger lRow;
-	if (Pe4shop OR Pe5category OR Pe8bank) {
-		// (0)TopMenu >> (1)E4/E5 >> (2)This clear
-		lRow = [[selectionArray objectAtIndex:2] integerValue];
-	} else {
-		// (0)TopMenu >> (1)This clear
-		lRow = [[selectionArray objectAtIndex:1] integerValue];
-	}
-	if (lRow < 0) { // この画面に留まる
-		return;
-	}
-	NSInteger lSec = lRow / GD_SECTION_TIMES;
-	lRow -= (lSec * GD_SECTION_TIMES);
-	
-	if (lSec <= 0 || [RaE3list count]-1 <= lSec) return;  // -1 : 行末セクションを除くため
-	if ([[RaE3list objectAtIndex:lSec] count] <= lRow) return; // OVER
-	
-	// 選択行を画面中央付近に表示する
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
-	[self.tableView scrollToRowAtIndexPath:indexPath 
-						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
-	
-	// ドリルダウン
-	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
-	e3detail.title = self.title;
-	e3detail.Re3edit = [[RaE3list objectAtIndex:lSec] objectAtIndex:lRow]; ;
-	e3detail.PiAdd = 0; // (0)Edit mode
-	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:NO];
-	// 末尾につき viewComeback なし
-	[e3detail release];
-}
-*/
-
-#pragma mark Table view methods
+#pragma mark - TableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return [RaE3list count]; // [0]さらに前へ  [1〜End-1]E3record  [End]さらに次へ
@@ -833,50 +799,39 @@
 	}
 }
 
-- (void)e3detailView:(NSIndexPath *)indexPath 
+
+#pragma mark - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-	// ドリルダウン
-	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
-	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
-	if (indexPath != nil && indexPath.section >= 1
-						 && indexPath.section < [RaE3list count]  
-						 && indexPath.row < [[RaE3list objectAtIndex:indexPath.section] count]) {
-		// Edit Item
-		e3detail.title = NSLocalizedString(@"Edit Record", nil);
-		e3detail.Re3edit = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-		e3detail.PiAdd = 0; // (0)Edit mode
-		
-		//[0.4.2]Fix:
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		app.Me3dateUse = [e3detail.Re3edit.dateUse copy];
-		NSLog(@"app.Me3dateUse=%@", app.Me3dateUse);
+	NSLog(@"--- unloadRelease --- E3recordTVC");
+#ifdef GD_Ad_ENABLED
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release], RoAdMobView = nil;
 	}
-	else {
-		// Add E3  【注意】同じE3Addが、TopMenuTVC内にもある。
-		//E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
-		//												   inManagedObjectContext:Re0root.managedObjectContext];
-		E3record *e3obj = [MocFunctions insertAutoEntity:@"E3record"]; // autorelese
-		e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
-		//e3obj.nReservType = [NSNumber numberWithInt:0]; // (0)利用
-		e3obj.e1card = nil;
-		e3obj.e4shop = Pe4shop;
-		e3obj.e5category = Pe5category;
-		e3obj.e6parts = nil;
-		// Args
-		e3detail.title = NSLocalizedString(@"Add Record", nil);
-		e3detail.Re3edit = e3obj;
-		if (Pe4shop) {
-			e3detail.PiAdd = 3; // (3)Shop固定
-		} else if (Pe5category) {
-			e3detail.PiAdd = 4; // (4)Category固定
-		} else {
-			e3detail.PiAdd = 1; // (1)New Add
-		}
-	}
-	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:YES];
-	[e3detail release];
+#endif
+	[RaE3list release],		RaE3list = nil;
+	[RaSection release],	RaSection = nil;
+	[RaIndex release],		RaIndex = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re0root release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 

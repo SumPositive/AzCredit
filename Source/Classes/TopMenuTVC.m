@@ -48,108 +48,93 @@
 @synthesize Re0root;
 
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	NSLog(@"--- unloadRelease --- TopMenuTVC");
-#ifdef GD_Ad_ENABLED
-	MbAdCanVisible = NO;  // 以後、Ad表示禁止
+#pragma mark - Source - Functions
 
-	if (MbannerView) {
-		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
-		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
-		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
+- (void)azInformationView
+{
+	// ヨコ非対応につき正面以外は、hideするようにした。
+	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) {
+		return; // 正面だけにボタン表示するようにしたので通らないハズだが、念のため。
 	}
-
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;	// 破棄
-	}
-#endif
-	[MinformationView hide];
-	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
-}
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	// @property (retain)
-	[Re0root release], Re0root = nil;
-	[super dealloc];
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
-
-
-/* iOS3.0以降では、viewDidUnload を使うようになった。
-- (void)didReceiveMemoryWarning {
-	AzLOG(@"MEMORY! TopMenuTVC: didReceiveMemoryWarning");
-    [super didReceiveMemoryWarning];
-}
-*/
-
-// UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
-{
-	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
-	if (self) {
-		// 初期化成功
-#ifdef GD_Ad_ENABLED
-		MbAdCanVisible = NO;
-#endif
-	}
-	return self;
-}
-
-// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
-- (void)loadView
-{
-	NSLog(@"--- loadView ---");
-	[super loadView];
-
-	// Set up NEXT Left [Back] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-#ifdef AzFREE
-	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free.png"]];
-	UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
-	self.navigationItem.leftBarButtonItem	= bui;
-	[bui release];
-	[iv release];
+	if (MinformationView==nil) {
+		MinformationView = [[InformationView alloc] initWithFrame:[self.view.window bounds]];
+		[self.view.window addSubview:MinformationView]; //回転しないが、.viewから出すとToolBarが隠れない
+		//NG//[MinformationView release] viewDidUnloadにて解放
+	}
+	[MinformationView show];
+}
+
+- (void)azSettingView
+{
+	SettingTVC *view = [[SettingTVC alloc] init];
+	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:view animated:YES];
+	[view release];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	switch (alertView.tag) {
+		case ALERT_TAG_SupportSite:
+			if (buttonIndex == 1) { // OK
+				[[UIApplication sharedApplication] 
+				 openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/category/9034665-1.html"]];
+			}
+			break;
+	}
+}
+
+- (void)e3recordAdd
+{
+	if (MiE1cardCount <= 0) {
+		alertBox(NSLocalizedString(@"No Card",nil),
+				 NSLocalizedString(@"No Card msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	
+	// Add E3  【注意】同じE3Addが、E3recordTVC内にもある。
+	//E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
+	//												inManagedObjectContext:Re0root.managedObjectContext];
+	E3record *e3obj = [MocFunctions insertAutoEntity:@"E3record"]; // autorelese
+	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
+	e3obj.e1card = nil;
+	e3obj.e4shop = nil;
+	e3obj.e5category = nil;
+	e3obj.e6parts = nil;
+	
+#ifdef xxxAzDEBUG
+	// DEBUG : insertAutoEntityで生成されたEntityは、rollBack では削除されないことを確認した。
+	e3obj.nAmount = [NSDecimalNumber decimalNumberWithString:@"999001"];
+	NSLog(@"*****1***** e3obj=%@", e3obj);
+	NSLog(@"*****1***** e3obj.nAmount=%@", e3obj.nAmount);
+	[MocFunctions rollBack];
+	NSLog(@"*****2***** e3obj=%@", e3obj);
+	NSLog(@"*****2***** e3obj.nAmount=%@", e3obj.nAmount);
+	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
+	e3obj.nAmount = [NSDecimalNumber decimalNumberWithString:@"999002"];
+	NSLog(@"*****3***** e3obj=%@", e3obj);
+	NSLog(@"*****3***** e3obj.nAmount=%@", e3obj.nAmount);
+	return;
 #endif
 	
-#ifndef AzMAKE_SPLASHFACE
-	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
-													  style:UIBarButtonItemStylePlain  //Bordered
-													 target:self action:@selector(azInformationView)];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(azSettingView)];
-	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buAdd, buFlex, buSet, nil];
-	[self setToolbarItems:buArray animated:YES];
-	[MbuToolBarInfo release];
-	[buAdd release];
-	[buSet release];
-	[buFlex release];
-#endif	
-	
-	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
+	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
+	e3detail.title = NSLocalizedString(@"Add Record", nil);
+	e3detail.Re3edit = e3obj;
+	e3detail.PiAdd = (1); // (1)New Add
+	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:e3detail animated:YES];
+	[e3detail release]; // self.navigationControllerがOwnerになる
 }
+
+- (void)barButtonAdd {
+	// Add Card
+	[self e3recordAdd];
+}
+
+
+#pragma mark - Ad
 
 #ifdef GD_Ad_ENABLED
 - (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
@@ -177,24 +162,7 @@
 		}
 	}
 }
-#endif
 
-// loadView の次に呼び出される
-- (void)viewDidLoad 
-{
-	NSLog(@"--- viewDidLoad ---");
-	MiE1cardCount = 0;			// viewWillAppearにてセット
-    [super viewDidLoad];
-}
-
-
-- (void)barButtonAdd {
-	// Add Card
-	[self e3recordAdd];
-}
-
-
-#ifdef GD_Ad_ENABLED
 - (void)AdShowApple:(BOOL)bApple AdMob:(BOOL)bMob
 {
 	AzLOG(@"=== AdShowApple[%d] AdMob[%d] ===", bApple, bMob);
@@ -274,49 +242,91 @@
  */
 #endif
 
-//---------------------------------------------------------------------------回転
-// YES を返すと、回転と同時に willRotateToInterfaceOrientation が呼び出され、
-//				回転後に didRotateFromInterfaceOrientation が呼び出される。
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// ここでは回転の許可、禁止だけを判定する  （現在の向きは、self.interfaceOrientation で取得できる）
-	if (interfaceOrientation==UIInterfaceOrientationPortrait) return YES; // 正面は常に許可
 
-	if ([self.view viewWithTag:VIEW_TAG_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
-	
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.MbLoginShow) return NO;	// appLoginPassView が表示中なので回転禁止
-	
-	return !MbOptAntirotation; // Not MbOptAntirotation
-}
+#pragma mark - View
 
-// shouldAutorotateToInterfaceOrientation で YES を返すと、回転開始時に呼び出される
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
-								duration:(NSTimeInterval)duration
+// UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
+- (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面：infoボタン表示
-		MbuToolBarInfo.enabled = YES;
-	} else {
-		MbuToolBarInfo.enabled = NO;
-		if (MinformationView) {
-			[MinformationView hide]; // 正面でなければhide
+	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
+	if (self) {
+		// 初期化成功
+#ifdef GD_Ad_ENABLED
+		MbAdCanVisible = NO;
+#endif
+		// インストールやアップデート後、1度だけ処理する
+		NSString *zNew = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		NSString* zDef = [defaults valueForKey:@"DefVersion"];
+		if (![zDef isEqualToString:zNew]) {
+			[defaults setValue:zNew forKey:@"DefVersion"];
+			MbInformationOpen = YES; // Informationを自動オープンする
+		} else {
+			MbInformationOpen = NO;
 		}
 	}
-#ifdef GD_Ad_ENABLED
-	[self bannerViewWillRotate:toInterfaceOrientation];
-#endif
+	return self;
 }
 
+// IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+- (void)loadView
+{
+	NSLog(@"--- loadView ---");
+	[super loadView];
+
+	// Set up NEXT Left [Back] buttons.
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+	
+#ifdef AzFREE
+	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free.png"]];
+	UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
+	self.navigationItem.leftBarButtonItem	= bui;
+	[bui release];
+	[iv release];
+#endif
+	
+#ifndef AzMAKE_SPLASHFACE
+	// Tool Bar Button
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			target:nil action:nil];
+	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
+													  style:UIBarButtonItemStylePlain  //Bordered
+													 target:self action:@selector(azInformationView)];
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																		   target:self action:@selector(barButtonAdd)];
+	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+															  style:UIBarButtonItemStylePlain  //Bordered
+															 target:self action:@selector(azSettingView)];
+	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buAdd, buFlex, buSet, nil];
+	[self setToolbarItems:buArray animated:YES];
+	[MbuToolBarInfo release];
+	[buAdd release];
+	[buSet release];
+	[buFlex release];
+#endif	
+	
+	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
+}
+
+// loadView の次に呼び出される
+- (void)viewDidLoad 
+{
+	NSLog(@"--- viewDidLoad ---");
+	MiE1cardCount = 0;			// viewWillAppearにてセット
+    [super viewDidLoad];
+}
 
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
 {
     [super viewWillAppear:animated];
-
+	
 	self.title = NSLocalizedString(@"Product Title",nil);
 	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
-
+	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
@@ -324,7 +334,7 @@
 	//MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
 	
 	
-
+	
 	//-----------------------------------------------------------------------------
 	// E1card 件数を求める
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -398,9 +408,15 @@
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated {	// ＜＜魅せる処理＞＞
+- (void)viewDidAppear:(BOOL)animated
+{	// ＜＜魅せる処理＞＞
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	if (MbInformationOpen) {	//initWithStyleにて判定処理している
+		MbInformationOpen = NO;	// 以後、自動初期表示しない。
+		[self azInformationView];  //[1.0.2]最初に表示する。バックグランド復帰時には通らない
+	}
 	
 #ifdef GD_Ad_ENABLED
 	// iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
@@ -428,133 +444,44 @@
 #endif
 }
 
-/*
-// この画面が非表示になった後に呼ばれる
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
-}
-*/
 
-/*
-// カムバック処理（復帰再現）：AppDelegate から呼ばれる
-- (void)viewComeback:(NSArray *)selectionArray
+#pragma mark View 回転
+
+//---------------------------------------------------------------------------回転
+// YES を返すと、回転と同時に willRotateToInterfaceOrientation が呼び出され、
+//				回転後に didRotateFromInterfaceOrientation が呼び出される。
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{	// ここでは回転の許可、禁止だけを判定する  （現在の向きは、self.interfaceOrientation で取得できる）
+	if (interfaceOrientation==UIInterfaceOrientationPortrait) return YES; // 正面は常に許可
+	
+	if ([self.view viewWithTag:VIEW_TAG_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
+	
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (apd.MbLoginShow) return NO;	// appLoginPassView が表示中なので回転禁止
+	
+	return !MbOptAntirotation; // Not MbOptAntirotation
+}
+
+// shouldAutorotateToInterfaceOrientation で YES を返すと、回転開始時に呼び出される
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+								duration:(NSTimeInterval)duration
 {
-	// L0
-	NSInteger lRow = [[selectionArray objectAtIndex:0] integerValue];
-	if (lRow < 0) return; // この画面表示
-	
-	NSInteger lSec = lRow / GD_SECTION_TIMES;
-	if (lSec < 0) return; // この画面表示
-	lRow -= (lSec * GD_SECTION_TIMES);
-	
-	if (MiE1cardCount <= 0) return; // No Card
-	
-	// ドリルダウンして TopMenuTVC でなくなるため iAd 非表示
-	[self iAdOff];
-	MbannerEnabled = NO; 
-	
-	// didSelectRowAtIndexPath と同様の振り分けになる
-	switch (lSec) {
-		case 0: //---------------------------------------------SECTION 0
-			switch (lRow) {
-				case 0: // Add Deteil
-					// なにもしない
-					break;
-				case 1: // E3recordTVC へ
-					{
-						E3recordTVC *tvc = [[E3recordTVC alloc] init];
-						tvc.title =  NSLocalizedString(@"Record list", nil);
-						tvc.Re0root = Re0root;
-						//tvc.Pe1card = nil;  // =nil:最近の全E3表示モード　　=e1obj:指定E1以下を表示することができる
-						tvc.Pe4shop = nil;
-						tvc.Pe5category = nil;
-						[self.navigationController pushViewController:tvc animated:NO];
-						lRow = [[selectionArray objectAtIndex:1] integerValue];
-						if (0 <= lRow) { // lRow<0:ならば「最近の明細：末尾」を表示する
-							// viewComeback を呼び出す
-							[tvc viewWillAppear:NO]; // Fechデータセットさせるため
-							[tvc viewComeback:selectionArray];
-						}
-						[tvc release];
-					}
-					break;
-				case 2: // E7paymentTVC へ
-				{
-					// E7paymentTVC へ
-					E7paymentTVC *tvc = [[E7paymentTVC alloc] init];
-					tvc.title =  NSLocalizedString(@"Payment list", nil);
-					tvc.Re0root = Re0root;
-					[self.navigationController pushViewController:tvc animated:NO];
-					// viewComeback を呼び出す
-					[tvc viewWillAppear:NO]; // Fechデータセットさせるため
-					[tvc viewComeback:selectionArray];
-					[tvc release];
-				}
-					break;
-			}
-			break;
-		case 1: //---------------------------------------------SECTION 1
-			switch (lRow) {
-				case 0: // E1card へ
-					{
-						E1cardTVC *tvc = [[E1cardTVC alloc] init];
-						tvc.title = NSLocalizedString(@"Card list",nil);
-						tvc.Re0root = Re0root;
-						tvc.Re3edit = nil;
-						[self.navigationController pushViewController:tvc animated:NO];
-						// viewComeback を呼び出す
-						[tvc viewWillAppear:NO]; // Fechデータセットさせるため
-						[tvc viewComeback:selectionArray];
-						[tvc release];
-					}
-					break;
-				case 1: // E4shop へ
-				{
-					E4shopTVC *tvc = [[E4shopTVC alloc] init];
-					tvc.title = NSLocalizedString(@"Shop list",nil);
-					tvc.Re0root = Re0root;
-					tvc.Pe3edit = nil;
-					[self.navigationController pushViewController:tvc animated:NO];
-					// viewComeback を呼び出す
-					[tvc viewWillAppear:NO]; // Fechデータセットさせるため
-					[tvc viewComeback:selectionArray];
-					[tvc release];
-				}
-					break;
-				case 2: // Category list
-					break;
-			}
-			break;
-		case 2: //---------------------------------------------SECTION 2
-			switch (lRow) {
-				case 0:
-				{
-					GooDocsTVC *goodocs = [[GooDocsTVC alloc] init];
-					goodocs.title = @"Google Document";
-					goodocs.Re0root = Re0root;
-					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-					[self.navigationController pushViewController:goodocs animated:NO];
-					[goodocs release];
-				}
-					break;
-			}
-			break;
+	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
+		// 正面：infoボタン表示
+		MbuToolBarInfo.enabled = YES;
+	} else {
+		MbuToolBarInfo.enabled = NO;
+		if (MinformationView) {
+			[MinformationView hide]; // 正面でなければhide
+		}
 	}
+#ifdef GD_Ad_ENABLED
+	[self bannerViewWillRotate:toInterfaceOrientation];
+#endif
 }
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
 
-#pragma mark Table view methods
+
+#pragma mark - TableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -580,14 +507,6 @@
 	return 0;
 #endif
 }
-
-/*
-// TableView セクションタイトルを応答
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
-{
-	return nil;
-}
-*/
 
 // TableView セクションフッタを応答
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
@@ -869,83 +788,56 @@
 	}
 }
 
-- (void)azInformationView
+
+#pragma mark - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-	// ヨコ非対応につき正面以外は、hideするようにした。
-	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) {
-		return; // 正面だけにボタン表示するようにしたので通らないハズだが、念のため。
+	NSLog(@"--- unloadRelease --- TopMenuTVC");
+#ifdef GD_Ad_ENABLED
+	MbAdCanVisible = NO;  // 以後、Ad表示禁止
+	
+	if (MbannerView) {
+		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
+		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
+		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
+		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
 	}
 	
-	if (MinformationView==nil) {
-		MinformationView = [[InformationView alloc] initWithFrame:[self.view.window bounds]];
-		[self.view.window addSubview:MinformationView]; //回転しないが、.viewから出すとToolBarが隠れない
-		//NG//[MinformationView release] viewDidUnloadにて解放
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release], RoAdMobView = nil;	// 破棄
 	}
-	[MinformationView show];
-}
-
-- (void)azSettingView
-{
-	SettingTVC *view = [[SettingTVC alloc] init];
-	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:view animated:YES];
-	[view release];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	switch (alertView.tag) {
-		case ALERT_TAG_SupportSite:
-			if (buttonIndex == 1) { // OK
-				[[UIApplication sharedApplication] 
-				 openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/category/9034665-1.html"]];
-			}
-			break;
-	}
-}
-
-- (void)e3recordAdd
-{
-	if (MiE1cardCount <= 0) {
-		alertBox(NSLocalizedString(@"No Card",nil),
-				 NSLocalizedString(@"No Card msg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	
-	// Add E3  【注意】同じE3Addが、E3recordTVC内にもある。
-	//E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
-	//												inManagedObjectContext:Re0root.managedObjectContext];
-	E3record *e3obj = [MocFunctions insertAutoEntity:@"E3record"]; // autorelese
-	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
-	e3obj.e1card = nil;
-	e3obj.e4shop = nil;
-	e3obj.e5category = nil;
-	e3obj.e6parts = nil;
-
-#ifdef xxxAzDEBUG
-	// DEBUG : insertAutoEntityで生成されたEntityは、rollBack では削除されないことを確認した。
-	e3obj.nAmount = [NSDecimalNumber decimalNumberWithString:@"999001"];
-	NSLog(@"*****1***** e3obj=%@", e3obj);
-	NSLog(@"*****1***** e3obj.nAmount=%@", e3obj.nAmount);
-	[MocFunctions rollBack];
-	NSLog(@"*****2***** e3obj=%@", e3obj);
-	NSLog(@"*****2***** e3obj.nAmount=%@", e3obj.nAmount);
-	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
-	e3obj.nAmount = [NSDecimalNumber decimalNumberWithString:@"999002"];
-	NSLog(@"*****3***** e3obj=%@", e3obj);
-	NSLog(@"*****3***** e3obj.nAmount=%@", e3obj.nAmount);
-	return;
 #endif
-
-	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
-	e3detail.title = NSLocalizedString(@"Add Record", nil);
-	e3detail.Re3edit = e3obj;
-	e3detail.PiAdd = (1); // (1)New Add
-	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:YES];
-	[e3detail release]; // self.navigationControllerがOwnerになる
+	[MinformationView hide];
+	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
 }
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	// @property (retain)
+	[Re0root release], Re0root = nil;
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
+
+/* iOS3.0以降では、viewDidUnload を使うようになった。
+ - (void)didReceiveMemoryWarning {
+ AzLOG(@"MEMORY! TopMenuTVC: didReceiveMemoryWarning");
+ [super didReceiveMemoryWarning];
+ }
+ */
 
 
 @end

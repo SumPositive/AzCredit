@@ -40,6 +40,15 @@
 @implementation E2temp
 @synthesize iYearMMDD, bPaid, decSum, iNoCheck, e2invoices;
 
+
+#pragma mark - Source - Functions
+#pragma mark - Ad
+#pragma mark - View
+#pragma mark View 回転
+#pragma mark - TableView
+#pragma mark - Unload - dealloc
+
+
 - (void)dealloc {   // 生成とは逆順に解放するのが好ましい
 	[decSum release];
 	[e2invoices release];

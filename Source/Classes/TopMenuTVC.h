@@ -38,7 +38,8 @@
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
 	NSInteger	MiE1cardCount;
-	BOOL		MbOptAntirotation;
+	BOOL			MbOptAntirotation;
+	BOOL			MbInformationOpen;	//[1.0.2]InformationViewを初回自動表示するため
 }
 
 @property (nonatomic, retain) E0root				*Re0root;

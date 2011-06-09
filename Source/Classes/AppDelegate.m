@@ -13,6 +13,9 @@
 #import "Entity.h"
 #import "MocFunctions.h"
 #import "TopMenuTVC.h"
+#ifdef AzPAD
+#import "padRootVC.h"
+#endif
 
 
 #define TAG_TF_LOGINPASS			901
@@ -23,15 +26,15 @@
 @end
 
 
-//static NSString *kComebackIndexKey = @"ComebackIndex";	// preference key to obtain our restore location
-
 @implementation AppDelegate
 
 @synthesize window;
-@synthesize navigationController;
-//@synthesize RaComebackIndex;
+@synthesize mainController;
 @synthesize	Me3dateUse;
 @synthesize MbLoginShow;
+#ifdef AzPAD
+@synthesize padRootVC;
+#endif
 
 
 - (void)dealloc 
@@ -39,10 +42,16 @@
 	AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
 	[Me3dateUse release], Me3dateUse = nil;
 
-	AzRETAIN_CHECK(@"AppDelegate navigationController", navigationController, 1)
-	[navigationController release];
+	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
+	mainController.delegate = nil;
+	[mainController release], mainController = nil;
+
 	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
 	[window release];
+
+#ifdef AzPAD
+	[padRootVC release], padRootVC = nil;
+#endif
 	
 	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
     [persistentStoreCoordinator release];
@@ -54,6 +63,7 @@
 	[super dealloc];
 }
 
+
 #ifdef AzDEBUG
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application 
 {	// メモリ不足警告があったことを知らせる
@@ -61,8 +71,8 @@
 }
 #endif
 
-#pragma mark -
-#pragma mark Application lifecycle
+
+#pragma mark - Application lifecycle
 
 //<iOS4> - (void)applicationDidFinishLaunching:(UIApplication *)application
 - (BOOL)application:(UIApplication *)application 
@@ -105,13 +115,29 @@
 	//-------------------------------------------------
 	TopMenuTVC *topMenuTvc = [[TopMenuTVC alloc] init];
 	topMenuTvc.Re0root = e0node; // TopMenuTVC側でretain
-	// topMenu を naviCon へ登録
-	navigationController = [[UINavigationController alloc] 
-									   initWithRootViewController:topMenuTvc];
+
+#ifdef AzPAD
+	padRootVC = [[PadRootVC alloc] init]; // retainされる
+	// padRootVC を [0] naviLeft へ登録
+	UINavigationController* naviLeft = [[UINavigationController alloc] initWithRootViewController:padRootVC];
+	// topMenu を [1] naviRight へ登録
+	UINavigationController* naviRight = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
+	// mainController へ登録
+	mainController = [[UISplitViewController alloc] init];
+	mainController.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
+	mainController.delegate = padRootVC;
+	[naviLeft release];
+	[naviRight release];
+#else
+	// topMenu を navigationController へ登録
+	mainController = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
+#endif
+	
+	// mainController を window へ登録
+	[window addSubview:mainController.view];
+	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
+
 	[topMenuTvc release];
-	// NavCon を window へ登録
-	[window addSubview:navigationController.view];
-	AzRETAIN_CHECK(@"AppDelegate naviCon", navigationController, 2)
 	
 	
 #ifdef AzMAKE_SPLASHFACE
@@ -248,8 +274,7 @@
 }
 
 
-#pragma mark -
-#pragma mark Saving
+#pragma mark - Saving
 
 /**
  Performs the save action for the application, which is to send the save:
@@ -353,8 +378,7 @@
 }
 
 
-#pragma mark -
-#pragma mark Application's documents directory
+#pragma mark - Application's documents directory
 
 /**
  Returns the path to the application's documents directory.
@@ -366,6 +390,8 @@
     return basePath;
 }
 
+
+#pragma mark - Login password
 
 // ログイン画面処理
 - (void)appLoginPassView 
@@ -468,8 +494,8 @@
 			MviewLogin.alpha = 0.3;
 			[UIView commitAnimations];
 			MbLoginShow = NO;
-			//[MviewLogin removeFromSuperview]; 破棄しない！するとE4shopTVCでフリーズ発生
-			//MviewLogin = nil;
+			//[MviewLogin removeFromSuperview];  	self.windowへaddSubviewしてrelease済みである
+			//MviewLogin = nil;　　　バックグランド中も有効、self.windowが破棄されるまで有効のまま残す
 		}
 		else {
 			// NG
