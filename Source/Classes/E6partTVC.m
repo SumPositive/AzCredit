@@ -40,7 +40,7 @@
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
 	NSLog(@"--- unloadRelease --- E6partTVC");
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
 		[RoAdMobView release],	RoAdMobView = nil;
@@ -80,7 +80,7 @@
 		Me2e1card = nil;
 		Me7e0root = nil;
 		MbFirstOne = YES;
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 		RoAdMobView = nil;
 #endif
 	}
@@ -105,7 +105,7 @@
 	[buTop release];
 	[buFlex release];
 
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
@@ -358,7 +358,7 @@
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
 {
@@ -490,7 +490,7 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	return [RaE6parts count] + 1; // AdMob
 #else
 	return [RaE6parts count];  // Me6partsは、[E2invoices]×[E3records] の二次元配列
@@ -501,7 +501,7 @@
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= section) {
 		return 1; // AdMob
 	}
@@ -518,7 +518,7 @@
 // TableView セクション名を応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= section) {
 		return @"End"; // AdMob
 	}
@@ -553,7 +553,7 @@
  // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= indexPath.section) {
 		return GAD_SIZE_320x50.height; // AdMob
 	}
@@ -574,7 +574,7 @@
 	UITableViewCell *cell = nil;
 	UILabel *cellLabel = nil;
 	
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
     static NSString *zCellAdMob = @"CellAdMob";
 	if ([RaE6parts count] <= indexPath.section) {
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:zCellAdMob];
@@ -763,7 +763,7 @@
 // TableView 行選択時の動作
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= indexPath.section) {
 		return; // AdMob
 	}
@@ -874,7 +874,7 @@
 
 // Editモード時の行Edit可否　　 YESを返した行は、左にスペースが入って右寄りになる
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= indexPath.section) { //セクション
 		return NO; // AdMob
 	}
@@ -887,7 +887,7 @@
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= indexPath.section) { //セクション
 		return NO; // AdMob
 	}
@@ -902,7 +902,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)oldPath 
 																		 toProposedIndexPath:(NSIndexPath *)newPath 
 {
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if ([RaE6parts count] <= newPath.section) {
 		return oldPath; // AdMob: 移動なし
 	}

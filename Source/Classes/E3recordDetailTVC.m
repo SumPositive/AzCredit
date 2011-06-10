@@ -22,6 +22,10 @@
 #import "EditAmountVC.h"
 #import "CalcView.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 #define ACTIONSEET_TAG_DELETE		190
 
 #define TAG_BAR_BUTTON_TOPVIEW		901		// viewWillAppear()にて、これ以上のものを無効にしている
@@ -34,7 +38,7 @@
 
 
 @interface E3recordDetailTVC (PrivateMethods)
-- (void)cancel:(id)sender;
+//- (void)cancel:(id)sender;  iPad対応のため公開メソッド(cancelClose:)になった。
 - (void)save:(id)sender;
 - (void)viewDesign;
 - (void)cellButtonE6check: (UIButton *)button;
@@ -115,7 +119,7 @@
 	[McalcView show];
 }
 
-- (void)cancel:(id)sender
+- (void)cancelClose:(id)sender
 {
 	[McalcView hide]; // Calcが出てれば隠す
 	
@@ -131,12 +135,17 @@
 	//[0.4]
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-	
+
+#ifdef AzPAD
+	//Padでは、親側の popoverControllerShouldDismissPopover にて処理
+	[(PadNaviCon*)self.navigationController dismissPopoverCancel];  // PadNaviCon拡張メソッド
+#else
 	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
 		[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 	} else {
 		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 	}
+#endif
 }
 
 // 編集フィールドの値を self.e3target にセットする
@@ -384,7 +393,7 @@
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											  target:self action:@selector(cancel:)] autorelease];
+											  target:self action:@selector(cancelClose:)] autorelease];
 	// SAVEボタンを右側に追加する
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -424,8 +433,8 @@
 		
 		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
-												 target:self action:@selector(cancel:)]; // ＜＜ cancel:YES<<--TopView ＞＞
-		MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancel:にて判断に使用
+												 target:self action:@selector(cancelClose:)]; // ＜＜ cancelClose:YES<<--TopView ＞＞
+		MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancelClose:にて判断に使用
 		
 		UIBarButtonItem *buCopyAdd = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyAdd.png"]
 																	  style:UIBarButtonItemStylePlain  //Bordered
@@ -1052,7 +1061,7 @@
 	} else {
 		[MocFunctions e6check:NO inE6obj:e6obj inAlert:YES];
 	}
-	//------------------＜＜ここでは保存しない！ E3修正の cancel:でrollBack, save:でcommitする＞＞
+	//------------------＜＜ここでは保存しない！ E3修正の cancelClose:でrollBack, save:でcommitする＞＞
 	// [EntityRelation commit];
 	
 	[self.tableView reloadData];

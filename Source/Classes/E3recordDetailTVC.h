@@ -53,4 +53,7 @@
 @property NSInteger							PiAdd;
 @property NSInteger							PiFirstYearMMDD;	
 
+// 公開メソッド
+- (void)cancelClose:(id)sender ;
+
 @end

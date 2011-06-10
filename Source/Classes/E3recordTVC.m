@@ -356,7 +356,7 @@
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 		//
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 		RoAdMobView = nil;
 #endif
 	}
@@ -388,7 +388,7 @@
 	[buTop release];
 	[buFlex release];
 	
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
@@ -467,7 +467,7 @@
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
 {
@@ -576,13 +576,13 @@
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 				if (RoAdMobView) { // Request an AdMob ad for this table view cell
 					[cell.contentView addSubview:RoAdMobView]; // unloadReleaseにて解放
 				}
 #endif
 			}
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 			if (RoAdMobView) {
 				CGRect rc = RoAdMobView.frame;
 				if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
@@ -805,7 +805,7 @@
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
 	NSLog(@"--- unloadRelease --- E3recordTVC");
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
 		[RoAdMobView release], RoAdMobView = nil;

@@ -2886,10 +2886,10 @@
 		44C0E7EE13A1108E003D0465 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
-				44C0E7EF13A110BA003D0465 /* PadRootVC.m */,
 				44C0E7F013A110BA003D0465 /* PadRootVC.h */,
-				44C0E7F113A110BA003D0465 /* PadPopoverInNaviCon.m */,
+				44C0E7EF13A110BA003D0465 /* PadRootVC.m */,
 				44C0E7F213A110BA003D0465 /* PadPopoverInNaviCon.h */,
+				44C0E7F113A110BA003D0465 /* PadPopoverInNaviCon.m */,
 			);
 			name = iPad;
 			sourceTree = "<group>";

@@ -26,6 +26,11 @@
 #import "WebSiteVC.h"
 #import "HttpServerView.h"
 
+#ifdef AzPAD
+#import "PadRootVC.h"
+#import "PadPopoverInNaviCon.h"
+#endif
+
 #define ALERT_TAG_SupportSite		109
 
 #define AD_HIDDEN_OFS_Y		200		//iAdを非表示/表示するときのＹ軸変位
@@ -36,7 +41,7 @@
 - (void)azSettingView;
 - (void)e3recordAdd;
 
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 //- (void)iAdOn;
 //- (void)iAdOff;
 - (void)AdShowApple:(BOOL)bApple AdMob:(BOOL)bMob;
@@ -123,8 +128,23 @@
 	e3detail.title = NSLocalizedString(@"Add Record", nil);
 	e3detail.Re3edit = e3obj;
 	e3detail.PiAdd = (1); // (1)New Add
+	
+#ifdef  AzPAD
+	[Mpopover release], Mpopover = nil;
+	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	Mpopover.popoverContentSize = CGSizeMake(450, 450);
+	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	MindexPathEdit = nil;
+	CGRect rc = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	rc.origin.x += rc.size.width/2;
+	rc.size.width = 30;
+	[Mpopover presentPopoverFromRect:rc
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+#else
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
+#endif	
+
 	[e3detail release]; // self.navigationControllerがOwnerになる
 }
 
@@ -136,7 +156,7 @@
 
 #pragma mark - Ad
 
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 - (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	if (MbannerView) {
@@ -243,7 +263,7 @@
 #endif
 
 
-#pragma mark - View
+#pragma mark - View lifecycle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -251,7 +271,7 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化成功
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 		MbAdCanVisible = NO;
 #endif
 		// インストールやアップデート後、1度だけ処理する
@@ -355,7 +375,7 @@
 	[self.tableView reloadData];
 	
 	
-#ifdef GD_Ad_ENABLED 
+#ifdef FREE_AD 
 	MbAdCanVisible = YES;
 	//--------------------------------------------AdMob
 	if (RoAdMobView==nil) {
@@ -418,7 +438,7 @@
 		[self azInformationView];  //[1.0.2]最初に表示する。バックグランド復帰時には通らない
 	}
 	
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	// iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
 	// AdMobは、常時開始とするためYES
 	[self AdShowApple:NO AdMob:YES];
@@ -437,7 +457,7 @@
 - (void)viewWillDisappear:(BOOL)animated 
 {
 	[super viewWillDisappear:animated];
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	// Ad非表示にする
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 	[self AdShowApple:NO AdMob:NO];
@@ -475,13 +495,13 @@
 			[MinformationView hide]; // 正面でなければhide
 		}
 	}
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	[self bannerViewWillRotate:toInterfaceOrientation];
 #endif
 }
 
 
-#pragma mark - TableView
+#pragma mark - TableView lifecycle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -541,8 +561,8 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
 		//cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	switch (indexPath.section) {
 		case 0: //-------------------------------------------------------------Statement
@@ -551,6 +571,9 @@
 				case 0:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 					cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
+#ifdef AzPAD
+					cell.accessoryType = UITableViewCellAccessoryNone;
+#endif
 					break;
 				case 1:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Statements.png"];
@@ -794,7 +817,7 @@
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 	
 	if (MbannerView) {
@@ -838,6 +861,39 @@
  [super didReceiveMemoryWarning];
  }
  */
+
+#ifdef AzPAD
+#pragma mark - delegate UIPopoverControllerDelegate
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+	if (popoverController==Mpopover) {
+		// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+		// つまり、これが呼び出されたときは、常に CANCEL　である。
+		// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
+		// PadPopoverInNaviCon を使っているから
+		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+		E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
+		[e3tvc cancelClose:nil];
+	}
+	return YES; // 閉じることを許可
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じた後に通知
+	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
+		// [SAVE]ボタンが押された
+		
+		// 未払い総額 再描画
+		
+		
+	}
+	// [Cancel][Save][枠外タッチ]何れでも閉じるときここを通るので解放する。さもなくば回転後に現れることになる
+	[Mpopover release], Mpopover = nil;
+	return;
+}
+#endif
 
 
 @end

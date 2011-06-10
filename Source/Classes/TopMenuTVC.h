@@ -10,32 +10,39 @@
 #import <iAd/iAd.h>
 #import "GADBannerView.h"
 
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 #import "GADBannerViewDelegate.h"
 #endif
 
 @class InformationView;
 
-@interface TopMenuTVC : UITableViewController
-#ifdef GD_Ad_ENABLED
-	<ADBannerViewDelegate>
+@interface TopMenuTVC : UITableViewController  <UITextFieldDelegate
+#ifdef AzPAD
+	,UIPopoverControllerDelegate
 #endif
+#ifdef FREE_AD
+	,ADBannerViewDelegate
+#endif
+>
 {
 @private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	E0root				*Re0root;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
-	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	InformationView		*MinformationView;
-#ifdef GD_Ad_ENABLED
+	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
+#ifdef AzPAD
+	UIPopoverController*	Mpopover;
+	NSIndexPath*				MindexPathEdit;
+#endif
+#ifdef FREE_AD
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
 	BOOL						MbAdCanVisible;		//[1.0.1]=YES:表示可能　=NO:表示厳禁
 #endif
-	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 	//----------------------------------------------assign
 	NSInteger	MiE1cardCount;
 	BOOL			MbOptAntirotation;

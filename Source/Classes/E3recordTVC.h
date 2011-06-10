@@ -24,7 +24,7 @@
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要

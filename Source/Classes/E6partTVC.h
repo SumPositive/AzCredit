@@ -26,7 +26,7 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray	*RaE2invoices;
 	NSMutableArray	*RaE6parts;		// (Pe2invoices,E6parts) 二次元
-#ifdef GD_Ad_ENABLED
+#ifdef FREE_AD
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要

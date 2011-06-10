@@ -9,11 +9,24 @@
 
 //#define AzMAKE_SPLASHFACE  // 起動画面 Default.png を作るための作業オプション
 
-#ifdef AzSTABLE
-// 広告なし
-#else
-#define GD_Ad_ENABLED
-#define MY_BANNER_UNIT_ID	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free"　
+/*
+ #ifdef AzSTABLE
+ // 広告なし
+ #else
+ #define GD_Ad_ENABLED
+ #define MY_BANNER_UNIT_ID	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free"　
+ #endif
+ */
+#if defined(AzSTABLE) || defined(AzMAKE_SPLASHFACE)
+	// 広告なし
+#else // AzFREE
+	#ifdef AzPAD
+		#define FREE_AD_PAD
+		#define AdMobID_PackPAD	@"a14df22df88250c";		//AdMobパブリッシャー ID  "クレメモ Free for iPad"
+	#else
+		#define FREE_AD
+		#define AdMobID_PackList	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free for iPhone"　
+	#endif
 #endif
 
 #define OR  ||
