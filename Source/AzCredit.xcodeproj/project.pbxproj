@@ -574,6 +574,8 @@
 		44B332D51123B756007D3A15 /* E1cardTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B332D31123B756007D3A15 /* E1cardTVC.m */; };
 		44B3337A1123E97A007D3A15 /* AzCredit.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */; };
 		44B333A11123EE2F007D3A15 /* AzCredit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */; };
+		44B4C07813A4988900CDD359 /* Icon72S1.png in Resources */ = {isa = PBXBuildFile; fileRef = 44B4C07513A4988900CDD359 /* Icon72S1.png */; };
+		44B4C07913A4988900CDD359 /* Icon72Free.png in Resources */ = {isa = PBXBuildFile; fileRef = 44B4C07613A4988900CDD359 /* Icon72Free.png */; };
 		44B605F61126FADD00E82C54 /* E1editPayDayVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B605F41126FADD00E82C54 /* E1editPayDayVC.h */; };
 		44B605F71126FADD00E82C54 /* E1editPayDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B605F51126FADD00E82C54 /* E1editPayDayVC.m */; };
 		44B85E8E1125B5A900383A34 /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
@@ -2110,6 +2112,8 @@
 		44B332D31123B756007D3A15 /* E1cardTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1cardTVC.m; sourceTree = "<group>"; };
 		44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcmappingmodel; path = AzCredit.xcmappingmodel; sourceTree = "<group>"; };
 		44B3339D1123EE2F007D3A15 /* AzCredit.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = AzCredit.xcdatamodel; sourceTree = "<group>"; };
+		44B4C07513A4988900CDD359 /* Icon72S1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon72S1.png; sourceTree = "<group>"; };
+		44B4C07613A4988900CDD359 /* Icon72Free.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon72Free.png; sourceTree = "<group>"; };
 		44B605F41126FADD00E82C54 /* E1editPayDayVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1editPayDayVC.h; sourceTree = "<group>"; };
 		44B605F51126FADD00E82C54 /* E1editPayDayVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1editPayDayVC.m; sourceTree = "<group>"; };
 		44B85E8C1125B5A900383A34 /* EditTextVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTextVC.h; sourceTree = "<group>"; };
@@ -2877,6 +2881,8 @@
 		44C0E5BB13A0A2D2003D0465 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
+				44B4C07613A4988900CDD359 /* Icon72Free.png */,
+				44B4C07513A4988900CDD359 /* Icon72S1.png */,
 				44C0E5D813A0A3CF003D0465 /* Info-iPad.plist */,
 				44C0E7D613A0A4D6003D0465 /* InfoS1-iPad.plist */,
 			);
@@ -4982,12 +4988,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */,
-				4434B832111F0A3900CCF7EE /* InfoPlist.strings in Resources */,
-				44BBEE881368558300DD6978 /* Default.png in Resources */,
-				44BBEE861368558300DD6978 /* Default@2x.png in Resources */,
 				44AF152E1341D8E80019F55C /* Icon57.png in Resources */,
 				44AF15301341D9000019F55C /* Icon57@2x.png in Resources */,
+				44BBEE881368558300DD6978 /* Default.png in Resources */,
+				44BBEE861368558300DD6978 /* Default@2x.png in Resources */,
+				448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */,
+				4434B832111F0A3900CCF7EE /* InfoPlist.strings in Resources */,
 				44BC4C2C13599FE4009B995C /* Icon24-Free.png in Resources */,
 				44BC4C2D13599FE4009B995C /* Icon24-Free@2x.png in Resources */,
 				44A8274A113A048B00F62E0E /* Icon32-Shop.png in Resources */,
@@ -5056,12 +5062,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44B0116A133EF773005AD0EA /* Localizable.strings in Resources */,
-				44B0116B133EF773005AD0EA /* InfoPlist.strings in Resources */,
-				44BBEE891368558300DD6978 /* Default.png in Resources */,
-				44BBEE871368558300DD6978 /* Default@2x.png in Resources */,
 				44D88BFB1350942E008CEAF6 /* Icon57s1.png in Resources */,
 				44D88BFD1350942E008CEAF6 /* Icon57s1@2x.png in Resources */,
+				44BBEE891368558300DD6978 /* Default.png in Resources */,
+				44BBEE871368558300DD6978 /* Default@2x.png in Resources */,
+				44B0116A133EF773005AD0EA /* Localizable.strings in Resources */,
+				44B0116B133EF773005AD0EA /* InfoPlist.strings in Resources */,
 				44B0116C133EF773005AD0EA /* Icon32-Shop.png in Resources */,
 				44B0116D133EF773005AD0EA /* Icon32-Category.png in Resources */,
 				44B0116E133EF773005AD0EA /* Icon32-Schedule.png in Resources */,
@@ -5128,6 +5134,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44B4C07913A4988900CDD359 /* Icon72Free.png in Resources */,
 				44C0E3B613A0A2D1003D0465 /* Localizable.strings in Resources */,
 				44C0E3B713A0A2D1003D0465 /* InfoPlist.strings in Resources */,
 				44C0E3F513A0A2D1003D0465 /* Icon24-Free.png in Resources */,
@@ -5198,6 +5205,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44B4C07813A4988900CDD359 /* Icon72S1.png in Resources */,
 				44C0E5DC13A0A475003D0465 /* Localizable.strings in Resources */,
 				44C0E5DD13A0A475003D0465 /* InfoPlist.strings in Resources */,
 				44C0E5DE13A0A475003D0465 /* Default.png in Resources */,

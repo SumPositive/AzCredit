@@ -476,15 +476,20 @@
 		case 0:
 			return NSLocalizedString(@"E2paidFooter",nil);
 			break;
-		case 1:
+		case 1: {
+			NSString* str; 
 			if (Re1select) {
-				return NSLocalizedString(@"E2unpaidFooter",nil);
+				str = NSLocalizedString(@"E2unpaidFooter",nil);
 			} else {
 				// "支払日の変更は、\nカード一覧から可能です。"
-				return NSLocalizedString(@"E2unpaidFromE8",nil);
+				str = NSLocalizedString(@"E2unpaidFromE8",nil);
 			}
-
-			break;
+#ifdef FREE_AD_PAD
+			return [str stringByAppendingString:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n"];	// 大型AdMobスペースのための下部余白
+#else
+			return str;
+#endif
+		} break;
 	}
 	return nil;
 }

@@ -13,7 +13,11 @@
 @class E3recordTVC;
 @class CalcView;
 
-@interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate>
+@interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate
+#ifdef AzPAD
+	,UIPopoverControllerDelegate
+#endif
+>
 {
 @private
 	//--------------------------retain

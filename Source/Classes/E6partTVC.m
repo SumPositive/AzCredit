@@ -113,7 +113,7 @@
 	//RoAdMobView.delegate = self;
 	RoAdMobView.delegate = nil; //Delegateなし
 	
-	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+	RoAdMobView.adUnitID = AdMobID_iPhone;
 	
 	// Let the runtime know which UIViewController to restore after taking
 	// the user wherever the ad goes and add it to the view hierarchy.

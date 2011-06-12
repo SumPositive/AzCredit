@@ -15,9 +15,12 @@
 {
 	UIPopoverController* Mpop;
 }
+
 @property (nonatomic, assign) UIPopoverController*	Mpop;
+
 - (void)dismissPopoverCancel;
 - (void)dismissPopoverSaved;
+
 @end
 
 

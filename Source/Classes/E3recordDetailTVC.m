@@ -78,6 +78,26 @@
 
 - (void)showCalcAmount
 {
+#ifdef AzPAD
+	CGRect rect = CGRectMake(0,0, 460,260);
+	McalcView = [[CalcView alloc] initWithFrame:rect];
+	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
+	McalcView.Rentity = Re3edit;
+	McalcView.RzKey = @"nAmount";
+	// Popover
+	UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:McalcView];
+	pop.popoverContentSize = rect.size;
+	pop.delegate = self;
+	CGRect rc = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+	rc.origin.y += 10;  rc.size.height -= 20;
+	[pop presentPopoverFromRect:rc inView:self.view 
+	   permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES];
+	McalcView.Rpopover = pop; //(retain)  内から閉じるときに必要になる
+	[pop release];
+	[McalcView release];
+	[McalcView show];
+	
+#else
 	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
 	[self.navigationController setToolbarHidden:YES];
 	
@@ -117,6 +137,7 @@
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
+#endif
 }
 
 - (void)cancelClose:(id)sender
@@ -352,7 +373,7 @@
 
 
 
-#pragma mark - View
+#pragma mark - View lifecycle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -670,7 +691,7 @@
 }
 
 
-#pragma mark Table view methods
+#pragma mark - TableView lifecycle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -789,11 +810,15 @@
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 			}
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
+#ifdef AzPAD
+			cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
+#else
 			if (MbE6paid) {
 				cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 			}
+#endif
 			switch (indexPath.row) {
 				case 0: { // Use date	// NSDateは、GTM(+0000)協定時刻で記録 ⇒ 表示でタイムゾーン変換する
 					if (Re3edit.e1card && [Re3edit.e1card.nPayDay integerValue]==0) {	//[0.4]E3.dateUse を支払日とするモード
@@ -822,6 +847,7 @@
 						//MlbAmount.backgroundColor = [UIColor grayColor]; //範囲チェック用
 #endif
 						MlbAmount.font = [UIFont systemFontOfSize:30];
+						MlbAmount.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbAmount]; [MlbAmount release];
 					}
 					cell.textLabel.text = NSLocalizedString(@"Use Amount",nil);
@@ -871,8 +897,12 @@
 						case 12: cell.detailTextLabel.text = NSLocalizedString(@"Repeat12", nil); break;
 						default: cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil); break;
 					}
+#ifdef AzPAD
+					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
+#else
 					if (MbE6paid) cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 					else		  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+#endif
 				} break;
 					
 				case 4: // nPayType
@@ -911,7 +941,11 @@
 				cell.textLabel.textColor = [UIColor grayColor];
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 			}
+#ifdef AzPAD
+			cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
+#else
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+#endif
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:16]; // 任意内容表示
 			switch (indexPath.row) {
 				case 0: // Shop
@@ -981,7 +1015,7 @@
 					cellLabel = [[UILabel alloc] init];
 					cellLabel.textAlignment = UITextAlignmentRight;
 					cellLabel.textColor = [UIColor blackColor];
-					//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
+					cellLabel.backgroundColor = [UIColor clearColor]; //grayColor <<DEBUG範囲チェック用
 					cellLabel.font = [UIFont systemFontOfSize:14];
 					cellLabel.tag = -1;
 					[cell addSubview:cellLabel]; [cellLabel release];
@@ -990,7 +1024,12 @@
 					cellLabel = (UILabel *)[cell viewWithTag:-1];
 				}
 				// 回転対応のため
+#ifdef AzPAD
+				// -25 は、Popoverの余白分だと思われる
+				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125-25, 12, 90, 20);
+#else
 				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+#endif
 				
 				// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 				UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
@@ -1015,12 +1054,20 @@
 				else if ([e6obj.nNoCheck intValue] == 1) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"];
 					cellButton.enabled = YES;
+#ifdef AzPAD
+					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
+#else
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+#endif
 				} 
 				else {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"];
 					cellButton.enabled = YES;
+#ifdef AzPAD
+					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
+#else
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+#endif
 				}
 				
 				// 支払日
@@ -1091,8 +1138,22 @@
 						evc.RzKey = @"dateUse";
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
+#ifdef AzPAD
+						//UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:evc];
+						// Popover Navi
+						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+						pop.popoverContentSize = CGSizeMake(290, 390);
+						pop.delegate = self;
+						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.y += 10;  rc.size.height -= 20;
+						[pop presentPopoverFromRect:rc  inView:self.view
+						   permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						evc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+						[pop release];
+#else
 						evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
+#endif
 						[evc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}
@@ -1258,6 +1319,21 @@
 	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
+
+#ifdef AzPAD
+#pragma mark - delegate UIPopoverControllerDelegate
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	return YES; // 閉じることを許可
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じた後に通知
+	// 再描画する
+	[self viewWillAppear:YES];
+	return;
+}
+#endif
 
 
 @end

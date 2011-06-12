@@ -295,9 +295,11 @@ static UIColor *MpColorBlue(float percent) {
 			return NSLocalizedString(@"E2paidFooter",nil);
 			//return NSLocalizedString(@"E7paidFooter",nil);
 			break;
-		//case 1:
-		//	return NSLocalizedString(@"E2Footer msg",nil);
-		//	break;
+#ifdef FREE_AD_PAD
+		case 1:
+			return @"\n\n\n\n\n\n\n\n\n\n\n\n\n\n";	// 大型AdMobスペースのための下部余白
+			break;
+#endif
 	}
 	return nil;
 }

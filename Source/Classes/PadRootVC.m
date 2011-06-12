@@ -100,7 +100,7 @@
 	RoAdMobView = [[GADBannerView alloc] initWithFrame:CGRectMake(
 																  0, 0, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height)];
 	RoAdMobView.alpha = 1;
-	RoAdMobView.adUnitID = AdMobID_PackPAD;
+	RoAdMobView.adUnitID = AdMobID_iPad;
 	RoAdMobView.rootViewController = self.splitViewController;
 	//[self.view addSubview:RoAdMobView];
 	[self.splitViewController.view addSubview:RoAdMobView];
@@ -201,7 +201,7 @@
 	if (RoAdMobView) {
 		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
 			RoAdMobView.frame = CGRectMake(
-										   768-45-GAD_SIZE_300x250.width,
+										   768-100-GAD_SIZE_300x250.width,
 										   1024-64-GAD_SIZE_300x250.height,
 										   GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
 		} else {	// ヨコ

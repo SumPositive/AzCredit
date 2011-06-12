@@ -13,7 +13,8 @@
 #define VIEW_TAG_LOGINPASS			9001
 #define VIEW_TAG_HttpServer			9010
 
-@class MocFunctions;
+//@class MocFunctions;
+@class TopMenuTVC;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate>
 											// AdMobDelegate, AdMobInterstitialDelegate>

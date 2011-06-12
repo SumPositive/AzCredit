@@ -46,7 +46,9 @@
 @synthesize Rentity;
 @synthesize RzKey;
 @synthesize PoParentTableView;
-
+#ifdef AzPAD
+@synthesize Rpopover;
+#endif
 
 #pragma mark - Source - Func
 
@@ -206,24 +208,28 @@
 		//		AparentTableView.userInteractionEnabled = YES; //[0.3]タッチイベントやキーイベントを有効
 	}
 	
-	// Scroll away the overlay
+	// アニメ準備
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
 	[UIView setAnimationDuration:0.8];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
+	// アニメ終了位置
+#ifdef AzPAD
+	if (Rpopover) {
+		[Rpopover dismissPopoverAnimated:YES];
+	}
+#else
 	CGRect rect = MrectInit;
 	rect.origin.y += 500;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
-	
 	[self setFrame:rect];
-	
-	// Complete the animation
-	[UIView commitAnimations];
-	
-	[self.PoParentTableView reloadData]; // Footer表示を消すため
-	
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorDefault];
+#endif
+	
+	// アニメ実行
+	[UIView commitAnimations];
+	[self.PoParentTableView reloadData]; // Footer表示を消すため
 }
 
 - (void)show
@@ -239,7 +245,9 @@
 		[self.PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
 	}
 	
-	// Scroll in the overlay
+#ifdef AzPAD
+#else
+	// アニメ準備
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -253,7 +261,8 @@
 	// Complete the animation
 	[UIView commitAnimations];
 	Rlabel.textColor = [UIColor brownColor];	// 電卓中は、ずっと茶色！ 文字色指定は、ここだけ。
-	
+#endif
+
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorCalc];	// 計算途中の丸め
 }
@@ -507,7 +516,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 
 
-#pragma mark - View
+#pragma mark - View lifecicle
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
@@ -518,6 +527,14 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 {
 	NSLog(@"CalcView: rect=(%f,%f)-(%f,%f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 	
+#ifdef AzPAD
+	// UIViewController
+	self = [super init];
+	if (self==nil) return self;
+	self.view.frame = rect;
+	self.view.backgroundColor = [UIColor clearColor];	// 透明でもTouchイベントが受け取れるようだ。
+	self.view.userInteractionEnabled = YES; // このViewがタッチを受けるか
+#else
 	// アニメションの開始位置
 	//rect.origin.y = 20.0f - rect.size.height;
 	MrectInit = rect;		// 表示位置を記録　showにて復元に使う
@@ -527,6 +544,8 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 	self.backgroundColor = [UIColor clearColor];	// 透明でもTouchイベントが受け取れるようだ。
 	self.userInteractionEnabled = YES; // このViewがタッチを受けるか
+#endif
+
 	MbShow = NO;
 	MdecAnswer = nil;
 	
@@ -546,9 +565,17 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	[MtextField addTarget:self	// UITextFieldDelegate に、 変更「後」イベント textFieldDidChange を追加する
 				   action:@selector(textFieldDidChange:) // 変更「後」に呼び出される
 		 forControlEvents:UIControlEventEditingChanged];
-	[self addSubview:MtextField]; [MtextField release];
+#ifdef AzPAD
+	[self.view addSubview:MtextField]; 
+#else
+	[self addSubview:MtextField];
+#endif	
+	[MtextField release];
 	
 	//------------------------------------------
+#ifdef AzPAD
+	// MscrollView なし
+#else
 	MscrollView = [[UIScrollView alloc] init];
 	MscrollView.pagingEnabled = NO;
 	MscrollView.showsVerticalScrollIndicator = NO;
@@ -557,6 +584,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	MscrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	MscrollView.backgroundColor = [UIColor blackColor];
 	[self addSubview:MscrollView]; [MscrollView release];
+#endif
 	
 	//------------------------------------------
 	NSMutableArray *maBu = [NSMutableArray new];
@@ -630,7 +658,11 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			[bu setBackgroundImage:[UIImage imageNamed:@"Icon-DrumPush.png"] forState:UIControlStateHighlighted];
 			[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchUpInside];
 			[maBu addObject:bu];
+#ifdef AzPAD
+			[self.view addSubview:bu];
+#else
 			[MscrollView addSubview:bu]; //[bu release]; autoreleaseされるため
+#endif
 			iIndex++;
 		}
 	}
@@ -638,7 +670,11 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	RaKeyButtons = [[NSArray alloc] initWithArray:maBu];
 	[maBu release];
 	
+#ifdef AzPAD
+	[self viewDesign:self.view.bounds]; // コントロール配置
+#else
 	[self viewDesign:self.bounds]; // コントロール配置
+#endif	
 
 	// Calc 初期化
 	//RzCalc = [[NSMutableString alloc] init];
@@ -686,6 +722,15 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	float fW;
 	float fH;
 	
+#ifdef AzPAD
+	fy = 10;
+	MtextField.frame = CGRectMake(5,fy,  rect.size.width-10,30);	// 1行
+	fy += MtextField.frame.size.height;
+	fW = (rect.size.width - fxGap) / 6 - fxGap; //Pad//6列まで全部表示
+	fyGap = 5;	// Yボタン間隔
+	fH = fW / GOLDENPER; // 黄金比
+	fyTop = fy + fyGap;
+#else
 	if (rect.size.width < rect.size.height)
 	{	// タテ
 		//MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
@@ -719,6 +764,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		fx += fxGap;
 		fyTop = fy + fyGap;
 	}
+#endif
 	
 	NSInteger iIndex = 0;
 	for (int iCol=0; iCol<6; iCol++)

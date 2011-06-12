@@ -14,6 +14,10 @@
 #import "E3recordTVC.h"
 #import "E3recordDetailTVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 #define ALERT_TAG_NoMore		109
 
 
@@ -101,8 +105,22 @@
 			e3detail.PiAdd = 1; // (1)New Add
 		}
 	}
-	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+
+#ifdef  AzPAD
+	[Mpopover release], Mpopover = nil;
+	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	Mpopover.popoverContentSize = CGSizeMake(450, 600);
+	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	MindexPathEdit = indexPath;
+	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+	rc.size.width /= 2;
+	rc.origin.y += 10;	rc.size.height -= 20;
+	[Mpopover presentPopoverFromRect:rc
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+#else
+	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
+#endif
 	[e3detail release];
 }
 
@@ -397,7 +415,7 @@
 	RoAdMobView.delegate = nil; //Delegateなし
 	
 	// Specify the ad's "unit identifier." This is your AdMob Publisher ID.
-	RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+	RoAdMobView.adUnitID = AdMobID_iPhone;
 	
 	// Let the runtime know which UIViewController to restore after taking
 	// the user wherever the ad goes and add it to the view hierarchy.
@@ -463,14 +481,20 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
+{
+#ifdef AzPAD
+	return YES;
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 #ifdef FREE_AD
+// 回転を始める前に呼ばれる
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
-{
+{	
 	if (RoAdMobView) {
 		CGRect rc = RoAdMobView.frame;
 		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
@@ -484,11 +508,30 @@
 }
 #endif
 
-// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
-													   duration:(NSTimeInterval)duration
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	[self.tableView reloadData];
+	[self.tableView reloadData];  // cellLable位置調整する
+
+#ifdef AzPAD
+	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+	if (Mpopover) {
+		if (MindexPathEdit) { 
+			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+			rc.size.width /= 2;
+			rc.origin.y += 10;	rc.size.height -= 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
+					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES];
+		} else {
+			// 回転後のアンカー位置が再現不可なので閉じる
+			[Mpopover dismissPopoverAnimated:YES];
+			[Mpopover release], Mpopover = nil;
+		}
+	}
+#endif
 }
 
 
@@ -541,12 +584,11 @@
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-//	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) {
-//		return 50; //「さらに前へ」「さらに次へ」
-//	}
+#ifdef FREE_AD
 	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) {
 		return GAD_SIZE_320x50.height; // AdMob
 	}
+#endif
 	return 44; // デフォルト：44ピクセル
 }
 
@@ -574,7 +616,7 @@
 				cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 				cell.showsReorderControl = NO;		// Move禁止
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
-				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				cell.textLabel.textAlignment = UITextAlignmentLeft;
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
 #ifdef FREE_AD
 				if (RoAdMobView) { // Request an AdMob ad for this table view cell
@@ -602,7 +644,7 @@
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 											   reuseIdentifier:zCellTopEnd] autorelease];
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
-				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				cell.textLabel.textAlignment = UITextAlignmentLeft;
 				cell.showsReorderControl = NO; // Move禁止
 				cell.textLabel.text = NSLocalizedString(@"E3list More",nil);
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -632,8 +674,12 @@
 			cellLabel = (UILabel *)[cell viewWithTag:-1];
 		}
 		// 回転対応のため
+#ifdef AzPAD
+		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-128, 2, 75, 20);
+#else
 		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
-
+#endif
+		
 		E3record *e3obj = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		
 		if (e3obj.e1card && 0 < [e3obj.e6parts count]) {
@@ -834,6 +880,40 @@
 	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
+#ifdef AzPAD
+#pragma mark - delegate UIPopoverControllerDelegate
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
+	
+	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+	if (popoverController==Mpopover) {
+		// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+		// つまり、これが呼び出されたときは、常に CANCEL　である。
+		// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
+		// PadPopoverInNaviCon を使っているから
+		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+		E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
+		[e3tvc cancelClose:nil];
+	}
+	return YES; // 閉じることを許可
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じた後に通知
+	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
+		// [SAVE]ボタンが押された
+		
+		// 未払い総額 再描画
+		
+		
+	}
+	// [Cancel][Save][枠外タッチ]何れでも閉じるときここを通るので解放する。さもなくば回転後に現れることになる
+	[Mpopover release], Mpopover = nil;
+	return;
+}
+#endif
 
 @end
 

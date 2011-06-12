@@ -8,6 +8,10 @@
 	<array/>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon72S1.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.azukid.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

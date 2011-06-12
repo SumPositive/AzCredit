@@ -11,6 +11,10 @@
 #import "MocFunctions.h"
 #import "EditDateVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 @interface NSObject (E3recordDetailTVC_delagate_Methods)
 - (void)editDateE6change;
 @end
@@ -27,8 +31,10 @@
 @synthesize RzKey;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
-//@synthesize PiE6row;				//[1.0.0]E6date変更モード
 @synthesize delegate;
+#ifdef AzPAD
+@synthesize RpopNaviCon;
+#endif
 
 
 #pragma mark - Source - Functions
@@ -42,6 +48,9 @@
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
+#ifdef AzPAD
+	[RpopNaviCon release], RpopNaviCon = nil;
+#endif
 	[Re6edit release], Re6edit = nil;
 	// 生成とは逆順に解放するのが好ましい
 	[RzKey release], RzKey = nil;
@@ -104,8 +113,8 @@
 	[MbuYearTime addTarget:self action:@selector(buttonYearTime) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuYearTime]; //[MbuYearTime release]; autoreleaseされるため
 	//------------------------------------------------------
-	MdatePicker = [[[UIDatePicker alloc] init] autorelease];
-	//[MdatePicker addTarget:self action:@selector(datePickerDidChange:) forControlEvents:UIControlEventValueChanged]; //[0.4]
+	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
+	MdatePicker = [[[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)] autorelease];
 	if (AzMIN_YearMMDD < PiMinYearMMDD) {
 		MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
 	} else {
@@ -314,8 +323,15 @@
 		[Rentity setValue:MdatePicker.date forKey:RzKey];
 	}
 
+#ifdef AzPAD
+	if (RpopNaviCon) {
+		//[RpopNaviCon dismissPopoverAnimated:YES];
+		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-
+#endif
+	
 	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
 		alertBox(NSLocalizedString(@"DateUse Over",nil),
 				 NSLocalizedString(@"DateUse Over msg",nil),

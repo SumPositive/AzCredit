@@ -31,7 +31,7 @@
 #import "PadPopoverInNaviCon.h"
 #endif
 
-#define ALERT_TAG_SupportSite		109
+#define TAG_ALERT_SupportSite		109
 
 #define AD_HIDDEN_OFS_Y		200		//iAdを非表示/表示するときのＹ軸変位
 
@@ -81,7 +81,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	switch (alertView.tag) {
-		case ALERT_TAG_SupportSite:
+		case TAG_ALERT_SupportSite:
 			if (buttonIndex == 1) { // OK
 				[[UIApplication sharedApplication] 
 				 openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/category/9034665-1.html"]];
@@ -132,14 +132,14 @@
 #ifdef  AzPAD
 	[Mpopover release], Mpopover = nil;
 	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
-	Mpopover.popoverContentSize = CGSizeMake(450, 450);
+	Mpopover.popoverContentSize = CGSizeMake(450, 550);
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-	MindexPathEdit = nil;
-	CGRect rc = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	rc.origin.x += rc.size.width/2;
-	rc.size.width = 30;
+	MindexPathEdit = [NSIndexPath indexPathForRow:0 inSection:0];
+	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+	//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;
+	rc.origin.y += 10;	rc.size.height -= 20;
 	[Mpopover presentPopoverFromRect:rc
-							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 #else
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
@@ -299,14 +299,14 @@
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-#ifdef AzFREE
+#if defined(AzFREE) && !defined(AzPAD)
 	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free.png"]];
 	UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
 	self.navigationItem.leftBarButtonItem	= bui;
 	[bui release];
 	[iv release];
 #endif
-	
+
 #ifndef AzMAKE_SPLASHFACE
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -386,7 +386,7 @@
 												GAD_SIZE_320x50.height)];
 		//RoAdMobView.delegate = self;
 		
-		RoAdMobView.adUnitID = MY_BANNER_UNIT_ID;
+		RoAdMobView.adUnitID = AdMobID_iPhone;
 		RoAdMobView.rootViewController = self;
 		[self.navigationController.view addSubview:RoAdMobView];
 		
@@ -443,6 +443,10 @@
 	// AdMobは、常時開始とするためYES
 	[self AdShowApple:NO AdMob:YES];
 #endif
+#ifdef FREE_AD_PAD
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate.padRootVC adBannerShow:YES];
+#endif
 	
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
 	[MocFunctions e7e2clean];  // [0.4.18]レス向上のためここで処理。バックグランド時だとE2やE7表示に戻ったとき落ちる可能性あるので没にした。
@@ -461,6 +465,10 @@
 	// Ad非表示にする
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 	[self AdShowApple:NO AdMob:NO];
+#endif
+#ifdef FREE_AD_PAD
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate.padRootVC adBannerShow:NO];
 #endif
 }
 
@@ -500,11 +508,34 @@
 #endif
 }
 
+#ifdef AzPAD
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+	if (Mpopover) {
+		if (MindexPathEdit) { 
+			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+			//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;
+			rc.origin.y += 10;	rc.size.height -= 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
+					permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+		} else {
+			// 回転後のアンカー位置が再現不可なので閉じる
+			[Mpopover dismissPopoverAnimated:YES];
+			[Mpopover release], Mpopover = nil;
+		}
+	}
+}
+#endif
+
 
 #pragma mark - TableView lifecycle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 // Customize the number of rows in the table view.
@@ -515,12 +546,15 @@
 #else
 	switch (section) {
 		case 0:			// 利用明細
-			return 3;
+			return 2;
 			break;
 		case 1:			// 集計
-			return 4;
+			return 3;
 			break;
-		case 2:			// 機能
+		case 2:			// 分類
+			return 2;
+			break;
+		case 3:			// 機能
 			return 3;
 			break;
 	}
@@ -528,12 +562,21 @@
 #endif
 }
 
+#ifdef FREE_AD_PAD
+// TableView セクションタイトルを応答
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{
+	if (section==0) return @"\n\n";	// iAd上部スペース
+	return nil;
+}
+#endif
+
 // TableView セクションフッタを応答
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
 {
 #ifndef AzMAKE_SPLASHFACE
 	switch (section) {
-		case 2:
+		case 3:
 			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
 			break;
 	}
@@ -579,7 +622,13 @@
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Statements.png"];
 					cell.textLabel.text = NSLocalizedString(@"Record list", nil);
 					break;
-				case 2:
+			}
+		} break;
+			
+		case 1: //-------------------------------------------------------------Paid/Unpaid
+		{
+			switch (indexPath.row) {
+				case 0:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Schedule.png"];
 					//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
 					// E7 未払い総額
@@ -596,36 +645,36 @@
 						[formatter setLocale:[NSLocale currentLocale]]; 
 						cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", 
 											   NSLocalizedString(@"Payment list",nil), 
-												[formatter stringFromNumber:decUnpaid]];
+											   [formatter stringFromNumber:decUnpaid]];
 						[formatter release];
 					}
 					break;
-			}
-		}
-			break;
-		case 1: //-------------------------------------------------------------Groups
-		{
-			switch (indexPath.row) {
-				case 0:
+				case 1:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Recipient.png"];
 					cell.textLabel.text = NSLocalizedString(@"Recipient list", nil);
 					break;
-				case 1:
+				case 2:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Bank.png"];
 					cell.textLabel.text = NSLocalizedString(@"Bank list", nil);
 					break;
-				case 2:
+			}
+		} break;
+			
+		case 2: //-------------------------------------------------------------Groups
+		{
+			switch (indexPath.row) {
+				case 0:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Shop.png"];
 					cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
 					break;
-				case 3:
+				case 1:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Category.png"];
 					cell.textLabel.text = NSLocalizedString(@"Category list", nil);
 					break;
 			}
-		}
-			break;
-		case 2: //-------------------------------------------------------------Function
+		} break;
+		
+		case 3: //-------------------------------------------------------------Function
 		{
 			switch (indexPath.row) {
 				case 0:
@@ -641,8 +690,8 @@
 					cell.textLabel.text = NSLocalizedString(@"Support Site", nil);
 					break;
 			}
-		}
-			break;
+		} break;
+			
 	}
     return cell;
 }
@@ -686,7 +735,13 @@
 					[tvc release];
 				}
 					break;
-				case 2: // 支払予定　E7 < E2 < E6 < E3detail
+			}
+		}
+			break;
+		case 1:
+		{
+			switch (indexPath.row) {
+				case 0: // 支払予定　E7 < E2 < E6 < E3detail
 				{
 					// E7paymentTVC へ
 					E7paymentTVC *tvc = [[E7paymentTVC alloc] init];
@@ -700,13 +755,7 @@
 					[tvc release];
 				}
 					break;
-			}
-		}
-			break;
-		case 1:
-		{
-			switch (indexPath.row) {
-				case 0: // カード一覧  E1 < E2 < E6 < E3detail
+				case 1: // カード一覧  E1 < E2 < E6 < E3detail
 				{
 					// E1card へ
 					E1cardTVC *tvc = [[E1cardTVC alloc] init];
@@ -721,7 +770,7 @@
 					[tvc release];
 				}
 					break;
-				case 1: // 銀行等口座一覧  E8 
+				case 2: // 銀行等口座一覧  E8 
 				{
 					// E8bank へ
 					E8bankTVC *tvc = [[E8bankTVC alloc] init];
@@ -736,7 +785,13 @@
 					[tvc release];
 				}
 					break;
-				case 2: // 利用店一覧  E4 < E3 < E3detail
+			}
+		}
+			break;
+		case 2:
+		{
+			switch (indexPath.row) {
+				case 0: // 利用店一覧  E4 < E3 < E3detail
 				{
 					E4shopTVC *tvc = [[E4shopTVC alloc] init];
 #ifdef AzDEBUG
@@ -750,7 +805,7 @@
 					[tvc release];
 				}
 					break;
-				case 3: // 分類一覧  E5 < E3 < E3detail
+				case 1: // 分類一覧  E5 < E3 < E3detail
 				{
 					E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
 #ifdef AzDEBUG
@@ -767,7 +822,7 @@
 			}
 		}
 			break;
-		case 2: // Function
+		case 3: // Function
 		{
 			switch (indexPath.row) {
 				case 0:
@@ -800,7 +855,7 @@
 																	delegate:self 
 														   cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
 														   otherButtonTitles:@"OK", nil];
-					alert.tag = ALERT_TAG_SupportSite;
+					alert.tag = TAG_ALERT_SupportSite;
 					[alert show];
 					[alert release];
 				}
@@ -866,6 +921,9 @@
 #pragma mark - delegate UIPopoverControllerDelegate
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+
+	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
+
 	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
 	if (popoverController==Mpopover) {
 		// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。

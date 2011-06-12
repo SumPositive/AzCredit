@@ -11,7 +11,11 @@
 
 //@class E2invoice;
 
-@interface E3recordTVC : UITableViewController <UIActionSheetDelegate>
+@interface E3recordTVC : UITableViewController <UIActionSheetDelegate
+#ifdef AzPAD
+	,UIPopoverControllerDelegate
+#endif
+>
 {
 @private
 	//----------------------------------------------retain
@@ -28,6 +32,10 @@
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+#ifdef AzPAD
+	UIPopoverController*	Mpopover;
+	NSIndexPath*				MindexPathEdit;
+#endif
 	//----------------------------------------------assign
 	BOOL		MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録

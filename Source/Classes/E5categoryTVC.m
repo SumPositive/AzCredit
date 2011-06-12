@@ -379,6 +379,15 @@
     return [RaE5categorys count] + 1; // (+1)Add
 }
 
+#ifdef FREE_AD_PAD
+// TableView セクションフッタを応答
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
+{
+	if (section==0) return @"\n\n\n\n\n\n\n\n\n\n\n\n\n\n";	// 大型AdMobスペースのための下部余白
+	return nil;
+}
+#endif
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	static NSString *zCellNode = @"CellNode";
