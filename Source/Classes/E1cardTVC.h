@@ -14,6 +14,9 @@
 	//--------------------------retain
 	E0root		*Re0root;
 	E3record	*Re3edit;		// =nil:マスタモード  !=nil:選択モード
+#ifdef AzPAD
+	UIPopoverController*	Rpopover;
+#endif
 	//--------------------------assign
 	
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -29,6 +32,10 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, retain) E3record	*Re3edit;
+
+#ifdef AzPAD
+@property (nonatomic, retain) UIPopoverController*	Rpopover;
+#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

@@ -1142,8 +1142,8 @@
 						//UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:evc];
 						// Popover Navi
 						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+						pop.delegate = self;  //閉じたとき再描画するため
 						pop.popoverContentSize = CGSizeMake(290, 390);
-						pop.delegate = self;
 						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 						rc.origin.y += 10;  rc.size.height -= 20;
 						[pop presentPopoverFromRect:rc  inView:self.view
@@ -1174,8 +1174,19 @@
 						tvc.title = NSLocalizedString(@"Card choice",nil);
 						tvc.Re0root = Me0root;
 						tvc.Re3edit = Re3edit;
+#ifdef AzPAD
+						UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:tvc];
+						pop.delegate = self;  //閉じたとき再描画するため
+						pop.popoverContentSize = CGSizeMake(320, 480);
+						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.y += 10;  rc.size.height -= 20;
+						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						tvc.Rpopover = pop; //(retain)  内から閉じるときに必要になる
+						[pop release];
+#else
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
+#endif
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}

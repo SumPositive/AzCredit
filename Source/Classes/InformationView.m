@@ -197,29 +197,45 @@ static UIColor *MpColorBlue(float percent) {
 
 #pragma mark - View
 
-- (id)initWithFrame:(CGRect)rect 
+//- (id)initWithFrame:(CGRect)rect 
+- (id)init
 {
 	// アニメションの開始位置
-	rect.origin.y = 20.0f - rect.size.height;
+	//rect.origin.y = 20.0f - rect.size.height;
 									// ↓
-	if (!(self = [super initWithFrame:rect])) return self;
-
-	[self setAlpha:0.85f]; // Information時
-	[self setBackgroundColor: MpColorBlue(0.15f)];
+	//if (!(self = [super initWithFrame:rect])) return self;
+	self = [super init];
+	if (!self) return nil;
 	
-	// 小豆色 RGB(152,81,75) #98514B  ＜＜しかし全面には不適切だ＞＞
-	//self.backgroundColor = [UIColor colorWithRed:152/255.0f green:81/255.0f blue:75/255.0f alpha:1.0f];
+	// 小豆色 RGB(152,81,75) #98514B
+	self.view.backgroundColor = [UIColor colorWithRed:152/255.0f 
+												green:81/255.0f 
+												 blue:75/255.0f
+												alpha:1.0f];
+#ifdef AzPAD
+	// Popover
+#else	
+	self.view.userInteractionEnabled = YES; //タッチの可否
+#endif
 
-	self.userInteractionEnabled = YES; //タッチの可否
 	
 	//------------------------------------------アイコン
+#ifdef AzPAD
+	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 35, 72, 72)];
+#ifdef AzSTABLE
+	[iv setImage:[UIImage imageNamed:@"Icon72s1.png"]];
+#else
+	[iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
+#endif
+#else	
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 50, 57, 57)];
 #ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
 #else
 	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
-	[self addSubview:iv]; [iv release];
+#endif
+	[self.view addSubview:iv]; [iv release];
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
@@ -230,22 +246,27 @@ static UIColor *MpColorBlue(float percent) {
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	//label.font = [UIFont boldSystemFontOfSize:25];
 	label.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:25];
-	[self addSubview:label]; [label release];
+	[self.view addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
 	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 80, 200, 30)];
+#ifdef AzPAD
+	NSString *zDevice = @"for iPad";
+#else	
+	NSString *zDevice = @"for iPhone";
+#endif
 #ifdef AzSTABLE
-	label.text = [NSString stringWithFormat:@"Version %@\nStable", zVersion];
+	label.text = [NSString stringWithFormat:@"%@\nVersion %@ Stable",  zDevice, zVersion];
 #else
-	label.text = [NSString stringWithFormat:@"Version %@\nFree", zVersion];
+	label.text = [NSString stringWithFormat:@"%@\nVersion %@ Free",  zDevice, zVersion];
 #endif
 	label.numberOfLines = 2;
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont boldSystemFontOfSize:12];
-	[self addSubview:label]; [label release];
+	[self.view addSubview:label]; [label release];
 
 	//------------------------------------------Lable:Azuki Color
 	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, 100, 77)];
@@ -260,7 +281,7 @@ static UIColor *MpColorBlue(float percent) {
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont boldSystemFontOfSize:10];
-	[self addSubview:label]; [label release];
+	[self.view addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
 	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 120, 200, 80)];
@@ -274,7 +295,7 @@ static UIColor *MpColorBlue(float percent) {
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont systemFontOfSize:12];
-	[self addSubview:label]; [label release];	
+	[self.view addSubview:label]; [label release];	
 	
 	//------------------------------------------Go to Support blog.
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -282,7 +303,7 @@ static UIColor *MpColorBlue(float percent) {
 	bu.frame = CGRectMake(20, 210, 120,26);
 	[bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
-	[self addSubview:bu];  //autorelease
+	[self.view addSubview:bu];  //autorelease
 	
 #if defined(AzFREE) && !defined(AzPAD)
 	//------------------------------------------Go to App Store
@@ -291,7 +312,7 @@ static UIColor *MpColorBlue(float percent) {
 	bu.frame = CGRectMake(150, 210, 150,26);
 	[bu setTitle:NSLocalizedString(@"GoAppStore Paid",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
-	[self addSubview:bu];  //autorelease
+	[self.view addSubview:bu];  //autorelease
 #endif
 	
 	//------------------------------------------Post Comment
@@ -300,7 +321,7 @@ static UIColor *MpColorBlue(float percent) {
 	bu.frame = CGRectMake(20, 255, 280,30);
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
-	[self addSubview:bu];  //autorelease
+	[self.view addSubview:bu];  //autorelease
 	
 	//------------------------------------------免責
 	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 300, 300, 50)];
@@ -310,7 +331,7 @@ static UIColor *MpColorBlue(float percent) {
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Courier" size:10];
-	[self addSubview:label]; [label release];	
+	[self.view addSubview:label]; [label release];	
 	
 	//------------------------------------------注意
 	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 360, 300, 65)];
@@ -320,7 +341,7 @@ static UIColor *MpColorBlue(float percent) {
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Courier" size:10];
-	[self addSubview:label]; [label release];	
+	[self.view addSubview:label]; [label release];	
 
 	
 	//------------------------------------------CLOSE
@@ -334,70 +355,41 @@ static UIColor *MpColorBlue(float percent) {
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	[self addSubview:label]; [label release];	
+	[self.view addSubview:label]; [label release];	
 
     return self;
 }
 
-/*　UIViewでは無効　なので、親側から回転したらhideが送られるようにした。
+/*
+ - (void)viewWillAppear:(BOOL)animated 
+ {
+ [super viewWillAppear:animated];
+ 
+ #ifdef AzPAD
+ self.title = NSLocalizedString(@"Information", nil);
+ #endif
+ }
+ */
+
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return interfaceOrientation == UIInterfaceOrientationPortrait; // 正面のみ許可
+#ifdef AzPAD
+	return YES;
+#else
+	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
+#endif
 }
 
-// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
-													   duration:(NSTimeInterval)duration
-{
-	[self hide]; // 回転が始まるとhideする
-}
-*/
-
-/*
-- (void)openWebSite
-{
-	UIWebView *web = [[UIWebView alloc] init];
-	web.frame = self.bounds;
-	web.autoresizingMask = UIViewAutoresizingFlexibleWidth OR UIViewAutoresizingFlexibleHeight;
-	web.scalesPageToFit = YES;
-	[self addSubview:web]; [web release];
-	
-	NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://azpacking.azukid.com/"]];
-	[web loadRequest:request];
-}
-*/
 
 - (void)hide
 {
-	// Scroll away the overlay
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	[UIView beginAnimations:nil context:context];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationDuration:0.5];
-	
-	CGRect rect = [self frame];
-	rect.origin.y = -10.0f - rect.size.height;
-	[self setFrame:rect];
-	
-	// Complete the animation
-	[UIView commitAnimations];
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)show
 {
-	// Scroll in the overlay
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	[UIView beginAnimations:nil context:context];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationDuration:0.5];
-	
-	CGRect rect = [self frame];
-	rect.origin.y = 0.0f;
-	[self setFrame:rect];
-	
-	// Complete the animation
-	[UIView commitAnimations];
+	return;
 }
 
 

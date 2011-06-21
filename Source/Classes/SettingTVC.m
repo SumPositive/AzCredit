@@ -29,18 +29,22 @@
 
 @implementation SettingTVC
 
+
+#pragma mark - dealloc
+
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[super dealloc];
 }
 
 
+#pragma mark - View lifecicle
+
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
 {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {  // セクションありテーブル
+	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {  // セクションありテーブル
 		// OK
-		
 	}
 	return self;
 }
@@ -53,32 +57,13 @@
 }
 */
 
-/*
-- (void)viewDidUnload {
-	AzLOG(@"MEMORY! SettingTVC: viewDidUnload");
-}
-*/
-
-// 回転の許可
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
-													   duration:(NSTimeInterval)duration
-{
-	[self.tableView reloadData];
-}
-
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
-
+	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [userDefaults boolForKey:GD_OptAntirotation];
@@ -94,13 +79,70 @@
 - (void)viewDidAppear:(BOOL)animated 
 {
     [super viewDidAppear:animated];
-
+	
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
 
 
+/*
+- (void)viewDidUnload {
+	AzLOG(@"MEMORY! SettingTVC: viewDidUnload");
+}
+*/
 
-#pragma mark Table view methods
+
+#pragma mark  View Rotate
+// 回転の許可
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+#ifdef AzPAD
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);	// Popover内につき回転不要 <正面は常に許可>
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
+}
+
+// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
+													   duration:(NSTimeInterval)duration
+{
+	[self.tableView reloadData];
+}
+
+
+#pragma mark - Action
+
+- (void)buttonTaxRate:(UIButton *)button
+{
+	long lRate = (long)[MlbTaxRate.text integerValue] + button.tag;
+	if (0 <= lRate && lRate <= 99) {
+		MlbTaxRate.text = [NSString stringWithFormat:@"%ld", lRate];
+		[[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%ld", lRate] 
+												 forKey:GD_OptTaxRate];
+	}
+}
+
+// UISwitch Action
+- (void)switchAction: (UISwitch *)sender
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	switch (sender.tag) {  // .tag は UIView にて NSInteger で存在する、　
+		case TAG_GD_OptAntirotation:
+			MbOptAntirotation = [sender isOn];  // このViewでも反映させるため。
+			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
+			break;
+		case TAG_GD_OptEnableInstallment:
+			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
+			break;
+		case TAG_GD_OptRoundBankers:
+			[defaults setBool:[sender isOn] forKey:GD_OptRoundBankers];
+			break;
+	}
+}
+
+
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -110,14 +152,22 @@
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+#ifdef AzPAD
+	return 4;	// (0)回転は不要
+#else
 	return 5;
+#endif
 }
 
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	switch (indexPath.row) {
+#ifdef AzPAD
+		case 3:	// OptLoginPass
+#else
 		case 4:	// OptLoginPass
+#endif
 			return 70;
 			break;
 	}
@@ -129,6 +179,8 @@
 {
     NSString *zCellIndex = [NSString stringWithFormat:@"Setting%d:%d", (int)indexPath.section, (int)indexPath.row];
 	UITableViewCell *cell = nil;
+
+	if (indexPath.section != 0) return nil;  // section=0 のみ
 
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
@@ -159,157 +211,122 @@
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
-	switch (indexPath.section) {
-		case 0: // 
-			switch (indexPath.row) {
-/*[0.4]			case 0:
-				{ // OptBootTopView
-					cell.textLabel.text = NSLocalizedString(@"OptBootTopView",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptBootTopView msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptBootTopView];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptBootTopView;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw];
-					[sw release];
-				}
-					break;*/
-				
-				case 0:
-				{ // OptAntirotation
-					cell.textLabel.text = NSLocalizedString(@"OptAntirotation",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptAntirotation msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptAntirotation];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptAntirotation;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw]; [sw release];
-				} break;
-				
-				case 1:
-				{ // OptEnableInstallment
-					cell.textLabel.text = NSLocalizedString(@"OptEnableInstallment",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptEnableInstallment msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptEnableInstallment];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptEnableInstallment;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView addSubview:sw]; [sw release];
-				} break;
-					
-				case 2:
-/*				{ // OptAmountCalc
-					cell.textLabel.text = NSLocalizedString(@"OptAmountCalc",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptAmountCalc msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptAmountCalc];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptAmountCalc;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView  addSubview:sw];
-					[sw release];
-				} break;*/
-				{ // OptRoundBankers
-					cell.textLabel.text = NSLocalizedString(@"OptRoundBankers",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptRoundBankers msg",nil);
-					// add UISwitch
-					UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(cell.frame.size.width-120, 5, 120, 25)];
-					BOOL bOpt = [userDefaults boolForKey:GD_OptRoundBankers];
-					[sw setOn:bOpt animated:NO]; // 初期値セット
-					[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-					sw.tag = TAG_GD_OptRoundBankers;
-					sw.backgroundColor = [UIColor clearColor]; //背景透明
-					[cell.contentView addSubview:sw]; [sw release];
-				} break;
-					
-				case 3:
-				{ // OptTaxRate
-					cell.textLabel.text = NSLocalizedString(@"OptTaxRate",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptTaxRate msg",nil);
-					// add UILabel
-					MlbTaxRate = [[UILabel alloc] initWithFrame:CGRectMake(cell.frame.size.width-115, 5, 50, 25)];
-					NSInteger iOpt = [userDefaults integerForKey:GD_OptTaxRate];
-					MlbTaxRate.text = [NSString stringWithFormat:@"%ld", (long)iOpt];
-					MlbTaxRate.tag = TAG_GD_OptTaxRate;
-					MlbTaxRate.backgroundColor = [UIColor clearColor]; //背景透明
-					MlbTaxRate.textAlignment = UITextAlignmentCenter;
-					MlbTaxRate.font = [UIFont boldSystemFontOfSize:20];
-					[cell.contentView  addSubview:MlbTaxRate]; [MlbTaxRate release];
-					// Left UIButton
-					UIButton *buLeft = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-					buLeft.frame = CGRectMake(cell.frame.size.width-155, 5, 35, 25);
-					buLeft.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-					[buLeft setTitle:@"-" forState:UIControlStateNormal];
-					buLeft.tag = -1;
-					[buLeft addTarget:self action:@selector(buttonTaxRate:) forControlEvents:UIControlEventTouchUpInside];
-					[cell.contentView  addSubview:buLeft]; //auto//[buLeft release];
-					// Right UIButton
-					UIButton *buRight = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-					buRight.frame = CGRectMake(cell.frame.size.width-65, 5, 35, 25);
-					buRight.titleLabel.font = [UIFont boldSystemFontOfSize:20];
-					[buRight setTitle:@"+" forState:UIControlStateNormal];
-					buRight.tag = +1;
-					[buRight addTarget:self action:@selector(buttonTaxRate:) forControlEvents:UIControlEventTouchUpInside];
-					[cell.contentView  addSubview:buRight]; //auto//[buRight release];
-				} break;
-					
-				case 4:
-				{ // OptLoginPass
-					cell.textLabel.text = NSLocalizedString(@"OptLoginPass",nil);
-					cell.detailTextLabel.text = NSLocalizedString(@"OptLoginPass msg",nil);
-					// add UITextField1
-					MtfPass1 = [[UITextField alloc] initWithFrame:CGRectMake(cell.frame.size.width-155, 5, 130, 25)];
-					MtfPass1.borderStyle = UITextBorderStyleRoundedRect;
-					MtfPass1.placeholder = NSLocalizedString(@"OptLoginPass1 place",nil);
-					MtfPass1.keyboardType = UIKeyboardTypeASCIICapable;
-					MtfPass1.secureTextEntry = YES;
-					MtfPass1.returnKeyType = UIReturnKeyNext;
-					MtfPass1.tag = TAG_GD_OptLoginPass1;
-					MtfPass1.delegate = self;
-					// KeyChainから保存しているパスワードを取得する
-					NSError *error; // nilを渡すと異常終了するので注意
-					MtfPass1.text = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
-															   andServiceName:GD_PRODUCTNAME error:&error];
-					[cell.contentView  addSubview:MtfPass1];
-					[MtfPass1 release];
-					// add UITextField2
-					MtfPass2 = [[UITextField alloc] initWithFrame:CGRectMake(cell.frame.size.width-155,35, 130, 25)];
-					MtfPass2.borderStyle = UITextBorderStyleRoundedRect;
-					MtfPass2.placeholder = NSLocalizedString(@"OptLoginPass2 place",nil);
-					MtfPass2.keyboardType = UIKeyboardTypeASCIICapable;
-					MtfPass2.secureTextEntry = YES;
-					MtfPass2.returnKeyType = UIReturnKeyDone;
-					MtfPass2.tag = TAG_GD_OptLoginPass2;
-					MtfPass2.delegate = self;
-					MtfPass2.text = MtfPass1.text;
-					[cell.contentView  addSubview:MtfPass2];
-					[MtfPass2 release];
-				} break;
-			}
-			break;
+#ifdef AzPAD
+	float fX = self.tableView.frame.size.width - 60 - 120;
+	int  iCase = indexPath.row + 1;
+#else
+	float fX = cell.frame.size.width - 120;
+	int  iCase = indexPath.row;
+#endif
+	
+	switch (iCase) {
+		case 0:
+		{ // OptAntirotation
+			cell.textLabel.text = NSLocalizedString(@"OptAntirotation",nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"OptAntirotation msg",nil);
+			// add UISwitch
+			UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(fX, 5, 120, 25)];
+			BOOL bOpt = [userDefaults boolForKey:GD_OptAntirotation];
+			[sw setOn:bOpt animated:NO]; // 初期値セット
+			[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+			sw.tag = TAG_GD_OptAntirotation;
+			sw.backgroundColor = [UIColor clearColor]; //背景透明
+			[cell.contentView  addSubview:sw]; [sw release];
+		} break;
+			
+		case 1:
+		{ // OptEnableInstallment
+			cell.textLabel.text = NSLocalizedString(@"OptEnableInstallment",nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"OptEnableInstallment msg",nil);
+			// add UISwitch
+			UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(fX, 5, 120, 25)];
+			BOOL bOpt = [userDefaults boolForKey:GD_OptEnableInstallment];
+			[sw setOn:bOpt animated:NO]; // 初期値セット
+			[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+			sw.tag = TAG_GD_OptEnableInstallment;
+			sw.backgroundColor = [UIColor clearColor]; //背景透明
+			[cell.contentView addSubview:sw]; [sw release];
+		} break;
+			
+		case 2:
+		{ // OptRoundBankers
+			cell.textLabel.text = NSLocalizedString(@"OptRoundBankers",nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"OptRoundBankers msg",nil);
+			// add UISwitch
+			UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(fX, 5, 120, 25)];
+			BOOL bOpt = [userDefaults boolForKey:GD_OptRoundBankers];
+			[sw setOn:bOpt animated:NO]; // 初期値セット
+			[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+			sw.tag = TAG_GD_OptRoundBankers;
+			sw.backgroundColor = [UIColor clearColor]; //背景透明
+			[cell.contentView addSubview:sw]; [sw release];
+		} break;
+			
+		case 3:
+		{ // OptTaxRate
+			cell.textLabel.text = NSLocalizedString(@"OptTaxRate",nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"OptTaxRate msg",nil);
+			// add UILabel
+			MlbTaxRate = [[UILabel alloc] initWithFrame:CGRectMake(fX+5, 5, 50, 25)];
+			NSInteger iOpt = [userDefaults integerForKey:GD_OptTaxRate];
+			MlbTaxRate.text = [NSString stringWithFormat:@"%ld", (long)iOpt];
+			MlbTaxRate.tag = TAG_GD_OptTaxRate;
+			MlbTaxRate.backgroundColor = [UIColor clearColor]; //背景透明
+			MlbTaxRate.textAlignment = UITextAlignmentCenter;
+			MlbTaxRate.font = [UIFont boldSystemFontOfSize:20];
+			[cell.contentView  addSubview:MlbTaxRate]; [MlbTaxRate release];
+			// Left UIButton
+			UIButton *buLeft = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+			buLeft.frame = CGRectMake(fX-35, 5, 35, 25);
+			buLeft.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+			[buLeft setTitle:@"-" forState:UIControlStateNormal];
+			buLeft.tag = -1;
+			[buLeft addTarget:self action:@selector(buttonTaxRate:) forControlEvents:UIControlEventTouchUpInside];
+			[cell.contentView  addSubview:buLeft]; //auto//[buLeft release];
+			// Right UIButton
+			UIButton *buRight = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+			buRight.frame = CGRectMake(fX+55, 5, 35, 25);
+			buRight.titleLabel.font = [UIFont boldSystemFontOfSize:20];
+			[buRight setTitle:@"+" forState:UIControlStateNormal];
+			buRight.tag = +1;
+			[buRight addTarget:self action:@selector(buttonTaxRate:) forControlEvents:UIControlEventTouchUpInside];
+			[cell.contentView  addSubview:buRight]; //auto//[buRight release];
+		} break;
+			
+		case 4:
+		{ // OptLoginPass
+			cell.textLabel.text = NSLocalizedString(@"OptLoginPass",nil);
+			cell.detailTextLabel.text = NSLocalizedString(@"OptLoginPass msg",nil);
+			// add UITextField1
+			MtfPass1 = [[UITextField alloc] initWithFrame:CGRectMake(fX-35, 5, 130, 25)];
+			MtfPass1.borderStyle = UITextBorderStyleRoundedRect;
+			MtfPass1.placeholder = NSLocalizedString(@"OptLoginPass1 place",nil);
+			MtfPass1.keyboardType = UIKeyboardTypeASCIICapable;
+			MtfPass1.secureTextEntry = YES;
+			MtfPass1.returnKeyType = UIReturnKeyNext;
+			MtfPass1.tag = TAG_GD_OptLoginPass1;
+			MtfPass1.delegate = self;
+			// KeyChainから保存しているパスワードを取得する
+			NSError *error; // nilを渡すと異常終了するので注意
+			MtfPass1.text = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
+													   andServiceName:GD_PRODUCTNAME error:&error];
+			[cell.contentView  addSubview:MtfPass1];
+			[MtfPass1 release];
+			// add UITextField2
+			MtfPass2 = [[UITextField alloc] initWithFrame:CGRectMake(fX-35,35, 130, 25)];
+			MtfPass2.borderStyle = UITextBorderStyleRoundedRect;
+			MtfPass2.placeholder = NSLocalizedString(@"OptLoginPass2 place",nil);
+			MtfPass2.keyboardType = UIKeyboardTypeASCIICapable;
+			MtfPass2.secureTextEntry = YES;
+			MtfPass2.returnKeyType = UIReturnKeyDone;
+			MtfPass2.tag = TAG_GD_OptLoginPass2;
+			MtfPass2.delegate = self;
+			MtfPass2.text = MtfPass1.text;
+			[cell.contentView  addSubview:MtfPass2];
+			[MtfPass2 release];
+		} break;
 	}
     return cell;
-}
-
-- (void)buttonTaxRate:(UIButton *)button
-{
-	long lRate = (long)[MlbTaxRate.text integerValue] + button.tag;
-	if (0 <= lRate && lRate <= 99) {
-		MlbTaxRate.text = [NSString stringWithFormat:@"%ld", lRate];
-		[[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%ld", lRate] 
-												 forKey:GD_OptTaxRate];
-	}
 }
 
 
@@ -319,43 +336,7 @@
 }
 
 
-// UISwitch Action
-- (void)switchAction: (UISwitch *)sender
-{
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	switch (sender.tag) {  // .tag は UIView にて NSInteger で存在する、　
-/*		case TAG_GD_OptBootTopView:
-			[defaults setBool:[sender isOn] forKey:GD_OptBootTopView];
-			break;*/
-		case TAG_GD_OptAntirotation:
-			MbOptAntirotation = [sender isOn];  // このViewでも反映させるため。
-			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
-			break;
-		case TAG_GD_OptEnableInstallment:
-			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
-			break;
-/*		case TAG_GD_OptAmountCalc:
-			[defaults setBool:[sender isOn] forKey:GD_OptAmountCalc];
-			break;*/
-		case TAG_GD_OptRoundBankers:
-			[defaults setBool:[sender isOn] forKey:GD_OptRoundBankers];
-			break;
-	}
-}
-
-
-//--------------------------------------<UITextFieldDelegate>
-// 編集を開始した直後に呼ばれる
-/*- (void)textFieldDidBeginEditing:(UITextField *)sender 
-{
-
-}*/
-
-// 編集が完了する直前に呼ばれる
-/*- (BOOL)textFieldShouldEndEditing:(UITextField *)sender 
-{
-    return YES;
-}*/
+#pragma make - <UITextFieldDelegate>
 
 // キーボードのリターンキーを押したときに呼ばれる
 - (BOOL)textFieldShouldReturn:(UITextField *)sender 

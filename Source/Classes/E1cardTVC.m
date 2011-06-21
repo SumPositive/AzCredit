@@ -26,6 +26,9 @@
 @implementation E1cardTVC
 @synthesize Re0root;
 @synthesize Re3edit;
+#ifdef AzPAD
+@synthesize Rpopover;
+#endif
 
 
 #pragma mark - Source - Functions
@@ -46,6 +49,9 @@
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
+#ifdef AzPAD
+	[Rpopover release], Rpopover = nil;
+#endif
 	[Re0root release];
 	[Re3edit release];
 	[super dealloc];
@@ -144,8 +150,13 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
+{	
+#ifdef AzPAD
+	return NO;	// Popover内につき回転不要
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -491,7 +502,13 @@ static UIImage* GimageFromString(NSString* str)
 	if (indexPath.row < [RaE1cards count]) {
 		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
+#ifdef AzPAD
+			if (Rpopover) {
+				[Rpopover dismissPopoverAnimated:YES];
+			}
+#else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 		}
 		else if (self.editing) {
 			[self e1cardDatail:indexPath];

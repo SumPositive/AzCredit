@@ -57,7 +57,29 @@
 
 - (void)azInformationView
 {
-	// ヨコ非対応につき正面以外は、hideするようにした。
+#ifdef  AzPAD
+	if (MinformationView) {
+		[MinformationView release], MinformationView = nil;
+	}
+	MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+	//MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+	[Mpopover release], Mpopover = nil;
+	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:MinformationView];
+	Mpopover = [[UIPopoverController alloc] initWithContentViewController:MinformationView];
+	Mpopover.popoverContentSize = CGSizeMake(320, 510);
+	Mpopover.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+	CGRect rcArrow;
+	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
+		rcArrow = CGRectMake(0, 1027-60, 32,32);
+	} else {
+		rcArrow = CGRectMake(0, 768-60, 32,32);
+	}
+	[Mpopover presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
+			permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+#else
+	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
+/*	// ヨコ非対応につき正面以外は、hideするようにした。
 	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) {
 		return; // 正面だけにボタン表示するようにしたので通らないハズだが、念のため。
 	}
@@ -66,15 +88,40 @@
 		MinformationView = [[InformationView alloc] initWithFrame:[self.view.window bounds]];
 		[self.view.window addSubview:MinformationView]; //回転しないが、.viewから出すとToolBarが隠れない
 		//NG//[MinformationView release] viewDidUnloadにて解放
+	}*/
+	// モーダル UIViewController
+	if (MinformationView) {
+		[MinformationView release], MinformationView = nil;
 	}
+	MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+	MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	[self presentModalViewController:MinformationView animated:YES];
+	//[MinformationView release];
 	[MinformationView show];
+#endif
 }
 
 - (void)azSettingView
 {
 	SettingTVC *view = [[SettingTVC alloc] init];
+#ifdef  AzPAD
+	[Mpopover release], Mpopover = nil;
+	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:vi];
+	Mpopover = [[UIPopoverController alloc] initWithContentViewController:view];
+	Mpopover.popoverContentSize = CGSizeMake(480, 300);
+	Mpopover.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+	CGRect rcArrow;
+	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+		rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+	} else {
+		rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+	}
+	[Mpopover presentPopoverFromRect:rcArrow	inView:self.navigationController.view  
+			permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+#else
 	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
+#endif
 	[view release];
 }
 
@@ -494,6 +541,8 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
 {
+#ifdef AzPAD
+#else
 	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
 		// 正面：infoボタン表示
 		MbuToolBarInfo.enabled = YES;
@@ -503,6 +552,7 @@
 			[MinformationView hide]; // 正面でなければhide
 		}
 	}
+#endif
 #ifdef FREE_AD
 	[self bannerViewWillRotate:toInterfaceOrientation];
 #endif
@@ -918,10 +968,11 @@
  */
 
 #ifdef AzPAD
-#pragma mark - delegate UIPopoverControllerDelegate
+#pragma mark - <UIPopoverControllerDelegate>
+// Information, Setting では、 .delegate = nil; として呼び出されないようにしている。
+
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-
 	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
 
 	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
@@ -944,7 +995,6 @@
 		// [SAVE]ボタンが押された
 		
 		// 未払い総額 再描画
-		
 		
 	}
 	// [Cancel][Save][枠外タッチ]何れでも閉じるときここを通るので解放する。さもなくば回転後に現れることになる
