@@ -13,6 +13,9 @@
 #import "E6partTVC.h"
 #import "E3recordDetailTVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
 
 #define ACTIONSEET_TAG_DELETE	199
 
@@ -382,6 +385,31 @@
 	[self.tableView reloadData];
 }
 
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[self.tableView reloadData];  // cellLable位置調整する
+#ifdef AzPAD
+	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+	if (Mpopover) {
+		if (MindexPathEdit) { 
+			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+			rc.size.width /= 2;
+			rc.origin.y += 10;	rc.size.height -= 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
+					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES];
+		} else {
+			// 回転後のアンカー位置が再現不可なので閉じる
+			[Mpopover dismissPopoverAnimated:YES];
+			[Mpopover release], Mpopover = nil;
+		}
+	}
+#endif
+}
+
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
@@ -609,20 +637,30 @@
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
 											reuseIdentifier:zCellE6part] autorelease];
 			// 行毎に変化の無い定義は、ここで最初に1度だけする
+#ifdef AzPAD
+			cell.textLabel.font = [UIFont systemFontOfSize:18];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+			cell.accessoryType = UITableViewCellAccessoryNone;  // Popoverになるから
+#else
 			cell.textLabel.font = [UIFont systemFontOfSize:14];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // ＞
+#endif
 			//cell.textLabel.textAlignment = UITextAlignmentLeft;
 			//cell.textLabel.textColor = [UIColor blackColor];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 			cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // ＞
 			cell.showsReorderControl = YES; // MoveOK
 
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = UITextAlignmentRight;
 			//cellLabel.textColor = [UIColor blackColor];
-			//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
+			cellLabel.backgroundColor = [UIColor clearColor];
+#ifdef AzPAD
+			cellLabel.font = [UIFont systemFontOfSize:20];
+#else
 			cellLabel.font = [UIFont systemFontOfSize:14];
+#endif
 			cellLabel.tag = -1;
 			[cell addSubview:cellLabel]; [cellLabel release];
 		}
@@ -630,7 +668,12 @@
 			cellLabel = (UILabel *)[cell viewWithTag:-1];
 		}
 		// 回転対応のため
-		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 2, 80, 20);
+#ifdef AzPAD
+		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
+#else
+		//cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 2, 80, 20);
+		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
+#endif
 
 		// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 		UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
@@ -703,12 +746,17 @@
 										   reuseIdentifier:zCellAdd] autorelease];
 		}
 		cell.textLabel.text = NSLocalizedString(@"PayDay Add Record",nil);
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:16];
+		cell.accessoryType = UITableViewCellAccessoryNone;
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.imageView.image = nil;
 		cell.accessoryType = UITableViewCellEditingStyleInsert; // (+)
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 	}
 	return cell;
@@ -820,8 +868,22 @@
 		e3detail.PiAdd = 2; // (2)Card固定Add
 		e3detail.PiFirstYearMMDD = [e2obj.nYearMMDD integerValue]; // E2,E7配下から追加されるとき、支払日をこのE2に合わせるため。
 	}
-	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+
+#ifdef  AzPAD
+	[Mpopover release], Mpopover = nil;
+	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	Mpopover.popoverContentSize = CGSizeMake(450, 600);
+	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	MindexPathEdit = indexPath;
+	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+	rc.size.width /= 2;
+	rc.origin.y += 10;	rc.size.height -= 20;
+	[Mpopover presentPopoverFromRect:rc
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+#else
+	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
+#endif
 	[e3detail release];
 }
 
@@ -983,6 +1045,41 @@
 	[MocFunctions commit];
 }
 
+
+#ifdef AzPAD
+#pragma mark - <UIPopoverControllerDelegate>
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
+	
+	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+	if (popoverController==Mpopover) {
+		// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+		// つまり、これが呼び出されたときは、常に CANCEL　である。
+		// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
+		// PadPopoverInNaviCon を使っているから
+		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+		E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
+		[e3tvc cancelClose:nil];
+	}
+	return YES; // 閉じることを許可
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じた後に通知
+	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
+		// [SAVE]ボタンが押された
+		
+		// 未払い総額 再描画
+		
+		
+	}
+	// [Cancel][Save][枠外タッチ]何れでも閉じるときここを通るので解放する。さもなくば回転後に現れることになる
+	[Mpopover release], Mpopover = nil;
+	return;
+}
+#endif
 
 @end
 

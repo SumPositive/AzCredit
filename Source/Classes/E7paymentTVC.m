@@ -27,13 +27,55 @@
 @synthesize Re0root;
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex 
+{
+	if (buttonIndex == alertView.cancelButtonIndex) return; // CANCEL
+	if (Me7cellButton == nil) return;
+	
+	switch (alertView.tag) {
+			/* 初版未対応！未チェックあれば禁止
+			 case TAG_ALERT_NoCheck: // 未チェック分を翌月払いにする
+			 if (Me7cellButton.e0unpaid) {
+			 // このE7,E2を Paid にする                                ↓YES:未チェックE6の支払日を翌月以降へ
+			 [EntityRelation e7paid:Me7cellButton inE6payNextMonth:YES]; // Paid <> Unpaid を切り替える
+			 // context commit (SAVE)
+			 [EntityRelation commit];
+			 }
+			 break;*/
+			
+		case TAG_ALERT_toPAID:	// PAIDにする
+			if (Me7cellButton.e0unpaid) {
+				// このE7,E2を Paid にする    [0.4]nRepeat対応
+				[MocFunctions e7paid:Me7cellButton inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+				// context commit (SAVE)
+				[MocFunctions commit];
+			}
+			break;
+		case TAG_ALERT_toPAY:	// Unpaidに戻す
+			if (Me7cellButton.e0paid) {
+				// このE7,E2を Paid にする
+				[MocFunctions e7paid:Me7cellButton inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+				// context commit (SAVE)
+				[MocFunctions commit];
+			}
+			break;
+	}
+	
+	[self viewWillAppear:NO]; // Fech データセットさせるため
+	//[self.tableView reloadData];
+}
+
+
+#pragma mark - Ad
+
+
+#pragma mark - Unload - dealloc
 
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
@@ -60,6 +102,9 @@
 }
 
 
+
+#pragma mark - View lifecicle
+
 static UIColor *MpColorBlue(float percent) {
 	float red = percent * 255.0f;
 	float green = (red + 20.0f) / 255.0f;
@@ -69,7 +114,6 @@ static UIColor *MpColorBlue(float percent) {
 	
 	return [UIColor colorWithRed:percent green:green blue:blue alpha:1.0f];
 }
-
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -173,10 +217,20 @@ static UIColor *MpColorBlue(float percent) {
 	}
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	// Comback (-1)にして未選択状態にする
+	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	// (0)TopMenu >> (1)This clear
+	//	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 }
 
+
+#pragma mark View 回転
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -198,17 +252,6 @@ static UIColor *MpColorBlue(float percent) {
 }
  */
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-	// Comback (-1)にして未選択状態にする
-//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	// (0)TopMenu >> (1)This clear
-//	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-}
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
@@ -241,7 +284,8 @@ static UIColor *MpColorBlue(float percent) {
 }
 */
 
-#pragma mark Table view methods
+
+#pragma mark - TableView delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return [RaE7list count];  // Me7listは、(0)e2paids (1)e2unpaids の二次元配列
@@ -349,6 +393,86 @@ static UIImage* GimageFromString(NSString* str)
 }
 */
 
+- (void)cellLeftButton: (UIButton *)button   // E7: Unpaid <--切替--> Paid
+{
+	AzLOG(@"button.tag=%ld", (long)button.tag);
+	if (button.tag < 0) return;
+	
+	NSInteger iSec = button.tag / GD_SECTION_TIMES;
+	if ([RaE7list count] <= iSec) return;
+	NSInteger iRow = button.tag - (iSec * GD_SECTION_TIMES);
+	if ([[RaE7list objectAtIndex:iSec] count] <= iRow) return;
+	
+	Me7cellButton = [[RaE7list objectAtIndex:iSec] objectAtIndex:iRow];
+	
+	if (Me7cellButton.e0paid) {
+		// E2 PAID -->> PAYに戻す
+#if AzDEBUG
+		if (Me7cellButton.e0unpaid) {
+			AzLOG(@"LOGIC ERR: cellLeftButton: Me7cellButton.e0unpaid NG");
+			return;
+		}
+#endif
+		// これより後に paid があれば禁止		"最下行から PAY に戻せます"
+		for (E7payment *e7 in Me7cellButton.e0paid.e7paids) {
+			if ([Me7cellButton.nYearMMDD integerValue] < [e7.nYearMMDD integerValue]) {
+				alertBox(NSLocalizedString(@"E2 to PAY NG",nil),
+						 NSLocalizedString(@"E2 to PAY NG msg",nil),
+						 NSLocalizedString(@"Roger",nil));
+				return; // 禁止
+			}
+		}
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E2 to PAY",nil) 
+														message:NSLocalizedString(@"E2 to PAY msg",nil) 
+													   delegate:self
+											  cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
+											  otherButtonTitles:@"OK", nil];
+		alert.tag = TAG_ALERT_toPAY;
+		[alert show];
+		[alert release];
+	}
+	else if (Me7cellButton.e0unpaid) {
+#if AzDEBUG
+		if (Me7cellButton.e0paid) {
+			AzLOG(@"LOGIC ERR: cellLeftButton: Me7cellButton.e0paid NG");
+			return;
+		}
+#endif
+		// "最上行から PAID にできます"
+		for (E7payment *e7 in Me7cellButton.e0unpaid.e7unpaids) {
+			// これより前に unpaid があるので禁止
+			if ([e7.nYearMMDD integerValue] < [Me7cellButton.nYearMMDD integerValue]) {
+				alertBox(NSLocalizedString(@"E2 to PAID NG",nil),
+						 NSLocalizedString(@"E2 to PAID NG msg",nil),
+						 NSLocalizedString(@"Roger",nil));
+				return; // 禁止
+			}
+		}
+		if (0 < [Me7cellButton.sumNoCheck integerValue]) {
+			// E2配下に未チェックあり、「未チェック分を翌月払いにしますか？」 >>> alertView:clickedButtonAtIndex:メソッドが呼び出される
+			// 初版未対応とする！未チェックあれば禁止
+			alertBox(NSLocalizedString(@"NoCheck",nil),
+					 NSLocalizedString(@"NoCheck msg",nil),
+					 NSLocalizedString(@"Roger",nil));
+			return;
+		}
+		// E2 PAY -->> PAID
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E2 to PAID",nil) 
+														message:NSLocalizedString(@"E2 to PAID msg",nil) 
+													   delegate:self
+											  cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
+											  otherButtonTitles:@"OK", nil];
+		alert.tag = TAG_ALERT_toPAID;
+		[alert show];
+		[alert release];
+	}
+	else {
+		AzLOG(@"LOGIC ERR: Me7cellButton.e0paid = e0unpaid = nil 孤立状態");
+		return;
+	}
+}
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -363,15 +487,23 @@ static UIImage* GimageFromString(NSString* str)
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentLeft;
 		cell.textLabel.textColor = [UIColor blackColor];
 		
 		cellLabel = [[UILabel alloc] init];
 		cellLabel.textAlignment = UITextAlignmentRight;
 		//cellLabel.textColor = [UIColor blackColor];
-		//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
+		cellLabel.backgroundColor = [UIColor clearColor];
+#ifdef AzPAD
+		cellLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cellLabel.font = [UIFont systemFontOfSize:14];
+#endif
 		cellLabel.tag = -1;
 		[cell addSubview:cellLabel]; [cellLabel release];
 	}
@@ -379,7 +511,11 @@ static UIImage* GimageFromString(NSString* str)
 		cellLabel = (UILabel *)[cell viewWithTag:-1];
 	}
 	// 回転対応のため
+#ifdef AzPAD
+	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 140, 22);
+#else
 	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+#endif
 	
 	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 	UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
@@ -461,124 +597,6 @@ static UIImage* GimageFromString(NSString* str)
 		}
 	}
 	return cell;
-}
-
-- (void)cellLeftButton: (UIButton *)button   // E7: Unpaid <--切替--> Paid
-{
-	AzLOG(@"button.tag=%ld", (long)button.tag);
-	if (button.tag < 0) return;
-	
-	NSInteger iSec = button.tag / GD_SECTION_TIMES;
-	if ([RaE7list count] <= iSec) return;
-	NSInteger iRow = button.tag - (iSec * GD_SECTION_TIMES);
-	if ([[RaE7list objectAtIndex:iSec] count] <= iRow) return;
-
-	Me7cellButton = [[RaE7list objectAtIndex:iSec] objectAtIndex:iRow];
-	
-	if (Me7cellButton.e0paid) {
-		// E2 PAID -->> PAYに戻す
-#if AzDEBUG
-		if (Me7cellButton.e0unpaid) {
-			AzLOG(@"LOGIC ERR: cellLeftButton: Me7cellButton.e0unpaid NG");
-			return;
-		}
-#endif
-		// これより後に paid があれば禁止		"最下行から PAY に戻せます"
-		for (E7payment *e7 in Me7cellButton.e0paid.e7paids) {
-			if ([Me7cellButton.nYearMMDD integerValue] < [e7.nYearMMDD integerValue]) {
-				alertBox(NSLocalizedString(@"E2 to PAY NG",nil),
-						 NSLocalizedString(@"E2 to PAY NG msg",nil),
-						 NSLocalizedString(@"Roger",nil));
-				return; // 禁止
-			}
-		}
-		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E2 to PAY",nil) 
-														 message:NSLocalizedString(@"E2 to PAY msg",nil) 
-														delegate:self
-											   cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
-											   otherButtonTitles:@"OK", nil];
-		alert.tag = TAG_ALERT_toPAY;
-		[alert show];
-		[alert release];
-	}
-	else if (Me7cellButton.e0unpaid) {
-#if AzDEBUG
-		if (Me7cellButton.e0paid) {
-			AzLOG(@"LOGIC ERR: cellLeftButton: Me7cellButton.e0paid NG");
-			return;
-		}
-#endif
-		// "最上行から PAID にできます"
-		for (E7payment *e7 in Me7cellButton.e0unpaid.e7unpaids) {
-			// これより前に unpaid があるので禁止
-			if ([e7.nYearMMDD integerValue] < [Me7cellButton.nYearMMDD integerValue]) {
-				alertBox(NSLocalizedString(@"E2 to PAID NG",nil),
-						 NSLocalizedString(@"E2 to PAID NG msg",nil),
-						 NSLocalizedString(@"Roger",nil));
-				return; // 禁止
-			}
-		}
-		if (0 < [Me7cellButton.sumNoCheck integerValue]) {
-			// E2配下に未チェックあり、「未チェック分を翌月払いにしますか？」 >>> alertView:clickedButtonAtIndex:メソッドが呼び出される
-			// 初版未対応とする！未チェックあれば禁止
-			alertBox(NSLocalizedString(@"NoCheck",nil),
-					 NSLocalizedString(@"NoCheck msg",nil),
-					 NSLocalizedString(@"Roger",nil));
-			return;
-		}
-		// E2 PAY -->> PAID
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E2 to PAID",nil) 
-														 message:NSLocalizedString(@"E2 to PAID msg",nil) 
-														delegate:self
-											   cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
-											   otherButtonTitles:@"OK", nil];
-		alert.tag = TAG_ALERT_toPAID;
-		[alert show];
-		[alert release];
-	}
-	else {
-		AzLOG(@"LOGIC ERR: Me7cellButton.e0paid = e0unpaid = nil 孤立状態");
-		return;
-	}
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex 
-{
-	if (buttonIndex == alertView.cancelButtonIndex) return; // CANCEL
-	if (Me7cellButton == nil) return;
-	
-	switch (alertView.tag) {
-		/* 初版未対応！未チェックあれば禁止
-		case TAG_ALERT_NoCheck: // 未チェック分を翌月払いにする
-			if (Me7cellButton.e0unpaid) {
-				// このE7,E2を Paid にする                                ↓YES:未チェックE6の支払日を翌月以降へ
-				[EntityRelation e7paid:Me7cellButton inE6payNextMonth:YES]; // Paid <> Unpaid を切り替える
-				// context commit (SAVE)
-				[EntityRelation commit];
-			}
-			break;*/
-			
-		case TAG_ALERT_toPAID:	// PAIDにする
-			if (Me7cellButton.e0unpaid) {
-				// このE7,E2を Paid にする    [0.4]nRepeat対応
-				[MocFunctions e7paid:Me7cellButton inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
-				// context commit (SAVE)
-				[MocFunctions commit];
-			}
-			break;
-		case TAG_ALERT_toPAY:	// Unpaidに戻す
-			if (Me7cellButton.e0paid) {
-				// このE7,E2を Paid にする
-				[MocFunctions e7paid:Me7cellButton inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
-				// context commit (SAVE)
-				[MocFunctions commit];
-			}
-			break;
-	}
-	
-	[self viewWillAppear:NO]; // Fech データセットさせるため
-	//[self.tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 

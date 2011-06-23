@@ -389,11 +389,17 @@ static UIImage* GimageFromString(NSString* str)
 					 initWithStyle:UITableViewCellStyleValue1
 					 reuseIdentifier:zCellCard] autorelease];
 
+#ifdef AzPAD
+			cell.textLabel.font = [UIFont systemFontOfSize:20];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+#else
 			cell.textLabel.font = [UIFont systemFontOfSize:18];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+#endif
+
 			cell.textLabel.textAlignment = UITextAlignmentLeft;
 			cell.textLabel.textColor = [UIColor blackColor];
 			
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 			cell.detailTextLabel.textAlignment = UITextAlignmentRight;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 		}
@@ -451,7 +457,11 @@ static UIImage* GimageFromString(NSString* str)
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
 										   reuseIdentifier:zCellAdd] autorelease];
 		}
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];

@@ -379,7 +379,7 @@
     return [RaE5categorys count] + 1; // (+1)Add
 }
 
-#ifdef FREE_AD_PAD
+#ifdef xxxxxxxxFREE_AD_PAD
 // TableView セクションフッタを応答
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
 {
@@ -403,11 +403,16 @@
 					 initWithStyle:UITableViewCellStyleValue1
 					 reuseIdentifier:zCellNode] autorelease];
 
+#ifdef AzPAD
+			cell.textLabel.font = [UIFont systemFontOfSize:20];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+#else
 			cell.textLabel.font = [UIFont systemFontOfSize:18];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+#endif
 			//cell.textLabel.textAlignment = UITextAlignmentLeft;
 			cell.textLabel.textColor = [UIColor blackColor];
 			
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 			//cell.detailTextLabel.textAlignment = UITextAlignmentRight;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 
@@ -431,7 +436,11 @@
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
 										   reuseIdentifier:zCellAdd] autorelease];
 		}
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];

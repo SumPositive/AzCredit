@@ -651,7 +651,11 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 									   reuseIdentifier:CellIdentifier] autorelease];
 
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
+#endif
 		//cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor blackColor];
     }

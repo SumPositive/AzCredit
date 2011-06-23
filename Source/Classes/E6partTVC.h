@@ -12,7 +12,10 @@
 @class E2invoice;
 @class E7payment;
 
-@interface E6partTVC : UITableViewController // <AdMobDelegate>  // <UIActionSheetDelegate> 
+@interface E6partTVC : UITableViewController
+#ifdef AzPAD
+	<UIPopoverControllerDelegate>
+#endif
 {
 @private
 	//----------------------------------------------retain
@@ -30,6 +33,10 @@
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+#ifdef AzPAD
+	UIPopoverController*	Mpopover;
+	NSIndexPath*				MindexPathEdit;
+#endif
 	//----------------------------------------------assign
 	E1card		*Me2e1card;
 	E0root		*Me7e0root;

@@ -515,15 +515,23 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentLeft;
 		cell.textLabel.textColor = [UIColor blackColor];
 
 		cellLabel = [[UILabel alloc] init];
 		cellLabel.textAlignment = UITextAlignmentRight;
 		//cellLabel.textColor = [UIColor blackColor];
-		//cellLabel.backgroundColor = [UIColor grayColor]; //DEBUG範囲チェック用
+		cellLabel.backgroundColor = [UIColor clearColor];
+#ifdef AzPAD
+		cellLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cellLabel.font = [UIFont systemFontOfSize:14];
+#endif
 		cellLabel.tag = -1;
 		[cell addSubview:cellLabel]; [cellLabel release];
 	}
@@ -531,7 +539,11 @@
 		cellLabel = (UILabel *)[cell viewWithTag:-1];
 	}
 	// 回転対応のため
+#ifdef AzPAD
+	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 140, 22);
+#else
 	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+#endif
 
 	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 	UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease

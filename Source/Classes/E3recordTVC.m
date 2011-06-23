@@ -363,7 +363,7 @@
 #pragma mark - Ad
 
 
-#pragma mark - View
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -535,7 +535,7 @@
 }
 
 
-#pragma mark - TableView
+#pragma mark - TableView delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return [RaE3list count]; // [0]さらに前へ  [1〜End-1]E3record  [End]さらに次へ
@@ -659,14 +659,25 @@
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
 											reuseIdentifier:zCellE3record] autorelease];
 			// 行毎に変化の無い定義は、ここで最初に1度だけする
+#ifdef AzPAD
+			cell.textLabel.font = [UIFont systemFontOfSize:18];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+#else
 			cell.textLabel.font = [UIFont systemFontOfSize:14];
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+#endif
 			cell.detailTextLabel.textAlignment = UITextAlignmentLeft; //金額が欠けないように左寄せにした
 			cell.showsReorderControl = NO; // Move禁止
 
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = UITextAlignmentRight;
+			//cellLabel.textColor = [UIColor blackColor];
+			cellLabel.backgroundColor = [UIColor clearColor];
+#ifdef AzPAD
+			cellLabel.font = [UIFont systemFontOfSize:20];
+#else
 			cellLabel.font = [UIFont systemFontOfSize:14];
+#endif
 			cellLabel.tag = -1;
 			[cell addSubview:cellLabel]; [cellLabel release];
 		 }
@@ -675,7 +686,7 @@
 		}
 		// 回転対応のため
 #ifdef AzPAD
-		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-128, 2, 75, 20);
+		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
 #else
 		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
 #endif
@@ -704,7 +715,11 @@
 				if ([e3obj.sumNoCheck intValue]==0) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check.png"];
 				} else {
-					cell.imageView.image = nil; //[UIImage imageNamed:@"Circle32.png"];
+#ifdef AzPAD
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
+#else
+					cell.imageView.image = nil; //左画像なし：少しでも幅広くするため。見栄えも問題なさそうだ。
+#endif
 				}
 			}
 		} else {
@@ -749,11 +764,11 @@
 		if (e3obj.e5category != nil) zCategory = e3obj.e5category.zName;
 		if (0 < [e3obj.nRepeat integerValue]) zRepeat = @"〃 ";
 		if (e3obj.e1card) {
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@  %@  %@", zRepeat, e3obj.e1card.zName, 
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"  %@%@  %@  %@", zRepeat, e3obj.e1card.zName, 
 										 zShop, zCategory];
-			cell.detailTextLabel.textColor = [UIColor blackColor];
+			cell.detailTextLabel.textColor = [UIColor brownColor];
 		} else {
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@  %@  %@", NSLocalizedString(@"Card Undecided",nil), 
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"  %@  %@  %@", NSLocalizedString(@"Card Undecided",nil), 
 										 zShop, zCategory];
 			cell.detailTextLabel.textColor = [UIColor redColor];
 		}
@@ -881,7 +896,7 @@
 }
 
 #ifdef AzPAD
-#pragma mark - delegate UIPopoverControllerDelegate
+#pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
 	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須

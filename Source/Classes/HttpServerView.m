@@ -66,6 +66,9 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect 
 {
+#ifdef AzPAD
+	//画像なし、背景色のみ
+#else
 	UIImageView *imgView;
 	if (rect.size.width < rect.size.height) {
 		// タテ画面
@@ -74,11 +77,11 @@
 		// ヨコ画面
 		imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"azuki-480.jpg"]];
 	}
-	//imgView.contentMode = UIViewContentModeScaleAspectFit; // 画像のaspect比を維持し、ちょうどはいるようにする
 	imgView.contentMode = UIViewContentModeScaleAspectFill; // 画像のaspect比を維持し、最大に伸ばす
 	imgView.frame = self.bounds;
 	[self addSubview:imgView];
 	[imgView release];
+#endif
 	
 	if (RalertHttpServer == nil) {
 		RalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HttpSv Title", nil) 
