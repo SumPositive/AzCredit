@@ -817,10 +817,10 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 #endif
+		//cell.accessoryType = UITableViewCellEditingStyleInsert; // (+)
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
-		cell.textLabel.textColor = [UIColor blackColor];
+		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = nil;
-		cell.accessoryType = UITableViewCellEditingStyleInsert; // (+)
 		cell.showsReorderControl = NO; // Move禁止
 	}
 	return cell;

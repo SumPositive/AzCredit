@@ -647,7 +647,8 @@
 				cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 				cell.showsReorderControl = NO;		// Move禁止
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
-				cell.textLabel.textAlignment = UITextAlignmentLeft;
+				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				cell.textLabel.textColor = [UIColor grayColor];
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
 #ifdef FREE_AD
 				if (RoAdMobView) { // Request an AdMob ad for this table view cell

@@ -14,6 +14,9 @@
 #import "E5categoryDetailTVC.h"
 #import "E3recordTVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
 
 #define ACTIONSEET_TAG_DELETE_SHOP	199
 
@@ -27,6 +30,9 @@
 @implementation E5categoryTVC
 @synthesize Re0root;
 @synthesize Pe3edit;
+#ifdef AzPAD
+@synthesize RpopNaviCon;
+#endif
 
 
 #pragma mark - Action
@@ -156,7 +162,11 @@
 					   NSLocalizedString(@"Sort Amount",nil),
 					   NSLocalizedString(@"Sort Index",nil), nil]; // release不要
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
+#ifdef AzPAD
+	segment.frame = CGRectMake(0,0, 350,30);
+#else
 	segment.frame = CGRectMake(0,0, 210,30);
+#endif
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE5SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE5SortMode];
 	segment.selectedSegmentIndex = MiOptE5SortMode;
@@ -443,7 +453,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 #endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
-		cell.textLabel.textColor = [UIColor blackColor];
+		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // MOVE
@@ -464,7 +474,13 @@
 		if (Pe3edit) {
 			// 選択モード
 			Pe3edit.e5category = [RaE5categorys objectAtIndex:indexPath.row]; 
+#ifdef AzPAD
+			if (RpopNaviCon) {
+				[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+			}
+#else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 		}
 		else if (self.editing) {
 			[self e5categoryDatail:indexPath.row];

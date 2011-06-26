@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+#ifdef AzPAD
+@class PadPopoverInNaviCon;
+#endif
+
 @interface E3selectRepeatTVC : UITableViewController 
 {
 @private
 	//--------------------------retain
 	E3record		*Re3edit;
+#ifdef AzPAD
+	PadPopoverInNaviCon*	RpopNaviCon;
+#endif
 	//--------------------------assign
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -22,4 +29,8 @@
 }
 
 @property (nonatomic, retain) E3record		*Re3edit;
+#ifdef AzPAD
+@property (nonatomic, retain) PadPopoverInNaviCon*	RpopNaviCon;
+#endif
+
 @end

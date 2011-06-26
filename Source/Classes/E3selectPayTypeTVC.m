@@ -10,6 +10,10 @@
 #import "Entity.h"
 #import "E3selectPayTypeTVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 @interface E3selectPayTypeTVC (PrivateMethods)
 //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 //----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -18,6 +22,9 @@
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
+#ifdef AzPAD
+@synthesize RpopNaviCon;
+#endif
 
 
 #pragma mark - Action
@@ -185,7 +192,13 @@
 			break;
 	}
 
+#ifdef AzPAD
+	if (RpopNaviCon) {
+		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 @end

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-//@class E1card;
+#ifdef AzPAD
+@class PadPopoverInNaviCon;
+#endif
 
 @interface EditTextVC : UIViewController <UITextViewDelegate>
 {
@@ -16,6 +18,9 @@
 	//--------------------------retain
 	id			Rentity;
 	NSString	*RzKey;			// @"zName"
+#ifdef AzPAD
+	PadPopoverInNaviCon*	RpopNaviCon;
+#endif
 	//--------------------------assign
 	NSInteger	PiMaxLength;	// 最大文字数　==nil:無制限
 	NSInteger	PiSuffixLength; // 末尾の改行の数（UILabel複数行で上寄せするために入っている）
@@ -31,4 +36,8 @@
 @property (nonatomic, retain) NSString		*RzKey;	
 @property NSInteger	PiMaxLength;
 @property NSInteger	PiSuffixLength;
+#ifdef AzPAD
+@property (nonatomic, retain) PadPopoverInNaviCon*	RpopNaviCon;
+#endif
+
 @end

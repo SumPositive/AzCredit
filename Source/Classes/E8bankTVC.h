@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+#ifdef AzPAD
+@class PadPopoverInNaviCon;
+#endif
+
 @interface E8bankTVC : UITableViewController <UIActionSheetDelegate> 
 {
 @private
 	//--------------------------retain
 	E0root		*Re0root;
+#ifdef AzPAD
+	PadPopoverInNaviCon*	RpopNaviCon;
+#endif
 	//--------------------------assign
 	E1card		*Pe1card;		// =nil:マスタモード  !=nil:選択モード
 	
@@ -29,6 +36,9 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, assign) E1card	*Pe1card;
+#ifdef AzPAD
+@property (nonatomic, retain) PadPopoverInNaviCon*	RpopNaviCon;
+#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

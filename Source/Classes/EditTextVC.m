@@ -10,6 +10,10 @@
 #import "Entity.h"
 #import "EditTextVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 @interface EditTextVC (PrivateMethods)
 - (void)viewDesign;
 - (void)done:(id)sender;
@@ -20,6 +24,9 @@
 @synthesize RzKey;
 @synthesize PiMaxLength;
 @synthesize PiSuffixLength;
+#ifdef AzPAD
+@synthesize RpopNaviCon;
+#endif
 
 
 #pragma mark - Action
@@ -44,8 +51,13 @@
 		[Rentity setValue:MtextView.text forKey:RzKey];
 	}
 	
-	
+#ifdef AzPAD
+	if (RpopNaviCon) {
+		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 
@@ -59,7 +71,7 @@
 	MtextView = nil;	// ここで生成
 
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
+	
 	// DONEボタンを右側に追加する
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -88,11 +100,15 @@
 	CGRect rect;
 	float	fKeyHeight;
 	
+#ifdef AzPAD
+	fKeyHeight = 0;
+#else
 	if (self.interfaceOrientation == UIInterfaceOrientationPortrait OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
 		fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
 	} else {
 		fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
 	}
+#endif
 	
 	rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
 	rect.origin.x += 10;

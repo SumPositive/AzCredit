@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class E3record;
+#ifdef AzPAD
 @class PadPopoverInNaviCon;
+#endif
 
 @interface EditDateVC : UIViewController
 {

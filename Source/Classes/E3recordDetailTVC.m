@@ -1202,13 +1202,13 @@
 						tvc.Re0root = Me0root;
 						tvc.Re3edit = Re3edit;
 #ifdef AzPAD
-						UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:tvc];
+						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
 						pop.delegate = self;  //閉じたとき再描画するため
-						pop.popoverContentSize = CGSizeMake(320, 480);
+						pop.popoverContentSize = CGSizeMake(400, 500);
 						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 						rc.origin.y += 10;  rc.size.height -= 20;
 						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-						tvc.Rpopover = pop; //(retain)  内から閉じるときに必要になる
+						tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
 						[pop release];
 #else
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
@@ -1224,8 +1224,19 @@
 						E3selectRepeatTVC *tvc = [[E3selectRepeatTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Repeat",nil);
 						tvc.Re3edit = Re3edit;
+#ifdef AzPAD
+						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+						pop.delegate = self;  //閉じたとき再描画するため
+						pop.popoverContentSize = CGSizeMake(280, 300);
+						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.y += 10;  rc.size.height -= 20;
+						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+						[pop release];
+#else
 						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
+#endif
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					} break;
@@ -1237,8 +1248,19 @@
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
 						tvc.Re3edit = Re3edit;
+#ifdef AzPAD
+						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+						pop.delegate = self;  //閉じたとき再描画するため
+						pop.popoverContentSize = CGSizeMake(320, 480);
+						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.y += 10;  rc.size.height -= 20;
+						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+						[pop release];
+#else
 						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
+#endif
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}
@@ -1256,7 +1278,18 @@
 							tvc.title = NSLocalizedString(@"Shop choice",nil);
 							tvc.Re0root = Me0root;
 							tvc.Pe3edit = Re3edit;
+#ifdef AzPAD
+							PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+							pop.delegate = self;  //閉じたとき再描画するため
+							pop.popoverContentSize = CGSizeMake(500, 600);
+							CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+							rc.origin.y += 10;  rc.size.height -= 20;
+							[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+							tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+							[pop release];
+#else
 							[self.navigationController pushViewController:tvc animated:YES];
+#endif
 							[tvc release];
 							MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						}
@@ -1269,7 +1302,18 @@
 					tvc.title = NSLocalizedString(@"Category choice",nil);
 					tvc.Re0root = Me0root;
 					tvc.Pe3edit = Re3edit;
+#ifdef AzPAD
+					PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+					pop.delegate = self;  //閉じたとき再描画するため
+					pop.popoverContentSize = CGSizeMake(500, 600);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+					[pop release];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
@@ -1282,8 +1326,19 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
+#ifdef AzPAD
+					PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+					pop.delegate = self;  //閉じたとき再描画するため
+					pop.popoverContentSize = CGSizeMake(400, 260);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+					[pop release];
+#else
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
+#endif
 					[evc release];
 					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
@@ -1309,8 +1364,19 @@
 					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
 					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
 					evc.delegate = self;
+#ifdef AzPAD
+					PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+					pop.delegate = self;  //閉じたとき再描画するため
+					pop.popoverContentSize = CGSizeMake(290, 390);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
+					[pop release];
+#else
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
+#endif
 					[evc release];
 					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				}

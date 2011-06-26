@@ -15,6 +15,7 @@
 #import "TopMenuTVC.h"
 #ifdef AzPAD
 #import "padRootVC.h"
+#import "LoginPassVC.h"
 #endif
 
 
@@ -415,6 +416,9 @@
 													 green:80.0/255.0 
 													  blue:77.0/255.0 
 													 alpha:1.0]; // Azukid Color
+		
+#ifdef AzPAD
+#else
 		MviewLogin.tag = VIEW_TAG_LOGINPASS; // TopMenuTVC:shouldAutorotateToInterfaceOrientationにて参照
 		//------------------------------------------アイコン
 		UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(130, 50, 57, 57)];
@@ -452,20 +456,33 @@
 		lb.backgroundColor = [UIColor clearColor]; //背景透明
 		lb.font = [UIFont systemFontOfSize:12];
 		[MviewLogin addSubview:lb]; [lb release];	
-		//
+#endif
+		
 		[self.window addSubview:MviewLogin];
 		[MviewLogin release];
 	}
+
 	CGRect rc = MviewLogin.frame;
 	rc.origin.y = 0;
 	MviewLogin.frame = rc;
 	MviewLogin.alpha = 1.0; // 完全に隠す
 	[self.window bringSubviewToFront:MviewLogin];
+	MbLoginShow = YES;
+
+#ifdef AzPAD
+	//Pad//回転対応するため
+	LoginPassVC *vc = [[LoginPassVC alloc] init];
+	vc.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self.window presentModalViewController:vc animated:YES];
+	[vc release];
+#else
 	UITextField *tf = (UITextField *)[MviewLogin viewWithTag:TAG_TF_LOGINPASS];
 	[tf becomeFirstResponder];
-	MbLoginShow = YES;
+#endif	
 }
 
+#ifdef AzPAD
+#else
 //--------------------------------------<UITextFieldDelegate>
 // キーボードのリターンキーを押したときに呼ばれる
 - (BOOL)textFieldShouldReturn:(UITextField *)sender 
@@ -504,7 +521,7 @@
 	}
 	return YES;
 }
-
+#endif
 
 @end
 

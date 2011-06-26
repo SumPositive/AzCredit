@@ -15,6 +15,9 @@
 #import "E2invoiceTVC.h"
 #import "SettingTVC.h"
 #import "WebSiteVC.h"
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
 
 #define ACTIONSEET_TAG_DELETE	199
 
@@ -25,6 +28,9 @@
 @implementation E8bankTVC
 @synthesize Re0root;
 @synthesize Pe1card;
+#ifdef AzPAD
+@synthesize RpopNaviCon;
+#endif
 
 #pragma mark - Action
 
@@ -368,7 +374,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 #endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
-		cell.textLabel.textColor = [UIColor blackColor];
+		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO;
@@ -392,7 +398,13 @@
 		if (Pe1card) {
 			// 選択モード
 			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
+#ifdef AzPAD
+			if (RpopNaviCon) {
+				[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+			}
+#else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 		}
 		else if (self.editing) {
 			[self E8bankDatail:indexPath];

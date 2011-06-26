@@ -179,7 +179,7 @@
 #ifdef  AzPAD
 	[Mpopover release], Mpopover = nil;
 	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
-	Mpopover.popoverContentSize = CGSizeMake(450, 550);
+	Mpopover.popoverContentSize = CGSizeMake(420, 550);
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	MindexPathEdit = [NSIndexPath indexPathForRow:0 inSection:0];
 	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];

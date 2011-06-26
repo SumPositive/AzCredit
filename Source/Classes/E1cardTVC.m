@@ -14,8 +14,10 @@
 #import "E1cardDetailTVC.h"
 #import "E2invoiceTVC.h"
 #import "SettingTVC.h"
-//#import "GooDocsTVC.h"
 #import "WebSiteVC.h"
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
 
 #define ACTIONSEET_TAG_DELETE_CARD	199
 
@@ -27,7 +29,7 @@
 @synthesize Re0root;
 @synthesize Re3edit;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize RpopNaviCon;
 #endif
 
 
@@ -73,8 +75,19 @@
 		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
 	
+#ifdef  AzPAD
+	PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
+	pop.delegate = self;  //閉じたとき再描画するため
+	pop.popoverContentSize = CGSizeMake(400, 450);
+	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+	//rc.origin.x = rc.size.width - 30;	rc.size.width = 30;
+	rc.origin.y += 10;	rc.size.height -= 20;
+	[pop presentPopoverFromRect:rc inView:self.view
+			permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+#else
 	e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e1detail animated:YES];
+#endif
 	[e1detail release]; // self.navigationControllerがOwnerになる
 }
 
@@ -255,9 +268,6 @@
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-#ifdef AzPAD
-	[Rpopover release], Rpopover = nil;
-#endif
 	[Re0root release];
 	[Re3edit release];
 	[super dealloc];
@@ -457,7 +467,7 @@ static UIImage* GimageFromString(NSString* str)
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 #endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
-		cell.textLabel.textColor = [UIColor blackColor];
+		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
@@ -495,8 +505,8 @@ static UIImage* GimageFromString(NSString* str)
 		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (Rpopover) {
-				[Rpopover dismissPopoverAnimated:YES];
+			if (RpopNaviCon) {
+				[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -658,6 +668,23 @@ static UIImage* GimageFromString(NSString* str)
 	}*/
 	[MocFunctions commit];
 }
+
+
+#ifdef AzPAD
+#pragma mark - <UIPopoverControllerDelegate>
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	return YES; // 閉じることを許可
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じた後に通知
+	// 再描画する
+	[self viewWillAppear:YES];
+	return;
+}
+#endif
+
 
 @end
 

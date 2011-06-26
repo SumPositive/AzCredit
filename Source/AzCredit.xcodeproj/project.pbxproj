@@ -16,6 +16,10 @@
 		440328D311D81CAA002F321B /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
 		440AC51611299DBE00B89317 /* EditDateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 440AC51411299DBE00B89317 /* EditDateVC.h */; };
 		440AC51711299DBE00B89317 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
+		442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */; };
+		442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */; };
+		442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
+		442FF3A213B7809D00F8C2C4 /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 		4434B832111F0A3900CCF7EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4434B831111F0A3900CCF7EE /* InfoPlist.strings */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
@@ -2040,6 +2044,8 @@
 		440328D211D81CAA002F321B /* azuki-320.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "azuki-320.jpg"; path = "Design/azuki-320.jpg"; sourceTree = "<group>"; };
 		440AC51411299DBE00B89317 /* EditDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDateVC.h; sourceTree = "<group>"; };
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDateVC.m; sourceTree = "<group>"; };
+		442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginPassVC.h; sourceTree = "<group>"; };
+		442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPassVC.m; sourceTree = "<group>"; };
 		4434B82F111F0A2B00CCF7EE /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4434B833111F0A4200CCF7EE /* Japanese */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4454C987114941930063621D /* E5categoryDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E5categoryDetailTVC.m; sourceTree = "<group>"; };
@@ -2805,6 +2811,8 @@
 				44ACA0C1114E698B000E9FD8 /* MocFunctions.m */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
+				442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */,
+				442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */,
 				44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */,
 				44B332CE1123B6AA007D3A15 /* TopMenuTVC.m */,
 			);
@@ -4501,6 +4509,7 @@
 				44C0E5B413A0A2D1003D0465 /* GADBannerView.h in Headers */,
 				44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */,
 				44C0E7F913A110BA003D0465 /* PadPopoverInNaviCon.h in Headers */,
+				442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4885,6 +4894,7 @@
 				44C0E7CF13A0A475003D0465 /* UIDevice-Hardware.h in Headers */,
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
 				44C0E7FA13A110BA003D0465 /* PadPopoverInNaviCon.h in Headers */,
+				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5447,6 +5457,7 @@
 				44C0E42713A0A2D1003D0465 /* UIDevice-Hardware.m in Sources */,
 				44C0E7F313A110BA003D0465 /* PadRootVC.m in Sources */,
 				44C0E7F713A110BA003D0465 /* PadPopoverInNaviCon.m in Sources */,
+				442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5502,6 +5513,7 @@
 				44C0E64B13A0A475003D0465 /* UIDevice-Hardware.m in Sources */,
 				44C0E7F413A110BA003D0465 /* PadRootVC.m in Sources */,
 				44C0E7F813A110BA003D0465 /* PadPopoverInNaviCon.m in Sources */,
+				442FF3A213B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

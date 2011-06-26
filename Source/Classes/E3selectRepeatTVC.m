@@ -10,6 +10,10 @@
 #import "Entity.h"
 #import "E3selectRepeatTVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 @interface E3selectRepeatTVC (PrivateMethods)
 //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 //----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -19,6 +23,9 @@
 
 @implementation E3selectRepeatTVC
 @synthesize Re3edit;
+#ifdef AzPAD
+@synthesize RpopNaviCon;
+#endif
 
 #pragma mark - Action
 
@@ -174,7 +181,13 @@
 		default: Re3edit.nRepeat = [NSNumber numberWithInteger: 0]; break;
 	}
 
+#ifdef AzPAD
+	if (RpopNaviCon) {
+		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 @end
