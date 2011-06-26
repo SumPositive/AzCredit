@@ -32,44 +32,82 @@
 @synthesize PiFirstSection;
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+// アラートボタンが押されたときに呼び出される
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"--- unloadRelease --- E6partTVC");
-#ifdef FREE_AD
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release],	RoAdMobView = nil;
+	[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
+}
+
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)e3detailView:(NSIndexPath *)indexPath 
+{
+	// ドリルダウン
+	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
+	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
+	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
+	{
+		E6part *e6obj = [[RaE6parts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		// Edit Item
+		e3detail.title = NSLocalizedString(@"Edit Record", nil);
+		e3detail.Re3edit = e6obj.e3record;
+		e3detail.PiAdd = 0; // (0)Edit mode
+		e3detail.PiFirstYearMMDD = 0;
 	}
+	else {
+		// Add E3　「この支払日になるように利用明細を追加」
+		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
+														inManagedObjectContext:appDelegate.managedObjectContext];
+		//E6part *e6obj = [[Me6parts objectAtIndex:indexPath.section] objectAtIndex:0];
+		//E6が無い場合あり、E2だけでも処理可能にする
+		E2invoice *e2obj = [RaE2invoices objectAtIndex:indexPath.section];
+		if (e2obj.e1paid) {
+			e3obj.e1card = e2obj.e1paid;
+		} else if (e2obj.e1unpaid) {
+			e3obj.e1card = e2obj.e1unpaid;
+		} else {
+			[e3detail release];
+			AzLOG(@"LOGIC ERR: e2obj-->E1 Nothing");
+			return;
+		}
+		e3obj.e4shop = nil;
+		e3obj.e5category = nil;
+		// Args
+		//e3detail.title = NSLocalizedString(@"Add Record", nil);
+		e3detail.title = [NSString stringWithFormat:@"%@%@", 
+						  GstringYearMMDD([e2obj.nYearMMDD integerValue]), 
+						  NSLocalizedString(@"Due", nil)];
+		e3detail.Re3edit = e3obj;
+		e3detail.PiAdd = 2; // (2)Card固定Add
+		e3detail.PiFirstYearMMDD = [e2obj.nYearMMDD integerValue]; // E2,E7配下から追加されるとき、支払日をこのE2に合わせるため。
+	}
+	
+#ifdef  AzPAD
+	[Mpopover release], Mpopover = nil;
+	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	Mpopover.popoverContentSize = CGSizeMake(450, 600);
+	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	MindexPathEdit = indexPath;
+	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+	rc.size.width /= 2;
+	rc.origin.y += 10;	rc.size.height -= 20;
+	[Mpopover presentPopoverFromRect:rc
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+#else
+	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:e3detail animated:YES];
 #endif
-	[RaE2invoices release], RaE2invoices = nil;
-	[RaE6parts release],	RaE6parts = nil;
+	[e3detail release];
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[super dealloc];
-}
 
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
 
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -351,9 +389,74 @@
 	}
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	// Comback (-1)にして未選択状態にする
+	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	// PiMode: (0)E1<E2<E6:同カードの支払日違い  (1)E7<E2<E6:同支払日のカード違い
+	if (Pe2select) {
+		// (0)TopMenu >> (1)E1card >> (2)E2invoice >> (3)This clear
+		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
+	} else {
+		// (0)TopMenu >> (1)E7payment >> (2)This clear
+		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+	}
+	
+	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < [RaE6parts count]) {
+		// 選択行を画面中央付近に表示する
+		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:PiFirstSection];
+		[self.tableView scrollToRowAtIndexPath:indexPath 
+							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
+		MiForTheFirstSection = (-2);  // 最初一度だけ通り、二度と通らないようにするため
+	}
+	
+	//NSLog(@"***viewDidAppear:RaE2invoices=%@\n", RaE2invoices);
+	BOOL bPreview = YES;
+	for (E2invoice *e2 in RaE2invoices) {
+		if (0 < [e2.e6parts count]) {
+			bPreview = NO; // E6あり
+			break;
+		}
+	}
+	if (bPreview) {
+		// E2配下のE6なし、前画面に戻る。
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Payment changed",nil)
+														message:NSLocalizedString(@"Payment changed msg",nil)
+													   delegate:self 
+											  cancelButtonTitle:nil
+											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
+		[alert show];
+		[alert release];
+		//[self.navigationController popViewControllerAnimated:YES]; 	alertデリゲートにて、前のViewへ戻る
+	}
 }
+
+// ビューが非表示にされる前や解放される前ににこの処理が呼ばれる。
+// 次(前)画面が表示される前に処理される。
+- (void)viewWillDisappear:(BOOL)animated 
+{
+    [super viewWillDisappear:animated];
+	
+	
+	/*[0.4.18]E3detailから Cancel で戻ったときに再読み込みしないようにしたため、ここでE2を削除すると落ちる場合あり。残しておくことにする。
+	 [0.4.18]レス向上のためTopMenu:viewDidAppearにて[EntityRelation e7e2clean]している。
+	 // E2(Unpaid)配下のE6が無ければ削除する。　　viewWillAppear:にて追加された前月と翌月のE2を削除するのが目的。
+	 NSArray *aE2 = [NSArray arrayWithArray:[Me2e1card.e2unpaids allObjects]];
+	 for (E2invoice *e2 in aE2) {
+	 if ([e2.e6parts count] <= 0) {
+	 [EntityRelation e2delete:e2]; // E2,E7削除
+	 }
+	 }
+	 [EntityRelation commit]; //--------------SAVE----------MOVE結果もこれにて保存される
+	 */
+}
+
+
+#pragma mark  View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -410,58 +513,6 @@
 #endif
 }
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-	// Comback (-1)にして未選択状態にする
-//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	// PiMode: (0)E1<E2<E6:同カードの支払日違い  (1)E7<E2<E6:同支払日のカード違い
-	if (Pe2select) {
-		// (0)TopMenu >> (1)E1card >> (2)E2invoice >> (3)This clear
-//		[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
-	} else {
-		// (0)TopMenu >> (1)E7payment >> (2)This clear
-//		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-	}
-	
-	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < [RaE6parts count]) {
-		// 選択行を画面中央付近に表示する
-		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:PiFirstSection];
-		[self.tableView scrollToRowAtIndexPath:indexPath 
-							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
-		MiForTheFirstSection = (-2);  // 最初一度だけ通り、二度と通らないようにするため
-	}
-
-	//NSLog(@"***viewDidAppear:RaE2invoices=%@\n", RaE2invoices);
-	BOOL bPreview = YES;
-	for (E2invoice *e2 in RaE2invoices) {
-		if (0 < [e2.e6parts count]) {
-			bPreview = NO; // E6あり
-			break;
-		}
-	}
-	if (bPreview) {
-		// E2配下のE6なし、前画面に戻る。
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Payment changed",nil)
-														message:NSLocalizedString(@"Payment changed msg",nil)
-													   delegate:self 
-											  cancelButtonTitle:nil
-											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
-		[alert show];
-		[alert release];
-		//[self.navigationController popViewControllerAnimated:YES]; 	alertデリゲートにて、前のViewへ戻る
-	}
-}
-
-// アラートボタンが押されたときに呼び出される
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
-}
-
 
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -494,28 +545,41 @@
 	[e3detail release];
 }
 */
-// ビューが非表示にされる前や解放される前ににこの処理が呼ばれる。
-// 次(前)画面が表示される前に処理される。
-- (void)viewWillDisappear:(BOOL)animated 
+
+#pragma mark  View - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-    [super viewWillDisappear:animated];
-	
-	
-/*[0.4.18]E3detailから Cancel で戻ったときに再読み込みしないようにしたため、ここでE2を削除すると落ちる場合あり。残しておくことにする。
-  [0.4.18]レス向上のためTopMenu:viewDidAppearにて[EntityRelation e7e2clean]している。
-	// E2(Unpaid)配下のE6が無ければ削除する。　　viewWillAppear:にて追加された前月と翌月のE2を削除するのが目的。
-	NSArray *aE2 = [NSArray arrayWithArray:[Me2e1card.e2unpaids allObjects]];
-	for (E2invoice *e2 in aE2) {
-		if ([e2.e6parts count] <= 0) {
-			[EntityRelation e2delete:e2]; // E2,E7削除
-		}
+	NSLog(@"--- unloadRelease --- E6partTVC");
+#ifdef FREE_AD
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release],	RoAdMobView = nil;
 	}
-	[EntityRelation commit]; //--------------SAVE----------MOVE結果もこれにて保存される
- */
+#endif
+	[RaE2invoices release], RaE2invoices = nil;
+	[RaE6parts release],	RaE6parts = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 
-#pragma mark Table view methods
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 #ifdef FREE_AD
@@ -649,7 +713,7 @@
 			//cell.textLabel.textAlignment = UITextAlignmentLeft;
 			//cell.textLabel.textColor = [UIColor blackColor];
 			cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
-			cell.detailTextLabel.textColor = [UIColor blackColor];
+			cell.detailTextLabel.textColor = [UIColor brownColor];
 			cell.showsReorderControl = YES; // MoveOK
 
 			cellLabel = [[UILabel alloc] init];
@@ -723,7 +787,7 @@
 		if (e3obj.e4shop != nil) zShop = e3obj.e4shop.zName;
 		if (e3obj.e5category != nil) zCategory = e3obj.e5category.zName;
 		if (0 < [e3obj.nRepeat integerValue]) zRepeat = @"〃 ";
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@ %@", zRepeat, zShop, zCategory];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"  %@%@ %@", zRepeat, zShop, zCategory];
 		
 		// 金額
 		if ([e6obj.nAmount doubleValue] < 0) {
@@ -796,6 +860,40 @@
 	[self.tableView reloadRowsAtIndexPaths:aIndex withRowAnimation:NO];
 }
 
+// TableView 行選択時の動作
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+#ifdef FREE_AD
+	if ([RaE6parts count] <= indexPath.section) {
+		return; // AdMob
+	}
+#endif
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+	
+	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
+	McontentOffsetDidSelect = [tableView contentOffset];
+	
+	// E3詳細画面へ
+	[self e3detailView:indexPath]; // この中でAddにも対応
+}
+
+
+#pragma mark  TableView - Editting
+
+// 編集モードに出入りするときとスワイプして削除モードに出入りするときに呼ばれる
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated 
+{
+	if (editing) {
+		// 編集モードに入るとき
+	}
+	else {
+		// 編集モードを出るとき
+		[self.tableView reloadData]; // セクション間移動があったとき、セクションタイトルの再表示が必要
+	}
+	[super setEditing:editing animated:YES];
+}
+
 // TableView Editボタンスタイル
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -806,85 +904,6 @@
 		return UITableViewCellEditingStyleInsert;
 	}
 	else return UITableViewCellEditingStyleNone; // E7一覧配下のとき編集なし
-}
-
-// TableView 行選択時の動作
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-#ifdef FREE_AD
-	if ([RaE6parts count] <= indexPath.section) {
-		return; // AdMob
-	}
-#endif
-
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
-
-	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
-	McontentOffsetDidSelect = [tableView contentOffset];
-
-	// E3詳細画面へ
-	[self e3detailView:indexPath]; // この中でAddにも対応
-}
-
-- (void)e3detailView:(NSIndexPath *)indexPath 
-{
-	// ドリルダウン
-	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
-	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
-	if (indexPath.row < [[RaE6parts objectAtIndex:indexPath.section] count]) 
-	{
-		E6part *e6obj = [[RaE6parts objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-		// Edit Item
-		e3detail.title = NSLocalizedString(@"Edit Record", nil);
-		e3detail.Re3edit = e6obj.e3record;
-		e3detail.PiAdd = 0; // (0)Edit mode
-		e3detail.PiFirstYearMMDD = 0;
-	}
-	else {
-		// Add E3　「この支払日になるように利用明細を追加」
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
-														   inManagedObjectContext:appDelegate.managedObjectContext];
-		//E6part *e6obj = [[Me6parts objectAtIndex:indexPath.section] objectAtIndex:0];
-		//E6が無い場合あり、E2だけでも処理可能にする
-		E2invoice *e2obj = [RaE2invoices objectAtIndex:indexPath.section];
-		if (e2obj.e1paid) {
-			e3obj.e1card = e2obj.e1paid;
-		} else if (e2obj.e1unpaid) {
-			e3obj.e1card = e2obj.e1unpaid;
-		} else {
-			[e3detail release];
-			AzLOG(@"LOGIC ERR: e2obj-->E1 Nothing");
-			return;
-		}
-		e3obj.e4shop = nil;
-		e3obj.e5category = nil;
-		// Args
-		//e3detail.title = NSLocalizedString(@"Add Record", nil);
-		e3detail.title = [NSString stringWithFormat:@"%@%@", 
-						  GstringYearMMDD([e2obj.nYearMMDD integerValue]), 
-						  NSLocalizedString(@"Due", nil)];
-		e3detail.Re3edit = e3obj;
-		e3detail.PiAdd = 2; // (2)Card固定Add
-		e3detail.PiFirstYearMMDD = [e2obj.nYearMMDD integerValue]; // E2,E7配下から追加されるとき、支払日をこのE2に合わせるため。
-	}
-
-#ifdef  AzPAD
-	[Mpopover release], Mpopover = nil;
-	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
-	Mpopover.popoverContentSize = CGSizeMake(450, 600);
-	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-	MindexPathEdit = indexPath;
-	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-	rc.size.width /= 2;
-	rc.origin.y += 10;	rc.size.height -= 20;
-	[Mpopover presentPopoverFromRect:rc
-							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-#else
-	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:YES];
-#endif
-	[e3detail release];
 }
 
 /*E6削除なし
@@ -946,6 +965,8 @@
 	return NO;  // 最終行のAdd行以降は右寄せさせない
 }
 
+#pragma mark  TableView - Moveing
+
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -992,19 +1013,6 @@
     return oldPath; // 移動なし
 }
 
-
-// 編集モードに出入りするときとスワイプして削除モードに出入りするときに呼ばれる
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated 
-{
-	if (editing) {
-		// 編集モードに入るとき
-	}
-	else {
-		// 編集モードを出るとき
-		[self.tableView reloadData]; // セクション間移動があったとき、セクションタイトルの再表示が必要
-	}
-	[super setEditing:editing animated:YES];
-}
 
 // Editモード時の行移動処理　　＜＜CoreDataにつきArrayのように削除＆挿入ではダメ。ソート属性(row)を書き換えることにより並べ替えている＞＞
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)oldPath 

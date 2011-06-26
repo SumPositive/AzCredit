@@ -17,9 +17,9 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="Icon32--128x128.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon32-Statements.png"
-   inkscape:export-xdpi="22.5"
-   inkscape:export-ydpi="22.5"
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Design/Icon32-Space@2x.png"
+   inkscape:export-xdpi="45"
+   inkscape:export-ydpi="45"
    style="display:inline">
   <defs
      id="defs2838">
@@ -2097,7 +2097,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="6.03125"
-     inkscape:cx="64"
+     inkscape:cx="43.937824"
      inkscape:cy="64"
      inkscape:current-layer="layer10"
      showgrid="true"
@@ -2677,7 +2677,7 @@
      inkscape:groupmode="layer"
      id="layer10"
      inkscape:label="Statements"
-     style="display:inline"
+     style="display:none"
      transform="translate(0,96)"
      sodipodi:insensitive="true">
     <g

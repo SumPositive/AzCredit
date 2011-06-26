@@ -20,21 +20,22 @@
 @synthesize RzKey;
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
+// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
+// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
+- (void)done:(id)sender
 {
-	[RzKey release];
-	[Rentity release];
-	[super dealloc];
+	if (0 < [MtfAmount.text length]) {
+		[Rentity setValue:[NSNumber numberWithInteger:[MtfAmount.text integerValue]] forKey:RzKey];
+	}
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
+
+#pragma mark - View lifecicle
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -175,6 +176,8 @@
 	[MtfAmount becomeFirstResponder];  // キーボード表示
 }
 
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
@@ -188,6 +191,18 @@
 	//[self viewWillAppear:NO];没：これを呼ぶと、回転の都度、編集がキャンセルされてしまう。
 	[self viewDesign]; // これで回転しても編集が継続されるようになった。
 }
+
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[RzKey release];
+	[Rentity release];
+	[super dealloc];
+}
+
+
+#pragma mark - <UITextFieldDelegate>
 
 //テキストフィールドの文字変更のイベント処理
 // UITextFieldオブジェクトから1文字入力の都度呼び出されることにより入力文字数制限を行っている。
@@ -219,18 +234,6 @@
     return YES;
 }
 
-
-// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
-// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
-// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
-- (void)done:(id)sender
-{
-	if (0 < [MtfAmount.text length]) {
-		[Rentity setValue:[NSNumber numberWithInteger:[MtfAmount.text integerValue]] forKey:RzKey];
-	}
-	
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
 
 /*
 - (void)buttonCalc:(id)sender

@@ -50,7 +50,8 @@
 @synthesize Rpopover;
 #endif
 
-#pragma mark - Source - Func
+
+#pragma mark - Action
 
 // zFomula を計算し、答えを MdecAnswer に保持しながら Rlabel.text に表示する
 - (void)finalAnswer:(NSString *)zFomula
@@ -788,10 +789,26 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
  */
 
 
+#pragma mark  View - Unload - dealloc
+- (void)dealloc 
+{
+	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
+	if (MdecAnswer) {
+		[MdecAnswer release];
+	}
+	
+	[MbehaviorCalc release];
+	[MbehaviorDefault release];
+	[RaKeyButtons release];
+	[RzKey release];
+	[Rentity release];
+	[Rlabel release];
+	[super dealloc];
+}
 
 
-#pragma mark - Delegate
-#pragma mark textField
+
+#pragma mark - <UITextFieldDelegate>
 
 // UITextFieldDelegate：変更「前」に呼び出される
 - (BOOL)textField:(UITextField *)textField 
@@ -845,7 +862,7 @@ replacementString:(NSString *)text
 }
 
 
-#pragma mark touches
+#pragma mark - <Touches>
 
 // タッチイベント
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
@@ -855,24 +872,6 @@ replacementString:(NSString *)text
 }
 
 
-
-#pragma mark - dealloc
-
-- (void)dealloc 
-{
-	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
-	if (MdecAnswer) {
-		[MdecAnswer release];
-	}
-	
-	[MbehaviorCalc release];
-	[MbehaviorDefault release];
-	[RaKeyButtons release];
-	[RzKey release];
-	[Rentity release];
-	[Rlabel release];
-	[super dealloc];
-}
 
 
 @end

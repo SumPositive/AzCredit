@@ -36,7 +36,7 @@
 //@synthesize MdateTarget;
 
 
-#pragma mark - Source - Functions
+#pragma mark - Action
 
 - (void)azSettingView
 {
@@ -360,9 +360,6 @@
 }
 
 
-#pragma mark - Ad
-
-
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
@@ -477,7 +474,7 @@
 }
 
 
-#pragma mark View 回転
+#pragma mark View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -532,6 +529,40 @@
 		}
 	}
 #endif
+}
+
+#pragma mark  View - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E3recordTVC");
+#ifdef FREE_AD
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release], RoAdMobView = nil;
+	}
+#endif
+	[RaE3list release],		RaE3list = nil;
+	[RaSection release],	RaSection = nil;
+	[RaIndex release],		RaIndex = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re0root release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 
@@ -702,21 +733,21 @@
 				}
 			}
 			if (bPaid) {
-				cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID.png"]; // PAID
+				cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID"]; // PAID
 			}
 			else if (1 < [e3obj.e6parts count]) {
 				if ([e3obj.sumNoCheck intValue]==0) {
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check.png"];
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check"];
 				} else {
-					cell.imageView.image = nil; //[UIImage imageNamed:@"CircleW32.png"];
+					cell.imageView.image = nil; //[UIImage imageNamed:@"CircleW32"];
 				}
 			}
 			else {
 				if ([e3obj.sumNoCheck intValue]==0) {
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check.png"];
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check"];
 				} else {
 #ifdef AzPAD
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Clear"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
 #else
 					cell.imageView.image = nil; //左画像なし：少しでも幅広くするため。見栄えも問題なさそうだ。
 #endif
@@ -860,40 +891,6 @@
 	}
 }
 
-
-#pragma mark - Unload - dealloc
-
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	NSLog(@"--- unloadRelease --- E3recordTVC");
-#ifdef FREE_AD
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;
-	}
-#endif
-	[RaE3list release],		RaE3list = nil;
-	[RaSection release],	RaSection = nil;
-	[RaIndex release],		RaIndex = nil;
-}
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
 
 #ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>

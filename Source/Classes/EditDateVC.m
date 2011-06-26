@@ -37,26 +37,76 @@
 #endif
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-
-- (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
+- (void)buttonToday
 {
-#ifdef AzPAD
-	[RpopNaviCon release], RpopNaviCon = nil;
-#endif
-	[Re6edit release], Re6edit = nil;
-	// 生成とは逆順に解放するのが好ましい
-	[RzKey release], RzKey = nil;
-	[Rentity release], Rentity = nil;
-	[super dealloc];
+	//MdatePicker.date = [NSDate date]; // Now
+	[MdatePicker setDate:[NSDate date] animated:YES];
 }
+
+- (void)buttonYearTime
+{
+	MbOptUseDateTime = !MbOptUseDateTime;  // Revers
+	[[NSUserDefaults standardUserDefaults] setBool:MbOptUseDateTime forKey:GD_OptUseDateTime];
+	
+	if (MbOptUseDateTime) {
+		[MbuYearTime setTitle:NSLocalizedString(@"Hide Time",nil) forState:UIControlStateNormal]; // 表示は逆
+		MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;
+	} else {
+		[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
+		MdatePicker.datePickerMode = UIDatePickerModeDate;
+	}
+}
+
+
+// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
+// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
+// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
+- (void)done:(id)sender
+{
+	if (0<=PiE6row) {	//[1.0.0]E6date変更モード：変更有れば即保存
+		if (Re6edit) {
+			E2invoice *e2old = Re6edit.e2invoice;  //変更前に属しているE2
+			E3record *e3 = Rentity;
+			NSInteger iYearMMDD = GiYearMMDD(MdatePicker.date);
+			E2invoice *e2new = [MocFunctions e2invoice:e3.e1card  inYearMMDD:iYearMMDD]; //変更後に属するE2
+			if (e2new != e2old) { 
+				//属するE2に変化あり
+				Re6edit.e2invoice = e2new;
+				//e2new 配下再集計
+				[MocFunctions e2e7update:e2new]; //E6増
+				//e2old 配下再集計
+				[MocFunctions e2e7update:e2old]; //E6減
+				//
+				if ([delegate respondsToSelector:@selector(editDateE6change)]) {
+					[delegate editDateE6change];
+				}
+			}
+		}
+	} 
+	else {
+		[Rentity setValue:MdatePicker.date forKey:RzKey];
+	}
+	
+#ifdef AzPAD
+	if (RpopNaviCon) {
+		//[RpopNaviCon dismissPopoverAnimated:YES];
+		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	}
+#else
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
+	
+	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
+		alertBox(NSLocalizedString(@"DateUse Over",nil),
+				 NSLocalizedString(@"DateUse Over msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+	}
+}
+
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)init
@@ -136,6 +186,43 @@
 {
 }
 */
+
+- (void)viewDesign
+{
+	CGRect rect = self.view.bounds;
+	
+	
+	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
+		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	{	// タテ
+		rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
+		rect.size.height = GD_PickerHeight;
+		MdatePicker.frame = rect;
+		
+		rect.size.width = 150;
+		rect.size.height = 30;
+		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width / 2;
+		rect.origin.y = 30;
+		MbuToday.frame = rect;
+		
+		rect.origin.y = self.view.bounds.size.height - 60;
+		MbuYearTime.frame = rect;
+	}
+	else {	// ヨコ
+		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
+		rect.size.height = GD_PickerHeight;
+		MdatePicker.frame = rect;
+		
+		rect.size.width = 150;
+		rect.size.height = 30;
+		rect.origin.y = 10;
+		rect.origin.x = (self.view.bounds.size.width/2) - rect.size.width - 50;
+		MbuToday.frame = rect;
+		
+		rect.origin.x = (self.view.bounds.size.width/2) + 50;
+		MbuYearTime.frame = rect;
+	}
+}	
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 
@@ -222,6 +309,8 @@
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 }
 
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
@@ -236,107 +325,18 @@
 	[self viewDesign]; // これで回転しても編集が継続されるようになった。
 }
 
-- (void)viewDesign
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
-	CGRect rect = self.view.bounds;
-	
-
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-	 OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
-	{	// タテ
-		rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
-		rect.size.height = GD_PickerHeight;
-		MdatePicker.frame = rect;
-		
-		rect.size.width = 150;
-		rect.size.height = 30;
-		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width / 2;
-		rect.origin.y = 30;
-		MbuToday.frame = rect;
-
-		rect.origin.y = self.view.bounds.size.height - 60;
-		MbuYearTime.frame = rect;
-	}
-	else {	// ヨコ
-		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
-		rect.size.height = GD_PickerHeight;
-		MdatePicker.frame = rect;
-
-		rect.size.width = 150;
-		rect.size.height = 30;
-		rect.origin.y = 10;
-		rect.origin.x = (self.view.bounds.size.width/2) - rect.size.width - 50;
-		MbuToday.frame = rect;
-		
-		rect.origin.x = (self.view.bounds.size.width/2) + 50;
-		MbuYearTime.frame = rect;
-	}
-}	
-
-- (void)buttonToday
-{
-	//MdatePicker.date = [NSDate date]; // Now
-	[MdatePicker setDate:[NSDate date] animated:YES];
-}
-
-- (void)buttonYearTime
-{
-	MbOptUseDateTime = !MbOptUseDateTime;  // Revers
-	[[NSUserDefaults standardUserDefaults] setBool:MbOptUseDateTime forKey:GD_OptUseDateTime];
-
-	if (MbOptUseDateTime) {
-		[MbuYearTime setTitle:NSLocalizedString(@"Hide Time",nil) forState:UIControlStateNormal]; // 表示は逆
-		MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;
-	} else {
-		[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
-		MdatePicker.datePickerMode = UIDatePickerModeDate;
-	}
-}
-
-
-// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
-// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
-// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
-- (void)done:(id)sender
-{
-	if (0<=PiE6row) {	//[1.0.0]E6date変更モード：変更有れば即保存
-		if (Re6edit) {
-			E2invoice *e2old = Re6edit.e2invoice;  //変更前に属しているE2
-			E3record *e3 = Rentity;
-			NSInteger iYearMMDD = GiYearMMDD(MdatePicker.date);
-			E2invoice *e2new = [MocFunctions e2invoice:e3.e1card  inYearMMDD:iYearMMDD]; //変更後に属するE2
-			if (e2new != e2old) { 
-				//属するE2に変化あり
-				Re6edit.e2invoice = e2new;
-				//e2new 配下再集計
-				[MocFunctions e2e7update:e2new]; //E6増
-				//e2old 配下再集計
-				[MocFunctions e2e7update:e2old]; //E6減
-				//
-				if ([delegate respondsToSelector:@selector(editDateE6change)]) {
-					[delegate editDateE6change];
-				}
-			}
-		}
-	} 
-	else {
-		[Rentity setValue:MdatePicker.date forKey:RzKey];
-	}
-
 #ifdef AzPAD
-	if (RpopNaviCon) {
-		//[RpopNaviCon dismissPopoverAnimated:YES];
-		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	[RpopNaviCon release], RpopNaviCon = nil;
 #endif
-	
-	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
-		alertBox(NSLocalizedString(@"DateUse Over",nil),
-				 NSLocalizedString(@"DateUse Over msg",nil),
-				 NSLocalizedString(@"Roger",nil));
-	}
+	[Re6edit release], Re6edit = nil;
+	// 生成とは逆順に解放するのが好ましい
+	[RzKey release], RzKey = nil;
+	[Rentity release], Rentity = nil;
+	[super dealloc];
 }
 
 

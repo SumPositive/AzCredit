@@ -27,28 +27,36 @@
 @synthesize PiAddRow;
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)cancel:(id)sender 
 {
-	//--------------------------------@property (retain)
-	[Re1edit release];
-	[super dealloc];
+	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	
+	if (0 <= PiAddRow) { // Add
+		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
+		[MocFunctions deleteEntity:Re1edit];
+	}
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
-/*
-- (void)viewDidUnload 
+// 編集フィールドの値を self.e3target にセットする
+- (void)save:(id)sender 
 {
-	[super viewDidUnload];
-	AzLOG(@"MEMORY! E1cardDetailTVC: viewDidUnload");
+	if (0 <= PiAddRow) { // Add
+		Re1edit.nRow = [NSNumber numberWithInteger:PiAddRow];
+	}
+	
+	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
+	[MocFunctions e1update:Re1edit];
+	[MocFunctions commit];
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
-*/
+
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -86,6 +94,16 @@
 											   target:self action:@selector(save:)] autorelease];
 }
 
+- (void)viewDesign
+{
+	// 回転によるリサイズ
+	CGRect rect;
+	float fWidth = self.tableView.frame.size.width;
+	
+	rect = MlbNote.frame;
+	rect.size.width = fWidth - 60;
+	MlbNote.frame = rect;
+}
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
@@ -97,11 +115,20 @@
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-
+	
 	[self viewDesign]; // 下層で回転して戻ったときに再描画が必要
 	// テーブルビューを更新します。
     [self.tableView reloadData];
 }
+
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+}
+
+#pragma mark  View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -117,26 +144,26 @@
 	[self viewDesign]; // cell生成の後
 }
 
-- (void)viewDesign
+
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	// 回転によるリサイズ
-	CGRect rect;
-	float fWidth = self.tableView.frame.size.width;
-	
-	rect = MlbNote.frame;
-	rect.size.width = fWidth - 60;
-	MlbNote.frame = rect;
+	//--------------------------------@property (retain)
+	[Re1edit release];
+	[super dealloc];
 }
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-}
+/*
+ - (void)viewDidUnload 
+ {
+ [super viewDidUnload];
+ AzLOG(@"MEMORY! E1cardDetailTVC: viewDidUnload");
+ }
+ */
 
 
-#pragma mark Table view methods
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
@@ -414,72 +441,6 @@
 			}
 			break;
 	}
-}
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-- (void)cancel:(id)sender 
-{
-	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
-
-	if (0 <= PiAddRow) { // Add
-		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[MocFunctions deleteEntity:Re1edit];
-	}
-
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-// 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
-{
-	if (0 <= PiAddRow) { // Add
-		Re1edit.nRow = [NSNumber numberWithInteger:PiAddRow];
-	}
-	
-	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
-	[MocFunctions e1update:Re1edit];
-	[MocFunctions commit];
-	
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
 		

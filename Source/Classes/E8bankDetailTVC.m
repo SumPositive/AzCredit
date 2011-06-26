@@ -27,14 +27,81 @@
 @synthesize PbSave;
 @synthesize Pe1edit;
 
+#pragma mark - Action
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)cancel:(id)sender 
 {
-	//--------------------------------@property (retain)
-	[Re8edit release];
-	[super dealloc];
+	if (PbSave) {
+		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	}
+	
+	if (0 <= PiAddRow) { // Add
+		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
+		[MocFunctions deleteEntity:Re8edit];
+	}
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
+// 編集フィールドの値を self.e3target にセットする
+- (void)save:(id)sender 
+{
+	if (0 <= PiAddRow) { // Add
+		Re8edit.nRow = [NSNumber numberWithInteger:PiAddRow];
+	}
+	
+	NSError *err = nil;
+	NSManagedObjectContext *contx = Re8edit.managedObjectContext;
+	
+	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
+	NSString *zName = [Re8edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	if ([zName length] <= 0) {
+		alertBox(NSLocalizedString(@"E8zNameLess",nil),
+				 NSLocalizedString(@"E8zNameLessMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	
+	// 重複が無いか調べる
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	// 取り出すエンティティを設定する
+	[request setEntity:[NSEntityDescription entityForName:@"E8bank" inManagedObjectContext:contx]];
+	// NSPredicateを使って、検索条件式を設定する
+	[request setPredicate:[NSPredicate predicateWithFormat:@"(%K = %@)", @"zName", zName]];
+	// コンテキストにリクエストを送る
+	NSArray* aRes = [contx executeFetchRequest:request error:&err];
+	[request release];
+	NSInteger iCnt = 2;
+	if (0 <= PiAddRow) iCnt = 1;
+	if (iCnt < [aRes count]) {
+		alertBox(NSLocalizedString(@"E8zNameDups",nil),
+				 NSLocalizedString(@"E8zNameDupsMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	// OK トリム済み＆重複なし
+	
+	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
+		// SAVE
+		[MocFunctions commit];
+	}
+	
+	if (Pe1edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
+		Pe1edit.e8bank = Re8edit;
+		NSInteger iPos = [self.navigationController.viewControllers count];
+		if (3 < iPos) {
+			// 2つ前のViewへ戻る
+			UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:iPos-3];
+			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
+			return;
+		}
+	}
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -76,6 +143,17 @@
 	}
 }
 
+- (void)viewDesign
+{
+	// 回転によるリサイズ
+	CGRect rect;
+	float fWidth = self.tableView.frame.size.width;
+	
+	rect = MlbNote.frame;
+	rect.size.width = fWidth - 60;
+	MlbNote.frame = rect;
+}
+
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
@@ -92,6 +170,15 @@
     [self.tableView reloadData];
 }
 
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+}
+
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
@@ -106,26 +193,17 @@
 	[self viewDesign]; // cell生成の後
 }
 
-- (void)viewDesign
-{
-	// 回転によるリサイズ
-	CGRect rect;
-	float fWidth = self.tableView.frame.size.width;
-	
-	rect = MlbNote.frame;
-	rect.size.width = fWidth - 60;
-	MlbNote.frame = rect;
-}
+#pragma mark  View - Unload - dealloc
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	//--------------------------------@property (retain)
+	[Re8edit release];
+	[super dealloc];
 }
 
 
-#pragma mark Table view methods
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
@@ -323,77 +401,6 @@
     return YES;
 }
 */
-
-- (void)cancel:(id)sender 
-{
-	if (PbSave) {
-		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
-	}
-	
-	if (0 <= PiAddRow) { // Add
-		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[MocFunctions deleteEntity:Re8edit];
-	}
-
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-// 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
-{
-	if (0 <= PiAddRow) { // Add
-		Re8edit.nRow = [NSNumber numberWithInteger:PiAddRow];
-	}
-	
-	NSError *err = nil;
-	NSManagedObjectContext *contx = Re8edit.managedObjectContext;
-
-	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
-	NSString *zName = [Re8edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if ([zName length] <= 0) {
-		alertBox(NSLocalizedString(@"E8zNameLess",nil),
-				 NSLocalizedString(@"E8zNameLessMsg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	
-	// 重複が無いか調べる
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	// 取り出すエンティティを設定する
-	[request setEntity:[NSEntityDescription entityForName:@"E8bank" inManagedObjectContext:contx]];
-	// NSPredicateを使って、検索条件式を設定する
-	[request setPredicate:[NSPredicate predicateWithFormat:@"(%K = %@)", @"zName", zName]];
-	// コンテキストにリクエストを送る
-	NSArray* aRes = [contx executeFetchRequest:request error:&err];
-	[request release];
-	NSInteger iCnt = 2;
-	if (0 <= PiAddRow) iCnt = 1;
-	if (iCnt < [aRes count]) {
-		alertBox(NSLocalizedString(@"E8zNameDups",nil),
-				 NSLocalizedString(@"E8zNameDupsMsg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	// OK トリム済み＆重複なし
-	
-	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
-		// SAVE
-		[MocFunctions commit];
-	}
-	
-	if (Pe1edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
-		Pe1edit.e8bank = Re8edit;
-		NSInteger iPos = [self.navigationController.viewControllers count];
-		if (3 < iPos) {
-			// 2つ前のViewへ戻る
-			UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:iPos-3];
-			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
-			return;
-		}
-	}
-	
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
 
 		
 @end

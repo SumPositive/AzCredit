@@ -26,22 +26,90 @@
 @synthesize Re0root;
 @synthesize Pe1card;
 
+#pragma mark - Action
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+// UIActionSheetDelegate 処理部
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"--- unloadRelease --- E8bankTVC");
-	[RaE8banks release], RaE8banks = nil;
+	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+	if (actionSheet.tag == ACTIONSEET_TAG_DELETE && buttonIndex == 0) {
+		//========== E1 削除実行 ==========
+		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
+		E8bank *e8objDelete = [RaE8banks objectAtIndex:MindexPathActionDelete.row];
+		// E8bank 削除
+		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
+		[Re0root.managedObjectContext deleteObject:e8objDelete];
+		// 削除行の次の行以下 E8.row 更新
+		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE8banks count] ; i++) 
+		{  // .nRow + 1 削除行の次から
+			E8bank *e8obj = [RaE8banks objectAtIndex:i];
+			e8obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
+		}
+		// Commit
+		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
+		/*NSError *error = nil;
+		 if (![Re0root.managedObjectContext save:&error]) {
+		 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		 exit(-1);  // Fail
+		 }*/
+		[MocFunctions commit];
+		[self.tableView reloadData];
+	}
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
+- (void)barButtonAdd {
+	// Add Card
+	[self E8bankDatail:nil]; // :(nil)Add mode
 }
 
-#pragma mark View lifecycle
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)barButtonUntitled { // [未定]
+	// 未定(nil)にする
+	Pe1card.e8bank = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+- (void)E8bankDatail:(NSIndexPath *)indexPath
+{
+	E8bankDetailTVC *e8detail = [[E8bankDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
+	
+	if (indexPath == nil) {
+		E8bank *e8obj = [NSEntityDescription insertNewObjectForEntityForName:@"E8bank"
+													  inManagedObjectContext:Re0root.managedObjectContext];
+		// Add
+		e8detail.title = NSLocalizedString(@"Add Bank",nil);
+		e8detail.PiAddRow = [RaE8banks count]; // 追加モード
+		e8detail.Re8edit = e8obj;
+		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
+	} 
+	else {
+		if ([RaE8banks count] <= indexPath.row) {
+			[e8detail release];
+			return;  // Addボタン行などの場合パスする
+		}
+		e8detail.title = NSLocalizedString(@"Edit Bank",nil);
+		e8detail.PiAddRow = (-1); // 修正モード
+		e8detail.Re8edit = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
+	}
+	
+	if (Pe1card) {
+		e8detail.PbSave = NO;	// 呼び出し元：E1cardDetailTVC側のsave:により保存
+	} else {
+		e8detail.PbSave = YES;	// マスタモード：
+	}
+	
+	// 呼び出し側(親)にてツールバーを常に非表示にする
+	e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	
+	[self.navigationController pushViewController:e8detail animated:YES];
+	[e8detail release]; // self.navigationControllerがOwnerになる
+}
+
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -145,21 +213,21 @@
 	}
 }
 
-
-- (void)barButtonAdd {
-	// Add Card
-	[self E8bankDatail:nil]; // :(nil)Add mode
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	/*	if (Pe1card == nil) {
+	 // Comback (-1)にして未選択状態にする
+	 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	 // (0)TopMenu >> (1)This clear
+	 [appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+	 }*/
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonUntitled { // [未定]
-	// 未定(nil)にする
-	Pe1card.e8bank = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
+#pragma mark  View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -167,19 +235,6 @@
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-/*	if (Pe1card == nil) {
-		// Comback (-1)にして未選択状態にする
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// (0)TopMenu >> (1)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}*/
-}
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
@@ -202,81 +257,24 @@
 }
 */
 
-#pragma mark Local methods
+#pragma mark  View - Unload - dealloc
 
-
-// ディスクロージャボタンが押されたときの処理
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[self E8bankDatail:indexPath];
-}
-
-- (void)E8bankDatail:(NSIndexPath *)indexPath
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-	E8bankDetailTVC *e8detail = [[E8bankDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
-	
-	if (indexPath == nil) {
-		E8bank *e8obj = [NSEntityDescription insertNewObjectForEntityForName:@"E8bank"
-														inManagedObjectContext:Re0root.managedObjectContext];
-		// Add
-		e8detail.title = NSLocalizedString(@"Add Bank",nil);
-		e8detail.PiAddRow = [RaE8banks count]; // 追加モード
-		e8detail.Re8edit = e8obj;
-		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
-	} 
-	else {
-		if ([RaE8banks count] <= indexPath.row) {
-			[e8detail release];
-			return;  // Addボタン行などの場合パスする
-		}
-		e8detail.title = NSLocalizedString(@"Edit Bank",nil);
-		e8detail.PiAddRow = (-1); // 修正モード
-		e8detail.Re8edit = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
-	}
-	
-	if (Pe1card) {
-		e8detail.PbSave = NO;	// 呼び出し元：E1cardDetailTVC側のsave:により保存
-	} else {
-		e8detail.PbSave = YES;	// マスタモード：
-	}
-
-	// 呼び出し側(親)にてツールバーを常に非表示にする
-	e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-
-	[self.navigationController pushViewController:e8detail animated:YES];
-	[e8detail release]; // self.navigationControllerがOwnerになる
+	NSLog(@"--- unloadRelease --- E8bankTVC");
+	[RaE8banks release], RaE8banks = nil;
 }
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE && buttonIndex == 0) {
-		//========== E1 削除実行 ==========
-		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E8bank *e8objDelete = [RaE8banks objectAtIndex:MindexPathActionDelete.row];
-		// E8bank 削除
-		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
-		[Re0root.managedObjectContext deleteObject:e8objDelete];
-		// 削除行の次の行以下 E8.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE8banks count] ; i++) 
-		{  // .nRow + 1 削除行の次から
-			E8bank *e8obj = [RaE8banks objectAtIndex:i];
-			e8obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
-		}
-		// Commit
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-		/*NSError *error = nil;
-		if (![Re0root.managedObjectContext save:&error]) {
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			exit(-1);  // Fail
-		}*/
-		[MocFunctions commit];
-		[self.tableView reloadData];
-	}
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re0root release];
+	[super dealloc];
 }
 
 
-#pragma mark TableView methods
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -383,15 +381,6 @@
     return cell;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-	NSInteger rows = [RaE8banks count] - indexPath.row;
-	if (0 < rows) {
-		return UITableViewCellEditingStyleDelete;
-    }
-    return UITableViewCellEditingStyleNone;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
@@ -435,6 +424,13 @@
 		[self E8bankDatail:nil]; // :nil = Add mode
 	}
 }
+
+// ディスクロージャボタンが押されたときの処理
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self E8bankDatail:indexPath];
+}
+
+#pragma mark  TableView - Editting
 
 // TableView Editモードの表示
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -488,6 +484,17 @@
 	if (indexPath.row < [RaE8banks count]) return YES;
 	return NO;  // 最終行のAdd行は、右寄せさせない
 }
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	NSInteger rows = [RaE8banks count] - indexPath.row;
+	if (0 < rows) {
+		return UITableViewCellEditingStyleDelete;
+    }
+    return UITableViewCellEditingStyleNone;
+}
+
+#pragma mark  TableView - Moveing
 
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 

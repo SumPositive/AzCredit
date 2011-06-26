@@ -21,12 +21,35 @@
 @synthesize PiMaxLength;
 @synthesize PiSuffixLength;
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+
+#pragma mark - Action
+
+// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
+// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
+// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
+- (void)done:(id)sender
 {
-	[RzKey release];
-	[Rentity release];
-	[super dealloc];
+	//	[PPmuString setString:MtextView.text]; // 戻り値
+	if (0 < PiSuffixLength) {	// 複数行ラベルで上寄表示させるため末尾に改行を追加する
+		NSMutableString *mstr = [[NSMutableString alloc] initWithString:MtextView.text];
+		// 末尾改行文字("\n")を PiSuffixLength 個追加する
+		for (NSInteger i=0; i<PiSuffixLength; i++) {
+			[mstr appendString:@"\n"];
+		}
+		[Rentity setValue:mstr forKey:RzKey];
+		[mstr release];
+	}
+	else {
+		//AzLOG(@"---[%@:%@]---",MtextView.text, PzKey);
+		[Rentity setValue:MtextView.text forKey:RzKey];
+	}
+	
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
+
+
+#pragma mark - View lifecicle
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -59,6 +82,25 @@
 	AzLOG(@"MEMORY! EditTextVC: viewDidUnload");
 }
 */
+
+- (void)viewDesign
+{
+	CGRect rect;
+	float	fKeyHeight;
+	
+	if (self.interfaceOrientation == UIInterfaceOrientationPortrait OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
+	} else {
+		fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
+	}
+	
+	rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
+	rect.origin.x += 10;
+	rect.origin.y += 10;
+	rect.size.width -= 20;
+	rect.size.height -= (20 + fKeyHeight);
+	MtextView.frame = rect;	
+}	
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 
@@ -93,6 +135,8 @@
 	[MtextView becomeFirstResponder];  // キーボード表示
 }
 
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
@@ -107,25 +151,18 @@
 	[self viewDesign]; // これで回転しても編集が継続されるようになった。
 }
 
-- (void)viewDesign
+
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	CGRect rect;
-	float	fKeyHeight;
+	[RzKey release];
+	[Rentity release];
+	[super dealloc];
+}
 
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
-	} else {
-		fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
-	}
 
-	rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
-	rect.origin.x += 10;
-	rect.origin.y += 10;
-	rect.size.width -= 20;
-	rect.size.height -= (20 + fKeyHeight);
-	MtextView.frame = rect;	
-}	
-
+#pragma mark - <UITextViewDelegate>
 
 // <UITextViewDelegete> テキストが変更される「直前」に呼び出される。これにより入力文字数制限を行っている。
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range 
@@ -140,29 +177,5 @@
 	return ([zText length] <= PiMaxLength); // PiMaxLength以下YES
 }
 
-
-// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
-// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
-// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
-- (void)done:(id)sender
-{
-//	[PPmuString setString:MtextView.text]; // 戻り値
-	if (0 < PiSuffixLength) {	// 複数行ラベルで上寄表示させるため末尾に改行を追加する
-		NSMutableString *mstr = [[NSMutableString alloc] initWithString:MtextView.text];
-		// 末尾改行文字("\n")を PiSuffixLength 個追加する
-		for (NSInteger i=0; i<PiSuffixLength; i++) {
-			[mstr appendString:@"\n"];
-		}
-		[Rentity setValue:mstr forKey:RzKey];
-		[mstr release];
-	}
-	else {
-		//AzLOG(@"---[%@:%@]---",MtextView.text, PzKey);
-		[Rentity setValue:MtextView.text forKey:RzKey];
-	}
-
-	
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
 
 @end

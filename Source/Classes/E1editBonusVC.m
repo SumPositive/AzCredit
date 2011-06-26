@@ -18,14 +18,23 @@
 @implementation E1editBonusVC
 @synthesize Re1edit;
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+
+#pragma mark - Action
+
+// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
+// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
+// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
+- (void)done:(id)sender
 {
-	//--------------------------------Private Alloc
-	//--------------------------------@property (retain)
-	[Re1edit release];
-	[super dealloc];
+	// 結果更新
+	Re1edit.nBonus1 = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
+	Re1edit.nBonus2 = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
+
+#pragma mark - UIViewController
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -69,6 +78,34 @@
 	//------------------------------------------------------
 }
 
+- (void)viewDesign
+{
+	CGRect rect = self.view.bounds;
+	
+	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
+		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	{	// タテ
+		rect.origin.y = self.view.bounds.size.height/2 - GD_PickerHeight/2;
+	}
+	else {	// ヨコ
+		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
+	}
+	rect.size.height = GD_PickerHeight;
+	Mpicker.frame = rect;
+	
+	rect.size.width = 150;
+	rect.size.height = 20;
+	rect.origin.y -= rect.size.height;
+	float fcx = self.view.bounds.size.width / 2;
+	// 左
+	rect.origin.x = fcx - rect.size.width;
+	MlbBonus1.frame = rect;
+	// 右
+	rect.origin.x = fcx;
+	MlbBonus2.frame = rect;
+	
+}	
+
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 
 {
@@ -101,6 +138,8 @@
 //	[MtfAmount becomeFirstResponder];  // キーボード表示
 }
 
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
@@ -115,34 +154,18 @@
 	[self viewDesign]; // これで回転しても編集が継続されるようになった。
 }
 
-- (void)viewDesign
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	CGRect rect = self.view.bounds;
-	
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-	 OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
-	{	// タテ
-		rect.origin.y = self.view.bounds.size.height/2 - GD_PickerHeight/2;
-	}
-	else {	// ヨコ
-		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
-	}
-	rect.size.height = GD_PickerHeight;
-	Mpicker.frame = rect;
+	//--------------------------------Private Alloc
+	//--------------------------------@property (retain)
+	[Re1edit release];
+	[super dealloc];
+}
 
-	rect.size.width = 150;
-	rect.size.height = 20;
-	rect.origin.y -= rect.size.height;
-	float fcx = self.view.bounds.size.width / 2;
-	// 左
-	rect.origin.x = fcx - rect.size.width;
-	MlbBonus1.frame = rect;
-	// 右
-	rect.origin.x = fcx;
-	MlbBonus2.frame = rect;
-	
-}	
 
+#pragma mark - UIPickerView
 
 //-----------------------------------------------------------Picker
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -189,17 +212,5 @@
 	}
 }
 
-
-// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
-// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
-// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
-- (void)done:(id)sender
-{
-	// 結果更新
-	Re1edit.nBonus1 = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
-	Re1edit.nBonus2 = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
-
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
 
 @end

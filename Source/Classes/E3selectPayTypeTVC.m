@@ -20,24 +20,12 @@
 @synthesize Re3edit;
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-
-	// @property (retain)
-	[Re3edit release];
-	[super dealloc];
-}
+#pragma mark - View lifecicle
 
 - (id)initWithStyle:(UITableViewStyle)style {
-    if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+    if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
 		// OK
     }
     return self;
@@ -80,14 +68,26 @@
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
 
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark  View - Unload - dealloc
 
-#pragma mark Table view methods
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	
+	// @property (retain)
+	[Re3edit release];
+	[super dealloc];
+}
+
+
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

@@ -18,6 +18,7 @@
 #define	TAG_ALERT_toPAID		127
 
 
+#pragma mark - E2temp
 //-------------------------------------------E2invoiceTVCローカル使用一時作業クラス定義
 @interface E2temp : NSObject
 {
@@ -40,15 +41,6 @@
 @implementation E2temp
 @synthesize iYearMMDD, bPaid, decSum, iNoCheck, e2invoices;
 
-
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
-
-
 - (void)dealloc {   // 生成とは逆順に解放するのが好ましい
 	[decSum release];
 	[e2invoices release];
@@ -70,6 +62,7 @@
 @end
 
 
+#pragma mark - E2invoiceTVC
 //-----------------------------------------------------------------------------------------------
 @interface E2invoiceTVC (PrivateMethods)
 - (void)viewDesign;
@@ -80,31 +73,57 @@
 @synthesize Re1select;
 @synthesize Re8select;
 
+#pragma mark - Action
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex 
 {
-	NSLog(@"--- unloadRelease --- E2invoiceTVC");
-	[RaE2list release], RaE2list = nil;
+	if (buttonIndex == alertView.cancelButtonIndex) return; // CANCEL
+	if (Me2cellButton == nil) return;
+	
+	switch (alertView.tag) {
+			/* 初版未対応！未チェックあれば禁止
+			 case TAG_ALERT_NoCheck: // 未チェック分を翌月払いにする
+			 if (Me2cellButton.e1unpaid) {
+			 // このE2を Paid にする                                ↓YES:未チェックE6の支払日を翌月以降へ
+			 [EntityRelation e2paid:Me2cellButton inE6payNextMonth:YES]; // Paid <> Unpaid を切り替える
+			 // context commit (SAVE)
+			 [EntityRelation commit];
+			 }
+			 break;*/
+			
+		case TAG_ALERT_toPAID:	// PAIDにする
+			if (Me2cellButton.bPaid == NO) {
+				// このE2を PAID にする
+				for (E2invoice *e2 in [Me2cellButton.e2invoices allObjects]) {
+					[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+				}
+				// context commit (SAVE)
+				[MocFunctions commit];
+			}
+			break;
+		case TAG_ALERT_toPAY:	// Unpaidに戻す
+			//if (Me2cellButton.e1paid) {
+			if (Me2cellButton.bPaid == YES) {
+				// このE2を Unpaid に戻す
+				for (E2invoice *e2 in [Me2cellButton.e2invoices allObjects]) {
+					[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+				}
+				// context commit (SAVE)
+				[MocFunctions commit];
+			}
+			break;
+	}
+	// 再描画
+	[self viewWillAppear:YES]; // Fech データセットさせるため
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re1select release];
-	[Re8select release];
-	[super dealloc];
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
+
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -316,9 +335,20 @@
 	}
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	// Comback (-1)にして未選択状態にする
+	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	// (0)TopMenu >> (1)E1card/E7payment >> (2)This clear
+	//	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 }
+
+
+#pragma mark  View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -355,17 +385,6 @@
 }
 */
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-	// Comback (-1)にして未選択状態にする
-//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	// (0)TopMenu >> (1)E1card/E7payment >> (2)This clear
-//	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-}
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
@@ -417,7 +436,35 @@
 }
 */
 
-#pragma mark Table view methods
+#pragma mark  View - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E2invoiceTVC");
+	[RaE2list release], RaE2list = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re1select release];
+	[Re8select release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
+
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return [RaE2list count];  // Me2listは、(0)e2paids (1)e2unpaids の二次元配列
@@ -720,48 +767,6 @@
 	//	AzLOG(@"LOGIC ERR: E2.e1paid = e1unpaid = nil 孤立状態");
 	//	return;
 	//}
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex 
-{
-	if (buttonIndex == alertView.cancelButtonIndex) return; // CANCEL
-	if (Me2cellButton == nil) return;
-	
-	switch (alertView.tag) {
-		/* 初版未対応！未チェックあれば禁止
-		case TAG_ALERT_NoCheck: // 未チェック分を翌月払いにする
-			if (Me2cellButton.e1unpaid) {
-				// このE2を Paid にする                                ↓YES:未チェックE6の支払日を翌月以降へ
-				[EntityRelation e2paid:Me2cellButton inE6payNextMonth:YES]; // Paid <> Unpaid を切り替える
-				// context commit (SAVE)
-				[EntityRelation commit];
-			}
-			break;*/
-			
-		case TAG_ALERT_toPAID:	// PAIDにする
-			if (Me2cellButton.bPaid == NO) {
-				// このE2を PAID にする
-				for (E2invoice *e2 in [Me2cellButton.e2invoices allObjects]) {
-					[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
-				}
-				// context commit (SAVE)
-				[MocFunctions commit];
-			}
-			break;
-		case TAG_ALERT_toPAY:	// Unpaidに戻す
-			//if (Me2cellButton.e1paid) {
-			if (Me2cellButton.bPaid == YES) {
-				// このE2を Unpaid に戻す
-				for (E2invoice *e2 in [Me2cellButton.e2invoices allObjects]) {
-					[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
-				}
-				// context commit (SAVE)
-				[MocFunctions commit];
-			}
-			break;
-	}
-	// 再描画
-	[self viewWillAppear:YES]; // Fech データセットさせるため
 }
 
 

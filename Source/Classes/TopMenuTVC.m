@@ -53,7 +53,7 @@
 @synthesize Re0root;
 
 
-#pragma mark - Source - Functions
+#pragma mark - Action
 
 - (void)azInformationView
 {
@@ -97,7 +97,7 @@
 	MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:MinformationView animated:YES];
 	//[MinformationView release];
-	[MinformationView show];
+	//[MinformationView show];
 #endif
 }
 
@@ -581,6 +581,56 @@
 }
 #endif
 
+#pragma mark  View - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- TopMenuTVC");
+#ifdef FREE_AD
+	MbAdCanVisible = NO;  // 以後、Ad表示禁止
+	
+	if (MbannerView) {
+		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
+		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
+		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
+		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
+	}
+	
+	if (RoAdMobView) {
+		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release], RoAdMobView = nil;	// 破棄
+	}
+#endif
+	[MinformationView hide];
+	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	// @property (retain)
+	[Re0root release], Re0root = nil;
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
+
+/* iOS3.0以降では、viewDidUnload を使うようになった。
+ - (void)didReceiveMemoryWarning {
+ AzLOG(@"MEMORY! TopMenuTVC: didReceiveMemoryWarning");
+ [super didReceiveMemoryWarning];
+ }
+ */
+
 
 #pragma mark - TableView lifecycle
 
@@ -920,56 +970,6 @@
 	}
 }
 
-
-#pragma mark - Unload - dealloc
-
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	NSLog(@"--- unloadRelease --- TopMenuTVC");
-#ifdef FREE_AD
-	MbAdCanVisible = NO;  // 以後、Ad表示禁止
-	
-	if (MbannerView) {
-		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
-		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
-		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
-	}
-	
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;	// 破棄
-	}
-#endif
-	[MinformationView hide];
-	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
-}
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	// @property (retain)
-	[Re0root release], Re0root = nil;
-	[super dealloc];
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
-
-
-/* iOS3.0以降では、viewDidUnload を使うようになった。
- - (void)didReceiveMemoryWarning {
- AzLOG(@"MEMORY! TopMenuTVC: didReceiveMemoryWarning");
- [super didReceiveMemoryWarning];
- }
- */
 
 #ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>

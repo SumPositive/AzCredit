@@ -31,6 +31,10 @@
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
 		4486956010F5ABCC00AD02D8 /* AzCredit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */; };
 		448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
+		44931BED13B4E56E005CBE85 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
+		44931BEE13B4E56E005CBE85 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
+		44931BEF13B4E56E005CBE85 /* Icon32-Clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */; };
+		44931BF013B4E56E005CBE85 /* Icon32-Clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */; };
 		44A10FC3131A113E000AE46F /* Icon32-GreenPlus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC1131A113E000AE46F /* Icon32-GreenPlus@2x.png */; };
 		44A10FC4131A113E000AE46F /* Icon32-GreenPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC2131A113E000AE46F /* Icon32-GreenPlus.png */; };
 		44A10FC7131A16E0000AE46F /* Icon32-Recipient.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC5131A16E0000AE46F /* Icon32-Recipient.png */; };
@@ -2058,6 +2062,8 @@
 		448A5632110DF1DB003ACF5F /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Japanese; path = Japanese.lproj/Localizable.strings; sourceTree = "<group>"; };
 		448A5634110DF1EA003ACF5F /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; lineEnding = 0; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		449312B410F0D5A700C6C8E5 /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
+		44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Clear.png"; path = "Design/Icon32-Clear.png"; sourceTree = "<group>"; };
+		44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Clear@2x.png"; path = "Design/Icon32-Clear@2x.png"; sourceTree = "<group>"; };
 		44A10FC1131A113E000AE46F /* Icon32-GreenPlus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-GreenPlus@2x.png"; path = "Design/Icon32-GreenPlus@2x.png"; sourceTree = "<group>"; };
 		44A10FC2131A113E000AE46F /* Icon32-GreenPlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-GreenPlus.png"; path = "Design/Icon32-GreenPlus.png"; sourceTree = "<group>"; };
 		44A10FC5131A16E0000AE46F /* Icon32-Recipient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Recipient.png"; path = "Design/Icon32-Recipient.png"; sourceTree = "<group>"; };
@@ -3268,6 +3274,8 @@
 		44F0737F1105D9D80024B707 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */,
+				44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */,
 				44A10FC5131A16E0000AE46F /* Icon32-Recipient.png */,
 				44A10FC6131A16E0000AE46F /* Icon32-Recipient@2x.png */,
 				44A10FC2131A113E000AE46F /* Icon32-GreenPlus.png */,
@@ -5198,6 +5206,8 @@
 				44C0E3F013A0A2D1003D0465 /* Icon32-GreenPlus.png in Resources */,
 				44C0E3F113A0A2D1003D0465 /* Icon32-Recipient.png in Resources */,
 				44C0E3F213A0A2D1003D0465 /* Icon32-Recipient@2x.png in Resources */,
+				44931BED13B4E56E005CBE85 /* Icon32-Clear.png in Resources */,
+				44931BEF13B4E56E005CBE85 /* Icon32-Clear@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5271,6 +5281,8 @@
 				44C0E61A13A0A475003D0465 /* Icon32-GreenPlus.png in Resources */,
 				44C0E61B13A0A475003D0465 /* Icon32-Recipient.png in Resources */,
 				44C0E61C13A0A475003D0465 /* Icon32-Recipient@2x.png in Resources */,
+				44931BEE13B4E56E005CBE85 /* Icon32-Clear.png in Resources */,
+				44931BF013B4E56E005CBE85 /* Icon32-Clear@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

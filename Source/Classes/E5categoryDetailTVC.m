@@ -27,13 +27,77 @@
 @synthesize Pe3edit;
 
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+#pragma mark - Action
+
+- (void)cancel:(id)sender 
 {
-	//--------------------------------@property (retain)
-	[Re5edit release];
-	[super dealloc];
+	if (PbSave) {
+		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
+	}
+	
+	if (PbAdd) { // Add
+		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
+		[MocFunctions deleteEntity:Re5edit];
+	}
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
+// 編集フィールドの値を self.e3target にセットする
+- (void)save:(id)sender 
+{
+	
+	// zName : トリムや重複チェックは、E4editTextVC.done にて処理済みである。ここでは追加直後のSAVE時の抜け穴を防ぐ。
+	NSError *err = nil;
+	NSManagedObjectContext *contx = Re5edit.managedObjectContext;
+	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
+	NSString *zName = [Re5edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	if ([zName length] <= 0) {
+		alertBox(NSLocalizedString(@"E5zNameLess",nil),
+				 NSLocalizedString(@"E5zNameLessMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	// 重複が無いか調べる
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	// 取り出すエンティティを設定する
+	[request setEntity:[NSEntityDescription entityForName:@"E5category" inManagedObjectContext:contx]];
+	// NSPredicateを使って、検索条件式を設定する
+	[request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", @"zName", zName]];
+	// コンテキストにリクエストを送る
+	NSArray* aRes = [contx executeFetchRequest:request error:&err];
+	[request release];
+	NSInteger iCnt = 2;
+	if (PbAdd) iCnt = 1;
+	if (iCnt < [aRes count]) {
+		alertBox(NSLocalizedString(@"E5zNameDups",nil),
+				 NSLocalizedString(@"E5zNameDupsMsg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+	// OK トリム済み＆重複なし
+	Re5edit.sortDate = [NSDate date]; // Now
+	
+	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
+		// SAVE
+		[MocFunctions commit];
+	}
+	
+	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
+		Pe3edit.e5category = Re5edit;
+		NSInteger iPos = [self.navigationController.viewControllers count];
+		if (3 < iPos) {
+			// 2つ前のViewへ戻る
+			UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:iPos-3];
+			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
+			return;
+		}
+	}
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -93,6 +157,15 @@
     [self.tableView reloadData];
 }
 
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated 
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+}
+
+#pragma mark  View - Rotate
+
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// 回転禁止でも、正面は常に許可しておくこと。
@@ -114,15 +187,17 @@
 }
 */
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	//--------------------------------@property (retain)
+	[Re5edit release];
+	[super dealloc];
 }
 
 
-#pragma mark Table view methods
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
@@ -262,73 +337,6 @@
 			}
 			break;
 	}
-}
-
-- (void)cancel:(id)sender 
-{
-	if (PbSave) {
-		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
-	}
-	
-	if (PbAdd) { // Add
-		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[MocFunctions deleteEntity:Re5edit];
-	}
-
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-// 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
-{
-	
-	// zName : トリムや重複チェックは、E4editTextVC.done にて処理済みである。ここでは追加直後のSAVE時の抜け穴を防ぐ。
-	NSError *err = nil;
-	NSManagedObjectContext *contx = Re5edit.managedObjectContext;
-	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
-	NSString *zName = [Re5edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if ([zName length] <= 0) {
-		alertBox(NSLocalizedString(@"E5zNameLess",nil),
-				 NSLocalizedString(@"E5zNameLessMsg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	// 重複が無いか調べる
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	// 取り出すエンティティを設定する
-	[request setEntity:[NSEntityDescription entityForName:@"E5category" inManagedObjectContext:contx]];
-	// NSPredicateを使って、検索条件式を設定する
-	[request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", @"zName", zName]];
-	// コンテキストにリクエストを送る
-	NSArray* aRes = [contx executeFetchRequest:request error:&err];
-	[request release];
-	NSInteger iCnt = 2;
-	if (PbAdd) iCnt = 1;
-	if (iCnt < [aRes count]) {
-		alertBox(NSLocalizedString(@"E5zNameDups",nil),
-				 NSLocalizedString(@"E5zNameDupsMsg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	// OK トリム済み＆重複なし
-	Re5edit.sortDate = [NSDate date]; // Now
-	
-	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
-		// SAVE
-		[MocFunctions commit];
-	}
-
-	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
-		Pe3edit.e5category = Re5edit;
-		NSInteger iPos = [self.navigationController.viewControllers count];
-		if (3 < iPos) {
-			// 2つ前のViewへ戻る
-			UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:iPos-3];
-			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
-			return;
-		}
-	}
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
 		

@@ -31,44 +31,80 @@
 #endif
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	NSLog(@"--- unloadRelease --- E1cardTVC");
-	[RaE1cards release], RaE1cards = nil;
+- (void)barButtonAdd {
+	// Add Card
+	[self e1cardDatail:nil]; // :(nil)Add mode
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-#ifdef AzPAD
-	[Rpopover release], Rpopover = nil;
-#endif
-	[Re0root release];
-	[Re3edit release];
-	[super dealloc];
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
+- (void)barButtonUntitled {
+	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
+		return;
+	}
+	// E3配下なし（新規追加中である） 未定(nil)にする
+	Re3edit.e1card = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+- (void)e1cardDatail:(NSIndexPath *)indexPath
 {
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+	E1cardDetailTVC *e1detail = [[E1cardDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
+	
+	if (indexPath == nil) {
+		E1card *e1obj = [NSEntityDescription insertNewObjectForEntityForName:@"E1card"
+													  inManagedObjectContext:Re0root.managedObjectContext];
+		// Add
+		e1detail.title = NSLocalizedString(@"Add Card",nil);
+		e1detail.PiAddRow = [RaE1cards count]; // 追加モード
+		e1detail.Re1edit = e1obj;
+	} else {
+		if ([RaE1cards count] <= indexPath.row) {
+			[e1detail release];
+			return;  // Addボタン行などの場合パスする
+		}
+		e1detail.title = NSLocalizedString(@"Edit Card",nil);
+		e1detail.PiAddRow = (-1); // 修正モード
+		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
+	}
+	
+	e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	[self.navigationController pushViewController:e1detail animated:YES];
+	[e1detail release]; // self.navigationControllerがOwnerになる
+}
+
+// UIActionSheetDelegate 処理部
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_CARD && buttonIndex == 0) {
+		//========== E1 削除実行 ==========
+		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
+		E1card *e1objDelete = [RaE1cards objectAtIndex:MindexPathActionDelete.row];
+		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
+		[MocFunctions e1delete:e1objDelete];
+		// 削除行の次の行以下 E1.row 更新
+		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE1cards count] ; i++) 
+		{  // .nRow + 1 削除行の次から
+			E1card *e1obj = [RaE1cards objectAtIndex:i];
+			e1obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
+		}
+		// Commit
+		[MocFunctions commit];
+		// 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
+		[RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
+		[self.tableView reloadData];
+	}
 }
 
 
-#pragma mark View lifecycle
+
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -128,37 +164,6 @@
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
-
-- (void)barButtonAdd {
-	// Add Card
-	[self e1cardDatail:nil]; // :(nil)Add mode
-}
-
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonUntitled {
-	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
-		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
-		return;
-	}
-	// E3配下なし（新規追加中である） 未定(nil)にする
-	Re3edit.e1card = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-// 回転の許可　ここでは許可、禁止の判定だけする
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	
-#ifdef AzPAD
-	return NO;	// Popover内につき回転不要
-#else
-	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
-}
-
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
@@ -216,13 +221,60 @@
 {
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
+	
 	if (Re3edit == nil) {
-	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
-	//	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+		//	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
+
+#pragma mark View Rotate
+
+// 回転の許可　ここでは許可、禁止の判定だけする
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{	
+#ifdef AzPAD
+	return NO;	// Popover内につき回転不要
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
+}
+
+
+#pragma mark  View - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E1cardTVC");
+	[RaE1cards release], RaE1cards = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+#ifdef AzPAD
+	[Rpopover release], Rpopover = nil;
+#endif
+	[Re0root release];
+	[Re3edit release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
+
+
+
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
@@ -250,66 +302,8 @@
 }
 */
 
-#pragma mark Local methods
 
-
-// ディスクロージャボタンが押されたときの処理
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[self e1cardDatail:indexPath];
-}
-
-- (void)e1cardDatail:(NSIndexPath *)indexPath
-{
-	E1cardDetailTVC *e1detail = [[E1cardDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
-	
-	if (indexPath == nil) {
-		E1card *e1obj = [NSEntityDescription insertNewObjectForEntityForName:@"E1card"
-														inManagedObjectContext:Re0root.managedObjectContext];
-		// Add
-		e1detail.title = NSLocalizedString(@"Add Card",nil);
-		e1detail.PiAddRow = [RaE1cards count]; // 追加モード
-		e1detail.Re1edit = e1obj;
-	} else {
-		if ([RaE1cards count] <= indexPath.row) {
-			[e1detail release];
-			return;  // Addボタン行などの場合パスする
-		}
-		e1detail.title = NSLocalizedString(@"Edit Card",nil);
-		e1detail.PiAddRow = (-1); // 修正モード
-		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
-	}
-	
-	e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e1detail animated:YES];
-	[e1detail release]; // self.navigationControllerがOwnerになる
-}
-
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_CARD && buttonIndex == 0) {
-		//========== E1 削除実行 ==========
-		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E1card *e1objDelete = [RaE1cards objectAtIndex:MindexPathActionDelete.row];
-		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
-		[MocFunctions e1delete:e1objDelete];
-		// 削除行の次の行以下 E1.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE1cards count] ; i++) 
-		{  // .nRow + 1 削除行の次から
-			E1card *e1obj = [RaE1cards objectAtIndex:i];
-			e1obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
-		}
-		// Commit
-		[MocFunctions commit];
-		// 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
-		[RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
-		[self.tableView reloadData];
-	}
-}
-
-
-#pragma mark TableView methods
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -490,25 +484,13 @@ static UIImage* GimageFromString(NSString* str)
     return cell;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-	NSInteger rows = [RaE1cards count] - indexPath.row;
-	if (0 < rows) {
-		return UITableViewCellEditingStyleDelete;
-    }
-//	else if (rows <= 0) {
-//		return UITableViewCellEditingStyleInsert;
-//	}
-    return UITableViewCellEditingStyleNone;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
-
+	
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = [tableView contentOffset];
-
+	
 	if (indexPath.row < [RaE1cards count]) {
 		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
@@ -524,13 +506,13 @@ static UIImage* GimageFromString(NSString* str)
 			[self e1cardDatail:indexPath];
 		} 
 		else {
-/*			// Comback-L1 E1card 記録
-			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-			// (0)TopMenu >> (1)This
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-*/			
+			/*			// Comback-L1 E1card 記録
+			 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			 long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
+			 // (0)TopMenu >> (1)This
+			 [appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
+			 [appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
+			 */			
 			// E2invoice へ
 			E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
@@ -550,13 +532,32 @@ static UIImage* GimageFromString(NSString* str)
 	}
 }
 
+// ディスクロージャボタンが押されたときの処理
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self e1cardDatail:indexPath];
+}
+
+#pragma mark  TableView - Editting
+
 // TableView Editモードの表示
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
     // この後、self.editing = YES になっている。
 	// [self.tableView reloadData]だとアニメ効果が消される。　(OS 3.0 Function)を使って解決した。
-//	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)]; // [0]セクションから1個
-//	[self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade]; // (OS 3.0 Function)
+	//	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)]; // [0]セクションから1個
+	//	[self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade]; // (OS 3.0 Function)
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	NSInteger rows = [RaE1cards count] - indexPath.row;
+	if (0 < rows) {
+		return UITableViewCellEditingStyleDelete;
+    }
+//	else if (rows <= 0) {
+//		return UITableViewCellEditingStyleInsert;
+//	}
+    return UITableViewCellEditingStyleNone;
 }
 
 // TableView Editモード処理
@@ -603,6 +604,8 @@ static UIImage* GimageFromString(NSString* str)
 	if (indexPath.row < [RaE1cards count]) return YES;
 	return NO;  // 最終行のAdd行は右寄せさせない
 }
+
+#pragma mark  TableView - Moveing
 
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 

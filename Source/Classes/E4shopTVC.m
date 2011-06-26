@@ -29,32 +29,94 @@
 @synthesize Pe3edit;
 
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+#pragma mark - Action
+
+// UIActionSheetDelegate 処理部
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"--- unloadRelease --- E4shopTVC");
-	[RaE4shops release], RaE4shops = nil;
+	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
+		//========== E4 削除実行 ==========
+		E4shop *e4objDelete = [RaE4shops objectAtIndex:MindexPathActionDelete.row];
+		
+		// E3は、削除せずに E4-E3 リンクを断つだけ
+		// E4-E3 リンクは、以下のE4削除すれば全てnilされる
+		// E4shop 削除
+		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
+		[Re0root.managedObjectContext deleteObject:e4objDelete];
+		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
+		/*NSError *error = nil;
+		 if (![Re0root.managedObjectContext save:&error]) {
+		 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		 exit(-1);  // Fail
+		 }*/
+		[MocFunctions commit];
+		[self.tableView reloadData];
+	}
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
+- (void)barButtonAdd {
+	// Add Shop
+	[self e4shopDatail:(-1)]; // :(-1)Add mode
+}
+
+- (void)barButtonUntitled {
+	// 未定(nil)にする
+	Pe3edit.e4shop = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+- (void)barSegmentSort:(id)sender {
+	MiOptE4SortMode = [sender selectedSegmentIndex];
+	// ソート条件を保存する　＜＜切り替えの都度、保存していたが[0.4]にてフリーズ症状発生＞＞
+	//[[NSUserDefaults standardUserDefaults] setInteger:MiOptE4SortMode forKey:GD_OptE4SortMode];
+	// Requery
+	[self requeryMe4shops:nil];
+}
+
+- (void)e4shopDatail:(NSInteger)iE4index
 {
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+	E4shopDetailTVC *e4detail = [[E4shopDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
+	
+	if (iE4index < 0) {
+		// Add
+		e4detail.title = NSLocalizedString(@"Add Shop",nil);
+		// ContextにE4ノードを追加する　E4edit内でCANCELならば DELETE している
+		e4detail.Re4edit = [NSEntityDescription insertNewObjectForEntityForName:@"E4shop"
+														 inManagedObjectContext:Re0root.managedObjectContext];
+		e4detail.PbAdd = YES;
+		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
+	}
+	else if ([RaE4shops count] <= iE4index) {
+		[e4detail release];
+		return; // Add行以降、パスする
+	}
+	else {
+		e4detail.title = NSLocalizedString(@"Edit Shop",nil);
+		e4detail.Re4edit = [RaE4shops objectAtIndex:iE4index]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e4detail.PbAdd = NO;
+		//e4detail.Pe3edit = nil;
+	}
+	
+	if (Pe3edit) {
+		e4detail.PbSave = NO;	// 呼び出し元：右上ボタン「完了」　E3recordDetailTVC側のsave:により保存
+	} else {
+		e4detail.PbSave = YES;	// マスタモード：右上ボタン「保存」
+	}
+	
+	// 呼び出し側(親)にてツールバーを常に非表示にする
+	e4detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	
+	[self.navigationController pushViewController:e4detail animated:YES];
+	[e4detail release]; // self.navigationControllerがOwnerになる
 }
 
 
-#pragma mark View lifecycle
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -139,31 +201,6 @@
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
-- (void)viewWillAppear:(BOOL)animated 
-{
-	[super viewWillAppear:animated];
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
-	
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-	
-	if (MbuTop) {
-		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
-	}
-	
-	// Requery
-	[self requeryMe4shops:nil];
-
-	if (0 < McontentOffsetDidSelect.y) {
-		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
-		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
-		self.tableView.contentOffset = McontentOffsetDidSelect;
-	}
-}
-
 
 - (void)requeryMe4shops:(NSString *)zSearch 
 {	// Me4shops Requery. 
@@ -204,41 +241,62 @@
 	[self.tableView reloadData];
 }
 
-// 検索バーへの文字入力の都度、呼び出される
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText 
+- (void)viewDesign
 {
-	// Requery
-	[self requeryMe4shops:searchText];
+	// 回転によるリサイズ
+	// SerchBar
+	self.tableView.tableHeaderView.frame = CGRectMake(0,0, self.tableView.bounds.size.width,0);
+	[self.tableView.tableHeaderView sizeToFit];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	searchBar.text = @"";
-	[searchBar resignFirstResponder]; // キーボードを非表示にする
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	if (Pe3edit == nil) {
+		// Comback (-1)にして未選択状態にする
+		//		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		// (0)TopMenu >> (1)This clear
+		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+	}
 }
 
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonAdd {
-	// Add Shop
-	[self e4shopDatail:(-1)]; // :(-1)Add mode
-}
-
-- (void)barButtonUntitled {
-	// 未定(nil)にする
-	Pe3edit.e4shop = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-- (void)barSegmentSort:(id)sender {
-	MiOptE4SortMode = [sender selectedSegmentIndex];
-	// ソート条件を保存する　＜＜切り替えの都度、保存していたが[0.4]にてフリーズ症状発生＞＞
-	//[[NSUserDefaults standardUserDefaults] setInteger:MiOptE4SortMode forKey:GD_OptE4SortMode];
+- (void)viewWillAppear:(BOOL)animated 
+{
+	[super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	
+	if (MbuTop) {
+		// hasChanges時にTop戻りボタンを無効にする
+		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
+	}
+	
 	// Requery
 	[self requeryMe4shops:nil];
+	
+	if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
 }
 
+/*
+ // この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
+ - (void)viewWillDisappear:(BOOL)animated
+ {
+ }
+ */
+
+
+#pragma mark  View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -253,33 +311,6 @@
 	[self viewDesign];
 }
 
-- (void)viewDesign
-{
-	// 回転によるリサイズ
-	// SerchBar
-	self.tableView.tableHeaderView.frame = CGRectMake(0,0, self.tableView.bounds.size.width,0);
-	[self.tableView.tableHeaderView sizeToFit];
-}
-
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-	if (Pe3edit == nil) {
-		// Comback (-1)にして未選択状態にする
-//		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// (0)TopMenu >> (1)This clear
-//		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}
-}
-/*
-// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
-- (void)viewWillDisappear:(BOOL)animated
-{
-}
-*/
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
@@ -302,77 +333,49 @@
 }
 */
 
-#pragma mark Local methods
+#pragma mark  View - Unload - dealloc
 
-
-// ディスクロージャボタンが押されたときの処理
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[self e4shopDatail:indexPath.row];
-}
-
-- (void)e4shopDatail:(NSInteger)iE4index
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-	E4shopDetailTVC *e4detail = [[E4shopDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
-	
-	if (iE4index < 0) {
-		// Add
-		e4detail.title = NSLocalizedString(@"Add Shop",nil);
-		// ContextにE4ノードを追加する　E4edit内でCANCELならば DELETE している
-		e4detail.Re4edit = [NSEntityDescription insertNewObjectForEntityForName:@"E4shop"
-											  inManagedObjectContext:Re0root.managedObjectContext];
-		e4detail.PbAdd = YES;
-		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
-	}
-	else if ([RaE4shops count] <= iE4index) {
-		[e4detail release];
-		return; // Add行以降、パスする
-	}
-	else {
-		e4detail.title = NSLocalizedString(@"Edit Shop",nil);
-		e4detail.Re4edit = [RaE4shops objectAtIndex:iE4index]; //[MfetchE1card objectAtIndexPath:indexPath];
-		e4detail.PbAdd = NO;
-		//e4detail.Pe3edit = nil;
-	}
-	
-	if (Pe3edit) {
-		e4detail.PbSave = NO;	// 呼び出し元：右上ボタン「完了」　E3recordDetailTVC側のsave:により保存
-	} else {
-		e4detail.PbSave = YES;	// マスタモード：右上ボタン「保存」
-	}
-	
-	// 呼び出し側(親)にてツールバーを常に非表示にする
-	e4detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-
-	[self.navigationController pushViewController:e4detail animated:YES];
-	[e4detail release]; // self.navigationControllerがOwnerになる
+	NSLog(@"--- unloadRelease --- E4shopTVC");
+	[RaE4shops release], RaE4shops = nil;
 }
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
-		//========== E4 削除実行 ==========
-		E4shop *e4objDelete = [RaE4shops objectAtIndex:MindexPathActionDelete.row];
-		
-		// E3は、削除せずに E4-E3 リンクを断つだけ
-		// E4-E3 リンクは、以下のE4削除すれば全てnilされる
-		// E4shop 削除
-		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
-		[Re0root.managedObjectContext deleteObject:e4objDelete];
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-		/*NSError *error = nil;
-		if (![Re0root.managedObjectContext save:&error]) {
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			exit(-1);  // Fail
-		}*/
-		[MocFunctions commit];
-		[self.tableView reloadData];
-	}
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re0root release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 
-#pragma mark TableView methods
+#pragma mark - UISearchBar
+
+// 検索バーへの文字入力の都度、呼び出される
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText 
+{
+	// Requery
+	[self requeryMe4shops:searchText];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	searchBar.text = @"";
+	[searchBar resignFirstResponder]; // キーボードを非表示にする
+}
+
+
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -518,6 +521,13 @@
 		[self e4shopDatail:(-1)]; // :(-1)Add mode
 	}
 }
+
+// ディスクロージャボタンが押されたときの処理
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self e4shopDatail:indexPath.row];
+}
+
+#pragma mark  TableView - Editting
 
 // TableView Editモードの表示
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {

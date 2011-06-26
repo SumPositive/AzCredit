@@ -17,9 +17,9 @@
    version="1.1"
    inkscape:version="0.48.1 r9760"
    sodipodi:docname="Icon--512x512.svg"
-   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Source/Icon72S1.png"
-   inkscape:export-xdpi="12.65625"
-   inkscape:export-ydpi="12.65625">
+   inkscape:export-filename="/Users/masa/AzukiSoft/AzCredit/Distribution/Icon512FreePad.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -1539,8 +1539,8 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.5351562"
-     inkscape:cx="256"
-     inkscape:cy="256"
+     inkscape:cx="177.18065"
+     inkscape:cy="255.99999"
      inkscape:document-units="px"
      inkscape:current-layer="layer7"
      showgrid="false"
@@ -1966,7 +1966,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Free"
-     style="display:none"
+     style="display:inline"
      sodipodi:insensitive="true">
     <flowRoot
        xml:space="preserve"
@@ -1996,7 +1996,8 @@
      inkscape:groupmode="layer"
      id="layer7"
      inkscape:label="Icon72 for iPad"
-     sodipodi:insensitive="true">
+     sodipodi:insensitive="true"
+     style="display:inline">
     <rect
        style="fill:#4169e1;fill-rule:evenodd;stroke:none;filter:url(#filter4060)"
        id="rect3290"

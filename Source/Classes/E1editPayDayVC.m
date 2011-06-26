@@ -20,22 +20,41 @@
 @synthesize Re1edit;
 
 
-#pragma mark - Source - Functions
-#pragma mark - Ad
-#pragma mark - View
-#pragma mark View 回転
-#pragma mark - TableView
-#pragma mark - Unload - dealloc
+#pragma mark - Action
 
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)buttonDebit		// [Debit]ボタンが押されたとき
 {
-	//--------------------------------Private Alloc
-	//--------------------------------@property (retain)
-	[Re1edit release];
-	[super dealloc];
+	[Mpicker selectRow:0 inComponent:0 animated:YES];	//「当日締」
+	[Mpicker reloadAllComponents];						// 再描画
+	[Mpicker selectRow:0 inComponent:0 animated:YES];	// 2回目だが、こうしないと再描画されない
+	[Mpicker selectRow:0 inComponent:1 animated:YES];	//「⇒⇒⇒」
+	[Mpicker selectRow:0 inComponent:2 animated:YES];	//「当日払」
 }
 
+// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
+// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
+// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
+- (void)done:(id)sender
+{
+	// 結果更新
+	if ([Mpicker selectedRowInComponent:0] <= 0 
+		OR [Mpicker selectedRowInComponent:1] <= 0) {
+		// 0=Debit(自動引落し)
+		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:-1];
+		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]]; // 日後払い
+	} else {
+		// 締め支払
+		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]-1];
+		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
+	}
+	
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+
+#pragma mark - UIViewController
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -99,67 +118,17 @@
 	//------------------------------------------------------
 }
 
-// viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
-- (void)viewWillAppear:(BOOL)animated 
-{
-	[super viewWillAppear:animated];
-	
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-
-	// PICKER 指定されたコンポーネンツの行を選択する。
-	NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
-	if (iDay < 0 OR 29 < iDay) iDay = 20;
-	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 0=Debit
-
-	iDay = [Re1edit.nPayMonth integerValue];
-	if (iDay < -1 OR 2 < iDay) iDay = 1;
-	[Mpicker selectRow:1+iDay inComponent:1 animated:NO]; // 0=Debit
-	
-	iDay = [Re1edit.nPayDay integerValue];
-	if (iDay < 0 OR 29 < iDay) iDay = 20;
-	[Mpicker selectRow:iDay inComponent:2 animated:NO];  // 0=Debit
-
-	
-	[self viewDesign];
-	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
-}
-
-// 画面表示された直後に呼び出される
-- (void)viewDidAppear:(BOOL)animated 
-{
-	[super viewDidAppear:animated];
-	
-	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
-//	[MtfAmount becomeFirstResponder];  // キーボード表示
-}
-
-// 回転の許可　ここでは許可、禁止の判定だけする
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
-													   duration:(NSTimeInterval)duration
-{
-	//[self viewWillAppear:NO];没：これを呼ぶと、回転の都度、編集がキャンセルされてしまう。
-	[self viewDesign]; // これで回転しても編集が継続されるようになった。
-}
-
 - (void)viewDesign
 {
 	CGRect rect = self.view.bounds;
-
+	
 	rect.origin.x = 0;
 	//---------------------------- Picker
 	rect.origin.y = 25;
 	rect.size.height = GD_PickerHeight;
 	rect.size.width = 320;
 	Mpicker.frame = rect;
-
+	
 	//---------------------------- Picker見出しラベル
 	rect.origin.y = 5;
 	rect.size.width = 80;
@@ -174,7 +143,7 @@
 	// 右
 	rect.origin.x = 200; //fcx + (rect.size.width / 2) + 20;
 	MlbPayDay.frame = rect;
-
+	
 	//---------------------------- Debit
 	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
 	{	// タテ
@@ -211,6 +180,71 @@
 	}
 }	
 
+// viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
+- (void)viewWillAppear:(BOOL)animated 
+{
+	[super viewWillAppear:animated];
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+
+	// PICKER 指定されたコンポーネンツの行を選択する。
+	NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
+	if (iDay < 0 OR 29 < iDay) iDay = 20;
+	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 0=Debit
+
+	iDay = [Re1edit.nPayMonth integerValue];
+	if (iDay < -1 OR 2 < iDay) iDay = 1;
+	[Mpicker selectRow:1+iDay inComponent:1 animated:NO]; // 0=Debit
+	
+	iDay = [Re1edit.nPayDay integerValue];
+	if (iDay < 0 OR 29 < iDay) iDay = 20;
+	[Mpicker selectRow:iDay inComponent:2 animated:NO];  // 0=Debit
+
+	
+	[self viewDesign];
+	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
+}
+
+// 画面表示された直後に呼び出される
+- (void)viewDidAppear:(BOOL)animated 
+{
+	[super viewDidAppear:animated];
+	
+	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
+//	[MtfAmount becomeFirstResponder];  // キーボード表示
+}
+
+
+#pragma mark  View - Rotate
+
+// 回転の許可　ここでは許可、禁止の判定だけする
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{	// 回転禁止でも、正面は常に許可しておくこと。
+	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+// ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
+													   duration:(NSTimeInterval)duration
+{
+	//[self viewWillAppear:NO];没：これを呼ぶと、回転の都度、編集がキャンセルされてしまう。
+	[self viewDesign]; // これで回転しても編集が継続されるようになった。
+}
+
+
+#pragma mark  View - Unload - dealloc
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	//--------------------------------Private Alloc
+	//--------------------------------@property (retain)
+	[Re1edit release];
+	[super dealloc];
+}
+
+#pragma mark  - UIPickerView
 
 //-----------------------------------------------------------Picker
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -319,37 +353,6 @@
 			[Mpicker selectRow:1 inComponent:2 animated:YES];
 		}
 	}
-}
-
-- (void)buttonDebit		// [Debit]ボタンが押されたとき
-{
-	[Mpicker selectRow:0 inComponent:0 animated:YES];	//「当日締」
-	[Mpicker reloadAllComponents];						// 再描画
-	[Mpicker selectRow:0 inComponent:0 animated:YES];	// 2回目だが、こうしないと再描画されない
-	[Mpicker selectRow:0 inComponent:1 animated:YES];	//「⇒⇒⇒」
-	[Mpicker selectRow:0 inComponent:2 animated:YES];	//「当日払」
-}
-
-// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
-// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
-// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
-- (void)done:(id)sender
-{
-	// 結果更新
-	if ([Mpicker selectedRowInComponent:0] <= 0 
-	 OR [Mpicker selectedRowInComponent:1] <= 0) {
-		// 0=Debit(自動引落し)
-		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:-1];
-		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]]; // 日後払い
-	} else {
-		// 締め支払
-		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]-1];
-		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
-	}
-
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
 @end

@@ -29,32 +29,90 @@
 @synthesize Pe3edit;
 
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+#pragma mark - Action
+
+// UIActionSheetDelegate 処理部
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	NSLog(@"--- unloadRelease --- E5categoryTVC");
-	[RaE5categorys release], RaE5categorys = nil;
+	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
+		//========== 削除実行 ==========
+		E5category *e5objDelete = [RaE5categorys objectAtIndex:MindexPathActionDelete.row];
+		
+		// 削除
+		[RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
+		[Re0root.managedObjectContext deleteObject:e5objDelete];
+		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
+		/*NSError *error = nil;
+		 if (![Re0root.managedObjectContext save:&error]) {
+		 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		 exit(-1);  // Fail
+		 }*/
+		[MocFunctions commit];
+		[self.tableView reloadData];
+	}
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+- (void)e5categoryDatail:(NSInteger)iE5index
 {
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
+	E5categoryDetailTVC *e5detail = [[E5categoryDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
+	
+	if (iE5index < 0) {
+		// Add
+		e5detail.title = NSLocalizedString(@"Add Category",nil);
+		// ContextにE1ノードを追加する　E4edit内でCANCELならば DELETE している
+		e5detail.Re5edit = [NSEntityDescription insertNewObjectForEntityForName:@"E5category"
+														 inManagedObjectContext:Re0root.managedObjectContext];
+		e5detail.PbAdd = YES;
+		e5detail.Pe3edit = Pe3edit;
+	}
+	else if ([RaE5categorys count] <= iE5index) {
+		[e5detail release];
+		return; // Add行以降、パスする
+	}
+	else {
+		e5detail.title = NSLocalizedString(@"Edit Category",nil);
+		e5detail.Re5edit = [RaE5categorys objectAtIndex:iE5index]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e5detail.PbAdd = NO;
+		e5detail.Pe3edit = nil;
+	}
+	
+	if (Pe3edit) {
+		e5detail.PbSave = NO;	// 呼び出し元：E3recordDetailTVC側のsave:により保存
+	} else {
+		e5detail.PbSave = YES;	// マスタモード：
+	}
+	
+	// 呼び出し側(親)にてツールバーを常に非表示にする
+	e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+	
+	[self.navigationController pushViewController:e5detail animated:YES];
+	[e5detail release]; // self.navigationControllerがOwnerになる
 }
 
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+- (void)barButtonTop {
+	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+}
+
+- (void)barButtonAdd {
+	// Add Shop
+	[self e5categoryDatail:(-1)]; // :(-1)Add mode
+}
+
+- (void)barButtonUntitled {
+	// 未定(nil)にする
+	Pe3edit.e5category = nil; 
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+
+- (void)barSegmentSort:(id)sender {
+	MiOptE5SortMode = [sender selectedSegmentIndex];
+	// Requery
+	[self requeryMe5categorys:nil];
 }
 
 
-#pragma mark View lifecycle
+#pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -137,31 +195,6 @@
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
-- (void)viewWillAppear:(BOOL)animated 
-{
-	[super viewWillAppear:animated];
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
-	
-	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
-	
-	if (MbuTop) {
-		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
-	}
-	
-	// Requery
-	[self requeryMe5categorys:nil];
-
-	if (0 < McontentOffsetDidSelect.y) {
-		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
-		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
-		self.tableView.contentOffset = McontentOffsetDidSelect;
-	}
-}
-
 
 - (void)requeryMe5categorys:(NSString *)zSearch 
 {	// Me5categorys Requery. 
@@ -202,38 +235,62 @@
 	[self.tableView reloadData];
 }
 
-//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	// Requery
-	[self requeryMe5categorys:searchText];
+- (void)viewDesign
+{
+	// 回転によるリサイズ
+	// SerchBar
+	self.tableView.tableHeaderView.frame = CGRectMake(0,0, self.tableView.bounds.size.width,0);
+	[self.tableView.tableHeaderView sizeToFit];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	searchBar.text = @"";
-	[searchBar resignFirstResponder]; // キーボードを非表示にする
-}
-
-- (void)barButtonTop {
-	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-}
-
-- (void)barButtonAdd {
-	// Add Shop
-	[self e5categoryDatail:(-1)]; // :(-1)Add mode
-}
-
-- (void)barButtonUntitled {
-	// 未定(nil)にする
-	Pe3edit.e5category = nil; 
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-}
-
-- (void)barSegmentSort:(id)sender {
-	MiOptE5SortMode = [sender selectedSegmentIndex];
+- (void)viewWillAppear:(BOOL)animated 
+{
+	[super viewWillAppear:animated];
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+	
+	// 画面表示に関係する Option Setting を取得する
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	
+	if (MbuTop) {
+		// hasChanges時にTop戻りボタンを無効にする
+		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
+	}
+	
 	// Requery
 	[self requeryMe5categorys:nil];
+	
+	if (0 < McontentOffsetDidSelect.y) {
+		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
+		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
+		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
 }
 
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	/*	if (Pe3edit == nil) {
+	 // Comback (-1)にして未選択状態にする
+	 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	 // (0)TopMenu >> (1)This clear
+	 [appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
+	 }*/
+}
+/*
+ // この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
+ - (void)viewWillDisappear:(BOOL)animated
+ {
+ // ソート条件を保存する　＜＜切り替えの都度、保存していたが[0.4]にてフリーズ症状発生＞＞
+ [[NSUserDefaults standardUserDefaults] setInteger:MiOptE5SortMode forKey:GD_OptE5SortMode];
+ }
+ */
+
+#pragma mark  View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -248,35 +305,6 @@
 	[self viewDesign];
 }
 
-- (void)viewDesign
-{
-	// 回転によるリサイズ
-	// SerchBar
-	self.tableView.tableHeaderView.frame = CGRectMake(0,0, self.tableView.bounds.size.width,0);
-	[self.tableView.tableHeaderView sizeToFit];
-}
-
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-
-/*	if (Pe3edit == nil) {
-		// Comback (-1)にして未選択状態にする
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// (0)TopMenu >> (1)This clear
-		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}*/
-}
-/*
-// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
-- (void)viewWillDisappear:(BOOL)animated
-{
-	// ソート条件を保存する　＜＜切り替えの都度、保存していたが[0.4]にてフリーズ症状発生＞＞
-	[[NSUserDefaults standardUserDefaults] setInteger:MiOptE5SortMode forKey:GD_OptE5SortMode];
-}
-*/
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
 - (void)viewComeback:(NSArray *)selectionArray
@@ -299,75 +327,48 @@
 }
 */
 
-#pragma mark Local methods
+#pragma mark  View - Unload - dealloc
 
-
-// ディスクロージャボタンが押されたときの処理
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[self e5categoryDatail:indexPath.row];
-}
-
-- (void)e5categoryDatail:(NSInteger)iE5index
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
-	E5categoryDetailTVC *e5detail = [[E5categoryDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
-	
-	if (iE5index < 0) {
-		// Add
-		e5detail.title = NSLocalizedString(@"Add Category",nil);
-		// ContextにE1ノードを追加する　E4edit内でCANCELならば DELETE している
-		e5detail.Re5edit = [NSEntityDescription insertNewObjectForEntityForName:@"E5category"
-											  inManagedObjectContext:Re0root.managedObjectContext];
-		e5detail.PbAdd = YES;
-		e5detail.Pe3edit = Pe3edit;
-	}
-	else if ([RaE5categorys count] <= iE5index) {
-		[e5detail release];
-		return; // Add行以降、パスする
-	}
-	else {
-		e5detail.title = NSLocalizedString(@"Edit Category",nil);
-		e5detail.Re5edit = [RaE5categorys objectAtIndex:iE5index]; //[MfetchE1card objectAtIndexPath:indexPath];
-		e5detail.PbAdd = NO;
-		e5detail.Pe3edit = nil;
-	}
-	
-	if (Pe3edit) {
-		e5detail.PbSave = NO;	// 呼び出し元：E3recordDetailTVC側のsave:により保存
-	} else {
-		e5detail.PbSave = YES;	// マスタモード：
-	}
-	
-	// 呼び出し側(親)にてツールバーを常に非表示にする
-	e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-
-	[self.navigationController pushViewController:e5detail animated:YES];
-	[e5detail release]; // self.navigationControllerがOwnerになる
+	NSLog(@"--- unloadRelease --- E5categoryTVC");
+	[RaE5categorys release], RaE5categorys = nil;
 }
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
-		//========== 削除実行 ==========
-		E5category *e5objDelete = [RaE5categorys objectAtIndex:MindexPathActionDelete.row];
-		
-		// 削除
-		[RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
-		[Re0root.managedObjectContext deleteObject:e5objDelete];
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-		/*NSError *error = nil;
-		if (![Re0root.managedObjectContext save:&error]) {
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-			exit(-1);  // Fail
-		}*/
-		[MocFunctions commit];
-		[self.tableView reloadData];
-	}
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re0root release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
 
 
-#pragma mark TableView methods
+#pragma mark - UISearchBar
+
+//- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar 
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+	// Requery
+	[self requeryMe5categorys:searchText];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	searchBar.text = @"";
+	[searchBar resignFirstResponder]; // キーボードを非表示にする
+}
+
+
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
@@ -451,13 +452,6 @@
     return cell;
 }
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
-{
-	// 末尾([Me4shops count])はAdd行
-	if (indexPath.row < [RaE5categorys count]) return UITableViewCellEditingStyleDelete;
-	return UITableViewCellEditingStyleNone;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
@@ -504,6 +498,13 @@
 	}
 }
 
+// ディスクロージャボタンが押されたときの処理
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self e5categoryDatail:indexPath.row];
+}
+
+#pragma mark  TableView - Editting
+
 // TableView Editモードの表示
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
@@ -543,6 +544,13 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row < [RaE5categorys count]) return YES;
 	return NO;  // 最終行のAdd行は、右寄せさせない
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	// 末尾([Me4shops count])はAdd行
+	if (indexPath.row < [RaE5categorys count]) return UITableViewCellEditingStyleDelete;
+	return UITableViewCellEditingStyleNone;
 }
 
 /**** 行移動なしである。

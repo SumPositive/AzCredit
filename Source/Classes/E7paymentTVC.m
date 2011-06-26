@@ -72,36 +72,6 @@
 }
 
 
-#pragma mark - Ad
-
-
-#pragma mark - Unload - dealloc
-
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	NSLog(@"--- unloadRelease --- E7paymentTVC");
-	[RaE7list release], RaE7list = nil;
-}
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
-
-
 
 #pragma mark - View lifecicle
 
@@ -230,7 +200,7 @@ static UIColor *MpColorBlue(float percent) {
 }
 
 
-#pragma mark View 回転
+#pragma mark View - Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -251,6 +221,33 @@ static UIColor *MpColorBlue(float percent) {
 	// 回転によるリサイズ
 }
  */
+
+
+#pragma mark  View - Unload - dealloc
+
+- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+{
+	NSLog(@"--- unloadRelease --- E7paymentTVC");
+	[RaE7list release], RaE7list = nil;
+}
+
+- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+{
+	[self unloadRelease];
+	//--------------------------------@property (retain)
+	[Re0root release];
+	[super dealloc];
+}
+
+// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+- (void)viewDidUnload 
+{
+	//NSLog(@"--- viewDidUnload ---"); 
+	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+	[self unloadRelease];
+	[super viewDidUnload];
+	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+}
 
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -285,7 +282,7 @@ static UIColor *MpColorBlue(float percent) {
 */
 
 
-#pragma mark - TableView delegate
+#pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return [RaE7list count];  // Me7listは、(0)e2paids (1)e2unpaids の二次元配列
