@@ -32,6 +32,7 @@
 #endif
 
 #define TAG_ALERT_SupportSite		109
+#define TAG_VIEW_HttpServer			118
 
 #define AD_HIDDEN_OFS_Y		200		//iAdを非表示/表示するときのＹ軸変位
 
@@ -527,14 +528,15 @@
 //				回転後に didRotateFromInterfaceOrientation が呼び出される。
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// ここでは回転の許可、禁止だけを判定する  （現在の向きは、self.interfaceOrientation で取得できる）
+
+	if ([self.view viewWithTag:TAG_VIEW_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
+
+#ifdef AzPAD
+	return YES;
+#else
 	if (interfaceOrientation==UIInterfaceOrientationPortrait) return YES; // 正面は常に許可
-	
-	if ([self.view viewWithTag:VIEW_TAG_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
-	
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.MbLoginShow) return NO;	// appLoginPassView が表示中なので回転禁止
-	
 	return !MbOptAntirotation; // Not MbOptAntirotation
+#endif
 }
 
 // shouldAutorotateToInterfaceOrientation で YES を返すと、回転開始時に呼び出される
@@ -946,7 +948,7 @@
 					//NG//ツールバーを消したいが、戻ったとき表示する方法が未定。
 					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
 					vi.Pe0root = Re0root;
-					vi.tag = VIEW_TAG_HttpServer; // 表示中は回転禁止にするために参照している
+					vi.tag = TAG_VIEW_HttpServer; // 表示中は回転禁止にするために参照している
 					[self.view addSubview:vi];
 					[vi show];
 					[vi release];

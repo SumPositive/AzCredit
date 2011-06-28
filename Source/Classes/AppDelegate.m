@@ -13,13 +13,11 @@
 #import "Entity.h"
 #import "MocFunctions.h"
 #import "TopMenuTVC.h"
+#import "LoginPassVC.h"
 #ifdef AzPAD
 #import "padRootVC.h"
-#import "LoginPassVC.h"
 #endif
 
-
-#define TAG_TF_LOGINPASS			901
 
 
 @interface AppDelegate (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
@@ -32,7 +30,6 @@
 @synthesize window;
 @synthesize mainController;
 @synthesize	Me3dateUse;
-@synthesize MbLoginShow;
 #ifdef AzPAD
 @synthesize padRootVC;
 #endif
@@ -408,120 +405,15 @@
 	if ([pass length]<=0) {
 		return; // パスなし、自動ログイン
 	}
-	if (MviewLogin==nil) {
-		//NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LoginPassView" owner:self options:nil];
-		//MviewLogin = [nib objectAtIndex:[nib count] – 1];
-		MviewLogin = [[UIView alloc] initWithFrame:self.window.frame];
-		MviewLogin.backgroundColor = [UIColor colorWithRed:151.0/255.0 
-													 green:80.0/255.0 
-													  blue:77.0/255.0 
-													 alpha:1.0]; // Azukid Color
-		
-#ifdef AzPAD
-#else
-		MviewLogin.tag = VIEW_TAG_LOGINPASS; // TopMenuTVC:shouldAutorotateToInterfaceOrientationにて参照
-		//------------------------------------------アイコン
-		UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(130, 50, 57, 57)];
-#ifdef AzSTABLE
-		[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
-#else
-		[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
-#endif
-		[MviewLogin addSubview:iv]; [iv release];
-		//------------------------------------------ログイン
-		UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(83,120, 154,28)];
-		tf.borderStyle = UITextBorderStyleRoundedRect;
-		tf.placeholder = NSLocalizedString(@"OptLoginPass1 place",nil);
-		tf.keyboardType = UIKeyboardTypeASCIICapable;
-		tf.secureTextEntry = YES;
-		tf.returnKeyType = UIReturnKeyDone;
-		tf.delegate = self;			//<UITextFieldDelegate>
-		tf.tag = TAG_TF_LOGINPASS;
-		[MviewLogin addSubview:tf]; [tf release];
-		//------------------------------------------■注意■
-		UILabel *lb = [[UILabel alloc] initWithFrame:CGRectMake(34, 170, 266, 80)];
-		lb.text = NSLocalizedString(@"LoginPass Attention",nil);
-		lb.numberOfLines = 4;
-		lb.textAlignment = UITextAlignmentLeft;
-		lb.textColor = [UIColor whiteColor];
-		lb.backgroundColor = [UIColor clearColor]; //背景透明
-		lb.font = [UIFont systemFontOfSize:12];
-		[MviewLogin addSubview:lb]; [lb release];	
-		//------------------------------------------パスワードを忘れた場合
-		lb = [[UILabel alloc] initWithFrame:CGRectMake(34, 270, 266, 120)];
-		lb.text = NSLocalizedString(@"LoginPass Lost",nil);
-		lb.numberOfLines = 7;
-		lb.textAlignment = UITextAlignmentLeft;
-		lb.textColor = [UIColor whiteColor];
-		lb.backgroundColor = [UIColor clearColor]; //背景透明
-		lb.font = [UIFont systemFontOfSize:12];
-		[MviewLogin addSubview:lb]; [lb release];	
-#endif
-		
-		[self.window addSubview:MviewLogin];
-		[MviewLogin release];
-	}
 
-	CGRect rc = MviewLogin.frame;
-	rc.origin.y = 0;
-	MviewLogin.frame = rc;
-	MviewLogin.alpha = 1.0; // 完全に隠す
-	[self.window bringSubviewToFront:MviewLogin];
-	MbLoginShow = YES;
-
-#ifdef AzPAD
-	//Pad//回転対応するため
+	//回転対応
 	LoginPassVC *vc = [[LoginPassVC alloc] init];
-	vc.modalPresentationStyle = UIModalPresentationFormSheet;
-	[self.window presentModalViewController:vc animated:YES];
+	vc.modalPresentationStyle = UIModalPresentationFullScreen;
+	vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	//[self.window  presentModalViewController:vc animated:YES];
+	[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
 	[vc release];
-#else
-	UITextField *tf = (UITextField *)[MviewLogin viewWithTag:TAG_TF_LOGINPASS];
-	[tf becomeFirstResponder];
-#endif	
 }
-
-#ifdef AzPAD
-#else
-//--------------------------------------<UITextFieldDelegate>
-// キーボードのリターンキーを押したときに呼ばれる
-- (BOOL)textFieldShouldReturn:(UITextField *)sender 
-{
-	if (sender.tag==TAG_TF_LOGINPASS) 
-	{
-		// KeyChainから保存しているパスワードを取得する
-		NSError *error; // nilを渡すと異常終了するので注意
-		NSString *pass = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
-													andServiceName:GD_PRODUCTNAME error:&error];
-		if (error) {
-			alertBox(NSLocalizedString(@"OptLoginPass Error",nil), 
-					 [error localizedDescription],
-					 NSLocalizedString(@"Roger",nil));
-			return YES;
-		}
-		[sender resignFirstResponder];
-		if ([pass isEqualToString:sender.text]) {
-			// OK
-			[UIView beginAnimations:nil context:NULL];
-			[UIView setAnimationDuration:0.5];
-			[UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-			CGRect rc = MviewLogin.frame;
-			rc.origin.y = 500;
-			MviewLogin.frame = rc;
-			MviewLogin.alpha = 0.3;
-			[UIView commitAnimations];
-			MbLoginShow = NO;
-			//[MviewLogin removeFromSuperview];  	self.windowへaddSubviewしてrelease済みである
-			//MviewLogin = nil;　　　バックグランド中も有効、self.windowが破棄されるまで有効のまま残す
-		}
-		else {
-			// NG
-		}
-		sender.text = @""; // 次回のためクリアしておく
-	}
-	return YES;
-}
-#endif
 
 @end
 

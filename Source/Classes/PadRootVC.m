@@ -201,7 +201,7 @@
 	if (RoAdMobView) {
 		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
 			RoAdMobView.frame = CGRectMake(
-										   768-100-GAD_SIZE_300x250.width,
+										   768-150-GAD_SIZE_300x250.width,
 										   1024-64-GAD_SIZE_300x250.height,
 										   GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
 		} else {	// ヨコ

@@ -10,14 +10,10 @@
 #import "padRootVC.h"
 #endif
 
-#define VIEW_TAG_LOGINPASS			9001
-#define VIEW_TAG_HttpServer			9010
-
-//@class MocFunctions;
 @class TopMenuTVC;
+@class LoginPassVC;
 
 @interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate>
-											// AdMobDelegate, AdMobInterstitialDelegate>
 {
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;	    
@@ -47,8 +43,6 @@
 	//-------------------------------------retain
 	NSDate				*Me3dateUse;
 	//-------------------------------------assign
-	UIView				*MviewLogin;
-	BOOL				MbLoginShow;
 }
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
@@ -64,7 +58,6 @@
 @property (nonatomic, retain) NSDate					*Me3dateUse;
 
 @property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
-@property (nonatomic, assign, readonly) BOOL			MbLoginShow;
 
 @end
 

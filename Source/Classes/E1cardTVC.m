@@ -75,7 +75,7 @@
 		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
 	
-#ifdef  AzPAD
+#ifdef  xxxxxxxxAzPAD
 	PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
 	pop.delegate = self;  //閉じたとき再描画するため
 	pop.popoverContentSize = CGSizeMake(400, 450);
@@ -248,7 +248,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	
 #ifdef AzPAD
-	return NO;	// Popover内につき回転不要
+	return YES;
 #else
 	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);

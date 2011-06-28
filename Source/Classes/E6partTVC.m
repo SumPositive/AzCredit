@@ -460,8 +460,13 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
+{	
+#ifdef AzPAD
+	return YES;
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 #ifdef FREE_AD

@@ -2031,6 +2031,8 @@
 		44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
+		44FDB09B13BA0BD700783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
+		44FDB09C13BA0BEB00783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -5303,6 +5305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44FDB09B13BA0BD700783B8E /* LoginPassVC.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				4457518410C7A65900419205 /* Entity.m in Sources */,
@@ -5356,6 +5359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44FDB09C13BA0BEB00783B8E /* LoginPassVC.m in Sources */,
 				44B011AC133EF773005AD0EA /* main.m in Sources */,
 				44B011AD133EF773005AD0EA /* AppDelegate.m in Sources */,
 				44B011AE133EF773005AD0EA /* Entity.m in Sources */,
