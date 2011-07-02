@@ -46,6 +46,7 @@
 @synthesize Rentity;
 @synthesize RzKey;
 @synthesize PoParentTableView;
+@synthesize delegate;
 #ifdef AzPAD
 @synthesize Rpopover;
 #endif
@@ -192,7 +193,18 @@
 		} else { // デフォルト丸め処理
 			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
 		}
+#ifdef AzPAD
+		if ([delegate respondsToSelector:@selector(refreshE3detail)]) {	// メソッドの存在を確認する
+			[delegate refreshE3detail];// 再描画
+		}
+		// この直後、hide が呼び出されて閉じる
+#endif
 	}
+}
+
+- (void)cancel
+{
+	Rlabel.text = RzLabelText;  // ラベルを元に戻す
 }
 
 - (void)hide
@@ -228,6 +240,10 @@
 	[NSDecimalNumber setDefaultBehavior:MbehaviorDefault];
 #endif
 	
+	if ([Rlabel.text length]<=0) {
+		Rlabel.text = RzLabelText; // 初期値復元
+	}
+
 	// アニメ実行
 	[UIView commitAnimations];
 	[self.PoParentTableView reloadData]; // Footer表示を消すため
@@ -238,6 +254,11 @@
 	if (MbShow) return;
 	MbShow = YES;
 	
+	if (RzLabelText) {
+		[RzLabelText release];
+	}
+	RzLabelText = [Rlabel.text copy];
+
 	if (MdecAnswer) {
 		[MdecAnswer release];
 		MdecAnswer = nil;
@@ -800,6 +821,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	[MbehaviorCalc release];
 	[MbehaviorDefault release];
 	[RaKeyButtons release];
+	[RzLabelText release],		RzLabelText = nil;
 	[RzKey release];
 	[Rentity release];
 	[Rlabel release];
@@ -867,7 +889,8 @@ replacementString:(NSString *)text
 // タッチイベント
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
 {
-	//[self save];
+	//Cancel//[self save];
+	Rlabel.text = RzLabelText; // 初期値復元
 	[self hide];
 }
 

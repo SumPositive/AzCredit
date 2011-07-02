@@ -9,13 +9,20 @@
 #import <UIKit/UIKit.h>
 
 @class E1card;
+#ifdef AzPAD
+@class PadPopoverInNaviCon;
+#endif
 
 @interface E1editPayDayVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 {
 @private
 	//--------------------------retain
 	E1card		*Re1edit;
+#ifdef AzPAD
+	UIPopoverController*	Rpopover;
+#endif
 	//--------------------------assign
+	id					delegate;
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -30,5 +37,9 @@
 }
 
 @property (nonatomic, retain) E1card		*Re1edit;
+@property (nonatomic, assign) id					delegate;
+#ifdef AzPAD
+@property (nonatomic, retain) UIPopoverController*	Rpopover;
+#endif
 
 @end

@@ -19,11 +19,12 @@
 	id			Rentity;
 	NSString	*RzKey;			// @"zName"
 #ifdef AzPAD
-	PadPopoverInNaviCon*	RpopNaviCon;
+	UIPopoverController*	Rpopover;
 #endif
 	//--------------------------assign
 	NSInteger	PiMaxLength;	// 最大文字数　==nil:無制限
 	NSInteger	PiSuffixLength; // 末尾の改行の数（UILabel複数行で上寄せするために入っている）
+	id					delegate;
 
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -36,8 +37,9 @@
 @property (nonatomic, retain) NSString		*RzKey;	
 @property NSInteger	PiMaxLength;
 @property NSInteger	PiSuffixLength;
+@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) PadPopoverInNaviCon*	RpopNaviCon;
+@property (nonatomic, retain) UIPopoverController*	Rpopover;
 #endif
 
 @end

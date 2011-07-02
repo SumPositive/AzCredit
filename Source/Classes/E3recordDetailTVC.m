@@ -21,10 +21,10 @@
 #import "EditTextVC.h"
 #import "EditAmountVC.h"
 #import "CalcView.h"
-
 #ifdef AzPAD
 #import "PadPopoverInNaviCon.h"
 #endif
+
 
 #define ACTIONSEET_TAG_DELETE		190
 
@@ -39,7 +39,7 @@
 
 @interface E3recordDetailTVC (PrivateMethods)
 //- (void)cancel:(id)sender;  iPad対応のため公開メソッド(cancelClose:)になった。
-- (void)save:(id)sender;
+- (void)saveClose:(id)sender;
 - (void)viewDesign;
 - (void)cellButtonE6check: (UIButton *)button;
 - (void)barButton: (UIButton *)button;
@@ -50,13 +50,156 @@
 @synthesize Re3edit;
 @synthesize PiAdd;
 @synthesize PiFirstYearMMDD;
+@synthesize delegate;
+#ifdef AzPAD
+@synthesize Rpopover;
+#endif
 
 
-#pragma mark - Action
+#pragma mark - Delegate method
 
+// デリゲート・メソッド
 - (void)editDateE6change {		// delegate: EditDateVC
 	MbE6dateChange = YES;
 }
+
+- (void)refreshE3detail
+{
+	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止。
+	//--------------------------------------------------------------------------------.
+	// Me0root はArreyじゃない！からrelese不要
+	if (Me0root==nil) {
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"E0root" 
+												  inManagedObjectContext:Re3edit.managedObjectContext];
+		[fetchRequest setEntity:entity];
+		// Fitch
+		NSError *error = nil;
+		NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		if (error) {
+			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			exit(-1);  // Fail
+		}
+		[fetchRequest release];
+		//
+		if ([arFetch count] == 1) {
+			Me0root = [arFetch objectAtIndex:0];
+		}
+		else {
+			AzLOG(@"Error: Me0root count = %d", [arFetch count]);
+			exit(-1);  // Fail
+		}
+	}
+	
+	//--------------------------------------------------Pe3select.e6parts
+	if (RaE6parts) {
+		[RaE6parts release], RaE6parts = nil;
+	}
+	// Sort条件
+	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
+	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+	[sort1 release];
+	// 
+	RaE6parts = [[NSMutableArray alloc] initWithArray:[Re3edit.e6parts allObjects]];
+	[RaE6parts sortUsingDescriptors:sortArray];
+	[sortArray release];
+	
+	MbE6paid = NO;
+	for (E6part *e6 in RaE6parts) {
+		if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
+			MbE6paid = YES; // YES:PAIDあり、主要条件の変更禁止！
+			break;
+		}
+	}
+	if (MbuDelete) {
+		// E3配下のE6に1つでもPAIDがあるならば、削除(ごみ箱)ボタンを無効にする     [0.3]
+		MbuDelete.enabled = !MbE6paid;
+	}
+	
+	//--------------------------------------------------Me3lasts: 前回引用するため
+	if (RaE3lasts) {
+		[RaE3lasts release], RaE3lasts = nil;
+	}
+	// Sorting
+	sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:NO]; // NO=降順
+	sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+	[sort1 release];
+	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entityE3 = [NSEntityDescription entityForName:@"E3record" 
+												inManagedObjectContext:Re3edit.managedObjectContext];
+	[fetchRequest setEntity:entityE3];
+	[fetchRequest setFetchLimit:21];
+	//[fetchRequest setFetchOffset:page * limit ];
+	
+	if (Re3edit.e4shop) {
+		// e4shop以下、最近の全E3
+		//RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e4shop.e3records allObjects]];
+		NSPredicate* pred = [NSPredicate predicateWithFormat:@"(e4shop == %@) AND (dateUse <= %@)",
+							 Re3edit.e4shop, [NSDate date]]; // 現在以前、Limitまで
+		[fetchRequest setPredicate:pred];
+	}
+	else if (Re3edit.e5category) {
+		// e5category以下、最近の全E3
+		//RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e5category.e3records allObjects]];
+		NSPredicate* pred = [NSPredicate predicateWithFormat:@"(e5category == %@) AND (dateUse <= %@)",
+							 Re3edit.e5category, [NSDate date]]; // 現在以前、Limitまで
+		[fetchRequest setPredicate:pred];
+	}
+	else {
+		//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		// 利用明細一覧用：最近の全E3
+		// datePrev 〜 dateBottom 間を抽出する	＜＜＜dateUse は,UTC(+0000)記録されている＞＞＞
+		//[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(dateUse > %@) && (dateUse <= %@)", 
+		//							[NSDate dateWithTimeIntervalSinceNow:-100*24*60*60], [NSDate date]]]; // 100日前〜今日まで抽出
+		[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(dateUse <= %@)", [NSDate date]]]; // 現在以前、Limitまで
+	}
+	
+	[fetchRequest setSortDescriptors:sortArray];
+	// Fitch
+	NSError *error = nil;
+	NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	if (error) {
+		AzLOG(@"Error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
+	}
+	[fetchRequest release];
+	RaE3lasts = [[NSMutableArray alloc] initWithArray:arFetch];
+	[sortArray release];
+	// 重要！Me3lastsには、新規追加されたRe3editが含まれているので、ここで除外する。
+	[RaE3lasts removeObject:Re3edit];
+	
+	// 初期値
+	if (Re3edit.dateUse == nil) {
+		Re3edit.dateUse = [NSDate date]; // Now
+	}
+	
+	if (Re3edit.e1card == nil) {
+		// Re3edit.e1card = 最上行のカードにする
+	}
+	
+	if (PiAdd==0 OR PiFirstYearMMDD < AzMIN_YearMMDD) {
+		PiFirstYearMMDD = 0;
+	}
+	
+	[self viewDesign]; // 下層で回転して戻ったときに再描画が必要
+	// テーブルビューを更新します。
+	[self.tableView reloadData];
+	
+	// 変更あれば、ツールバー(Top, Add, Delete)を非表示にする
+	//if (PiAdd <= 0 && [Re3edit.managedObjectContext hasChanges]) {
+	if (MbModified) {
+		for (id obj in self.toolbarItems) {
+			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
+				[obj setEnabled:NO];
+			}
+		}
+		//MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
+	}
+}
+
+
+#pragma mark - Action
 
 // UIActionSheetDelegate 処理部
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -84,16 +227,17 @@
 	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
 	McalcView.Rentity = Re3edit;
 	McalcView.RzKey = @"nAmount";
+	McalcView.delegate = self;	//決定時に、viewWillAppear を呼び出すため
 	// Popover
-	UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:McalcView];
-	pop.popoverContentSize = rect.size;
-	pop.delegate = self;
+	MpopoverView = [[UIPopoverController alloc] initWithContentViewController:McalcView];
+	MpopoverView.popoverContentSize = rect.size;
+	MpopoverView.delegate = self;
 	CGRect rc = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
 	rc.origin.y += 10;  rc.size.height -= 20;
-	[pop presentPopoverFromRect:rc inView:self.view 
+	[MpopoverView presentPopoverFromRect:rc inView:self.view 
 	   permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES];
-	McalcView.Rpopover = pop; //(retain)  内から閉じるときに必要になる
-	[pop release];
+	McalcView.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+	[MpopoverView release];
 	[McalcView release];
 	[McalcView show];
 	
@@ -159,7 +303,8 @@
 
 #ifdef AzPAD
 	//Padでは、親側の popoverControllerShouldDismissPopover にて処理
-	[(PadNaviCon*)self.navigationController dismissPopoverCancel];  // PadNaviCon拡張メソッド
+	//[(PadNaviCon*)self.navigationController dismissPopoverCancel];  // PadNaviCon拡張メソッド
+	[Rpopover dismissPopoverAnimated:YES];
 #else
 	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
 		[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
@@ -170,7 +315,7 @@
 }
 
 // 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
+- (void)saveClose:(id)sender 
 {
 	if (McalcView) {
 		[McalcView save]; // Calcが出てれば保存してから、
@@ -214,8 +359,30 @@
 	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 	app.Me3dateUse = [Re3edit.dateUse copy];
 	
+#ifdef AzPAD
+	if (Rpopover) {
+		if ([delegate respondsToSelector:@selector(refreshE3record)]) {	// メソッドの存在を確認する
+			[delegate refreshE3record];// 再描画
+		}
+		//[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // SAVE: PadNaviCon拡張メソッド
+		[Rpopover dismissPopoverAnimated:YES];
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
+
+#ifdef AzPAD
+- (void)closePopover
+{
+	if (MpopoverView) {	//dismissPopoverCancel
+		if (McalcView && [McalcView isShow]) {
+			[McalcView cancel];  //　ラベル表示を元に戻す
+		}
+		[MpopoverView dismissPopoverAnimated:YES];
+	}
+}
+#endif
 
 
 #pragma mark barButton
@@ -418,7 +585,7 @@
 	// SAVEボタンを右側に追加する
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-											   target:self action:@selector(save:)] autorelease];
+											   target:self action:@selector(saveClose:)] autorelease];
 	
 	// Tool Bar Button
 	if (0 < PiAdd) {
@@ -451,11 +618,14 @@
 	else {
 		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																				target:nil action:nil];
-		
+#ifdef AzPAD
+		// Top不要
+#else
 		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(cancelClose:)]; // ＜＜ cancelClose:YES<<--TopView ＞＞
 		MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancelClose:にて判断に使用
+#endif
 		
 		UIBarButtonItem *buCopyAdd = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyAdd.png"]
 																	  style:UIBarButtonItemStylePlain  //Bordered
@@ -466,9 +636,15 @@
 																  target:self action:@selector(barButtonDelete)];
 		MbuDelete.tag = TAG_BAR_BUTTON_DEL;
 		
+#ifdef AzPAD
+		// Top不要
+		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buCopyAdd, buFlex, MbuDelete, nil];
+		[self setToolbarItems:buArray animated:YES];
+#else
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buCopyAdd, buFlex, MbuDelete, nil];
 		[self setToolbarItems:buArray animated:YES];
 		[MbuTop release];
+#endif
 		[buCopyAdd release];
 		[MbuDelete release];
 		[buFlex release];
@@ -483,149 +659,16 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:YES];
-	
-	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止。
-	
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
-	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptEnableInstallment = [defaults boolForKey:GD_OptEnableInstallment];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
 	//MbOptAmountCalc = [defaults boolForKey:GD_OptAmountCalc];
-	
-	//--------------------------------------------------------------------------------.
-	// Me0root はArreyじゃない！からrelese不要
-	if (Me0root==nil) {
-		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"E0root" 
-												  inManagedObjectContext:Re3edit.managedObjectContext];
-		[fetchRequest setEntity:entity];
-		// Fitch
-		NSError *error = nil;
-		NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-		if (error) {
-			AzLOG(@"Error %@, %@", error, [error userInfo]);
-			exit(-1);  // Fail
-		}
-		[fetchRequest release];
-		//
-		if ([arFetch count] == 1) {
-			Me0root = [arFetch objectAtIndex:0];
-		}
-		else {
-			AzLOG(@"Error: Me0root count = %d", [arFetch count]);
-			exit(-1);  // Fail
-		}
-	}
-	
-	//--------------------------------------------------Pe3select.e6parts
-	if (RaE6parts) {
-		[RaE6parts release], RaE6parts = nil;
-	}
-	// Sort条件
-	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
-	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
-	[sort1 release];
-	// 
-	RaE6parts = [[NSMutableArray alloc] initWithArray:[Re3edit.e6parts allObjects]];
-	[RaE6parts sortUsingDescriptors:sortArray];
-	[sortArray release];
-	
-	MbE6paid = NO;
-	for (E6part *e6 in RaE6parts) {
-		if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
-			MbE6paid = YES; // YES:PAIDあり、主要条件の変更禁止！
-			break;
-		}
-	}
-	if (MbuDelete) {
-		// E3配下のE6に1つでもPAIDがあるならば、削除(ごみ箱)ボタンを無効にする     [0.3]
-		MbuDelete.enabled = !MbE6paid;
-	}
-	
-	//--------------------------------------------------Me3lasts: 前回引用するため
-	if (RaE3lasts) {
-		[RaE3lasts release], RaE3lasts = nil;
-	}
-	// Sorting
-	sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:NO]; // NO=降順
-	sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
-	[sort1 release];
-
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entityE3 = [NSEntityDescription entityForName:@"E3record" 
-												inManagedObjectContext:Re3edit.managedObjectContext];
-	[fetchRequest setEntity:entityE3];
-	[fetchRequest setFetchLimit:21];
-	//[fetchRequest setFetchOffset:page * limit ];
-	
-	if (Re3edit.e4shop) {
-		// e4shop以下、最近の全E3
-		//RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e4shop.e3records allObjects]];
-		NSPredicate* pred = [NSPredicate predicateWithFormat:@"(e4shop == %@) AND (dateUse <= %@)",
-																	Re3edit.e4shop, [NSDate date]]; // 現在以前、Limitまで
-		[fetchRequest setPredicate:pred];
-	}
-	else if (Re3edit.e5category) {
-		// e5category以下、最近の全E3
-		//RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e5category.e3records allObjects]];
-		NSPredicate* pred = [NSPredicate predicateWithFormat:@"(e5category == %@) AND (dateUse <= %@)",
-																	Re3edit.e5category, [NSDate date]]; // 現在以前、Limitまで
-		[fetchRequest setPredicate:pred];
-	}
-	else {
-		//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// 利用明細一覧用：最近の全E3
-		// datePrev 〜 dateBottom 間を抽出する	＜＜＜dateUse は,UTC(+0000)記録されている＞＞＞
-		//[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(dateUse > %@) && (dateUse <= %@)", 
-		//							[NSDate dateWithTimeIntervalSinceNow:-100*24*60*60], [NSDate date]]]; // 100日前〜今日まで抽出
-		[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(dateUse <= %@)", [NSDate date]]]; // 現在以前、Limitまで
-	}
-	
-	[fetchRequest setSortDescriptors:sortArray];
-	// Fitch
-	NSError *error = nil;
-	NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-	if (error) {
-		AzLOG(@"Error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
-	[fetchRequest release];
-	RaE3lasts = [[NSMutableArray alloc] initWithArray:arFetch];
-	[sortArray release];
-	// 重要！Me3lastsには、新規追加されたRe3editが含まれているので、ここで除外する。
-	[RaE3lasts removeObject:Re3edit];
-	
-	// 初期値
-	if (Re3edit.dateUse == nil) {
-		Re3edit.dateUse = [NSDate date]; // Now
-	}
-
-	if (Re3edit.e1card == nil) {
-		// Re3edit.e1card = 最上行のカードにする
-	}
-	
-	if (PiAdd==0 OR PiFirstYearMMDD < AzMIN_YearMMDD) {
-		PiFirstYearMMDD = 0;
-	}
-	
-	[self viewDesign]; // 下層で回転して戻ったときに再描画が必要
-	// テーブルビューを更新します。
-	[self.tableView reloadData];
-	
-	// 変更あれば、ツールバー(Top, Add, Delete)を非表示にする
-	//if (PiAdd <= 0 && [Re3edit.managedObjectContext hasChanges]) {
-	if (MbModified) {
-		for (id obj in self.toolbarItems) {
-			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
-				[obj setEnabled:NO];
-			}
-		}
-		//MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
-	}
+	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+	// データ更新、再描画
+	[self refreshE3detail];
 }
 
 - (void)viewDesign
@@ -701,6 +744,9 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	[Rpopover release], Rpopover = nil;
+#endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	[Re3edit release], Re3edit = nil;
@@ -1165,18 +1211,21 @@
 						evc.RzKey = @"dateUse";
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
+						evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
 #ifdef AzPAD
-						//UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:evc];
-						// Popover Navi
-						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
-						pop.delegate = self;  //閉じたとき再描画するため
-						pop.popoverContentSize = CGSizeMake(290, 390);
+						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+						UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+						[nc release];
+						MpopoverView.delegate = self;  //閉じたとき再描画するため
+						MpopoverView.popoverContentSize = CGSizeMake(320, 390);	// Show Time時の幅(広くなる)に注意！
 						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.x += 30;  rc.size.width = 50;
 						rc.origin.y += 10;  rc.size.height -= 20;
-						[pop presentPopoverFromRect:rc  inView:self.view
-						   permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-						evc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-						[pop release];
+						[MpopoverView presentPopoverFromRect:rc  inView:self.view
+													permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						evc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+						[MpopoverView release];
 #else
 						evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
@@ -1201,15 +1250,18 @@
 						tvc.title = NSLocalizedString(@"Card choice",nil);
 						tvc.Re0root = Me0root;
 						tvc.Re3edit = Re3edit;
+						tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
 #ifdef AzPAD
-						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-						pop.delegate = self;  //閉じたとき再描画するため
-						pop.popoverContentSize = CGSizeMake(400, 500);
+						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
+						MpopoverView.delegate = self;  //閉じたとき再描画するため
+						MpopoverView.popoverContentSize = CGSizeMake(400, 500);
 						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.x += 30;  rc.size.width = 50;
 						rc.origin.y += 10;  rc.size.height -= 20;
-						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-						tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-						[pop release];
+						[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						tvc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+						[MpopoverView release];
 #else
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
@@ -1224,15 +1276,18 @@
 						E3selectRepeatTVC *tvc = [[E3selectRepeatTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Repeat",nil);
 						tvc.Re3edit = Re3edit;
+						tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
 #ifdef AzPAD
-						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-						pop.delegate = self;  //閉じたとき再描画するため
-						pop.popoverContentSize = CGSizeMake(280, 300);
+						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
+						MpopoverView.delegate = self;  //閉じたとき再描画するため
+						MpopoverView.popoverContentSize = CGSizeMake(280, 300);
 						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.x += 30;  rc.size.width = 50;
 						rc.origin.y += 10;  rc.size.height -= 20;
-						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-						tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-						[pop release];
+						[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						tvc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+						[MpopoverView release];
 #else
 						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
@@ -1248,15 +1303,18 @@
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
 						tvc.Re3edit = Re3edit;
+						tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
 #ifdef AzPAD
-						PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-						pop.delegate = self;  //閉じたとき再描画するため
-						pop.popoverContentSize = CGSizeMake(320, 480);
+						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
+						MpopoverView.delegate = self;  //閉じたとき再描画するため
+						MpopoverView.popoverContentSize = CGSizeMake(320, 480);
 						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+						rc.origin.x += 30;  rc.size.width = 50;
 						rc.origin.y += 10;  rc.size.height -= 20;
-						[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-						tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-						[pop release];
+						[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+						tvc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+						[MpopoverView release];
 #else
 						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
@@ -1278,15 +1336,20 @@
 							tvc.title = NSLocalizedString(@"Shop choice",nil);
 							tvc.Re0root = Me0root;
 							tvc.Pe3edit = Re3edit;
+							tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
 #ifdef AzPAD
-							PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-							pop.delegate = self;  //閉じたとき再描画するため
-							pop.popoverContentSize = CGSizeMake(500, 600);
+							//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+							UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
+							MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+							[nc release];
+							MpopoverView.delegate = self;  //閉じたとき再描画するため
+							MpopoverView.popoverContentSize = CGSizeMake(400, 700);
 							CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+							rc.origin.x += 30;  rc.size.width = 50;
 							rc.origin.y += 10;  rc.size.height -= 20;
-							[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-							tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-							[pop release];
+							[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+							tvc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+							[MpopoverView release];
 #else
 							[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -1302,15 +1365,18 @@
 					tvc.title = NSLocalizedString(@"Category choice",nil);
 					tvc.Re0root = Me0root;
 					tvc.Pe3edit = Re3edit;
+					tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
 #ifdef AzPAD
-					PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-					pop.delegate = self;  //閉じたとき再描画するため
-					pop.popoverContentSize = CGSizeMake(500, 600);
+					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(400, 700);
 					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.x += 30;  rc.size.width = 50;
 					rc.origin.y += 10;  rc.size.height -= 20;
-					[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					tvc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-					[pop release];
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					tvc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -1326,15 +1392,20 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
+					evc.delegate = self;	//[Done]にて、viewWillAppear を呼び出すため
 #ifdef AzPAD
-					PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
-					pop.delegate = self;  //閉じたとき再描画するため
-					pop.popoverContentSize = CGSizeMake(400, 260);
+					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					[nc release];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(400, 260);
 					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.x += 30;  rc.size.width = 50;
 					rc.origin.y += 10;  rc.size.height -= 20;
-					[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					evc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-					[pop release];
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
 #else
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
@@ -1363,16 +1434,20 @@
 					evc.RzKey = @"";  //[1.0.0]E6date変更モード：未使用
 					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
 					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
-					evc.delegate = self;
+					evc.delegate = self;	// [Done]にて、editDateE6change を呼び出すため
 #ifdef AzPAD
-					PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
-					pop.delegate = self;  //閉じたとき再描画するため
-					pop.popoverContentSize = CGSizeMake(290, 390);
+					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					[nc release];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(320, 390);	// Show Time時の幅(広くなる)に注意！
 					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.x += 30;  rc.size.width = 50;
 					rc.origin.y += 10;  rc.size.height -= 20;
-					[pop presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					evc.RpopNaviCon = pop; //(retain)  内から閉じるときに必要になる
-					[pop release];
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
 #else
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];

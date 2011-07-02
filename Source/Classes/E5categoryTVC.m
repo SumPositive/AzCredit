@@ -30,8 +30,9 @@
 @implementation E5categoryTVC
 @synthesize Re0root;
 @synthesize Pe3edit;
+@synthesize delegate;
 #ifdef AzPAD
-@synthesize RpopNaviCon;
+@synthesize Rpopover;
 #endif
 
 
@@ -163,7 +164,7 @@
 					   NSLocalizedString(@"Sort Index",nil), nil]; // release不要
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
 #ifdef AzPAD
-	segment.frame = CGRectMake(0,0, 350,30);
+	segment.frame = CGRectMake(0,0, 300,30);
 #else
 	segment.frame = CGRectMake(0,0, 210,30);
 #endif
@@ -480,8 +481,11 @@
 			// 選択モード
 			Pe3edit.e5category = [RaE5categorys objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (RpopNaviCon) {
-				[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+			if (Rpopover) {
+				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+					[delegate viewWillAppear:YES];// 再描画
+				}
+				[Rpopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

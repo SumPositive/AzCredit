@@ -18,9 +18,10 @@
 	//--------------------------retain
 	E3record		*Re3edit;
 #ifdef AzPAD
-	PadPopoverInNaviCon*	RpopNaviCon;
+	UIPopoverController*	Rpopover;
 #endif
 	//--------------------------assign
+	id					delegate;
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -29,8 +30,9 @@
 }
 
 @property (nonatomic, retain) E3record		*Re3edit;
+@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) PadPopoverInNaviCon*	RpopNaviCon;
+@property (nonatomic, retain) UIPopoverController*	Rpopover;
 #endif
 
 @end

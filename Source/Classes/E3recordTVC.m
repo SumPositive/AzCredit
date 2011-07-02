@@ -68,6 +68,8 @@
 {
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
+	e3detail.delegate = self;		// refresh callback
+
 	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
 	if (indexPath != nil && indexPath.section >= 1
 		&& indexPath.section < [RaE3list count]  
@@ -76,7 +78,6 @@
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
 		e3detail.Re3edit = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 		e3detail.PiAdd = 0; // (0)Edit mode
-		
 		//[0.4.2]Fix:
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
@@ -108,8 +109,11 @@
 
 #ifdef  AzPAD
 	[Mpopover release], Mpopover = nil;
-	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
-	Mpopover.popoverContentSize = CGSizeMake(450, 600);
+	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
+	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+	[nc release];
+	Mpopover.popoverContentSize = CGSizeMake(360, 600);
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	MindexPathEdit = indexPath;
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
@@ -117,6 +121,7 @@
 	rc.origin.y += 10;	rc.size.height -= 20;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+	e3detail.Rpopover = Mpopover;  //(retain)  内から閉じるときに必要になる
 #else
 	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
@@ -351,11 +356,28 @@
 		if (iSecMiddle < 0) { // 現在以降の明細が無いとき
 			// 最新行（最終ページ）を表示する　＜＜最終行を画面下部に表示する＞＞  +Add行まで表示するためMiddleにした。
 			indexPath = [NSIndexPath indexPathForRow:0 inSection:[RaE3list count]-1]; // 行末セクションへ
+			[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 		} else {
 			indexPath = [NSIndexPath indexPathForRow:iRowMiddle inSection:iSecMiddle];
+			[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];	//  Middle 選択状態
+			[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.5]; // 0.5s後に選択状態を解除する
 		}
-		[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
-							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+	}
+}
+
+- (void)deselectRow:(NSIndexPath*)indexPath
+{
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES]; // 選択状態を解除する
+}
+
+// E3recordDetailTVC から呼び出されるデリゲート・メソッド
+- (void)refreshE3record
+{	// 対象日付が中央になるように再描画する
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (RaE3list==nil || app.Me3dateUse) {
+		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
+		[self setMe3list:app.Me3dateUse];
 	}
 }
 
@@ -526,6 +548,19 @@
 			// 回転後のアンカー位置が再現不可なので閉じる
 			[Mpopover dismissPopoverAnimated:YES];
 			[Mpopover release], Mpopover = nil;
+		}
+		
+		// E3detailTVC配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+		PadNaviCon* nav = (PadNaviCon*)[Mpopover contentViewController];
+		NSLog(@"nav=%@", nav);
+		if ([nav isMemberOfClass:[PadNaviCon class]]) {
+			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
+				id vc = [nav visibleViewController];
+				NSLog(@"vc=%@", vc);
+				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
+					[vc closePopover];
+				}
+			}
 		}
 	}
 #endif
@@ -704,7 +739,7 @@
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = UITextAlignmentRight;
 			//cellLabel.textColor = [UIColor blackColor];
-			cellLabel.backgroundColor = [UIColor clearColor];
+			cellLabel.backgroundColor = [UIColor whiteColor];
 #ifdef AzPAD
 			cellLabel.font = [UIFont systemFontOfSize:20];
 #else
@@ -898,16 +933,19 @@
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
 	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
-	
-	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
-	if (popoverController==Mpopover) {
-		// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-		// つまり、これが呼び出されたときは、常に CANCEL　である。
-		// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
-		// PadPopoverInNaviCon を使っているから
+	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+	// つまり、これが呼び出されたときは、常に CANCEL　である。
+	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
 		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
-		[e3tvc cancelClose:nil];
+		// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
+		if ([nav.topViewController isMemberOfClass:[E3recordDetailTVC class]]) {
+			// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
+			// PadPopoverInNaviCon を使っているから
+			E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
+			if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+				[e3tvc cancelClose:nil];	// 新しいObject破棄
+			}
+		}
 	}
 	return YES; // 閉じることを許可
 }
@@ -917,6 +955,18 @@
 	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
 	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
 		// [SAVE]ボタンが押された
+		// E3 再描画
+		if (MindexPathEdit) {
+			AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			if (RaE3list==nil || app.Me3dateUse) {
+				NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
+				[self setMe3list:app.Me3dateUse];
+			}
+			//NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+			//[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:NO];
+		} else {
+			[self.tableView reloadData];
+		}
 		
 		// 未払い総額 再描画
 		

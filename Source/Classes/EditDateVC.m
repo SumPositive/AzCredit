@@ -12,7 +12,8 @@
 #import "EditDateVC.h"
 
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+#import "E3editTextVC.h"
+#import "E3recordDetailTVC.h"
 #endif
 
 @interface NSObject (E3recordDetailTVC_delagate_Methods)
@@ -33,7 +34,7 @@
 @synthesize PiMaxYearMMDD;
 @synthesize delegate;
 #ifdef AzPAD
-@synthesize RpopNaviCon;
+@synthesize Rpopover;
 #endif
 
 
@@ -90,9 +91,11 @@
 	}
 	
 #ifdef AzPAD
-	if (RpopNaviCon) {
-		//[RpopNaviCon dismissPopoverAnimated:YES];
-		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	if (Rpopover) {	
+		if ([delegate respondsToSelector:@selector(refreshE3detail)]) {	// メソッドの存在を確認する
+			[delegate refreshE3detail];// 再描画
+		}
+		[Rpopover dismissPopoverAnimated:YES];
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -140,8 +143,11 @@
 	MbuToday = nil;		// ここ(loadView)で生成
 	MbuYearTime = nil;	// ここ(loadView)で生成
 
-	
+#ifdef AzPAD
+	self.view.backgroundColor = [UIColor lightGrayColor];
+#else
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+#endif
 
 	// DONEボタンを右側に追加する
 	// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
@@ -285,12 +291,15 @@
 		}
 		else if ([Rentity valueForKey:RzKey]) {
 			self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  デフォルト[Save]
-				MdatePicker.date = [Rentity valueForKey:RzKey];
+			MdatePicker.date = [Rentity valueForKey:RzKey];
 		}
 		else {
 			self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  デフォルト[Save]
 			MdatePicker.date = [NSDate date]; // Now
 		}
+	}
+	else if ([Rentity valueForKey:RzKey]) {		//[1.0.2]
+		MdatePicker.date = [Rentity valueForKey:RzKey];
 	}
 	else {
 		MdatePicker.date = [NSDate date]; // Now
@@ -313,8 +322,13 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
+{	
+#ifdef AzPAD
+	return NO;	// Popover内につき回転不要
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -330,7 +344,7 @@
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
 #ifdef AzPAD
-	[RpopNaviCon release], RpopNaviCon = nil;
+	[Rpopover release], Rpopover = nil;
 #endif
 	[Re6edit release], Re6edit = nil;
 	// 生成とは逆順に解放するのが好ましい

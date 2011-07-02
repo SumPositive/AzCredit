@@ -87,12 +87,13 @@
 		e3detail.PiFirstYearMMDD = [e2obj.nYearMMDD integerValue]; // E2,E7配下から追加されるとき、支払日をこのE2に合わせるため。
 	}
 	
+	MindexPathEdit = indexPath;
+
 #ifdef  AzPAD
 	[Mpopover release], Mpopover = nil;
 	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
 	Mpopover.popoverContentSize = CGSizeMake(450, 600);
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-	MindexPathEdit = indexPath;
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.size.width /= 2;
 	rc.origin.y += 10;	rc.size.height -= 20;
@@ -182,15 +183,20 @@
 	// テーブルソース セット
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE6parts==nil || app.Me3dateUse) {  // 最初 または E3recordDetailTVCにてSAVEされたとき
-		//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 		[self MtableSource];
-		//0.5//[autoPool release];
+		[self.tableView selectRowAtIndexPath:MindexPathEdit animated:NO scrollPosition:UITableViewScrollPositionMiddle];	//  Middle 選択状態
+		[self performSelector:@selector(deselectRow:) withObject:MindexPathEdit afterDelay:0.5]; // 0.5s後に選択状態を解除する
 	}
 	else if (0 < McontentOffsetDidSelect.y) {  //.Y座標
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
+}
+
+- (void)deselectRow:(NSIndexPath*)indexPath
+{
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES]; // 選択状態を解除する
 }
 
 - (void)MtableSource
@@ -724,7 +730,7 @@
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = UITextAlignmentRight;
 			//cellLabel.textColor = [UIColor blackColor];
-			cellLabel.backgroundColor = [UIColor clearColor];
+			cellLabel.backgroundColor = [UIColor whiteColor];
 #ifdef AzPAD
 			cellLabel.font = [UIFont systemFontOfSize:20];
 #else
@@ -1083,6 +1089,7 @@
 	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
 	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
 		// [SAVE]ボタンが押された
+		[self viewWillAppear:YES];
 		
 		// 未払い総額 再描画
 		

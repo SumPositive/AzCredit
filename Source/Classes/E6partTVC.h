@@ -33,9 +33,9 @@
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+	NSIndexPath*				MindexPathEdit;
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
-	NSIndexPath*				MindexPathEdit;
 #endif
 	//----------------------------------------------assign
 	E1card		*Me2e1card;

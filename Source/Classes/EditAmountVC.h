@@ -15,6 +15,7 @@
 	id			Rentity;
 	NSString	*RzKey;			// @"zName"
 	//--------------------------assign
+	id					delegate;
 
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -26,4 +27,6 @@
 
 @property (nonatomic, retain) id			Rentity;
 @property (nonatomic, retain) NSString		*RzKey;	
+@property (nonatomic, assign) id					delegate;
+
 @end

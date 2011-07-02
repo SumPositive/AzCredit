@@ -28,8 +28,9 @@
 @implementation E8bankTVC
 @synthesize Re0root;
 @synthesize Pe1card;
+@synthesize delegate;
 #ifdef AzPAD
-@synthesize RpopNaviCon;
+@synthesize Rpopover;
 #endif
 
 #pragma mark - Action
@@ -222,6 +223,13 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
+#ifdef xxxxxxxxAzPAD
+	//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
+	CGSize currentSetSizeForPopover = E1CardDetailView_SIZE; // 最終的に設定したいサイズ
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
+#endif	
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
@@ -399,8 +407,11 @@
 			// 選択モード
 			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (RpopNaviCon) {
-				[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+			if (Rpopover) {
+				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+					[delegate viewWillAppear:YES];// 再描画
+				}
+				[Rpopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

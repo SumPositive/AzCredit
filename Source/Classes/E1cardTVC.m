@@ -28,8 +28,9 @@
 @implementation E1cardTVC
 @synthesize Re0root;
 @synthesize Re3edit;
+@synthesize delegate;
 #ifdef AzPAD
-@synthesize RpopNaviCon;
+@synthesize Rpopover;
 #endif
 
 
@@ -58,7 +59,7 @@
 {
 	E1cardDetailTVC *e1detail = [[E1cardDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	
-	if (indexPath == nil) {
+	if ([RaE1cards count] <= indexPath.row) {	// Add mode
 		E1card *e1obj = [NSEntityDescription insertNewObjectForEntityForName:@"E1card"
 													  inManagedObjectContext:Re0root.managedObjectContext];
 		// Add
@@ -66,21 +67,17 @@
 		e1detail.PiAddRow = [RaE1cards count]; // 追加モード
 		e1detail.Re1edit = e1obj;
 	} else {
-		if ([RaE1cards count] <= indexPath.row) {
-			[e1detail release];
-			return;  // Addボタン行などの場合パスする
-		}
 		e1detail.title = NSLocalizedString(@"Edit Card",nil);
 		e1detail.PiAddRow = (-1); // 修正モード
 		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
 	
-#ifdef  xxxxxxxxAzPAD
+#ifdef  AzPAD
 	PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
 	pop.delegate = self;  //閉じたとき再描画するため
-	pop.popoverContentSize = CGSizeMake(400, 450);
+	pop.popoverContentSize = CGSizeMake(400, 460);
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-	//rc.origin.x = rc.size.width - 30;	rc.size.width = 30;
+	rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
 	rc.origin.y += 10;	rc.size.height -= 20;
 	[pop presentPopoverFromRect:rc inView:self.view
 			permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
@@ -505,8 +502,11 @@ static UIImage* GimageFromString(NSString* str)
 		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (RpopNaviCon) {
-				[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+			if (Rpopover) {
+				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+					[delegate viewWillAppear:YES];// 再描画
+				}
+				[Rpopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -538,7 +538,7 @@ static UIImage* GimageFromString(NSString* str)
 		}
 	}
 	else if (indexPath.row == [RaE1cards count]) {	// Add Plan
-		[self e1cardDatail:nil]; // :nil = Add mode
+		[self e1cardDatail:indexPath]; // 改めて Add 判断している
 	}
 }
 
@@ -674,15 +674,32 @@ static UIImage* GimageFromString(NSString* str)
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+	// つまり、これが呼び出されたときは、常に CANCEL　である。
+	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+		if ([nav.topViewController isMemberOfClass:[E1cardDetailTVC class]]) {
+			// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
+			// PadPopoverInNaviCon を使っているから
+			E1cardDetailTVC* e1tvc = (E1cardDetailTVC *)nav.topViewController;
+			if ([e1tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+				[e1tvc cancelClose:nil];	// 新しいObject破棄
+			}
+		}
+	}
 	return YES; // 閉じることを許可
 }
 
+/* [Done]や決定時には、[delegate viewWillAppear:] を呼び出すようにした。
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じた後に通知
+	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
+	// [SAVE]ボタンが押された
 	// 再描画する
 	[self viewWillAppear:YES];
 	return;
 }
+ */
 #endif
 
 

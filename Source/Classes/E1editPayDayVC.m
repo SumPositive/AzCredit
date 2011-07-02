@@ -10,6 +10,10 @@
 #import "Entity.h"
 #import "E1editPayDayVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 @interface E1editPayDayVC (PrivateMethods)
 - (void)viewDesign;
 - (void)buttonDebit;
@@ -18,6 +22,10 @@
 
 @implementation E1editPayDayVC
 @synthesize Re1edit;
+@synthesize delegate;
+#ifdef AzPAD
+@synthesize Rpopover;
+#endif
 
 
 #pragma mark - Action
@@ -50,7 +58,16 @@
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
 	}
 	
+#ifdef AzPAD
+	if (Rpopover) {
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];// 再描画
+		}
+		[Rpopover dismissPopoverAnimated:YES];
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 
@@ -66,8 +83,12 @@
 	MlbPayMonth = nil;	// ここで生成
 	MlbPayDay = nil;	// ここで生成
 	
+#ifdef AzPAD
+	self.view.backgroundColor = [UIColor lightGrayColor];
+#else
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-
+#endif
+	
 	// DONEボタンを右側に追加する
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -121,7 +142,7 @@
 - (void)viewDesign
 {
 	CGRect rect = self.view.bounds;
-	
+
 	rect.origin.x = 0;
 	//---------------------------- Picker
 	rect.origin.y = 25;
@@ -210,6 +231,13 @@
 // 画面表示された直後に呼び出される
 - (void)viewDidAppear:(BOOL)animated 
 {
+#ifdef xxxxxxAzPAD
+	//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
+	CGSize currentSetSizeForPopover = E1CardDetailView_SIZE; // 最終的に設定したいサイズ
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
+#endif	
 	[super viewDidAppear:animated];
 	
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
@@ -221,8 +249,13 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
+{	
+#ifdef AzPAD
+	return NO;	// Popover内につき回転不要
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -238,8 +271,9 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	//--------------------------------Private Alloc
-	//--------------------------------@property (retain)
+#ifdef AzPAD
+	[Rpopover release], Rpopover = nil;
+#endif
 	[Re1edit release];
 	[super dealloc];
 }

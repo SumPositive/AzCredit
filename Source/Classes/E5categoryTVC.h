@@ -18,10 +18,11 @@
 	//--------------------------retain
 	E0root		*Re0root;
 #ifdef AzPAD
-	PadPopoverInNaviCon*	RpopNaviCon;
+	UIPopoverController*	Rpopover;
 #endif
 	//--------------------------assign
 	E3record	*Pe3edit;		// =nil:マスタモード  !=nil:選択モード
+	id					delegate;
 
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray			*RaE5categorys;
@@ -36,8 +37,9 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, assign) E3record	*Pe3edit;
+@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) PadPopoverInNaviCon*	RpopNaviCon;
+@property (nonatomic, retain) UIPopoverController*	Rpopover;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用

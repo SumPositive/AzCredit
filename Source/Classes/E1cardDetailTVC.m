@@ -16,6 +16,10 @@
 #import "E1editBonusVC.h"
 #import "E8bankTVC.h"
 
+#ifdef AzPAD
+#import "PadPopoverInNaviCon.h"
+#endif
+
 #define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（10行）
 
 @interface E1cardDetailTVC (PrivateMethods)
@@ -29,7 +33,7 @@
 
 #pragma mark - Action
 
-- (void)cancel:(id)sender 
+- (void)cancelClose:(id)sender
 {
 	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
 	
@@ -38,11 +42,16 @@
 		[MocFunctions deleteEntity:Re1edit];
 	}
 	
+#ifdef AzPAD
+	//Padでは、親側の popoverControllerShouldDismissPopover にて処理
+	[(PadNaviCon*)self.navigationController dismissPopoverCancel];  // PadNaviCon拡張メソッド
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 // 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
+- (void)saveClose:(id)sender 
 {
 	if (0 <= PiAddRow) { // Add
 		Re1edit.nRow = [NSNumber numberWithInteger:PiAddRow];
@@ -52,8 +61,21 @@
 	[MocFunctions e1update:Re1edit];
 	[MocFunctions commit];
 	
+#ifdef AzPAD
+	[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // SAVE: PadNaviCon拡張メソッド
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
+
+#ifdef AzPAD
+- (void)closePopover
+{
+	if (MpopoverView) {	//dismissPopoverCancel
+		[MpopoverView dismissPopoverAnimated:YES];
+	}
+}
+#endif
 
 
 
@@ -88,11 +110,11 @@
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											  target:self action:@selector(cancel:)] autorelease];
+											  target:self action:@selector(cancelClose:)] autorelease];
 	// SAVEボタンを右側に追加する
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-											   target:self action:@selector(save:)] autorelease];
+											   target:self action:@selector(saveClose:)] autorelease];
 }
 
 - (void)viewDesign
@@ -110,6 +132,7 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:YES];
+	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
 	
@@ -125,6 +148,13 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
+#ifdef xxxxxxxAzPAD
+	//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
+	CGSize currentSetSizeForPopover = E1CardDetailView_SIZE; // 最終的に設定したいサイズ
+    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+    self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
+    self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
+#endif	
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
@@ -214,7 +244,11 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 									   reuseIdentifier:zCellIndex] autorelease];
+#ifdef AzPAD
+		cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
+#else
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+#endif
 		cell.showsReorderControl = NO; // Move禁止
 
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
@@ -374,19 +408,47 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
+					evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
+#ifdef AzPAD
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					[nc release];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(400, 200);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
+#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
+#endif
 					[evc release];
 				}
 					break;
 				case 1: // PayDay
 				{
-					E1editPayDayVC *e1ed = [[E1editPayDayVC alloc] init];
-					e1ed.title = NSLocalizedString(@"PayDay", nil);
-					e1ed.Re1edit = Re1edit;
+					E1editPayDayVC *evc = [[E1editPayDayVC alloc] init];
+					evc.title = NSLocalizedString(@"PayDay", nil);
+					evc.Re1edit = Re1edit;
+					evc.delegate = self;	//[Done]にて、viewWillAppear を呼び出すため
+#ifdef AzPAD
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					[nc release];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(320, 440);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
+#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:e1ed animated:YES];
-					[e1ed release];
+#endif
+					[evc release];
 				}
 					break;
 /******************** Bonus 未対応
@@ -408,7 +470,19 @@
 					tvc.title = NSLocalizedString(@"Bank choice",nil);
 					tvc.Re0root = [MocFunctions e0root];
 					tvc.Pe1card = Re1edit;
+					tvc.delegate = self;	//選択決定にて、viewWillAppear を呼び出すため
+#ifdef AzPAD
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(380, 500);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					tvc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;
@@ -424,17 +498,23 @@
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;
+					evc.delegate = self;	//[Done]にて、viewWillAppear を呼び出すため
+#ifdef AzPAD
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					[nc release];
+					MpopoverView.delegate = self;  //閉じたとき再描画するため
+					MpopoverView.popoverContentSize = CGSizeMake(400, 300);
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.y += 10;  rc.size.height -= 20;
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.Rpopover = MpopoverView; //(retain)  内から閉じるときに必要になる
+					[MpopoverView release];
+#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
+#endif
 					[evc release];
-				}
-					break;
-				case 1: // 
-				{
-				}
-					break;
-				case 2: // 
-				{
 				}
 					break;
 			}
@@ -443,44 +523,20 @@
 }
 
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+#ifdef AzPAD
+#pragma mark - <UIPopoverControllerDelegate>
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	return YES; // 閉じることを許可
 }
-*/
 
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じた後に通知
+	// 再描画する
+	[self viewWillAppear:YES];
+	return;
 }
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+#endif
 
 		
 @end

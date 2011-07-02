@@ -11,7 +11,7 @@
 #import "E3selectRepeatTVC.h"
 
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+#import "E3recordDetailTVC.h"
 #endif
 
 @interface E3selectRepeatTVC (PrivateMethods)
@@ -23,8 +23,9 @@
 
 @implementation E3selectRepeatTVC
 @synthesize Re3edit;
+@synthesize delegate;
 #ifdef AzPAD
-@synthesize RpopNaviCon;
+@synthesize Rpopover;
 #endif
 
 #pragma mark - Action
@@ -81,16 +82,22 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
+{	
+#ifdef AzPAD
+	return NO;	// Popover内につき回転不要
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 #pragma mark  View - Unload - dealloc
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	
-	// @property (retain)
+#ifdef AzPAD
+	[Rpopover release], Rpopover = nil;
+#endif
 	[Re3edit release];
 	[super dealloc];
 }
@@ -182,8 +189,11 @@
 	}
 
 #ifdef AzPAD
-	if (RpopNaviCon) {
-		[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
+	if (Rpopover) {
+		if ([delegate respondsToSelector:@selector(refreshE3detail)]) {	// メソッドの存在を確認する
+			[delegate refreshE3detail];// 再描画
+		}
+		[Rpopover dismissPopoverAnimated:YES];
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

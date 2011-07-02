@@ -24,11 +24,13 @@
 	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
 	id			Rentity;		// NSNumber
 	NSString	*RzKey;			// @"nAmount"
+	NSString	*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
 #ifdef AzPAD
 	UIPopoverController*	Rpopover;
 #endif
 	//----------------------------------------------assign
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
+	id					delegate;
 
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//NSMutableString			*RzCalc;
@@ -57,6 +59,7 @@
 @property (nonatomic, retain) id						Rentity;
 @property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
+@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
 @property (nonatomic, retain) UIPopoverController*	Rpopover;
 #endif
@@ -65,6 +68,7 @@
 - (id)initWithFrame:(CGRect)rect;
 - (void)show;
 - (void)save;
+- (void)cancel;
 - (void)hide;
 - (void)viewDesign:(CGRect)rect;	// 回転時に呼び出す
 - (BOOL)isShow;

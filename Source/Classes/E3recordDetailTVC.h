@@ -22,10 +22,14 @@
 @private
 	//--------------------------retain
 	E3record		*Re3edit;
+#ifdef AzPAD
+	UIPopoverController*	Rpopover;
+#endif
 	//--------------------------assign
 	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する
 									//		     (1)New (2)Card固定 (3)Shop固定 (4)Category固定
 	NSInteger	PiFirstYearMMDD;	// 「この支払日になるように利用明細を追加」のとき、支払日が渡される
+	id					delegate;
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE6parts;
@@ -36,6 +40,9 @@
 	UIBarButtonItem		*MbuDelete;		// BarButton ＜PAID時に無効にするため＞ [0.3]
 	UILabel				*MlbAmount;
 	CalcView			*McalcView;
+#ifdef AzPAD
+	UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
+#endif
 	//----------------------------------------------assign
 	BOOL			MbE6dateChange;
 	
@@ -56,8 +63,18 @@
 @property (nonatomic, retain) E3record		*Re3edit;
 @property NSInteger							PiAdd;
 @property NSInteger							PiFirstYearMMDD;	
+@property (nonatomic, assign) id					delegate;
+#ifdef AzPAD
+@property (nonatomic, retain) UIPopoverController*	Rpopover;
+#endif
 
 // 公開メソッド
 - (void)cancelClose:(id)sender ;
+
+// デリゲート・メソッド
+- (void)refreshE3detail;
+#ifdef AzPAD
+- (void)closePopover;
+#endif
 
 @end

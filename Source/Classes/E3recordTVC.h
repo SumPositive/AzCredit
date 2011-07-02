@@ -49,4 +49,7 @@
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 
+// デリゲート・メソッド
+- (void)refreshE3record;
+
 @end
