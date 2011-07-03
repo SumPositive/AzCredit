@@ -14,7 +14,7 @@
 #import "E3recordDetailTVC.h"
 
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+//#import "PadPopoverInNaviCon.h"
 #endif
 
 #define ACTIONSEET_TAG_DELETE	199
@@ -90,15 +90,20 @@
 	MindexPathEdit = indexPath;
 
 #ifdef  AzPAD
-	[Mpopover release], Mpopover = nil;
-	Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
-	Mpopover.popoverContentSize = CGSizeMake(450, 600);
+	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
+	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	[nc release];
+	MindexPathEdit = indexPath;
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.size.width /= 2;
 	rc.origin.y += 10;	rc.size.height -= 20;
+	Mpopover.popoverContentSize = E3DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
+	e3detail.delegate = self;		// refresh callback
 #else
 	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
@@ -503,9 +508,23 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	[self.tableView reloadData];  // cellLable位置調整する
+	
 #ifdef AzPAD
-	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 	if (Mpopover) {
+		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+		id nav = [Mpopover contentViewController];
+		//NSLog(@"nav=%@", nav);
+		if ([nav isMemberOfClass:[UINavigationController class]]) {
+			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
+				id vc = [nav visibleViewController];
+				//NSLog(@"vc=%@", vc);
+				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
+					[vc closePopover];
+				}
+			}
+		}
+		
+		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
 			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
@@ -513,9 +532,14 @@
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 			rc.size.width /= 2;
 			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
-					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES];
-		} else {
+			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
+			CGSize currentSetSizeForPopover = E3DETAILVIEW_SIZE; // 最終的に設定したいサイズ
+			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
+		} 
+		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
 			[Mpopover dismissPopoverAnimated:YES];
 			[Mpopover release], Mpopover = nil;

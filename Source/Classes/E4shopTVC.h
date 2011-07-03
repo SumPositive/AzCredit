@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #ifdef AzPAD
-@class PadPopoverInNaviCon;
+//@class PadPopoverInNaviCon;
 #endif
 
 @interface E4shopTVC : UITableViewController <UIActionSheetDelegate, UISearchBarDelegate> 
@@ -18,11 +18,11 @@
 	//--------------------------retain
 	E0root		*Re0root;
 #ifdef AzPAD
-	UIPopoverController*	Rpopover;
+	id									delegate;
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
 	E3record	*Pe3edit;	// =nil:マスタモード  !=nil:選択モード
-	id					delegate;
 
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE4shops;
@@ -37,9 +37,9 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, assign) E3record	*Pe3edit;
-@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) UIPopoverController*	Rpopover;
+@property (nonatomic, assign) id									delegate;
+@property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用

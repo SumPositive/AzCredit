@@ -16,7 +16,7 @@
 #import "SettingTVC.h"
 #import "WebSiteVC.h"
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+//#import "PadPopoverInNaviCon.h"
 #endif
 
 #define ACTIONSEET_TAG_DELETE_CARD	199
@@ -28,11 +28,25 @@
 @implementation E1cardTVC
 @synthesize Re0root;
 @synthesize Re3edit;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
+
+#pragma mark - Delegate
+
+#ifdef AzPAD
+- (void)refreshTable
+{
+	if (MindexPathEdit) {	// 行位置が有効ならば、修正行だけを再表示する
+		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+	} else {
+		[self viewWillAppear:YES];
+	}
+}
+#endif
 
 #pragma mark - Action
 
@@ -72,15 +86,21 @@
 		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
 	
+	MindexPathEdit = indexPath;
+
 #ifdef  AzPAD
-	PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
-	pop.delegate = self;  //閉じたとき再描画するため
-	pop.popoverContentSize = CGSizeMake(400, 460);
+	//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
+	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e1detail];
+	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+	Mpopover.delegate = self;  //閉じたとき再描画するため
+	[nc release];
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
 	rc.origin.y += 10;	rc.size.height -= 20;
-	[pop presentPopoverFromRect:rc inView:self.view
-			permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+	Mpopover.popoverContentSize = E1DETAILVIEW_SIZE;
+	[Mpopover presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
+	e1detail.selfPopover = Mpopover; [Mpopover release];
+	e1detail.delegate = self;
 #else
 	e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e1detail animated:YES];
@@ -184,12 +204,6 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	
-	//if (Re3edit) {			//Fix[1.0.0] 選択モードのときだけ
-	//	// hasChanges時にTop戻りボタンを無効にする
-	//	MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
-	//	MbuAdd.enabled = MbuTop.enabled;
-	//}
-	
 	// Me1cards Requery. 
 	//--------------------------------------------------------------------------------
 	if (RaE1cards) {
@@ -226,6 +240,7 @@
 	}
 }
 
+
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -252,6 +267,48 @@
 #endif
 }
 
+#ifdef AzPAD
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	if (Mpopover) {
+		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+		id nav = [Mpopover contentViewController];
+		//NSLog(@"nav=%@", nav);
+		if ([nav isMemberOfClass:[UINavigationController class]]) {
+			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
+				id vc = [nav visibleViewController];
+				//NSLog(@"vc=%@", vc);
+				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
+					[vc closePopover];
+				}
+			}
+		}
+		
+		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+		if (MindexPathEdit) { 
+			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+			rc.origin.y += 10;	rc.size.height -= 20;
+			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
+			CGSize currentSetSizeForPopover = E1DETAILVIEW_SIZE; // 最終的に設定したいサイズ
+			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
+		}
+		else {
+			// 回転後のアンカー位置が再現不可なので閉じる
+			[Mpopover dismissPopoverAnimated:YES];
+			[Mpopover release], Mpopover = nil;
+		}
+	}
+}
+#endif
+
 
 #pragma mark  View - Unload - dealloc
 
@@ -263,6 +320,10 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	delegate = nil;
+	[selfPopover release], selfPopover = nil;
+#endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	[Re0root release];
@@ -502,11 +563,11 @@ static UIImage* GimageFromString(NSString* str)
 		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (Rpopover) {
+			if (selfPopover) {
 				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 					[delegate viewWillAppear:YES];// 再描画
 				}
-				[Rpopover dismissPopoverAnimated:YES];
+				[selfPopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

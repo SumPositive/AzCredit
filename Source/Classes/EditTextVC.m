@@ -11,7 +11,7 @@
 #import "EditTextVC.h"
 
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+//#import "PadPopoverInNaviCon.h"
 #endif
 
 @interface EditTextVC (PrivateMethods)
@@ -24,9 +24,9 @@
 @synthesize RzKey;
 @synthesize PiMaxLength;
 @synthesize PiSuffixLength;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
 
@@ -53,11 +53,11 @@
 	}
 	
 #ifdef AzPAD
-	if (Rpopover) {
+	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
 		}
-		[Rpopover dismissPopoverAnimated:YES];
+		[selfPopover dismissPopoverAnimated:YES];
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -83,7 +83,11 @@
 
 	// とりあえず生成、位置はviewDesignにて決定
 	MtextView = [[UITextView alloc] init];
+#ifdef AzPAD
+	MtextView.font = [UIFont systemFontOfSize:20];
+#else
 	MtextView.font = [UIFont systemFontOfSize:16];
+#endif
 	MtextView.textAlignment = UITextAlignmentLeft;
 	MtextView.keyboardType = UIKeyboardTypeDefault;
 	MtextView.returnKeyType = UIReturnKeyDefault; // Return
@@ -102,7 +106,7 @@
 - (void)viewDesign
 {
 #ifdef AzPAD
-	MtextView.frame = CGRectMake(10,10, self.view.bounds.size.width-20, self.view.bounds.size.height-20);	
+	MtextView.frame = CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-10);	
 #else
 	CGRect rect;
 	float	fKeyHeight;
@@ -187,7 +191,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 #ifdef AzPAD
-	[Rpopover release], Rpopover = nil;
+	[selfPopover release], selfPopover = nil;
 #endif
 	[RzKey release];
 	[Rentity release];

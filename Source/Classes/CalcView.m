@@ -46,9 +46,9 @@
 @synthesize Rentity;
 @synthesize RzKey;
 @synthesize PoParentTableView;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
 
@@ -194,8 +194,8 @@
 			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
 		}
 #ifdef AzPAD
-		if ([delegate respondsToSelector:@selector(refreshE3detail)]) {	// メソッドの存在を確認する
-			[delegate refreshE3detail];// 再描画
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];// 再描画
 		}
 		// この直後、hide が呼び出されて閉じる
 #endif
@@ -229,8 +229,8 @@
 	
 	// アニメ終了位置
 #ifdef AzPAD
-	if (Rpopover) {
-		[Rpopover dismissPopoverAnimated:YES];
+	if (selfPopover) {
+		[selfPopover dismissPopoverAnimated:YES];
 	}
 #else
 	CGRect rect = MrectInit;

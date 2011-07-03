@@ -26,11 +26,11 @@
 	NSString	*RzKey;			// @"nAmount"
 	NSString	*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
 #ifdef AzPAD
-	UIPopoverController*	Rpopover;
+	id									delegate;
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//----------------------------------------------assign
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
-	id					delegate;
 
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//NSMutableString			*RzCalc;
@@ -59,9 +59,9 @@
 @property (nonatomic, retain) id						Rentity;
 @property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
-@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) UIPopoverController*	Rpopover;
+@property (nonatomic, assign) id									delegate;
+@property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif
 
 // 公開メソッド

@@ -22,9 +22,9 @@
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
 
@@ -94,7 +94,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 #ifdef AzPAD
-	[Rpopover release], Rpopover = nil;
+	[selfPopover release], selfPopover = nil;
 #endif
 	[Re3edit release];
 	[super dealloc];
@@ -203,11 +203,11 @@
 	//if (RpopNaviCon) {
 	//	[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
 	//}
-	if (Rpopover) {
-		if ([delegate respondsToSelector:@selector(refreshE3detail)]) {	// メソッドの存在を確認する
-			[delegate refreshE3detail];// 再描画
+	if (selfPopover) {
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];// 再描画
 		}
-		[Rpopover dismissPopoverAnimated:YES];
+		[selfPopover dismissPopoverAnimated:YES];
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

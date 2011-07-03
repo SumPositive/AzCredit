@@ -20,6 +20,10 @@
 @private
 	//----------------------------------------------retain
 	E0root			*Re0root;
+#ifdef AzPAD
+	id									delegate;
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+#endif
 	//----------------------------------------------assign
 	E4shop			*Pe4shop;		// 
 	E5category		*Pe5category;	// 
@@ -45,11 +49,13 @@
 @property (nonatomic, assign) E4shop			*Pe4shop;
 @property (nonatomic, assign) E5category		*Pe5category;
 @property (nonatomic, assign) E8bank			*Pe8bank;
-//@property (nonatomic, assign) NSDate			*MdateTarget;
+#ifdef AzPAD
+@property (nonatomic, assign) id									delegate;
+@property (nonatomic, retain) UIPopoverController*	selfPopover;
+// delegate method
+- (void)refreshTable:(BOOL)bSameDate;
+#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
-
-// デリゲート・メソッド
-- (void)refreshE3record;
 
 @end

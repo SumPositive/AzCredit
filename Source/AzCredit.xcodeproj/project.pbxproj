@@ -1664,10 +1664,6 @@
 		44C0E7F413A110BA003D0465 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
 		44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
-		44C0E7F713A110BA003D0465 /* PadPopoverInNaviCon.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7F113A110BA003D0465 /* PadPopoverInNaviCon.m */; };
-		44C0E7F813A110BA003D0465 /* PadPopoverInNaviCon.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7F113A110BA003D0465 /* PadPopoverInNaviCon.m */; };
-		44C0E7F913A110BA003D0465 /* PadPopoverInNaviCon.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F213A110BA003D0465 /* PadPopoverInNaviCon.h */; };
-		44C0E7FA13A110BA003D0465 /* PadPopoverInNaviCon.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F213A110BA003D0465 /* PadPopoverInNaviCon.h */; };
 		44C2A6C01108A3C2006445DC /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C2A6BE1108A3C2006445DC /* SFHFKeychainUtils.h */; };
 		44C2A6DF1108A501006445DC /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C2A6DE1108A501006445DC /* SFHFKeychainUtils.m */; };
 		44C2A7D51108AD3C006445DC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C2A7D41108AD3C006445DC /* Security.framework */; };
@@ -2207,8 +2203,6 @@
 		44C0E7D613A0A4D6003D0465 /* InfoS1-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "InfoS1-iPad.plist"; sourceTree = "<group>"; };
 		44C0E7EF13A110BA003D0465 /* PadRootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PadRootVC.m; sourceTree = "<group>"; };
 		44C0E7F013A110BA003D0465 /* PadRootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadRootVC.h; sourceTree = "<group>"; };
-		44C0E7F113A110BA003D0465 /* PadPopoverInNaviCon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PadPopoverInNaviCon.m; sourceTree = "<group>"; };
-		44C0E7F213A110BA003D0465 /* PadPopoverInNaviCon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadPopoverInNaviCon.h; sourceTree = "<group>"; };
 		44C2A6BE1108A3C2006445DC /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		44C2A6DE1108A501006445DC /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		44C2A7D41108AD3C006445DC /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -2910,8 +2904,6 @@
 			children = (
 				44C0E7F013A110BA003D0465 /* PadRootVC.h */,
 				44C0E7EF13A110BA003D0465 /* PadRootVC.m */,
-				44C0E7F213A110BA003D0465 /* PadPopoverInNaviCon.h */,
-				44C0E7F113A110BA003D0465 /* PadPopoverInNaviCon.m */,
 			);
 			name = iPad;
 			sourceTree = "<group>";
@@ -4510,7 +4502,6 @@
 				44C0E5B313A0A2D1003D0465 /* GADBannerViewDelegate.h in Headers */,
 				44C0E5B413A0A2D1003D0465 /* GADBannerView.h in Headers */,
 				44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */,
-				44C0E7F913A110BA003D0465 /* PadPopoverInNaviCon.h in Headers */,
 				442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4895,7 +4886,6 @@
 				44C0E7CE13A0A475003D0465 /* GDataYouTubeStatistics.h in Headers */,
 				44C0E7CF13A0A475003D0465 /* UIDevice-Hardware.h in Headers */,
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
-				44C0E7FA13A110BA003D0465 /* PadPopoverInNaviCon.h in Headers */,
 				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5460,7 +5450,6 @@
 				44C0E42613A0A2D1003D0465 /* DDData.m in Sources */,
 				44C0E42713A0A2D1003D0465 /* UIDevice-Hardware.m in Sources */,
 				44C0E7F313A110BA003D0465 /* PadRootVC.m in Sources */,
-				44C0E7F713A110BA003D0465 /* PadPopoverInNaviCon.m in Sources */,
 				442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5516,7 +5505,6 @@
 				44C0E64A13A0A475003D0465 /* DDData.m in Sources */,
 				44C0E64B13A0A475003D0465 /* UIDevice-Hardware.m in Sources */,
 				44C0E7F413A110BA003D0465 /* PadRootVC.m in Sources */,
-				44C0E7F813A110BA003D0465 /* PadPopoverInNaviCon.m in Sources */,
 				442FF3A213B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

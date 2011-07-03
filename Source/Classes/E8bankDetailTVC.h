@@ -8,13 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-//@class E0root;
+#define E8DETAILVIEW_SIZE		CGSizeMake(400, 420)
 
 @interface E8bankDetailTVC : UITableViewController 
 {
 @private
 	//----------------------------------------------retain
 	E8bank		*Re8edit;
+#ifdef AzPAD
+	id									delegate;
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+#endif
 	//----------------------------------------------assign
 	NSInteger	PiAddRow;	// (-1)Edit
 	BOOL		PbSave;		//
@@ -23,6 +27,9 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
+#ifdef AzPAD
+	UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
+#endif
 	//----------------------------------------------assign - Entity fields
 	//----------------------------------------------assign
 	BOOL MbOptAntirotation;
@@ -30,7 +37,16 @@
 
 @property (nonatomic, retain) E8bank	*Re8edit;
 @property NSInteger						PiAddRow;
-@property BOOL							PbSave;
+@property BOOL								PbSave;
 @property (nonatomic, assign) E1card	*Pe1edit;
+#ifdef AzPAD
+@property (nonatomic, assign) id									delegate;
+@property (nonatomic, retain) UIPopoverController*	selfPopover;
+// delegate method
+- (void)closePopover;
+#endif
+
+// 公開メソッド
+- (void)cancelClose:(id)sender ;
 
 @end

@@ -14,10 +14,6 @@
 #import "E3recordTVC.h"
 #import "E3recordDetailTVC.h"
 
-#ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
-#endif
-
 #define ALERT_TAG_NoMore		109
 
 
@@ -33,7 +29,26 @@
 @synthesize Pe4shop;
 @synthesize Pe5category;
 @synthesize Pe8bank;
-//@synthesize MdateTarget;
+#ifdef AzPAD
+@synthesize delegate;
+@synthesize selfPopover;
+#endif
+
+
+#pragma mark - Delegate
+
+#ifdef AzPAD
+- (void)refreshTable:(BOOL)bSameDate
+{
+	if (bSameDate && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+		//[self performSelector:@selector(deselectRow:) withObject:MindexPathEdit afterDelay:0.3]; // 0.3s後に選択状態を解除する
+	} else {
+		[self viewWillAppear:YES];
+	}
+}
+#endif
 
 
 #pragma mark - Action
@@ -68,7 +83,6 @@
 {
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
-	e3detail.delegate = self;		// refresh callback
 
 	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
 	if (indexPath != nil && indexPath.section >= 1
@@ -108,20 +122,20 @@
 	}
 
 #ifdef  AzPAD
-	[Mpopover release], Mpopover = nil;
 	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-	[nc release];
-	Mpopover.popoverContentSize = CGSizeMake(360, 600);
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	[nc release];
 	MindexPathEdit = indexPath;
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.size.width /= 2;
 	rc.origin.y += 10;	rc.size.height -= 20;
+	Mpopover.popoverContentSize = E3DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-	e3detail.Rpopover = Mpopover;  //(retain)  内から閉じるときに必要になる
+	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
+	e3detail.delegate = self;		// refresh callback
 #else
 	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
@@ -371,16 +385,6 @@
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES]; // 選択状態を解除する
 }
 
-// E3recordDetailTVC から呼び出されるデリゲート・メソッド
-- (void)refreshE3record
-{	// 対象日付が中央になるように再描画する
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (RaE3list==nil || app.Me3dateUse) {
-		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
-		[self setMe3list:app.Me3dateUse];
-	}
-}
-
 
 #pragma mark - View lifecicle
 
@@ -533,8 +537,21 @@
 	[self.tableView reloadData];  // cellLable位置調整する
 
 #ifdef AzPAD
-	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 	if (Mpopover) {
+		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+		id nav = [Mpopover contentViewController];
+		//NSLog(@"nav=%@", nav);
+		if ([nav isMemberOfClass:[UINavigationController class]]) {
+			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
+				id vc = [nav visibleViewController];
+				//NSLog(@"vc=%@", vc);
+				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
+					[vc closePopover];
+				}
+			}
+		}
+
+		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
 			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
@@ -542,25 +559,17 @@
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 			rc.size.width /= 2;
 			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
-					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES];
-		} else {
+			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
+			CGSize currentSetSizeForPopover = E3DETAILVIEW_SIZE; // 最終的に設定したいサイズ
+			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
+		} 
+		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
 			[Mpopover dismissPopoverAnimated:YES];
 			[Mpopover release], Mpopover = nil;
-		}
-		
-		// E3detailTVC配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
-		PadNaviCon* nav = (PadNaviCon*)[Mpopover contentViewController];
-		NSLog(@"nav=%@", nav);
-		if ([nav isMemberOfClass:[PadNaviCon class]]) {
-			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
-				id vc = [nav visibleViewController];
-				NSLog(@"vc=%@", vc);
-				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
-					[vc closePopover];
-				}
-			}
 		}
 	}
 #endif
@@ -584,6 +593,10 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	delegate = nil;
+	[selfPopover release], selfPopover = nil;
+#endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	[Re0root release];
@@ -948,33 +961,6 @@
 		}
 	}
 	return YES; // 閉じることを許可
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じた後に通知
-	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
-	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
-		// [SAVE]ボタンが押された
-		// E3 再描画
-		if (MindexPathEdit) {
-			AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			if (RaE3list==nil || app.Me3dateUse) {
-				NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
-				[self setMe3list:app.Me3dateUse];
-			}
-			//NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
-			//[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:NO];
-		} else {
-			[self.tableView reloadData];
-		}
-		
-		// 未払い総額 再描画
-		
-		
-	}
-	// [Cancel][Save][枠外タッチ]何れでも閉じるときここを通るので解放する。さもなくば回転後に現れることになる
-	[Mpopover release], Mpopover = nil;
-	return;
 }
 #endif
 

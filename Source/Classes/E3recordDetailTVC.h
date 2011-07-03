@@ -8,28 +8,26 @@
 
 #import <UIKit/UIKit.h>
 
+#define E3DETAILVIEW_SIZE		CGSizeMake(360, 600)
+
 @class E0root;
 @class E3record;
 @class E3recordTVC;
 @class CalcView;
 
-@interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate
-#ifdef AzPAD
-	,UIPopoverControllerDelegate
-#endif
->
+@interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate>
 {
 @private
 	//--------------------------retain
 	E3record		*Re3edit;
 #ifdef AzPAD
-	UIPopoverController*	Rpopover;
+	id									delegate;
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
 	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する
 									//		     (1)New (2)Card固定 (3)Shop固定 (4)Category固定
 	NSInteger	PiFirstYearMMDD;	// 「この支払日になるように利用明細を追加」のとき、支払日が渡される
-	id					delegate;
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE6parts;
@@ -42,6 +40,7 @@
 	CalcView			*McalcView;
 #ifdef AzPAD
 	UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
+	NSInteger			MiSourceYearMMDD;	// 修正前の利用日、[Save]時に比較して同じならば修正行だけ再表示し、変化あれば全再表示する
 #endif
 	//----------------------------------------------assign
 	BOOL			MbE6dateChange;
@@ -63,18 +62,14 @@
 @property (nonatomic, retain) E3record		*Re3edit;
 @property NSInteger							PiAdd;
 @property NSInteger							PiFirstYearMMDD;	
-@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) UIPopoverController*	Rpopover;
+@property (nonatomic, assign) id									delegate;
+@property (nonatomic, retain) UIPopoverController*	selfPopover;
+// delegate method
+- (void)closePopover;
 #endif
 
 // 公開メソッド
 - (void)cancelClose:(id)sender ;
-
-// デリゲート・メソッド
-- (void)refreshE3detail;
-#ifdef AzPAD
-- (void)closePopover;
-#endif
 
 @end

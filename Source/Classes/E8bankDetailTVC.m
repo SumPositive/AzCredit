@@ -10,9 +10,9 @@
 #import "AppDelegate.h"
 #import "Entity.h"
 #import "MocFunctions.h"
+#import "E8bankTVC.h"
 #import "E8bankDetailTVC.h"
 #import "EditTextVC.h"
-//#import "E1editPayDayVC.h"
 
 
 #define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（10行）
@@ -26,10 +26,29 @@
 @synthesize PiAddRow;
 @synthesize PbSave;
 @synthesize Pe1edit;
+#ifdef AzPAD
+@synthesize delegate;
+@synthesize selfPopover;
+#endif
+
+
+#pragma mark - Delegate method
+
+
+#ifdef AzPAD
+- (void)closePopover	// 回転したとき表示中のPopoverがあれば矢印位置が不定になるので強制的に閉じる。親から呼び出される
+{
+	if (MpopoverView) {	//dismissPopoverCancel
+		[MpopoverView dismissPopoverAnimated:YES];
+	}
+}
+#endif
+
+
 
 #pragma mark - Action
 
-- (void)cancel:(id)sender 
+- (void)cancelClose:(id)sender
 {
 	if (PbSave) {
 		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
@@ -40,11 +59,15 @@
 		[MocFunctions deleteEntity:Re8edit];
 	}
 	
+#ifdef AzPAD
+	[selfPopover dismissPopoverAnimated:YES];
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 // 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
+- (void)saveClose:(id)sender 
 {
 	if (0 <= PiAddRow) { // Add
 		Re8edit.nRow = [NSNumber numberWithInteger:PiAddRow];
@@ -81,7 +104,7 @@
 	}
 	// OK トリム済み＆重複なし
 	
-	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
+	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsaveClose:により保存。
 		// SAVE
 		[MocFunctions commit];
 	}
@@ -97,7 +120,16 @@
 		}
 	}
 	
+#ifdef AzPAD
+	if (selfPopover) {
+		if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+			[delegate refreshTable];// 親の再描画を呼び出す
+		}
+		[selfPopover dismissPopoverAnimated:YES];
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 
@@ -126,20 +158,20 @@
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
+	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose: 処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											  target:self action:@selector(cancel:)] autorelease];
+											  target:self action:@selector(cancelClose:)] autorelease];
 	if (PbSave) {
 		// SAVEボタンを右側に追加する
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-												   target:self action:@selector(save:)] autorelease];
+												   target:self action:@selector(saveClose:)] autorelease];
 	} else {
 		// DONEボタンを右側に追加する　＜＜E1cardDetailTVCから呼び出されたとき＞＞
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-												   target:self action:@selector(save:)] autorelease];
+												   target:self action:@selector(saveClose:)] autorelease];
 	}
 }
 
@@ -173,6 +205,14 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
+#ifdef xxxxxxAzPAD
+	CGSize currentSetSizeForPopover = E8LISTVIEW_SIZE; // 最終的に設定したいサイズ
+	currentSetSizeForPopover.height = self.view.frame.size.height;
+	CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+	self.contentSizeForViewInPopover = fakeMomentarySize;			// 変動させるための偽サイズ
+	self.contentSizeForViewInPopover = currentSetSizeForPopover; // 目的とするサイズ復帰
+#endif	
+
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
@@ -266,14 +306,18 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 									   reuseIdentifier:zCellIndex] autorelease];
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
-
+#ifdef AzPAD
+		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.textLabel.font = [UIFont systemFontOfSize:14];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+#else
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
-		
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
 		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 		cell.detailTextLabel.textColor = [UIColor blackColor];
 	}
@@ -299,10 +343,12 @@
 						MlbNote.numberOfLines = 0;
 						MlbNote.lineBreakMode = UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
 						//MlbNote.textAlignment = UITextAlignmentLeft; // 左寄せ(Default)
+#ifdef AzPAD
+						MlbNote.font = [UIFont systemFontOfSize:20];
+#else
 						MlbNote.font = [UIFont systemFontOfSize:14];
-#ifdef AzDEBUG
-						//MlbNote.backgroundColor = [UIColor grayColor]; //範囲チェック用
 #endif
+						MlbNote.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbNote]; [MlbNote release];
 					}
 					if (Re8edit.zNote == nil) {
@@ -335,8 +381,22 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
+#ifdef AzPAD
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					//MpopoverView.delegate = self;  //閉じたとき再描画するため
+					[nc release];
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.x += 30;  rc.size.width = 50;
+					rc.origin.y += 10;  rc.size.height -= 20;
+					MpopoverView.popoverContentSize = CGSizeMake(400, 130);
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
+					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
+					evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
+#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
+#endif
 					[evc release];
 				}
 					break;
@@ -352,8 +412,22 @@
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;
+#ifdef AzPAD
+					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
+					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
+					//MpopoverView.delegate = self;  //閉じたとき再描画するため
+					[nc release];
+					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+					rc.origin.x += 30;  //rc.size.width = 100;
+					rc.origin.y += 10;  rc.size.height -= 20;
+					MpopoverView.popoverContentSize = CGSizeMake(400, 300);
+					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
+					evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
+#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
+#endif
 					[evc release];
 				}
 					break;

@@ -15,9 +15,6 @@
 #import "E2invoiceTVC.h"
 #import "SettingTVC.h"
 #import "WebSiteVC.h"
-#ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
-#endif
 
 #define ACTIONSEET_TAG_DELETE	199
 
@@ -28,10 +25,26 @@
 @implementation E8bankTVC
 @synthesize Re0root;
 @synthesize Pe1card;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
+
+#pragma mark - Delegate
+
+#ifdef AzPAD
+- (void)refreshTable
+{
+	if (MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+		//[self performSelector:@selector(deselectRow:) withObject:MindexPathEdit afterDelay:0.3]; // 0.3s後に選択状態を解除する
+	} else {
+		[self viewWillAppear:YES];
+	}
+}
+#endif
+
 
 #pragma mark - Action
 
@@ -76,7 +89,16 @@
 - (void)barButtonUntitled { // [未定]
 	// 未定(nil)にする
 	Pe1card.e8bank = nil; 
+#ifdef AzPAD
+	if (selfPopover) {
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];// 再描画
+		}
+		[selfPopover dismissPopoverAnimated:YES];
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 - (void)E8bankDatail:(NSIndexPath *)indexPath
@@ -91,6 +113,7 @@
 		e8detail.PiAddRow = [RaE8banks count]; // 追加モード
 		e8detail.Re8edit = e8obj;
 		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
+		indexPath = [NSIndexPath indexPathForRow:e8detail.PiAddRow inSection:0];
 	} 
 	else {
 		if ([RaE8banks count] <= indexPath.row) {
@@ -108,10 +131,26 @@
 		e8detail.PbSave = YES;	// マスタモード：
 	}
 	
+#ifdef  AzPAD
+	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e8detail];
+	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+	[nc release];
+	MindexPathEdit = indexPath;
+	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+	rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+	rc.origin.y += 10;	rc.size.height -= 20;
+	Mpopover.popoverContentSize = E8DETAILVIEW_SIZE;
+	[Mpopover presentPopoverFromRect:rc
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+	e8detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
+	e8detail.delegate = self;		// refresh callback
+#else
 	// 呼び出し側(親)にてツールバーを常に非表示にする
 	e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	
 	[self.navigationController pushViewController:e8detail animated:YES];
+#endif
 	[e8detail release]; // self.navigationControllerがOwnerになる
 }
 
@@ -158,7 +197,8 @@
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
 									   style:UIBarButtonItemStyleBordered
 									   target:self action:@selector(barButtonUntitled)];
-		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, MbuAdd, nil];
+		//NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, MbuAdd, nil];
+		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, nil];	//[1.0.2]Addなしにした。
 		[self setToolbarItems:buArray animated:YES];
 		[buUntitled release];
 	}
@@ -223,12 +263,14 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
-#ifdef xxxxxxxxAzPAD
-	//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
-	CGSize currentSetSizeForPopover = E1CardDetailView_SIZE; // 最終的に設定したいサイズ
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
+#ifdef AzPAD
+	if (selfPopover) {
+		//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
+		CGSize currentSetSizeForPopover = E8LISTVIEW_SIZE; // 最終的に設定したいサイズ
+		CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+		self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
+		self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
+	}
 #endif	
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
@@ -248,6 +290,48 @@
 {	// 回転禁止でも、正面は常に許可しておくこと。
 	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+#ifdef AzPAD
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	if (Mpopover) {
+		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+		id nav = [Mpopover contentViewController];
+		//NSLog(@"nav=%@", nav);
+		if ([nav isMemberOfClass:[UINavigationController class]]) {
+			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
+				id vc = [nav visibleViewController];
+				//NSLog(@"vc=%@", vc);
+				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
+					[vc closePopover];
+				}
+			}
+		}
+		
+		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+		if (MindexPathEdit) { 
+			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+			rc.origin.y += 10;	rc.size.height -= 20;
+			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
+			CGSize currentSetSizeForPopover = E8DETAILVIEW_SIZE; // 最終的に設定したいサイズ
+			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
+		} 
+		else {
+			// 回転後のアンカー位置が再現不可なので閉じる
+			[Mpopover dismissPopoverAnimated:YES];
+			//[Mpopover release], Mpopover = nil;
+		}
+	}
+}
+#endif
 
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -281,6 +365,10 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	delegate = nil;
+	[selfPopover release], selfPopover = nil;
+#endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	[Re0root release];
@@ -297,10 +385,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if (MbuAdd.enabled) {
-		return [RaE8banks count] + 1; // (+1)Add
+	if (Pe1card) {  // !=nil:選択モード
+		return [RaE8banks count];	
 	}
-	return [RaE8banks count]; 
+	return [RaE8banks count] + 1; // (+1)Add
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -407,11 +495,11 @@
 			// 選択モード
 			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (Rpopover) {
+			if (selfPopover) {
 				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 					[delegate viewWillAppear:YES];// 再描画
 				}
-				[Rpopover dismissPopoverAnimated:YES];
+				[selfPopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -570,6 +658,25 @@
 	}*/
 	[MocFunctions commit];
 }
+
+
+#ifdef AzPAD
+#pragma mark - <UIPopoverControllerDelegate>
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+		if ([nav.topViewController isMemberOfClass:[E8bankDetailTVC class]]) {
+			// Popover外側をタッチしたとき E8bankDetailTVC -　cancelClose を通っていないので、ここで通す。
+			E8bankDetailTVC* e8tvc = (E8bankDetailTVC *)nav.topViewController;
+			if ([e8tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+				[e8tvc cancelClose:nil];	// 新しいObject破棄
+			}
+		}
+	}
+	return YES; // 閉じることを許可
+}
+#endif
 
 @end
 

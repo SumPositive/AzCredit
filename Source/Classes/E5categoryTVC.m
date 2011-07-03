@@ -15,7 +15,7 @@
 #import "E3recordTVC.h"
 
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+//#import "PadPopoverInNaviCon.h"
 #endif
 
 #define ACTIONSEET_TAG_DELETE_SHOP	199
@@ -30,9 +30,9 @@
 @implementation E5categoryTVC
 @synthesize Re0root;
 @synthesize Pe3edit;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
 
@@ -109,7 +109,16 @@
 - (void)barButtonUntitled {
 	// 未定(nil)にする
 	Pe3edit.e5category = nil; 
+#ifdef AzPAD
+	if (selfPopover) {
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];// 再描画
+		}
+		[selfPopover dismissPopoverAnimated:YES];
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 - (void)barSegmentSort:(id)sender {
@@ -481,11 +490,11 @@
 			// 選択モード
 			Pe3edit.e5category = [RaE5categorys objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (Rpopover) {
+			if (selfPopover) {
 				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 					[delegate viewWillAppear:YES];// 再描画
 				}
-				[Rpopover dismissPopoverAnimated:YES];
+				[selfPopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

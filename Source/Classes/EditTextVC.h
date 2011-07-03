@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #ifdef AzPAD
-@class PadPopoverInNaviCon;
+//@class PadPopoverInNaviCon;
 #endif
 
 @interface EditTextVC : UIViewController <UITextViewDelegate>
@@ -19,12 +19,12 @@
 	id			Rentity;
 	NSString	*RzKey;			// @"zName"
 #ifdef AzPAD
-	UIPopoverController*	Rpopover;
+	id									delegate;
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
 	NSInteger	PiMaxLength;	// 最大文字数　==nil:無制限
 	NSInteger	PiSuffixLength; // 末尾の改行の数（UILabel複数行で上寄せするために入っている）
-	id					delegate;
 
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -37,9 +37,9 @@
 @property (nonatomic, retain) NSString		*RzKey;	
 @property NSInteger	PiMaxLength;
 @property NSInteger	PiSuffixLength;
-@property (nonatomic, assign) id					delegate;
 #ifdef AzPAD
-@property (nonatomic, retain) UIPopoverController*	Rpopover;
+@property (nonatomic, assign) id									delegate;
+@property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif
 
 @end

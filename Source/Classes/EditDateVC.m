@@ -32,9 +32,9 @@
 @synthesize RzKey;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
 
@@ -91,11 +91,11 @@
 	}
 	
 #ifdef AzPAD
-	if (Rpopover) {	
-		if ([delegate respondsToSelector:@selector(refreshE3detail)]) {	// メソッドの存在を確認する
-			[delegate refreshE3detail];// 再描画
+	if (selfPopover) {	
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];// 再描画
 		}
-		[Rpopover dismissPopoverAnimated:YES];
+		[selfPopover dismissPopoverAnimated:YES];
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -344,7 +344,7 @@
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
 #ifdef AzPAD
-	[Rpopover release], Rpopover = nil;
+	[selfPopover release], selfPopover = nil;
 #endif
 	[Re6edit release], Re6edit = nil;
 	// 生成とは逆順に解放するのが好ましい

@@ -14,7 +14,7 @@
 #import "E4shopDetailTVC.h"
 #import "E3recordTVC.h"
 #ifdef AzPAD
-#import "PadPopoverInNaviCon.h"
+//#import "PadPopoverInNaviCon.h"
 #endif
 
 #define ACTIONSEET_TAG_DELETE_SHOP	199
@@ -29,9 +29,9 @@
 @implementation E4shopTVC
 @synthesize Re0root;
 @synthesize Pe3edit;
-@synthesize delegate;
 #ifdef AzPAD
-@synthesize Rpopover;
+@synthesize delegate;
+@synthesize selfPopover;
 #endif
 
 
@@ -74,11 +74,11 @@
 	// 未定(nil)にする
 	Pe3edit.e4shop = nil; 
 #ifdef AzPAD
-	if (Rpopover) {
+	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
 		}
-		[Rpopover dismissPopoverAnimated:YES];
+		[selfPopover dismissPopoverAnimated:YES];
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -176,11 +176,8 @@
 					   NSLocalizedString(@"Sort Amount",nil),
 					   NSLocalizedString(@"Sort Index",nil), nil];
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
-#ifdef AzPAD
-	segment.frame = CGRectMake(0,0, 300,30);
-#else
+
 	segment.frame = CGRectMake(0,0, 210,30);
-#endif
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE4SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE4SortMode];
 	segment.selectedSegmentIndex = MiOptE4SortMode;
@@ -513,11 +510,11 @@
 			// 選択モード
 			Pe3edit.e4shop = [RaE4shops objectAtIndex:indexPath.row]; 
 #ifdef AzPAD
-			if (Rpopover) {
+			if (selfPopover) {
 				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 					[delegate viewWillAppear:YES];// 再描画
 				}
-				[Rpopover dismissPopoverAnimated:YES];
+				[selfPopover dismissPopoverAnimated:YES];
 			}
 #else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
