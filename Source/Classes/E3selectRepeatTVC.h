@@ -8,16 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#ifdef AzPAD
-//@class PadPopoverInNaviCon;
-#endif
 
 @interface E3selectRepeatTVC : UITableViewController 
 {
 @private
 	//--------------------------retain
 	E3record		*Re3edit;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	id									delegate;
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
@@ -30,7 +27,7 @@
 }
 
 @property (nonatomic, retain) E3record		*Re3edit;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif

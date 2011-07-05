@@ -10,9 +10,6 @@
 #import "Entity.h"
 #import "EditTextVC.h"
 
-#ifdef AzPAD
-//#import "PadPopoverInNaviCon.h"
-#endif
 
 @interface EditTextVC (PrivateMethods)
 - (void)viewDesign;
@@ -24,7 +21,7 @@
 @synthesize RzKey;
 @synthesize PiMaxLength;
 @synthesize PiSuffixLength;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @synthesize delegate;
 @synthesize selfPopover;
 #endif
@@ -52,7 +49,7 @@
 		[Rentity setValue:MtextView.text forKey:RzKey];
 	}
 	
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
@@ -66,6 +63,18 @@
 
 
 #pragma mark - View lifecicle
+
+- (id)init
+{
+	self = [super init];
+	if (self) {
+		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
+	}
+	return self;
+}
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -105,7 +114,7 @@
 
 - (void)viewDesign
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	MtextView.frame = CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-10);	
 #else
 	CGRect rect;
@@ -152,13 +161,6 @@
 // 画面表示された直後に呼び出される
 - (void)viewDidAppear:(BOOL)animated 
 {
-#ifdef xxxxxAzPAD
-	//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
-	CGSize currentSetSizeForPopover = E1CardDetailView_SIZE; // 最終的に設定したいサイズ
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
-#endif	
 	[super viewDidAppear:animated];
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 	[MtextView becomeFirstResponder];  // キーボード表示
@@ -190,7 +192,7 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	[selfPopover release], selfPopover = nil;
 #endif
 	[RzKey release];

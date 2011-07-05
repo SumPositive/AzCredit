@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define E8DETAILVIEW_SIZE		CGSizeMake(400, 420)
 
 @interface E8bankDetailTVC : UITableViewController 
 {
@@ -42,8 +41,6 @@
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
-// delegate method
-- (void)closePopover;
 #endif
 
 // 公開メソッド

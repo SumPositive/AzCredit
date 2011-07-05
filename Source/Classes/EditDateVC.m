@@ -11,7 +11,7 @@
 #import "MocFunctions.h"
 #import "EditDateVC.h"
 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 #import "E3editTextVC.h"
 #import "E3recordDetailTVC.h"
 #endif
@@ -30,10 +30,10 @@
 @implementation EditDateVC
 @synthesize Rentity;
 @synthesize RzKey;
+@synthesize delegate;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
-#ifdef AzPAD
-@synthesize delegate;
+#ifdef xxxAzPAD
 @synthesize selfPopover;
 #endif
 
@@ -90,7 +90,7 @@
 		[Rentity setValue:MdatePicker.date forKey:RzKey];
 	}
 	
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {	
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
@@ -119,6 +119,9 @@
 		// 初期化成功
 		PiE6row = (-1);  //E6dateモードでないことを示す
 		Re6edit = nil;
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
 	}
 	return self;
 }
@@ -130,6 +133,9 @@
 		// 初期化成功
 		PiE6row = iRow;
 		Re6edit = nil;
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
 	}
 	return self;
 }
@@ -343,7 +349,7 @@
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	[selfPopover release], selfPopover = nil;
 #endif
 	[Re6edit release], Re6edit = nil;

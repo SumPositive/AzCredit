@@ -20,7 +20,7 @@
 #define ACTIONSEET_TAG_DELETE_SHOP	199
 
 @interface E4shopTVC (PrivateMethods)
-- (void)e4shopDatail:(NSInteger)iE4index;
+- (void)e4shopDatail:(NSIndexPath *)indexPath;
 - (void)barButtonAdd;
 - (void)requeryMe4shops:(NSString *)zSearch;
 - (void)viewDesign;
@@ -32,6 +32,22 @@
 #ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
+#endif
+
+
+#pragma mark - Delegate
+
+#ifdef AzPAD
+- (void)refreshTable
+{
+	if (MindexPathEdit && MindexPathEdit.row < [RaE4shops count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+	} else {
+		// Add または行位置不明のとき
+		[self viewWillAppear:YES];
+	}
+}
 #endif
 
 
@@ -67,13 +83,13 @@
 
 - (void)barButtonAdd {
 	// Add Shop
-	[self e4shopDatail:(-1)]; // :(-1)Add mode
+	[self e4shopDatail:nil]; //Add mode
 }
 
 - (void)barButtonUntitled {
 	// 未定(nil)にする
 	Pe3edit.e4shop = nil; 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
@@ -93,26 +109,26 @@
 	[self requeryMe4shops:nil];
 }
 
-- (void)e4shopDatail:(NSInteger)iE4index
+- (void)e4shopDatail:(NSIndexPath *)indexPath	//(NSInteger)iE4index
 {
 	E4shopDetailTVC *e4detail = [[E4shopDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	
-	if (iE4index < 0) {
-		// Add
+	if (indexPath == nil) {	// Add
 		e4detail.title = NSLocalizedString(@"Add Shop",nil);
 		// ContextにE4ノードを追加する　E4edit内でCANCELならば DELETE している
 		e4detail.Re4edit = [NSEntityDescription insertNewObjectForEntityForName:@"E4shop"
 														 inManagedObjectContext:Re0root.managedObjectContext];
 		e4detail.PbAdd = YES;
 		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
+		indexPath = [NSIndexPath indexPathForRow:[RaE4shops count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
 	}
-	else if ([RaE4shops count] <= iE4index) {
+	else if ([RaE4shops count] <= indexPath.row) {
 		[e4detail release];
 		return; // Add行以降、パスする
 	}
 	else {
 		e4detail.title = NSLocalizedString(@"Edit Shop",nil);
-		e4detail.Re4edit = [RaE4shops objectAtIndex:iE4index]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e4detail.Re4edit = [RaE4shops objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 		e4detail.PbAdd = NO;
 		//e4detail.Pe3edit = nil;
 	}
@@ -123,15 +139,35 @@
 		e4detail.PbSave = YES;	// マスタモード：右上ボタン「保存」
 	}
 	
+#ifdef  AzPAD
+	if (Pe3edit) { // 選択モード
+		e4detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+		[self.navigationController pushViewController:e4detail animated:YES];
+	} else {
+		MindexPathEdit = indexPath;
+		UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e4detail];
+		Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+		Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+		[nc release];
+		CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+		rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+		rc.origin.y += 10;	rc.size.height -= 20;
+		[Mpopover presentPopoverFromRect:rc
+								  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+		e4detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
+		e4detail.delegate = self;		// refreshTable callback
+	}
+#else
 	// 呼び出し側(親)にてツールバーを常に非表示にする
 	e4detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	
 	[self.navigationController pushViewController:e4detail animated:YES];
+#endif
 	[e4detail release]; // self.navigationControllerがOwnerになる
 }
 
 
 #pragma mark - View lifecicle
+
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (id)initWithStyle:(UITableViewStyle)style 
@@ -139,9 +175,13 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
 	}
 	return self;
 }
+
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -265,20 +305,6 @@
 	[self.tableView.tableHeaderView sizeToFit];
 }
 
-// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-	
-	if (Pe3edit == nil) {
-		// Comback (-1)にして未選択状態にする
-		//		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// (0)TopMenu >> (1)This clear
-		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-	}
-}
-
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
@@ -301,6 +327,20 @@
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
+}
+
+// ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	if (Pe3edit == nil) {
+		// Comback (-1)にして未選択状態にする
+		//		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		// (0)TopMenu >> (1)This clear
+		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
 
@@ -331,6 +371,28 @@
 {
 	[self viewDesign];
 }
+
+#ifdef AzPAD
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	if ([Mpopover isPopoverVisible]) {
+		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+		if (MindexPathEdit) { 
+			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+			rc.origin.y += 10;	rc.size.height -= 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+		} 
+		else {
+			// 回転後のアンカー位置が再現不可なので閉じる
+			[Mpopover dismissPopoverAnimated:YES];
+		}
+	}
+}
+#endif
 
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -506,10 +568,9 @@
 
 	// 末尾([Me4shops count])はAdd行
 	if (indexPath.row < [RaE4shops count]) {
-		if (Pe3edit) {
-			// 選択モード
+		if (Pe3edit) { // 選択モード
 			Pe3edit.e4shop = [RaE4shops objectAtIndex:indexPath.row]; 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 			if (selfPopover) {
 				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 					[delegate viewWillAppear:YES];// 再描画
@@ -521,7 +582,7 @@
 #endif
 		}
 		else if (self.editing) {
-			[self e4shopDatail:indexPath.row];
+			[self e4shopDatail:indexPath];
 		} else {
 /*			// Comback-L1 E4shop 記録
 			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -548,13 +609,13 @@
 	}
 	else {
 		// Add Plan
-		[self e4shopDatail:(-1)]; // :(-1)Add mode
+		[self e4shopDatail:nil]; //Add mode
 	}
 }
 
 // ディスクロージャボタンが押されたときの処理
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[self e4shopDatail:indexPath.row];
+	[self e4shopDatail:indexPath];
 }
 
 #pragma mark  TableView - Editting
@@ -652,6 +713,30 @@
 	[MocFunctions commit];
 }
 */
+
+
+#ifdef AzPAD
+#pragma mark - <UIPopoverControllerDelegate>
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{	// Popoverの外部をタップして閉じる前に通知
+	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+/*
+	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E4shopDetailTVC class]]) 
+		{	// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
+			E4shopDetailTVC* tvc = (E4shopDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+			if ([tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+				[tvc cancelClose:nil];	// 新しいObject破棄
+			}
+		}
+	}
+	return YES; // 閉じることを許可
+*/
+}
+#endif
+
 
 @end
 

@@ -10,9 +10,6 @@
 #import "Entity.h"
 #import "E3selectRepeatTVC.h"
 
-#ifdef AzPAD
-#import "E3recordDetailTVC.h"
-#endif
 
 @interface E3selectRepeatTVC (PrivateMethods)
 //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -23,7 +20,7 @@
 
 @implementation E3selectRepeatTVC
 @synthesize Re3edit;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @synthesize delegate;
 @synthesize selfPopover;
 #endif
@@ -37,6 +34,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
 		// OK
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
     }
     return self;
 }
@@ -95,7 +95,8 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
+	delegate = nil;
 	[selfPopover release], selfPopover = nil;
 #endif
 	[Re3edit release];
@@ -188,7 +189,7 @@
 		default: Re3edit.nRepeat = [NSNumber numberWithInteger: 0]; break;
 	}
 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画

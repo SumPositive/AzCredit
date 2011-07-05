@@ -10,10 +10,6 @@
 #import "Entity.h"
 #import "E3selectPayTypeTVC.h"
 
-#ifdef AzPAD
-#import "E3recordDetailTVC.h"
-#endif
-
 @interface E3selectPayTypeTVC (PrivateMethods)
 //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 //----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -22,7 +18,7 @@
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @synthesize delegate;
 @synthesize selfPopover;
 #endif
@@ -35,6 +31,9 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
 		// OK
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
     }
     return self;
 }
@@ -93,7 +92,8 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
+	delegate = nil;
 	[selfPopover release], selfPopover = nil;
 #endif
 	[Re3edit release];
@@ -199,7 +199,7 @@
 			break;
 	}
 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	//if (RpopNaviCon) {
 	//	[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
 	//}

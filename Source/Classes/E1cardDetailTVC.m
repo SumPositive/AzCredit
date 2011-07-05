@@ -45,9 +45,11 @@
 	}
 	
 #ifdef AzPAD
-	//Padでは、親側の popoverControllerShouldDismissPopover にて処理
-	//[(PadNaviCon*)self.navigationController dismissPopoverCancel];  // PadNaviCon拡張メソッド
-	[selfPopover dismissPopoverAnimated:YES];
+	if (selfPopover) {
+		[selfPopover dismissPopoverAnimated:YES];
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 #endif
@@ -76,7 +78,7 @@
 #endif
 }
 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 - (void)closePopover
 {
 	if (MpopoverView) {	//dismissPopoverCancel
@@ -95,6 +97,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
 	if (self) {
 		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
   	}
 	return self;
 }
@@ -115,7 +120,7 @@
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
+	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 											  target:self action:@selector(cancelClose:)] autorelease];
@@ -184,7 +189,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 #ifdef AzPAD
-	delegate = nil;
+	//delegate = nil;
 	[selfPopover release], selfPopover = nil;
 #endif
 	[Re1edit release];
@@ -250,7 +255,7 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 									   reuseIdentifier:zCellIndex] autorelease];
-#ifdef AzPAD
+#ifdef xxxxAzPAD
 		cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
 #else
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -414,7 +419,7 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef AzPAD
+#ifdef xxxxAzPAD
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
 					//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -438,7 +443,7 @@
 					E1editPayDayVC *evc = [[E1editPayDayVC alloc] init];
 					evc.title = NSLocalizedString(@"PayDay", nil);
 					evc.Re1edit = Re1edit;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
 					//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -476,7 +481,7 @@
 					tvc.title = NSLocalizedString(@"Bank choice",nil);
 					tvc.Re0root = [MocFunctions e0root];
 					tvc.Pe1card = Re1edit;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 					//UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
 					//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -506,7 +511,7 @@
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
 					//MpopoverView.delegate = self;  //閉じたとき再描画するため

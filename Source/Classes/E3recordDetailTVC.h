@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define E3DETAILVIEW_SIZE		CGSizeMake(360, 600)
-
 @class E0root;
 @class E3record;
 @class E3recordTVC;
@@ -66,7 +64,7 @@
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
 // delegate method
-- (void)closePopover;
+//- (void)closePopover;
 #endif
 
 // 公開メソッド

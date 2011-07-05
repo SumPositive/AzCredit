@@ -122,7 +122,6 @@
 	}
 
 #ifdef  AzPAD
-	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -131,7 +130,6 @@
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.size.width /= 2;
 	rc.origin.y += 10;	rc.size.height -= 20;
-	Mpopover.popoverContentSize = E3DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
@@ -537,8 +535,8 @@
 	[self.tableView reloadData];  // cellLable位置調整する
 
 #ifdef AzPAD
-	if (Mpopover) {
-		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+	if ([Mpopover isPopoverVisible]) {
+	/*	// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
 		id nav = [Mpopover contentViewController];
 		//NSLog(@"nav=%@", nav);
 		if ([nav isMemberOfClass:[UINavigationController class]]) {
@@ -549,7 +547,7 @@
 					[vc closePopover];
 				}
 			}
-		}
+		}*/
 
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
@@ -559,17 +557,17 @@
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 			rc.size.width /= 2;
 			rc.origin.y += 10;	rc.size.height -= 20;
-			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+	/*		//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
 			CGSize currentSetSizeForPopover = E3DETAILVIEW_SIZE; // 最終的に設定したいサイズ
 			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
 			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
 			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
+			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰 */
 		} 
 		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
 			[Mpopover dismissPopoverAnimated:YES];
-			[Mpopover release], Mpopover = nil;
 		}
 	}
 #endif
@@ -945,22 +943,21 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
+	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+/*
 	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-	// つまり、これが呼び出されたときは、常に CANCEL　である。
 	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
 		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
-		if ([nav.topViewController isMemberOfClass:[E3recordDetailTVC class]]) {
-			// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
-			// PadPopoverInNaviCon を使っているから
-			E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
+		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
+		{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が TopMenuTVC.m にもある＞＞＞
+			E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
 			if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
 				[e3tvc cancelClose:nil];	// 新しいObject破棄
 			}
 		}
 	}
 	return YES; // 閉じることを許可
+ */
 }
 #endif
 

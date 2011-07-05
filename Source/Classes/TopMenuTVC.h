@@ -32,11 +32,12 @@
 	//----------------------------------------------assign
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	InformationView		*MinformationView;
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
 	NSIndexPath*				MindexPathEdit;
+#else
+	InformationView		*MinformationView;
 #endif
 #ifdef FREE_AD
 	ADBannerView		*MbannerView;

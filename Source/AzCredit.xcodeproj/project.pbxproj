@@ -157,7 +157,6 @@
 		44B011B4133EF773005AD0EA /* AzCredit.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */; };
 		44B011B5133EF773005AD0EA /* AzCredit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */; };
 		44B011B6133EF773005AD0EA /* E3recordDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7168F1123F309005423CB /* E3recordDetailTVC.m */; };
-		44B011B7133EF773005AD0EA /* EditAmountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D716B01124356E005423CB /* EditAmountVC.m */; };
 		44B011B8133EF773005AD0EA /* E1cardDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7179E11244E52005423CB /* E1cardDetailTVC.m */; };
 		44B011B9133EF773005AD0EA /* EditTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B85E8D1125B5A900383A34 /* EditTextVC.m */; };
 		44B011BA133EF773005AD0EA /* E1editPayDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B605F51126FADD00E82C54 /* E1editPayDayVC.m */; };
@@ -208,7 +207,6 @@
 		44B011F5133EF773005AD0EA /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44B011F6133EF773005AD0EA /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
 		44B011F7133EF773005AD0EA /* E3recordDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7168E1123F309005423CB /* E3recordDetailTVC.h */; };
-		44B011F8133EF773005AD0EA /* EditAmountVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D716AF1124356E005423CB /* EditAmountVC.h */; };
 		44B011F9133EF773005AD0EA /* E1cardDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7179D11244E51005423CB /* E1cardDetailTVC.h */; };
 		44B011FA133EF773005AD0EA /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
 		44B011FB133EF773005AD0EA /* E1editPayDayVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B605F41126FADD00E82C54 /* E1editPayDayVC.h */; };
@@ -733,7 +731,6 @@
 		44C0E40213A0A2D1003D0465 /* AzCredit.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */; };
 		44C0E40313A0A2D1003D0465 /* AzCredit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */; };
 		44C0E40413A0A2D1003D0465 /* E3recordDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7168F1123F309005423CB /* E3recordDetailTVC.m */; };
-		44C0E40513A0A2D1003D0465 /* EditAmountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D716B01124356E005423CB /* EditAmountVC.m */; };
 		44C0E40613A0A2D1003D0465 /* E1cardDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7179E11244E52005423CB /* E1cardDetailTVC.m */; };
 		44C0E40713A0A2D1003D0465 /* EditTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B85E8D1125B5A900383A34 /* EditTextVC.m */; };
 		44C0E40813A0A2D1003D0465 /* E1editPayDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B605F51126FADD00E82C54 /* E1editPayDayVC.m */; };
@@ -788,7 +785,6 @@
 		44C0E43B13A0A2D1003D0465 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44C0E43C13A0A2D1003D0465 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
 		44C0E43D13A0A2D1003D0465 /* E3recordDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7168E1123F309005423CB /* E3recordDetailTVC.h */; };
-		44C0E43E13A0A2D1003D0465 /* EditAmountVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D716AF1124356E005423CB /* EditAmountVC.h */; };
 		44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7179D11244E51005423CB /* E1cardDetailTVC.h */; };
 		44C0E44013A0A2D1003D0465 /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
 		44C0E44113A0A2D1003D0465 /* E1editPayDayVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B605F41126FADD00E82C54 /* E1editPayDayVC.h */; };
@@ -1239,7 +1235,6 @@
 		44C0E62613A0A475003D0465 /* AzCredit.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */; };
 		44C0E62713A0A475003D0465 /* AzCredit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */; };
 		44C0E62813A0A475003D0465 /* E3recordDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7168F1123F309005423CB /* E3recordDetailTVC.m */; };
-		44C0E62913A0A475003D0465 /* EditAmountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D716B01124356E005423CB /* EditAmountVC.m */; };
 		44C0E62A13A0A475003D0465 /* E1cardDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7179E11244E52005423CB /* E1cardDetailTVC.m */; };
 		44C0E62B13A0A475003D0465 /* EditTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B85E8D1125B5A900383A34 /* EditTextVC.m */; };
 		44C0E62C13A0A475003D0465 /* E1editPayDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B605F51126FADD00E82C54 /* E1editPayDayVC.m */; };
@@ -1291,7 +1286,6 @@
 		44C0E65C13A0A475003D0465 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44C0E65D13A0A475003D0465 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
 		44C0E65E13A0A475003D0465 /* E3recordDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7168E1123F309005423CB /* E3recordDetailTVC.h */; };
-		44C0E65F13A0A475003D0465 /* EditAmountVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D716AF1124356E005423CB /* EditAmountVC.h */; };
 		44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7179D11244E51005423CB /* E1cardDetailTVC.h */; };
 		44C0E66113A0A475003D0465 /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
 		44C0E66213A0A475003D0465 /* E1editPayDayVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B605F41126FADD00E82C54 /* E1editPayDayVC.h */; };
@@ -1679,8 +1673,6 @@
 		44D374651361DDF200F36E36 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374641361DDF200F36E36 /* SystemConfiguration.framework */; };
 		44D716901123F309005423CB /* E3recordDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7168E1123F309005423CB /* E3recordDetailTVC.h */; };
 		44D716911123F309005423CB /* E3recordDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7168F1123F309005423CB /* E3recordDetailTVC.m */; };
-		44D716B11124356E005423CB /* EditAmountVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D716AF1124356E005423CB /* EditAmountVC.h */; };
-		44D716B21124356E005423CB /* EditAmountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D716B01124356E005423CB /* EditAmountVC.m */; };
 		44D7179F11244E52005423CB /* E1cardDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7179D11244E51005423CB /* E1cardDetailTVC.h */; };
 		44D717A011244E52005423CB /* E1cardDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7179E11244E52005423CB /* E1cardDetailTVC.m */; };
 		44D7351611279ACB00997A37 /* E2invoiceTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7351411279ACB00997A37 /* E2invoiceTVC.h */; };
@@ -2218,8 +2210,6 @@
 		44D374641361DDF200F36E36 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		44D7168E1123F309005423CB /* E3recordDetailTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E3recordDetailTVC.h; sourceTree = "<group>"; };
 		44D7168F1123F309005423CB /* E3recordDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E3recordDetailTVC.m; sourceTree = "<group>"; };
-		44D716AF1124356E005423CB /* EditAmountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditAmountVC.h; sourceTree = "<group>"; };
-		44D716B01124356E005423CB /* EditAmountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditAmountVC.m; sourceTree = "<group>"; };
 		44D7179D11244E51005423CB /* E1cardDetailTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1cardDetailTVC.h; sourceTree = "<group>"; };
 		44D7179E11244E52005423CB /* E1cardDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E1cardDetailTVC.m; sourceTree = "<group>"; };
 		44D7351411279ACB00997A37 /* E2invoiceTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E2invoiceTVC.h; sourceTree = "<group>"; };
@@ -2856,8 +2846,6 @@
 				44A68B6411685121004A89ED /* CalcView.m */,
 				440AC51411299DBE00B89317 /* EditDateVC.h */,
 				440AC51511299DBE00B89317 /* EditDateVC.m */,
-				44D716AF1124356E005423CB /* EditAmountVC.h */,
-				44D716B01124356E005423CB /* EditAmountVC.m */,
 				44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */,
 				44AD35D7113EB7A900E40BD0 /* E3selectPayTypeTVC.m */,
 				44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */,
@@ -3356,7 +3344,6 @@
 				44B332D11123B6AA007D3A15 /* TopMenuTVC.h in Headers */,
 				44B332D41123B756007D3A15 /* E1cardTVC.h in Headers */,
 				44D716901123F309005423CB /* E3recordDetailTVC.h in Headers */,
-				44D716B11124356E005423CB /* EditAmountVC.h in Headers */,
 				44D7179F11244E52005423CB /* E1cardDetailTVC.h in Headers */,
 				44B85E8E1125B5A900383A34 /* EditTextVC.h in Headers */,
 				44B605F61126FADD00E82C54 /* E1editPayDayVC.h in Headers */,
@@ -3744,7 +3731,6 @@
 				44B011F5133EF773005AD0EA /* TopMenuTVC.h in Headers */,
 				44B011F6133EF773005AD0EA /* E1cardTVC.h in Headers */,
 				44B011F7133EF773005AD0EA /* E3recordDetailTVC.h in Headers */,
-				44B011F8133EF773005AD0EA /* EditAmountVC.h in Headers */,
 				44B011F9133EF773005AD0EA /* E1cardDetailTVC.h in Headers */,
 				44B011FA133EF773005AD0EA /* EditTextVC.h in Headers */,
 				44B011FB133EF773005AD0EA /* E1editPayDayVC.h in Headers */,
@@ -4126,7 +4112,6 @@
 				44C0E43B13A0A2D1003D0465 /* TopMenuTVC.h in Headers */,
 				44C0E43C13A0A2D1003D0465 /* E1cardTVC.h in Headers */,
 				44C0E43D13A0A2D1003D0465 /* E3recordDetailTVC.h in Headers */,
-				44C0E43E13A0A2D1003D0465 /* EditAmountVC.h in Headers */,
 				44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E44013A0A2D1003D0465 /* EditTextVC.h in Headers */,
 				44C0E44113A0A2D1003D0465 /* E1editPayDayVC.h in Headers */,
@@ -4516,7 +4501,6 @@
 				44C0E65C13A0A475003D0465 /* TopMenuTVC.h in Headers */,
 				44C0E65D13A0A475003D0465 /* E1cardTVC.h in Headers */,
 				44C0E65E13A0A475003D0465 /* E3recordDetailTVC.h in Headers */,
-				44C0E65F13A0A475003D0465 /* EditAmountVC.h in Headers */,
 				44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E66113A0A475003D0465 /* EditTextVC.h in Headers */,
 				44C0E66213A0A475003D0465 /* E1editPayDayVC.h in Headers */,
@@ -5307,7 +5291,6 @@
 				44B3337A1123E97A007D3A15 /* AzCredit.xcmappingmodel in Sources */,
 				44B333A11123EE2F007D3A15 /* AzCredit.xcdatamodeld in Sources */,
 				44D716911123F309005423CB /* E3recordDetailTVC.m in Sources */,
-				44D716B21124356E005423CB /* EditAmountVC.m in Sources */,
 				44D717A011244E52005423CB /* E1cardDetailTVC.m in Sources */,
 				44B85E8F1125B5A900383A34 /* EditTextVC.m in Sources */,
 				44B605F71126FADD00E82C54 /* E1editPayDayVC.m in Sources */,
@@ -5361,7 +5344,6 @@
 				44B011B4133EF773005AD0EA /* AzCredit.xcmappingmodel in Sources */,
 				44B011B5133EF773005AD0EA /* AzCredit.xcdatamodeld in Sources */,
 				44B011B6133EF773005AD0EA /* E3recordDetailTVC.m in Sources */,
-				44B011B7133EF773005AD0EA /* EditAmountVC.m in Sources */,
 				44B011B8133EF773005AD0EA /* E1cardDetailTVC.m in Sources */,
 				44B011B9133EF773005AD0EA /* EditTextVC.m in Sources */,
 				44B011BA133EF773005AD0EA /* E1editPayDayVC.m in Sources */,
@@ -5414,7 +5396,6 @@
 				44C0E40213A0A2D1003D0465 /* AzCredit.xcmappingmodel in Sources */,
 				44C0E40313A0A2D1003D0465 /* AzCredit.xcdatamodeld in Sources */,
 				44C0E40413A0A2D1003D0465 /* E3recordDetailTVC.m in Sources */,
-				44C0E40513A0A2D1003D0465 /* EditAmountVC.m in Sources */,
 				44C0E40613A0A2D1003D0465 /* E1cardDetailTVC.m in Sources */,
 				44C0E40713A0A2D1003D0465 /* EditTextVC.m in Sources */,
 				44C0E40813A0A2D1003D0465 /* E1editPayDayVC.m in Sources */,
@@ -5469,7 +5450,6 @@
 				44C0E62613A0A475003D0465 /* AzCredit.xcmappingmodel in Sources */,
 				44C0E62713A0A475003D0465 /* AzCredit.xcdatamodeld in Sources */,
 				44C0E62813A0A475003D0465 /* E3recordDetailTVC.m in Sources */,
-				44C0E62913A0A475003D0465 /* EditAmountVC.m in Sources */,
 				44C0E62A13A0A475003D0465 /* E1cardDetailTVC.m in Sources */,
 				44C0E62B13A0A475003D0465 /* EditTextVC.m in Sources */,
 				44C0E62C13A0A475003D0465 /* E1editPayDayVC.m in Sources */,

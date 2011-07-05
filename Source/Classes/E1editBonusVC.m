@@ -36,6 +36,18 @@
 
 #pragma mark - UIViewController
 
+- (id)init
+{
+	self = [super init];
+	if (self) {
+		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
+	}
+	return self;
+}
+
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
 {

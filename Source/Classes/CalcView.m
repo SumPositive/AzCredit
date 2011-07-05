@@ -46,9 +46,9 @@
 @synthesize Rentity;
 @synthesize RzKey;
 @synthesize PoParentTableView;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 #endif
 
 
@@ -193,7 +193,7 @@
 		} else { // デフォルト丸め処理
 			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
 		}
-#ifdef AzPAD
+#ifdef xxxAzPAD
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
 		}
@@ -228,7 +228,7 @@
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
 	// アニメ終了位置
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {
 		[selfPopover dismissPopoverAnimated:YES];
 	}
@@ -267,7 +267,7 @@
 		[self.PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
 	}
 	
-#ifdef AzPAD
+#ifdef xxxAzPAD
 #else
 	// アニメ準備
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -540,16 +540,11 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 #pragma mark - View lifecicle
 
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-	//self.userInteractionEnabled = YES; //タッチの可否  どこでもDone
-}
-
 - (id)initWithFrame:(CGRect)rect
 {
 	NSLog(@"CalcView: rect=(%f,%f)-(%f,%f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 	
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	// UIViewController
 	self = [super init];
 	if (self==nil) return self;
@@ -560,7 +555,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	// アニメションの開始位置
 	//rect.origin.y = 20.0f - rect.size.height;
 	MrectInit = rect;		// 表示位置を記録　showにて復元に使う
-	rect.origin.y += 500;	//rect.size.height; // 最初、下部に隠れている状態
+	rect.origin.y += 600;	//rect.size.height; // 最初、下部に隠れている状態
 
 	if (!(self = [super initWithFrame:rect])) return self;
 
@@ -587,7 +582,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	[MtextField addTarget:self	// UITextFieldDelegate に、 変更「後」イベント textFieldDidChange を追加する
 				   action:@selector(textFieldDidChange:) // 変更「後」に呼び出される
 		 forControlEvents:UIControlEventEditingChanged];
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	[self.view addSubview:MtextField]; 
 #else
 	[self addSubview:MtextField];
@@ -595,7 +590,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	[MtextField release];
 	
 	//------------------------------------------
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	// MscrollView なし
 #else
 	MscrollView = [[UIScrollView alloc] init];
@@ -680,7 +675,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			[bu setBackgroundImage:[UIImage imageNamed:@"Icon-DrumPush.png"] forState:UIControlStateHighlighted];
 			[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchUpInside];
 			[maBu addObject:bu];
-#ifdef AzPAD
+#ifdef xxxAzPAD
 			[self.view addSubview:bu];
 #else
 			[MscrollView addSubview:bu]; //[bu release]; autoreleaseされるため
@@ -692,7 +687,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	RaKeyButtons = [[NSArray alloc] initWithArray:maBu];
 	[maBu release];
 	
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	[self viewDesign:self.view.bounds]; // コントロール配置
 #else
 	[self viewDesign:self.bounds]; // コントロール配置
@@ -732,6 +727,11 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
     return self;
 }
 
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
+	//self.userInteractionEnabled = YES; //タッチの可否  どこでもDone
+}
+
 - (void)viewDesign:(CGRect)rect 
 {
 	AzLOG(@"viewDesign:rect (x,y)=(%f,%f) (w,h)=(%f,%f)", rect.origin.x,rect.origin.y, rect.size.width,rect.size.height);
@@ -745,11 +745,15 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	float fH;
 	
 #ifdef AzPAD
-	fy = 10;
-	MtextField.frame = CGRectMake(5,fy,  rect.size.width-10,30);	// 1行
+	fy = 100;
+	MtextField.frame = CGRectMake(5,fy, rect.size.width-10,30);	// 1行
 	fy += MtextField.frame.size.height;
-	fW = (rect.size.width - fxGap) / 6 - fxGap; //Pad//6列まで全部表示
+	MscrollView.frame = CGRectMake(5,fy, rect.size.width-10, 214);
+	fW = (rect.size.width-10 - fxGap) / 6 - fxGap; //Pad//6列まで全部表示
+	MscrollView.contentSize = MscrollView.frame.size; //同じ＝1ページのみ固定
+	// 以下、MscrollView座標
 	fyGap = 5;	// Yボタン間隔
+	fy = 0;
 	fH = fW / GOLDENPER; // 黄金比
 	fyTop = fy + fyGap;
 #else

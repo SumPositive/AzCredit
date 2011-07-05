@@ -59,25 +59,25 @@
 - (void)azInformationView
 {
 #ifdef  AzPAD
-	if (MinformationView) {
+/*	if (MinformationView) {
 		[MinformationView release], MinformationView = nil;
 	}
 	MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-	//MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	
-	[Mpopover release], Mpopover = nil;
-	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:MinformationView];
-	Mpopover = [[UIPopoverController alloc] initWithContentViewController:MinformationView];
-	Mpopover.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+*/
+
+	InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+	UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:vc];
+	[vc release];
+	pop.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 	CGRect rcArrow;
 	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
 		rcArrow = CGRectMake(0, 1027-60, 32,32);
 	} else {
 		rcArrow = CGRectMake(0, 768-60, 32,32);
 	}
-	Mpopover.popoverContentSize = CGSizeMake(320, 510);
-	[Mpopover presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
+	[pop presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
 			permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+	//[pop release] 不要
 #else
 	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
 /*	// ヨコ非対応につき正面以外は、hideするようにした。
@@ -106,19 +106,19 @@
 {
 	SettingTVC *view = [[SettingTVC alloc] init];
 #ifdef  AzPAD
-	[Mpopover release], Mpopover = nil;
+	//[Mpopover release], Mpopover = nil;
 	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:vi];
-	Mpopover = [[UIPopoverController alloc] initWithContentViewController:view];
-	Mpopover.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+	UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:view];
+	pop.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 	CGRect rcArrow;
 	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
 		rcArrow = CGRectMake(768-32, 1027-60, 32,32);
 	} else {
 		rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
 	}
-	Mpopover.popoverContentSize = CGSizeMake(480, 300);
-	[Mpopover presentPopoverFromRect:rcArrow	inView:self.navigationController.view  
+	[pop presentPopoverFromRect:rcArrow	inView:self.navigationController.view  
 			permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+	//[pop release] 不要
 #else
 	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
@@ -185,12 +185,12 @@
 	[nc release];
 	MindexPathEdit = [NSIndexPath indexPathForRow:0 inSection:0];
 	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-	rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
+	//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
 	rc.origin.y += 10;	rc.size.height -= 20;
-	Mpopover.popoverContentSize = E3DETAILVIEW_SIZE;
+	//Mpopover.popoverContentSize = E3DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	e3detail.selfPopover = Mpopover; [Mpopover release];
+	e3detail.selfPopover = Mpopover;  [Mpopover release];
 	e3detail.delegate = nil;	// ここでは、再描画不要
 #else
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
@@ -568,8 +568,8 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-	if (Mpopover) {
-		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+	if ([Mpopover isPopoverVisible]) {
+/*		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
 		id nav = [Mpopover contentViewController];
 		//NSLog(@"nav=%@", nav);
 		if ([nav isMemberOfClass:[UINavigationController class]]) {
@@ -580,7 +580,7 @@
 					[vc closePopover];
 				}
 			}
-		}
+		}*/
 		
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
@@ -588,19 +588,21 @@
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
+			//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
 			rc.origin.y += 10;	rc.size.height -= 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES]; //表示開始
 			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
-			CGSize currentSetSizeForPopover = E3DETAILVIEW_SIZE; // 最終的に設定したいサイズ
+/*			CGSize currentSetSizeForPopover = GD_POPOVER_SIZE; // 最終的に設定したいサイズ
 			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
 			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
 			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES]; //表示開始
 			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
+ */
 		} 
 		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
 			[Mpopover dismissPopoverAnimated:YES];
-			[Mpopover release], Mpopover = nil;
+			//[Mpopover release], Mpopover = nil;
 		}
 	}
 }
@@ -626,8 +628,12 @@
 		[RoAdMobView release], RoAdMobView = nil;	// 破棄
 	}
 #endif
+	
+#ifdef AzPAD
+#else
 	[MinformationView hide];
 	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
+#endif
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -998,37 +1004,23 @@
 
 #ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>
-// Information, Setting では、 .delegate = nil; として呼び出されないようにしている。
-
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-	//return NO; //枠外タッチでは閉じさせない [Cancel/Save]ボタン必須
-
-	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
-	if (popoverController==Mpopover) {
-		// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-		// つまり、これが呼び出されたときは、常に CANCEL　である。
-		// Popover外側をタッチしたとき E3recordDetailTVC -　cancel を通っていないので、ここで通す。
-		// PadPopoverInNaviCon を使っているから
+	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+/*
+	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
 		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)nav.topViewController;
-		[e3tvc cancelClose:nil];
+		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
+		{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が E3recordTVC.m にもある＞＞＞
+			E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+			if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+				[e3tvc cancelClose:nil];	// 新しいObject破棄
+			}
+		}
 	}
 	return YES; // 閉じることを許可
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じた後に通知
-	// MpopE2viewが閉じたときも、ここを通るため、Mpopoverと区別する必要がある
-	if (popoverController==Mpopover) {	// Cancelときは、dismissPopoverCancel:にて強制的に nil にしている
-		// [SAVE]ボタンが押された
-		
-		// 未払い総額 再描画
-		
-	}
-	// [Cancel][Save][枠外タッチ]何れでも閉じるときここを通るので解放する。さもなくば回転後に現れることになる
-	[Mpopover release], Mpopover = nil;
-	return;
+*/
 }
 #endif
 

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define E1DETAILVIEW_SIZE		CGSizeMake(400, 460)
-
 @class E0root;
 
 @interface E1cardDetailTVC : UITableViewController 
@@ -27,7 +25,7 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
-#ifdef AzPAD
+#ifdef xxxxAzPAD
 	UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
 #endif
 	//----------------------------------------------assign - Entity fields
@@ -46,7 +44,7 @@
 - (void)cancelClose:(id)sender ;
 
 // デリゲート・メソッド
-#ifdef AzPAD
+#ifdef xxxAzPAD
 //- (void)refreshE1detail;
 - (void)closePopover;
 #endif

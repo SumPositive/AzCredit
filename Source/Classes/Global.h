@@ -117,6 +117,10 @@
 #define GD_PAIDLIST_MAX			20		// E2,E7一覧で表示するPAID側の最大件数、Unpaid側は全件
 #define GD_E3_SELECT_LIMIT		50		// 明細一覧で中央日付から前後抽出する件数(Limit)
 
+#ifdef AzPAD
+#define GD_POPOVER_SIZE		CGSizeMake(480, 600)	//iPhoneをヨコにしたときの幅に合わせる
+#endif
+
 
 //----------------------------------------------- Global.m グローバル関数
 UIColor *GcolorBlue(float percent) ;

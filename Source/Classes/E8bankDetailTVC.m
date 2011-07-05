@@ -35,7 +35,7 @@
 #pragma mark - Delegate method
 
 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 - (void)closePopover	// 回転したとき表示中のPopoverがあれば矢印位置が不定になるので強制的に閉じる。親から呼び出される
 {
 	if (MpopoverView) {	//dismissPopoverCancel
@@ -60,7 +60,11 @@
 	}
 	
 #ifdef AzPAD
-	[selfPopover dismissPopoverAnimated:YES];
+	if (selfPopover) {
+		[selfPopover dismissPopoverAnimated:YES];
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 #endif
@@ -126,6 +130,8 @@
 			[delegate refreshTable];// 親の再描画を呼び出す
 		}
 		[selfPopover dismissPopoverAnimated:YES];
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 	}
 #else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -142,6 +148,9 @@
 	if (self) {
 		// 初期化成功
 		Pe1edit = nil;
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
   	}
 	return self;
 }
@@ -205,14 +214,6 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
-#ifdef xxxxxxAzPAD
-	CGSize currentSetSizeForPopover = E8LISTVIEW_SIZE; // 最終的に設定したいサイズ
-	currentSetSizeForPopover.height = self.view.frame.size.height;
-	CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-	self.contentSizeForViewInPopover = fakeMomentarySize;			// 変動させるための偽サイズ
-	self.contentSizeForViewInPopover = currentSetSizeForPopover; // 目的とするサイズ復帰
-#endif	
-
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
@@ -237,6 +238,9 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	[selfPopover release], selfPopover = nil;
+#endif
 	//--------------------------------@property (retain)
 	[Re8edit release];
 	[super dealloc];
@@ -306,13 +310,12 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 									   reuseIdentifier:zCellIndex] autorelease];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 #ifdef AzPAD
-		cell.accessoryType = UITableViewCellAccessoryNone;
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
 #else
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
 #endif
@@ -381,7 +384,7 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
 					//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -412,7 +415,7 @@
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
 					//MpopoverView.delegate = self;  //閉じたとき再描画するため

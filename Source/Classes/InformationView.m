@@ -206,6 +206,10 @@ static UIColor *MpColorBlue(float percent) {
 	//if (!(self = [super initWithFrame:rect])) return self;
 	self = [super init];
 	if (!self) return nil;
+
+#ifdef AzPAD
+	self.contentSizeForViewInPopover = CGSizeMake(320, 510);
+#endif
 	
 	// 小豆色 RGB(152,81,75) #98514B
 	self.view.backgroundColor = [UIColor colorWithRed:152/255.0f 

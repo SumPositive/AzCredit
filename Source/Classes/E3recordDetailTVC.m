@@ -19,7 +19,7 @@
 #import "E5categoryTVC.h"
 #import "EditDateVC.h"
 #import "EditTextVC.h"
-#import "EditAmountVC.h"
+//#import "EditAmountVC.h"
 #import "CalcView.h"
 
 
@@ -59,7 +59,7 @@
 	MbE6dateChange = YES;
 }
 
-#ifdef AzPAD
+#ifdef xxxxxxxxxAzPAD
 - (void)closePopover	// 回転したとき表示中のPopoverがあれば矢印位置が不定になるので強制的に閉じる。親から呼び出される
 {
 	if (MpopoverView) {	//dismissPopoverCancel
@@ -94,7 +94,7 @@
 
 - (void)showCalcAmount
 {
-#ifdef AzPAD
+#ifdef xxxxxxxxAzPAD
 	CGRect rect = CGRectMake(0,0, 460,260);
 	McalcView = [[CalcView alloc] initWithFrame:rect];
 	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
@@ -411,6 +411,7 @@
 		MbE6dateChange = NO;
 #ifdef AzPAD
 		MiSourceYearMMDD = 0;		// 初回のみ通すため
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
@@ -440,7 +441,7 @@
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
+	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 											  target:self action:@selector(cancelClose:)] autorelease];
@@ -642,7 +643,7 @@
 	}
 #ifdef AzPAD
 	if (MiSourceYearMMDD==0) {	// 初回のみ通す
-		MiSourceYearMMDD = GiYearMMDD( Re3edit.dateUse );
+		MiSourceYearMMDD = GiYearMMDD( Re3edit.dateUse ); // saveClose:にて日付の変化を判定するため
 	}
 #endif
 	
@@ -745,7 +746,6 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 #ifdef AzPAD
-	delegate = nil;
 	[selfPopover release], selfPopover = nil;
 #endif
 	[self unloadRelease];
@@ -891,7 +891,7 @@
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 			}
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
-#ifdef AzPAD
+#ifdef xxxxxxxAzPAD
 			cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
 #else
 			if (MbE6paid) {
@@ -978,7 +978,7 @@
 						case 12: cell.detailTextLabel.text = NSLocalizedString(@"Repeat12", nil); break;
 						default: cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil); break;
 					}
-#ifdef AzPAD
+#ifdef xxxxxxxxxAzPAD
 					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
 #else
 					if (MbE6paid) cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
@@ -1022,7 +1022,7 @@
 				cell.textLabel.textColor = [UIColor grayColor];
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 			}
-#ifdef AzPAD
+#ifdef xxxxxxxxxxAzPAD
 			cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
 #else
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -1135,7 +1135,7 @@
 				else if ([e6obj.nNoCheck intValue] == 1) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"];
 					cellButton.enabled = YES;
-#ifdef AzPAD
+#ifdef xxxxxxxxxxxAzPAD
 					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
 #else
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -1144,7 +1144,7 @@
 				else {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"];
 					cellButton.enabled = YES;
-#ifdef AzPAD
+#ifdef xxxxxxxxxxAzPAD
 					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
 #else
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -1219,7 +1219,7 @@
 						evc.RzKey = @"dateUse";
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
-#ifdef AzPAD
+#ifdef xxxxxxxxAzPAD
 						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
 						UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -1256,7 +1256,7 @@
 						tvc.title = NSLocalizedString(@"Card choice",nil);
 						tvc.Re0root = Me0root;
 						tvc.Re3edit = Re3edit;
-#ifdef AzPAD
+#ifdef xxxxxxxxxxAzPAD
 						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
 						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
 						//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -1281,7 +1281,7 @@
 						E3selectRepeatTVC *tvc = [[E3selectRepeatTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Repeat",nil);
 						tvc.Re3edit = Re3edit;
-#ifdef AzPAD
+#ifdef xxxxxxxxxxxxxAzPAD
 						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
 						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
 						//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -1307,7 +1307,7 @@
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
 						tvc.Re3edit = Re3edit;
-#ifdef AzPAD
+#ifdef xxxxxxxxxAzPAD
 						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
 						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
 						//MpopoverView.delegate = self;  //閉じたとき再描画するため
@@ -1340,7 +1340,7 @@
 							tvc.Re0root = Me0root;
 							tvc.Pe3edit = Re3edit;
 							tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#ifdef AzPAD
+#ifdef xxxxxxxxxxAzPAD
 							//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
 							UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
 							MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -1368,7 +1368,7 @@
 					tvc.Re0root = Me0root;
 					tvc.Pe3edit = Re3edit;
 					tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#ifdef AzPAD
+#ifdef xxxxxxxxAzPAD
 					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -1395,7 +1395,7 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef AzPAD
+#ifdef xxxxxxxxAzPAD
 					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -1436,7 +1436,8 @@
 					evc.RzKey = @"";  //[1.0.0]E6date変更モード：未使用
 					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
 					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
-#ifdef AzPAD
+					evc.delegate = self;	// [Done]にて、editDateE6change を呼び出すため
+#ifdef xxxxxxxxxAzPAD
 					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
 					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
 					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -1448,7 +1449,6 @@
 					rc.origin.y += 10;  rc.size.height -= 20;
 					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
 					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	// [Done]にて、editDateE6change を呼び出すため
 #else
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];

@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Entity.h"
 #import "MocFunctions.h"
+#import "E4shopTVC.h"
 #import "E4shopDetailTVC.h"
 #import "EditTextVC.h"
 
@@ -25,10 +26,15 @@
 @synthesize PbAdd;
 @synthesize PbSave;
 @synthesize Pe3edit;
+#ifdef AzPAD
+@synthesize delegate;
+@synthesize selfPopover;
+#endif
+
 
 #pragma mark - Action
 
-- (void)cancel:(id)sender 
+- (void)cancelClose:(id)sender
 {
 	if (PbSave) {
 		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
@@ -39,11 +45,19 @@
 		[MocFunctions deleteEntity:Re4edit];
 	}
 	
+#ifdef AzPAD
+	if (selfPopover) {
+		[selfPopover dismissPopoverAnimated:YES];
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 // 編集フィールドの値を self.e3target にセットする
-- (void)save:(id)sender 
+- (void)saveClose:(id)sender 
 {
 	// zName : トリムや重複チェックは、E4editTextVC.done にて処理済みである。ここでは追加直後のSAVE時の抜け穴を防ぐ。
 	NSError *err = nil;
@@ -93,7 +107,18 @@
 			return;
 		}
 	}
+#ifdef AzPAD
+	if (selfPopover) {
+		if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+			[delegate refreshTable];// 親の再描画を呼び出す
+		}
+		[selfPopover dismissPopoverAnimated:YES];
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+	}
+#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 }
 
 
@@ -107,6 +132,9 @@
 		// 初期値
 		PbAdd = NO;
 		Pe3edit = nil;
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
 	}
 	return self;
 }
@@ -123,20 +151,20 @@
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 	
-	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancel:処理ができないため
+	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											  target:self action:@selector(cancel:)] autorelease];
+											  target:self action:@selector(cancelClose:)] autorelease];
 	if (PbSave) {
 		// SAVE「保存」ボタンを右側に追加する
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-												   target:self action:@selector(save:)] autorelease];
+												   target:self action:@selector(saveClose:)] autorelease];
 	} else {
 		// DONE「完了」ボタンを右側に追加する　＜＜E3recordDetailTVCから呼び出されたとき＞＞
 		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-												   target:self action:@selector(save:)] autorelease];
+												   target:self action:@selector(saveClose:)] autorelease];
 	}
 
 }
@@ -191,6 +219,9 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	[selfPopover release], selfPopover = nil;
+#endif
 	//--------------------------------@property (retain)
 	[Re4edit release];
 	[super dealloc];
@@ -243,11 +274,16 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:14];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
 		
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
 		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 		cell.detailTextLabel.textColor = [UIColor blackColor];
 	}

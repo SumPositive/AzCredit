@@ -12,7 +12,11 @@
 //@class PadPopoverInNaviCon;
 #endif
 
-@interface E5categoryTVC : UITableViewController <UIActionSheetDelegate, UISearchBarDelegate> 
+@interface E5categoryTVC : UITableViewController <UIActionSheetDelegate, UISearchBarDelegate
+#ifdef AzPAD
+	,UIPopoverControllerDelegate
+#endif
+>
 {
 @private
 	//--------------------------retain
@@ -28,6 +32,10 @@
 	NSMutableArray			*RaE5categorys;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
+#ifdef AzPAD
+	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
+	NSIndexPath*				MindexPathEdit;
+#endif
 	//----------------------------------------------------------------assign
 	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath
 	BOOL MbOptAntirotation;
@@ -40,6 +48,8 @@
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
+// delegate method
+- (void)refreshTable;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用

@@ -8,11 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#define E8LISTVIEW_SIZE		CGSizeMake(380, 500)
-
-#ifdef AzPAD
-//@class PadPopoverInNaviCon;
-#endif
 
 @interface E8bankTVC : UITableViewController <UIActionSheetDelegate
 #ifdef AzPAD
@@ -23,7 +18,7 @@
 @private
 	//--------------------------retain
 	E0root		*Re0root;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	id									delegate;
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
@@ -36,7 +31,7 @@
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
 #ifdef AzPAD
-	UIPopoverController*	Mpopover;
+	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
 	NSIndexPath*				MindexPathEdit;
 #endif
 	//----------------------------------------------------------------assign
@@ -47,9 +42,12 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, assign) E1card	*Pe1card;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
+#endif
+
+#ifdef AzPAD
 // delegate method
 - (void)refreshTable;
 #endif

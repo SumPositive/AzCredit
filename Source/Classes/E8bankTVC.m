@@ -25,7 +25,7 @@
 @implementation E8bankTVC
 @synthesize Re0root;
 @synthesize Pe1card;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @synthesize delegate;
 @synthesize selfPopover;
 #endif
@@ -35,11 +35,11 @@
 #ifdef AzPAD
 - (void)refreshTable
 {
-	if (MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+	if (MindexPathEdit && MindexPathEdit.row < [RaE8banks count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
 		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
 		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
-		//[self performSelector:@selector(deselectRow:) withObject:MindexPathEdit afterDelay:0.3]; // 0.3s後に選択状態を解除する
 	} else {
+		// Add または行位置不明のとき
 		[self viewWillAppear:YES];
 	}
 }
@@ -89,7 +89,7 @@
 - (void)barButtonUntitled { // [未定]
 	// 未定(nil)にする
 	Pe1card.e8bank = nil; 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
@@ -115,11 +115,11 @@
 		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
 		indexPath = [NSIndexPath indexPathForRow:e8detail.PiAddRow inSection:0];
 	} 
+	else if ([RaE8banks count] <= indexPath.row) {
+		[e8detail release];
+		return;  // Addボタン行などの場合パスする
+	}
 	else {
-		if ([RaE8banks count] <= indexPath.row) {
-			[e8detail release];
-			return;  // Addボタン行などの場合パスする
-		}
 		e8detail.title = NSLocalizedString(@"Edit Bank",nil);
 		e8detail.PiAddRow = (-1); // 修正モード
 		e8detail.Re8edit = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
@@ -132,7 +132,6 @@
 	}
 	
 #ifdef  AzPAD
-	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e8detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -141,11 +140,10 @@
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
 	rc.origin.y += 10;	rc.size.height -= 20;
-	Mpopover.popoverContentSize = E8DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 	e8detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
-	e8detail.delegate = self;		// refresh callback
+	e8detail.delegate = self;		// refreshTable callback
 #else
 	// 呼び出し側(親)にてツールバーを常に非表示にする
 	e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
@@ -163,6 +161,9 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
 	}
 	return self;
 }
@@ -263,7 +264,7 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
-#ifdef AzPAD
+#ifdef xxxxxxxxAzPAD
 	if (selfPopover) {
 		//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
 		CGSize currentSetSizeForPopover = E8LISTVIEW_SIZE; // 最終的に設定したいサイズ
@@ -295,39 +296,19 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	if (Mpopover) {
-		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
-		id nav = [Mpopover contentViewController];
-		//NSLog(@"nav=%@", nav);
-		if ([nav isMemberOfClass:[UINavigationController class]]) {
-			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
-				id vc = [nav visibleViewController];
-				//NSLog(@"vc=%@", vc);
-				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
-					[vc closePopover];
-				}
-			}
-		}
-		
+	if ([Mpopover isPopoverVisible]) {
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
-			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
 			rc.origin.y += 10;	rc.size.height -= 20;
-			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
-			CGSize currentSetSizeForPopover = E8DETAILVIEW_SIZE; // 最終的に設定したいサイズ
-			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
 			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
-			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
 		} 
 		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
 			[Mpopover dismissPopoverAnimated:YES];
-			//[Mpopover release], Mpopover = nil;
 		}
 	}
 }
@@ -365,7 +346,7 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	delegate = nil;
 	[selfPopover release], selfPopover = nil;
 #endif
@@ -491,10 +472,9 @@
 	McontentOffsetDidSelect = [tableView contentOffset];
 
 	if (indexPath.row < [RaE8banks count]) {
-		if (Pe1card) {
-			// 選択モード
+		if (Pe1card) { // 選択モード
 			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 			if (selfPopover) {
 				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 					[delegate viewWillAppear:YES];// 再描画
@@ -664,19 +644,24 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+/*
+	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
 	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
 		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		if ([nav.topViewController isMemberOfClass:[E8bankDetailTVC class]]) {
-			// Popover外側をタッチしたとき E8bankDetailTVC -　cancelClose を通っていないので、ここで通す。
-			E8bankDetailTVC* e8tvc = (E8bankDetailTVC *)nav.topViewController;
-			if ([e8tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-				[e8tvc cancelClose:nil];	// 新しいObject破棄
+		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E8bankDetailTVC class]]) 
+		{	// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
+			E8bankDetailTVC* tvc = (E8bankDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+			if ([tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+				[tvc cancelClose:nil];	// 新しいObject破棄
 			}
 		}
 	}
 	return YES; // 閉じることを許可
+*/
 }
 #endif
+
 
 @end
 

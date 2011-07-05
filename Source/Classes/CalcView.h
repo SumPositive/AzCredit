@@ -12,7 +12,7 @@
 #define ANSWER_MAX				99999999.991	// double近似値で比較するため+0.001してある
 
 
-#ifdef AzPAD
+#ifdef xxxxxxxxAzPAD
 // Popoverに内蔵するためControllerにする
 @interface CalcView : UIViewController <UITextFieldDelegate>
 #else
@@ -25,9 +25,9 @@
 	id			Rentity;		// NSNumber
 	NSString	*RzKey;			// @"nAmount"
 	NSString	*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//----------------------------------------------assign
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
@@ -59,9 +59,9 @@
 @property (nonatomic, retain) id						Rentity;
 @property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
-#ifdef AzPAD
+#ifdef xxxAzPAD
 @property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif
 
 // 公開メソッド

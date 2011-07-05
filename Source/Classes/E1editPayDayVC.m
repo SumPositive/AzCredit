@@ -10,9 +10,6 @@
 #import "Entity.h"
 #import "E1editPayDayVC.h"
 
-#ifdef AzPAD
-//#import "PadPopoverInNaviCon.h"
-#endif
 
 @interface E1editPayDayVC (PrivateMethods)
 - (void)viewDesign;
@@ -22,7 +19,7 @@
 
 @implementation E1editPayDayVC
 @synthesize Re1edit;
-#ifdef AzPAD
+#ifdef xxxxxxAzPAD
 @synthesize delegate;
 @synthesize selfPopover;
 #endif
@@ -58,7 +55,7 @@
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
 	}
 	
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
 			[delegate viewWillAppear:YES];// 再描画
@@ -72,6 +69,18 @@
 
 
 #pragma mark - UIViewController
+
+- (id)init
+{
+	self = [super init];
+	if (self) {
+		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
+	}
+	return self;
+}
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
@@ -231,13 +240,6 @@
 // 画面表示された直後に呼び出される
 - (void)viewDidAppear:(BOOL)animated 
 {
-#ifdef xxxxxxAzPAD
-	//Popoverサイズ指定。　　下層から戻ったとき、サイズを元に戻すようにも働く
-	CGSize currentSetSizeForPopover = E1CardDetailView_SIZE; // 最終的に設定したいサイズ
-    CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-    self.contentSizeForViewInPopover = fakeMomentarySize;			// 1回目は、反映されないが、少し変化させる必要あり
-    self.contentSizeForViewInPopover = currentSetSizeForPopover;	// この2回目が反映される
-#endif	
 	[super viewDidAppear:animated];
 	
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
@@ -271,7 +273,7 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
+#ifdef xxxAzPAD
 	[selfPopover release], selfPopover = nil;
 #endif
 	[Re1edit release];

@@ -7,9 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#ifdef AzPAD
-//@class PadPopoverInNaviCon;
-#endif
 
 @interface E1cardTVC : UITableViewController <UIActionSheetDelegate
 #ifdef AzPAD

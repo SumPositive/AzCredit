@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @class E3record;
-#ifdef AzPAD
-//@class PadPopoverInNaviCon;
-#endif
 
 @interface EditDateVC : UIViewController
 {
@@ -20,11 +17,11 @@
 	id					Rentity;
 	NSString		*RzKey;			// @"dateUse"    //[1.0.0]E6date変更モード="E6date"
 	E6part			*Re6edit;
-#ifdef AzPAD
-	id									delegate;
+#ifdef xxxAzPAD
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
+	id						delegate;			// editDateE6change を呼び出すため
 	NSInteger	PiMinYearMMDD;
 	NSInteger	PiMaxYearMMDD;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -41,10 +38,10 @@
 
 @property (nonatomic, retain) id					Rentity;
 @property (nonatomic, retain) NSString		*RzKey;	
+@property (nonatomic, assign) id					delegate;
 @property (nonatomic, assign) NSInteger	PiMinYearMMDD;
 @property (nonatomic, assign) NSInteger	PiMaxYearMMDD;
-#ifdef AzPAD
-@property (nonatomic, assign) id									delegate;
+#ifdef xxxAzPAD
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif
 
