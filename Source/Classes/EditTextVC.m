@@ -76,6 +76,18 @@
 	return self;
 }
 
+#ifdef AzPAD
+- (id)initWithFrameSize:(CGSize)size
+{
+	self = [super init];
+	if (self) {
+		// 初期化成功
+		self.contentSizeForViewInPopover = size;
+	}
+	return self;
+}
+#endif
+
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 - (void)loadView
 {

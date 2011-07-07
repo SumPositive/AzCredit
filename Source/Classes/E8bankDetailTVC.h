@@ -26,7 +26,7 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UILabel		*MlbNote;
-#ifdef AzPAD
+#ifdef xxxxxxxxxAzPAD
 	UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
 #endif
 	//----------------------------------------------assign - Entity fields

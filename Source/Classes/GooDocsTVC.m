@@ -115,6 +115,11 @@
 	RtfUsername = [[UITextField alloc] init]; // viewDesignにてrect決定
 	RtfUsername.placeholder = NSLocalizedString(@"@gmail.com Optional",nil);
 	RtfUsername.text = [defaults objectForKey:GD_DefUsername];
+#ifdef AzPAD
+	RtfUsername.font = [UIFont systemFontOfSize:20];
+#else
+	RtfUsername.font = [UIFont systemFontOfSize:14];
+#endif
 	RtfUsername.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
 	RtfUsername.keyboardType = UIKeyboardTypeEmailAddress;
 	RtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
@@ -129,7 +134,11 @@
 	RtfPassword.text = [SFHFKeychainUtils 
 						getPasswordForUsername:RtfUsername.text 
 								andServiceName:GD_PRODUCTNAME error:&error];
-
+#ifdef AzPAD
+	RtfPassword.font = [UIFont systemFontOfSize:20];
+#else
+	RtfPassword.font = [UIFont systemFontOfSize:14];
+#endif
 	RtfPassword.secureTextEntry = YES;    // パスワードを画面に表示しないようにする
 	RtfPassword.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
 	RtfPassword.keyboardType = UIKeyboardTypeASCIICapable;
@@ -1158,7 +1167,8 @@
     static NSString *zCellUser = @"CellUser";
     static NSString *zCellPass = @"CellPass";
     static NSString *zCellLogin = @"CellLogin";
-    static NSString *zCellList = @"CellList";
+    static NSString *zCellListUp = @"CellListUp";
+    static NSString *zCellListDw = @"CellListDw";
 	UITableViewCell *cell = nil;
 	
 #ifdef AzPAD
@@ -1197,7 +1207,11 @@
 					if (cell == nil) {
 						cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 													   reuseIdentifier:zCellLogin] autorelease];
-						
+#ifdef AzPAD
+						cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
+						cell.textLabel.font = [UIFont systemFontOfSize:12];
+#endif
 						UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(fX, 6, 120, 8)];
 						label.text = NSLocalizedString(@"Remember Password",nil);
 						label.font = [UIFont systemFontOfSize:9];
@@ -1221,10 +1235,17 @@
 		case 1: // Upload Section
 		{
 			// Upload
-			cell = [tableView dequeueReusableCellWithIdentifier:zCellList];
+			cell = [tableView dequeueReusableCellWithIdentifier:zCellListUp];
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 
-											   reuseIdentifier:zCellList] autorelease];
+											   reuseIdentifier:zCellListUp] autorelease];
+#ifdef AzPAD
+				cell.textLabel.font = [UIFont systemFontOfSize:12];
+				cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+#else
+				cell.textLabel.font = [UIFont systemFontOfSize:12];
+				cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+#endif
 			}
 			cell.textLabel.text = NSLocalizedString(@"Upload name",nil);
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -1239,10 +1260,15 @@
 			return cell;
 			break;
 		case 2: // Download Section
-			cell = [tableView dequeueReusableCellWithIdentifier:zCellList];
+			cell = [tableView dequeueReusableCellWithIdentifier:zCellListDw];
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-											   reuseIdentifier:zCellList] autorelease];
+											   reuseIdentifier:zCellListDw] autorelease];
+#ifdef AzPAD
+				cell.textLabel.font = [UIFont systemFontOfSize:18];
+#else
+				cell.textLabel.font = [UIFont systemFontOfSize:12];
+#endif
 			}
 			if (MbUpload) {
 				GDataEntryDocBase *doc = [mDocListFeed entryAtIndex:indexPath.row];

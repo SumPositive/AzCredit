@@ -87,7 +87,9 @@
 														 inManagedObjectContext:Re0root.managedObjectContext];
 		e5detail.PbAdd = YES;
 		e5detail.Pe3edit = Pe3edit;
+#ifdef  AzPAD
 		indexPath = [NSIndexPath indexPathForRow:[RaE5categorys count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
+#endif
 	}
 	else if ([RaE5categorys count] <= indexPath.row) {
 		[e5detail release];

@@ -925,7 +925,12 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Pe3edit = nil;
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					[[apd.mainController.viewControllers objectAtIndex:0] pushViewController:tvc animated:YES];	//[0]Left
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;

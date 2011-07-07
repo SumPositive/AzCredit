@@ -38,4 +38,8 @@
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
 #endif
 
+#ifdef AzPAD
+- (id)initWithFrameSize:(CGSize)size;
+#endif
+
 @end

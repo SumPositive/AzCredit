@@ -113,7 +113,9 @@
 		e8detail.PiAddRow = [RaE8banks count]; // 追加モード
 		e8detail.Re8edit = e8obj;
 		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
+#ifdef  AzPAD
 		indexPath = [NSIndexPath indexPathForRow:e8detail.PiAddRow inSection:0];
+#endif
 	} 
 	else if ([RaE8banks count] <= indexPath.row) {
 		[e8detail release];

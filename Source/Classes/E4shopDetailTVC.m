@@ -133,7 +133,7 @@
 		PbAdd = NO;
 		Pe3edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.contentSizeForViewInPopover = CGSizeMake(480, 260); //GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
@@ -329,7 +329,11 @@
 			switch (indexPath.row) {
 				case 0: // Name
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"Shop name", nil);
 					evc.Rentity = Re4edit;
 					evc.RzKey = @"zName";
@@ -346,7 +350,11 @@
 			switch (indexPath.row) {
 				case 0: // sortName
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"Shop index", nil);
 					evc.Rentity = Re4edit;
 					evc.RzKey = @"sortName";
@@ -359,7 +367,11 @@
 					break;
 				case 1: // Note
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"Shop note", nil);
 					evc.Rentity = Re4edit;
 					evc.RzKey = @"zNote";

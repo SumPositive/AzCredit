@@ -120,7 +120,9 @@
 														 inManagedObjectContext:Re0root.managedObjectContext];
 		e4detail.PbAdd = YES;
 		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
+#ifdef  AzPAD
 		indexPath = [NSIndexPath indexPathForRow:[RaE4shops count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
+#endif
 	}
 	else if ([RaE4shops count] <= indexPath.row) {
 		[e4detail release];
@@ -150,10 +152,10 @@
 		Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 		[nc release];
 		CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-		rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+		rc.origin.x = rc.size.width;	rc.size.width = 10;
 		rc.origin.y += 10;	rc.size.height -= 20;
 		[Mpopover presentPopoverFromRect:rc
-								  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+								  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 		e4detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
 		e4detail.delegate = self;		// refreshTable callback
 	}
@@ -216,10 +218,10 @@
 					   NSLocalizedString(@"Sort Amount",nil),
 					   NSLocalizedString(@"Sort Index",nil), nil];
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
-#ifdef AzPAD
+#ifdef xxxxxxAzPAD
 	segment.frame = CGRectMake(0,0, 350,30);
 #else
-	segment.frame = CGRectMake(0,0, 210,30);
+	segment.frame = CGRectMake(0,0, 230,30);
 #endif
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE4SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE4SortMode];
@@ -331,6 +333,31 @@
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
+	
+#ifdef AzPAD
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	id vc = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	if ([vc isMemberOfClass:[UINavigationController class]]) {
+		UINavigationController* nav = (UINavigationController*)vc;
+		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordTVC class]]) 
+		{	//[1]Right：E3recordTVC Opend
+			//E3recordTVC* e3tvc = (E3recordTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+		} else {
+			//[1]Right：E3recordTVC を開く
+			E3recordTVC *tvc = [[E3recordTVC alloc] init];
+			E4shop *e4obj = nil;
+			if (0 < [RaE4shops count]) {
+				e4obj = [RaE4shops objectAtIndex:0];
+			}
+			tvc.title =  [e4obj zName];
+			tvc.Re0root = Re0root;
+			tvc.Pe4shop = e4obj;  // e4obj以下の全E3表示モード
+			tvc.Pe5category = nil;
+			[[apd.mainController.viewControllers objectAtIndex:1] pushViewController:tvc animated:YES];	//[1]Right
+			[tvc release];
+		}
+	}
+#endif
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
@@ -564,8 +591,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
-
+	//[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
+	
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = [tableView contentOffset];
 
@@ -606,7 +633,12 @@
 			//tvc.Pe1card = nil;  
 			tvc.Pe4shop = e4obj;  // e4obj以下の全E3表示モード
 			tvc.Pe5category = nil;
+#ifdef AzPAD
+			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			[[apd.mainController.viewControllers objectAtIndex:1] pushViewController:tvc animated:YES];	//[1]Right
+#else
 			[self.navigationController pushViewController:tvc animated:YES];
+#endif
 			[tvc release];
 		}
 	}
