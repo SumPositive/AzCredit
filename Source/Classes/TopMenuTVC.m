@@ -760,9 +760,16 @@
 						NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 						[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル（先頭に通貨記号が付く）
 						[formatter setLocale:[NSLocale currentLocale]]; 
+#ifdef AzPAD
+						cell.textLabel.text = [NSString stringWithFormat:@"%@      （%@  %@）", 
+											   NSLocalizedString(@"Payment list",nil), 
+											   NSLocalizedString(@"Unpaid",nil), 
+											   [formatter stringFromNumber:decUnpaid]];
+#else
 						cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", 
 											   NSLocalizedString(@"Payment list",nil), 
 											   [formatter stringFromNumber:decUnpaid]];
+#endif
 						[formatter release];
 					}
 					break;

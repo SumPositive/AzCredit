@@ -703,12 +703,12 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		NSInteger iPayType = [e3obj.nPayType integerValue];
 		if (1 <= iPayType && iPayType < 100) 
 		{
-			NSDecimalNumber *decAmountOne;		// 1回分
-			NSDecimalNumber *decAmountFirst;	// 余り（第1回目に配分する）
+			NSDecimalNumber *decAmountOne;	// 1回分
+			NSDecimalNumber *decAmountRest;	// 余り（最終回に配分する） ＜＜[1.0.1]以前は1回目に配分していた＞＞
 
 			if (iPayType <= 1) { // 一括払い
 				decAmountOne = e3obj.nAmount;
-				decAmountFirst = [NSDecimalNumber zero];
+				decAmountRest = [NSDecimalNumber zero];
 			}
 			else {	// 2回以上分割
 				NSDecimalNumber *decAmountZan = e3obj.nAmount;
@@ -732,7 +732,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				// 以後、デフォルト丸め
 				NSDecimalNumber *decTotal = [decAmountOne decimalNumberByMultiplyingBy:decPayType]; // デフォルト丸め
 				// 誤差を1回目に配賦するため
-				decAmountFirst = [decAmountZan decimalNumberBySubtracting:decTotal];
+				decAmountRest = [decAmountZan decimalNumberBySubtracting:decTotal];
 			}
 			
 			// 分割1〜99回まで対応
@@ -759,8 +759,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 						// 属性
 						e6obj.nPartNo = [NSNumber numberWithInteger:iPartNo];
 						e6obj.nNoCheck = [NSNumber numberWithInteger:1];
-						if (iPartNo==1) {
-							e6obj.nAmount = [decAmountOne decimalNumberByAdding:decAmountFirst]; // decAmountOne + decAmountFirst
+						if (iPayType <= iPartNo) {
+							e6obj.nAmount = [decAmountOne decimalNumberByAdding:decAmountRest]; //最終回 decAmountOne + decAmountRest
 						} else {
 							e6obj.nAmount = decAmountOne;
 						}
@@ -780,8 +780,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 					// 属性
 					e6obj.nPartNo = [NSNumber numberWithInteger:iPartNo];
 					e6obj.nNoCheck = [NSNumber numberWithInteger:1];
-					if (iPartNo==1) {
-						e6obj.nAmount = [decAmountOne decimalNumberByAdding:decAmountFirst]; // decAmountOne + decAmountFirst
+					if (iPayType <= iPartNo) {
+						e6obj.nAmount = [decAmountOne decimalNumberByAdding:decAmountRest]; //最終回 decAmountOne + decAmountRest
 					} else {
 						e6obj.nAmount = decAmountOne;
 					}
