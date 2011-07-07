@@ -20,7 +20,7 @@
 
 @interface E7paymentTVC (PrivateMethods)
 - (void)viewDesign;
-- (void)cellLeftButton: (UIButton *)button;
+//- (void)cellLeftButton: (UIButton *)button;
 @end
 
 @implementation E7paymentTVC
@@ -33,6 +33,7 @@
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
+#ifdef xxxxxxxxxxxxxx
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex 
 {
 	if (buttonIndex == alertView.cancelButtonIndex) return; // CANCEL
@@ -67,8 +68,63 @@
 			break;
 	}
 	
-	[self viewWillAppear:NO]; // Fech データセットさせるため
-	//[self.tableView reloadData];
+	MbFirstAppear = YES; // ボタン位置調整のため
+	[self viewWillAppear:YES]; // Fech データセットさせるため
+}
+#endif
+
+- (void)toPAID
+{
+	if ([RaE7list count] <= 1) return;	// Section
+	if ([[RaE7list objectAtIndex:1] count] <= 0) return;	// Row
+	E7payment* e7obj = [[RaE7list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
+
+	if (e7obj && e7obj.e0unpaid) 
+	{
+		if (0 < [e7obj.sumNoCheck integerValue]) 
+		{	// E7配下に未チェックあり禁止
+			alertBox(NSLocalizedString(@"NoCheck",nil),
+					 NSLocalizedString(@"NoCheck msg",nil),
+					 NSLocalizedString(@"Roger",nil));
+			return;
+		}
+		[MocFunctions e7paid:e7obj inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+		[MocFunctions commit];		// context commit (SAVE)
+		// アニメ準備
+		CGRect rc = MbuPaid.frame; rc.origin.y -= 44; MbuPaid.frame = rc;
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		[UIView beginAnimations:nil context:context];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:1.0];
+		// 再描画
+		MbFirstAppear = YES; // ボタン位置調整のため
+		[self viewWillAppear:NO]; // Fech データセットさせるため
+		// アニメ開始
+		[UIView commitAnimations];
+	}
+}
+
+- (void)toUnpaid
+{
+	if ([RaE7list count] <= 0) return;	// Section
+	NSInteger iRowBottom = [[RaE7list objectAtIndex:0] count] - 1;
+	if (iRowBottom < 0) return;
+	E7payment* e7obj = [[RaE7list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
+	if (e7obj && e7obj.e0paid) {
+		[MocFunctions e7paid:e7obj inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+		[MocFunctions commit];		// context commit (SAVE)
+		// アニメ準備
+		CGRect rc = MbuUnpaid.frame; rc.origin.y += 44; MbuUnpaid.frame = rc;
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		[UIView beginAnimations:nil context:context];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:1.0];
+		// 再描画
+		MbFirstAppear = YES; // ボタン位置調整のため
+		[self viewWillAppear:NO]; // Fech データセットさせるため
+		// アニメ開始
+		[UIView commitAnimations];
+	}
 }
 
 
@@ -103,7 +159,7 @@ static UIColor *MpColorBlue(float percent) {
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
 	// なし
 
-	//self.tableView.backgroundColor = [UIColor brownColor];
+	//self.tableView.backgroundColor = [UIColor clearColor];
 
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
@@ -120,6 +176,38 @@ static UIColor *MpColorBlue(float percent) {
 	[self setToolbarItems:buArray animated:YES];
 	[buTop release];
 	[buFlex release];
+
+	// PAID  ボタン
+	if (MbuPaid==nil) {
+		MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
+		[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateNormal];
+		//[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateHighlighted];
+		[MbuPaid addTarget:self action:@selector(toPAID) forControlEvents:UIControlEventTouchUpInside];
+		[self.tableView addSubview:MbuPaid];
+	}
+	
+	// Unpaid ボタン
+	if (MbuUnpaid==nil) {
+		MbuUnpaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
+		[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateNormal];
+		//[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateHighlighted];
+		[MbuUnpaid addTarget:self action:@selector(toUnpaid) forControlEvents:UIControlEventTouchUpInside];
+		[self.tableView addSubview:MbuUnpaid];
+	}
+}
+
+- (void)viewDesign		//初期表示および回転時に位置調整して描画する
+{
+	// PAID ,Unpaid ボタン設置
+	CGRect rc = [self.tableView rectForFooterInSection:0];
+	MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
+	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
+	
+	MbuUnpaid.hidden = ([Re0root.e7paids count] <= 0);
+	MbuPaid.hidden = ([Re0root.e7unpaids count] <= 0);
+
+	[self.tableView bringSubviewToFront:MbuPaid];
+	[self.tableView bringSubviewToFront:MbuUnpaid];
 }
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
@@ -185,6 +273,8 @@ static UIColor *MpColorBlue(float percent) {
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
+	
+	[self viewDesign];
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
@@ -217,15 +307,15 @@ static UIColor *MpColorBlue(float percent) {
 - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
 													   duration:(NSTimeInterval)duration
 {
-	[self.tableView reloadData];
+	//[self.tableView reloadData]; ここではダメ　＜＜cellLable位置調整されない＞＞
+	[self viewDesign];
 }
 
-/*
-- (void)viewDesign
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	// 回転によるリサイズ
+	[self.tableView reloadData];  // cellLable位置調整するため
 }
- */
 
 
 #pragma mark  View - Unload - dealloc
@@ -311,8 +401,9 @@ static UIColor *MpColorBlue(float percent) {
 			// E7 未払い総額
 			if ([Re0root.e7unpaids count] <= 0) {
 				return NSLocalizedString(@"Following unpaid nothing",nil);
-			} 
-			else {
+			}
+			return NSLocalizedString(@"Unpaid",nil);
+	/*		else {
 				//NSNumber *nUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
 				// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 				NSDecimalNumber *decUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
@@ -328,7 +419,7 @@ static UIColor *MpColorBlue(float percent) {
 				[formatter release];
 				return str;
 			}
-			break;
+			break; */
 	}
 	return nil;
 }
@@ -338,8 +429,8 @@ static UIColor *MpColorBlue(float percent) {
 {
 	switch (section) {
 		case 0:
-			return NSLocalizedString(@"E2paidFooter",nil);
-			//return NSLocalizedString(@"E7paidFooter",nil);
+			//return NSLocalizedString(@"E2paidFooter",nil);
+			return @"\n";
 			break;
 #ifdef FREE_AD_PAD
 		case 1:
@@ -395,6 +486,7 @@ static UIImage* GimageFromString(NSString* str)
 }
 */
 
+/*
 - (void)cellLeftButton: (UIButton *)button   // E7: Unpaid <--切替--> Paid
 {
 	AzLOG(@"button.tag=%ld", (long)button.tag);
@@ -474,6 +566,7 @@ static UIImage* GimageFromString(NSString* str)
 		return;
 	}
 }
+*/
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -514,12 +607,12 @@ static UIImage* GimageFromString(NSString* str)
 	}
 	// 回転対応のため
 #ifdef AzPAD
-	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 140, 22);
+	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 125, 22);
 #else
-	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 12, 75, 20);
 #endif
 	
-	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
+/*	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 	UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
 	cellButton.frame = CGRectMake(0,0, 44,44);
 	[cellButton addTarget:self action:@selector(cellLeftButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -527,7 +620,7 @@ static UIImage* GimageFromString(NSString* str)
 	cellButton.showsTouchWhenHighlighted = YES;
 	cellButton.tag = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 	[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
-	// 左ボタン ------------------------------------------------------------------
+	// 左ボタン ------------------------------------------------------------------ */
 	
 	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 

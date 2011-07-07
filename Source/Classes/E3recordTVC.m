@@ -38,12 +38,11 @@
 #pragma mark - Delegate
 
 #ifdef AzPAD
-- (void)refreshTable:(BOOL)bSameDate
+- (void)refreshE3recordTVC:(BOOL)bSameDate
 {
 	if (bSameDate && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
 		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
 		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
-		//[self performSelector:@selector(deselectRow:) withObject:MindexPathEdit afterDelay:0.3]; // 0.3s後に選択状態を解除する
 	} else {
 		[self viewWillAppear:YES];
 	}
@@ -55,10 +54,29 @@
 
 - (void)azSettingView
 {
+#ifdef  AzPAD
+	if ([MpopSetting isPopoverVisible]==NO) {
+		if (!MpopSetting) { //無ければ1度だけ生成する
+			SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+			MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
+			[vc release];
+		}
+		MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+		CGRect rcArrow;
+		if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+			rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+		} else {
+			rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+		}
+		[MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
+				   permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+	}
+#else
 	SettingTVC *view = [[SettingTVC alloc] init];
 	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
 	[view release];
+#endif
 }
 
 - (void)barButtonTop {
@@ -532,23 +550,14 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	[self.tableView reloadData];  // cellLable位置調整する
+	[self.tableView reloadData];  // cellLable位置調整するため
 
 #ifdef AzPAD
+	if ([MpopSetting isPopoverVisible]) {
+		[MpopSetting dismissPopoverAnimated:YES];
+	}
+	
 	if ([Mpopover isPopoverVisible]) {
-	/*	// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
-		id nav = [Mpopover contentViewController];
-		//NSLog(@"nav=%@", nav);
-		if ([nav isMemberOfClass:[UINavigationController class]]) {
-			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
-				id vc = [nav visibleViewController];
-				//NSLog(@"vc=%@", vc);
-				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
-					[vc closePopover];
-				}
-			}
-		}*/
-
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
 			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
@@ -558,12 +567,6 @@
 			rc.size.width /= 2;
 			rc.origin.y += 10;	rc.size.height -= 20;
 			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-	/*		//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
-			CGSize currentSetSizeForPopover = E3DETAILVIEW_SIZE; // 最終的に設定したいサイズ
-			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰 */
 		} 
 		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
@@ -793,17 +796,18 @@
 				if ([e3obj.sumNoCheck intValue]==0) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check"];
 				} else {
-#ifdef AzPAD
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Clear"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
-#else
 					cell.imageView.image = nil; //左画像なし：少しでも幅広くするため。見栄えも問題なさそうだ。
-#endif
 				}
 			}
 		} else {
 			// クイック追加にてカード(未定)のとき
 			cell.imageView.image = nil;
 		}
+#ifdef AzPAD
+		if (cell.imageView.image==nil) {
+			cell.imageView.image = [UIImage imageNamed:@"Icon32-Clear"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
+		}
+#endif
 		
 		// zDate 利用日
 		NSDateFormatter *df = [[NSDateFormatter alloc] init];

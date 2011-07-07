@@ -65,8 +65,8 @@
 #pragma mark - E2invoiceTVC
 //-----------------------------------------------------------------------------------------------
 @interface E2invoiceTVC (PrivateMethods)
-- (void)viewDesign;
-- (void)cellLeftButton: (UIButton *)button;
+- (void)viewDesign:(BOOL)animated;
+//- (void)cellLeftButton: (UIButton *)button;
 @end
 
 @implementation E2invoiceTVC
@@ -75,6 +75,7 @@
 
 #pragma mark - Action
 
+#ifdef xxxxxxxxxxxxx
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex 
 {
 	if (buttonIndex == alertView.cancelButtonIndex) return; // CANCEL
@@ -114,13 +115,77 @@
 			break;
 	}
 	// 再描画
+	MbFirstAppear = YES; // ボタン位置調整のため
 	[self viewWillAppear:YES]; // Fech データセットさせるため
 }
+#endif
 
-- (void)barButtonTop {
+- (void)barButtonTop 
+{
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
+- (void)toPAID
+{
+	if ([RaE2list count] <= 1) return;	// Section
+	if ([[RaE2list objectAtIndex:1] count] <= 0) return;	// Row
+	E2temp* e2obj = [[RaE2list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
+	
+	if (e2obj && e2obj.bPaid==NO) 
+	{
+		if (0 < e2obj.iNoCheck) 
+		{	// E2配下に未チェックあり禁止
+			alertBox(NSLocalizedString(@"NoCheck",nil),
+					 NSLocalizedString(@"NoCheck msg",nil),
+					 NSLocalizedString(@"Roger",nil));
+			return; // 禁止
+		}
+		// このE2を PAID にする
+		for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
+			[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+		}
+		[MocFunctions commit];		// context commit (SAVE)
+		// アニメ準備
+		CGRect rc = MbuPaid.frame; rc.origin.y -= 44; MbuPaid.frame = rc;
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		[UIView beginAnimations:nil context:context];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:1.0];
+		// 再描画
+		MbFirstAppear = YES; // ボタン位置調整のため
+		[self viewWillAppear:NO]; // Fech データセットさせるため
+		[self viewDesign:NO];
+		// アニメ開始
+		[UIView commitAnimations];
+	}
+}
+
+- (void)toUnpaid
+{
+	if ([RaE2list count] <= 0) return;	// Section
+	NSInteger iRowBottom = [[RaE2list objectAtIndex:0] count] - 1;
+	if (iRowBottom < 0) return;
+	E2temp* e2obj = [[RaE2list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
+	if (e2obj && e2obj.bPaid==YES) {
+		// このE2を Unpaid に戻す
+		for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
+			[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+		}
+		[MocFunctions commit];		// context commit (SAVE)
+		// アニメ準備
+		CGRect rc = MbuUnpaid.frame; rc.origin.y += 44; MbuUnpaid.frame = rc;
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		[UIView beginAnimations:nil context:context];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:1.0];
+		// 再描画
+		MbFirstAppear = YES; // ボタン位置調整のため
+		[self viewWillAppear:NO]; // Fech データセットさせるため
+		[self viewDesign:NO];
+		// アニメ開始
+		[UIView commitAnimations];
+	}
+}
 
 
 #pragma mark - View lifecicle
@@ -160,6 +225,55 @@
 	[self setToolbarItems:buArray animated:YES];
 	[buTop release];
 	[buFlex release];
+
+	// PAID  ボタン
+	if (MbuPaid==nil) {
+		MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
+		[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateNormal];
+		//[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateHighlighted];
+		[MbuPaid addTarget:self action:@selector(toPAID) forControlEvents:UIControlEventTouchUpInside];
+		[self.tableView addSubview:MbuPaid];
+		//[self.view addSubview:MbuPaid];
+	}
+
+	// Unpaid ボタン
+	if (MbuUnpaid==nil) {
+		MbuUnpaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
+		[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateNormal];
+		//[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateHighlighted];
+		[MbuUnpaid addTarget:self action:@selector(toUnpaid) forControlEvents:UIControlEventTouchUpInside];
+		[self.tableView addSubview:MbuUnpaid];
+	}
+}
+
+- (void)viewDesign:(BOOL)animated 		//初期表示および回転時に位置調整して描画する
+{
+	// PAID ,Unpaid ボタン設置
+	CGRect rc = [self.tableView rectForFooterInSection:0];
+	MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
+	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
+	
+	MbuUnpaid.hidden = ([[RaE2list objectAtIndex:0] count] <= 0);		// Index: 0=Paid 1=Unpaid
+	MbuPaid.hidden = ([[RaE2list objectAtIndex:1] count] <= 0);			// Index: 0=Paid 1=Unpaid
+	
+	[self.tableView bringSubviewToFront:MbuPaid];
+	[self.tableView bringSubviewToFront:MbuUnpaid];
+	
+	if (animated) {
+		MbuPaid.alpha = 0;
+		MbuUnpaid.alpha = 0;
+		// アニメ準備
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		[UIView beginAnimations:nil context:context];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:0.7];
+		
+		MbuPaid.alpha = 0.9;
+		MbuUnpaid.alpha = 0.9;
+		
+		// アニメ開始
+		[UIView commitAnimations];
+	}
 }
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
@@ -333,14 +447,17 @@
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
+	
+	//[self viewDesign]; ここだとセル外部が表示されない不具合発生 ⇒ viewDidAppearへ移した。
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
+	[self viewDesign:animated];
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-	
+
 	// Comback (-1)にして未選択状態にする
 	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// (0)TopMenu >> (1)E1card/E7payment >> (2)This clear
@@ -379,16 +496,15 @@
 - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
 													   duration:(NSTimeInterval)duration {
 	// この時点で self.View は、回転後の状態になっている
-	[self.tableView reloadData];  // self.View の状態に従って描画しているので、ここが最も早いタイミングになる。
+	//[self.tableView reloadData]; ここではダメ　＜＜cellLable位置調整されない＞＞
+	[self viewDesign:NO];
 }
 
-/*
-- (void)viewDesign
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	// 回転によるリサイズ
-//	McellLabel.frame = CGRectMake(self.tableView.frame.size.width-115, 12, 80, 20);
+	[self.tableView reloadData];  // cellLable位置調整するため
 }
-*/
 
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -491,11 +607,11 @@
 			break;
 		case 1:
 			// E2 未払い総額
-			//if ([Re1select.e2unpaids count] <= 0) {
 			if ([[RaE2list objectAtIndex:1] count] <= 0) {  // Index: 0=Paid 1=Unpaid
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			} 
-			else {
+			return NSLocalizedString(@"Unpaid",nil);
+	/*		else {
 				//NSNumber *nUnpaid;
 				NSDecimalNumber *decUnpaid;
 				if (Re1select) { // E1card
@@ -515,7 +631,7 @@
 								 [formatter stringFromNumber:decUnpaid]];
 				[formatter release];
 				return str;
-			}
+			}*/
 			break;
 	}
 	return @"Err";
@@ -526,7 +642,8 @@
 {
 	switch (section) {
 		case 0:
-			return NSLocalizedString(@"E2paidFooter",nil);
+			//return NSLocalizedString(@"E2paidFooter",nil);
+			return @"\n";
 			break;
 		case 1: {
 			NSString* str; 
@@ -592,12 +709,12 @@
 	}
 	// 回転対応のため
 #ifdef AzPAD
-	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 140, 22);
+	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 125, 22);
 #else
-	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 12, 75, 20);
 #endif
 
-	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
+/*	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 	UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
 	cellButton.frame = CGRectMake(0,0, 44,44);
 	[cellButton addTarget:self action:@selector(cellLeftButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -605,7 +722,7 @@
 	cellButton.showsTouchWhenHighlighted = YES;
 	cellButton.tag = indexPath.section * GD_SECTION_TIMES + indexPath.row;
 	[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
-	// 左ボタン ------------------------------------------------------------------
+	// 左ボタン ------------------------------------------------------------------ */
 
 	//E2invoice *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	E2temp *e2obj = [[RaE2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
@@ -678,6 +795,7 @@
 	return cell;
 }
 
+/*
 - (void)cellLeftButton: (UIButton *)button		// PAID or Unpaid ボタン
 {
 	//AzLOG(@"button.tag=%ld", (long)button.tag);
@@ -773,7 +891,7 @@
 	//	return;
 	//}
 }
-
+*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {

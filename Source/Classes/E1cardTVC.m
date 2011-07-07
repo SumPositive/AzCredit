@@ -82,10 +82,9 @@
 		e1detail.PiAddRow = (-1); // 修正モード
 		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
-	
-	MindexPathEdit = indexPath;
 
 #ifdef  AzPAD
+	MindexPathEdit = indexPath;
 	//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e1detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];

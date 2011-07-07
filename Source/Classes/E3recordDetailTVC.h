@@ -42,6 +42,7 @@
 #endif
 	//----------------------------------------------assign
 	BOOL			MbE6dateChange;
+	BOOL			MbE1cardChange;
 	
 	BOOL			MbOptAntirotation;
 	BOOL			MbOptEnableInstallment;

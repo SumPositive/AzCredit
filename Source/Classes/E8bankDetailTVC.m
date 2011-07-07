@@ -313,7 +313,7 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 #ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:14];
+		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
 #else
 		cell.textLabel.font = [UIFont systemFontOfSize:12];

@@ -216,8 +216,11 @@
 					   NSLocalizedString(@"Sort Amount",nil),
 					   NSLocalizedString(@"Sort Index",nil), nil];
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
-
+#ifdef AzPAD
+	segment.frame = CGRectMake(0,0, 350,30);
+#else
 	segment.frame = CGRectMake(0,0, 210,30);
+#endif
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE4SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE4SortMode];
 	segment.selectedSegmentIndex = MiOptE4SortMode;

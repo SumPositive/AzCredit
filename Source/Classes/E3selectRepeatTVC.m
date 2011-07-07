@@ -144,8 +144,12 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  // Subtitle
 									   reuseIdentifier:CellIdentifier] autorelease];
 
-		cell.textLabel.textColor = [UIColor blackColor];
+#ifdef AzPAD
+		cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
+#endif
+		cell.textLabel.textColor = [UIColor blackColor];
 		cell.textLabel.textAlignment = UITextAlignmentLeft;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;

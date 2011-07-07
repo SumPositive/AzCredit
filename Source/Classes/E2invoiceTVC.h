@@ -22,10 +22,12 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE2list;
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
+	UIButton		*MbuPaid;
+	UIButton		*MbuUnpaid;
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
-	E2temp		*Me2cellButton;		// cellLeftButton:にて button.tag をセットして、alertView:にて参照。
+	//E2temp		*Me2cellButton;		// cellLeftButton:にて button.tag をセットして、alertView:にて参照。
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 

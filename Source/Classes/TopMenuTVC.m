@@ -59,37 +59,24 @@
 - (void)azInformationView
 {
 #ifdef  AzPAD
-/*	if (MinformationView) {
-		[MinformationView release], MinformationView = nil;
+	if ([MpopInformation isPopoverVisible]==NO) {
+		if (!MpopInformation) { //無ければ1度だけ生成する
+			InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+			MpopInformation = [[UIPopoverController alloc] initWithContentViewController:vc];
+			[vc release];
+		}
+		MpopInformation.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+		CGRect rcArrow;
+		if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
+			rcArrow = CGRectMake(0, 1027-60, 32,32);
+		} else {
+			rcArrow = CGRectMake(0, 768-60, 32,32);
+		}
+		[MpopInformation presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
+					   permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
 	}
-	MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-*/
-
-	InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-	UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:vc];
-	[vc release];
-	pop.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
-	CGRect rcArrow;
-	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
-		rcArrow = CGRectMake(0, 1027-60, 32,32);
-	} else {
-		rcArrow = CGRectMake(0, 768-60, 32,32);
-	}
-	[pop presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
-			permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
-	//[pop release] 不要
 #else
 	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
-/*	// ヨコ非対応につき正面以外は、hideするようにした。
-	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) {
-		return; // 正面だけにボタン表示するようにしたので通らないハズだが、念のため。
-	}
-	
-	if (MinformationView==nil) {
-		MinformationView = [[InformationView alloc] initWithFrame:[self.view.window bounds]];
-		[self.view.window addSubview:MinformationView]; //回転しないが、.viewから出すとToolBarが隠れない
-		//NG//[MinformationView release] viewDidUnloadにて解放
-	}*/
 	// モーダル UIViewController
 	if (MinformationView) {
 		[MinformationView release], MinformationView = nil;
@@ -104,26 +91,29 @@
 
 - (void)azSettingView
 {
-	SettingTVC *view = [[SettingTVC alloc] init];
 #ifdef  AzPAD
-	//[Mpopover release], Mpopover = nil;
-	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:vi];
-	UIPopoverController* pop = [[UIPopoverController alloc] initWithContentViewController:view];
-	pop.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
-	CGRect rcArrow;
-	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-		rcArrow = CGRectMake(768-32, 1027-60, 32,32);
-	} else {
-		rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+	if ([MpopSetting isPopoverVisible]==NO) {
+		if (!MpopSetting) { //無ければ1度だけ生成する
+			SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+			MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
+			[vc release];
+		}
+		MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+		CGRect rcArrow;
+		if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+			rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+		} else {
+			rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+		}
+		[MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
+					   permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
 	}
-	[pop presentPopoverFromRect:rcArrow	inView:self.navigationController.view  
-			permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-	//[pop release] 不要
 #else
+	SettingTVC *view = [[SettingTVC alloc] init];
 	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
-#endif
 	[view release];
+#endif
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -568,36 +558,24 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+	
+	if ([MpopInformation isPopoverVisible]) {
+		[MpopInformation dismissPopoverAnimated:YES];
+	}
+	
+	if ([MpopSetting isPopoverVisible]) {
+		[MpopSetting dismissPopoverAnimated:YES];
+	}
+	
 	if ([Mpopover isPopoverVisible]) {
-/*		// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
-		id nav = [Mpopover contentViewController];
-		//NSLog(@"nav=%@", nav);
-		if ([nav isMemberOfClass:[UINavigationController class]]) {
-			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
-				id vc = [nav visibleViewController];
-				//NSLog(@"vc=%@", vc);
-				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
-					[vc closePopover];
-				}
-			}
-		}*/
-		
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		if (MindexPathEdit) { 
-			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 			//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
 			rc.origin.y += 10;	rc.size.height -= 20;
 			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES]; //表示開始
-			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
-/*			CGSize currentSetSizeForPopover = GD_POPOVER_SIZE; // 最終的に設定したいサイズ
-			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES]; //表示開始
-			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰
- */
 		} 
 		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
@@ -638,6 +616,10 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+#ifdef AzPAD
+	[MpopInformation release], MpopInformation = nil;
+	[MpopSetting release], MpopSetting = nil;
+#endif
 	[self unloadRelease];
 	// @property (retain)
 	[Re0root release], Re0root = nil;

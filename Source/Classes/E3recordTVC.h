@@ -39,6 +39,7 @@
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
 	NSIndexPath*				MindexPathEdit;
+	UIPopoverController*	MpopSetting;			//回転時に閉じるため
 #endif
 	//----------------------------------------------assign
 	BOOL		MbOptAntirotation;
@@ -53,7 +54,7 @@
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
 // delegate method
-- (void)refreshTable:(BOOL)bSameDate;
+- (void)refreshE3recordTVC:(BOOL)bSameDate;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用

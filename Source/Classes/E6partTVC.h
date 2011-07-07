@@ -51,6 +51,11 @@
 @property (nonatomic, assign) NSMutableSet	*Pe2invoices;
 @property (nonatomic, assign) NSInteger		PiFirstSection;
 
+#ifdef AzPAD
+// delegate method
+- (void)refreshE6partTVC:(BOOL)bSame;
+#endif
+
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 
 @end

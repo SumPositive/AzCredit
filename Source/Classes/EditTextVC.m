@@ -114,20 +114,20 @@
 
 - (void)viewDesign
 {
-#ifdef xxxAzPAD
-	MtextView.frame = CGRectMake(10,0, self.view.bounds.size.width-20, self.view.bounds.size.height-10);	
+#ifdef AzPAD
+	MtextView.frame = self.view.bounds;
 #else
 	CGRect rect;
+	rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
+	rect.origin.x += 10;
+	rect.origin.y += 10;
+	rect.size.width -= 20;
 	float	fKeyHeight;
 	if (self.interfaceOrientation == UIInterfaceOrientationPortrait OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
 		fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
 	} else {
 		fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
 	}
-	rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
-	rect.origin.x += 10;
-	rect.origin.y += 10;
-	rect.size.width -= 20;
 	rect.size.height -= (20 + fKeyHeight);
 	MtextView.frame = rect;	
 #endif

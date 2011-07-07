@@ -17,6 +17,7 @@
 #import "E3selectRepeatTVC.h"
 #import "E4shopTVC.h"
 #import "E5categoryTVC.h"
+#import "E6partTVC.h"
 #import "EditDateVC.h"
 #import "EditTextVC.h"
 //#import "EditAmountVC.h"
@@ -232,9 +233,13 @@
 	
 #ifdef AzPAD
 	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(refreshTable:)]) {	// メソッドの存在を確認する
-			BOOL bSameDate = (MiSourceYearMMDD == GiYearMMDD( Re3edit.dateUse ));
-			[delegate refreshTable:bSameDate];// 親の再描画を呼び出す
+		if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+			BOOL bSame = (MiSourceYearMMDD == GiYearMMDD( Re3edit.dateUse ));
+			[delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
+		}
+		else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+			BOOL bSame = !MbE6dateChange && !MbE1cardChange;
+			[delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
 		}
 		[selfPopover dismissPopoverAnimated:YES];
 	}
@@ -409,6 +414,7 @@
 		// 初期化成功
 		MbSaved = NO;
 		MbE6dateChange = NO;
+		MbE1cardChange = NO;
 #ifdef AzPAD
 		MiSourceYearMMDD = 0;		// 初回のみ通すため
 		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
@@ -857,13 +863,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	if (indexPath.section==0 && 3<=indexPath.row) {
+#ifdef AzPAD
+		return 36; // Repeat, Payment
+#else
 		return 30; // Repeat, Payment
-	}
-#ifdef xxxxxxxxAzPAD
-	if (indexPath.section==1 && indexPath.row==2) {
-		return 100; // Memo - UITextView
-	}
 #endif
+	}
 	return 44; // デフォルト：44ピクセル
 }
 
@@ -883,23 +888,25 @@
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 											   reuseIdentifier:zCellIndex] autorelease];
 				cell.showsReorderControl = NO; // Move禁止
-				
+#ifdef AzPAD
 				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+				cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 必須内容表示　大きく
+#else
+				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+				cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
+#endif
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
 				cell.textLabel.textColor = [UIColor grayColor];
 				
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 			}
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
-#ifdef xxxxxxxAzPAD
-			cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
-#else
+
 			if (MbE6paid) {
 				cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 			}
-#endif
+
 			switch (indexPath.row) {
 				case 0: { // Use date	// NSDateは、GTM(+0000)協定時刻で記録 ⇒ 表示でタイムゾーン変換する
 					if (Re3edit.e1card && [Re3edit.e1card.nPayDay integerValue]==0) {	//[0.4]E3.dateUse を支払日とするモード
@@ -914,6 +921,9 @@
 						[df setDateFormat:NSLocalizedString(@"E3detailDate",nil)];
 					}
 					//AzLOG(@"Me3zDateUse=%@", Me3zDateUse);
+#ifdef AzPAD
+					cell.detailTextLabel.font = [UIFont systemFontOfSize:24]; // 特に大きく
+#endif
 					cell.detailTextLabel.text = [df stringFromDate:Re3edit.dateUse];
 					[df release];
 				} break;
@@ -970,7 +980,11 @@
 				case 3: // Repeat	//[0.4] (0)なし　(1)1ヶ月後　(2)2ヶ月後　(12)1年後
 				{
 					cell.textLabel.text = NSLocalizedString(@"Use Repeat",nil);
+#ifdef AzPAD
+					cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+#else
 					cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+#endif
 					switch ([Re3edit.nRepeat integerValue]) {
 						case  0: cell.detailTextLabel.text = NSLocalizedString(@"Repeat00", nil); break;
 						case  1: cell.detailTextLabel.text = NSLocalizedString(@"Repeat01", nil); break;
@@ -978,17 +992,18 @@
 						case 12: cell.detailTextLabel.text = NSLocalizedString(@"Repeat12", nil); break;
 						default: cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil); break;
 					}
-#ifdef xxxxxxxxxAzPAD
-					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
-#else
+
 					if (MbE6paid) cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 					else		  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-#endif
 				} break;
 					
 				case 4: // nPayType
 					cell.textLabel.text = NSLocalizedString(@"Use Payment",nil);
+#ifdef AzPAD
+					cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+#else
 					cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+#endif
 					switch ([Re3edit.nPayType integerValue]) {
 						case 1:
 							cell.detailTextLabel.text = NSLocalizedString(@"PayType 001",nil);
@@ -1016,18 +1031,19 @@
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 											   reuseIdentifier:zCellIndex] autorelease];
 				cell.showsReorderControl = NO; // Move禁止
-				
+#ifdef AzPAD
 				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+				cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 任意内容表示
+#else
+				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+				cell.detailTextLabel.font = [UIFont systemFontOfSize:16]; // 任意内容表示
+#endif
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
 				cell.textLabel.textColor = [UIColor grayColor];
 				cell.detailTextLabel.textColor = [UIColor blackColor];
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 			}
-#ifdef xxxxxxxxxxAzPAD
-			cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
-#else
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-#endif
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:16]; // 任意内容表示
+
 			switch (indexPath.row) {
 				case 0: // Shop
 				{
@@ -1073,9 +1089,13 @@
 				if (cell == nil) {
 					cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault // Subtitle
 												   reuseIdentifier:zCellE6part] autorelease];
+#ifdef AzPAD
+					cell.textLabel.font = [UIFont systemFontOfSize:16];
+#else
 					cell.textLabel.font = [UIFont systemFontOfSize:14];
+#endif
 					cell.textLabel.textAlignment = UITextAlignmentCenter;
-					cell.textLabel.text = @"©2000-2010 Azukid";
+					cell.textLabel.text = @"©2000-2011 Azukid";
 					cell.accessoryType = UITableViewCellAccessoryNone; // なし
 					cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 				}
@@ -1087,17 +1107,25 @@
 					cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault // Subtitle
 												   reuseIdentifier:zCellE6part] autorelease];
 					// 行毎に変化の無い定義は、ここで最初に1度だけする
+#ifdef AzPAD
+					cell.textLabel.font = [UIFont systemFontOfSize:20];
+#else
 					cell.textLabel.font = [UIFont systemFontOfSize:14];
-					cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-					cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
-					cell.detailTextLabel.textColor = [UIColor blackColor];
+#endif
+					//cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+					//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+					//cell.detailTextLabel.textColor = [UIColor blackColor];
 					cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 					
 					cellLabel = [[UILabel alloc] init];
 					cellLabel.textAlignment = UITextAlignmentRight;
 					cellLabel.textColor = [UIColor blackColor];
 					cellLabel.backgroundColor = [UIColor clearColor]; //grayColor <<DEBUG範囲チェック用
+#ifdef AzPAD
+					cellLabel.font = [UIFont systemFontOfSize:20];
+#else
 					cellLabel.font = [UIFont systemFontOfSize:14];
+#endif
 					cellLabel.tag = -1;
 					[cell addSubview:cellLabel]; [cellLabel release];
 				}
@@ -1135,20 +1163,12 @@
 				else if ([e6obj.nNoCheck intValue] == 1) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"];
 					cellButton.enabled = YES;
-#ifdef xxxxxxxxxxxAzPAD
-					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
-#else
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-#endif
 				} 
 				else {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"];
 					cellButton.enabled = YES;
-#ifdef xxxxxxxxxxAzPAD
-					cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
-#else
 					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-#endif
 				}
 				
 				// 支払日
@@ -1219,23 +1239,8 @@
 						evc.RzKey = @"dateUse";
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
-#ifdef xxxxxxxxAzPAD
-						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
-						UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-						//MpopoverView.delegate = self;  //閉じたとき再描画するため
-						[nc release];
-						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-						rc.origin.x += 30;  rc.size.width = 50;
-						rc.origin.y += 10;  rc.size.height -= 20;
-						MpopoverView.popoverContentSize = CGSizeMake(320, 390);	// Show Time時の幅(広くなる)に注意！
-						[MpopoverView presentPopoverFromRect:rc  inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-						evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-						evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
-#else
 						evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
-#endif
 						[evc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}
@@ -1256,23 +1261,11 @@
 						tvc.title = NSLocalizedString(@"Card choice",nil);
 						tvc.Re0root = Me0root;
 						tvc.Re3edit = Re3edit;
-#ifdef xxxxxxxxxxAzPAD
-						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
-						//MpopoverView.delegate = self;  //閉じたとき再描画するため
-						MpopoverView.popoverContentSize = CGSizeMake(400, 500);
-						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-						rc.origin.x += 30;  rc.size.width = 50;
-						rc.origin.y += 10;  rc.size.height -= 20;
-						[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-						tvc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-						tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#else
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
-#endif
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+						MbE1cardChange = YES;
 					}
 					break;
 					
@@ -1281,21 +1274,8 @@
 						E3selectRepeatTVC *tvc = [[E3selectRepeatTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Repeat",nil);
 						tvc.Re3edit = Re3edit;
-#ifdef xxxxxxxxxxxxxAzPAD
-						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
-						//MpopoverView.delegate = self;  //閉じたとき再描画するため
-						MpopoverView.popoverContentSize = CGSizeMake(280, 270);
-						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-						rc.origin.x += 30;  rc.size.width = 50;
-						rc.origin.y += 10;  rc.size.height -= 20;
-						[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-						tvc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-						tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#else
 						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
-#endif
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					} break;
@@ -1307,21 +1287,8 @@
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
 						tvc.Re3edit = Re3edit;
-#ifdef xxxxxxxxxAzPAD
-						//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-						MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
-						//MpopoverView.delegate = self;  //閉じたとき再描画するため
-						MpopoverView.popoverContentSize = CGSizeMake(250, 180);
-						CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-						rc.origin.x += 30;  rc.size.width = 50;
-						rc.origin.y += 10;  rc.size.height -= 20;
-						[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-						tvc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-						tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#else
 						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
-#endif
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}
@@ -1339,22 +1306,10 @@
 							tvc.title = NSLocalizedString(@"Shop choice",nil);
 							tvc.Re0root = Me0root;
 							tvc.Pe3edit = Re3edit;
+#ifdef AzPAD
 							tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#ifdef xxxxxxxxxxAzPAD
-							//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-							UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
-							MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-							[nc release];
-							//MpopoverView.delegate = self;  //閉じたとき再描画するため
-							//規定サイズにする//MpopoverView.popoverContentSize = CGSizeMake(400, 700);
-							CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-							rc.origin.x += 30;  rc.size.width = 50;
-							rc.origin.y += 10;  rc.size.height -= 20;
-							[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-							tvc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-#else
-							[self.navigationController pushViewController:tvc animated:YES];
 #endif
+							[self.navigationController pushViewController:tvc animated:YES];
 							[tvc release];
 							MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						}
@@ -1367,22 +1322,10 @@
 					tvc.title = NSLocalizedString(@"Category choice",nil);
 					tvc.Re0root = Me0root;
 					tvc.Pe3edit = Re3edit;
+#ifdef AzPAD
 					tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#ifdef xxxxxxxxAzPAD
-					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:tvc];
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					[nc release];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					//規定サイズにする//MpopoverView.popoverContentSize = CGSizeMake(400, 700);
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-					tvc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
 #endif
+					[self.navigationController pushViewController:tvc animated:YES];
 					[tvc release];
 					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
@@ -1395,23 +1338,8 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef xxxxxxxxAzPAD
-					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					[nc release];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					MpopoverView.popoverContentSize = CGSizeMake(400, 200);
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	//[Done]にて、viewWillAppear を呼び出すため
-#else
 					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
 					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;

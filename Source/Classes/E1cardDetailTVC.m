@@ -146,8 +146,11 @@
 {
     [super viewWillAppear:YES];
 	
+#ifdef AzPAD
+#else
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+#endif
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -255,18 +258,17 @@
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 									   reuseIdentifier:zCellIndex] autorelease];
-#ifdef xxxxAzPAD
-		cell.accessoryType = UITableViewCellAccessoryNone; //Pad:Popover
-#else
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-#endif
 		cell.showsReorderControl = NO; // Move禁止
-
+#ifdef AzPAD
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+#else
+		cell.textLabel.font = [UIFont systemFontOfSize:12];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+#endif
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
-		
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
 		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 		cell.detailTextLabel.textColor = [UIColor blackColor];
 	}
@@ -361,7 +363,11 @@
 						MlbNote.numberOfLines = 0;
 						MlbNote.lineBreakMode = UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
 						//MlbNote.textAlignment = UITextAlignmentLeft; // 左寄せ(Default)
+#ifdef AzPAD
+						MlbNote.font = [UIFont systemFontOfSize:20];
+#else
 						MlbNote.font = [UIFont systemFontOfSize:14];
+#endif
 						MlbNote.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbNote];  [MlbNote release];
 					}

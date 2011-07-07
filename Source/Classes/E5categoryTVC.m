@@ -211,7 +211,7 @@
 					   NSLocalizedString(@"Sort Index",nil), nil]; // release不要
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
 #ifdef AzPAD
-	segment.frame = CGRectMake(0,0, 300,30);
+	segment.frame = CGRectMake(0,0, 350,30);
 #else
 	segment.frame = CGRectMake(0,0, 210,30);
 #endif

@@ -142,7 +142,11 @@
 	//------------------------------------------------------
 	MlbDebit = [[UILabel alloc] init];
 	MlbDebit.text = NSLocalizedString(@"PayDay Debit msg",nil);
+#ifdef AzPAD
+	MlbDebit.font = [UIFont systemFontOfSize:14];
+#else
 	MlbDebit.font = [UIFont systemFontOfSize:12];
+#endif
 	MlbDebit.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbDebit]; [MlbDebit release];
 	//------------------------------------------------------
@@ -152,41 +156,49 @@
 {
 	CGRect rect = self.view.bounds;
 
-	rect.origin.x = 0;
+#ifdef AzPAD
+	float fXofs = (rect.size.width - 320) / 2.0;
+	float fYofs = 60;
+#else
+	float fXofs = 0;
+	float fYofs = 0;
+#endif
+
+	rect.origin.x = fXofs;
 	//---------------------------- Picker
-	rect.origin.y = 25;
+	rect.origin.y = fYofs + 25;
 	rect.size.height = GD_PickerHeight;
 	rect.size.width = 320;
 	Mpicker.frame = rect;
 	
 	//---------------------------- Picker見出しラベル
-	rect.origin.y = 5;
+	rect.origin.y = fYofs + 5;
 	rect.size.width = 80;
 	rect.size.height = 20;
 	//float fcx = 320 / 2;
 	// 左
-	rect.origin.x = 10; //fcx - (rect.size.width * 1.5) - 20;
+	rect.origin.x = fXofs + 10; //fcx - (rect.size.width * 1.5) - 20;
 	MlbClosing.frame = rect;
 	// 中央
-	rect.origin.x = 100; //fcx - (rect.size.width / 2);
+	rect.origin.x = fXofs + 100; //fcx - (rect.size.width / 2);
 	MlbPayMonth.frame = rect;
 	// 右
-	rect.origin.x = 200; //fcx + (rect.size.width / 2) + 20;
+	rect.origin.x = fXofs + 200; //fcx + (rect.size.width / 2) + 20;
 	MlbPayDay.frame = rect;
 	
 	//---------------------------- Debit
 	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
 	{	// タテ
 		// 中央
-		rect.origin.y += GD_PickerHeight + 80;
+		rect.origin.y += (GD_PickerHeight + 80);
 		rect.size.width = 80;
-		rect.origin.x = 160 - (rect.size.width / 2);
+		rect.origin.x = fXofs + 160 - (rect.size.width / 2);
 		rect.size.height = 30;
 		MbuDebit.frame = rect;
 		// 中央
-		rect.origin.y += rect.size.height;
-		rect.size.width = 300;
-		rect.origin.x = 160 - (rect.size.width / 2);
+		rect.origin.y += (rect.size.height + 5);
+		rect.size.width = 360;
+		rect.origin.x = fXofs + 160 - (rect.size.width / 2);
 		rect.size.height = 50;
 		MlbDebit.frame = rect;
 		MlbDebit.textAlignment = UITextAlignmentCenter;
@@ -196,7 +208,7 @@
 		// Pickerの右
 		rect.origin.x = 320 + 40;
 		rect.size.width = 80;
-		rect.origin.y = 80;
+		rect.origin.y = fYofs + 80;
 		rect.size.height = 30;
 		MbuDebit.frame = rect;
 		// 下

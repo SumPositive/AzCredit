@@ -29,6 +29,21 @@
 @synthesize PiFirstSection;
 
 
+#pragma mark - Delegate
+
+#ifdef AzPAD
+- (void)refreshE6partTVC:(BOOL)bSame	//=YES:支払先と支払日が変更なし、ならば行だけ再表示
+{
+	if (bSame && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+	} else {
+		[self viewWillAppear:YES];
+	}
+}
+#endif
+
+
 #pragma mark - Action
 
 // アラートボタンが押されたときに呼び出される
@@ -98,7 +113,7 @@
 	[Mpopover presentPopoverFromRect:rc
 							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
-	e3detail.delegate = self;		// refresh callback
+	e3detail.delegate = self;		// refreshTable: callback
 #else
 	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];

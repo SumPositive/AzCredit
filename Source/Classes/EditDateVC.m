@@ -202,10 +202,26 @@
 - (void)viewDesign
 {
 	CGRect rect = self.view.bounds;
+
+#ifdef AzPAD
+	rect.size.width = 320;
+	rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+	rect.size.height = GD_PickerHeight;
+	rect.origin.y = (self.view.bounds.size.height - rect.size.height) / 2;
+	MdatePicker.frame = rect;
 	
+	rect.size.width = 150;
+	rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+	rect.size.height = 30;
+	rect.origin.y = 60;
+	MbuToday.frame = rect;
 	
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	rect.origin.y = self.view.bounds.size.height - 90;
+	MbuYearTime.frame = rect;
+
+#else
+
+	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
 	{	// タテ
 		rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
 		rect.size.height = GD_PickerHeight;
@@ -234,6 +250,7 @@
 		rect.origin.x = (self.view.bounds.size.width/2) + 50;
 		MbuYearTime.frame = rect;
 	}
+#endif
 }	
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
