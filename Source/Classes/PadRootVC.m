@@ -12,14 +12,13 @@
 
 
 @interface PadRootVC (PrivateMethods)
-#ifdef FREE_AD_PAD
+#ifdef xxxFREE_AD_PAD
 - (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
 #endif
 @end
 
 
 @implementation PadRootVC
-//@synthesize popoverController;
 @synthesize popoverButtonItem;
 
 
@@ -29,7 +28,7 @@
     //[popoverController release], popoverController = nil;
    [popoverButtonItem release], popoverButtonItem = nil;
 
-#ifdef FREE_AD_PAD
+#ifdef xxxFREE_AD_PAD
 	if (MbannerView) {
 		[MbannerView cancelBannerViewAction];	// 停止
 		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
@@ -85,7 +84,11 @@
 												alpha:1.0f];
 	
 	//------------------------------------------アイコン
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(124,124, 72,72)];
+	CGRect rect = self.view.bounds;
+	rect.origin.x = rect.size.width/2.0 - 72;  //故意に少し左寄せしている
+	rect.origin.y = 88;
+	rect.size.width = rect.size.height = 72;
+	UIImageView *iv = [[UIImageView alloc] initWithFrame:rect];
 #ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
 #else
@@ -95,7 +98,7 @@
 	[iv release], iv = nil;
 
 
-#ifdef FREE_AD_PAD
+#ifdef xxxxxxxxFREE_AD_PAD
 	//--------------------------------------------AdMob
 	RoAdMobView = [[GADBannerView alloc] initWithFrame:CGRectMake(
 																  0, 0, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height)];
@@ -190,7 +193,7 @@
 	self.popoverButtonItem = nil;
 }
 
-#ifdef FREE_AD_PAD
+#ifdef xxxFREE_AD_PAD
 // shouldAutorotateToInterfaceOrientation で YES を返すと、回転開始時に呼び出される
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration

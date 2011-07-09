@@ -150,13 +150,21 @@
 {
     [super loadView];
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MbuTop = nil;	// ここ(loadView)で生成
+	//MbuTop = nil;	// ここ(loadView)で生成
 	MbuAdd = nil;	// ここ(loadView)で生成
 	
-	// Set up NEXT Left [Back] buttons.
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+	// Set up NEXT Left Back [<] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-									   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"] // <<
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#else
+	// Set up NEXT Left Back [<<] buttons.
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#endif
 	
 	if (Re3edit == nil) {	//編集モード
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -170,12 +178,17 @@
 	if (Re3edit == nil) {	//編集モード　／ 選択モードならば、MbuAdd = MbuTop = nill;
 		MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 															   target:self action:@selector(barButtonAdd)];
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+#ifdef AzPAD
+		NSArray *buArray = [NSArray arrayWithObjects: buFlex, MbuAdd, nil];
+		[self setToolbarItems:buArray animated:YES];
+#else
+		UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
-		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
+		NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[MbuTop release];
+		[buTop release];
+#endif
 		[MbuAdd release];
 	}
 	else {  //選択モード

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#ifdef FREE_AD_PAD
+#ifdef xxxxxFREE_AD_PAD
 #import <iAd/iAd.h>
 #import "GADBannerView.h"
 #endif
@@ -21,7 +21,7 @@
 
 
 @interface PadRootVC : UIViewController <UISplitViewControllerDelegate
-#ifdef FREE_AD_PAD
+#ifdef xxxxxxFREE_AD_PAD
 	,ADBannerViewDelegate
 #endif
 >
@@ -30,7 +30,7 @@
     //UIPopoverController		*popoverController;    
     UIBarButtonItem				*popoverButtonItem;
 	
-#ifdef FREE_AD_PAD
+#ifdef xxxFREE_AD_PAD
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
 	BOOL						MbAdBannerShow;  // =NO:非表示（表示禁止中）
@@ -40,7 +40,7 @@
 //@property (nonatomic, retain) UIPopoverController		*popoverController;
 @property (nonatomic, retain) UIBarButtonItem			*popoverButtonItem;
 
-#ifdef FREE_AD_PAD
+#ifdef xxxFREE_AD_PAD
 - (void)adBannerShow:(BOOL)bShow;
 #endif
 

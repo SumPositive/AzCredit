@@ -151,7 +151,9 @@
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
 	// なし
 	
-	// Tool Bar Button
+#ifdef AzPAD
+	// Tool Bar Button なし
+#else
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
 	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
@@ -161,7 +163,8 @@
 	[self setToolbarItems:buArray animated:YES];
 	[buTop release];
 	[buFlex release];
-
+#endif
+	
 #ifdef FREE_AD
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用

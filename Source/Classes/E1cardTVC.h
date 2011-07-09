@@ -29,7 +29,7 @@
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE1cards;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
-	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
+	//UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;

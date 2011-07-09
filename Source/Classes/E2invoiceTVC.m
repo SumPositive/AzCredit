@@ -210,10 +210,17 @@
 
 	//self.tableView.backgroundColor = [UIColor brownColor];
 
-	// Set up NEXT Left [Back] buttons.
+#ifdef AzPAD
+	// Set up NEXT Left Back [<<] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-									   initWithImage:[UIImage imageNamed:@"Icon16-Return3.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#else
+	// Set up NEXT Left Back [<<<] buttons.
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return3.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#endif
 	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace

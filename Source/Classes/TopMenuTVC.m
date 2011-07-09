@@ -41,11 +41,11 @@
 - (void)azInformationView;
 - (void)azSettingView;
 - (void)e3recordAdd;
-
 #ifdef FREE_AD
-//- (void)iAdOn;
-//- (void)iAdOff;
 - (void)AdShowApple:(BOOL)bApple AdMob:(BOOL)bMob;
+- (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
+#endif
+#ifdef FREE_AD_PAD
 - (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
 #endif
 @end
@@ -168,18 +168,27 @@
 	e3detail.PiAdd = (1); // (1)New Add
 	
 #ifdef  AzPAD
-	//Mpopover = [[PadPopoverInNaviCon alloc] initWithContentViewController:e3detail];
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	[naviRight popToRootViewControllerAnimated:NO];
+#ifdef FREE_AD_PAD
+	if (!MbAdBannerShow) {
+		[self adBannerShow:YES];	// E3Add状態のときだけｉＡｄ表示する
+	}
+#endif
+	// セル選択状態にする
+	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+	//
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	[nc release];
 	MindexPathEdit = [NSIndexPath indexPathForRow:0 inSection:0];
 	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-	//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
+	rc.origin.x += (rc.size.width - 30);		rc.size.width = 20;	// 右側にPopoverさせるため
 	rc.origin.y += 10;	rc.size.height -= 20;
-	//Mpopover.popoverContentSize = E3DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc
-							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 	e3detail.selfPopover = Mpopover;  [Mpopover release];
 	e3detail.delegate = nil;	// ここでは、再描画不要
 #else
@@ -304,6 +313,104 @@
  */
 #endif
 
+#ifdef FREE_AD_PAD
+- (void)bannerViewWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
+{
+	if (MbannerView) {
+		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
+			// iOS4.2より前
+			if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+			} else {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+			}
+		} else {
+			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
+			if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+			} else {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+			}
+		}
+		if (MbAdBannerShow) {
+			MbannerView.frame = CGRectMake(0,44,  0,0);
+		} else {
+			MbannerView.frame = CGRectMake(0,-200,  0,0);  // 非表示
+		}
+	}
+}
+
+//- (void)AdShowApple:(BOOL)bApple AdMob:(BOOL)bMob
+- (void)adBannerShow:(BOOL)bShow
+{
+	AzLOG(@"=== adBannerShow[%d] ===", bShow);
+	MbAdBannerShow = bShow;
+	if (bShow==NO) { // 表示禁止
+		if (MbannerView==nil || MbannerView.frame.origin.y<0 ) return; // 既に非表示
+	}
+	
+	const float fOffset = -200;  // 上に隠す
+	// 開始位置：非表示位置
+	if (bShow && MbannerView) { // && MbannerEnabled  && MbannerActive
+		[self bannerViewWillRotate:self.splitViewController.interfaceOrientation]; // この時点の向きによりY座標修正
+		CGRect rc = MbannerView.frame;
+		rc.origin.y += fOffset;
+		MbannerView.frame = rc;
+	}
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:1.6];
+	
+	if (MbannerView) {  // && MbannerEnabled && MbannerActive
+		CGRect rc = MbannerView.frame;
+		if (bShow) {
+			rc.origin.y -= fOffset;
+			MbannerView.delegate = self;
+		} else {
+			rc.origin.y += fOffset;
+			MbannerView.delegate = nil; // 割り込み禁止
+		}
+		MbannerView.frame = rc;
+	}
+	// AdMob 常時表示
+	[UIView commitAnimations];
+}
+
+
+// iAd取得できたときに呼ばれる　⇒　表示する
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner
+{
+	AzLOG(@"=== bannerViewDidLoadAd ===");
+	if (MbannerView && MbAdBannerShow) { // 許可中のみ通す ＜＜＜表示禁止中に呼び出されてもパスするように
+		[self adBannerShow:YES];
+	}
+}
+
+// iAd取得できなかったときに呼ばれる　⇒　非表示にする
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+{
+	if (MbannerView) {	// && MbannerActive
+		AzLOG(@"=== didFailToReceiveAdWithError ===");
+		[self adBannerShow:NO];
+	}
+}
+
+// iAdバナーをタップしたときに呼ばれる
+- (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
+{	// 広告表示前にする処理があれば記述
+	return YES;
+}
+
+/*
+ - (void)bannerViewActionDidFinish:(ADBannerView *)banner
+ {
+ AzLOG(@"===== bannerViewActionDidFinish =====");
+ //[self iAdOff];  一度見れば消えるようにする
+ }
+ */
+#endif
+
 
 #pragma mark - View lifecycle
 
@@ -336,10 +443,14 @@
 	NSLog(@"--- loadView ---");
 	[super loadView];
 
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+#else
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
 									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#endif
 	
 #if defined(AzFREE) && !defined(AzPAD)
 	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free.png"]];
@@ -356,19 +467,65 @@
 	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
 													  style:UIBarButtonItemStylePlain  //Bordered
 													 target:self action:@selector(azInformationView)];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
 	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
 															 target:self action:@selector(azSettingView)];
+#ifdef AzPAD
+	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buSet, nil];
+	[self setToolbarItems:buArray animated:YES];
+#else
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																		   target:self action:@selector(barButtonAdd)];
 	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[MbuToolBarInfo release];
 	[buAdd release];
+#endif
+	[MbuToolBarInfo release];
 	[buSet release];
 	[buFlex release];
 #endif	
 	
+#ifdef FREE_AD_PAD
+	//--------------------------------------------AdMob
+	RoAdMobView = [[GADBannerView alloc] initWithFrame:CGRectMake(
+																  0, 0, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height)];
+	RoAdMobView.alpha = 1;
+	RoAdMobView.adUnitID = AdMobID_iPad;
+	RoAdMobView.rootViewController = self.splitViewController;
+	//[self.view addSubview:RoAdMobView];
+	[self.splitViewController.view addSubview:RoAdMobView];
+	
+	GADRequest *request = [GADRequest request];
+	//[request setTesting:YES];
+	[RoAdMobView loadRequest:request];	
+	
+	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
+	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
+		//													出現前の隠れる↓位置を指定している。
+		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectZero]; 
+		
+		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
+			// iOS4.2より前
+			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+														  ADBannerContentSizeIdentifier320x50,
+														  ADBannerContentSizeIdentifier480x32, nil];
+		} else {
+			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
+			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape, nil];
+		}
+		//[self bannerViewWillRotate:self.splitViewController.interfaceOrientation];  // 表示位置セット
+		MbannerView.delegate = self;
+		//[self.view addSubview:MbannerView];
+		[self.splitViewController.view addSubview:MbannerView];
+		//retainCount +2 --> unloadRelease:にて　-2 している
+	}
+	
+	[self willRotateToInterfaceOrientation:self.splitViewController.interfaceOrientation duration:0];
+	//[self adBannerShow:YES]// E1viewController:viewDidAppear:にて表示開始している
+#endif
+
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
@@ -486,8 +643,9 @@
 	[self AdShowApple:NO AdMob:YES];
 #endif
 #ifdef FREE_AD_PAD
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate.padRootVC adBannerShow:YES];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//[appDelegate.padRootVC adBannerShow:YES];
+	[self adBannerShow:YES];
 #endif
 	
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
@@ -509,8 +667,9 @@
 	[self AdShowApple:NO AdMob:NO];
 #endif
 #ifdef FREE_AD_PAD
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate.padRootVC adBannerShow:NO];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//[appDelegate.padRootVC adBannerShow:NO];
+	[self adBannerShow:NO];
 #endif
 }
 
@@ -552,6 +711,24 @@
 #ifdef FREE_AD
 	[self bannerViewWillRotate:toInterfaceOrientation];
 #endif
+#ifdef FREE_AD_PAD
+	if (MbannerView) {
+		[self bannerViewWillRotate:toInterfaceOrientation];
+	}
+	if (RoAdMobView) {
+		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
+			RoAdMobView.frame = CGRectMake(
+										   768-150-GAD_SIZE_300x250.width,
+										   1024-64-GAD_SIZE_300x250.height,
+										   GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
+		} else {	// ヨコ
+			RoAdMobView.frame = CGRectMake(
+										   10,
+										   768-64-GAD_SIZE_300x250.height,
+										   GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
+		}
+	}
+#endif
 }
 
 #ifdef AzPAD
@@ -573,14 +750,17 @@
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			//rc.origin.x += rc.size.width/2;		rc.size.width /= 2;	// 右に寄せる、次のPopoverをできるだけ左側に表示するため
+			rc.origin.x += (rc.size.width - 30);		rc.size.width = 20;	// 右側にPopoverさせるため
 			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES]; //表示開始
-		} 
-		else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
-			//[Mpopover release], Mpopover = nil;
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
+					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+		} else {
+			// アンカー位置 [Menu]
+			CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+			rc.origin.x = 60;		rc.size.width = 20;
+			rc.origin.y = 30;		rc.size.height = 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES]; //表示開始
 		}
 	}
 }
@@ -604,6 +784,19 @@
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
 		[RoAdMobView release], RoAdMobView = nil;	// 破棄
+	}
+#endif
+#ifdef FREE_AD_PAD
+	if (MbannerView) {
+		[MbannerView cancelBannerViewAction];	// 停止
+		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
+		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
+		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
+	}
+	
+	if (RoAdMobView) {	// AdMobは、unloadReleaseすると落ちる
+		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+		[RoAdMobView release], RoAdMobView = nil;
 	}
 #endif
 	
@@ -679,7 +872,7 @@
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (section==0) return @"\n\n";	// iAd上部スペース
+	if (section==0) return @"\n\n\n";	// iAd上部スペース
 	return nil;
 }
 #endif
@@ -690,7 +883,11 @@
 #ifndef AzMAKE_SPLASHFACE
 	switch (section) {
 		case 3:
+#ifdef FREE_AD_PAD
+			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n\n\n\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
+#else
 			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
+#endif
 			break;
 	}
 #endif
@@ -715,7 +912,7 @@
 									   reuseIdentifier:CellIdentifier] autorelease];
 
 #ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:20];
+		cell.textLabel.font = [UIFont systemFontOfSize:18];
 #else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
@@ -760,7 +957,7 @@
 						NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 						[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル（先頭に通貨記号が付く）
 						[formatter setLocale:[NSLocale currentLocale]]; 
-#ifdef AzPAD
+#ifdef xxxAzPAD
 						cell.textLabel.text = [NSString stringWithFormat:@"%@      （%@  %@）", 
 											   NSLocalizedString(@"Payment list",nil), 
 											   NSLocalizedString(@"Unpaid",nil), 
@@ -823,7 +1020,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+#ifdef AzPAD
+	// 選択状態のまま
+#ifdef FREE_AD_PAD
+	if (indexPath.section!=0 || indexPath.row!=0) {
+		[self adBannerShow:NO];	// E3Addでなければ、ｉＡｄ非表示
+	}
+#endif
+#else
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+#endif
 	
 /*	// Comback-L0 TopMenu 記録
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -843,8 +1049,7 @@
 					[self e3recordAdd]; // E3record 新規追加
 					break;
 				case 1: // 最近の明細　E3 < E3detail
-				{
-					// E3records へ
+				{	// E3records へ
 					E3recordTVC *tvc = [[E3recordTVC alloc] init];
 #ifdef AzDEBUG
 					tvc.title = [NSString stringWithFormat:@"E3 %@", cell.textLabel.text];
@@ -855,7 +1060,14 @@
 					//tvc.Pe1card = nil;  // =nil:最近の全E3表示モード　　=e1obj:指定E1以下を表示することができる
 					tvc.Pe4shop = nil;
 					tvc.Pe5category = nil;
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:tvc animated:YES];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;
@@ -875,7 +1087,14 @@
 					tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
 #endif
 					tvc.Re0root = Re0root;
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:tvc animated:YES];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;
@@ -890,7 +1109,14 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Re3edit = nil;
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:tvc animated:YES];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;
@@ -905,7 +1131,14 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Pe1card = nil;
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:tvc animated:YES];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;
@@ -927,7 +1160,9 @@
 					tvc.Pe3edit = nil;
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					[[apd.mainController.viewControllers objectAtIndex:0] pushViewController:tvc animated:YES];	//[0]Left
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:tvc animated:YES];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -944,7 +1179,14 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Pe3edit = nil;
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:tvc animated:YES];
+#else
 					[self.navigationController pushViewController:tvc animated:YES];
+#endif
 					[tvc release];
 				}
 					break;
@@ -961,7 +1203,14 @@
 					goodocs.title = cell.textLabel.text;
 					goodocs.Re0root = Re0root;
 					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					[naviRight popToRootViewControllerAnimated:NO];
+					[naviRight pushViewController:goodocs animated:YES];
+#else
 					[self.navigationController pushViewController:goodocs animated:YES];
+#endif
 					[goodocs release];
 				}
 					break;
@@ -972,7 +1221,14 @@
 					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
 					vi.Pe0root = Re0root;
 					vi.tag = TAG_VIEW_HttpServer; // 表示中は回転禁止にするために参照している
+#ifdef AzPAD
+					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					//[naviRight pushViewController:goodocs animated:YES];
+					[naviRight.view addSubview:vi];
+#else
 					[self.view addSubview:vi];
+#endif
 					[vi show];
 					[vi release];
 				}

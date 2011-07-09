@@ -187,10 +187,18 @@
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
 	MbuTop = nil;		// ここ(loadView)で生成
 	
-	// Set up NEXT Left [Back] buttons.
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+	// Set up NEXT Left Back [<] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-		   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"] // <<
-		   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#else
+	// Set up NEXT Left Back [<<] buttons.
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#endif
 
 	if (Pe3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -241,12 +249,17 @@
 		[buUntitled release];
 	}
 	else {
+#ifdef AzPAD
+		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buSort, buFlex, buAdd, nil];
+		[self setToolbarItems:buArray animated:YES];
+#else
 		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
 												 target:self action:@selector(barButtonTop)];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buSort, buFlex, buAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
 		[MbuTop release];
+#endif
 	}
 	[buAdd release];
 	[buFlex release];

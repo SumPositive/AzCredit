@@ -145,11 +145,21 @@
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	[nc release];
 	MindexPathEdit = indexPath;
-	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-	rc.size.width /= 2;
-	rc.origin.y += 10;	rc.size.height -= 20;
-	[Mpopover presentPopoverFromRect:rc
-							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+	CGRect rc;
+	if (indexPath) {
+		rc = [self.tableView rectForRowAtIndexPath:indexPath];
+		rc.size.width /= 2;
+		rc.origin.y += 10;	rc.size.height -= 20;
+		[Mpopover presentPopoverFromRect:rc inView:self.tableView  
+				permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+	} else {
+		rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+		rc.origin.x += (rc.size.width - 20) / 2;		rc.size.width = 20;
+		rc.origin.y += (rc.size.height + 10);			rc.size.height = 20;
+		//NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
+		[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+				permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
+	}
 	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
 	e3detail.delegate = self;		// refresh callback
 #else
@@ -427,22 +437,31 @@
 	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
 	// なし
 	
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+#endif
+
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																		   target:self action:@selector(barButtonAdd)];
+#ifdef AzPAD
+	NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
+	[self setToolbarItems:buArray animated:YES];
+#else
 	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
 															 target:self action:@selector(barButtonTop)];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
 	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
 															 target:self action:@selector(azSettingView)];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buSet release];
-	[buAdd release];
 	[buTop release];
+	[buSet release];
+#endif
+	[buAdd release];
 	[buFlex release];
 	
 #ifdef FREE_AD
@@ -566,11 +585,17 @@
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 			rc.size.width /= 2;
 			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-		} 
-		else {
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
+					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+		} else {
 			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
+			//[Mpopover dismissPopoverAnimated:YES];
+			// アンカー位置 [+]
+			CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+			rc.origin.x += (rc.size.width - 20) / 2;		rc.size.width = 20;
+			rc.origin.y += (rc.size.height + 10);			rc.size.height = 20;
+			[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+					permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
 		}
 	}
 #endif

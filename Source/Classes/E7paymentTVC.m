@@ -161,12 +161,22 @@ static UIColor *MpColorBlue(float percent) {
 
 	//self.tableView.backgroundColor = [UIColor clearColor];
 
-	// Set up NEXT Left [Back] buttons.
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+	// Set up NEXT Left Back [<] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-									   initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#else
+	// Set up NEXT Left Back [<<] buttons.
+	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+#endif
 	
-	// Tool Bar Button
+#ifdef AzPAD
+	// Tool Bar Button なし
+#else
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
 	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
@@ -176,7 +186,8 @@ static UIColor *MpColorBlue(float percent) {
 	[self setToolbarItems:buArray animated:YES];
 	[buTop release];
 	[buFlex release];
-
+#endif
+	
 	// PAID  ボタン
 	if (MbuPaid==nil) {
 		MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease

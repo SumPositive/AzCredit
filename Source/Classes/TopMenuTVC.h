@@ -13,6 +13,10 @@
 #ifdef FREE_AD
 #import "GADBannerViewDelegate.h"
 #endif
+#ifdef FREE_AD_PAD
+#import <iAd/iAd.h>
+#import "GADBannerView.h"
+#endif
 
 @class InformationView;
 
@@ -21,6 +25,9 @@
 	,UIPopoverControllerDelegate
 #endif
 #ifdef FREE_AD
+	,ADBannerViewDelegate
+#endif
+#ifdef FREE_AD_PAD
 	,ADBannerViewDelegate
 #endif
 >
@@ -46,6 +53,11 @@
 	GADBannerView		*RoAdMobView;
 	BOOL						MbAdCanVisible;		//[1.0.1]=YES:表示可能　=NO:表示厳禁
 #endif
+#ifdef FREE_AD_PAD
+	ADBannerView		*MbannerView;
+	GADBannerView		*RoAdMobView;
+	BOOL						MbAdBannerShow;  // =NO:非表示（表示禁止中）
+#endif
 	//----------------------------------------------assign
 	NSInteger	MiE1cardCount;
 	BOOL			MbOptAntirotation;
@@ -53,6 +65,10 @@
 }
 
 @property (nonatomic, retain) E0root				*Re0root;
+
+#ifdef FREE_AD_PAD
+- (void)adBannerShow:(BOOL)bShow;
+#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 

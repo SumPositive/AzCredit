@@ -115,11 +115,11 @@
 	topMenuTvc.Re0root = e0node; // TopMenuTVC側でretain
 
 #ifdef AzPAD
+	// topMenu を [0] naviLeft へ登録
+	UINavigationController* naviLeft = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
+	// padRootVC を [1] naviRight へ登録
 	padRootVC = [[PadRootVC alloc] init]; // retainされる
-	// padRootVC を [0] naviLeft へ登録
-	UINavigationController* naviLeft = [[UINavigationController alloc] initWithRootViewController:padRootVC];
-	// topMenu を [1] naviRight へ登録
-	UINavigationController* naviRight = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
+	UINavigationController* naviRight = [[UINavigationController alloc] initWithRootViewController:padRootVC];
 	// mainController へ登録
 	mainController = [[UISplitViewController alloc] init];
 	mainController.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
