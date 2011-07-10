@@ -19,6 +19,7 @@
 #endif
 
 @class InformationView;
+@class E0root;
 
 @interface TopMenuTVC : UITableViewController  <UITextFieldDelegate
 #ifdef AzPAD
@@ -35,6 +36,9 @@
 @private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	E0root				*Re0root;
+#ifdef AzPAD
+	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+#endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -42,7 +46,7 @@
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
-	NSIndexPath*				MindexPathEdit;
+	//NSIndexPath*				MindexPathEdit;
 	UIPopoverController*	MpopInformation;	//回転時に閉じるため
 	UIPopoverController*	MpopSetting;			//回転時に閉じるため
 #else
@@ -65,11 +69,18 @@
 }
 
 @property (nonatomic, retain) E0root				*Re0root;
+#ifdef AzPAD
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
+#endif
 
 #ifdef FREE_AD_PAD
 - (void)adBannerShow:(BOOL)bShow;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
+#ifdef AzPAD
+- (void)setPopover:(UIPopoverController*)pc;
+- (void)e3recordAdd;	//PadRootVCからdelegate呼び出しされる
+#endif
 
 @end

@@ -32,6 +32,7 @@
 @synthesize	Me3dateUse;
 #ifdef AzPAD
 @synthesize padRootVC;
+@synthesize barMenu;
 #endif
 
 
@@ -119,6 +120,7 @@
 	UINavigationController* naviLeft = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
 	// padRootVC を [1] naviRight へ登録
 	padRootVC = [[PadRootVC alloc] init]; // retainされる
+	padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
 	UINavigationController* naviRight = [[UINavigationController alloc] initWithRootViewController:padRootVC];
 	// mainController へ登録
 	mainController = [[UISplitViewController alloc] init];

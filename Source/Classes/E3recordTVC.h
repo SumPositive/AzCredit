@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GADBannerView.h"
 
-//@class E2invoice;
 
 @interface E3recordTVC : UITableViewController <UIActionSheetDelegate
 #ifdef AzPAD
@@ -40,6 +39,7 @@
 	UIPopoverController*	Mpopover;
 	NSIndexPath*				MindexPathEdit;
 	UIPopoverController*	MpopSetting;			//回転時に閉じるため
+	BOOL							PbFirstAdd;
 #endif
 	//----------------------------------------------assign
 	BOOL		MbOptAntirotation;
@@ -53,6 +53,7 @@
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
+@property (nonatomic, assign) BOOL							PbFirstAdd;
 // delegate method
 - (void)refreshE3recordTVC:(BOOL)bSameDate;
 #endif

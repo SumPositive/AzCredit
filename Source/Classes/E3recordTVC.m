@@ -32,6 +32,7 @@
 #ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
+@synthesize PbFirstAdd;
 #endif
 
 
@@ -153,9 +154,10 @@
 		[Mpopover presentPopoverFromRect:rc inView:self.tableView  
 				permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
 	} else {
+		// [+]Add mode
 		rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-		rc.origin.x += (rc.size.width - 20) / 2;		rc.size.width = 20;
-		rc.origin.y += (rc.size.height + 10);			rc.size.height = 20;
+		rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
+		rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
 		//NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
 		[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
 				permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
@@ -171,13 +173,14 @@
 
 - (void)setMe3list:(NSDate *)dateMiddle // この日時が画面中央になるように前後最大50行読み込み表示する
 {
-	
 	NSCalendar *cal = [NSCalendar currentCalendar];	// 言語設定のタイムゾーンに従う
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
 	| NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
 	
 	NSLog(@"setMe3list: dateMiddle=%@", dateMiddle);
+	BOOL bTargetBrink = YES; // 指定行を反転ブリンクさせる
 	if (dateMiddle==nil) {
+		bTargetBrink = NO;
 		dateMiddle = [NSDate dateWithTimeIntervalSinceNow: -12 * 60 * 60]; //UTC 現在の12時間前
 	}
 	// ＜＜＜dateUse は,UTC(+0000)記録されている。比較や抽出などUTCで行うこと＞＞＞
@@ -400,8 +403,13 @@
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 		} else {
 			indexPath = [NSIndexPath indexPathForRow:iRowMiddle inSection:iSecMiddle];
-			[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];	//  Middle 選択状態
-			[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.5]; // 0.5s後に選択状態を解除する
+			if (bTargetBrink) {
+				[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];	//  Middle 選択状態
+				[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.5]; // 0.5s後に選択状態を解除する
+			} else {
+				[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
+									  atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+			}
 		}
 	}
 }
@@ -426,6 +434,9 @@
 #ifdef FREE_AD
 		RoAdMobView = nil;
 #endif
+#ifdef AzPAD
+		PbFirstAdd = NO;
+#endif
 	}
 	return self;
 }
@@ -438,9 +449,25 @@
 	// なし
 	
 #ifdef AzPAD
-	self.navigationItem.hidesBackButton = YES;
+	//Popover [Menu] button
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
 #endif
-
+	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			target:nil action:nil];
@@ -498,6 +525,14 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	
+#ifdef AzPAD
+	if (Pe4shop || Pe5category || Pe8bank) {
+		self.navigationItem.hidesBackButton = NO;
+	} else {
+		self.navigationItem.hidesBackButton = YES;
+	}
+#endif
+	
 	// テーブルソース セット
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE3list==nil || app.Me3dateUse) {
@@ -532,8 +567,22 @@
 	}
 	
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+#ifdef AzPAD
+	if (PbFirstAdd) {	//iPad//[+]自動起動
+		PbFirstAdd = NO;
+		[self barButtonAdd];
+	}
+#endif
 }
-
+/*
+- (void)viewDidDisappear:(BOOL)animated
+{
+	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.Me3dateUse release], app.Me3dateUse = nil; //クリア
+}
+*/
 
 #pragma mark View - Rotate
 
@@ -592,14 +641,15 @@
 			//[Mpopover dismissPopoverAnimated:YES];
 			// アンカー位置 [+]
 			CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-			rc.origin.x += (rc.size.width - 20) / 2;		rc.size.width = 20;
-			rc.origin.y += (rc.size.height + 10);			rc.size.height = 20;
+			rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
+			rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
 			[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
 					permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
 		}
 	}
 #endif
 }
+
 
 #pragma mark  View - Unload - dealloc
 
@@ -690,7 +740,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 #ifdef FREE_AD
-	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) {
+	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) 
+	{	// 先頭と末尾
 		return GAD_SIZE_320x50.height; // AdMob
 	}
 #endif
@@ -708,7 +759,8 @@
 	UILabel *cellLabel = nil;
 	
 	
-	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) {
+	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) 
+	{
 		// Top End
 		if ([[RaE3list objectAtIndex:indexPath.section] objectAtIndex:0] == [NSNull null]) {
 			// No More & AdMob
@@ -751,8 +803,8 @@
 											   reuseIdentifier:zCellTopEnd] autorelease];
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
 				cell.textLabel.textAlignment = UITextAlignmentLeft;
-				cell.showsReorderControl = NO; // Move禁止
 				cell.textLabel.text = NSLocalizedString(@"E3list More",nil);
+				cell.showsReorderControl = NO; // Move禁止
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			}
 		}

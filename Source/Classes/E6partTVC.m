@@ -191,6 +191,26 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+#ifdef AzPAD
+	//Popover [Menu] button
+	//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+#endif
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
@@ -199,7 +219,6 @@
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	// テーブルソース セット
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (RaE6parts==nil || app.Me3dateUse) {  // 最初 または E3recordDetailTVCにてSAVEされたとき
 		[self MtableSource];
 		[self.tableView selectRowAtIndexPath:MindexPathEdit animated:NO scrollPosition:UITableViewScrollPositionMiddle];	//  Middle 選択状態
@@ -644,12 +663,16 @@
 	}
 #endif
 
+	NSString *zSum = @"-----";
 	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
-	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-	[formatter setLocale:[NSLocale currentLocale]];
-	NSString *zSum = [formatter stringFromNumber:e2obj.sumAmount];
-	[formatter release];
+	NSLog(@"e2obj=%@", e2obj);
+	if (e2obj && e2obj.e6parts && 0<[e2obj.e6parts count]) {    <<<<<<<<<<<<<<<<<<　Ｅ６partTVC：エルエスト（空の月あり）にて回転時に落ちる
+		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
+		[formatter setLocale:[NSLocale currentLocale]];
+		zSum = [formatter stringFromNumber:e2obj.sumAmount];
+		[formatter release];
+	}
 	
 	if (Pe2select) {	// (0)E1<E2<E6:同カードの支払日違い　＜＜表示：支払日＋支払未済＋金額＞＞
 		// 支払日

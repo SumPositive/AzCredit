@@ -287,6 +287,25 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:YES];
+#ifdef AzPAD
+	//Popover [Menu] button
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+#endif
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
@@ -461,7 +480,7 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
-	[self viewDesign:animated];
+	[self viewDesign:animated];	// viewWillAppearだと一部が描画されない不具合発生のためここにした。
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 

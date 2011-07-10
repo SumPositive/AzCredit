@@ -8,40 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#ifdef xxxxxFREE_AD_PAD
-#import <iAd/iAd.h>
-#import "GADBannerView.h"
-#endif
 
-
-@protocol DetailViewController
-- (void)showPopoverButtonItem:(UIBarButtonItem *)barButtonItem;
-- (void)hidePopoverButtonItem:(UIBarButtonItem *)barButtonItem;
-@end
-
-
-@interface PadRootVC : UIViewController <UISplitViewControllerDelegate
-#ifdef xxxxxxFREE_AD_PAD
-	,ADBannerViewDelegate
-#endif
->
+@interface PadRootVC : UIViewController <UISplitViewControllerDelegate>
 {
 @private
-    //UIPopoverController		*popoverController;    
-    UIBarButtonItem				*popoverButtonItem;
-	
-#ifdef xxxFREE_AD_PAD
-	ADBannerView		*MbannerView;
-	GADBannerView		*RoAdMobView;
-	BOOL						MbAdBannerShow;  // =NO:非表示（表示禁止中）
-#endif
+	id										delegate;
 }
 
-//@property (nonatomic, retain) UIPopoverController		*popoverController;
-@property (nonatomic, retain) UIBarButtonItem			*popoverButtonItem;
-
-#ifdef xxxFREE_AD_PAD
-- (void)adBannerShow:(BOOL)bShow;
-#endif
+@property (nonatomic, assign) id									delegate;
 
 @end

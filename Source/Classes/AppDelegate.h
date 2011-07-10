@@ -24,6 +24,7 @@
 #ifdef AzPAD
 	PadRootVC						*padRootVC;
 	UISplitViewController		*mainController;
+    UIBarButtonItem				*barMenu;
 #else
     UINavigationController	*mainController;
 #endif
@@ -52,6 +53,7 @@
 #ifdef AzPAD
 @property (nonatomic, retain) PadRootVC						*padRootVC;  //解放されないようにretain
 @property (nonatomic, retain) UISplitViewController		*mainController;
+@property (nonatomic, assign) UIBarButtonItem				*barMenu;
 #else
 @property (nonatomic, retain) UINavigationController		*mainController;
 #endif

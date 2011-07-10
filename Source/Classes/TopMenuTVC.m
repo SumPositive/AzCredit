@@ -52,6 +52,17 @@
 
 @implementation TopMenuTVC
 @synthesize Re0root;
+#ifdef AzPAD
+//@synthesize selfPopover;
+#endif
+
+
+#pragma mark - Delegate
+
+- (void)setPopover:(UIPopoverController*)pc
+{
+	selfPopover = pc;
+}
 
 
 #pragma mark - Action
@@ -67,13 +78,18 @@
 		}
 		MpopInformation.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 		CGRect rcArrow;
-		if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
-			rcArrow = CGRectMake(0, 1027-60, 32,32);
+		if (selfPopover) {
+			[selfPopover dismissPopoverAnimated:YES];
+			rcArrow = CGRectMake(0, 40, 32,32); //[Menu]
 		} else {
-			rcArrow = CGRectMake(0, 768-60, 32,32);
+			if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
+				rcArrow = CGRectMake(0, 1027-60, 32,32);
+			} else {
+				rcArrow = CGRectMake(0, 768-60, 32,32);
+			}
 		}
 		[MpopInformation presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
-					   permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+					   permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 	}
 #else
 	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
@@ -100,13 +116,18 @@
 		}
 		MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 		CGRect rcArrow;
-		if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-			rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+		if (selfPopover) {
+			[selfPopover dismissPopoverAnimated:YES];
+			rcArrow = CGRectMake(0, 40, 32,32); //[Menu]
 		} else {
-			rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+			if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+				rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+			} else {
+				rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+			}
 		}
 		[MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
-					   permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+					   permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
 	}
 #else
 	SettingTVC *view = [[SettingTVC alloc] init];
@@ -147,21 +168,6 @@
 	e3obj.e5category = nil;
 	e3obj.e6parts = nil;
 
-#ifdef xxxAzDEBUG
-	// DEBUG : insertAutoEntityで生成されたEntityは、rollBack では削除されないことを確認した。
-	e3obj.nAmount = [NSDecimalNumber decimalNumberWithString:@"999001"];
-	NSLog(@"*****1***** e3obj=%@", e3obj);
-	NSLog(@"*****1***** e3obj.nAmount=%@", e3obj.nAmount);
-	[MocFunctions rollBack];
-	NSLog(@"*****2***** e3obj=%@", e3obj);
-	NSLog(@"*****2***** e3obj.nAmount=%@", e3obj.nAmount);
-	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
-	e3obj.nAmount = [NSDecimalNumber decimalNumberWithString:@"999002"];
-	NSLog(@"*****3***** e3obj=%@", e3obj);
-	NSLog(@"*****3***** e3obj.nAmount=%@", e3obj.nAmount);
-	return;
-#endif
-	
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	e3detail.title = NSLocalizedString(@"Add Record", nil);
 	e3detail.Re3edit = e3obj;
@@ -172,23 +178,21 @@
 	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
 	[naviRight popToRootViewControllerAnimated:NO];
 #ifdef FREE_AD_PAD
-	if (!MbAdBannerShow) {
-		[self adBannerShow:YES];	// E3Add状態のときだけｉＡｄ表示する
-	}
+	[self adBannerShow:YES];	// E3Add状態のときだけｉＡｄ表示する
 #endif
 	// セル選択状態にする
-	[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+	//[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
 	//
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	[nc release];
-	MindexPathEdit = [NSIndexPath indexPathForRow:0 inSection:0];
-	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-	rc.origin.x += (rc.size.width - 30);		rc.size.width = 20;	// 右側にPopoverさせるため
-	rc.origin.y += 10;	rc.size.height -= 20;
+	// [+]Add mode
+	CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
+	rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
+	rc.origin.y += (rc.size.height - 35);		rc.size.height = 1;
 	[Mpopover presentPopoverFromRect:rc
-							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+							  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	e3detail.selfPopover = Mpopover;  [Mpopover release];
 	e3detail.delegate = nil;	// ここでは、再描画不要
 #else
@@ -332,8 +336,15 @@
 				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
 			}
 		}
+		
+/*		float fY;
+		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
+			fY = 1024 - 64 - MbannerView.frame.size.height;
+		} else {	// ヨコ
+			fY = 768 - 64 - MbannerView.frame.size.height;
+		}*/
 		if (MbAdBannerShow) {
-			MbannerView.frame = CGRectMake(0,44,  0,0);
+			MbannerView.frame = CGRectMake(0,40,  0,0);
 		} else {
 			MbannerView.frame = CGRectMake(0,-200,  0,0);  // 非表示
 		}
@@ -344,12 +355,14 @@
 - (void)adBannerShow:(BOOL)bShow
 {
 	AzLOG(@"=== adBannerShow[%d] ===", bShow);
+	if (MbAdBannerShow == bShow) return; // 変化なし
 	MbAdBannerShow = bShow;
 	if (bShow==NO) { // 表示禁止
 		if (MbannerView==nil || MbannerView.frame.origin.y<0 ) return; // 既に非表示
 	}
 	
 	const float fOffset = -200;  // 上に隠す
+	//const float fOffset = +200;  // 下に隠す
 	// 開始位置：非表示位置
 	if (bShow && MbannerView) { // && MbannerEnabled  && MbannerActive
 		[self bannerViewWillRotate:self.splitViewController.interfaceOrientation]; // この時点の向きによりY座標修正
@@ -367,9 +380,11 @@
 		if (bShow) {
 			rc.origin.y -= fOffset;
 			MbannerView.delegate = self;
+			//RoAdMobView.alpha = 0;
 		} else {
 			rc.origin.y += fOffset;
 			MbannerView.delegate = nil; // 割り込み禁止
+			//RoAdMobView.alpha = 1;
 		}
 		MbannerView.frame = rc;
 	}
@@ -420,6 +435,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化成功
+#ifdef AzPAD
+		self.contentSizeForViewInPopover = CGSizeMake(320, 580);
+#endif
 #ifdef FREE_AD
 		MbAdCanVisible = NO;
 #endif
@@ -444,8 +462,10 @@
 	[super loadView];
 
 #ifdef AzPAD
+	self.title = @"Menu";
 	self.navigationItem.hidesBackButton = YES;
 #else
+	self.title = NSLocalizedString(@"Product Title",nil);
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
@@ -540,8 +560,6 @@
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
 {
     [super viewWillAppear:animated];
-	
-	self.title = NSLocalizedString(@"Product Title",nil);
 	
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
@@ -645,7 +663,7 @@
 #ifdef FREE_AD_PAD
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	//[appDelegate.padRootVC adBannerShow:YES];
-	[self adBannerShow:YES];
+	//[self adBannerShow:YES];
 #endif
 	
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
@@ -669,7 +687,7 @@
 #ifdef FREE_AD_PAD
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	//[appDelegate.padRootVC adBannerShow:NO];
-	[self adBannerShow:NO];
+//	[self adBannerShow:NO];
 #endif
 }
 
@@ -746,7 +764,7 @@
 	
 	if ([Mpopover isPopoverVisible]) {
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
+/*		if (MindexPathEdit) { 
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
@@ -761,7 +779,16 @@
 			rc.origin.y = 30;		rc.size.height = 20;
 			[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
 					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES]; //表示開始
-		}
+		}*/
+		// アンカー位置 [Menu]
+		// [+]Add mode
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+		CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
+		rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
+		rc.origin.y += (rc.size.height - 35);		rc.size.height = 1;
+		[Mpopover presentPopoverFromRect:rc
+								  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	}
 }
 #endif
@@ -872,7 +899,7 @@
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (section==0) return @"\n\n\n";	// iAd上部スペース
+	if (section==0) return @"\n\n";	// iAd上部スペース
 	return nil;
 }
 #endif
@@ -884,9 +911,9 @@
 	switch (section) {
 		case 3:
 #ifdef FREE_AD_PAD
-			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n\n\n\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
+			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
 #else
-			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
+			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
 #endif
 			break;
 	}
@@ -919,7 +946,7 @@
 		//cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor blackColor];
     }
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //[>]
 	
 	switch (indexPath.section) {
 		case 0: //-------------------------------------------------------------Statement
@@ -928,9 +955,6 @@
 				case 0:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 					cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
-#ifdef AzPAD
-					cell.accessoryType = UITableViewCellAccessoryNone;
-#endif
 					break;
 				case 1:
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Statements.png"];
@@ -1020,16 +1044,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#ifdef AzPAD
-	// 選択状態のまま
 #ifdef FREE_AD_PAD
 	if (indexPath.section!=0 || indexPath.row!=0) {
 		[self adBannerShow:NO];	// E3Addでなければ、ｉＡｄ非表示
 	}
 #endif
-#else
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
-#endif
 	
 /*	// Comback-L0 TopMenu 記録
 	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -1249,6 +1270,11 @@
 		}
 			break;
 	}
+#ifdef AzPAD
+	if (selfPopover) {
+		[selfPopover dismissPopoverAnimated:YES];
+	}
+#endif
 }
 
 

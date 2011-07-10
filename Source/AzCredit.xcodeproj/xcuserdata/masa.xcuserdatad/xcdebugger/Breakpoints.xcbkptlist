@@ -9,12 +9,26 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/AppDelegate.m"
-         timestampString = "330963816.121184"
+         timestampString = "332005111.937709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "414"
-         endingLineNumber = "414"
+         startingLineNumber = "416"
+         endingLineNumber = "416"
          landmarkName = "-appLoginPassView"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "Classes/MocFunctions.m"
+         timestampString = "332007808.660034"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "498"
+         endingLineNumber = "498"
+         landmarkName = "+e2invoice:inYearMMDD:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

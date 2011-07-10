@@ -209,6 +209,25 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
+#ifdef AzPAD
+	//Popover [Menu] button
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+#endif
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
 	

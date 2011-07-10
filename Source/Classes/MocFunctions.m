@@ -495,7 +495,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 	e2new.nYearMMDD = [NSNumber numberWithLong:iYearMMDD]; // 支払日 ＜＜締月日と違う＞＞
 	e2new.e1paid = nil;
 	e2new.e1unpaid = e1card;	// E2 <<--> E1 未払い
-
+	e2new.e6parts = nil;	//[1.0.2]
+	
 	// E7 Unpaid 検索
 	E0root *e0root = [MocFunctions e0root];
 	if (e0root == nil) return NO;
