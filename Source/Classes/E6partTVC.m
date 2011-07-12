@@ -348,7 +348,7 @@
 					[MocFunctions e2invoice:Me2e1card inYearMMDD:GiAddYearMMDD(iYearMMDD, 0, +1, 0)]; // +1 翌月へ E2無ければ追加する
 					//--------------SAVE
 					[MocFunctions commit]; 
-					// 最終的に未使用のE2は、viewWillDisappear:にて削除している。
+					// 最終的に未使用のE2は、TopMenu:viewDidAppear:にて削除している。
 				}
 				// E1配下のE2
 				[RaE2invoices setArray:[Pe2select.e1unpaid.e2unpaids allObjects]];
@@ -357,6 +357,7 @@
 				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 				[sort1 release];
 				[RaE2invoices sortUsingDescriptors:sortArray];
+				NSLog(@"RaE2invoices=%@", RaE2invoices);
 				[sortArray release];
 			}
 			if (Pe2select.e1unpaid) {
@@ -529,12 +530,14 @@
 }
 #endif
 
+/*
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
 - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
 													   duration:(NSTimeInterval)duration
 {
 	[self.tableView reloadData];
 }
+*/
 
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -662,17 +665,22 @@
 		return @"End"; // AdMob
 	}
 #endif
-
+	assert(0 <= section && section < [RaE2invoices count]);
 	NSString *zSum = @"-----";
-	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
-	NSLog(@"e2obj=%@", e2obj);
-	if (e2obj && e2obj.e6parts && 0<[e2obj.e6parts count]) {    <<<<<<<<<<<<<<<<<<　Ｅ６partTVC：エルエスト（空の月あり）にて回転時に落ちる
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-		[formatter setLocale:[NSLocale currentLocale]];
-		zSum = [formatter stringFromNumber:e2obj.sumAmount];
-		[formatter release];
+	E2invoice *e2obj = (E2invoice *)[RaE2invoices objectAtIndex:section];
+	NSLog(@"A>>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<fault> <未ロード> 発生　　＜＜iPhoneでは正常＞＞
+	if ([e2obj isFault]) {
+		//[e2obj.managedObjectContext refreshObject:e2obj mergeChanges:YES];
+		NSLog(@"AA>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<fault> <未ロード> 発生　　＜＜iPhoneでは正常＞＞
+		NSLog(@"   >>> e2obj.nYearMMDD=%d", [[e2obj valueForKey:@"nYearMMDD"] integerValue]);
 	}
+	NSLog(@"B>>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<false> 発生　　＜＜iPhoneでは正常＞＞
+	<<<<<<<<<<<<<<<<<<iPadにて、Ｅ６partTVC：エルエスト（空の月あり）にて回転時に落ちる
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
+	[formatter setLocale:[NSLocale currentLocale]];
+	zSum = [formatter stringFromNumber:e2obj.sumAmount];
+	[formatter release];
 	
 	if (Pe2select) {	// (0)E1<E2<E6:同カードの支払日違い　＜＜表示：支払日＋支払未済＋金額＞＞
 		// 支払日

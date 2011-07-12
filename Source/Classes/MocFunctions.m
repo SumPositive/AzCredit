@@ -477,7 +477,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 {
 	if (iYearMMDD < AzMIN_YearMMDD OR AzMAX_YearMMDD < iYearMMDD) return nil;
 	if (e1card==nil) return nil;
-	NSManagedObjectContext *moc = e1card.managedObjectContext;
+	//NSManagedObjectContext *moc = e1card.managedObjectContext;
+	assert(scMoc);
 
 	for (E2invoice *e2 in e1card.e2paids) {
 		if ([e2.nYearMMDD integerValue] == iYearMMDD) {
@@ -491,13 +492,16 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 	}
 
 	// E2なし、E2追加　　　以下、E2配下のE6は無いのでE2,E7のsum更新は不要
-	E2invoice *e2new = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:moc];
+	E2invoice *e2new = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:scMoc];
 	e2new.nYearMMDD = [NSNumber numberWithLong:iYearMMDD]; // 支払日 ＜＜締月日と違う＞＞
 	e2new.e1paid = nil;
 	e2new.e1unpaid = e1card;	// E2 <<--> E1 未払い
-	e2new.e6parts = nil;	//[1.0.2]
 	
-	// E7 Unpaid 検索
+	//e2new.sumAmount = [NSDecimalNumber zero];
+	//e2new.sumNoCheck = [NSNumber numberWithInt:0];
+	//e2new.e6parts = [NSSet set];
+	
+	 // E7 Unpaid 検索
 	E0root *e0root = [MocFunctions e0root];
 	if (e0root == nil) return NO;
 	for (E7payment *e7 in e0root.e7unpaids) {
@@ -507,7 +511,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		}
 	}
 	// E7なし、E7 Unpaid 追加
-	E7payment *e7new = [NSEntityDescription insertNewObjectForEntityForName:@"E7payment" inManagedObjectContext:moc];
+	E7payment *e7new = [NSEntityDescription insertNewObjectForEntityForName:@"E7payment" inManagedObjectContext:scMoc];
 	e7new.nYearMMDD = [NSNumber numberWithLong:iYearMMDD]; // 支払日
 	e7new.e0paid = nil;
 	e7new.e0unpaid = e0root;
@@ -665,7 +669,8 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		}
 	}
 	
-	NSManagedObjectContext *moc = e3obj.managedObjectContext;
+	//NSManagedObjectContext *moc = e3obj.managedObjectContext;
+	assert(scMoc);
 
 	if (bE6remake) {
 		//------------------------------------------------------------E6 PAIDあれば拒否
@@ -694,7 +699,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 			// E6の所属が変わったので親となるE2,E7を再集計する
 			[MocFunctions e2e7update:e2];		//e6減
 			// E6削除
-			[moc deleteObject:e6];
+			[scMoc deleteObject:e6];
 		}
 		[arrayE6 release];
 		
@@ -754,7 +759,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				for (e2obj in e3obj.e1card.e2unpaids) { // E2未払い から探す
 					if ([e2obj.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
 						// E2発見！E6追加
-						e6obj = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
+						e6obj = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:scMoc];
 						e6obj.e2invoice = e2obj;	// E6-E2 リンク
 						e6obj.e3record = e3obj; // E6-E3 リンク
 						// 属性
@@ -770,12 +775,12 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 				}
 				if (e6obj == nil) {
 					// 既存E2なし：追加する
-					e2obj = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:moc];
+					e2obj = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:scMoc];
 					e2obj.nYearMMDD = [NSNumber numberWithInteger:iYearMMDD];
 					e2obj.e1paid = nil;  // 必ず一方は nil になる
 					e2obj.e1unpaid = e3obj.e1card;  // E2-E1 リンク
 					// E6追加
-					e6obj = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
+					e6obj = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:scMoc];
 					e6obj.e2invoice = e2obj;	// E6-E2 リンク　　これのより e2obj.e6parts にも加えられる。
 					e6obj.e3record = e3obj; // E6-E3 リンク
 					// 属性
@@ -802,7 +807,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 						}
 					}
 					if (e2obj.e7payment == nil) { // 探したが、E7が無いので追加する
-						E7payment *e7obj = [NSEntityDescription insertNewObjectForEntityForName:@"E7payment" inManagedObjectContext:moc];
+						E7payment *e7obj = [NSEntityDescription insertNewObjectForEntityForName:@"E7payment" inManagedObjectContext:scMoc];
 						e7obj.nYearMMDD = [NSNumber numberWithLong:iYearMMDD]; // 支払日 ＜＜締月日と違う＞＞
 						e7obj.e0paid = nil;
 						e7obj.e0unpaid = e0root;	// E7 <<--> E0 未払い

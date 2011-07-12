@@ -59,10 +59,12 @@
 
 #pragma mark - Delegate
 
+#ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc
 {
 	selfPopover = pc;
 }
+#endif
 
 
 #pragma mark - Action
