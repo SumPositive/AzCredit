@@ -84,7 +84,7 @@
 #endif
 	
 	if (RalertHttpServer == nil) {
-		RalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HttpSv Title", nil) 
+		RalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Communicate with your PC", nil) 
 													  message:NSLocalizedString(@"HttpSv Wait", nil) 
 													 delegate:self 
 											cancelButtonTitle:nil  //@"CANCEL" 
@@ -106,7 +106,7 @@
 - (void)animationDidEnd  // showアニメーションが完了したときに呼ばれる
 {
 /*	if (MalertHttpServer == nil) {
-		MalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"HttpSv Title", nil) 
+		MalertHttpServer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Communicate with your PC", nil) 
 													  message:NSLocalizedString(@"HttpSv Wait", nil) 
 													 delegate:self 
 											cancelButtonTitle:nil  //@"CANCEL" 

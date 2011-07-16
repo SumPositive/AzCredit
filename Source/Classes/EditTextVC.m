@@ -89,11 +89,10 @@
 #endif
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MtextView = nil;	// ここで生成
 
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
@@ -103,7 +102,7 @@
 											   target:self action:@selector(done:)] autorelease];
 
 	// とりあえず生成、位置はviewDesignにて決定
-	MtextView = [[UITextView alloc] init];
+	MtextView = [[[UITextView alloc] init] autorelease];
 #ifdef AzPAD
 	MtextView.font = [UIFont systemFontOfSize:20];
 #else
@@ -113,7 +112,7 @@
 	MtextView.keyboardType = UIKeyboardTypeDefault;
 	MtextView.returnKeyType = UIReturnKeyDefault; // Return
 	MtextView.delegate = self;
-	[self.view addSubview:MtextView]; [MtextView release]; // self.viewがOwnerになる
+	[self.view addSubview:MtextView]; // self.viewがOwnerになる
 }
 
 /*

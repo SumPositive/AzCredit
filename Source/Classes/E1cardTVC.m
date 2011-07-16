@@ -27,7 +27,7 @@
 @synthesize Re3edit;
 #ifdef AzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 #endif
 
 
@@ -59,6 +59,7 @@
 - (void)barButtonUntitled {
 	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
 		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
+		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		return;
 	}
 	// E3配下なし（新規追加中である） 未定(nil)にする
@@ -128,6 +129,12 @@
 	}
 }
 
+#ifdef AzPAD
+- (void)cancelClose:(id)sender
+{
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+#endif
 
 
 #pragma mark - View lifecicle
@@ -146,12 +153,10 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView 
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	//MbuTop = nil;	// ここ(loadView)で生成
-	MbuAdd = nil;	// ここ(loadView)で生成
 	
 #ifdef AzPAD
 	self.navigationItem.hidesBackButton = YES;
@@ -172,36 +177,36 @@
 	}
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
 	
 	if (Re3edit == nil) {	//編集モード　／ 選択モードならば、MbuAdd = MbuTop = nill;
-		MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-															   target:self action:@selector(barButtonAdd)];
+		MbuAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																target:self action:@selector(barButtonAdd)] autorelease];
 #ifdef AzPAD
 		NSArray *buArray = [NSArray arrayWithObjects: buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
 #else
-		UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-												  style:UIBarButtonItemStylePlain  //Bordered
-												 target:self action:@selector(barButtonTop)];
+		UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+																   style:UIBarButtonItemStylePlain  //Bordered
+																  target:self action:@selector(barButtonTop)] autorelease];
 		NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[buTop release];
+		//[buTop release];
 #endif
-		[MbuAdd release];
+		//[MbuAdd release];
 	}
 	else {  //選択モード
 		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
-		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
-									   initWithTitle:NSLocalizedString(@"Untitled",nil)
-									   style:UIBarButtonItemStyleBordered
-									   target:self action:@selector(barButtonUntitled)];
+		UIBarButtonItem *buUntitled = [[[UIBarButtonItem alloc] 
+										initWithTitle:NSLocalizedString(@"Untitled",nil)
+										style:UIBarButtonItemStyleBordered
+										target:self action:@selector(barButtonUntitled)] autorelease];
 		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[buUntitled release];
+		//[buUntitled release];
 	}
-	[buFlex release];
+	//[buFlex release];
 
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
@@ -211,21 +216,28 @@
 	[super viewWillAppear:animated];
 #ifdef AzPAD
 	//Popover [Menu] button
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[toolBar release];
+	if (Re3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		if (app.barMenu) {
+			UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+			UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+			UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+			NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+			[buTitle release], buTitle = nil;
+			[buFixed release], buFixed = nil;
+			[buFlexible release], buFlexible = nil;
+			UIToolbar* toolBar = [[UIToolbar alloc] init];
+			toolBar.barStyle = UIBarStyleDefault;
+			[toolBar setItems:items animated:NO];
+			[toolBar sizeToFit];
+			self.navigationItem.titleView = toolBar;
+			[toolBar release];
+		}
+	} else {
+		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
+		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+												  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+												  target:self action:@selector(cancelClose:)] autorelease];
 	}
 #endif
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
@@ -268,6 +280,10 @@
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
+
+	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+		[self setToolbarItems:nil animated:NO]; //[未定]ボタンを消す ＜＜＜E6があればE1未定禁止
 	}
 }
 
@@ -343,19 +359,21 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{	// ここで破棄するのは表示オブジェクトに限る。データ関係はデリゲートなどで使われる可能性があるので破棄できない。
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E1cardTVC");
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
+	[RaE1cards release], RaE1cards = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 #ifdef AzPAD
-	[selfPopover release], selfPopover = nil;
+	//[selfPopover release], selfPopover = nil;
 #endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-	[RaE1cards release], RaE1cards = nil;
 	[Re0root release];
 	[Re3edit release];
 	[super dealloc];
@@ -765,6 +783,7 @@ static UIImage* GimageFromString(NSString* str)
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
 /*
  // 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。

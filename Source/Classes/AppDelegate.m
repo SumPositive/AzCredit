@@ -31,7 +31,7 @@
 @synthesize mainController;
 @synthesize	Me3dateUse;
 #ifdef AzPAD
-@synthesize padRootVC;
+//@synthesize padRootVC;
 @synthesize barMenu;
 #endif
 
@@ -49,7 +49,7 @@
 	[window release];
 
 #ifdef AzPAD
-	[padRootVC release], padRootVC = nil;
+	//[padRootVC release], padRootVC = nil;
 #endif
 	
 	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
@@ -119,13 +119,14 @@
 	// topMenu を [0] naviLeft へ登録
 	UINavigationController* naviLeft = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
 	// padRootVC を [1] naviRight へ登録
-	padRootVC = [[PadRootVC alloc] init]; // retainされる
+	PadRootVC *padRootVC = [[[PadRootVC alloc] init] autorelease];
 	padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
 	UINavigationController* naviRight = [[UINavigationController alloc] initWithRootViewController:padRootVC];
 	// mainController へ登録
 	mainController = [[UISplitViewController alloc] init];
 	mainController.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
-	mainController.delegate = padRootVC;
+	mainController.delegate = padRootVC; 
+	//[padRootVC release];
 	[naviLeft release];
 	[naviRight release];
 #else

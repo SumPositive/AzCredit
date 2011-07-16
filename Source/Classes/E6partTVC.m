@@ -145,41 +145,36 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	// なし
 	
 #ifdef AzPAD
 	// Tool Bar Button なし
 #else
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															   style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)];
+															  target:self action:@selector(barButtonTop)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buTop release];
-	[buFlex release];
+	//[buTop release];
+	//[buFlex release];
 #endif
 	
 #ifdef FREE_AD
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];
+                                            GAD_SIZE_320x50.height)]; // autoreleaseだめ：cellへaddSubする前に破棄されてしまうので、自己管理している
 	//RoAdMobView.delegate = self;
 	RoAdMobView.delegate = nil; //Delegateなし
-	
 	RoAdMobView.adUnitID = AdMobID_iPhone;
-	
 	// Let the runtime know which UIViewController to restore after taking
 	// the user wherever the ad goes and add it to the view hierarchy.
 	RoAdMobView.rootViewController = self;
-	//	[self.view addSubview:RoAdMobView];
-	
 	// Initiate a generic request to load it with an ad.
 	GADRequest *request = [GADRequest request];
 	//[request setTesting:YES];
@@ -552,9 +547,10 @@
 			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
 			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			//rc.size.width /= 2;
+			rc.size.width /= 2;
 			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
+					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
 		} 
 		else {
 			// 回転後のアンカー位置が再現不可なので閉じる
@@ -599,23 +595,25 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{	// ここで破棄するのは表示オブジェクトに限る。データ関係はデリゲートなどで使われる可能性があるので破棄できない。
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E6partTVC");
 #ifdef FREE_AD
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release],	RoAdMobView = nil;
+		[RoAdMobView release], RoAdMobView = nil;	//cellへのaddSubなので、自己管理している。
 	}
 #endif
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
+	[RaE2invoices release], RaE2invoices = nil;
+	[RaE6parts release],	RaE6parts = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-	[RaE2invoices release], RaE2invoices = nil;
-	[RaE6parts release],	RaE6parts = nil;
 	[super dealloc];
 }
 
@@ -732,7 +730,7 @@
 			cell.showsReorderControl = NO; // Move禁止
 			cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 			if (RoAdMobView) { // Request an AdMob ad for this table view cell
-				[cell.contentView addSubview:RoAdMobView];
+				[cell.contentView addSubview:RoAdMobView]; //自己管理ＯＢＪ： unloadReleaseにて解放
 			}
 		}
 		if (RoAdMobView) {
@@ -1113,6 +1111,7 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
 /*
 	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {

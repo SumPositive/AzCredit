@@ -118,7 +118,8 @@
 #define GD_E3_SELECT_LIMIT		50		// 明細一覧で中央日付から前後抽出する件数(Limit)
 
 #ifdef AzPAD
-#define GD_POPOVER_SIZE		CGSizeMake(480, 535)	//iPhoneをヨコにしたときの幅に合わせる
+#define GD_POPOVER_SIZE_INIT		CGSizeMake(480-1, 500-1)	//init初期化時に使用　＜＜＜変化ありにするため1廻り小さくする
+#define GD_POPOVER_SIZE				CGSizeMake(480, 500)			//viewDidAppear時に使用
 #endif
 
 

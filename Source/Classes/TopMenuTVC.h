@@ -47,8 +47,8 @@
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
 	//NSIndexPath*				MindexPathEdit;
-	UIPopoverController*	MpopInformation;	//回転時に閉じるため
-	UIPopoverController*	MpopSetting;			//回転時に閉じるため
+	//UIPopoverController*	MpopInformation;	//回転時に閉じるため
+	//UIPopoverController*	MpopSetting;			//回転時に閉じるため
 #else
 	InformationView		*MinformationView;
 #endif

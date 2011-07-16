@@ -224,15 +224,15 @@
 #endif
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(barButtonTop)];
+															  target:self action:@selector(barButtonTop)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buTop release];
-	[buFlex release];
+	//[buTop release];
+	//[buFlex release];
 
 	//【Tips】UIButtonは、Autoreleaseである。ゆえに、addSubview後のrelease禁止！。かつ、メモリ不足時には自動的に解放後、改めてloadViewを通るので、初回同様に生成する。
 	// PAID  ボタン
@@ -582,18 +582,18 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{	// ここで破棄するのは表示オブジェクトに限る。データ関係はデリゲートなどで使われる可能性があるので破棄できない。
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E2invoiceTVC");
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
+	[RaE2list release], RaE2list = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
-	//iPad-NG//【対応】[MocFunctions e7e2clean] 処理を E2 または E7 の unloadRelease に入れた。
-	//[MocFunctions e7e2clean];
 	//--------------------------------@property (retain)
-	[RaE2list release], RaE2list = nil;
 	[Re1select release];
 	[Re8select release];
 	[super dealloc];

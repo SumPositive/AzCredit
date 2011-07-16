@@ -132,13 +132,14 @@
 		PbAdd = NO;
 		Pe3edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.contentSizeForViewInPopover = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
 	[super loadView];
@@ -328,7 +329,11 @@
 			switch (indexPath.row) {
 				case 0: // Name
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"Category name", nil);
 					evc.Rentity = Re5edit;
 					evc.RzKey = @"zName";
@@ -345,7 +350,11 @@
 			switch (indexPath.row) {
 				case 0: // sortName
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"Category index", nil);
 					evc.Rentity = Re5edit;
 					evc.RzKey = @"sortName";
@@ -358,7 +367,11 @@
 					break;
 				case 1: // Note
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"Category note", nil);
 					evc.Rentity = Re5edit;
 					evc.RzKey = @"zNote";

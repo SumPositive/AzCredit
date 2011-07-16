@@ -83,14 +83,10 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	Mpicker = nil;		// ここで生成
-	MlbClosing = nil;	// ここで生成
-	MlbPayMonth = nil;	// ここで生成
-	MlbPayDay = nil;	// ここで生成
 	
 #ifdef AzPAD
 	self.view.backgroundColor = [UIColor lightGrayColor];
@@ -105,42 +101,42 @@
 	
 	// とりあえず生成、位置はviewDesignにて決定
 	//------------------------------------------------------
-	Mpicker = [[UIPickerView alloc] init];
+	Mpicker = [[[UIPickerView alloc] init] autorelease];
 	Mpicker.delegate = self;
 	Mpicker.dataSource = self;
 	Mpicker.showsSelectionIndicator = YES;
-	[self.view addSubview:Mpicker]; [Mpicker release];
+	[self.view addSubview:Mpicker]; //[Mpicker release];
 	//------------------------------------------------------
-	MlbClosing = [[UILabel alloc] init];
+	MlbClosing = [[[UILabel alloc] init] autorelease];
 	MlbClosing.text = NSLocalizedString(@"Closing day",nil);
 	//MlbClosing.numberOfLines = 2;
 	MlbClosing.textAlignment = UITextAlignmentCenter;
 	MlbClosing.font = [UIFont systemFontOfSize:14];
 	MlbClosing.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:MlbClosing]; [MlbClosing release];
+	[self.view addSubview:MlbClosing]; //[MlbClosing release];
 	//------------------------------------------------------
-	MlbPayMonth = [[UILabel alloc] init];
+	MlbPayMonth = [[[UILabel alloc] init] autorelease];
 	MlbPayMonth.text = NSLocalizedString(@"Payment month",nil);
 	//MlbPayMonth.numberOfLines = 2;
 	MlbPayMonth.font = [UIFont systemFontOfSize:14];
 	MlbPayMonth.textAlignment = UITextAlignmentCenter;
 	MlbPayMonth.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:MlbPayMonth]; [MlbPayMonth release];
+	[self.view addSubview:MlbPayMonth]; //[MlbPayMonth release];
 	//------------------------------------------------------
-	MlbPayDay = [[UILabel alloc] init];
+	MlbPayDay = [[[UILabel alloc] init] autorelease];
 	MlbPayDay.text = NSLocalizedString(@"Payment day",nil);
 	//MlbPayDay.numberOfLines = 2;
 	MlbPayDay.font = [UIFont systemFontOfSize:14];
 	MlbPayDay.textAlignment = UITextAlignmentCenter;
 	MlbPayDay.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:MlbPayDay]; [MlbPayDay release];
+	[self.view addSubview:MlbPayDay]; //[MlbPayDay release];
 	//------------------------------------------------------
 	MbuDebit = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[MbuDebit setTitle:NSLocalizedString(@"PayDay Debit",nil) forState:UIControlStateNormal];
 	[MbuDebit addTarget:self action:@selector(buttonDebit) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuDebit]; //[MbuDebit release]; autoreleaseされるため
 	//------------------------------------------------------
-	MlbDebit = [[UILabel alloc] init];
+	MlbDebit = [[[UILabel alloc] init] autorelease];
 	MlbDebit.text = NSLocalizedString(@"PayDay Debit msg",nil);
 #ifdef AzPAD
 	MlbDebit.font = [UIFont systemFontOfSize:14];
@@ -148,7 +144,7 @@
 	MlbDebit.font = [UIFont systemFontOfSize:12];
 #endif
 	MlbDebit.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:MlbDebit]; [MlbDebit release];
+	[self.view addSubview:MlbDebit]; //[MlbDebit release];
 	//------------------------------------------------------
 }
 

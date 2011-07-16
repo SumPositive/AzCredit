@@ -133,18 +133,17 @@
 		PbAdd = NO;
 		Pe3edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = CGSizeMake(480, 260); //GD_POPOVER_SIZE;
+		self.contentSizeForViewInPopover = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	// なし
 
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]

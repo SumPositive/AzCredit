@@ -78,7 +78,7 @@
 	//------------------------------------------アイコン
 	CGRect rect = self.view.bounds;
 	rect.origin.x = rect.size.width/2.0 - 72;  //故意に少し左寄せしている
-	rect.origin.y = 88;
+	rect.origin.y = 188;
 	rect.size.width = rect.size.height = 72;
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:rect];
 #ifdef AzSTABLE
@@ -111,6 +111,26 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+#ifdef AzPAD
+	//Popover [Menu] button
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+#endif
+
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
 }
 

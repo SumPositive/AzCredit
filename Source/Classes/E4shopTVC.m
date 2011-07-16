@@ -149,10 +149,10 @@
 		Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 		[nc release];
 		CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-		rc.origin.x = rc.size.width;	rc.size.width = 10;
+		rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
 		rc.origin.y += 10;	rc.size.height -= 20;
 		[Mpopover presentPopoverFromRect:rc
-								  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+								  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
 		e4detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
 		e4detail.delegate = self;		// refreshTable callback
 	}
@@ -163,6 +163,13 @@
 #endif
 	[e4detail release]; // self.navigationControllerがOwnerになる
 }
+
+#ifdef AzPAD
+- (void)cancelClose:(id)sender
+{
+	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+}
+#endif
 
 
 #pragma mark - View lifecicle
@@ -183,11 +190,10 @@
 
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MbuTop = nil;		// ここ(loadView)で生成
 	
 #ifdef AzPAD
 	self.navigationItem.hidesBackButton = YES;
@@ -216,57 +222,52 @@
 	self.tableView.tableHeaderView = searchBar;
 	
 	// Search segmented
-	NSArray *aItems = [[NSArray alloc] initWithObjects:
+	NSArray *aItems = [NSArray arrayWithObjects:
 					   NSLocalizedString(@"Sort Recent",nil),
 					   NSLocalizedString(@"Sort Views",nil),
 					   NSLocalizedString(@"Sort Amount",nil),
-					   NSLocalizedString(@"Sort Index",nil), nil];
-	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
-#ifdef xxxxxxAzPAD
-	segment.frame = CGRectMake(0,0, 350,30);
-#else
+					   NSLocalizedString(@"Sort Index",nil), nil]; // autorelease
+	UISegmentedControl *segment = [[[UISegmentedControl alloc] initWithItems:aItems] autorelease];
 	segment.frame = CGRectMake(0,0, 230,30);
-#endif
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE4SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE4SortMode];
 	segment.selectedSegmentIndex = MiOptE4SortMode;
 	// .selectedSegmentIndex 代入より後に addTarget:指定すること。 逆になると代入によりaction:コールされてしまう。
 	[segment addTarget:self action:@selector(barSegmentSort:) forControlEvents:UIControlEventValueChanged];
-	UIBarButtonItem *buSort = [[UIBarButtonItem alloc] initWithCustomView:segment];
-	[segment release];
-	[aItems release];
+	UIBarButtonItem *buSort = [[[UIBarButtonItem alloc] initWithCustomView:segment] autorelease];
+	//[segment release];
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-															 target:self action:@selector(barButtonAdd)];
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)] autorelease];
 	if (Pe3edit) {
 		MbuTop = nil;
-		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
+		UIBarButtonItem *buUntitled = [[[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
 									   style:UIBarButtonItemStyleBordered
-									   target:self action:@selector(barButtonUntitled)];
+										target:self action:@selector(barButtonUntitled)] autorelease];
 		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, buSort, buFlex, buAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[buUntitled release];
+		//[buUntitled release];
 	}
 	else {
 #ifdef AzPAD
 		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buSort, buFlex, buAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
 #else
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+		MbuTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
-												 target:self action:@selector(barButtonTop)];
+												  target:self action:@selector(barButtonTop)] autorelease];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buSort, buFlex, buAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[MbuTop release];
+		//[MbuTop release];
 #endif
 	}
-	[buAdd release];
-	[buFlex release];
-	[buSort release];
+	//[buAdd release];
+	//[buFlex release];
+	//[buSort release];
 	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
@@ -324,21 +325,28 @@
 	[super viewWillAppear:animated];
 #ifdef AzPAD
 	//Popover [Menu] button
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[toolBar release];
+	if (Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		if (app.barMenu) {
+			UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+			UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+			UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+			NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+			[buTitle release], buTitle = nil;
+			[buFixed release], buFixed = nil;
+			[buFlexible release], buFlexible = nil;
+			UIToolbar* toolBar = [[UIToolbar alloc] init];
+			toolBar.barStyle = UIBarStyleDefault;
+			[toolBar setItems:items animated:NO];
+			[toolBar sizeToFit];
+			self.navigationItem.titleView = toolBar;
+			[toolBar release];
+		}
+	} else {
+		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
+		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+												  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+												  target:self action:@selector(cancelClose:)] autorelease];
 	}
 #endif
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
@@ -478,7 +486,10 @@
 
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
 {
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E4shopTVC");
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
 	[RaE4shops release], RaE4shops = nil;
 }
 
@@ -782,6 +793,7 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
 /*
 	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。

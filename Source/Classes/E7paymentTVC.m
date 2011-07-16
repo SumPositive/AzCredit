@@ -157,8 +157,6 @@ static UIColor *MpColorBlue(float percent) {
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	// なし
 
 	//self.tableView.backgroundColor = [UIColor clearColor];
 
@@ -178,15 +176,15 @@ static UIColor *MpColorBlue(float percent) {
 #ifdef AzPAD
 	// Tool Bar Button なし
 #else
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(barButtonTop)];
+															  target:self action:@selector(barButtonTop)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buTop release];
-	[buFlex release];
+	//[buTop release];
+	//[buFlex release];
 #endif
 	
 	//【Tips】UIButtonは、Autoreleaseである。ゆえに、addSubview後のrelease禁止！。かつ、メモリ不足時には自動的に解放後、改めてloadViewを通るので、初回同様に生成する。
@@ -348,17 +346,17 @@ static UIColor *MpColorBlue(float percent) {
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E7paymentTVC");
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
 	[RaE7list release], RaE7list = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
-	//iPad-NG//【対応】[MocFunctions e7e2clean] 処理を E2 または E7 の unloadRelease に入れた。
-	//[MocFunctions e7e2clean];
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];

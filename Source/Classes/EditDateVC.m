@@ -141,13 +141,10 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MdatePicker = nil;	// ここ(loadView)で生成
-	MbuToday = nil;		// ここ(loadView)で生成
-	MbuYearTime = nil;	// ここ(loadView)で生成
 
 #ifdef AzPAD
 	self.view.backgroundColor = [UIColor lightGrayColor];
@@ -257,7 +254,7 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
-	
+
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];

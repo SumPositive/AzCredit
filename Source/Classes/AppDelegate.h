@@ -22,7 +22,7 @@
     UIWindow *window;
 
 #ifdef AzPAD
-	PadRootVC						*padRootVC;
+	//PadRootVC						*padRootVC;
 	UISplitViewController		*mainController;
     UIBarButtonItem				*barMenu;
 #else
@@ -51,7 +51,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) UIWindow					*window;
 #ifdef AzPAD
-@property (nonatomic, retain) PadRootVC						*padRootVC;  //解放されないようにretain
+//@property (nonatomic, retain) PadRootVC						*padRootVC;  //解放されないようにretain
 @property (nonatomic, retain) UISplitViewController		*mainController;
 @property (nonatomic, assign) UIBarButtonItem				*barMenu;
 #else

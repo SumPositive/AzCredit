@@ -149,18 +149,17 @@
 		// 初期化成功
 		Pe1edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.contentSizeForViewInPopover = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
 #endif
   	}
 	return self;
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
 	[super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MlbNote = nil;		// cellForRowAtIndexPathにて生成
 
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
@@ -378,28 +377,18 @@
 			switch (indexPath.row) {
 				case 0: // Card name
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"BankName", nil);
 					evc.Rentity = Re8edit;
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef xxxAzPAD
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					[nc release];
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					MpopoverView.popoverContentSize = CGSizeMake(400, 130);
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
-#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
 				}
 					break;
@@ -409,28 +398,18 @@
 			switch (indexPath.row) {
 				case 0: // Note
 				{
+#ifdef AzPAD
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+#else
 					EditTextVC *evc = [[EditTextVC alloc] init];
+#endif
 					evc.title = NSLocalizedString(@"BankNote", nil);
 					evc.Rentity = Re8edit;
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef xxxAzPAD
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					[nc release];
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  //rc.size.width = 100;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					MpopoverView.popoverContentSize = CGSizeMake(400, 300);
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
-#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
 				}
 					break;

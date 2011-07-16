@@ -207,8 +207,12 @@ static UIColor *MpColorBlue(float percent) {
 	self = [super init];
 	if (!self) return nil;
 
+	float fX = 0, fY = 0;
 #ifdef AzPAD
-	self.contentSizeForViewInPopover = CGSizeMake(320, 510);
+	//self.contentSizeForViewInPopover = CGSizeMake(320, 510);
+	self.navigationItem.hidesBackButton = YES;
+	fX = (768 - 320) / 2.0;
+	fY = 100;
 #endif
 	
 	// 小豆色 RGB(152,81,75) #98514B
@@ -225,14 +229,14 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------アイコン
 #ifdef AzPAD
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 35, 72, 72)];
+	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+35, 72, 72)];
 #ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon72s1.png"]];
 #else
 	[iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
 #endif
 #else	
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, 50, 57, 57)];
+	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+50, 57, 57)];
 #ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
 #else
@@ -243,7 +247,7 @@ static UIColor *MpColorBlue(float percent) {
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+50, 200, 30)];
 	label.text = NSLocalizedString(@"Product Title",nil);
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
@@ -254,7 +258,7 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------Lable:Version
 	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 80, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 30)];
 #ifdef AzPAD
 	NSString *zDevice = @"for iPad";
 #else	
@@ -273,7 +277,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self.view addSubview:label]; [label release];
 
 	//------------------------------------------Lable:Azuki Color
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 110, 100, 77)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+110, 100, 77)];
 	label.text = @"Azukid Color\n"
 				 @"RGB(151,80,77)\n"
 				 @"Code#97504D\n"
@@ -288,7 +292,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self.view addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
-	label = [[UILabel alloc] initWithFrame:CGRectMake(100, 120, 200, 80)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+120, 200, 80)];
 	label.text =	@"PayNote\n"
 						@"Born on March 26\n"
 						@"© 2000-2011  Azukid\n"
@@ -304,7 +308,7 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Go to Support blog.
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-	bu.frame = CGRectMake(20, 210, 120,26);
+	bu.frame = CGRectMake(fX+20, fY+210, 120,26);
 	[bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
@@ -313,7 +317,7 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Go to App Store
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:10];
-	bu.frame = CGRectMake(150, 210, 150,26);
+	bu.frame = CGRectMake(fX+150, fY+210, 150,26);
 	[bu setTitle:NSLocalizedString(@"GoAppStore Paid",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
@@ -322,13 +326,13 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Post Comment
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	bu.frame = CGRectMake(20, 255, 280,30);
+	bu.frame = CGRectMake(fX+20, fY+255, 280,30);
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
 	
 	//------------------------------------------免責
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 300, 300, 50)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+300, 300, 50)];
 	label.text = NSLocalizedString(@"Disclaimer",nil);
 	label.textAlignment = UITextAlignmentLeft;
 	label.numberOfLines = 4;
@@ -338,7 +342,7 @@ static UIColor *MpColorBlue(float percent) {
 	[self.view addSubview:label]; [label release];	
 	
 	//------------------------------------------注意
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 360, 300, 65)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+360, 300, 65)];
 	label.text = NSLocalizedString(@"Security Alert",nil);
 	label.textAlignment = UITextAlignmentLeft;
 	label.numberOfLines = 5;
@@ -349,31 +353,49 @@ static UIColor *MpColorBlue(float percent) {
 
 	
 	//------------------------------------------CLOSE
-	label = [[UILabel alloc] initWithFrame:CGRectMake(20, 440, 280, 25)];
 #ifdef AzPAD
-	label.text = NSLocalizedString(@"Infomation Open Pad",nil);
+	//label.text = NSLocalizedString(@"Infomation Open Pad",nil);
 #else
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+440, 280, 25)];
 	label.text = NSLocalizedString(@"Infomation Open",nil);
-#endif
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	[self.view addSubview:label]; [label release];	
+#endif
 
     return self;
 }
 
-/*
- - (void)viewWillAppear:(BOOL)animated 
- {
- [super viewWillAppear:animated];
- 
- #ifdef AzPAD
- self.title = NSLocalizedString(@"Information", nil);
- #endif
- }
- */
+- (void)viewWillAppear:(BOOL)animated 
+{
+    [super viewWillAppear:animated];
+#ifdef AzPAD
+	//Popover [Menu] button
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+#else
+	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+#endif
+	
+//	self.title = NSLocalizedString(@"Setting", nil);
+}
 
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

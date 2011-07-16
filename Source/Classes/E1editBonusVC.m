@@ -49,13 +49,10 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	Mpicker = nil;		// ここで生成
-	MlbBonus1 = nil;	// ここで生成
-	MlbBonus2 = nil;	// ここで生成
 	
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
@@ -66,27 +63,27 @@
 	
 	// とりあえず生成、位置はviewDesignにて決定
 	//------------------------------------------------------
-	Mpicker = [[UIPickerView alloc] init];
+	Mpicker = [[[UIPickerView alloc] init] autorelease];
 	Mpicker.delegate = self;
 	Mpicker.dataSource = self;
 	Mpicker.showsSelectionIndicator = YES;
-	[self.view addSubview:Mpicker]; [Mpicker release];
+	[self.view addSubview:Mpicker]; //[Mpicker release];
 	//------------------------------------------------------
-	MlbBonus1 = [[UILabel alloc] init];
+	MlbBonus1 = [[[UILabel alloc] init] autorelease];
 	MlbBonus1.text = NSLocalizedString(@"Bonus1",nil);
 	//MlbBonus1.numberOfLines = 2;
 	MlbBonus1.textAlignment = UITextAlignmentCenter;
 	MlbBonus1.font = [UIFont systemFontOfSize:14];
 	MlbBonus1.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:MlbBonus1]; [MlbBonus1 release];
+	[self.view addSubview:MlbBonus1]; //[MlbBonus1 release];
 	//------------------------------------------------------
-	MlbBonus2 = [[UILabel alloc] init];
+	MlbBonus2 = [[[UILabel alloc] init] autorelease];
 	MlbBonus2.text = NSLocalizedString(@"Bonus2",nil);
 	//MlbBonus2.numberOfLines = 2;
 	MlbBonus2.font = [UIFont systemFontOfSize:14];
 	MlbBonus2.textAlignment = UITextAlignmentCenter;
 	MlbBonus2.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:MlbBonus2]; [MlbBonus2 release];
+	[self.view addSubview:MlbBonus2]; //[MlbBonus2 release];
 	//------------------------------------------------------
 }
 

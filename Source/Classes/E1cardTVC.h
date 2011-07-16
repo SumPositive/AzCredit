@@ -22,7 +22,7 @@
 #ifdef AzPAD
 	// E3recordDetailTVC から Popover で呼び出されるときにセットする
 	id									delegate;	
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
 	
@@ -45,7 +45,7 @@
 @property (nonatomic, retain) E3record	*Re3edit;
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
 // デリゲート・メソッド
 - (void)refreshTable;
 #endif

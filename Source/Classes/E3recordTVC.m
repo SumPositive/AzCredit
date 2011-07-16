@@ -442,11 +442,10 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	// なし
 	
 #ifdef AzPAD
 	//Popover [Menu] button
@@ -469,33 +468,33 @@
 #endif
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)] autorelease];
 #ifdef AzPAD
 	NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
 #else
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(barButtonTop)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+															  target:self action:@selector(barButtonTop)] autorelease];
+	UIBarButtonItem *buSet = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(azSettingView)];
+															  target:self action:@selector(azSettingView)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buTop release];
-	[buSet release];
+	//[buTop release];
+	//[buSet release];
 #endif
-	[buAdd release];
-	[buFlex release];
+	//[buAdd release];
+	//[buFlex release];
 	
 #ifdef FREE_AD
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)];
+                                            GAD_SIZE_320x50.height)]; // autoreleaseだめ：cellへaddSubする前に破棄されてしまうので、自己管理している
 	//RoAdMobView.delegate = self;
 	RoAdMobView.delegate = nil; //Delegateなし
 	
@@ -559,7 +558,7 @@
 														message:NSLocalizedString(@"E3list NoData msg",nil)
 													   delegate:self 
 											  cancelButtonTitle:nil
-											  otherButtonTitles:@"Roger", nil];
+											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
 		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
 		[alert show];
 		[alert release];
@@ -653,15 +652,17 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E3recordTVC");
 #ifdef FREE_AD
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;
+		[RoAdMobView release], RoAdMobView = nil;	//cellへのaddSubなので、自己管理している。
 	}
 #endif
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
 	[RaE3list release],		RaE3list = nil;
 	[RaSection release],	RaSection = nil;
 	[RaIndex release],		RaIndex = nil;
@@ -778,7 +779,7 @@
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
 #ifdef FREE_AD
 				if (RoAdMobView) { // Request an AdMob ad for this table view cell
-					[cell.contentView addSubview:RoAdMobView]; // unloadReleaseにて解放
+					[cell.contentView addSubview:RoAdMobView]; //自己管理ＯＢＪ： unloadReleaseにて解放
 				}
 #endif
 			}
@@ -1024,6 +1025,7 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
 /*
 	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。

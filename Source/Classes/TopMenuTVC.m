@@ -72,7 +72,7 @@
 - (void)azInformationView
 {
 #ifdef  AzPAD
-	if ([MpopInformation isPopoverVisible]==NO) {
+/*	if ([MpopInformation isPopoverVisible]==NO) {
 		if (!MpopInformation) { //無ければ1度だけ生成する
 			InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
 			MpopInformation = [[UIPopoverController alloc] initWithContentViewController:vc];
@@ -80,19 +80,30 @@
 		}
 		MpopInformation.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 		CGRect rcArrow;
-		if (selfPopover) {
+		UIPopoverArrowDirection arrowDir;
+		if (selfPopover) {	// Popover Menu のとき、[Menu]ボタンへアンカーする
 			[selfPopover dismissPopoverAnimated:YES];
-			rcArrow = CGRectMake(0, 40, 32,32); //[Menu]
+			rcArrow = CGRectMake(60, 5, 1,1); //[Menu]
+			arrowDir = UIPopoverArrowDirectionUp;
 		} else {
-			if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) { //iPad初期、常にタテになる。原因不明
-				rcArrow = CGRectMake(0, 1027-60, 32,32);
-			} else {
-				rcArrow = CGRectMake(0, 768-60, 32,32);
-			}
+			rcArrow = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:3]];
+			rcArrow.origin.x = rcArrow.size.width - 40;	rcArrow.size.width = 10;
+			rcArrow.origin.y += 10;	rcArrow.size.height -= 20;
+			arrowDir = UIPopoverArrowDirectionLeft;
 		}
 		[MpopInformation presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
-					   permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	}
+					   permittedArrowDirections:arrowDir animated:YES];
+	}*/
+	
+	InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+	//vc.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	//[self presentModalViewController:vc animated:YES];
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	[naviRight popToRootViewControllerAnimated:NO];
+	[naviRight pushViewController:vc animated:YES];
+	[vc release];
+
 #else
 	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
 	// モーダル UIViewController
@@ -110,7 +121,7 @@
 - (void)azSettingView
 {
 #ifdef  AzPAD
-	if ([MpopSetting isPopoverVisible]==NO) {
+/*	if ([MpopSetting isPopoverVisible]==NO) {
 		if (!MpopSetting) { //無ければ1度だけ生成する
 			SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
 			MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
@@ -118,22 +129,33 @@
 		}
 		MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 		CGRect rcArrow;
-		if (selfPopover) {
+		UIPopoverArrowDirection arrowDir;
+		if (selfPopover) {	// Popover Menu のとき、[Menu]ボタンへアンカーする
 			[selfPopover dismissPopoverAnimated:YES];
-			rcArrow = CGRectMake(0, 40, 32,32); //[Menu]
+			rcArrow = CGRectMake(40, 0, 1,1); //[Menu]
+			arrowDir = UIPopoverArrowDirectionUp;
+			[MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
+					   permittedArrowDirections:arrowDir  animated:YES];
 		} else {
-			if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-				rcArrow = CGRectMake(768-32, 1027-60, 32,32);
-			} else {
-				rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
-			}
+			rcArrow = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:3]];
+			rcArrow.origin.x = rcArrow.size.width - 20;	rcArrow.size.width = 1;
+			rcArrow.origin.y += 10;	rcArrow.size.height -= 20;
+			arrowDir = UIPopoverArrowDirectionLeft;
+			[MpopSetting presentPopoverFromRect:rcArrow  inView:self.tableView  
+					   permittedArrowDirections:arrowDir  animated:YES];
 		}
-		[MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
-					   permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-	}
+	}*/
+
+	SettingTVC *view = [[SettingTVC alloc] init];
+	//[self.navigationController pushViewController:view animated:YES];
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	[naviRight popToRootViewControllerAnimated:NO];
+	[naviRight pushViewController:view animated:YES];
+	[view release];
+
 #else
 	SettingTVC *view = [[SettingTVC alloc] init];
-	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
 	[view release];
 #endif
@@ -145,7 +167,7 @@
 		case TAG_ALERT_SupportSite:
 			if (buttonIndex == 1) { // OK
 				[[UIApplication sharedApplication] 
-				 openURL:[NSURL URLWithString:@"http://azukisoft.seesaa.net/category/9034665-1.html"]];
+				 openURL:[NSURL URLWithString:@"http://paynote.tumblr.com/"]];
 			}
 			break;
 	}
@@ -192,7 +214,7 @@
 	// [+]Add mode
 	CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
 	rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
-	rc.origin.y += (rc.size.height - 35);		rc.size.height = 1;
+	rc.origin.y += (rc.size.height - 30);		rc.size.height = 1;
 	[Mpopover presentPopoverFromRect:rc
 							  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	e3detail.selfPopover = Mpopover;  [Mpopover release];
@@ -382,16 +404,18 @@
 		if (bShow) {
 			rc.origin.y -= fOffset;
 			MbannerView.delegate = self;
-			//RoAdMobView.alpha = 0;
 		} else {
 			rc.origin.y += fOffset;
 			MbannerView.delegate = nil; // 割り込み禁止
-			//RoAdMobView.alpha = 1;
 		}
 		MbannerView.frame = rc;
+		
+		[self.tableView reloadData];
 	}
-	// AdMob 常時表示
+	//アニメ開始
 	[UIView commitAnimations];
+	// AdMob 常時表示
+	RoAdMobView.alpha = 1;
 }
 
 
@@ -438,7 +462,7 @@
 	if (self) {
 		// 初期化成功
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = CGSizeMake(320, 580);
+		self.contentSizeForViewInPopover = CGSizeMake(320, 650);
 #endif
 #ifdef FREE_AD
 		MbAdCanVisible = NO;
@@ -458,9 +482,10 @@
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
-	NSLog(@"--- loadView ---");
+	NSLog(@"--- loadView --- TopMenuTVC");
 	[super loadView];
 
 #ifdef AzPAD
@@ -470,8 +495,8 @@
 	self.title = NSLocalizedString(@"Product Title",nil);
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-									   initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 #endif
 	
 #if defined(AzFREE) && !defined(AzPAD)
@@ -484,47 +509,88 @@
 
 #ifndef AzMAKE_SPLASHFACE
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
-													  style:UIBarButtonItemStylePlain  //Bordered
-													 target:self action:@selector(azInformationView)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															 target:self action:@selector(azSettingView)];
 #ifdef AzPAD
-	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buSet, nil];
-	[self setToolbarItems:buArray animated:YES];
+	// Cell配置により、ボタンなし
 #else
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	MbuToolBarInfo = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
+													   style:UIBarButtonItemStylePlain  //Bordered
+													  target:self action:@selector(azInformationView)] autorelease];
+	UIBarButtonItem *buSet = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+															   style:UIBarButtonItemStylePlain  //Bordered
+															  target:self action:@selector(azSettingView)] autorelease];
+	UIBarButtonItem *buAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buAdd release];
 #endif
-	[MbuToolBarInfo release];
-	[buSet release];
-	[buFlex release];
 #endif	
 	
-#ifdef FREE_AD_PAD
+#ifdef FREE_AD 
 	//--------------------------------------------AdMob
-	RoAdMobView = [[GADBannerView alloc] initWithFrame:CGRectMake(
-																  0, 0, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height)];
-	RoAdMobView.alpha = 1;
-	RoAdMobView.adUnitID = AdMobID_iPad;
-	RoAdMobView.rootViewController = self.splitViewController;
-	//[self.view addSubview:RoAdMobView];
-	[self.splitViewController.view addSubview:RoAdMobView];
+	RoAdMobView = [[[GADBannerView alloc]
+				   initWithFrame:CGRectMake(0.0,
+											480 + 10,	// 下部に隠す
+											GAD_SIZE_320x50.width,
+											GAD_SIZE_320x50.height)] autorelease];
+	//RoAdMobView.delegate = self;
+	RoAdMobView.adUnitID = AdMobID_iPhone;
+	RoAdMobView.rootViewController = self;
+	[self.navigationController.view addSubview:RoAdMobView];
 	
 	GADRequest *request = [GADRequest request];
 	//[request setTesting:YES];
 	[RoAdMobView loadRequest:request];	
 	
 	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
+	//NG//float fOSversion =  [[[UIDevice currentDevice] systemVersion] floatValue];  NG// "4.2" --> 4.19999になるため
+	//NSLog(@" [[UIDevice currentDevice] systemVersion]=%@", [[UIDevice currentDevice] systemVersion]);
+	if ([[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
+		assert(NSClassFromString(@"ADBannerView"));
+		//													出現前の隠れる↓位置を指定している。
+		MbannerView = [[[ADBannerView alloc] init] autorelease];  // initWithFrame:CGRectZero]; 
+		MbannerView.delegate = self;
+		
+		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // < "4.2"
+			// iOS4.2より前
+			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+														  ADBannerContentSizeIdentifier320x50,
+														  ADBannerContentSizeIdentifier480x32, nil];
+		} else {
+			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
+			MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape, nil];
+		}
+		[self bannerViewWillRotate:self.interfaceOrientation];  // 表示位置セット
+		CGRect rc = MbannerView.frame;
+		rc.origin.y += AD_HIDDEN_OFS_Y;  // 下部に隠す
+		MbannerView.frame = rc;
+		[self.navigationController.view addSubview:MbannerView];
+	}
+#endif
+
+#ifdef FREE_AD_PAD
+	//--------------------------------------------AdMob
+	RoAdMobView = [[[GADBannerView alloc] initWithFrame:CGRectMake(
+																  0, 0, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height)] autorelease];
+	RoAdMobView.alpha = 0;
+	RoAdMobView.adUnitID = AdMobID_iPad;
+	RoAdMobView.rootViewController = self.splitViewController;
+	[self.splitViewController.view addSubview:RoAdMobView];
+	
+	GADRequest *request = [GADRequest request];
+#ifdef xxxAzDEBUG
+	//[request setTestDevices:<#(NSArray *)#>]; こちらに変えろとのことだが、仕様不明
+	//[request setTesting:YES];
+#endif
+	[RoAdMobView loadRequest:request];	
+	
+	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
 	if (MbannerView==nil && NSClassFromString(@"ADBannerView")) {
 		//													出現前の隠れる↓位置を指定している。
-		MbannerView = [[ADBannerView alloc] initWithFrame:CGRectZero]; 
+		MbannerView = [[[ADBannerView alloc] initWithFrame:CGRectZero] autorelease]; 
 		
 		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
 			// iOS4.2より前
@@ -541,7 +607,6 @@
 		MbannerView.delegate = self;
 		//[self.view addSubview:MbannerView];
 		[self.splitViewController.view addSubview:MbannerView];
-		//retainCount +2 --> unloadRelease:にて　-2 している
 	}
 	
 	[self willRotateToInterfaceOrientation:self.splitViewController.interfaceOrientation duration:0];
@@ -563,8 +628,11 @@
 {
     [super viewWillAppear:animated];
 	
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
+	if (selfPopover) {
+		[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+	} else {
+		[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
+	}
 	
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -592,57 +660,9 @@
 	
 	// TableView Reflesh
 	[self.tableView reloadData];
-	
-	
+
 #ifdef FREE_AD 
 	MbAdCanVisible = YES;
-	//--------------------------------------------AdMob
-	if (RoAdMobView==nil) {
-		RoAdMobView = [[GADBannerView alloc]
-					   initWithFrame:CGRectMake(0.0,
-												480 + 10,	// 下部に隠す
-												GAD_SIZE_320x50.width,
-												GAD_SIZE_320x50.height)];
-		//RoAdMobView.delegate = self;
-		
-		RoAdMobView.adUnitID = AdMobID_iPhone;
-		RoAdMobView.rootViewController = self;
-		[self.navigationController.view addSubview:RoAdMobView];
-		
-		GADRequest *request = [GADRequest request];
-		//[request setTesting:YES];
-		[RoAdMobView loadRequest:request];	
-	}
-	
-	//--------------------------------------------iAd : AdMobの上層になるように後からaddSubviewする
-	if (MbannerView==nil) {
-		//NG//float fOSversion =  [[[UIDevice currentDevice] systemVersion] floatValue];  NG// "4.2" --> 4.19999になるため
-		//NSLog(@" [[UIDevice currentDevice] systemVersion]=%@", [[UIDevice currentDevice] systemVersion]);
-		if ([[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
-			assert(NSClassFromString(@"ADBannerView"));
-			//													出現前の隠れる↓位置を指定している。
-			MbannerView = [[ADBannerView alloc] init];  // initWithFrame:CGRectZero]; 
-			MbannerView.delegate = self;
-			
-			if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // < "4.2"
-				// iOS4.2より前
-				MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
-															  ADBannerContentSizeIdentifier320x50,
-															  ADBannerContentSizeIdentifier480x32, nil];
-			} else {
-				// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-				MbannerView.requiredContentSizeIdentifiers = [NSSet setWithObjects:
-															  ADBannerContentSizeIdentifierPortrait,
-															  ADBannerContentSizeIdentifierLandscape, nil];
-			}
-			[self bannerViewWillRotate:self.interfaceOrientation];  // 表示位置セット
-			CGRect rc = MbannerView.frame;
-			rc.origin.y += AD_HIDDEN_OFS_Y;  // 下部に隠す
-			MbannerView.frame = rc;
-			[self.navigationController.view addSubview:MbannerView];
-			//retainCount +2 --> unloadRelease:にて　-2 している
-		}
-	}
 #endif
 }
 
@@ -663,9 +683,11 @@
 	[self AdShowApple:NO AdMob:YES];
 #endif
 #ifdef FREE_AD_PAD
-	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	//[appDelegate.padRootVC adBannerShow:YES];
-	//[self adBannerShow:YES];
+	if (selfPopover) {
+		[self adBannerShow:NO]; //Popover Menuとして表示されるときはAd非表示
+	} else {
+		[self adBannerShow:YES];
+	}
 #endif
 	
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
@@ -687,11 +709,6 @@
 	// Ad非表示にする
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 	[self AdShowApple:NO AdMob:NO];
-#endif
-#ifdef FREE_AD_PAD
-	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	//[appDelegate.padRootVC adBannerShow:NO];
-//	[self adBannerShow:NO];
 #endif
 }
 
@@ -758,13 +775,13 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 	
-	if ([MpopInformation isPopoverVisible]) {
+/*	if ([MpopInformation isPopoverVisible]) {
 		[MpopInformation dismissPopoverAnimated:YES];
 	}
 	
 	if ([MpopSetting isPopoverVisible]) {
 		[MpopSetting dismissPopoverAnimated:YES];
-	}
+	}*/
 	
 	if ([Mpopover isPopoverVisible]) {
 		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
@@ -790,7 +807,7 @@
 		UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
 		CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
 		rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
-		rc.origin.y += (rc.size.height - 35);		rc.size.height = 1;
+		rc.origin.y += (rc.size.height - 30);		rc.size.height = 1;
 		[Mpopover presentPopoverFromRect:rc
 								  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	}
@@ -799,8 +816,9 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
 #ifdef FREE_AD
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
@@ -808,26 +826,26 @@
 	if (MbannerView) {
 		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
 		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
-		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
+		//[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
+		//[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
 	}
 	
 	if (RoAdMobView) {
 		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;	// 破棄
+		//[RoAdMobView release], RoAdMobView = nil;	// 破棄
 	}
 #endif
 #ifdef FREE_AD_PAD
 	if (MbannerView) {
 		[MbannerView cancelBannerViewAction];	// 停止
 		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
-		[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
+		//[MbannerView removeFromSuperview];		// UIView解放		retainCount -1
+		//[MbannerView release], MbannerView = nil;	// alloc解放			retainCount -1
 	}
 	
 	if (RoAdMobView) {	// AdMobは、unloadReleaseすると落ちる
 		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;
+		//[RoAdMobView release], RoAdMobView = nil;
 	}
 #endif
 	
@@ -841,8 +859,8 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 #ifdef AzPAD
-	[MpopInformation release], MpopInformation = nil;
-	[MpopSetting release], MpopSetting = nil;
+//	[MpopInformation release], MpopInformation = nil;
+//	[MpopSetting release], MpopSetting = nil;
 #endif
 	[self unloadRelease];
 	// @property (retain)
@@ -854,8 +872,7 @@
 - (void)viewDidUnload 
 {
 	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
+	[self unloadRelease]; //必ずsuperより先に処理
 	[super viewDidUnload];
 	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
 }
@@ -892,7 +909,7 @@
 			return 2;
 			break;
 		case 3:			// 機能
-			return 3;
+			return 4;
 			break;
 	}
 	return 0;
@@ -903,7 +920,7 @@
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (section==0) return @"\n\n";	// iAd上部スペース
+	if (section==0) return @"\n     Free edition\n\n";	// iAd上部スペース
 	return nil;
 }
 #endif
@@ -915,7 +932,7 @@
 	switch (section) {
 		case 3:
 #ifdef FREE_AD_PAD
-			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
+			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
 #else
 			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n";
 #endif
@@ -1035,8 +1052,14 @@
 					cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
 					break;
 				case 2:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Safari.png"];
-					cell.textLabel.text = NSLocalizedString(@"Support Site", nil);
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
+					cell.textLabel.text = NSLocalizedString(@"Setting", nil);
+					//cell.accessoryType = UITableViewCellAccessoryNone;
+					break;
+				case 3:
+					cell.imageView.image = [UIImage imageNamed:@"Icon32-Information.png"];
+					cell.textLabel.text = NSLocalizedString(@"Information", nil);
+					//cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 			}
 		} break;
@@ -1227,13 +1250,13 @@
 					// 以下は、GooDocsViewの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
 					goodocs.title = cell.textLabel.text;
 					goodocs.Re0root = Re0root;
-					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
 					[naviRight popToRootViewControllerAnimated:NO];
 					[naviRight pushViewController:goodocs animated:YES];
 #else
+					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 					[self.navigationController pushViewController:goodocs animated:YES];
 #endif
 					[goodocs release];
@@ -1249,7 +1272,8 @@
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					//[naviRight pushViewController:goodocs animated:YES];
+					//[naviRight popToRootViewControllerAnimated:NO];
+					vi.frame = naviRight.view.bounds;
 					[naviRight.view addSubview:vi];
 #else
 					[self.view addSubview:vi];
@@ -1259,15 +1283,13 @@
 				}
 					break;
 				case 2:
-				{  // サポートWebサイトへ
-					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Go to support",nil)
-																	 message:NSLocalizedString(@"SupportSite message",nil)
-																	delegate:self 
-														   cancelButtonTitle:NSLocalizedString(@"Cancel",nil)
-														   otherButtonTitles:@"OK", nil];
-					alert.tag = TAG_ALERT_SupportSite;
-					[alert show];
-					[alert release];
+				{  // Setting
+					[self azSettingView];
+				}
+					break;
+				case 3:
+				{  // Information
+					[self azInformationView];
 				}
 					break;
 			}
@@ -1286,6 +1308,7 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
+	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
 /*
 	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。

@@ -95,29 +95,12 @@
 
 - (void)showCalcAmount
 {
-#ifdef xxxxxxxxAzPAD
-	CGRect rect = CGRectMake(0,0, 460,260);
-	McalcView = [[CalcView alloc] initWithFrame:rect];
-	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
-	McalcView.Rentity = Re3edit;
-	McalcView.RzKey = @"nAmount";
-	// Popover
-	MpopoverView = [[UIPopoverController alloc] initWithContentViewController:McalcView];
-	MpopoverView.popoverContentSize = rect.size;
-	//MpopoverView.delegate = self;
-	CGRect rc = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-	//rc.origin.x += 30;  rc.size.width = 50;
-	rc.origin.y += 10;  rc.size.height -= 20;
-	[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp  animated:YES];
-	McalcView.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-	McalcView.delegate = self;	//決定時に、viewWillAppear を呼び出すため
-	
-	[McalcView release];
-	[McalcView show];
-	
+#ifdef AzPAD
+	// ToolBar常時表示
 #else
 	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
 	[self.navigationController setToolbarHidden:YES];
+#endif
 	
 	if (McalcView) {
 		[McalcView hide];
@@ -155,7 +138,6 @@
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
-#endif
 }
 
 - (void)cancelClose:(id)sender
@@ -417,28 +399,27 @@
 		MbE1cardChange = NO;
 #ifdef AzPAD
 		MiSourceYearMMDD = 0;		// 初回のみ通すため
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.contentSizeForViewInPopover = GD_POPOVER_SIZE_INIT;
+		// この後、viewDidAppearにて GD_POPOVER_SIZE を設定することにより、ようやくPopoverサイズの変動が無くなった。
 #endif
 	}
 	return self;
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
 	//NSLog(@"--- loadView --- E3recordDetailTVC");
 	[super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	MbuTop = nil;		// ここ(loadView)で生成
-	MbuDelete = nil;	// ここ(loadView)で生成
-	Me0root = nil;		// viewWillAppearにて生成
-	MlbAmount = nil;	// cellForRowAtIndexPathにて生成
-	McalcView = nil;	// showCalcAmountにて生成
 	
-	// その他、初期化
+	// 初期化
 	MbCopyAdd = NO;
 	MiIndexE3lasts = (-1); // (-2)過去コピー機能無効
 	MbModified = NO;
+	Me0root = nil;		// viewWillAppearにて生成
+	MlbAmount = nil;	// cellForRowAtIndexPathにて生成
+	McalcView = nil;	// showCalcAmountにて生成
 	
 	//self.tableView.backgroundColor = [UIColor brownColor];
 
@@ -458,51 +439,51 @@
 	
 	// Tool Bar Button
 	if (0 < PiAdd) {
-		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																				target:nil action:nil];
+		UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																				 target:nil action:nil] autorelease];
 		
-		UIBarButtonItem *buNew = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyStop.png"]
+		UIBarButtonItem *buNew = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyStop.png"]
 																  style:UIBarButtonItemStylePlain
-																 target:self action:@selector(barButton:)];
+																  target:self action:@selector(barButton:)] autorelease];
 		buNew.tag = TAG_BAR_BUTTON_NEW;
 		
-		UIBarButtonItem *buPast = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyLeft.png"]
+		UIBarButtonItem *buPast = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyLeft.png"]
 																   style:UIBarButtonItemStylePlain
-																  target:self action:@selector(barButton:)];
+																   target:self action:@selector(barButton:)] autorelease];
 		buPast.tag = TAG_BAR_BUTTON_PAST;
 		
-		UIBarButtonItem *buReturn = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyRight.png"]
+		UIBarButtonItem *buReturn = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyRight.png"]
 																	 style:UIBarButtonItemStylePlain
-																	target:self action:@selector(barButton:)];
+																	 target:self action:@selector(barButton:)] autorelease];
 		buReturn.tag = TAG_BAR_BUTTON_RETURN;
 		buReturn.enabled = NO; // 最初、戻るは無効
 		
 		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buPast, buFlex, buNew, buFlex, buReturn, buFlex, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[buReturn release];
-		[buPast release];
-		[buNew release];
-		[buFlex release];
+		//[buReturn release];
+		//[buPast release];
+		//[buNew release];
+		//[buFlex release];
 	} 
 	else {
-		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																				target:nil action:nil];
+		UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																				 target:nil action:nil] autorelease];
 #ifdef AzPAD
 		// Top不要
 #else
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+		MbuTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
-												 target:self action:@selector(cancelClose:)]; // ＜＜ cancelClose:YES<<--TopView ＞＞
+												  target:self action:@selector(cancelClose:)] autorelease]; // ＜＜ cancelClose:YES<<--TopView ＞＞
 		MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancelClose:にて判断に使用
 #endif
 		
-		UIBarButtonItem *buCopyAdd = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyAdd.png"]
+		UIBarButtonItem *buCopyAdd = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyAdd.png"]
 																	  style:UIBarButtonItemStylePlain  //Bordered
-																	 target:self action:@selector(barButtonCopyAdd)];
+																	  target:self action:@selector(barButtonCopyAdd)] autorelease];
 		buCopyAdd.tag = TAG_BAR_BUTTON_ADD;
 		
-		MbuDelete = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-																  target:self action:@selector(barButtonDelete)];
+		MbuDelete = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+																   target:self action:@selector(barButtonDelete)] autorelease];
 		MbuDelete.tag = TAG_BAR_BUTTON_DEL;
 		
 #ifdef AzPAD
@@ -512,11 +493,11 @@
 #else
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buCopyAdd, buFlex, MbuDelete, nil];
 		[self setToolbarItems:buArray animated:YES];
-		[MbuTop release];
+		//[MbuTop release];
 #endif
-		[buCopyAdd release];
-		[MbuDelete release];
-		[buFlex release];
+		//[buCopyAdd release];
+		//[MbuDelete release];
+		//[buFlex release];
 	}
 
 	// 初回処理のため
@@ -686,6 +667,10 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
+#ifdef AzPAD
+	// init 時に GD_POPOVER_SIZE_INIT を設定してから、この処理により、ようやくPopoverサイズの変動が無くなった。
+	self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+#endif
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
@@ -742,9 +727,11 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
+- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E3recordDetailTVC");
+	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
 	[RaE6parts release], RaE6parts = nil;
 	[RaE3lasts release], RaE3lasts = nil;
 }
@@ -848,7 +835,7 @@
 				return NSLocalizedString(@"E6PAID Help",nil);
 			}
 			else if (0 < PiAdd) {
-				return	@"\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
+				return	@"\n\n\n\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
 			}
 			break;
 
@@ -1239,7 +1226,7 @@
 						evc.RzKey = @"dateUse";
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
-						evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
 						[evc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
@@ -1274,7 +1261,7 @@
 						E3selectRepeatTVC *tvc = [[E3selectRepeatTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Repeat",nil);
 						tvc.Re3edit = Re3edit;
-						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
@@ -1287,7 +1274,7 @@
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
 						tvc.Re3edit = Re3edit;
-						tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
 						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
@@ -1338,7 +1325,7 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+					//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
 					[evc release];
 					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
@@ -1378,7 +1365,7 @@
 					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
 					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
 #else
-					evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+					//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
 #endif
 					[evc release];

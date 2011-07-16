@@ -6,11 +6,12 @@
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
 
+#import "SFHFKeychainUtils.h"
 #import "Global.h"
+#import "AppDelegate.h"
 #import "Entity.h"
 #import "MocFunctions.h"
 #import "GooDocsTVC.h"
-#import "SFHFKeychainUtils.h"
 #import "FileCsv.h"
 
 #define TAG_ACTION_UPLOAD_START		109
@@ -101,14 +102,15 @@
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う
 //（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	RtfUsername = nil;		// ここ(loadView)で生成
-	RtfPassword = nil;		// ここ(loadView)で生成
-	
 
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+#endif
+	
 	// ユーザが既に設定済みであればその情報を表示する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	// Username
@@ -166,8 +168,28 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
+#ifdef AzPAD
+	//Popover [Menu] button
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+#else
 	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+#endif
 
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
