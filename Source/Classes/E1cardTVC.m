@@ -344,9 +344,8 @@
 #pragma mark  View - Unload - dealloc
 
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
+{	// ここで破棄するのは表示オブジェクトに限る。データ関係はデリゲートなどで使われる可能性があるので破棄できない。
 	NSLog(@"--- unloadRelease --- E1cardTVC");
-	[RaE1cards release], RaE1cards = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -356,6 +355,7 @@
 #endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
+	[RaE1cards release], RaE1cards = nil;
 	[Re0root release];
 	[Re3edit release];
 	[super dealloc];

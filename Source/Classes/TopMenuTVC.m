@@ -669,7 +669,9 @@
 #endif
 	
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
-	[MocFunctions e7e2clean];  // [0.4.18]レス向上のためここで処理。バックグランド時だとE2やE7表示に戻ったとき落ちる可能性あるので没にした。
+	//iPad-NG// [MocFunctions e7e2clean];  // [0.4.18]レス向上のためここで処理。バックグランド時だとE2やE7表示に戻ったとき落ちる可能性あるので没にした。
+	//iPad-NG//【原因】左ペインにTopMenuが表示されたタイミングで、TopMenu:viewDidAppear:e7e2clean により削除されてしまい不具合発生した。
+	//iPad-NG//【対応】[MocFunctions e7e2clean] 処理を E2 または E7 の unloadRelease に入れた。
 	
 	// Comback (-1)にして未選択状態にする
 	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -915,7 +917,7 @@
 #ifdef FREE_AD_PAD
 			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
 #else
-			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n";  // iAdが表示されているとき最終セルが隠れないようにする
+			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n";
 #endif
 			break;
 	}

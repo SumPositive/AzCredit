@@ -2205,9 +2205,9 @@
 		44BF486F1300F090006F70FF /* DDNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDNumber.h; path = CocoaHTTPServer/DDNumber.h; sourceTree = "<group>"; };
 		44BF48701300F090006F70FF /* DDData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDData.m; path = CocoaHTTPServer/DDData.m; sourceTree = "<group>"; };
 		44BF48711300F090006F70FF /* DDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDData.h; path = CocoaHTTPServer/DDData.h; sourceTree = "<group>"; };
-		44C0E5B913A0A2D1003D0465 /* AzCredit-iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AzCredit-iPad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		44C0E5B913A0A2D1003D0465 /* AzCreditPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44C0E5D813A0A3CF003D0465 /* Info-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iPad.plist"; sourceTree = "<group>"; };
-		44C0E7D413A0A475003D0465 /* AzCreditS1-iPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AzCreditS1-iPad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditS1Pad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44C0E7D613A0A4D6003D0465 /* InfoS1-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "InfoS1-iPad.plist"; sourceTree = "<group>"; };
 		44C0E7EF13A110BA003D0465 /* PadRootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PadRootVC.m; sourceTree = "<group>"; };
 		44C0E7F013A110BA003D0465 /* PadRootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadRootVC.h; sourceTree = "<group>"; };
@@ -2684,8 +2684,8 @@
 			children = (
 				448694E610F5A84300AD02D8 /* AzCredit.app */,
 				44B0137B133EF773005AD0EA /* AzCreditS1.app */,
-				44C0E5B913A0A2D1003D0465 /* AzCredit-iPad.app */,
-				44C0E7D413A0A475003D0465 /* AzCreditS1-iPad.app */,
+				44C0E5B913A0A2D1003D0465 /* AzCreditPad.app */,
+				44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4937,9 +4937,9 @@
 			productReference = 44B0137B133EF773005AD0EA /* AzCreditS1.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44C0E3B413A0A2D1003D0465 /* AzCredit-iPad */ = {
+		44C0E3B413A0A2D1003D0465 /* AzCreditPad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCredit-iPad" */;
+			buildConfigurationList = 44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPad" */;
 			buildPhases = (
 				44C0E3B513A0A2D1003D0465 /* Resources */,
 				44C0E3F913A0A2D1003D0465 /* Sources */,
@@ -4950,14 +4950,14 @@
 			);
 			dependencies = (
 			);
-			name = "AzCredit-iPad";
+			name = AzCreditPad;
 			productName = iPack;
-			productReference = 44C0E5B913A0A2D1003D0465 /* AzCredit-iPad.app */;
+			productReference = 44C0E5B913A0A2D1003D0465 /* AzCreditPad.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44C0E5DA13A0A475003D0465 /* AzCreditS1-iPad */ = {
+		44C0E5DA13A0A475003D0465 /* AzCreditS1Pad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1-iPad" */;
+			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */;
 			buildPhases = (
 				44C0E5DB13A0A475003D0465 /* Resources */,
 				44C0E61D13A0A475003D0465 /* Sources */,
@@ -4968,9 +4968,9 @@
 			);
 			dependencies = (
 			);
-			name = "AzCreditS1-iPad";
+			name = AzCreditS1Pad;
 			productName = iPack;
-			productReference = 44C0E7D413A0A475003D0465 /* AzCreditS1-iPad.app */;
+			productReference = 44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -4995,8 +4995,8 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* AzCredit */,
 				44B01168133EF773005AD0EA /* AzCreditS1 */,
-				44C0E3B413A0A2D1003D0465 /* AzCredit-iPad */,
-				44C0E5DA13A0A475003D0465 /* AzCreditS1-iPad */,
+				44C0E3B413A0A2D1003D0465 /* AzCreditPad */,
+				44C0E5DA13A0A475003D0465 /* AzCreditS1Pad */,
 			);
 		};
 /* End PBXProject section */
@@ -5739,7 +5739,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "AzCredit-iPad";
+				PRODUCT_NAME = AzCreditPad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "32B6273E-80B8-4E87-8B63-1242DD8889DC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -5770,7 +5770,7 @@
 					"\"$(SRCROOT)/GoogleAdMobAdsSDK\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "AzCredit-iPad";
+				PRODUCT_NAME = AzCreditPad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "32B6273E-80B8-4E87-8B63-1242DD8889DC";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -5800,7 +5800,7 @@
 					"\"$(SRCROOT)/GoogleAdMobAdsSDK\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "AzCredit-iPad";
+				PRODUCT_NAME = AzCreditPad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF34D7D5-B962-4103-9CD8-1A0F299594C0";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -5833,7 +5833,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "AzCreditS1-iPad";
+				PRODUCT_NAME = AzCreditS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "32B6273E-80B8-4E87-8B63-1242DD8889DC";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -5864,7 +5864,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "AzCreditS1-iPad";
+				PRODUCT_NAME = AzCreditS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "32B6273E-80B8-4E87-8B63-1242DD8889DC";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -5894,7 +5894,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				PRODUCT_NAME = "AzCreditS1-iPad";
+				PRODUCT_NAME = AzCreditS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "FF34D7D5-B962-4103-9CD8-1A0F299594C0";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -6029,7 +6029,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCredit-iPad" */ = {
+		44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44C0E5B613A0A2D1003D0465 /* Debug */,
@@ -6039,7 +6039,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1-iPad" */ = {
+		44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44C0E7D113A0A475003D0465 /* Debug */,

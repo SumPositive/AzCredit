@@ -13,7 +13,7 @@
 		<string>Icon72Free.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}</string>
+	<string>com.azukid.${PRODUCT_NAME:identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

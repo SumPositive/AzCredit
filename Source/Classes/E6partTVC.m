@@ -348,7 +348,8 @@
 					[MocFunctions e2invoice:Me2e1card inYearMMDD:GiAddYearMMDD(iYearMMDD, 0, +1, 0)]; // +1 翌月へ E2無ければ追加する
 					//--------------SAVE
 					[MocFunctions commit]; 
-					// 最終的に未使用のE2は、TopMenu:viewDidAppear:にて削除している。
+					// 最終的に未使用のE2は、TopMenu:viewDidAppear:にて削除している。<<<iPad-NG!
+					//iPad-NG//左ペインにTopMenuが表示されたタイミングで削除されてしまうことになり不具合発生した。
 				}
 				// E1配下のE2
 				[RaE2invoices setArray:[Pe2select.e1unpaid.e2unpaids allObjects]];
@@ -357,7 +358,7 @@
 				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
 				[sort1 release];
 				[RaE2invoices sortUsingDescriptors:sortArray];
-				NSLog(@"RaE2invoices=%@", RaE2invoices);
+				//NSLog(@"RaE2invoices=%@", RaE2invoices);
 				[sortArray release];
 			}
 			if (Pe2select.e1unpaid) {
@@ -599,7 +600,7 @@
 #pragma mark  View - Unload - dealloc
 
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
+{	// ここで破棄するのは表示オブジェクトに限る。データ関係はデリゲートなどで使われる可能性があるので破棄できない。
 	NSLog(@"--- unloadRelease --- E6partTVC");
 #ifdef FREE_AD
 	if (RoAdMobView) {
@@ -607,14 +608,14 @@
 		[RoAdMobView release],	RoAdMobView = nil;
 	}
 #endif
-	[RaE2invoices release], RaE2invoices = nil;
-	[RaE6parts release],	RaE6parts = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
+	[RaE2invoices release], RaE2invoices = nil;
+	[RaE6parts release],	RaE6parts = nil;
 	[super dealloc];
 }
 
@@ -667,15 +668,11 @@
 #endif
 	assert(0 <= section && section < [RaE2invoices count]);
 	NSString *zSum = @"-----";
-	E2invoice *e2obj = (E2invoice *)[RaE2invoices objectAtIndex:section];
-	NSLog(@"A>>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<fault> <未ロード> 発生　　＜＜iPhoneでは正常＞＞
-	if ([e2obj isFault]) {
-		//[e2obj.managedObjectContext refreshObject:e2obj mergeChanges:YES];
-		NSLog(@"AA>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<fault> <未ロード> 発生　　＜＜iPhoneでは正常＞＞
-		NSLog(@"   >>> e2obj.nYearMMDD=%d", [[e2obj valueForKey:@"nYearMMDD"] integerValue]);
-	}
-	NSLog(@"B>>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<false> 発生　　＜＜iPhoneでは正常＞＞
-	<<<<<<<<<<<<<<<<<<iPadにて、Ｅ６partTVC：エルエスト（空の月あり）にて回転時に落ちる
+	E2invoice *e2obj = [RaE2invoices objectAtIndex:section];
+	//iPad-NG//NSLog(@"A>>>>> e2obj=%@", e2obj);   //iPadにて、e2obj data:<fault> 発生　　＜＜iPhoneでは正常＞＞
+	//iPad-NG//【原因】左ペインにTopMenuが表示されたタイミングで、TopMenu:viewDidAppear:e7e2clean により削除されてしまい不具合発生した。
+	//iPad-NG//【対応】[MocFunctions e7e2clean] 処理を E2 または E7 の unloadRelease に入れた。
+
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 	[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
 	[formatter setLocale:[NSLocale currentLocale]];
@@ -696,7 +693,6 @@
 		} else {
 			return [NSString stringWithFormat:@"%@  %@", e2obj.e1unpaid.zName, zSum];
 		}
-
 	}
 }
 

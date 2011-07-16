@@ -153,6 +153,7 @@ static UIColor *MpColorBlue(float percent) {
 }
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
+//【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
 - (void)loadView
 {
     [super loadView];
@@ -188,23 +189,20 @@ static UIColor *MpColorBlue(float percent) {
 	[buFlex release];
 #endif
 	
+	//【Tips】UIButtonは、Autoreleaseである。ゆえに、addSubview後のrelease禁止！。かつ、メモリ不足時には自動的に解放後、改めてloadViewを通るので、初回同様に生成する。
 	// PAID  ボタン
-	if (MbuPaid==nil) {
-		MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
-		[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateNormal];
-		//[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateHighlighted];
-		[MbuPaid addTarget:self action:@selector(toPAID) forControlEvents:UIControlEventTouchUpInside];
-		[self.tableView addSubview:MbuPaid];
-	}
+	MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
+	[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateNormal];
+	//[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateHighlighted];
+	[MbuPaid addTarget:self action:@selector(toPAID) forControlEvents:UIControlEventTouchUpInside];
+	[self.tableView addSubview:MbuPaid];
 	
 	// Unpaid ボタン
-	if (MbuUnpaid==nil) {
-		MbuUnpaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
-		[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateNormal];
-		//[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateHighlighted];
-		[MbuUnpaid addTarget:self action:@selector(toUnpaid) forControlEvents:UIControlEventTouchUpInside];
-		[self.tableView addSubview:MbuUnpaid];
-	}
+	MbuUnpaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
+	[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateNormal];
+	//[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateHighlighted];
+	[MbuUnpaid addTarget:self action:@selector(toUnpaid) forControlEvents:UIControlEventTouchUpInside];
+	[self.tableView addSubview:MbuUnpaid];
 }
 
 - (void)viewDesign		//初期表示および回転時に位置調整して描画する
@@ -359,6 +357,8 @@ static UIColor *MpColorBlue(float percent) {
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
+	//iPad-NG//【対応】[MocFunctions e7e2clean] 処理を E2 または E7 の unloadRelease に入れた。
+	//[MocFunctions e7e2clean];
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
