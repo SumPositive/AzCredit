@@ -34,12 +34,22 @@
 #ifdef AzPAD
 - (void)refreshE6partTVC:(BOOL)bSame	//=YES:支払先と支払日が変更なし、ならば行だけ再表示
 {
-	if (bSame && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+/*	if (bSame && MindexPathEdit)
+	{	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
+		//NSLog(@"***MindexPathEdit=(%d, %d)", (int)MindexPathEdit.section, (int)MindexPathEdit.row);
 		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
-		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+		@try {  // なぜか？エラー発生するケースあり、回避策。
+			[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+		}
+		@catch (NSException *exception) {
+			[self viewWillAppear:YES];
+		}
 	} else {
 		[self viewWillAppear:YES];
-	}
+	}*/
+
+	// 上のエラーが未解決のため
+	[self viewWillAppear:YES];
 }
 #endif
 
@@ -106,8 +116,7 @@
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	[nc release];
-	MindexPathEdit = indexPath;
-	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
 	rc.size.width /= 2;
 	rc.origin.y += 10;	rc.size.height -= 20;
 	[Mpopover presentPopoverFromRect:rc

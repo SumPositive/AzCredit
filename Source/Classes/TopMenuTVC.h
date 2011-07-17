@@ -49,9 +49,6 @@
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
-	//NSIndexPath*				MindexPathEdit;
-	//UIPopoverController*	MpopInformation;	//回転時に閉じるため
-	//UIPopoverController*	MpopSetting;			//回転時に閉じるため
 #else
 	InformationView		*MinformationView;
 #endif
@@ -64,7 +61,6 @@
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
 	BOOL						MbAdCanVisible;		//YES:表示可能な状況　 NO:表示してはいけない状況
-	//BOOL						MbAdBannerShow;  // =NO:非表示（表示禁止中）
 #endif
 	//----------------------------------------------assign
 	NSInteger	MiE1cardCount;
@@ -73,18 +69,11 @@
 }
 
 @property (nonatomic, retain) E0root				*Re0root;
-#ifdef AzPAD
-//@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
-#ifdef FREE_AD_PAD
-//- (void)adBannerShow:(BOOL)bShow;
-#endif
-
-//- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 #ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc;
 - (void)e3recordAdd;	//PadRootVCからdelegate呼び出しされる
+- (void)refreshTopMenuTVC;	// E3recordDetailTVC:から呼び出される
 #endif
 
 @end

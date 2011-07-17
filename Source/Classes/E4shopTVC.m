@@ -228,7 +228,7 @@
 					   NSLocalizedString(@"Sort Amount",nil),
 					   NSLocalizedString(@"Sort Index",nil), nil]; // autorelease
 	UISegmentedControl *segment = [[[UISegmentedControl alloc] initWithItems:aItems] autorelease];
-	segment.frame = CGRectMake(0,0, 230,30);
+	segment.frame = CGRectMake(0,0, 220,30);
 	segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE4SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE4SortMode];
 	segment.selectedSegmentIndex = MiOptE4SortMode;

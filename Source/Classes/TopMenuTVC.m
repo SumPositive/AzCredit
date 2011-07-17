@@ -65,6 +65,11 @@
 {
 	selfPopover = pc;
 }
+
+- (void)refreshTopMenuTVC	// 「未払合計額」再描画するため
+{
+	[self viewWillAppear:YES];
+}
 #endif
 
 
@@ -221,7 +226,7 @@
 	[Mpopover presentPopoverFromRect:rc
 							  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	e3detail.selfPopover = Mpopover;  [Mpopover release];
-	e3detail.delegate = nil;	// ここでは、再描画不要
+	e3detail.delegate = nil;		// 不要
 #else
 	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
@@ -271,7 +276,7 @@
 
 	if (RoAdMobView) {
 		CGRect rc = RoAdMobView.frame;
-		if (MbAdCanVisible && RoAdMobView.tag==1) {
+		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
 			if (RoAdMobView.alpha==0) {
 				rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
 				RoAdMobView.frame = rc;
@@ -777,18 +782,6 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
 {
-#ifdef AzPAD
-#else
-	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-		// 正面：infoボタン表示
-		MbuToolBarInfo.enabled = YES;
-	} else {
-		MbuToolBarInfo.enabled = NO;
-		if (MinformationView) {
-			[MinformationView hide]; // 正面でなければhide
-		}
-	}
-#endif
 #ifdef FREE_AD
 	[self bannerViewWillRotate:toInterfaceOrientation];
 #endif
@@ -812,37 +805,12 @@
 #endif
 }
 
-#ifdef AzPAD
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-	
-/*	if ([MpopInformation isPopoverVisible]) {
-		[MpopInformation dismissPopoverAnimated:YES];
-	}
-	
-	if ([MpopSetting isPopoverVisible]) {
-		[MpopSetting dismissPopoverAnimated:YES];
-	}*/
-	
-	if ([Mpopover isPopoverVisible]) {
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-/*		if (MindexPathEdit) { 
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.origin.x += (rc.size.width - 30);		rc.size.width = 20;	// 右側にPopoverさせるため
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
-					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-		} else {
-			// アンカー位置 [Menu]
-			CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-			rc.origin.x = 60;		rc.size.width = 20;
-			rc.origin.y = 30;		rc.size.height = 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
-					permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES]; //表示開始
-		}*/
+{
+#ifdef AzPAD
+	if ([Mpopover isPopoverVisible]) 
+	{	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
 		// アンカー位置 [Menu]
 		// [+]Add mode
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -853,8 +821,19 @@
 		[Mpopover presentPopoverFromRect:rc
 								  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	}
-}
+#else
+	if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
+		// 正面：infoボタン表示
+		MbuToolBarInfo.enabled = YES;
+	} else {
+		MbuToolBarInfo.enabled = NO;
+		if (MinformationView) {
+			[MinformationView hide]; // 正面でなければhide
+		}
+	}
 #endif
+}
+
 
 #pragma mark  View - Unload - dealloc
 
@@ -951,7 +930,12 @@
 			return 2;
 			break;
 		case 3:			// 機能
+#ifdef AzPAD
 			return 4;
+#else
+			if (self.interfaceOrientation == UIInterfaceOrientationPortrait) return 4;
+			return 3;
+#endif
 			break;
 	}
 	return 0;

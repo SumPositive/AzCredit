@@ -231,7 +231,7 @@ static UIColor *MpColorBlue(float percent) {
 #ifdef AzPAD
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+35, 72, 72)];
 #ifdef AzSTABLE
-	[iv setImage:[UIImage imageNamed:@"Icon72s1.png"]];
+	[iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
 #else
 	[iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
 #endif
@@ -354,10 +354,10 @@ static UIColor *MpColorBlue(float percent) {
 	
 	//------------------------------------------CLOSE
 #ifdef AzPAD
-	//label.text = NSLocalizedString(@"Infomation Open Pad",nil);
+	//label.text = NSLocalizedString(@"Information Open Pad",nil);
 #else
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+440, 280, 25)];
-	label.text = NSLocalizedString(@"Infomation Open",nil);
+	label.text = NSLocalizedString(@"Information Open",nil);
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明

@@ -13,6 +13,9 @@
 #import "MocFunctions.h"
 #import "GooDocsTVC.h"
 #import "FileCsv.h"
+#ifdef AzPAD
+#import "TopMenuTVC.h"
+#endif
 
 #define TAG_ACTION_UPLOAD_START		109
 #define TAG_ACTION_DOWNLOAD_START	118
@@ -797,6 +800,15 @@
 - (void)alertView:(UIAlertView *)alert clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (alert.tag == 101) {
 		// (101) Download Compleat! OK
+#ifdef AzPAD
+		// TopMenuTVCにある 「未払合計額」を再描画するための処理
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		UINavigationController* naviLeft = [app.mainController.viewControllers objectAtIndex:0];	//[0]Left
+		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+		}
+#endif
 		[self.navigationController popViewControllerAnimated:YES];	// 前のViewへ戻る
 	}
 	else if (alert.tag == 201) {

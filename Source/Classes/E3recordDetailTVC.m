@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Entity.h"
 #import "MocFunctions.h"
+#import "TopMenuTVC.h"
 #import "E1cardTVC.h"
 #import "E3recordTVC.h"
 #import "E3recordDetailTVC.h"
@@ -88,8 +89,26 @@
 		app.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
 		[MocFunctions e3delete:Re3edit];
 		[MocFunctions commit];
-		//
+
+#ifdef AzPAD
+		if (selfPopover) {
+			if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+				[delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
+			}
+			else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+				[delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
+			}
+			// TopMenuTVCにある 「未払合計額」を再描画するための処理
+			UINavigationController* naviLeft = [app.mainController.viewControllers objectAtIndex:0];	//[0]Left
+			TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+			if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+				[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+			}
+			[selfPopover dismissPopoverAnimated:YES];
+		}
+#else
 		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+#endif
 	}
 }
 
@@ -223,6 +242,14 @@
 			BOOL bSame = !MbE6dateChange && !MbE1cardChange;
 			[delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
 		}
+
+		// TopMenuTVCにある 「未払合計額」を再描画するための処理
+		UINavigationController* naviLeft = [app.mainController.viewControllers objectAtIndex:0];	//[0]Left
+		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+		}
+
 		[selfPopover dismissPopoverAnimated:YES];
 	}
 #else
