@@ -262,13 +262,8 @@
 												  target:self action:@selector(barButtonTop)] autorelease];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, buSort, buFlex, buAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
-		//[MbuTop release];
 #endif
 	}
-	//[buAdd release];
-	//[buFlex release];
-	//[buSort release];
-	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
@@ -369,31 +364,6 @@
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
-	
-#ifdef xxxAzPAD
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	id vc = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-	if ([vc isMemberOfClass:[UINavigationController class]]) {
-		UINavigationController* nav = (UINavigationController*)vc;
-		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordTVC class]]) 
-		{	//[1]Right：E3recordTVC Opend
-			//E3recordTVC* e3tvc = (E3recordTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-		} else {
-			//[1]Right：E3recordTVC を開く
-			E3recordTVC *tvc = [[E3recordTVC alloc] init];
-			E4shop *e4obj = nil;
-			if (0 < [RaE4shops count]) {
-				e4obj = [RaE4shops objectAtIndex:0];
-			}
-			tvc.title =  [e4obj zName];
-			tvc.Re0root = Re0root;
-			tvc.Pe4shop = e4obj;  // e4obj以下の全E3表示モード
-			tvc.Pe5category = nil;
-			[[apd.mainController.viewControllers objectAtIndex:1] pushViewController:tvc animated:YES];	//[1]Right
-			[tvc release];
-		}
-	}
-#endif
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
@@ -409,13 +379,6 @@
 		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
 	}
 }
-
-/*
- // この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
- - (void)viewWillDisappear:(BOOL)animated
- {
- }
- */
 
 
 #pragma mark  View - Rotate
@@ -460,27 +423,6 @@
 }
 #endif
 
-/*
-// カムバック処理（復帰再現）：親から呼ばれる
-- (void)viewComeback:(NSArray *)selectionArray
-{
-	// (0)TopMenu >> (1)This
-	NSInteger lRow = [[selectionArray objectAtIndex:1] integerValue];
-	if (lRow < 0) return; // この画面表示
-	
-	NSInteger lSec = lRow / GD_SECTION_TIMES;
-	if (1 <= lSec) return; // 無効セクション
-	
-	lRow -= (lSec * GD_SECTION_TIMES);
-	if ([RaE4shops count] <= lRow) return; // 無効セル（削除されたとか）
-
-	// 次、 E3recordTVC だが、これ以上戻しても見難いだけなので、ここまでで止めることにした。
-	// 前回選択行を画面中央にする。
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
-	[self.tableView scrollToRowAtIndexPath:indexPath 
-						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
-}
-*/
 
 #pragma mark  View - Unload - dealloc
 

@@ -368,6 +368,15 @@ static UIColor *MpColorBlue(float percent) {
     return self;
 }
 
+- (void)loadView
+{
+    [super loadView];
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+#endif
+	self.title = NSLocalizedString(@"Information", nil);
+}
+
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];

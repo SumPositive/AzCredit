@@ -206,10 +206,6 @@
 - (void)loadView
 {
     [super loadView];
-	// メモリ不足時に self.viewが破棄されると同時に破棄されるオブジェクトを初期化する
-	// なし
-
-	//self.tableView.backgroundColor = [UIColor brownColor];
 
 #ifdef AzPAD
 	// Set up NEXT Left Back [<<] buttons.
@@ -223,6 +219,9 @@
 											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 #endif
 	
+#ifdef AzPAD
+	// Tool Bar Button なし
+#else
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			 target:nil action:nil] autorelease];
@@ -231,21 +230,18 @@
 															  target:self action:@selector(barButtonTop)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
-	//[buTop release];
-	//[buFlex release];
+#endif
 
 	//【Tips】UIButtonは、Autoreleaseである。ゆえに、addSubview後のrelease禁止！。かつ、メモリ不足時には自動的に解放後、改めてloadViewを通るので、初回同様に生成する。
 	// PAID  ボタン
 	MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
 	[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateNormal];
-	//[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateHighlighted];
 	[MbuPaid addTarget:self action:@selector(toPAID) forControlEvents:UIControlEventTouchUpInside];
 	[self.tableView addSubview:MbuPaid];
 
 	// Unpaid ボタン
 	MbuUnpaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
 	[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateNormal];
-	//[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateHighlighted];
 	[MbuUnpaid addTarget:self action:@selector(toUnpaid) forControlEvents:UIControlEventTouchUpInside];
 	[self.tableView addSubview:MbuUnpaid];
 }
@@ -272,8 +268,8 @@
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 		[UIView setAnimationDuration:0.7];
 		
-		MbuPaid.alpha = 0.9;
-		MbuUnpaid.alpha = 0.9;
+		MbuPaid.alpha = 1.0;
+		MbuUnpaid.alpha = 1.0;
 		
 		// アニメ開始
 		[UIView commitAnimations];
@@ -925,14 +921,6 @@
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = [tableView contentOffset];
 
-/*	// Comback 記録
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-	// (0)TopMenu >> (1)E1card/E7payment >> (2)This >> (3)Clear
-	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
-	[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
-*/
-	
 	//E2invoice *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	E2temp *e2t = [[RaE2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	if ([e2t.e2invoices count] <= 0) return;
@@ -968,46 +956,6 @@
 	[self.navigationController pushViewController:tvc animated:YES];
 	[tvc release];
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 @end
 

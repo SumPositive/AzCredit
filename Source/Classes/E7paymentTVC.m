@@ -19,7 +19,7 @@
 
 
 @interface E7paymentTVC (PrivateMethods)
-- (void)viewDesign;
+- (void)viewDesign:(BOOL)animated;
 //- (void)cellLeftButton: (UIButton *)button;
 @end
 
@@ -99,6 +99,7 @@
 		// 再描画
 		MbFirstAppear = YES; // ボタン位置調整のため
 		[self viewWillAppear:NO]; // Fech データセットさせるため
+		[self viewDesign:NO];
 		// アニメ開始
 		[UIView commitAnimations];
 	}
@@ -122,6 +123,7 @@
 		// 再描画
 		MbFirstAppear = YES; // ボタン位置調整のため
 		[self viewWillAppear:NO]; // Fech データセットさせるため
+		[self viewDesign:NO];
 		// アニメ開始
 		[UIView commitAnimations];
 	}
@@ -158,8 +160,6 @@ static UIColor *MpColorBlue(float percent) {
 {
     [super loadView];
 
-	//self.tableView.backgroundColor = [UIColor clearColor];
-
 #ifdef AzPAD
 	self.navigationItem.hidesBackButton = YES;
 	// Set up NEXT Left Back [<] buttons.
@@ -183,27 +183,23 @@ static UIColor *MpColorBlue(float percent) {
 															  target:self action:@selector(barButtonTop)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
-	//[buTop release];
-	//[buFlex release];
 #endif
 	
 	//【Tips】UIButtonは、Autoreleaseである。ゆえに、addSubview後のrelease禁止！。かつ、メモリ不足時には自動的に解放後、改めてloadViewを通るので、初回同様に生成する。
 	// PAID  ボタン
 	MbuPaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
 	[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateNormal];
-	//[MbuPaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toPAID"] forState:UIControlStateHighlighted];
 	[MbuPaid addTarget:self action:@selector(toPAID) forControlEvents:UIControlEventTouchUpInside];
 	[self.tableView addSubview:MbuPaid];
 	
 	// Unpaid ボタン
 	MbuUnpaid = [UIButton buttonWithType:UIButtonTypeCustom]; //Autorelease
 	[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateNormal];
-	//[MbuUnpaid setBackgroundImage:[UIImage imageNamed:@"Icon90x70-toUnpaid"] forState:UIControlStateHighlighted];
 	[MbuUnpaid addTarget:self action:@selector(toUnpaid) forControlEvents:UIControlEventTouchUpInside];
 	[self.tableView addSubview:MbuUnpaid];
 }
 
-- (void)viewDesign		//初期表示および回転時に位置調整して描画する
+- (void)viewDesign:(BOOL)animated 		//初期表示および回転時に位置調整して描画する
 {
 	// PAID ,Unpaid ボタン設置
 	CGRect rc = [self.tableView rectForFooterInSection:0];
@@ -215,6 +211,22 @@ static UIColor *MpColorBlue(float percent) {
 
 	[self.tableView bringSubviewToFront:MbuPaid];
 	[self.tableView bringSubviewToFront:MbuUnpaid];
+
+	if (animated) {
+		MbuPaid.alpha = 0;
+		MbuUnpaid.alpha = 0;
+		// アニメ準備
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		[UIView beginAnimations:nil context:context];
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		[UIView setAnimationDuration:0.7];
+		
+		MbuPaid.alpha = 1.0;
+		MbuUnpaid.alpha = 1.0;
+		
+		// アニメ開始
+		[UIView commitAnimations];
+	}
 }
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
@@ -300,12 +312,13 @@ static UIColor *MpColorBlue(float percent) {
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 	
-	[self viewDesign];
+	//[self viewDesign]; ここだとセル外部が表示されない不具合発生 ⇒ viewDidAppearへ移した。
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
+	[self viewDesign:animated];	// viewWillAppearだと一部が描画されない不具合発生のためここにした。
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
@@ -334,7 +347,7 @@ static UIColor *MpColorBlue(float percent) {
 													   duration:(NSTimeInterval)duration
 {
 	//[self.tableView reloadData]; ここではダメ　＜＜cellLable位置調整されない＞＞
-	[self viewDesign];
+	[self viewDesign:NO];
 }
 
 // 回転した後に呼び出される
@@ -729,13 +742,6 @@ static UIImage* GimageFromString(NSString* str)
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = [tableView contentOffset];
 	
-/*	// Comback-L2 E2invoice 記録
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-	// (0)TopMenu >> (1)This >> (2)Clear
-	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-	[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-*/
 	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	// (0)TopMenu >> (1)E7payment >> (2)E6part(CardMixMode) へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
@@ -752,45 +758,6 @@ static UIImage* GimageFromString(NSString* str)
 	[tvc release];
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 @end
 

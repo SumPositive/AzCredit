@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <iAd/iAd.h>
-#import "GADBannerView.h"
 
 #ifdef FREE_AD
+#import <iAd/iAd.h>
+#import "GADBannerView.h"
 #import "GADBannerViewDelegate.h"
 #endif
 #ifdef FREE_AD_PAD
 #import <iAd/iAd.h>
 #import "GADBannerView.h"
+#import "GADBannerViewDelegate.h"
 #endif
 
 @class InformationView;
@@ -27,9 +28,11 @@
 #endif
 #ifdef FREE_AD
 	,ADBannerViewDelegate
+	,GADBannerViewDelegate
 #endif
 #ifdef FREE_AD_PAD
 	,ADBannerViewDelegate
+	,GADBannerViewDelegate
 #endif
 >
 {
@@ -55,12 +58,13 @@
 #ifdef FREE_AD
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
-	BOOL						MbAdCanVisible;		//[1.0.1]=YES:表示可能　=NO:表示厳禁
+	BOOL						MbAdCanVisible;		//YES:表示可能な状況　 NO:表示してはいけない状況
 #endif
 #ifdef FREE_AD_PAD
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
-	BOOL						MbAdBannerShow;  // =NO:非表示（表示禁止中）
+	BOOL						MbAdCanVisible;		//YES:表示可能な状況　 NO:表示してはいけない状況
+	//BOOL						MbAdBannerShow;  // =NO:非表示（表示禁止中）
 #endif
 	//----------------------------------------------assign
 	NSInteger	MiE1cardCount;
@@ -74,7 +78,7 @@
 #endif
 
 #ifdef FREE_AD_PAD
-- (void)adBannerShow:(BOOL)bShow;
+//- (void)adBannerShow:(BOOL)bShow;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用

@@ -151,8 +151,13 @@
     [super loadView];
 	
 #ifdef AzPAD
+	// E7-->E6 [<]Backボタンが表示されない症状。下記の策も効果なし。
+	//self.navigationItem.leftBarButtonItem = nil;
+	//[self.navigationItem setHidesBackButton:NO animated:NO];
+
 	// Tool Bar Button なし
 #else
+	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			 target:nil action:nil] autorelease];
 	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
@@ -189,7 +194,6 @@
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 #ifdef AzPAD
 	//Popover [Menu] button
-	//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (app.barMenu) {
 		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -435,7 +439,7 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
-	// Comback (-1)にして未選択状態にする
+/*	// Comback (-1)にして未選択状態にする
 	//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	// PiMode: (0)E1<E2<E6:同カードの支払日違い  (1)E7<E2<E6:同支払日のカード違い
 	if (Pe2select) {
@@ -444,7 +448,7 @@
 	} else {
 		// (0)TopMenu >> (1)E7payment >> (2)This clear
 		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-	}
+	}*/
 	
 	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < [RaE6parts count]) {
 		// 選択行を画面中央付近に表示する

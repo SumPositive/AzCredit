@@ -62,6 +62,15 @@
 }
 */
 
+- (void)loadView
+{
+    [super loadView];
+#ifdef AzPAD
+	self.navigationItem.hidesBackButton = YES;
+#endif
+	self.title = NSLocalizedString(@"Setting", nil);
+}
+
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
 - (void)viewWillAppear:(BOOL)animated 
 {
@@ -92,8 +101,6 @@
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	MbOptAntirotation = [userDefaults boolForKey:GD_OptAntirotation];
-	
-	self.title = NSLocalizedString(@"Setting", nil);
 	
 	// テーブルビューを更新します。
     [self.tableView reloadData];	// これにより修正結果が表示される
