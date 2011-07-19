@@ -23,8 +23,8 @@
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
-	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する
-									//		     (1)New (2)Card固定 (3)Shop固定 (4)Category固定
+	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する  ＜iPad:変更無ければPopover外タッチでCancel＞
+												// (1)New (2)Card固定 (3)Shop固定 (4)Category固定  ＜iPad:Popover外タッチで閉じさせない＞
 	NSInteger	PiFirstYearMMDD;	// 「この支払日になるように利用明細を追加」のとき、支払日が渡される
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese

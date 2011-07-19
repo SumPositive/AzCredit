@@ -137,7 +137,7 @@
 		rect.origin.y = 52; //55;
 	}
 	else {
-		// 縦
+		// 縦   ＜＜iPadの場合は、常にタテ
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
 									  animated:YES];
@@ -656,7 +656,7 @@
 		Re3edit.dateUse = [NSDate date]; // Now
 	}
 #ifdef AzPAD
-	if (MiSourceYearMMDD==0) {	// 初回のみ通す
+	if (PiAdd==0 && MiSourceYearMMDD==0) {	// 初回のみ通す
 		MiSourceYearMMDD = GiYearMMDD( Re3edit.dateUse ); // saveClose:にて日付の変化を判定するため
 	}
 #endif
@@ -1410,6 +1410,9 @@
 			}
 		}
 		//MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
+		// 変更あったことを E3recordTVC へ伝える
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;
 	}
 }
 

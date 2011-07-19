@@ -36,10 +36,11 @@
 #ifdef AzPAD
 - (void)refreshTable
 {
-	if (MindexPathEdit) {	// 行位置が有効ならば、修正行だけを再表示する
+	if (MindexPathEdit && MindexPathEdit.row < [RaE1cards count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
 		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
 		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
 	} else {
+		// Add または行位置不明のとき
 		[self viewWillAppear:YES];
 	}
 }
@@ -214,32 +215,6 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
 	[super viewWillAppear:animated];
-#ifdef AzPAD
-	//Popover [Menu] button
-	if (Re3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		if (app.barMenu) {
-			UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-			UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-			UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-			NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-			[buTitle release], buTitle = nil;
-			[buFixed release], buFixed = nil;
-			[buFlexible release], buFlexible = nil;
-			UIToolbar* toolBar = [[UIToolbar alloc] init];
-			toolBar.barStyle = UIBarStyleDefault;
-			[toolBar setItems:items animated:NO];
-			[toolBar sizeToFit];
-			self.navigationItem.titleView = toolBar;
-			[toolBar release];
-		}
-	} else {
-		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
-		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
-												  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-												  target:self action:@selector(cancelClose:)] autorelease];
-	}
-#endif
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
 	
@@ -291,6 +266,34 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
+#ifdef AzPAD
+	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+	// SplitViewタテのとき [Menu] button を表示する
+	if (Re3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		if (app.barMenu) {
+			UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+			UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+			UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+			NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+			[buTitle release], buTitle = nil;
+			[buFixed release], buFixed = nil;
+			[buFlexible release], buFlexible = nil;
+			UIToolbar* toolBar = [[UIToolbar alloc] init];
+			toolBar.barStyle = UIBarStyleDefault;
+			[toolBar setItems:items animated:NO];
+			[toolBar sizeToFit];
+			self.navigationItem.titleView = toolBar;
+			[toolBar release];
+		}
+	} else {
+		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
+		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+												  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+												  target:self action:@selector(cancelClose:)] autorelease];
+	}
+#endif
+
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
@@ -363,7 +366,7 @@
 	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E1cardTVC");
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
-	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
+	// ただし、他オブジェクトからの参照無く、viewWillAppearにて生成されるものは破棄可能
 	[RaE1cards release], RaE1cards = nil;
 }
 

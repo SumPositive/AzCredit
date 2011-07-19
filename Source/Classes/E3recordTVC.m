@@ -32,7 +32,7 @@
 #ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
-@synthesize PbFirstAdd;
+//@synthesize PbFirstAdd;
 #endif
 
 
@@ -42,12 +42,21 @@
 - (void)refreshE3recordTVC:(BOOL)bSameDate
 {
 	if (bSameDate && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
-		NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
-		[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+		//NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
+		//[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
+		//上↑では、セクションヘッダが更新されない。
+		[self.tableView reloadData];
 	} else {
+		// 日付変更など行位置が変わる場合は、コンテナ配列から更新する必要あり
 		[self viewWillAppear:YES];
 	}
 }
+
+/*- (void)e3modified:(BOOL)bModified
+{
+	MbModified = bModified;
+}*/
+
 #endif
 
 
@@ -141,6 +150,9 @@
 	}
 
 #ifdef  AzPAD
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	apd.entityModified = (e3detail.PiAdd != 0);	// 追加は、常に「変更あり」とする
+
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -435,7 +447,7 @@
 		RoAdMobView = nil;
 #endif
 #ifdef AzPAD
-		PbFirstAdd = NO;
+//		PbFirstAdd = NO;
 #endif
 	}
 	return self;
@@ -446,26 +458,6 @@
 - (void)loadView
 {
     [super loadView];
-	
-#ifdef AzPAD
-	//Popover [Menu] button
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[toolBar release];
-	}
-#endif
 	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -550,6 +542,27 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
+#ifdef AzPAD
+	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+	// SplitViewタテのとき [Menu] button を表示する
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.barMenu) {
+		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		[buTitle release], buTitle = nil;
+		[buFixed release], buFixed = nil;
+		[buFlexible release], buFlexible = nil;
+		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		toolBar.barStyle = UIBarStyleDefault;
+		[toolBar setItems:items animated:NO];
+		[toolBar sizeToFit];
+		self.navigationItem.titleView = toolBar;
+		[toolBar release];
+	}
+#endif
+	
     [super viewDidAppear:animated];
 	
 	if ([RaE3list count] < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
@@ -567,7 +580,7 @@
 	
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
-#ifdef AzPAD
+#ifdef xxxxxxxxxAzPAD
 	if (PbFirstAdd) {	//iPad//[+]自動起動
 		PbFirstAdd = NO;
 		[self barButtonAdd];
@@ -1025,8 +1038,14 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (apd.entityModified) {	// 追加または変更あり
+		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+	} else {	// 追加や変更なし
+		return YES;	// Popover外部タッチで閉じるのを許可
+	}
+
 /*
 	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
 	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {

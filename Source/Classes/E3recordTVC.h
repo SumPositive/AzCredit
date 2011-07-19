@@ -18,7 +18,7 @@
 {
 @private
 	//----------------------------------------------retain
-	E0root			*Re0root;
+	E0root				*Re0root;
 #ifdef AzPAD
 	id									delegate;
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
@@ -39,23 +39,25 @@
 	UIPopoverController*	Mpopover;
 	NSIndexPath*				MindexPathEdit;
 	UIPopoverController*	MpopSetting;			//回転時に閉じるため
-	BOOL							PbFirstAdd;
+	//BOOL							PbFirstAdd;
+	//BOOL							MbModified;		//Pad// YES=変更した==>Popover外タッチで閉じさせない
 #endif
 	//----------------------------------------------assign
-	BOOL		MbOptAntirotation;
+	BOOL			MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic, retain) E0root			*Re0root;
+@property (nonatomic, retain) E0root				*Re0root;
 @property (nonatomic, assign) E4shop			*Pe4shop;
 @property (nonatomic, assign) E5category		*Pe5category;
 @property (nonatomic, assign) E8bank			*Pe8bank;
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
-@property (nonatomic, assign) BOOL							PbFirstAdd;
+//@property (nonatomic, assign) BOOL							PbFirstAdd;
 // delegate method
 - (void)refreshE3recordTVC:(BOOL)bSameDate;
+//- (void)e3modified:(BOOL)bModified;
 #endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用

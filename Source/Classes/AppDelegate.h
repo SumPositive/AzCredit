@@ -25,6 +25,7 @@
 	//PadRootVC						*padRootVC;
 	UISplitViewController		*mainController;
     UIBarButtonItem				*barMenu;
+	BOOL								entityModified;		//Pad// YES=変更した==>Popover外タッチで閉じさせない
 #else
     UINavigationController	*mainController;
 #endif
@@ -54,6 +55,7 @@
 //@property (nonatomic, retain) PadRootVC						*padRootVC;  //解放されないようにretain
 @property (nonatomic, retain) UISplitViewController		*mainController;
 @property (nonatomic, assign) UIBarButtonItem				*barMenu;
+@property (nonatomic, assign) BOOL								entityModified;
 #else
 @property (nonatomic, retain) UINavigationController		*mainController;
 #endif

@@ -33,6 +33,7 @@
 #ifdef AzPAD
 //@synthesize padRootVC;
 @synthesize barMenu;
+@synthesize entityModified;
 #endif
 
 

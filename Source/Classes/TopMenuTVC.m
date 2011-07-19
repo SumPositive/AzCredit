@@ -429,9 +429,10 @@
 			}
 		} else {
 			// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-			if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+			if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+			} else {
 				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-			} else {				MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
 			}
 		}
 		
@@ -570,7 +571,6 @@
 	RoAdMobView.adUnitID = AdMobID_iPhone;
 	RoAdMobView.rootViewController = self;
 	[self.navigationController.view addSubview:RoAdMobView];
-	
 	GADRequest *request = [GADRequest request];
 	//[request setTesting:YES];
 	[RoAdMobView loadRequest:request];	
@@ -879,10 +879,6 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
-//	[MpopInformation release], MpopInformation = nil;
-//	[MpopSetting release], MpopSetting = nil;
-#endif
 	[self unloadRelease];
 	// @property (retain)
 	[Re0root release], Re0root = nil;
@@ -1334,7 +1330,7 @@
 			break;
 	}
 #ifdef AzPAD
-	if (selfPopover) {
+	if (selfPopover) {		//選択後、Popoverならば閉じる
 		[selfPopover dismissPopoverAnimated:YES];
 	}
 #endif
