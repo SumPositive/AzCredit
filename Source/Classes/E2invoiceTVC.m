@@ -13,6 +13,10 @@
 #import "E2invoiceTVC.h"
 #import "E6partTVC.h"
 
+#ifdef AzPAD
+#import "TopMenuTVC.h"
+#endif
+
 #define	TAG_ALERT_NoCheck		109
 #define	TAG_ALERT_toPAY			118
 #define	TAG_ALERT_toPAID		127
@@ -155,6 +159,15 @@
 		MbFirstAppear = YES; // ボタン位置調整のため
 		[self viewWillAppear:NO]; // Fech データセットさせるため
 		[self viewDesign:NO];
+#ifdef AzPAD
+		// TopMenuTVCにある 「未払合計額」を再描画するための処理
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
+		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+		}
+#endif
 		// アニメ開始
 		[UIView commitAnimations];
 	}
@@ -182,6 +195,15 @@
 		MbFirstAppear = YES; // ボタン位置調整のため
 		[self viewWillAppear:NO]; // Fech データセットさせるため
 		[self viewDesign:NO];
+#ifdef AzPAD
+		// TopMenuTVCにある 「未払合計額」を再描画するための処理
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
+		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+		}
+#endif
 		// アニメ開始
 		[UIView commitAnimations];
 	}
@@ -676,7 +698,7 @@
 				// "支払日の変更は、\nカード一覧から可能です。"
 				str = NSLocalizedString(@"E2unpaidFromE8",nil);
 			}
-#ifdef FREE_AD_PAD
+#if defined (FREE_AD) && defined (AzPAD)
 			return [str stringByAppendingString:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n"];	// 大型AdMobスペースのための下部余白
 #else
 			return str;

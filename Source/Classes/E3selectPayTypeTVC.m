@@ -7,6 +7,7 @@
 //
 
 #import "Global.h"
+#import "AppDelegate.h"
 #import "Entity.h"
 #import "E3selectPayTypeTVC.h"
 
@@ -18,10 +19,6 @@
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
-#ifdef xxxAzPAD
-@synthesize delegate;
-@synthesize selfPopover;
-#endif
 
 
 #pragma mark - Action
@@ -67,6 +64,7 @@
 
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
+	sourcePayType = [Re3edit.nPayType integerValue]; //初期値
 }
 
 
@@ -92,10 +90,6 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef xxxAzPAD
-	delegate = nil;
-	[selfPopover release], selfPopover = nil;
-#endif
 	[Re3edit release];
 	[super dealloc];
 }
@@ -203,19 +197,12 @@
 			break;
 	}
 
-#ifdef xxxAzPAD
-	//if (RpopNaviCon) {
-	//	[(PadNaviCon*)self.navigationController dismissPopoverSaved];  // PadNaviCon拡張メソッド
-	//}
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
+	if (sourcePayType != [Re3edit.nPayType integerValue]) {
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;	//変更あり
 	}
-#else
+	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 }
 
 @end

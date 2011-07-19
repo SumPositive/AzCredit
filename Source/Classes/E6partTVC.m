@@ -177,20 +177,15 @@
 	//[buFlex release];
 #endif
 	
-#ifdef FREE_AD
+#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
                                             GAD_SIZE_320x50.height)]; // autoreleaseだめ：cellへaddSubする前に破棄されてしまうので、自己管理している
-	//RoAdMobView.delegate = self;
 	RoAdMobView.delegate = nil; //Delegateなし
 	RoAdMobView.adUnitID = AdMobID_iPhone;
-	// Let the runtime know which UIViewController to restore after taking
-	// the user wherever the ad goes and add it to the view hierarchy.
 	RoAdMobView.rootViewController = self;
-	// Initiate a generic request to load it with an ad.
 	GADRequest *request = [GADRequest request];
-	//[request setTesting:YES];
 	[RoAdMobView loadRequest:request];	
 #endif
 }

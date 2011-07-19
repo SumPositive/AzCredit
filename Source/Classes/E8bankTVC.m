@@ -134,6 +134,9 @@
 	}
 	
 #ifdef  AzPAD
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	apd.entityModified = (e8detail.PiAddRow != (-1));
+
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e8detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -227,11 +230,9 @@
 												  target:self action:@selector(barButtonTop)] autorelease];
 		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
-		//[MbuTop release];
 #endif
 	}
-	//[MbuAdd release];
-	//[buFlex release];
+
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
@@ -277,6 +278,12 @@
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
+
+	if (Pe1card) {
+		sourceE8bank = Pe1card.e8bank;		//初期値
+	} else {
+		sourceE8bank = nil;
 	}
 }
 
@@ -514,28 +521,16 @@
 	if (indexPath.row < [RaE8banks count]) {
 		if (Pe1card) { // 選択モード
 			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
-#ifdef xxxAzPAD
-			if (selfPopover) {
-				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-					[delegate viewWillAppear:YES];// 再描画
-				}
-				[selfPopover dismissPopoverAnimated:YES];
+			if (sourceE8bank != Pe1card.e8bank) {
+				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+				apd.entityModified = YES;	//変更あり
 			}
-#else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 		}
 		else if (self.editing) {
 			[self E8bankDatail:indexPath];
 		} 
 		else {
-/*			// Comback-L1 E8bank 記録
-			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-			// (0)TopMenu >> (1)This
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-*/			
 			// E2invoice へ
 			E8bank *e8obj = [RaE8banks objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
@@ -684,22 +679,13 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-/*
-	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
-		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E8bankDetailTVC class]]) 
-		{	// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
-			E8bankDetailTVC* tvc = (E8bankDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-			if ([tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-				[tvc cancelClose:nil];	// 新しいObject破棄
-			}
-		}
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (apd.entityModified) {	// 追加または変更あり
+		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+	} else {	// 追加や変更なし
+		return YES;	// Popover外部タッチで閉じるのを許可
 	}
-	return YES; // 閉じることを許可
-*/
 }
 #endif
 

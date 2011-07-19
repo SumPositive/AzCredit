@@ -19,7 +19,6 @@
 #endif
 
 
-
 @interface AppDelegate (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
 - (void)appLoginPassView;
 @end
@@ -30,10 +29,9 @@
 @synthesize window;
 @synthesize mainController;
 @synthesize	Me3dateUse;
-#ifdef AzPAD
-//@synthesize padRootVC;
-@synthesize barMenu;
 @synthesize entityModified;
+#ifdef AzPAD
+@synthesize barMenu;
 #endif
 
 
@@ -49,10 +47,6 @@
 	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
 	[window release];
 
-#ifdef AzPAD
-	//[padRootVC release], padRootVC = nil;
-#endif
-	
 	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
     [persistentStoreCoordinator release];
 	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)

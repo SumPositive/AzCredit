@@ -54,7 +54,7 @@
 	BOOL			MbCopyAdd;			// YES:既存明細をコピーして新規追加している状態
 	BOOL			MbRotatShowCalc;	// YES:回転前に表示されていたので、回転後再表示する。
 	NSInteger		MiIndexE3lasts;
-	BOOL			MbModified;			// YES:変更された ⇒ ToolBarを無効にする
+	BOOL			MbModified;			// AppDelegate.entityModified方式へ統一変更したが、一部参照している。
 	BOOL			MbSaved;			// YES:保存ボタンが押されて、前のViewへ戻る途中。E6が削除されている可能性があるので再描画禁止にする。
 }
 

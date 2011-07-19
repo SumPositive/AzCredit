@@ -14,12 +14,8 @@
 @private
 	//--------------------------retain
 	E3record		*Re3edit;
-#ifdef xxxAzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
 	//--------------------------assign
-	
+	NSInteger	sourcePayType;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
@@ -27,9 +23,5 @@
 }
 
 @property (nonatomic, retain) E3record		*Re3edit;
-#ifdef xxxAzPAD
-@property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
 @end

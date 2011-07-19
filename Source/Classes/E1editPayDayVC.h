@@ -15,10 +15,6 @@
 @private
 	//--------------------------retain
 	E1card		*Re1edit;
-#ifdef xxxAzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
 	//--------------------------assign
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -27,16 +23,15 @@
 	UILabel			*MlbClosing;
 	UILabel			*MlbPayMonth;
 	UILabel			*MlbPayDay;
-	UIButton		*MbuDebit;
+	UIButton			*MbuDebit;
 	UILabel			*MlbDebit;
 	//----------------------------------------------assign
 	BOOL MbOptAntirotation;
+	NSInteger	sourceClosingDay;
+	NSInteger	sourcePayMonth;
+	NSInteger	sourcePayDay;
 }
 
 @property (nonatomic, retain) E1card		*Re1edit;
-#ifdef xxxAzPAD
-@property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
 @end

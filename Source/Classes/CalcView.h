@@ -12,26 +12,19 @@
 #define ANSWER_MAX				99999999.991	// double近似値で比較するため+0.001してある
 
 
-#ifdef xxxxxxxxAzPAD
-// Popoverに内蔵するためControllerにする
-@interface CalcView : UIViewController <UITextFieldDelegate>
-#else
 @interface CalcView : UIView <UITextFieldDelegate>
-#endif
 {
 @private
 	//--------------------------retain
 	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
-	id			Rentity;		// NSNumber
-	NSString	*RzKey;			// @"nAmount"
-	NSString	*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
-#ifdef xxxAzPAD
-	id									delegate;
-	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+	id					Rentity;		// MOC Entity
+	NSString		*RzKey;		// @"nAmount"
+	NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
 	//----------------------------------------------assign
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
-
+	//NSDecimalNumber			*sourceDecimal;
+	// NSDecimalNumberの扱いが面倒で、単純に save:されたら「変更あり」にした。
+	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//NSMutableString			*RzCalc;
 	NSDecimalNumberHandler	*MbehaviorDefault;	// 通貨既定の丸め処理
@@ -59,10 +52,6 @@
 @property (nonatomic, retain) id						Rentity;
 @property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
-#ifdef xxxAzPAD
-@property (nonatomic, assign) id									delegate;
-//@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
 // 公開メソッド
 - (id)initWithFrame:(CGRect)rect;

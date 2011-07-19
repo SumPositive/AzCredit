@@ -25,7 +25,7 @@
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
-	
+	E1card			*sourceE1card;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE1cards;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要

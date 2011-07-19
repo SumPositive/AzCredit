@@ -17,13 +17,11 @@
 	id					Rentity;
 	NSString		*RzKey;			// @"dateUse"    //[1.0.0]E6date変更モード="E6date"
 	E6part			*Re6edit;
-#ifdef xxxAzPAD
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
 	//--------------------------assign
 	id						delegate;			// editDateE6change を呼び出すため
 	NSInteger	PiMinYearMMDD;
 	NSInteger	PiMaxYearMMDD;
+	NSDate		*sourceDate;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIDatePicker	*MdatePicker;
@@ -41,9 +39,6 @@
 @property (nonatomic, assign) id					delegate;
 @property (nonatomic, assign) NSInteger	PiMinYearMMDD;
 @property (nonatomic, assign) NSInteger	PiMaxYearMMDD;
-#ifdef xxxAzPAD
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
 - (id)init;	//E3.dateUser
 - (id)initWithE6row:(NSUInteger)iRow;	//[1.0.0]E6date変更モード

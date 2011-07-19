@@ -12,16 +12,12 @@
 {
 @private
 	//--------------------------retain
-	id			Rentity;
-	NSString	*RzKey;			// @"zName"
-#ifdef xxxAzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+	id					Rentity;
+	NSString		*RzKey;			// @"zName"
 	//--------------------------assign
 	NSInteger	PiMaxLength;	// 最大文字数　==nil:無制限
 	NSInteger	PiSuffixLength; // 末尾の改行の数（UILabel複数行で上寄せするために入っている）
-
+	NSString		*sourceText;	//変更前の文字列を記録し、[Done]にて比較して変更の有無を判定している
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UITextView	*MtextView; // self.viewがOwner
@@ -33,10 +29,6 @@
 @property (nonatomic, retain) NSString		*RzKey;	
 @property NSInteger	PiMaxLength;
 @property NSInteger	PiSuffixLength;
-#ifdef xxxAzPAD
-@property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
 #ifdef AzPAD
 - (id)initWithFrameSize:(CGSize)size;

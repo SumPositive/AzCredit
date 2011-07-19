@@ -288,7 +288,7 @@
 	// テーブルビューを更新
 	[self.tableView reloadData];
 	
-	MbModified = NO;
+	//MbModified = NO;
 }
 
 - (void)barButtonDelete 
@@ -408,7 +408,7 @@
 	}
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
-	MbModified = NO; // クリア：これ以降に変更があればYES ⇒ ToolBarボタンを無効にする
+	//MbModified = NO; // クリア：これ以降に変更があればYES ⇒ ToolBarボタンを無効にする
 }
 
 
@@ -676,7 +676,10 @@
 	
 	// 変更あれば、ツールバー(Top, Add, Delete)を非表示にする
 	//if (PiAdd <= 0 && [Re3edit.managedObjectContext hasChanges]) {
-	if (MbModified) {
+	//if (MbModified) {
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (apd.entityModified) {	// 変更あり
+		MbModified = YES; // titleForFooterInSection:にて参照
 		for (id obj in self.toolbarItems) {
 			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
 				[obj setEnabled:NO];
@@ -1256,14 +1259,15 @@
 						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
 						[evc release];
-						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+						// 変更ありを AppDelegateへ通知	// EditDateVC：内から通知している
 					}
 					break;
 					
 				case 1: // Amount
 					if (MbE6paid) break;
 					[self showCalcAmount];
-					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					break;
 					
 				case 2: // Card
@@ -1278,7 +1282,7 @@
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
-						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						MbE1cardChange = YES;
 					}
 					break;
@@ -1291,7 +1295,7 @@
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
-						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					} break;
 					
 				case 4: // PayType
@@ -1304,7 +1308,7 @@
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
-						MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}
 					break;
 			}
@@ -1325,7 +1329,7 @@
 #endif
 							[self.navigationController pushViewController:tvc animated:YES];
 							[tvc release];
-							MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+							//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						}
 						break;
 					
@@ -1341,7 +1345,7 @@
 #endif
 					[self.navigationController pushViewController:tvc animated:YES];
 					[tvc release];
-					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
 					
 				case 2: // Memo
@@ -1355,7 +1359,7 @@
 					//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
 					[evc release];
-					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
 			}
 			break;
@@ -1379,41 +1383,24 @@
 					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
 					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
 					evc.delegate = self;	// [Done]にて、editDateE6change を呼び出すため
-#ifdef xxxxxxxxxAzPAD
-					//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:evc];
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					[nc release];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					MpopoverView.popoverContentSize = CGSizeMake(320, 390);	// Show Time時の幅(広くなる)に注意！
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-#else
 					//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
-					MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
+					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				}
 			}
 			break;
 	}
 
-	if (MbModified) {
+	// 変更ありを AppDelegateへ通知	// 配下VC：内で AppDelegate.entityModified = YES としている
+/*	if (MbModified) {
 		// 変更あり ⇒ ToolBarボタンを無効にする
 		for (id obj in self.toolbarItems) {
 			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
 				[obj setEnabled:NO];
 			}
 		}
-		//MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
-		// 変更あったことを E3recordTVC へ伝える
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		apd.entityModified = YES;
-	}
+	}*/
 }
 
 

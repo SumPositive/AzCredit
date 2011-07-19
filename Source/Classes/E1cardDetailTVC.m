@@ -431,23 +431,10 @@
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef xxxxAzPAD
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					[nc release];
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					MpopoverView.popoverContentSize = CGSizeMake(400, 130);
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	// [Done]にて、viewWillAppear を呼び出すため
-#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
+					// 変更ありを AppDelegateへ通知	// EditTextVC：内から通知している
 				}
 					break;
 				case 1: // PayDay
@@ -455,37 +442,12 @@
 					E1editPayDayVC *evc = [[E1editPayDayVC alloc] init];
 					evc.title = NSLocalizedString(@"PayDay", nil);
 					evc.Re1edit = Re1edit;
-#ifdef xxxAzPAD
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					[nc release];
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					MpopoverView.popoverContentSize = CGSizeMake(320, 440);
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	//[Done]にて、viewWillAppear を呼び出すため
-#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
+					// 変更ありを AppDelegateへ通知	// E1editPayDayVC：内から通知している
 				}
 					break;
-/******************** Bonus 未対応
-			case 2: // Bonus
-				{
-					E1editBonusVC *e1ed = [[E1editBonusVC alloc] init];
-					e1ed.title = NSLocalizedString(@"CardBonus", nil);
-					e1ed.Re1edit = Re1edit;
-					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
-					[self.navigationController pushViewController:e1ed animated:YES];
-					[e1ed release];
-				}
-					break;
- */
 				case 2: // Bank
 				{
 					// E8bankTVC へ
@@ -493,22 +455,9 @@
 					tvc.title = NSLocalizedString(@"Bank choice",nil);
 					tvc.Re0root = [MocFunctions e0root];
 					tvc.Pe1card = Re1edit;
-#ifdef xxxAzPAD
-					//UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:tvc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:tvc];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					//[nc release];
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					MpopoverView.popoverContentSize = E8LISTVIEW_SIZE;
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					tvc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					tvc.delegate = self;	//選択決定にて、viewWillAppear を呼び出すため
-#else
 					[self.navigationController pushViewController:tvc animated:YES];
-#endif
 					[tvc release];
+					// 変更ありを AppDelegateへ通知	// E8bankTVC：内から通知している
 				}
 					break;
 			}
@@ -523,46 +472,16 @@
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;
-#ifdef xxxAzPAD
-					UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:evc];
-					MpopoverView = [[UIPopoverController alloc] initWithContentViewController:nc];
-					//MpopoverView.delegate = self;  //閉じたとき再描画するため
-					[nc release];
-					CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-					rc.origin.x += 30;  rc.size.width = 50;
-					rc.origin.y += 10;  rc.size.height -= 20;
-					MpopoverView.popoverContentSize = CGSizeMake(400, 300);
-					[MpopoverView presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny  animated:YES];
-					evc.selfPopover = MpopoverView; [MpopoverView release]; //(retain)  内から閉じるときに必要になる
-					evc.delegate = self;	//[Done]にて、viewWillAppear を呼び出すため
-#else
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-#endif
 					[evc release];
+					// 変更ありを AppDelegateへ通知	// EditTextVC：内から通知している
 				}
 					break;
 			}
 			break;
 	}
 }
-
-/*
-#ifdef AzPAD
-#pragma mark - <UIPopoverControllerDelegate>
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じる前に通知
-	return YES; // 閉じることを許可
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じた後に通知
-	// 再描画する
-	[self viewWillAppear:YES];
-	return;
-}
-#endif
-*/
 		
 @end
 

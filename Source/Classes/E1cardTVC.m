@@ -86,16 +86,19 @@
 	}
 
 #ifdef  AzPAD
+	//iPhoneの場合は不要
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	apd.entityModified = (e1detail.PiAddRow != (-1));	//この後、EditTextVCにて変更があれば YES になる
+	//NSLog(@"apd.entityModified=%d", apd.entityModified);
+	
 	MindexPathEdit = indexPath;
-	//PadPopoverInNaviCon* pop = [[PadPopoverInNaviCon alloc] initWithContentViewController:e1detail];
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e1detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;  //閉じたとき再描画するため
 	[nc release];
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-	rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+	rc.origin.x = rc.size.width - 40;	rc.size.width = 1;
 	rc.origin.y += 10;	rc.size.height -= 20;
-	//Mpopover.popoverContentSize = E1DETAILVIEW_SIZE;
 	[Mpopover presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
 	e1detail.selfPopover = Mpopover; [Mpopover release];
 	e1detail.delegate = self;
@@ -257,8 +260,11 @@
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 
-	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
-		[self setToolbarItems:nil animated:NO]; //[未定]ボタンを消す ＜＜＜E6があればE1未定禁止
+	if (Re3edit) {
+		if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+			[self setToolbarItems:nil animated:NO]; //[未定]ボタンを消す ＜＜＜E6があればE1未定禁止
+		}
+		sourceE1card = Re3edit.e1card;	//初期値
 	}
 }
 
@@ -613,28 +619,16 @@ static UIImage* GimageFromString(NSString* str)
 	if (indexPath.row < [RaE1cards count]) {
 		if (Re3edit) {			// 選択モード
 			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
-#ifdef xxxAzPAD
-			if (selfPopover) {
-				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-					[delegate viewWillAppear:YES];// 再描画
-				}
-				[selfPopover dismissPopoverAnimated:YES];
+			if (sourceE1card != Re3edit.e1card) {
+				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+				apd.entityModified = YES;	//変更あり
 			}
-#else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 		}
 		else if (self.editing) {
 			[self e1cardDatail:indexPath];
 		} 
 		else {
-			/*			// Comback-L1 E1card 記録
-			 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			 long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-			 // (0)TopMenu >> (1)This
-			 [appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			 [appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-			 */			
 			// E2invoice へ
 			E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
@@ -786,8 +780,14 @@ static UIImage* GimageFromString(NSString* str)
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (apd.entityModified) {	// 追加または変更あり
+		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+	} else {	// 追加や変更なし
+		return YES;	// Popover外部タッチで閉じるのを許可
+	}
+
 /*
  // 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
 	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {

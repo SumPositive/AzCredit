@@ -7,6 +7,7 @@
 //
 
 #import "Global.h"
+#import "AppDelegate.h"
 #import "Entity.h"
 #import "E1editPayDayVC.h"
 
@@ -19,10 +20,6 @@
 
 @implementation E1editPayDayVC
 @synthesize Re1edit;
-#ifdef xxxxxxAzPAD
-@synthesize delegate;
-@synthesize selfPopover;
-#endif
 
 
 #pragma mark - Action
@@ -46,25 +43,29 @@
 		OR [Mpicker selectedRowInComponent:1] <= 0) {
 		// 0=Debit(自動引落し)
 		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:-1];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:(-1)];
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]]; // 日後払い
 	} else {
 		// 締め支払
 		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]-1];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1] - 1];
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
 	}
-	
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
+
+	if (sourceClosingDay != [Re1edit.nClosingDay integerValue]
+		|| sourcePayMonth != [Re1edit.nPayMonth integerValue]
+		|| sourcePayDay != [Re1edit.nPayDay integerValue]	)
+	{
+		/*NSLog(@"*** (source:done) (%ld:%ld) (%ld:%ld) (%ld:%ld) ***",
+			  sourceClosingDay, [Re1edit.nClosingDay integerValue], 
+			  sourcePayMonth, [Re1edit.nPayMonth integerValue],  
+			  sourcePayDay, [Re1edit.nPayDay integerValue]); */
+		
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;	//変更あり
 	}
-#else
+	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 }
 
 
@@ -229,31 +230,32 @@
 
 	// PICKER 指定されたコンポーネンツの行を選択する。
 	NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
+	sourceClosingDay = iDay;
 	if (iDay < 0 OR 29 < iDay) iDay = 20;
 	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 0=Debit
 
 	iDay = [Re1edit.nPayMonth integerValue];
+	sourcePayMonth = iDay;
 	if (iDay < -1 OR 2 < iDay) iDay = 1;
 	[Mpicker selectRow:1+iDay inComponent:1 animated:NO]; // 0=Debit
 	
 	iDay = [Re1edit.nPayDay integerValue];
+	sourcePayDay = iDay;
 	if (iDay < 0 OR 29 < iDay) iDay = 20;
 	[Mpicker selectRow:iDay inComponent:2 animated:NO];  // 0=Debit
-
 	
 	[self viewDesign];
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 }
-
+/*
 // 画面表示された直後に呼び出される
 - (void)viewDidAppear:(BOOL)animated 
 {
 	[super viewDidAppear:animated];
-	
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 //	[MtfAmount becomeFirstResponder];  // キーボード表示
 }
-
+*/
 
 #pragma mark  View - Rotate
 

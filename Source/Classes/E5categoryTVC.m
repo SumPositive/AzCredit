@@ -113,6 +113,9 @@
 		e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 		[self.navigationController pushViewController:e5detail animated:YES];
 	} else {
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = e5detail.PbAdd;
+
 		MindexPathEdit = indexPath;
 		UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e5detail];
 		Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -340,6 +343,12 @@
 		// app.Me3dateUse=nil のときや、メモリ不足発生時に元の位置に戻すための処理。
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
+	}
+
+	if (Pe3edit) {
+		sourceE5category = Pe3edit.e5category;		//初期値
+	} else {
+		sourceE5category = nil;
 	}
 }
 
@@ -595,27 +604,15 @@
 	if (indexPath.row < [RaE5categorys count]) {
 		if (Pe3edit) { // 選択モード
 			Pe3edit.e5category = [RaE5categorys objectAtIndex:indexPath.row]; 
-#ifdef xxxAzPAD
-			if (selfPopover) {
-				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-					[delegate viewWillAppear:YES];// 再描画
-				}
-				[selfPopover dismissPopoverAnimated:YES];
+			if (sourceE5category != Pe3edit.e5category) {
+				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+				apd.entityModified = YES;	//変更あり
 			}
-#else
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 		}
 		else if (self.editing) {
 			[self e5categoryDatail:indexPath];
 		} else {
-/*			// Comback-L1 E4shop 記録
-			AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-			// (0)TopMenu >> (1)This >> (2)Clear
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-*/			
 			// E3records へ
 			E3recordTVC *tvc = [[E3recordTVC alloc] init];
 			E5category *e5obj = [RaE5categorys objectAtIndex:indexPath.row];
@@ -750,22 +747,13 @@
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
-	alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-	return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-/*
-	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
-		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E5categoryDetailTVC class]]) 
-		{	// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
-			E5categoryDetailTVC* tvc = (E5categoryDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-			if ([tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-				[tvc cancelClose:nil];	// 新しいObject破棄
-			}
-		}
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (apd.entityModified) {	// 追加または変更あり
+		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+	} else {	// 追加や変更なし
+		return YES;	// Popover外部タッチで閉じるのを許可
 	}
-	return YES; // 閉じることを許可
-*/
 }
 #endif
 

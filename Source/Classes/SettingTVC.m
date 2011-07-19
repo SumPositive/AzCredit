@@ -197,7 +197,7 @@
 #endif
 }
 
-#ifdef FREE_AD_PAD
+#if defined (FREE_AD) && defined (AzPAD)
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {

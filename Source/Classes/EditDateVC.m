@@ -7,14 +7,10 @@
 //
 
 #import "Global.h"
+#import "AppDelegate.h"
 #import "Entity.h"
 #import "MocFunctions.h"
 #import "EditDateVC.h"
-
-#ifdef xxxAzPAD
-#import "E3editTextVC.h"
-#import "E3recordDetailTVC.h"
-#endif
 
 @interface NSObject (E3recordDetailTVC_delagate_Methods)
 - (void)editDateE6change;
@@ -33,9 +29,6 @@
 @synthesize delegate;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
-#ifdef xxxAzPAD
-@synthesize selfPopover;
-#endif
 
 
 #pragma mark - Action
@@ -90,16 +83,12 @@
 		[Rentity setValue:MdatePicker.date forKey:RzKey];
 	}
 	
-#ifdef xxxAzPAD
-	if (selfPopover) {	
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
+	if (![sourceDate isEqualToDate:MdatePicker.date]) {
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;	//変更あり
 	}
-#else
+	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 	
 	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
 		alertBox(NSLocalizedString(@"DateUse Over",nil),
@@ -325,6 +314,8 @@
 		MdatePicker.date = [NSDate date]; // Now
 	}
 	
+	sourceDate = [MdatePicker.date copy];	// 初期日付　　[Done]にて変化あれば AppDelegate.entityModified = YES にする
+
 	[self viewDesign];
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 }
@@ -363,9 +354,7 @@
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
-#ifdef xxxAzPAD
-	[selfPopover release], selfPopover = nil;
-#endif
+	[sourceDate release], sourceDate = nil;
 	[Re6edit release], Re6edit = nil;
 	// 生成とは逆順に解放するのが好ましい
 	[RzKey release], RzKey = nil;

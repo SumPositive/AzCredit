@@ -21,11 +21,11 @@
 #if defined(AzSTABLE) || defined(AzMAKE_SPLASHFACE)
 	// 広告なし
 #else // AzFREE
+	#define FREE_AD
 	#ifdef AzPAD
-		#define FREE_AD_PAD
+		//FREE_ADに統一// #define FREE_AD_PAD
 		#define AdMobID_iPad		@"a14df22df88250c";		//AdMobパブリッシャー ID  "クレメモ Free for iPad"
 	#else
-		#define FREE_AD
 		#define AdMobID_iPhone	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free for iPhone"　
 	#endif
 #endif

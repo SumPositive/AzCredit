@@ -19,13 +19,13 @@
     NSManagedObjectContext *managedObjectContext;	    
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-    UIWindow *window;
+    UIWindow			*window;
+
+	BOOL				entityModified;		// E1,3,4,5,8detail詳細の一部でも変更あり ==> YES
 
 #ifdef AzPAD
-	//PadRootVC						*padRootVC;
 	UISplitViewController		*mainController;
     UIBarButtonItem				*barMenu;
-	BOOL								entityModified;		//Pad// YES=変更した==>Popover外タッチで閉じさせない
 #else
     UINavigationController	*mainController;
 #endif
@@ -50,18 +50,17 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) UIWindow					*window;
+@property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
+@property (nonatomic, retain) UIWindow						*window;
+@property (nonatomic, retain) NSDate							*Me3dateUse;
+@property (nonatomic, assign) BOOL							entityModified;
+
 #ifdef AzPAD
-//@property (nonatomic, retain) PadRootVC						*padRootVC;  //解放されないようにretain
 @property (nonatomic, retain) UISplitViewController		*mainController;
 @property (nonatomic, assign) UIBarButtonItem				*barMenu;
-@property (nonatomic, assign) BOOL								entityModified;
 #else
 @property (nonatomic, retain) UINavigationController		*mainController;
 #endif
-@property (nonatomic, retain) NSDate					*Me3dateUse;
-
-@property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
 
 @end
 

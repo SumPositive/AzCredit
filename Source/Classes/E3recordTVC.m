@@ -149,10 +149,10 @@
 		}
 	}
 
-#ifdef  AzPAD
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	apd.entityModified = (e3detail.PiAdd != 0);	// 追加は、常に「変更あり」とする
+	apd.entityModified = NO;  //リセット
 
+#ifdef  AzPAD
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -482,25 +482,15 @@
 	//[buAdd release];
 	//[buFlex release];
 	
-#ifdef FREE_AD
+#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
                                             GAD_SIZE_320x50.height)]; // autoreleaseだめ：cellへaddSubする前に破棄されてしまうので、自己管理している
-	//RoAdMobView.delegate = self;
 	RoAdMobView.delegate = nil; //Delegateなし
-	
-	// Specify the ad's "unit identifier." This is your AdMob Publisher ID.
 	RoAdMobView.adUnitID = AdMobID_iPhone;
-	
-	// Let the runtime know which UIViewController to restore after taking
-	// the user wherever the ad goes and add it to the view hierarchy.
 	RoAdMobView.rootViewController = self;
-	
-	// Initiate a generic request to load it with an ad.
-	//[RoAdMobView loadRequest:[GADRequest request]];
 	GADRequest *request = [GADRequest request];
-	//[request setTesting:YES];
 	[RoAdMobView loadRequest:request];	
 #endif
 }
@@ -1039,27 +1029,25 @@
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 追加または変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+	if (apd.entityModified) {	// 変更あり
+		alertBox(NSLocalizedString(@"Cancel or Save",nil), 
+				 NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	} else {	// 追加や変更なし
-		return YES;	// Popover外部タッチで閉じるのを許可
 	}
-
-/*
-	// 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
-		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
-		{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が TopMenuTVC.m にもある＞＞＞
-			E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-			if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-				[e3tvc cancelClose:nil];	// 新しいObject破棄
+	else {	// 変更なし
+		// E3recordDetailTVC:cancelClose:【insertAutoEntity削除】を通ってないのでここで通す。
+		if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+			UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+			if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
+			{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が TopMenuTVC.m にもある＞＞＞
+				E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+				if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+					[e3tvc cancelClose:nil];	// 【insertAutoEntity削除】
+				}
 			}
 		}
+		return YES;	// Popover外部タッチで閉じるのを許可
 	}
-	return YES; // 閉じることを許可
- */
 }
 #endif
 

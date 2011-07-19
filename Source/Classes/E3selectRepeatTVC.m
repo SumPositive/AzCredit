@@ -7,6 +7,7 @@
 //
 
 #import "Global.h"
+#import "AppDelegate.h"
 #import "Entity.h"
 #import "E3selectRepeatTVC.h"
 
@@ -70,6 +71,7 @@
 
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
+	sourceRepeat = [Re3edit.nRepeat integerValue]; //初期値
 }
 
 
@@ -193,16 +195,12 @@
 		default: Re3edit.nRepeat = [NSNumber numberWithInteger: 0]; break;
 	}
 
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
+	if (sourceRepeat != [Re3edit.nRepeat integerValue]) {
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;	//変更あり
 	}
-#else
+
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 }
 
 @end

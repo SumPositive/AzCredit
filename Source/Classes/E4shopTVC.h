@@ -23,8 +23,8 @@
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
-	E3record	*Pe3edit;	// =nil:マスタモード  !=nil:選択モード
-
+	E3record		*Pe3edit;	// =nil:マスタモード  !=nil:選択モード
+	E4shop		*sourceE4shop;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE4shops;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要

@@ -7,6 +7,7 @@
 //
 
 #import "Global.h"
+#import "AppDelegate.h"
 #import "Entity.h"
 #import "EditTextVC.h"
 
@@ -21,10 +22,6 @@
 @synthesize RzKey;
 @synthesize PiMaxLength;
 @synthesize PiSuffixLength;
-#ifdef xxxAzPAD
-@synthesize delegate;
-@synthesize selfPopover;
-#endif
 
 
 #pragma mark - Action
@@ -34,6 +31,11 @@
 // 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
 - (void)done:(id)sender
 {
+	if (![sourceText isEqualToString:MtextView.text] ) {
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;	//変更あり
+	}
+	
 	//	[PPmuString setString:MtextView.text]; // 戻り値
 	if (0 < PiSuffixLength) {	// 複数行ラベルで上寄表示させるため末尾に改行を追加する
 		NSMutableString *mstr = [[NSMutableString alloc] initWithString:MtextView.text];
@@ -49,16 +51,7 @@
 		[Rentity setValue:MtextView.text forKey:RzKey];
 	}
 	
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 }
 
 
@@ -156,7 +149,6 @@
 	[self viewDesign];
 	
 	MtextView.text = [Rentity valueForKey:RzKey];
-	
 	if (0 < PiSuffixLength) {
 		// 末尾改行文字("\n")を PiSuffixLength 個除く -->> doneにて追加する
 		if ([MtextView.text length] <= PiSuffixLength) {
@@ -165,6 +157,12 @@
 			MtextView.text = [MtextView.text substringToIndex:([MtextView.text length] - PiSuffixLength)];
 		}
 	}
+#ifdef AzPAD
+	if (sourceText) {
+		[sourceText release];
+	}
+	sourceText = [[NSString alloc] initWithString:MtextView.text];  //変更前の文字列を記録し、[Done]にて比較して変更の有無を判定している
+#endif
 	
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 }
@@ -203,9 +201,7 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef xxxAzPAD
-	[selfPopover release], selfPopover = nil;
-#endif
+	[sourceText release], sourceText = nil;
 	[RzKey release];
 	[Rentity release];
 	[super dealloc];

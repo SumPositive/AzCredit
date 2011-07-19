@@ -18,13 +18,9 @@
 @private
 	//--------------------------retain
 	E0root		*Re0root;
-#ifdef xxxAzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
 	//--------------------------assign
 	E1card		*Pe1card;		// =nil:マスタモード  !=nil:選択モード
-
+	E8bank	*sourceE8bank;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE8banks;
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -42,10 +38,6 @@
 
 @property (nonatomic, retain) E0root	*Re0root;
 @property (nonatomic, assign) E1card	*Pe1card;
-#ifdef xxxAzPAD
-@property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
 
 #ifdef AzPAD
 // delegate method

@@ -13,11 +13,6 @@
 #import "GADBannerView.h"
 #import "GADBannerViewDelegate.h"
 #endif
-#ifdef FREE_AD_PAD
-#import <iAd/iAd.h>
-#import "GADBannerView.h"
-#import "GADBannerViewDelegate.h"
-#endif
 
 @class InformationView;
 @class E0root;
@@ -27,10 +22,6 @@
 	,UIPopoverControllerDelegate
 #endif
 #ifdef FREE_AD
-	,ADBannerViewDelegate
-	,GADBannerViewDelegate
-#endif
-#ifdef FREE_AD_PAD
 	,ADBannerViewDelegate
 	,GADBannerViewDelegate
 #endif
@@ -53,11 +44,6 @@
 	InformationView		*MinformationView;
 #endif
 #ifdef FREE_AD
-	ADBannerView		*MbannerView;
-	GADBannerView		*RoAdMobView;
-	BOOL						MbAdCanVisible;		//YES:表示可能な状況　 NO:表示してはいけない状況
-#endif
-#ifdef FREE_AD_PAD
 	ADBannerView		*MbannerView;
 	GADBannerView		*RoAdMobView;
 	BOOL						MbAdCanVisible;		//YES:表示可能な状況　 NO:表示してはいけない状況

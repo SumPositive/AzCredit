@@ -46,10 +46,6 @@
 @synthesize Rentity;
 @synthesize RzKey;
 @synthesize PoParentTableView;
-#ifdef xxxAzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-#endif
 
 
 #pragma mark - Action
@@ -193,12 +189,9 @@
 		} else { // デフォルト丸め処理
 			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
 		}
-#ifdef xxxAzPAD
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		// この直後、hide が呼び出されて閉じる
-#endif
+
+		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		apd.entityModified = YES;	//変更あり
 	}
 }
 
@@ -228,17 +221,11 @@
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	
 	// アニメ終了位置
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
 	CGRect rect = MrectInit;
 	rect.origin.y += 500;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
 	[self setFrame:rect];
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorDefault];
-#endif
 	
 	if ([Rlabel.text length]<=0) {
 		Rlabel.text = RzLabelText; // 初期値復元
@@ -257,8 +244,11 @@
 	if (RzLabelText) {
 		[RzLabelText release];
 	}
-	RzLabelText = [Rlabel.text copy];
+	RzLabelText = [Rlabel.text copy];	//表示文字列をそのまま戻すために記録
 
+	//sourceDecimal = [NSDecimalNumber decimalNumberWithDecimal:[[Rentity valueForKey:RzKey] decimalValue]];	//初期値
+	//NSLog(@"sourceDecimal=%@", sourceDecimal);
+	
 	if (MdecAnswer) {
 		[MdecAnswer release];
 		MdecAnswer = nil;
@@ -267,8 +257,6 @@
 		[self.PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
 	}
 	
-#ifdef xxxAzPAD
-#else
 	// アニメ準備
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
@@ -283,7 +271,6 @@
 	// Complete the animation
 	[UIView commitAnimations];
 	Rlabel.textColor = [UIColor brownColor];	// 電卓中は、ずっと茶色！ 文字色指定は、ここだけ。
-#endif
 
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorCalc];	// 計算途中の丸め
