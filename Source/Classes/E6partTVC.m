@@ -162,6 +162,7 @@
 	// E7-->E6 [<]Backボタンが表示されない症状。下記の策も効果なし。
 	//self.navigationItem.leftBarButtonItem = nil;
 	//[self.navigationItem setHidesBackButton:NO animated:NO];
+	self.navigationItem.hidesBackButton = NO;
 
 	// Tool Bar Button なし
 #else
@@ -426,19 +427,14 @@
 	// SplitViewタテのとき [Menu] button を表示する
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 		toolBar.barStyle = UIBarStyleDefault;
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
-		[toolBar release];
 	}
 #endif
 

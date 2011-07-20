@@ -2871,12 +2871,12 @@
 		44B87D8A112A1E4D00ABF916 /* E2 E6 E7 */ = {
 			isa = PBXGroup;
 			children = (
+				44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */,
+				44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */,
 				44D7351411279ACB00997A37 /* E2invoiceTVC.h */,
 				44D7351511279ACB00997A37 /* E2invoiceTVC.m */,
 				44AD488A1132B6B900FB19FB /* E6partTVC.h */,
 				44AD48891132B6B900FB19FB /* E6partTVC.m */,
-				44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */,
-				44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */,
 			);
 			name = "E2 E6 E7";
 			sourceTree = "<group>";

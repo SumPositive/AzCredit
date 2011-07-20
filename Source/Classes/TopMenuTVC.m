@@ -389,7 +389,7 @@
 	[super loadView];
 
 #ifdef AzPAD
-	self.title = @"Menu";
+	self.title = @"T o p";
 	self.navigationItem.hidesBackButton = YES;
 #else
 	self.title = NSLocalizedString(@"Product Title",nil);
@@ -751,7 +751,7 @@
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (section==0) return @"\n     Free edition\n\n";	// iAd上部スペース
+	if (section==0) return @"\n     PayNote - Free edition.\n\n";	// iAd上部スペース
 	return nil;
 }
 #endif

@@ -155,6 +155,7 @@
 	//[self.navigationController.view bringSubviewToFront:McalcView]; これは無くても後からaddSubした方が上になる
 	
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
+	McalcView.delegate = self;	// viewWillAppear:を呼び出すため
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
 }
@@ -446,7 +447,6 @@
 	MbModified = NO;
 	Me0root = nil;		// viewWillAppearにて生成
 	MlbAmount = nil;	// cellForRowAtIndexPathにて生成
-	McalcView = nil;	// showCalcAmountにて生成
 	
 	//self.tableView.backgroundColor = [UIColor brownColor];
 
@@ -463,6 +463,7 @@
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
 											   target:self action:@selector(saveClose:)] autorelease];
+	self.navigationItem.rightBarButtonItem.enabled = NO; // 変更あればYESにする
 	
 	// Tool Bar Button
 	if (0 < PiAdd) {
@@ -679,6 +680,7 @@
 	//if (MbModified) {
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (apd.entityModified) {	// 変更あり
+		self.navigationItem.rightBarButtonItem.enabled = ([Re3edit.nAmount doubleValue] != 0.0); // 金額0で無ければYES
 		MbModified = YES; // titleForFooterInSection:にて参照
 		for (id obj in self.toolbarItems) {
 			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
@@ -760,6 +762,13 @@
 - (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
 	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E3recordDetailTVC");
+	if (McalcView) {
+		McalcView.delegate = nil;
+		[McalcView hide];
+		[McalcView removeFromSuperview];
+		McalcView = nil;
+	}
+	
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
 	[RaE6parts release], RaE6parts = nil;

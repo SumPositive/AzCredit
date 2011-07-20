@@ -21,6 +21,7 @@
 	NSString		*RzKey;		// @"nAmount"
 	NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
 	//----------------------------------------------assign
+	id									delegate;
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
 	//NSDecimalNumber			*sourceDecimal;
 	// NSDecimalNumberの扱いが面倒で、単純に save:されたら「変更あり」にした。
@@ -52,6 +53,7 @@
 @property (nonatomic, retain) id						Rentity;
 @property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
+@property (nonatomic, assign) id						delegate;
 
 // 公開メソッド
 - (id)initWithFrame:(CGRect)rect;

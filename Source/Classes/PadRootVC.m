@@ -70,6 +70,8 @@
 
 	self.title = NSLocalizedString(@"Product Title",nil);
 
+	self.navigationItem.hidesBackButton = YES;
+
 	self.view.backgroundColor = [UIColor colorWithRed:152/255.0f 
 												green:81/255.0f 
 												 blue:75/255.0f 
@@ -90,14 +92,17 @@
 	[iv release], iv = nil;
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			target:nil action:nil];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																		   target:self action:@selector(barButtonAdd)];
+	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)] autorelease];
+#ifdef AzMAKE_SPLASHFACE
+	buAdd.enabled = NO;
+#endif
 	NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
-	[buAdd release];
-	[buFlex release];
+	//[buAdd release];
+	//[buFlex release];
 }
 
 /*
@@ -112,25 +117,21 @@
 {
     [super viewWillAppear:animated];
 #ifdef AzPAD
-	//Popover [Menu] button
+	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+	// SplitViewタテのとき [Menu] button を表示する
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 		toolBar.barStyle = UIBarStyleDefault;
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
-		[toolBar release];
 	}
 #endif
-
+	
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
 }
 
@@ -171,25 +172,28 @@
 {	//左ペインが消えたので、右ペインに[Menu]ボタンを表示する
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	app.barMenu = barButtonItem;	//下層のVCへも設置するため保持する
+#ifdef AzMAKE_SPLASHFACE
+	barButtonItem.enabled = NO;
+#endif
 	//
 	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
 	UIViewController *rightVC = nc.visibleViewController;
 	NSLog(@"rightVC.title=%@", rightVC.title);
-	barButtonItem.title = @"   Menu   ";
-	UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, barButtonItem, buFlexible, buTitle, buFlexible, nil];
-	[buTitle release], buTitle = nil;
-	[buFixed release], buFixed = nil;
-	[buFlexible release], buFlexible = nil;
+	barButtonItem.title = @"    T o p    ";
+	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+	//UIBarButtonItem* buFixed = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
+	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
+	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: barButtonItem, buFlexible, buTitle, buFlexible, nil];
+	//[buTitle release], buTitle = nil;
+	//[buFixed release], buFixed = nil;
+	//[buFlexible release], buFlexible = nil;
 
-	UIToolbar* toolBar = [[UIToolbar alloc] init];
+	UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 	toolBar.barStyle = UIBarStyleDefault;
 	[toolBar setItems:items animated:NO];
 	[toolBar sizeToFit];
 	rightVC.navigationItem.titleView = toolBar;
-	[toolBar release];
+	//[toolBar release];
 }
 
 // 縦 => 横 ： 左ペインが現れる時に呼び出される
@@ -203,18 +207,18 @@
 	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
 	UIViewController *rightVC = nc.visibleViewController;
 	NSLog(@"rightVC.title=%@", rightVC.title);
-	UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
 	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFlexible, buTitle, buFlexible, nil];
-	[buTitle release], buTitle = nil;
-	[buFlexible release], buFlexible = nil;
+	//[buTitle release], buTitle = nil;
+	//[buFlexible release], buFlexible = nil;
 	
-	UIToolbar* toolBar = [[UIToolbar alloc] init];
+	UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 	toolBar.barStyle = UIBarStyleDefault;
 	[toolBar setItems:items animated:NO];
 	[toolBar sizeToFit];
 	rightVC.navigationItem.titleView = toolBar;
-	[toolBar release];
+	//[toolBar release];
 }
 
 

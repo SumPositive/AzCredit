@@ -420,7 +420,7 @@
 				[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.5]; // 0.5s後に選択状態を解除する
 			} else {
 				[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
-									  atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+									  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			}
 		}
 	}
@@ -537,19 +537,14 @@
 	// SplitViewタテのとき [Menu] button を表示する
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 		toolBar.barStyle = UIBarStyleDefault;
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
-		[toolBar release];
 	}
 #endif
 	
@@ -569,14 +564,8 @@
 	}
 	
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-	
-#ifdef xxxxxxxxxAzPAD
-	if (PbFirstAdd) {	//iPad//[+]自動起動
-		PbFirstAdd = NO;
-		[self barButtonAdd];
-	}
-#endif
 }
+
 /*
 - (void)viewDidDisappear:(BOOL)animated
 {

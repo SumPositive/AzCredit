@@ -46,6 +46,7 @@
 @synthesize Rentity;
 @synthesize RzKey;
 @synthesize PoParentTableView;
+@synthesize delegate;
 
 
 #pragma mark - Action
@@ -192,6 +193,11 @@
 
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		apd.entityModified = YES;	//変更あり
+		
+		// 再描画
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];	
+		}
 	}
 }
 

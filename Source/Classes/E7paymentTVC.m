@@ -231,7 +231,7 @@ static UIColor *MpColorBlue(float percent) {
 	MbuUnpaid.hidden = ([Re0root.e7paids count] <= 0);
 	MbuPaid.hidden = ([Re0root.e7unpaids count] <= 0);
 
-	[self.tableView bringSubviewToFront:MbuPaid];
+	[self.tableView bringSubviewToFront:MbuPaid];	//改めてtitleForFooterInSection:でも呼び出している
 	[self.tableView bringSubviewToFront:MbuUnpaid];
 
 	if (animated) {
@@ -326,19 +326,14 @@ static UIColor *MpColorBlue(float percent) {
 	// SplitViewタテのとき [Menu] button を表示する
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
+		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 		toolBar.barStyle = UIBarStyleDefault;
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
-		[toolBar release];
 	}
 #endif
 
@@ -494,7 +489,8 @@ static UIColor *MpColorBlue(float percent) {
 {
 	switch (section) {
 		case 0:
-			//return NSLocalizedString(@"E2paidFooter",nil);
+			[self.tableView bringSubviewToFront:MbuPaid];		//iPhone//これが無いと範囲外に出てから戻ると背景裏に隠されてしまう
+			[self.tableView bringSubviewToFront:MbuUnpaid];			//iPad//隠れないがタッチ無反応になる
 			return @"\n";
 			break;
 #if defined (FREE_AD) && defined (AzPAD)
