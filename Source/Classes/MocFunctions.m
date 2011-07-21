@@ -363,8 +363,11 @@ static NSManagedObjectContext *scMoc = nil;
 }
 
 // カード(Pe1card)と利用日(PtUse)から支払日を求める
-static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
+//static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
++ (NSInteger)yearMMDDpaymentE1card:(E1card *)Pe1card  forUseDate:(NSDate*)PtUse
 {
+	if (Pe1card==nil || PtUse==nil) return 0;
+	
 	NSInteger iClosingDay = [Pe1card.nClosingDay integerValue];
 	NSInteger iPayMonth = [Pe1card.nPayMonth integerValue]; // 支払月（0=当月、1=翌月、2=翌々月）
 	NSInteger iPayDay = [Pe1card.nPayDay integerValue];
@@ -407,7 +410,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 		// 締め支払が変更された場合、Paid分は不変、Unpaid分を全て変更する
 		for (E3record *e3 in e1obj.e3records) {
 			// カード(e1obj)と利用日(e3.dateUse)から支払日を求める
-			NSInteger iYearMMDD = MiYearMMDDpayment(e1obj, e3.dateUse);
+			NSInteger iYearMMDD = [self yearMMDDpaymentE1card:e1obj forUseDate:e3.dateUse];  //MiYearMMDDpayment(e1obj, e3.dateUse);
 			// E3配下のE6を取得
 			//NSMutableArray *muE6 = [NSMutableArray arrayWithArray:[e3.e6parts allObjects]];
 			NSMutableArray *muE6 = [[NSMutableArray alloc] initWithArray:[e3.e6parts allObjects]];
@@ -634,7 +637,7 @@ static NSInteger MiYearMMDDpayment( E1card *Pe1card, NSDate *PtUse )
 	NSInteger iYearMMDD = iFirstYearMMDD; // 支払日
 	if (iFirstYearMMDD < AzMIN_YearMMDD) {
 		// カード(e3obj.e1card)と利用日(e3obj.dateUse)から支払日を求める
-		iYearMMDD = MiYearMMDDpayment(e3obj.e1card, e3obj.dateUse);
+		iYearMMDD = [self yearMMDDpaymentE1card:e3obj.e1card forUseDate:e3obj.dateUse];  //MiYearMMDDpayment(e3obj.e1card, e3obj.dateUse);
 	}
 	
 	//------------------------------------------------- 旧E6の第1回目の支払日と比較して異なれば再生する

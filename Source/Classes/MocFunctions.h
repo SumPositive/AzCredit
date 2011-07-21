@@ -29,6 +29,7 @@
 
 + (E0root *)e0root;
 
++ (NSInteger)yearMMDDpaymentE1card:(E1card *)Pe1card  forUseDate:(NSDate*)PtUse;
 + (void)e1delete:(E1card *)e1obj;
 + (void)e1update:(E1card *)e1obj;
 
