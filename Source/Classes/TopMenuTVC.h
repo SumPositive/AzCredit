@@ -37,11 +37,11 @@
 	//----------------------------------------------assign
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
 #else
 	InformationView		*MinformationView;
+	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
 #endif
 #ifdef FREE_AD
 	ADBannerView		*MbannerView;
@@ -58,7 +58,7 @@
 
 #ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc;
-- (void)e3recordAdd;	//PadRootVCからdelegate呼び出しされる
+- (void)e3detailAdd;		//PadRootVCからdelegate呼び出しされる
 - (void)refreshTopMenuTVC;	// E3recordDetailTVC:から呼び出される
 #endif
 

@@ -88,7 +88,7 @@
 							  @"NO",	GD_OptAntirotation,			// 回転防止
 						//	  @"YES",	GD_OptEnableSchedule,		// 支払予定
 						//	  @"YES",	GD_OptEnableCategory,		// 分類
-							  @"NO",	GD_OptEnableInstallment,	// 分割払い
+							  @"YES",	GD_OptEnableInstallment,	// 分割払い
 							  @"NO",	GD_OptUseDateTime,			// 利用日：時刻なし
 							  @"NO",	GD_OptNumAutoShow,			// ＜保留＞ テンキー自動表示
 							  @"NO",	GD_OptFixedPriority,		// ＜保留＞ 修正を優先

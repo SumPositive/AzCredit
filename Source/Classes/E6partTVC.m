@@ -162,7 +162,8 @@
 	// E7-->E6 [<]Backボタンが表示されない症状。下記の策も効果なし。
 	//self.navigationItem.leftBarButtonItem = nil;
 	//[self.navigationItem setHidesBackButton:NO animated:NO];
-	self.navigationItem.hidesBackButton = NO;
+	//self.navigationItem.hidesBackButton = NO; 
+	//＜＜＜ E7⇒E6⇒E7への[<]ボタンが現れない件、実機では発生しない。＞＞＞
 
 	// Tool Bar Button なし
 #else
@@ -435,6 +436,7 @@
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
+		[items release];
 	}
 #endif
 

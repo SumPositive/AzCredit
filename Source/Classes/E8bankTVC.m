@@ -25,10 +25,6 @@
 @implementation E8bankTVC
 @synthesize Re0root;
 @synthesize Pe1card;
-#ifdef xxxAzPAD
-@synthesize delegate;
-@synthesize selfPopover;
-#endif
 
 #pragma mark - Delegate
 
@@ -89,16 +85,7 @@
 - (void)barButtonUntitled { // [未定]
 	// 未定(nil)にする
 	Pe1card.e8bank = nil; 
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
 }
 
 - (void)E8bankDatail:(NSIndexPath *)indexPath
@@ -304,6 +291,7 @@
 			[toolBar setItems:items animated:NO];
 			[toolBar sizeToFit];
 			self.navigationItem.titleView = toolBar;
+			[items release];
 		}
 	} else {
 		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
@@ -353,27 +341,6 @@
 }
 #endif
 
-/*
-// カムバック処理（復帰再現）：親から呼ばれる
-- (void)viewComeback:(NSArray *)selectionArray
-{
-	// (0)TopMenu >> (1)This
-	NSInteger lRow = [[selectionArray objectAtIndex:1] integerValue];
-	if (lRow < 0) return; // この画面表示
-	
-	NSInteger lSec = lRow / GD_SECTION_TIMES;
-	if (1 <= lSec) return; // 無効セクション
-	
-	lRow -= (lSec * GD_SECTION_TIMES);
-	if ([RaE8banks count] <= lRow) return; // 無効セル（削除されたとか）
-
-	// 次、 E3recordTVC だが、これ以上戻しても見難いだけなので、ここまでで止めることにした。
-	// 前回選択行を画面中央にする。
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:lRow inSection:lSec];
-	[self.tableView scrollToRowAtIndexPath:indexPath 
-						  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
-}
-*/
 
 #pragma mark  View - Unload - dealloc
 
@@ -388,10 +355,6 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef xxxAzPAD
-	delegate = nil;
-	[selfPopover release], selfPopover = nil;
-#endif
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	[Re0root release];

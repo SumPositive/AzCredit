@@ -92,6 +92,7 @@
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
 		[toolBar release];
+		[items release];
 	}
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 #else

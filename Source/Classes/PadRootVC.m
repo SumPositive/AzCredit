@@ -44,8 +44,8 @@
 
 - (void)barButtonAdd 
 {	// Add Card
-	if ([delegate respondsToSelector:@selector(e3recordAdd)]) {	// メソッドの存在を確認する
-		[delegate e3recordAdd];
+	if ([delegate respondsToSelector:@selector(e3detailAdd)]) {	// メソッドの存在を確認する
+		[delegate e3detailAdd];
 	}
 }
 
@@ -68,7 +68,7 @@
 	//AzLOG(@"------- E1viewController: loadView");    
 	[super loadView];
 
-	self.title = NSLocalizedString(@"Product Title",nil);
+	//self.title = NSLocalizedString(@"Product Title",nil);
 
 	self.navigationItem.hidesBackButton = YES;
 
@@ -79,8 +79,8 @@
 	
 	//------------------------------------------アイコン
 	CGRect rect = self.view.bounds;
-	rect.origin.x = rect.size.width/2.0 - 72;  //故意に少し左寄せしている
-	rect.origin.y = 188;
+	rect.origin.x = rect.size.width/2.0 - 72/2;  //故意に少し左寄せしている
+	rect.origin.y = 160;
 	rect.size.width = rect.size.height = 72;
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:rect];
 #ifdef AzSTABLE
@@ -129,6 +129,7 @@
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
+		[items release];
 	}
 #endif
 	
@@ -181,19 +182,15 @@
 	NSLog(@"rightVC.title=%@", rightVC.title);
 	barButtonItem.title = @"    T o p    ";
 	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-	//UIBarButtonItem* buFixed = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
 	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
 	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: barButtonItem, buFlexible, buTitle, buFlexible, nil];
-	//[buTitle release], buTitle = nil;
-	//[buFixed release], buFixed = nil;
-	//[buFlexible release], buFlexible = nil;
 
 	UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 	toolBar.barStyle = UIBarStyleDefault;
 	[toolBar setItems:items animated:NO];
 	[toolBar sizeToFit];
 	rightVC.navigationItem.titleView = toolBar;
-	//[toolBar release];
+	[items release];
 }
 
 // 縦 => 横 ： 左ペインが現れる時に呼び出される
@@ -210,15 +207,13 @@
 	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
 	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFlexible, buTitle, buFlexible, nil];
-	//[buTitle release], buTitle = nil;
-	//[buFlexible release], buFlexible = nil;
 	
 	UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 	toolBar.barStyle = UIBarStyleDefault;
 	[toolBar setItems:items animated:NO];
 	[toolBar sizeToFit];
 	rightVC.navigationItem.titleView = toolBar;
-	//[toolBar release];
+	[items release];
 }
 
 

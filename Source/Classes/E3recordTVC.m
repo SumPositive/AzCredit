@@ -29,6 +29,7 @@
 @synthesize Pe4shop;
 @synthesize Pe5category;
 @synthesize Pe8bank;
+@synthesize PbAddMode;
 #ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
@@ -183,16 +184,16 @@
 	[e3detail release];
 }
 
-- (void)setMe3list:(NSDate *)dateMiddle // この日時が画面中央になるように前後最大50行読み込み表示する
+- (void)setMe3list:(NSDate *)dateMiddle // この日時が画面の(MmoreScrollPosition)位置になるように前後最大50行読み込み表示する
 {
 	NSCalendar *cal = [NSCalendar currentCalendar];	// 言語設定のタイムゾーンに従う
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
 	| NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
 	
 	NSLog(@"setMe3list: dateMiddle=%@", dateMiddle);
-	BOOL bTargetBrink = YES; // 指定行を反転ブリンクさせる
+	//BOOL bTargetBrink = YES; // 指定行を反転ブリンクさせる
 	if (dateMiddle==nil) {
-		bTargetBrink = NO;
+		//bTargetBrink = NO;
 		dateMiddle = [NSDate dateWithTimeIntervalSinceNow: -12 * 60 * 60]; //UTC 現在の12時間前
 	}
 	// ＜＜＜dateUse は,UTC(+0000)記録されている。比較や抽出などUTCで行うこと＞＞＞
@@ -414,14 +415,40 @@
 			[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 		} else {
-			indexPath = [NSIndexPath indexPathForRow:iRowMiddle inSection:iSecMiddle];
-			if (bTargetBrink) {
-				[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];	//  Middle 選択状態
-				[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.5]; // 0.5s後に選択状態を解除する
-			} else {
-				[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
-									  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+			switch (MmoreScrollPosition) {
+				case UITableViewScrollPositionTop:
+					// 前の行へ
+					if (0 < iRowMiddle) {
+						iRowMiddle--;
+					} else {
+						if (0 < iSecMiddle) {
+							iSecMiddle--;
+							iRowMiddle = [[RaE3list objectAtIndex:iSecMiddle] count] - 1;
+						}
+					}
+					break;
+				case UITableViewScrollPositionBottom:
+					// 次の行へ
+					if (iRowMiddle < [[RaE3list objectAtIndex:iSecMiddle] count] - 1) {
+						iRowMiddle++;
+					} else {
+						if (iSecMiddle < [RaE3list count] - 1) {
+							iSecMiddle++;
+							iRowMiddle = 0;
+						}
+					}
+					break;
+				default:
+					break;
 			}
+			indexPath = [NSIndexPath indexPathForRow:iRowMiddle inSection:iSecMiddle];
+//			if (bTargetBrink) {
+				[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:MmoreScrollPosition];
+				[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.5]; // 0.5s後に選択状態を解除する
+//			} else {
+//				[self.tableView scrollToRowAtIndexPath:indexPath
+//									  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // Middle固定
+//			}
 		}
 	}
 }
@@ -439,7 +466,13 @@
 {
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
-		// 初期化成功
+		// 初期化
+		self.Pe4shop = nil;
+		self.Pe5category = nil;
+		self.Pe8bank = nil;
+		self.PbAddMode = NO;
+		MmoreScrollPosition = UITableViewScrollPositionMiddle;
+		
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 		//
@@ -458,6 +491,8 @@
 - (void)loadView
 {
     [super loadView];
+	
+	//self.title =  親からセットする。 E4,E5などから呼び出されるため
 	
 	// Tool Bar Button
 	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -519,6 +554,7 @@
 	if (RaE3list==nil || app.Me3dateUse) {
 		//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
+		MmoreScrollPosition = UITableViewScrollPositionMiddle;
 		[self setMe3list:app.Me3dateUse];
 		//[autoPool release];
 	}
@@ -527,6 +563,15 @@
 		// McontentOffsetDidSelect は、didSelectRowAtIndexPath にて記録している。
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
+
+/****************　UITableView Pull-To-Reload の実験
+	NSLog(@"self.tableView.frame=(%f,%f,%f,%f) contentOffset=(%f,%f)  contentSize=(%f,%f)", 
+		  self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height,
+		  self.tableView.contentOffset.x, self.tableView.contentOffset.y,
+		  self.tableView.contentSize.width, self.tableView.contentSize.height );
+
+	self.tableView.pagingEnabled = YES;
+ */
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
@@ -545,12 +590,13 @@
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
+		[items release];
 	}
 #endif
 	
     [super viewDidAppear:animated];
 	
-	if ([RaE3list count] < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
+	if (self.PbAddMode==NO && [RaE3list count] < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
 		// 明細なし ＞ 前画面に戻す
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E3list NoData",nil)
 														message:NSLocalizedString(@"E3list NoData msg",nil)
@@ -564,6 +610,11 @@
 	}
 	
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	
+	if (self.PbAddMode) {
+		self.PbAddMode = NO; //1度限り、さもなくばiPhoneでは抜け出せなくなる
+		[self barButtonAdd];	//[+]
+	}
 }
 
 /*
@@ -796,7 +847,7 @@
 											   reuseIdentifier:zCellTopEnd] autorelease];
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
 				cell.textLabel.textAlignment = UITextAlignmentLeft;
-				cell.textLabel.text = NSLocalizedString(@"E3list More",nil);
+				cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"E3list More",nil), (long)GD_E3_SELECT_LIMIT];
 				cell.showsReorderControl = NO; // Move禁止
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			}
@@ -978,6 +1029,7 @@
 		id datePrev = [[RaE3list objectAtIndex:0] objectAtIndex:0];
 		if (datePrev != [NSNull null]) {
 			//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+			MmoreScrollPosition = UITableViewScrollPositionTop;
 			[self setMe3list:[datePrev retain]]; [datePrev release]; // retain必要
 			//0.5//[autoPool release];
 		}
@@ -988,6 +1040,7 @@
 		id dateNext = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:0];
 		if (dateNext != [NSNull null]) {
 			//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
+			MmoreScrollPosition = UITableViewScrollPositionBottom;
 			[self setMe3list:[dateNext retain]]; [dateNext release]; // retain必要
 			//0.5//[autoPool release];
 		}
@@ -995,18 +1048,6 @@
 	}
 	else
 	{
-/*		// Comback-L3 記録
-		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-		if (Pe4shop OR Pe5category OR Pe8bank) {
-			// (0)TopMenu >> (1)E4/E5 >> (2)This clear
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:3 withObject:[NSNumber numberWithLong:-1]];
-		} else {
-			// (0)TopMenu >> (1)This clear
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:lPos]];
-			[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
-		}*/
 		// E3詳細画面へ
 		[self e3detailView:indexPath]; // この中でAddにも対応
 	}

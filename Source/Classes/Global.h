@@ -114,8 +114,13 @@
 #define GD_OptE5SortMode					@"OptE5SortMode"
 
 
+#ifdef AzPAD
+#define GD_PAIDLIST_MAX			30		// E2,E7一覧で表示するPAID側の最大件数、Unpaid側は全件
+#define GD_E3_SELECT_LIMIT		100		// 明細一覧で中央日付から前後抽出する件数(Limit)
+#else
 #define GD_PAIDLIST_MAX			20		// E2,E7一覧で表示するPAID側の最大件数、Unpaid側は全件
 #define GD_E3_SELECT_LIMIT		50		// 明細一覧で中央日付から前後抽出する件数(Limit)
+#endif
 
 #ifdef AzPAD
 #define GD_POPOVER_SIZE_INIT		CGSizeMake(480-1, 500-1)	//init初期化時に使用　＜＜＜変化ありにするため1廻り小さくする

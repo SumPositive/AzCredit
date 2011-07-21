@@ -32,13 +32,14 @@
 	NSMutableArray		*RaE3lasts;		// 前回引用するための直近3件
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	E0root				*Me0root;		// Arrayではない！単独　release不要（するとFreeze）
-	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem		*MbuDelete;		// BarButton ＜PAID時に無効にするため＞ [0.3]
 	UILabel				*MlbAmount;
 	CalcView			*McalcView;
 #ifdef AzPAD
 	//UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
 	NSInteger			MiSourceYearMMDD;	// 修正前の利用日、[Save]時に比較して同じならば修正行だけ再表示し、変化あれば全再表示する
+#else
+	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 #endif
 	//----------------------------------------------assign
 	BOOL			MbE6dateChange;

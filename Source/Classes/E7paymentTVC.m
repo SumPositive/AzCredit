@@ -183,7 +183,7 @@ static UIColor *MpColorBlue(float percent) {
     [super loadView];
 
 #ifdef AzPAD
-	self.navigationItem.hidesBackButton = YES;
+	self.navigationItem.hidesBackButton = YES; // E7⇒E6⇒E7への[<]ボタンが現れない件、実機では発生しない。
 	// Set up NEXT Left Back [<] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
@@ -334,6 +334,7 @@ static UIColor *MpColorBlue(float percent) {
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
+		[items release];
 	}
 #endif
 
@@ -455,31 +456,15 @@ static UIColor *MpColorBlue(float percent) {
 {
 	switch (section) {
 		case 0:
-			return NSLocalizedString(@"Paid header",nil);
+			return [NSString stringWithFormat:NSLocalizedString(@"Paid header",nil), (long)GD_PAIDLIST_MAX];
 			break;
+			
 		case 1:
 			// E7 未払い総額
 			if ([Re0root.e7unpaids count] <= 0) {
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			}
 			return NSLocalizedString(@"Unpaid",nil);
-	/*		else {
-				//NSNumber *nUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
-				// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
-				NSDecimalNumber *decUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
-				NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-				[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-				//NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-				//[formatter setLocale:localeJP];
-				//[localeJP release];
-				[formatter setLocale:[NSLocale currentLocale]]; 
-				NSString *str = [NSString stringWithFormat:@"%@ %@", 
-								 NSLocalizedString(@"Following unpaid",nil), 
-								 [formatter stringFromNumber:decUnpaid]];
-				[formatter release];
-				return str;
-			}
-			break; */
 	}
 	return nil;
 }

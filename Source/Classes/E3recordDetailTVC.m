@@ -421,10 +421,11 @@
 {
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
-		// 初期化成功
+		// 初期化
 		MbSaved = NO;
 		MbE6dateChange = NO;
 		MbE1cardChange = NO;
+		MbModified = NO;
 #ifdef AzPAD
 		MiSourceYearMMDD = 0;		// 初回のみ通すため
 		self.contentSizeForViewInPopover = GD_POPOVER_SIZE_INIT;
@@ -444,7 +445,6 @@
 	// 初期化
 	MbCopyAdd = NO;
 	MiIndexE3lasts = (-1); // (-2)過去コピー機能無効
-	MbModified = NO;
 	Me0root = nil;		// viewWillAppearにて生成
 	MlbAmount = nil;	// cellForRowAtIndexPathにて生成
 	
@@ -687,6 +687,8 @@
 				[obj setEnabled:NO];
 			}
 		}
+		// 金額または支払方法に変更があればE6partsを非表示にする
+		
 		//MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
 	}
 }
@@ -821,7 +823,7 @@
 			return 3;
 			break;
 		case 2:
-			if (PiAdd <= 0) {
+			if (PiAdd <= 0 && MbModified==NO) { // 金額または支払方法に変更があればE6partsを非表示にする
 				return [Re3edit.e6parts count]; // 支払明細
 			} else {
 				return 1; // 新規追加時の電卓描画範囲を確保するためダミーセル表示する
@@ -1165,18 +1167,31 @@
 #else
 				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
 #endif
-				
-				// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
-				UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
-				cellButton.frame = CGRectMake(0,0, 44,44);
-				[cellButton addTarget:self action:@selector(cellButtonE6check:) forControlEvents:UIControlEventTouchUpInside];
-				cellButton.backgroundColor = [UIColor clearColor]; //背景透明
-				cellButton.showsTouchWhenHighlighted = YES;
-				cellButton.tag = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-				[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
-				// 左ボタン ------------------------------------------------------------------
 
+				if (MbModified) {
+					// E6影響項目（金額・支払方法）に変更あり、E6partsを非表示にする
+					cell.textLabel.text = NSLocalizedString(@"E6 Modified",nil);
+					cellLabel.hidden = YES;
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.userInteractionEnabled = NO;
+					break;
+				}
+				
 				if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
+				
+				// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞  [1.0.2]viewWithTagにより改善
+				NSInteger tag = indexPath.section * GD_SECTION_TIMES + indexPath.row;
+				UIButton *cellButton = (UIButton*)[cell.contentView viewWithTag:tag];
+				if (cellButton==nil) {
+					cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
+					cellButton.frame = CGRectMake(0,0, 44,44);
+					[cellButton addTarget:self action:@selector(cellButtonE6check:) forControlEvents:UIControlEventTouchUpInside];
+					cellButton.backgroundColor = [UIColor clearColor]; //背景透明
+					cellButton.showsTouchWhenHighlighted = YES;
+					cellButton.tag = tag;
+					[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
+				}
+				//------------------------------------------------------------------
 
 				E6part *e6obj = [RaE6parts objectAtIndex:indexPath.row];
 				//NSLog(@"*** e6obj.e2invoice=%@", e6obj.e2invoice); [0.4.17]SAVE直後E6が再生成されるため、ここで落ちた。
@@ -1235,10 +1250,15 @@
 	} else {
 		[MocFunctions e6check:NO inE6obj:e6obj inAlert:YES];
 	}
-	//------------------＜＜ここでは保存しない！ E3修正の cancelClose:でrollBack, save:でcommitする＞＞
+	//------------------＜＜ここでは保存しない！ 他の修正に影響するため、E3修正の cancelClose:でrollBack, save:でcommitする＞＞
 	// [EntityRelation commit];
-	
+
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	apd.entityModified = YES;	//変更あり
+	//[self viewWillAppear:YES]; これえを呼ぶと、E6partsが非表示にされてしまう。
 	[self.tableView reloadData];
+	//[Save]ボタン表示だけ必要
+	self.navigationItem.rightBarButtonItem.enabled = ([Re3edit.nAmount doubleValue] != 0.0); // 金額0で無ければYES
 }
 
 

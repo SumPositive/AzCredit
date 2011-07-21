@@ -188,6 +188,7 @@
 		[toolBar sizeToFit];
 		self.navigationItem.titleView = toolBar;
 		[toolBar release];
+		[items release];
 	}
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 #else
@@ -1136,7 +1137,11 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	switch (section) {
 		case 0:
+#if defined (FREE_AD) && defined (AzPAD)
+			return [@"\n\n\n" stringByAppendingString:NSLocalizedString(@"Google Login",nil)];	//iAdスペースのため
+#else
 			return NSLocalizedString(@"Google Login",nil);
+#endif
 			break;
 		case 1:
 			if (MbLogin) return NSLocalizedString(@"Upload - click start",nil);

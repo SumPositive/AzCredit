@@ -35,9 +35,6 @@
 
 
 @interface TopMenuTVC (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
-- (void)azInformationView;
-- (void)azSettingView;
-- (void)e3recordAdd;
 #ifdef FREE_AD
 #define FREE_AD_OFFSET_Y			200.0
 - (void)AdRefresh;
@@ -72,8 +69,9 @@
 	InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[InformationView class]];
 	[naviRight popToRootViewControllerAnimated:NO];
-	[naviRight pushViewController:vc animated:YES];
+	[naviRight pushViewController:vc animated:bAnime];
 	[vc release];
 #else
 	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
@@ -95,8 +93,9 @@
 	SettingTVC *view = [[SettingTVC alloc] init];
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[SettingTVC class]];
 	[naviRight popToRootViewControllerAnimated:NO];
-	[naviRight pushViewController:view animated:YES];
+	[naviRight pushViewController:view animated:bAnime];
 	[view release];
 
 #else
@@ -118,25 +117,20 @@
 	}
 }
 
-- (void)e3recordAdd
+- (void)e3detailAdd		//PadRootVCからdelegate呼び出しされる
 {
-	if (MiE1cardCount <= 0) {
-		alertBox(NSLocalizedString(@"No Card",nil),
-				 NSLocalizedString(@"No Card msg",nil),
-				 NSLocalizedString(@"Roger",nil));
-		return;
-	}
-	
+#if defined (FREE_AD) && defined (AzPAD)
+	MbAdCanVisible = YES;	//iPad// E3Add状態のときだけｉＡｄ表示する
+	[self AdRefresh];
+#endif
 	// Add E3  【注意】同じE3Addが、E3recordTVC内にもある。
-	//E3record *e3obj = [NSEntityDescription insertNewObjectForEntityForName:@"E3record"
-	//												inManagedObjectContext:Re0root.managedObjectContext];
 	E3record *e3obj = [MocFunctions insertAutoEntity:@"E3record"]; // autorelese
 	e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
-	e3obj.e1card = nil;
-	e3obj.e4shop = nil;
-	e3obj.e5category = nil;
-	e3obj.e6parts = nil;
-
+	//e3obj.e1card = nil;
+	//e3obj.e4shop = nil;
+	//e3obj.e5category = nil;
+	//e3obj.e6parts = nil;
+	
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	e3detail.title = NSLocalizedString(@"Add Record", nil);
 	e3detail.Re3edit = e3obj;
@@ -144,17 +138,11 @@
 	
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	apd.entityModified = NO;  //リセット
-
-#ifdef  AzPAD
-	#ifdef FREE_AD
-		MbAdCanVisible = YES;	//iPad// E3Add状態のときだけｉＡｄ表示する
-		[self AdRefresh];
-	#endif
+	
+#ifdef AzPAD
 	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
 	[naviRight popToRootViewControllerAnimated:NO];
-	// セル選択状態にする
-	//[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-	//
+	
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -168,16 +156,40 @@
 	e3detail.selfPopover = Mpopover;  [Mpopover release];
 	e3detail.delegate = nil;		// 不要
 #else
-	//e3detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:YES];
-#endif	
-
+	[self.navigationController pushViewController:e3detail animated: YES];
+#endif
 	[e3detail release]; // self.navigationControllerがOwnerになる
 }
 
+- (void)e3record
+{
+	if (MiE1cardCount <= 0) {
+		alertBox(NSLocalizedString(@"No Card",nil),
+				 NSLocalizedString(@"No Card msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
+	}
+
+	E3recordTVC *tvc = [[E3recordTVC alloc] init];
+	tvc.title = NSLocalizedString(@"Record list", nil);
+	tvc.Re0root = Re0root;
+	tvc.PbAddMode = NO; //Default
+#ifdef AzPAD
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+	BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]];
+	[naviRight popToRootViewControllerAnimated:NO];
+	[naviRight pushViewController:tvc animated:bAnime];
+#else
+	[self.navigationController pushViewController:tvc animated: YES];
+#endif
+	[tvc release];
+}
+
+
 - (void)barButtonAdd {
 	// Add Card
-	[self e3recordAdd];
+	[self e3detailAdd];
 }
 
 
@@ -388,11 +400,11 @@
 	NSLog(@"--- loadView --- TopMenuTVC");
 	[super loadView];
 
+	self.title = NSLocalizedString(@"Product Title",nil);
+
 #ifdef AzPAD
-	self.title = @"T o p";
 	self.navigationItem.hidesBackButton = YES;
 #else
-	self.title = NSLocalizedString(@"Product Title",nil);
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
@@ -751,7 +763,7 @@
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (section==0) return @"\n     PayNote - Free edition.\n\n";	// iAd上部スペース
+	if (section==0) return @"\n     Free Edition.\n\n";	// iAd上部スペース
 	return nil;
 }
 #endif
@@ -902,49 +914,18 @@
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 	
-/*	// Comback-L0 TopMenu 記録
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	long lPos = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-	// (0)This >> (1)Clear
-	[appDelegate.RaComebackIndex replaceObjectAtIndex:0 withObject:[NSNumber numberWithLong:lPos]];
-	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
-*/
-	
 	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 
 	switch (indexPath.section) {
 		case 0:
 		{
 			switch (indexPath.row) {
-				case 0: // Add Record
-#ifdef FREE_AD_PAD
-					MbAdCanVisible = YES; // iAd許可
-					[self AdRefresh];
-#endif
-					[self e3recordAdd]; // E3record 新規追加
+				case 0: // Add Record  //[1.0.2]E3一覧後、Addする。＜＜一覧に戻って確認することが多いため
+					[self e3detailAdd];
 					break;
-				case 1: // 最近の明細　E3 < E3detail
-				{	// E3records へ
-					E3recordTVC *tvc = [[E3recordTVC alloc] init];
-#ifdef AzDEBUG
-					tvc.title = [NSString stringWithFormat:@"E3 %@", cell.textLabel.text];
-#else
-					tvc.title = cell.textLabel.text;
-#endif
-					tvc.Re0root = Re0root;
-					//tvc.Pe1card = nil;  // =nil:最近の全E3表示モード　　=e1obj:指定E1以下を表示することができる
-					tvc.Pe4shop = nil;
-					tvc.Pe5category = nil;
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:YES];
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
-#endif
-					[tvc release];
-				}
+					
+				case 1: // 最近の明細
+					[self e3record];
 					break;
 			}
 		}
@@ -965,8 +946,9 @@
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]];
 					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:YES];
+					[naviRight pushViewController:tvc animated:bAnime];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -987,8 +969,9 @@
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]];
 					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:YES];
+					[naviRight pushViewController:tvc animated:bAnime];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -1009,8 +992,9 @@
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]];
 					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:YES];
+					[naviRight pushViewController:tvc animated:bAnime];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -1036,8 +1020,9 @@
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]];
 					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:YES];
+					[naviRight pushViewController:tvc animated:bAnime];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -1057,8 +1042,9 @@
 #ifdef AzPAD
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]];
 					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:YES];
+					[naviRight pushViewController:tvc animated:bAnime];
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
@@ -1078,10 +1064,15 @@
 					goodocs.title = cell.textLabel.text;
 					goodocs.Re0root = Re0root;
 #ifdef AzPAD
+	#ifdef FREE_AD
+					MbAdCanVisible = YES; // iAd許可
+					[self AdRefresh];
+	#endif
 					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[GooDocsTVC class]];
 					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:goodocs animated:YES];
+					[naviRight pushViewController:goodocs animated:bAnime];
 #else
 					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 					[self.navigationController pushViewController:goodocs animated:YES];

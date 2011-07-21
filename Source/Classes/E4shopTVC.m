@@ -366,6 +366,7 @@
 			[toolBar setItems:items animated:NO];
 			[toolBar sizeToFit];
 			self.navigationItem.titleView = toolBar;
+			[items release];
 		}
 	} else {
 		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため

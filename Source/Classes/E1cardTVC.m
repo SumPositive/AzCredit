@@ -285,6 +285,7 @@
 			toolBar.barStyle = UIBarStyleDefault;
 			[toolBar setItems:items animated:NO];
 			[toolBar sizeToFit];
+			[items release];
 			self.navigationItem.titleView = toolBar;
 		}
 	} else {

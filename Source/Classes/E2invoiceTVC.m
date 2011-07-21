@@ -488,6 +488,7 @@
 		toolBar.barStyle = UIBarStyleDefault;
 		[toolBar setItems:items animated:NO];
 		[toolBar sizeToFit];
+		[items release];
 		self.navigationItem.titleView = toolBar;
 	}
 #endif
@@ -643,7 +644,7 @@
 {
 	switch (section) {
 		case 0:
-			return NSLocalizedString(@"Paid header",nil);
+			return [NSString stringWithFormat:NSLocalizedString(@"Paid header",nil), (long)GD_PAIDLIST_MAX];
 			break;
 		case 1:
 			// E2 未払い総額
@@ -651,27 +652,6 @@
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			} 
 			return NSLocalizedString(@"Unpaid",nil);
-	/*		else {
-				//NSNumber *nUnpaid;
-				NSDecimalNumber *decUnpaid;
-				if (Re1select) { // E1card
-					decUnpaid = [Re1select valueForKeyPath:@"e2unpaids.@sum.sumAmount"];
-				} else { // E8bank
-					decUnpaid = [Re8select valueForKeyPath:@"e1cards.@sum.e2unpaids.@sum.sumAmount"];
-				}
-				// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
-				NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-				[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-				//NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
-				//[formatter setLocale:localeJP];
-				//[localeJP release];
-				[formatter setLocale:[NSLocale currentLocale]]; 
-				NSString *str = [NSString stringWithFormat:@"%@ %@", 
-								 NSLocalizedString(@"Following unpaid",nil), 
-								 [formatter stringFromNumber:decUnpaid]];
-				[formatter release];
-				return str;
-			}*/
 			break;
 	}
 	return @"Err";
