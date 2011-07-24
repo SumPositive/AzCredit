@@ -14,33 +14,35 @@
 {
 @private
 	//--------------------------retain
-	id					Rentity;
-	NSString		*RzKey;			// @"dateUse"    //[1.0.0]E6date変更モード="E6date"
-	E6part			*Re6edit;
+	E3record		*Re3edit;			// !=nil : E3record変更モード（日付）
+	E6part			*Re6edit;			// !=nil : E6part変更モード（日付、金額）
+//	id					Rentity;
+//	NSString		*RzKey;			// @"dateUse"    //[1.0.0]E6date変更モード="E6date"
 	//--------------------------assign
 	id						delegate;			// editDateE6change を呼び出すため
 	NSInteger	PiMinYearMMDD;
 	NSInteger	PiMaxYearMMDD;
-	NSDate		*sourceDate;
+//	NSDate		*sourceDate;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIDatePicker	*MdatePicker;
 	UIButton		*MbuToday;			// Todayにリセットする
-	UIButton		*MbuYearTime;		// UIDatePickerModeDate, UIDatePickerModeDateAndTime を切り替える
+	UIButton		*MbuYearTime;		// E3:時刻部有無　　　E6：金額
 	//----------------------------------------------assign
-	NSInteger	PiE6row;				//[1.0.0]E6date変更モード
+	//NSInteger	PiE6row;				//[1.0.0]E6date変更モード
 	BOOL MbOptAntirotation;
 	BOOL MbOptUseDateTime;
 	NSTimeInterval	MintervalPrev;
 }
 
-@property (nonatomic, retain) id					Rentity;
-@property (nonatomic, retain) NSString		*RzKey;	
+//@property (nonatomic, retain) id					Rentity;
+//@property (nonatomic, retain) NSString		*RzKey;	
 @property (nonatomic, assign) id					delegate;
 @property (nonatomic, assign) NSInteger	PiMinYearMMDD;
 @property (nonatomic, assign) NSInteger	PiMaxYearMMDD;
 
-- (id)init;	//E3.dateUser
-- (id)initWithE6row:(NSUInteger)iRow;	//[1.0.0]E6date変更モード
+//- (id)init;	//E3.dateUser
+//- (id)initWithE6row:(NSUInteger)iRow;	//[1.0.0]E6date変更モード
+- (id)initWithE3:(E3record*)e3 orE6:(E6part*)e6;
 
 @end

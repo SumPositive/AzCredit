@@ -624,6 +624,8 @@ static NSManagedObjectContext *scMoc = nil;
 	e5.sortCount =  [e5 valueForKeyPath:@"e3records.@count"];
 }
 
+
+#ifdef xxxxxxxxxxxxDELxxxxxxxxx   //E3recordDetailTVCにて随時E6更新されるようになったので不要。
 // E3配下のE6(unpaid)をE1,E3の支払条件に合わせて再生成する
 // E6に1つでもPAIDがあれば拒否returnする
 // iFirstYearMMDD = 最初の支払日(分割の場合、これと翌月以降になる)   =0:カードの締支払条件から自動決定する
@@ -834,6 +836,7 @@ static NSManagedObjectContext *scMoc = nil;
 	
 	return YES;
 }
+#endif
 
 // E6.nNoCheck を 0,1 切り替えする。 E6.PAIDならば不変。
 + (void)e6check:(BOOL)bCheckOn inE6obj:(E6part *)e6obj inAlert:(BOOL)bAlert
@@ -1151,11 +1154,13 @@ static NSManagedObjectContext *scMoc = nil;
 // iFirstYearMMDD = 最初の支払日(分割の場合、これと翌月以降になる)   =0:カードの締支払条件から自動決定する  <0:支払日のみ変更時
 + (BOOL)e3saved:(E3record *)e3node inFirstYearMMDD:(NSInteger)iFirstYearMMDD
 {
+
+	/*E3recordDetailTVCにて随時E6更新されるようになったので不要。
 	// クイック追加時、＜この時点で配下のE6は無い。また、E6が追加された後に.e1card==nilになることは無い＞
 	if (e3node.e1card && 0<=iFirstYearMMDD)  // クイック追加時、カード未定(.e1card==nil)許可のため　
 	{	// 配下のE6を生成または更新する			E2が PiFirstYearMMDD 
 		if ([MocFunctions e3makeE6:e3node inFirstYearMMDD:iFirstYearMMDD]==NO) return NO;
-	}
+	}*/
 	
 	e3node.sumNoCheck = [e3node valueForKeyPath:@"e6parts.@sum.nNoCheck"];
 	

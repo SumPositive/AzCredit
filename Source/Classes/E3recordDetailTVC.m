@@ -58,9 +58,9 @@
 #pragma mark - Delegate method
 
 // デリゲート・メソッド
-- (void)editDateE6change {		// delegate: EditDateVC
-	MbE6dateChange = YES;
-}
+//- (void)editDateE6change {		// delegate: EditDateVC
+//	MbE6dateChange = YES;
+//}
 
 // E6partsに影響する項目が変更されたので、E6partsを再生成する　 ＜＜安全快適のため、1回と2回払いだけに限定、かつ未チェックに限る＞＞
 // return(BOOL) YES=OK, NO=E6変更禁止につき、保存禁止すること
@@ -111,10 +111,15 @@
 			e6part1 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
 			e6part1.nPartNo = [NSNumber numberWithInteger:1];
 			e6part1.nNoCheck = [NSNumber numberWithInteger:1];
-			e6part1.nAmount = Re3edit.nAmount;	// 1回払い
 			e6part1.e3record = Re3edit;  // E6 <<--> E3 リンク
 			e6part1.e2invoice = nil;  // E6 <<--> E2 リンク
 		}
+		// e6part1 更新
+		iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
+		if (iYearMMDD==0) {
+			return NO;
+		}
+		e6part1.nAmount = Re3edit.nAmount;	// 1回払い
 		//
 		if (e6part2)
 		{	// e6part2 削除
@@ -127,48 +132,41 @@
 			[moc deleteObject:e6part2];
 			e6part2 = nil;
 		}
-		// e6part1 更新
-		iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
-		if (iYearMMDD==0) {
-			return NO;
-		}
 	}
 	else if (iPayType==2)
 	{	// 2回払いのとき、
 		NSDecimalNumber *part2Amount = [NSDecimalNumber zero];
-		if (e6part1)
-		{
-			if (iChange==5 OR [e6part1.nNoCheck integerValue]==0) 
-			{	// (5)1回目を基準　または　e6part1がチェック済
-				part2Amount = [Re3edit.nAmount decimalNumberBySubtracting:e6part1.nAmount];  // E62 = E3 - E61
-				iYearMMDD = [e6part1.e2invoice.nYearMMDD integerValue];
-				iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 2回目は翌月へ
-			}
-			else if (iChange==6 && e6part2) 
-			{	// (6)2回目を基準
-				if ([e6part2.e2invoice.nYearMMDD integerValue] <= [e6part1.e2invoice.nYearMMDD integerValue]) {
-					NSLog(@"日付が逆転");
-					return NO;
-				}
-				if ([e6part1.nNoCheck integerValue]==0) 
-				{	// e6part1がチェック済なのでE3を更新する
-					Re3edit.nAmount = [e6part1.nAmount decimalNumberByAdding:e6part2.nAmount];  // E3 = E61 + E62
-				} else {
-					e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
-				}
-				// E6の金額が変わったので親となるE2,E7を再集計する
-				[MocFunctions e2e7update:e6part1.e2invoice];
-			}
-		}
-		else //if (e6part1==nil)
+		if (e6part1==nil)
 		{	// e6part1 生成
 			e6part1 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
 			e6part1.nPartNo = [NSNumber numberWithInteger:1];
 			e6part1.nNoCheck = [NSNumber numberWithInteger:1];
 			e6part1.e3record = Re3edit;  // E6 <<--> E3 リンク
 			e6part1.e2invoice = nil;  // E6 <<--> E2 リンク
-			// e6part1.nAmount を求める
-			NSDecimalNumber *decAmountZan = Re3edit.nAmount;
+		}	
+		if (iChange==5 OR [e6part1.nNoCheck integerValue]==0) 
+		{	// (5)1回目を基準　または　e6part1がチェック済
+			part2Amount = [Re3edit.nAmount decimalNumberBySubtracting:e6part1.nAmount];  // E62 = E3 - E61
+			iYearMMDD = [e6part1.e2invoice.nYearMMDD integerValue];
+			iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 2回目は翌月へ
+		}
+		else if (iChange==6 && e6part2) 
+		{	// (6)2回目を基準
+			if ([e6part2.e2invoice.nYearMMDD integerValue] <= [e6part1.e2invoice.nYearMMDD integerValue]) {
+				NSLog(@"日付が逆転");
+				return NO;
+			}
+			if ([e6part1.nNoCheck integerValue]==0) 
+			{	// e6part1がチェック済なのでE3を更新する
+				Re3edit.nAmount = [e6part1.nAmount decimalNumberByAdding:e6part2.nAmount];  // E3 = E61 + E62
+			} else {
+				e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
+			}
+			// E6の金額が変わったので親となるE2,E7を再集計する
+			[MocFunctions e2e7update:e6part1.e2invoice];
+		}
+		else
+		{	// e6part1 更新
 			NSDecimalNumber *decPayType = [NSDecimalNumber decimalNumberWithString:@"2.0"]; //2回払い
 			//[0.4] Decimal対応  behavior
 			// 通貨型に合った丸め位置を取得
@@ -184,34 +182,36 @@
 																				   raiseOnUnderflow:YES				// アンダーフロー
 																				raiseOnDivideByZero:YES ];			// アンダーフロー
 			// 2回目が多くなるように切上している。　＜＜クレジット分割では、誤差が後払いになるらしい。
-			part2Amount = [decAmountZan decimalNumberByDividingBy:decPayType withBehavior:behavior];
+			part2Amount = [Re3edit.nAmount decimalNumberByDividingBy:decPayType withBehavior:behavior];	// E62 = E3 ÷ 2 (切上)
 			[behavior release];
-			e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:part2Amount];  // E61 = E3 - E62
 			// e6part1 更新
 			iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
 			if (iYearMMDD==0) {
 				return NO;
 			}
-		}	
+			e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:part2Amount];  // E61 = E3 - E62
+		}
 		//
 		if (e6part2==nil)
 		{	// e6part2 生成
 			e6part2 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
 			e6part2.nPartNo = [NSNumber numberWithInteger:2];
 			e6part2.nNoCheck = [NSNumber numberWithInteger:1];
-			e6part2.nAmount = part2Amount;
 			e6part2.e3record = Re3edit;  // E6 <<--> E3 リンク
 			e6part2.e2invoice = nil;  // E6 <<--> E2 リンク
-			// e6part2 更新
-			iYearMMDD = [self partMakeE6:e6part2 forDue:iYearMMDD];
-			if (iYearMMDD==0) {
-				return NO;
-			}
 		}	
+		// e6part2 更新
+		iYearMMDD = [self partMakeE6:e6part2 forDue:iYearMMDD];
+		if (iYearMMDD==0) {
+			return NO;
+		}
+		e6part2.nAmount = part2Amount;
 	}	
 	else {
 		return NO;
 	}
+	// 再描画
+	[self viewWillAppear:YES];
 	return YES;
 }
 	
@@ -256,8 +256,9 @@
 	}
 	//-------------------------------------------------e0root（固有ノード）を取得する　E7追加に必要となる
 	E0root *e0root = [MocFunctions e0root];
-	if (e0root == nil) return 0;
-
+	if (e0root == nil) {
+		return 0;
+	}
 	//------------------------------------------------- E2 <<--> E7
 	if (e6part.e2invoice.e7payment == nil) {
 		// E7がリンクされていないので探してリンクする
@@ -279,9 +280,7 @@
 	[MocFunctions e2e7update:e6part.e2invoice];		//e6増
 
 	// 次回（翌月）へ
-	if (0 < [Re3edit.e1card.nPayDay integerValue]) {	// <=0:Debitならば同じ利用日
-		iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
-	}
+	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
 	return iYearMMDD;
 }
 
@@ -427,8 +426,8 @@
 		// 長さがAzMAX_NAME_LENGTH超ならば、0文字目から50文字を切り出して保存　＜以下で切り出すとフリーズする＞
 		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
-	
-	if (MbE6dateChange) PiFirstYearMMDD = (-1); //E6更新しない
+
+	//if (MbE6dateChange) PiFirstYearMMDD = (-1); //E6更新しない
 	// E3配下リンク等の更新処理
 	if ([MocFunctions e3saved:Re3edit inFirstYearMMDD:PiFirstYearMMDD]==NO) {
 		//return; // 中止
@@ -454,7 +453,7 @@
 			[delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
 		}
 		else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
-			BOOL bSame = !MbE6dateChange && !MbE1cardChange;
+			BOOL bSame = !MbE1cardChange;
 			[delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
 		}
 
@@ -637,7 +636,7 @@
 	if (self) {
 		// 初期化
 		MbSaved = NO;
-		MbE6dateChange = NO;
+		//MbE6dateChange = NO;
 		MbE1cardChange = NO;
 		MbModified = NO;
 #ifdef AzPAD
@@ -1037,7 +1036,7 @@
 			return 3;
 			break;
 		case 2:
-			if (PiAdd <= 0 && MbModified==NO) { // 金額または支払方法に変更があればE6partsを非表示にする
+			if (PiAdd <= 0) { // 金額または支払方法に変更があればE6partsを非表示にする
 				return [Re3edit.e6parts count]; // 支払明細
 			} else {
 				return 1; // 新規追加時の電卓描画範囲を確保するためダミーセル表示する
@@ -1382,14 +1381,14 @@
 				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
 #endif
 
-				if (MbModified) {
+/*				if (MbModified) {
 					// E6影響項目（金額・支払方法）に変更あり、E6partsを非表示にする
 					cell.textLabel.text = NSLocalizedString(@"E6 Modified",nil);
 					cellLabel.hidden = YES;
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.userInteractionEnabled = NO;
 					break;
-				}
+				}*/
 				
 				if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
 				
@@ -1493,10 +1492,8 @@
 				case 0: // Use date
 					if (!MbE6paid) {
 						// 変更あれば[DONE]にて配下E6全削除すること
-						EditDateVC *evc = [[EditDateVC alloc] init];
+						EditDateVC *evc = [[EditDateVC alloc] initWithE3:Re3edit orE6:nil];
 						evc.title = NSLocalizedString(@"Use date", nil);
-						evc.Rentity = Re3edit;
-						evc.RzKey = @"dateUse";
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
 						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
@@ -1548,7 +1545,7 @@
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
 						tvc.Re3edit = Re3edit;
-						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+						tvc.delegate = self;
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
 						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
@@ -1619,14 +1616,22 @@
 					//		 NSLocalizedString(@"How to change Due msg",nil),
 					//		 NSLocalizedString(@"Roger",nil));
 					//[1.0.0]ここで支払日変更ができるようにする
-					EditDateVC *evc = [[EditDateVC alloc] initWithE6row:indexPath.row]; //[1.0.0]E6date変更モード
+					//EditDateVC *evc = [[EditDateVC alloc] initWithE6row:indexPath.row]; //[1.0.0]E6date変更モード
+					EditDateVC *evc = [[EditDateVC alloc] initWithE3:nil orE6:[RaE6parts objectAtIndex:indexPath.row]];
 					evc.title = NSLocalizedString(@"Due date", nil);
-					evc.Rentity = Re3edit;
-					evc.RzKey = @"";  //[1.0.0]E6date変更モード：未使用
-					evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
-					evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
-					evc.delegate = self;	// [Done]にて、editDateE6change を呼び出すため
-					//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+					if (0 < indexPath.row) { // 前回あり
+						E6part *e6 = [RaE6parts objectAtIndex:indexPath.row-1];
+						evc.PiMinYearMMDD = [e6.e2invoice.nYearMMDD integerValue];	//前回の支払日以降
+					} else {
+						evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
+					}
+					if (indexPath.row+1 < [RaE6parts count]) { // 次回あり
+						E6part *e6 = [RaE6parts objectAtIndex:indexPath.row+1];
+						evc.PiMaxYearMMDD = [e6.e2invoice.nYearMMDD integerValue];	//次回の支払日以前
+					} else {
+						evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
+					}
+					evc.delegate = self;
 					[self.navigationController pushViewController:evc animated:YES];
 					[evc release];
 					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする

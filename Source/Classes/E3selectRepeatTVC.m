@@ -198,6 +198,8 @@
 	if (sourceRepeat != [Re3edit.nRepeat integerValue]) {
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		apd.entityModified = YES;	//変更あり
+		
+		// E6更新：関係なし
 	}
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る

@@ -8,7 +8,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "CalcView.h"
-#import "E3recordDetailTVC.h"
+#import "E3recordDetailTVC.h"		// delegate
 
 
 //----------------------------------------------------------NSMutableArray Stack Method
@@ -182,24 +182,33 @@
 	if (Rentity && RzKey && MdecAnswer)
 	{
 		AzRETAIN_CHECK(@"save: MdecAnswer", MdecAnswer, 0);
-		//NSDecimalNumber *dec = [NSDecimalNumber decimalNumberWithString:MzAnswer];
-		NSLog(@"Calc: MdecAnswer=%@", MdecAnswer);
 		
 		if (MdecAnswer==nil) {
-			[Rentity setValue:[NSDecimalNumber zero]  forKey:RzKey];
-		} else { // デフォルト丸め処理
-			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
+			MdecAnswer = [NSDecimalNumber zero];
 		}
 
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		apd.entityModified = YES;	//変更あり
+		NSLog(@"Calc: MdecAnswer=%@ != %@", MdecAnswer, [Rentity valueForKey:RzKey]);
 		
-		// 再描画
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];	
+		//if ([MdecAnswer doubleValue] != [[NSDecimalNumber decimalNumberWithString:RzLabelText] doubleValue]) 
+		if ([MdecAnswer compare:[Rentity valueForKey:RzKey]] != NSOrderedSame) 
+		{	// 変化あり
+			// デフォルト丸め処理
+			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
+			
+			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			apd.entityModified = YES;	//変更あり
+			// E6更新
+			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+				[delegate remakeE6change:2];		// (2) nAmount	金額
+			}
+			// 再描画
+			if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+				[delegate viewWillAppear:YES];	
+			}
 		}
 	}
 }
+
 
 - (void)cancel
 {

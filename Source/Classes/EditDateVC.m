@@ -11,10 +11,8 @@
 #import "Entity.h"
 #import "MocFunctions.h"
 #import "EditDateVC.h"
+#import "E3recordDetailTVC.h"		// delegate
 
-@interface NSObject (E3recordDetailTVC_delagate_Methods)
-- (void)editDateE6change;
-@end
 
 @interface EditDateVC (PrivateMethods)
 - (void)viewDesign;
@@ -24,8 +22,8 @@
 @end
 
 @implementation EditDateVC
-@synthesize Rentity;
-@synthesize RzKey;
+//@synthesize Rentity;
+//@synthesize RzKey;
 @synthesize delegate;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
@@ -41,15 +39,21 @@
 
 - (void)buttonYearTime
 {
-	MbOptUseDateTime = !MbOptUseDateTime;  // Revers
-	[[NSUserDefaults standardUserDefaults] setBool:MbOptUseDateTime forKey:GD_OptUseDateTime];
-	
-	if (MbOptUseDateTime) {
-		[MbuYearTime setTitle:NSLocalizedString(@"Hide Time",nil) forState:UIControlStateNormal]; // 表示は逆
-		MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;
-	} else {
-		[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
-		MdatePicker.datePickerMode = UIDatePickerModeDate;
+	if (Re6edit)
+	{	// 金額　：　電卓出現
+		
+	}
+	else {
+		MbOptUseDateTime = !MbOptUseDateTime;  // Revers
+		[[NSUserDefaults standardUserDefaults] setBool:MbOptUseDateTime forKey:GD_OptUseDateTime];
+		
+		if (MbOptUseDateTime) {
+			[MbuYearTime setTitle:NSLocalizedString(@"Hide Time",nil) forState:UIControlStateNormal]; // 表示は逆
+			MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;
+		} else {
+			[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
+			MdatePicker.datePickerMode = UIDatePickerModeDate;
+		}
 	}
 }
 
@@ -59,35 +63,66 @@
 // 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
 - (void)done:(id)sender
 {
-	if (0<=PiE6row) {	//[1.0.0]E6date変更モード：変更有れば即保存
-		if (Re6edit) {
-			E2invoice *e2old = Re6edit.e2invoice;  //変更前に属しているE2
-			E3record *e3 = Rentity;
-			NSInteger iYearMMDD = GiYearMMDD(MdatePicker.date);
-			E2invoice *e2new = [MocFunctions e2invoice:e3.e1card  inYearMMDD:iYearMMDD]; //変更後に属するE2
-			if (e2new != e2old) { 
-				//属するE2に変化あり
-				Re6edit.e2invoice = e2new;
-				//e2new 配下再集計
-				[MocFunctions e2e7update:e2new]; //E6増
-				//e2old 配下再集計
-				[MocFunctions e2e7update:e2old]; //E6減
-				//
-				if ([delegate respondsToSelector:@selector(editDateE6change)]) {
-					[delegate editDateE6change];
-				}
+	if (Re3edit) 
+	{
+		//[Rentity setValue:MdatePicker.date forKey:RzKey];
+		if (![Re3edit.dateUse isEqualToDate:MdatePicker.date]) 
+		{	// 変更あり
+			Re3edit.dateUse = MdatePicker.date;
+		
+			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			apd.entityModified = YES;	//変更あり
+			// E6更新
+			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+				[delegate remakeE6change:1];		// (1) dateUse	利用日
+			}
+			// 再描画
+			if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+				[delegate viewWillAppear:YES];	
 			}
 		}
-	} 
+	}
+	else if (Re6edit) 
+	{	// E6part 変更モード
+		E2invoice *e2old = Re6edit.e2invoice;  //変更前に属しているE2
+		E3record *e3 = Re6edit.e3record;
+		NSInteger iYearMMDD = GiYearMMDD(MdatePicker.date);
+		E2invoice *e2new = [MocFunctions e2invoice:e3.e1card  inYearMMDD:iYearMMDD]; //変更後に属するE2
+		if (e2new.e1paid) {
+			NSLog(@"LOGIC ERROR: 変更先の支払日がPAIDである"); // [PAID]ならば変更禁止になっているので通らないハズ
+			return;
+		}
+		if (e2new != e2old)
+		{	//属するE2に変化あり
+			Re6edit.e2invoice = e2new;
+			//e2new 配下再集計
+			[MocFunctions e2e7update:e2new]; //E6増
+			//e2old 配下再集計
+			[MocFunctions e2e7update:e2old]; //E6減
+			//
+			/*	if ([delegate respondsToSelector:@selector(editDateE6change)]) {
+			 [delegate editDateE6change];
+			 }*/
+			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			apd.entityModified = YES;	//変更あり
+			// E6更新　　このRe6editを基準(固定)にして処理する
+			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+				if ([Re6edit.nPartNo integerValue]==1) {
+					[delegate remakeE6change:5];		// (5) E6part1	支払1回目（日付と金額）
+				} else {
+					[delegate remakeE6change:6];		// (6) E6part2	支払2回目（日付と金額）
+				}
+			}
+			// 再描画
+			if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+				[delegate viewWillAppear:YES];	
+			}
+		}
+	}
 	else {
-		[Rentity setValue:MdatePicker.date forKey:RzKey];
+		NSLog(@"LOGIC ERROR");
 	}
-	
-	if (![sourceDate isEqualToDate:MdatePicker.date]) {
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		apd.entityModified = YES;	//変更あり
-	}
-	
+
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 	
 	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
@@ -101,13 +136,17 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)init
+- (id)initWithE3:(E3record*)e3 orE6:(E6part*)e6
 {
+	if (e3 && e6) {
+		NSLog(@"LOGIC ERROR: e3 OR e6");
+		return nil;
+	}
 	self = [super init];
 	if (self) {
 		// 初期化成功
-		PiE6row = (-1);  //E6dateモードでないことを示す
-		Re6edit = nil;
+		Re3edit = [e3 retain];	// どちらか必ずnil
+		Re6edit = [e6 retain];	// どちらか必ずnil
 #ifdef AzPAD
 		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
 #endif
@@ -115,6 +154,7 @@
 	return self;
 }
 
+/*
 - (id)initWithE6row:(NSUInteger)iRow
 {
 	self = [super init];
@@ -128,6 +168,7 @@
 	}
 	return self;
 }
+*/
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 //【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
@@ -150,29 +191,21 @@
 												   target:self action:@selector(done:)] autorelease];
 	
 	// とりあえず生成、位置はviewDesignにて決定
-	//------------------------------------------------------
+	//------------------------------------------------------[NOW]ボタン
 	MbuToday = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[MbuToday setTitle:NSLocalizedString(@"Today",nil) forState:UIControlStateNormal];
 	[MbuToday addTarget:self action:@selector(buttonToday) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuToday]; //[MbuToday release]; autoreleaseされるため
-	//------------------------------------------------------
+
+	//------------------------------------------------------[Time]ボタン
 	MbuYearTime = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	//MbuMode.titleLabel.text = NSLocalizedString(@"Year/Month/Day",nil); viewWillAppear にてセット
+	// Titleは、viewWillAppear:にてセット
 	[MbuYearTime addTarget:self action:@selector(buttonYearTime) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuYearTime]; //[MbuYearTime release]; autoreleaseされるため
-	//------------------------------------------------------
+	
+	//------------------------------------------------------Picker
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
 	MdatePicker = [[[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)] autorelease];
-	if (AzMIN_YearMMDD < PiMinYearMMDD) {
-		MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
-	} else {
-		MdatePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-365*24*60*60];	// 約1年前から
-	}
-	if (PiMaxYearMMDD < AzMAX_YearMMDD) {
-		MdatePicker.maximumDate = GdateYearMMDD(PiMaxYearMMDD, 23,59,59); 
-	} else {
-		MdatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:+31*6*24*60*60];	// 約6ヶ月先まで
-	}
 	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
 	MdatePicker.locale = locale; [locale release];
 	[self.view addSubview:MdatePicker];  //auto//[MdatePicker release];
@@ -197,11 +230,16 @@
 	MdatePicker.frame = rect;
 	
 	rect.size.width = 150;
-	rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
 	rect.size.height = 30;
+	rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
 	rect.origin.y = 60;
 	MbuToday.frame = rect;
 	
+	if (Re6edit) {
+		rect.size.width = 200;
+		rect.size.height = 40;
+		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+	}
 	rect.origin.y = self.view.bounds.size.height - 90;
 	MbuYearTime.frame = rect;
 
@@ -215,10 +253,15 @@
 		
 		rect.size.width = 150;
 		rect.size.height = 30;
-		rect.origin.x = self.view.bounds.size.width/2 - rect.size.width / 2;
+		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
 		rect.origin.y = 30;
 		MbuToday.frame = rect;
 		
+		if (Re6edit) {
+			rect.size.width = 200;
+			rect.size.height = 40;
+			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+		}
 		rect.origin.y = self.view.bounds.size.height - 60;
 		MbuYearTime.frame = rect;
 	}
@@ -233,6 +276,10 @@
 		rect.origin.x = (self.view.bounds.size.width/2) - rect.size.width - 50;
 		MbuToday.frame = rect;
 		
+		if (Re6edit) {
+			rect.size.width = 200;
+			rect.size.height = 40;
+		}
 		rect.origin.x = (self.view.bounds.size.width/2) + 50;
 		MbuYearTime.frame = rect;
 	}
@@ -249,72 +296,43 @@
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
 
-	if (MbOptUseDateTime) {
-		[MbuYearTime setTitle:NSLocalizedString(@"Hide Time",nil) forState:UIControlStateNormal]; // 表示は逆
-		MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;
+	if (AzMIN_YearMMDD < PiMinYearMMDD) {
+		MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
 	} else {
-		[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
+		MdatePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-365*24*60*60];	// 約1年前から
+	}
+	if (PiMaxYearMMDD < AzMAX_YearMMDD) {
+		MdatePicker.maximumDate = GdateYearMMDD(PiMaxYearMMDD, 23,59,59); 
+	} else {
+		MdatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:+31*6*24*60*60];	// 約6ヶ月先まで
+	}
+
+	if (Re3edit) {
+		if (MbOptUseDateTime) {
+			[MbuYearTime setTitle:NSLocalizedString(@"Hide Time",nil) forState:UIControlStateNormal]; // 表示は逆
+			MdatePicker.datePickerMode = UIDatePickerModeDateAndTime;
+		} else {
+			[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
+			MdatePicker.datePickerMode = UIDatePickerModeDate;
+		}
+		MdatePicker.date =Re3edit.dateUse;
+	} 
+	else { // E6 常に時刻不要
 		MdatePicker.datePickerMode = UIDatePickerModeDate;
+		NSInteger iYearMMDD = [Re6edit.e2invoice.e7payment.nYearMMDD integerValue];
+		self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  (デフォルト[Save])
+		MdatePicker.date = GdateYearMMDD(iYearMMDD, 0, 0, 0);
+		// 金額表示
+		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
+		[formatter setLocale:[NSLocale currentLocale]]; 
+		[formatter setNegativeFormat:@"¤-#,##0.####"];
+		MbuYearTime.titleLabel.font = [UIFont systemFontOfSize:24];
+		[MbuYearTime setTitle: [formatter stringFromNumber:Re6edit.nAmount] forState:UIControlStateNormal];
+		[formatter release];
 	}
-	
-	if (0<=PiE6row) {	//[1.0.0]E6date変更モード
-		E3record *e3 = Rentity;
-		if (0 <= PiE6row && PiE6row < [e3.e6parts count]) {
-			NSArray* e6parts = nil;
-			if ([e3.e6parts count]==1) {
-				assert(PiE6row==0);
-				e6parts = [e3.e6parts allObjects];
-				// 要素が1個だけなのでSorting不要
-			} else {
-				// Index指定するためにSortingが必要
-				NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
-				NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
-				[sort1 release];
-				e6parts = [[e3.e6parts allObjects] sortedArrayUsingDescriptors:sortArray];
-				[sortArray release];
-				// 分割払いの場合、前回や次回の支払があればその日までに制限する
-				if (0 < PiE6row) {
-					//前回支払あり
-					E6part *e6 = [e6parts objectAtIndex:PiE6row-1];  //前回
-					NSInteger iYearMMDD = [e6.e2invoice.e7payment.nYearMMDD integerValue];
-					//最小日付制限
-					PiMinYearMMDD = GiAddYearMMDD( iYearMMDD, 0,0,+1); // +1日＝翌日
-					MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
-				}
-				else if (PiE6row < [e3.e6parts count]-1) {
-					//次回支払あり
-					E6part *e6 = [e6parts objectAtIndex:PiE6row+1];  //次回
-					NSInteger iYearMMDD = [e6.e2invoice.e7payment.nYearMMDD integerValue];
-					//最大日付制限
-					PiMaxYearMMDD = GiAddYearMMDD( iYearMMDD, 0,0,-1); // -1日＝前日
-					MdatePicker.maximumDate = GdateYearMMDD(PiMaxYearMMDD, 23,59,59); 
-				}
-			}
-			// Re6edit : 支払日変更対象となるE6
-			if (Re6edit) {
-				[Re6edit release], Re6edit = nil;
-			}
-			Re6edit = [[e6parts objectAtIndex:PiE6row] retain];  //SortしたのでIndex指定できる		//このモジュールで確保するためｒｅｔａｉｎしている
-			NSInteger iYearMMDD = [Re6edit.e2invoice.e7payment.nYearMMDD integerValue];
-			MdatePicker.date = GdateYearMMDD(iYearMMDD, 0, 0, 0);
-		}
-		else if ([Rentity valueForKey:RzKey]) {
-			self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  デフォルト[Save]
-			MdatePicker.date = [Rentity valueForKey:RzKey];
-		}
-		else {
-			self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  デフォルト[Save]
-			MdatePicker.date = [NSDate date]; // Now
-		}
-	}
-	else if ([Rentity valueForKey:RzKey]) {		//[1.0.2]
-		MdatePicker.date = [Rentity valueForKey:RzKey];
-	}
-	else {
-		MdatePicker.date = [NSDate date]; // Now
-	}
-	
-	sourceDate = [MdatePicker.date copy];	// 初期日付　　[Done]にて変化あれば AppDelegate.entityModified = YES にする
+
+	//sourceDate = [MdatePicker.date copy];	// 初期日付　　[Done]にて変化あれば AppDelegate.entityModified = YES にする
 
 	[self viewDesign];
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
@@ -354,11 +372,12 @@
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
-	[sourceDate release], sourceDate = nil;
-	[Re6edit release], Re6edit = nil;
+	//[sourceDate release], sourceDate = nil;
 	// 生成とは逆順に解放するのが好ましい
-	[RzKey release], RzKey = nil;
-	[Rentity release], Rentity = nil;
+	//[RzKey release], RzKey = nil;
+	//[Rentity release], Rentity = nil;
+	[Re3edit release];
+	[Re6edit release];
 	[super dealloc];
 }
 

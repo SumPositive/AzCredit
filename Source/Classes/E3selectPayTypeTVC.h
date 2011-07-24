@@ -13,7 +13,8 @@
 {
 @private
 	//--------------------------retain
-	E3record		*Re3edit;
+	E3record			*Re3edit;
+	id						delegate;
 	//--------------------------assign
 	NSInteger	sourcePayType;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -23,5 +24,6 @@
 }
 
 @property (nonatomic, retain) E3record		*Re3edit;
+@property (nonatomic, assign) id					delegate;
 
 @end

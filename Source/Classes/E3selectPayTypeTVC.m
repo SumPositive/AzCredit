@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Entity.h"
 #import "E3selectPayTypeTVC.h"
+#import "E3recordDetailTVC.h"		// delegate
 
 @interface E3selectPayTypeTVC (PrivateMethods)
 //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -19,6 +20,7 @@
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
+@synthesize delegate;
 
 
 #pragma mark - Action
@@ -200,8 +202,17 @@
 	if (sourcePayType != [Re3edit.nPayType integerValue]) {
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		apd.entityModified = YES;	//変更あり
+
+		// E6更新
+		if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+			[delegate remakeE6change:4];		// (4) nPayType	支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
+		}
+		// 再描画
+		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[delegate viewWillAppear:YES];	
+		}
 	}
-	
+
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
