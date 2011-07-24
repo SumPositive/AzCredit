@@ -17,9 +17,11 @@
 @private
 	//--------------------------retain
 	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
-	id					Rentity;		// MOC Entity
-	NSString		*RzKey;		// @"nAmount"
 	NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
+	//id					Rentity;		// MOC Entity
+	//NSString		*RzKey;		// @"nAmount"
+	E3record		*Re3edit;
+	//E6part			*Re6edit;
 	//----------------------------------------------assign
 	id									delegate;
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
@@ -50,13 +52,14 @@
 }
 
 @property (nonatomic, retain) UILabel				*Rlabel;
-@property (nonatomic, retain) id						Rentity;
-@property (nonatomic, retain) NSString			*RzKey;	
+//@property (nonatomic, retain) id						Rentity;
+//@property (nonatomic, retain) NSString			*RzKey;	
 @property (nonatomic, assign) UITableView	*PoParentTableView;
 @property (nonatomic, assign) id						delegate;
 
 // 公開メソッド
-- (id)initWithFrame:(CGRect)rect;
+//- (id)initWithFrame:(CGRect)rect;
+- (id)initWithFrame:(CGRect)rect withE3:(E3record*)e3;
 - (void)show;
 - (void)save;
 - (void)cancel;

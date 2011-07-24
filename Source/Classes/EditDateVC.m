@@ -12,6 +12,7 @@
 #import "MocFunctions.h"
 #import "EditDateVC.h"
 #import "E3recordDetailTVC.h"		// delegate
+#import "CalcView.h"
 
 
 @interface EditDateVC (PrivateMethods)
@@ -39,11 +40,8 @@
 
 - (void)buttonYearTime
 {
-	if (Re6edit)
-	{	// 金額　：　電卓出現
-		
-	}
-	else {
+	if (Re3edit)
+	{
 		MbOptUseDateTime = !MbOptUseDateTime;  // Revers
 		[[NSUserDefaults standardUserDefaults] setBool:MbOptUseDateTime forKey:GD_OptUseDateTime];
 		
@@ -54,6 +52,23 @@
 			[MbuYearTime setTitle:NSLocalizedString(@"Show Time",nil) forState:UIControlStateNormal]; // 表示は逆
 			MdatePicker.datePickerMode = UIDatePickerModeDate;
 		}
+	}
+	else
+	{	// 金額　：　電卓出現
+		assert(Re6edit);
+		if (McalcView) {
+			[McalcView hide];
+			McalcView.delegate = nil;
+			[McalcView removeFromSuperview];
+			McalcView = nil;
+		}
+		McalcView = [[CalcView alloc] initWithFrame:self.view.bounds withE3:nil];
+		McalcView.Rlabel = MlbAmount;  // 結果もこのラベルに戻る
+		McalcView.PoParentTableView = nil;
+		McalcView.delegate = self;	// viewWillAppear:を呼び出すため
+		[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
+		[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
+		[McalcView show];
 	}
 }
 
@@ -84,6 +99,7 @@
 	}
 	else if (Re6edit) 
 	{	// E6part 変更モード
+		BOOL bDuty = NO;
 		E2invoice *e2old = Re6edit.e2invoice;  //変更前に属しているE2
 		E3record *e3 = Re6edit.e3record;
 		NSInteger iYearMMDD = GiYearMMDD(MdatePicker.date);
@@ -92,17 +108,30 @@
 			NSLog(@"LOGIC ERROR: 変更先の支払日がPAIDである"); // [PAID]ならば変更禁止になっているので通らないハズ
 			return;
 		}
+		//
 		if (e2new != e2old)
-		{	//属するE2に変化あり
-			Re6edit.e2invoice = e2new;
-			//e2new 配下再集計
-			[MocFunctions e2e7update:e2new]; //E6増
-			//e2old 配下再集計
-			[MocFunctions e2e7update:e2old]; //E6減
-			//
-			/*	if ([delegate respondsToSelector:@selector(editDateE6change)]) {
-			 [delegate editDateE6change];
-			 }*/
+		{	// 支払日に変化あり
+			//Re6edit.nAmount 更新前に e2old 配下再集計
+			[MocFunctions e2e7update:e2old]; //Re6edit.nAmount = OLD 減
+			bDuty = YES;
+		}
+		//
+		if ([Re6edit.nAmount compare:[NSDecimalNumber decimalNumberWithString:MlbAmount.text]] != NSOrderedSame) 
+		{	// 金額に変化あり
+			Re6edit.nAmount = [NSDecimalNumber decimalNumberWithString:MlbAmount.text];
+			NSLog(@"New Re6edit.nAmount=%@", Re6edit.nAmount);
+			bDuty = YES;
+		}
+		//
+		if (e2new != e2old)
+		{	// 支払日に変化あり
+			Re6edit.e2invoice = e2new;	//新しい支払日
+			//Re6edit.nAmount 更新後に e2new 配下再集計
+			[MocFunctions e2e7update:e2new]; // Re6edit.nAmount = NEW 増
+		}
+		//
+		if (bDuty) 
+		{	//変更あり
 			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			apd.entityModified = YES;	//変更あり
 			// E6更新　　このRe6editを基準(固定)にして処理する
@@ -202,6 +231,14 @@
 	// Titleは、viewWillAppear:にてセット
 	[MbuYearTime addTarget:self action:@selector(buttonYearTime) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuYearTime]; //[MbuYearTime release]; autoreleaseされるため
+	if (Re6edit) 
+	{
+		[MbuYearTime setTitle:NSLocalizedString(@"Due Amount",nil) forState:UIControlStateNormal]; // 表示は逆
+		MlbAmount = [[[UILabel alloc] init] autorelease];
+		MlbAmount.font = [UIFont systemFontOfSize:20];
+		MlbAmount.textAlignment = UITextAlignmentCenter;
+		[self.view addSubview:MlbAmount]; // autorelease
+	}
 	
 	//------------------------------------------------------Picker
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
@@ -235,13 +272,19 @@
 	rect.origin.y = 60;
 	MbuToday.frame = rect;
 	
-	if (Re6edit) {
+	if (Re3edit) {
+		rect.origin.y = self.view.bounds.size.height - 90;
+		MbuYearTime.frame = rect;
+	} else {
 		rect.size.width = 200;
-		rect.size.height = 40;
 		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+		rect.origin.y = self.view.bounds.size.height - 110;
+		MbuYearTime.frame = rect;
+		rect.origin.y += 32;
+		rect.size.width -= 20;
+		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+		MlbAmount.frame = rect;
 	}
-	rect.origin.y = self.view.bounds.size.height - 90;
-	MbuYearTime.frame = rect;
 
 #else
 
@@ -257,13 +300,19 @@
 		rect.origin.y = 30;
 		MbuToday.frame = rect;
 		
-		if (Re6edit) {
+		if (Re3edit) {
+			rect.origin.y = self.view.bounds.size.height - 60;
+			MbuYearTime.frame = rect;
+		} else {
 			rect.size.width = 200;
-			rect.size.height = 40;
 			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+			rect.origin.y = self.view.bounds.size.height - 90;
+			MbuYearTime.frame = rect;
+			rect.origin.y += 32;
+			rect.size.width -= 20;
+			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+			MlbAmount.frame = rect;
 		}
-		rect.origin.y = self.view.bounds.size.height - 60;
-		MbuYearTime.frame = rect;
 	}
 	else {	// ヨコ
 		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
@@ -273,15 +322,20 @@
 		rect.size.width = 150;
 		rect.size.height = 30;
 		rect.origin.y = 10;
-		rect.origin.x = (self.view.bounds.size.width/2) - rect.size.width - 50;
+		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
 		MbuToday.frame = rect;
 		
-		if (Re6edit) {
-			rect.size.width = 200;
-			rect.size.height = 40;
+		if (Re3edit) {
+			rect.origin.x = self.view.bounds.size.width/2 + (self.view.bounds.size.width - rect.size.width)/2;
+			MbuYearTime.frame = rect;
+		} else {
+			rect.origin.x = (self.view.bounds.size.width/2) + 0;
+			rect.size.width = 60;
+			MbuYearTime.frame = rect;
+			rect.origin.x += 100;
+			rect.size.width = 180;
+			MlbAmount.frame = rect;
 		}
-		rect.origin.x = (self.view.bounds.size.width/2) + 50;
-		MbuYearTime.frame = rect;
 	}
 #endif
 }	
@@ -327,8 +381,7 @@
 		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
 		[formatter setLocale:[NSLocale currentLocale]]; 
 		[formatter setNegativeFormat:@"¤-#,##0.####"];
-		MbuYearTime.titleLabel.font = [UIFont systemFontOfSize:24];
-		[MbuYearTime setTitle: [formatter stringFromNumber:Re6edit.nAmount] forState:UIControlStateNormal];
+		MlbAmount.text = [formatter stringFromNumber:Re6edit.nAmount];
 		[formatter release];
 	}
 

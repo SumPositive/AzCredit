@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class E3record;
+@class CalcView;
 
 @interface EditDateVC : UIViewController
 {
@@ -28,6 +29,8 @@
 	UIDatePicker	*MdatePicker;
 	UIButton		*MbuToday;			// Todayにリセットする
 	UIButton		*MbuYearTime;		// E3:時刻部有無　　　E6：金額
+	UILabel		*MlbAmount;
+	CalcView					*McalcView;
 	//----------------------------------------------assign
 	//NSInteger	PiE6row;				//[1.0.0]E6date変更モード
 	BOOL MbOptAntirotation;

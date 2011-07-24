@@ -21,7 +21,6 @@
 #import "E6partTVC.h"
 #import "EditDateVC.h"
 #import "EditTextVC.h"
-//#import "EditAmountVC.h"
 #import "CalcView.h"
 
 
@@ -115,11 +114,18 @@
 			e6part1.e2invoice = nil;  // E6 <<--> E2 リンク
 		}
 		// e6part1 更新
-		iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
-		if (iYearMMDD==0) {
-			return NO;
+		if (iChange==5) {
+			Re3edit.nAmount = [e6part1.nAmount copy];
+		} else	{
+			e6part1.nAmount = [Re3edit.nAmount copy];	// 1回払い
+			if (e6part1.e2invoice==nil) {
+				// E2リンク および .nAmount-E2,E7集計
+				iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
+				if (iYearMMDD==0) {
+					return NO;
+				}
+			}
 		}
-		e6part1.nAmount = Re3edit.nAmount;	// 1回払い
 		//
 		if (e6part2)
 		{	// e6part2 削除
@@ -135,7 +141,8 @@
 	}
 	else if (iPayType==2)
 	{	// 2回払いのとき、
-		NSDecimalNumber *part2Amount = [NSDecimalNumber zero];
+		//NSDecimalNumber *part2Amount = [NSDecimalNumber zero];
+		
 		if (e6part1==nil)
 		{	// e6part1 生成
 			e6part1 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
@@ -143,15 +150,25 @@
 			e6part1.nNoCheck = [NSNumber numberWithInteger:1];
 			e6part1.e3record = Re3edit;  // E6 <<--> E3 リンク
 			e6part1.e2invoice = nil;  // E6 <<--> E2 リンク
-		}	
-		if (iChange==5 OR [e6part1.nNoCheck integerValue]==0) 
-		{	// (5)1回目を基準　または　e6part1がチェック済
-			part2Amount = [Re3edit.nAmount decimalNumberBySubtracting:e6part1.nAmount];  // E62 = E3 - E61
-			iYearMMDD = [e6part1.e2invoice.nYearMMDD integerValue];
-			iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 2回目は翌月へ
 		}
-		else if (iChange==6 && e6part2) 
+		//
+		if (e6part2==nil)
+		{	// e6part2 生成
+			e6part2 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
+			e6part2.nPartNo = [NSNumber numberWithInteger:2];
+			e6part2.nNoCheck = [NSNumber numberWithInteger:1];
+			e6part2.e3record = Re3edit;  // E6 <<--> E3 リンク
+			e6part2.e2invoice = nil;  // E6 <<--> E2 リンク
+		}
+		//
+		if (iChange==6)		// (5)より先に評価すること
 		{	// (6)2回目を基準
+			assert(e6part1);
+			assert(e6part1.e2invoice);
+			//assert([e6part1.nNoCheck integerValue]==1);
+			assert(e6part2);
+			assert(e6part2.e2invoice);
+			assert([e6part2.nNoCheck integerValue]==1);
 			if ([e6part2.e2invoice.nYearMMDD integerValue] <= [e6part1.e2invoice.nYearMMDD integerValue]) {
 				NSLog(@"日付が逆転");
 				return NO;
@@ -160,13 +177,25 @@
 			{	// e6part1がチェック済なのでE3を更新する
 				Re3edit.nAmount = [e6part1.nAmount decimalNumberByAdding:e6part2.nAmount];  // E3 = E61 + E62
 			} else {
+				// 日付は調整変更しない
 				e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
+				// E6の金額が変わったので親となるE2,E7を再集計する
+				[MocFunctions e2e7update:e6part1.e2invoice];
 			}
+			// e6part2 基準につき不変
+		}
+		else if (iChange==5 OR [e6part1.nNoCheck integerValue]==0)
+		{	// (5)1回目を基準　または　e6part1がチェック済のとき、 e6part2 を更新する
+			assert(e6part1);
+			assert(e6part1.e2invoice);
+			// e6part2
+			// 日付は調整変更しない
+			e6part2.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part1.nAmount];  // E62 = E3 - E61
 			// E6の金額が変わったので親となるE2,E7を再集計する
-			[MocFunctions e2e7update:e6part1.e2invoice];
+			[MocFunctions e2e7update:e6part2.e2invoice];
 		}
 		else
-		{	// e6part1 更新
+		{	// 金額2分割
 			NSDecimalNumber *decPayType = [NSDecimalNumber decimalNumberWithString:@"2.0"]; //2回払い
 			//[0.4] Decimal対応  behavior
 			// 通貨型に合った丸め位置を取得
@@ -182,30 +211,22 @@
 																				   raiseOnUnderflow:YES				// アンダーフロー
 																				raiseOnDivideByZero:YES ];			// アンダーフロー
 			// 2回目が多くなるように切上している。　＜＜クレジット分割では、誤差が後払いになるらしい。
-			part2Amount = [Re3edit.nAmount decimalNumberByDividingBy:decPayType withBehavior:behavior];	// E62 = E3 ÷ 2 (切上)
+			e6part2.nAmount = [Re3edit.nAmount decimalNumberByDividingBy:decPayType withBehavior:behavior];	// E62 = E3 ÷ 2 (切上)
 			[behavior release];
 			// e6part1 更新
-			iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
+			e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
+			// E2リンク および .nAmount-E2,E7集計
+			iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];  //この中で.nAmount-E2,E7集計している
 			if (iYearMMDD==0) {
 				return NO;
 			}
-			e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:part2Amount];  // E61 = E3 - E62
+			// e6part2 更新
+			// E2リンク および .nAmount-E2,E7集計
+			iYearMMDD = [self partMakeE6:e6part2 forDue:iYearMMDD];
+			if (iYearMMDD==0) {
+				return NO;
+			}
 		}
-		//
-		if (e6part2==nil)
-		{	// e6part2 生成
-			e6part2 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
-			e6part2.nPartNo = [NSNumber numberWithInteger:2];
-			e6part2.nNoCheck = [NSNumber numberWithInteger:1];
-			e6part2.e3record = Re3edit;  // E6 <<--> E3 リンク
-			e6part2.e2invoice = nil;  // E6 <<--> E2 リンク
-		}	
-		// e6part2 更新
-		iYearMMDD = [self partMakeE6:e6part2 forDue:iYearMMDD];
-		if (iYearMMDD==0) {
-			return NO;
-		}
-		e6part2.nAmount = part2Amount;
 	}	
 	else {
 		return NO;
@@ -215,6 +236,7 @@
 	return YES;
 }
 	
+// E2リンク および .nAmount-E2,E7集計
 - (NSInteger)partMakeE6:(E6part*)e6part  forDue:(NSInteger)iYearMMDD
 {
 	NSManagedObjectContext *moc = Re3edit.managedObjectContext;
@@ -336,6 +358,7 @@
 	
 	if (McalcView) {
 		[McalcView hide];
+		McalcView.delegate = nil;
 		[McalcView removeFromSuperview];
 		McalcView = nil;
 	}
@@ -357,18 +380,11 @@
 		rect.origin.y = 65; //0;
 	}
 	
-	McalcView = [[CalcView alloc] initWithFrame:rect];
-	McalcView.Rlabel = MlbAmount; // MlbAmount.tag にはCalc入力された数値(long)が記録される
-	McalcView.Rentity = Re3edit;
-	McalcView.RzKey = @"nAmount";
-	//[self.view.window addSubview:McalcView]; //NG:ヨコ向きができなくなる
-	//[self.tableView   addSubview:McalcView]; NG
-	//[self.view addSubview:McalcView]; 3GS+4.3.3にて広告が残ってキーが押せない不具合発生。
-	[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
-	//[self.navigationController.view bringSubviewToFront:McalcView]; これは無くても後からaddSubした方が上になる
-	
+	McalcView = [[CalcView alloc] initWithFrame:rect withE3:Re3edit];
+	McalcView.Rlabel = MlbAmount;  // MlbAmount.tag にはCalc入力された数値(long)が記録される
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	McalcView.delegate = self;	// viewWillAppear:を呼び出すため
+	[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
 	[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
 }

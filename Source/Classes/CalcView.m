@@ -7,6 +7,7 @@
 
 #import "Global.h"
 #import "AppDelegate.h"
+#import "Entity.h"
 #import "CalcView.h"
 #import "E3recordDetailTVC.h"		// delegate
 
@@ -43,8 +44,8 @@
 
 @implementation CalcView
 @synthesize Rlabel;
-@synthesize Rentity;
-@synthesize RzKey;
+//@synthesize Rentity;
+//@synthesize RzKey;
 @synthesize PoParentTableView;
 @synthesize delegate;
 
@@ -179,32 +180,34 @@
 
 - (void)save	// E3recordDetailTVCの中から呼び出されることがある
 {
-	if (Rentity && RzKey && MdecAnswer)
+	if (MdecAnswer)
 	{
 		AzRETAIN_CHECK(@"save: MdecAnswer", MdecAnswer, 0);
-		
-		if (MdecAnswer==nil) {
-			MdecAnswer = [NSDecimalNumber zero];
-		}
 
-		NSLog(@"Calc: MdecAnswer=%@ != %@", MdecAnswer, [Rentity valueForKey:RzKey]);
-		
-		//if ([MdecAnswer doubleValue] != [[NSDecimalNumber decimalNumberWithString:RzLabelText] doubleValue]) 
-		if ([MdecAnswer compare:[Rentity valueForKey:RzKey]] != NSOrderedSame) 
-		{	// 変化あり
-			// デフォルト丸め処理
-			[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
-			
-			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			apd.entityModified = YES;	//変更あり
-			// E6更新
-			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
-				[delegate remakeE6change:2];		// (2) nAmount	金額
+		if (Re3edit) {
+			NSDecimalNumber *decSource = Re3edit.nAmount;
+			NSLog(@"Calc: MdecAnswer=%@ != %@", MdecAnswer, decSource);
+			if ([MdecAnswer compare:decSource] != NSOrderedSame) 
+			{	// 変化あり
+				// デフォルト丸め処理
+				//[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
+				Re3edit.nAmount = [MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault];
+				
+				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+				apd.entityModified = YES;	//変更あり
+				// E6更新
+				if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+					[delegate remakeE6change:2];		// (2) nAmount	金額
+				}
+				// 再描画
+				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+					[delegate viewWillAppear:YES];	
+				}
 			}
-			// 再描画
-			if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-				[delegate viewWillAppear:YES];	
-			}
+		}
+		else {
+			// Entity更新なし。　ラベルだけ更新
+			// Rlabel.text により値を返す
 		}
 	}
 }
@@ -237,7 +240,7 @@
 	
 	// アニメ終了位置
 	CGRect rect = MrectInit;
-	rect.origin.y += 500;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
+	rect.origin.y += 600;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
 	[self setFrame:rect];
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorDefault];
@@ -276,12 +279,9 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationDuration:0.2]; // 0.15 出は早く
+	[UIView setAnimationDuration:0.2]; // 出は早く
 	
-	//CGRect rect = self.frame;
-	//rect.origin.y -= 500; //＝ アプリケーションエリア上端 ＝ ステータスバー(20) ＋ ナビゲーションバー(44)
-	
-	[self setFrame:MrectInit];
+	[self setFrame:MrectInit]; // viewDesign:で決められた位置へ
 	
 	// Complete the animation
 	[UIView commitAnimations];
@@ -542,28 +542,19 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 #pragma mark - View lifecicle
 
-- (id)initWithFrame:(CGRect)rect
+- (id)initWithFrame:(CGRect)rect withE3:(E3record*)e3
 {
 	NSLog(@"CalcView: rect=(%f,%f)-(%f,%f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-	
-#ifdef xxxAzPAD
-	// UIViewController
-	self = [super init];
-	if (self==nil) return self;
-	self.view.frame = rect;
-	self.view.backgroundColor = [UIColor clearColor];	// 透明でもTouchイベントが受け取れるようだ。
-	self.view.userInteractionEnabled = YES; // このViewがタッチを受けるか
-#else
-	// アニメションの開始位置
-	//rect.origin.y = 20.0f - rect.size.height;
+
 	MrectInit = rect;		// 表示位置を記録　showにて復元に使う
-	rect.origin.y += 600;	//rect.size.height; // 最初、下部に隠れている状態
+	rect.origin.y += 600;  // rect.size.height; 横向きからタテにしても完全に隠れるようにするため。
 
-	if (!(self = [super initWithFrame:rect])) return self;
-
+	if (!(self = [super initWithFrame:rect])) return self; // ERROR
+	
+	Re3edit = [e3 retain];	//=nil: E6partモード　　結果をラベル(Rlabel.text)で返す
+	
 	self.backgroundColor = [UIColor clearColor];	// 透明でもTouchイベントが受け取れるようだ。
 	self.userInteractionEnabled = YES; // このViewがタッチを受けるか
-#endif
 
 	MbShow = NO;
 	MdecAnswer = nil;
@@ -584,17 +575,10 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	[MtextField addTarget:self	// UITextFieldDelegate に、 変更「後」イベント textFieldDidChange を追加する
 				   action:@selector(textFieldDidChange:) // 変更「後」に呼び出される
 		 forControlEvents:UIControlEventEditingChanged];
-#ifdef xxxAzPAD
-	[self.view addSubview:MtextField]; 
-#else
 	[self addSubview:MtextField];
-#endif	
 	[MtextField release];
 	
 	//------------------------------------------
-#ifdef xxxAzPAD
-	// MscrollView なし
-#else
 	MscrollView = [[UIScrollView alloc] init];
 	MscrollView.pagingEnabled = NO;
 	MscrollView.showsVerticalScrollIndicator = NO;
@@ -603,7 +587,6 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	MscrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	MscrollView.backgroundColor = [UIColor blackColor];
 	[self addSubview:MscrollView]; [MscrollView release];
-#endif
 	
 	//------------------------------------------
 	NSMutableArray *maBu = [NSMutableArray new];
@@ -677,11 +660,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 			[bu setBackgroundImage:[UIImage imageNamed:@"Icon-DrumPush.png"] forState:UIControlStateHighlighted];
 			[bu addTarget:self action:@selector(buttonCalc:) forControlEvents:UIControlEventTouchUpInside];
 			[maBu addObject:bu];
-#ifdef xxxAzPAD
-			[self.view addSubview:bu];
-#else
 			[MscrollView addSubview:bu]; //[bu release]; autoreleaseされるため
-#endif
 			iIndex++;
 		}
 	}
@@ -689,11 +668,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	RaKeyButtons = [[NSArray alloc] initWithArray:maBu];
 	[maBu release];
 	
-#ifdef xxxAzPAD
-	[self viewDesign:self.view.bounds]; // コントロール配置
-#else
 	[self viewDesign:self.bounds]; // コントロール配置
-#endif	
 
 	// Calc 初期化
 	//RzCalc = [[NSMutableString alloc] init];
@@ -747,7 +722,11 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	float fH;
 	
 #ifdef AzPAD
-	fy = 100;
+	if (Re3edit) {
+		fy = 100;
+	} else {
+		fy = 180;
+	}
 	MtextField.frame = CGRectMake(5,fy, rect.size.width-10,30);	// 1行
 	fy += MtextField.frame.size.height;
 	MscrollView.frame = CGRectMake(5,fy, rect.size.width-10, 214);
@@ -828,8 +807,9 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	[MbehaviorDefault release];
 	[RaKeyButtons release];
 	[RzLabelText release],		RzLabelText = nil;
-	[RzKey release];
-	[Rentity release];
+	//[RzKey release];
+	//[Rentity release];
+	[Re3edit release];
 	[Rlabel release];
 	[super dealloc];
 }
