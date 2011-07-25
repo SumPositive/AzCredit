@@ -76,6 +76,8 @@
 	assert(Re3edit);
 	NSInteger iPayType = [Re3edit.nPayType integerValue];
 	if (iPayType<1 OR 2<iPayType) { // ＜＜1と2回払いだけに限定＞＞
+		assert(NO); // DEBUG時中断
+		[MocFunctions rollBack];	
 		return NO;
 	}
 	
@@ -94,7 +96,9 @@
 
 	if (e6part1 && [e6part1.nNoCheck integerValue]==0) {
 		if (e6part2==nil OR [e6part2.nNoCheck integerValue]==0) {
-			return NO; // チェック済につき変更禁止
+			assert(NO); // DEBUG時中断
+			[MocFunctions rollBack];	
+			return NO; // 全回チェック済につき変更禁止
 		}
 	}
 	
@@ -122,6 +126,8 @@
 				// E2リンク および .nAmount-E2,E7集計
 				iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
 				if (iYearMMDD==0) {
+					assert(NO); // DEBUG時中断
+					[MocFunctions rollBack];	
 					return NO;
 				}
 			}
@@ -171,6 +177,8 @@
 			assert([e6part2.nNoCheck integerValue]==1);
 			if ([e6part2.e2invoice.nYearMMDD integerValue] <= [e6part1.e2invoice.nYearMMDD integerValue]) {
 				NSLog(@"日付が逆転");
+				assert(NO); // DEBUG時中断
+				[MocFunctions rollBack];	
 				return NO;
 			}
 			if ([e6part1.nNoCheck integerValue]==0) 
@@ -178,6 +186,8 @@
 				Re3edit.nAmount = [e6part1.nAmount decimalNumberByAdding:e6part2.nAmount];  // E3 = E61 + E62
 			} else {
 				// 日付は調整変更しない
+				NSLog(@"e6part1.nAmount(%@) = Re3edit.nAmount(%@) - e6part2.nAmount(%@)", 
+					  e6part1.nAmount, Re3edit.nAmount, e6part2.nAmount);
 				e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
 				// E6の金額が変わったので親となるE2,E7を再集計する
 				[MocFunctions e2e7update:e6part1.e2invoice];
@@ -190,6 +200,7 @@
 			assert(e6part1.e2invoice);
 			// e6part2
 			// 日付は調整変更しない
+			e6part2.nNoCheck = [NSNumber numberWithInteger:1];//強制解除する
 			e6part2.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part1.nAmount];  // E62 = E3 - E61
 			// E6の金額が変わったので親となるE2,E7を再集計する
 			[MocFunctions e2e7update:e6part2.e2invoice];
@@ -214,21 +225,29 @@
 			e6part2.nAmount = [Re3edit.nAmount decimalNumberByDividingBy:decPayType withBehavior:behavior];	// E62 = E3 ÷ 2 (切上)
 			[behavior release];
 			// e6part1 更新
+			e6part1.nNoCheck = [NSNumber numberWithInteger:1]; //強制解除する
 			e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
 			// E2リンク および .nAmount-E2,E7集計
 			iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];  //この中で.nAmount-E2,E7集計している
 			if (iYearMMDD==0) {
+				assert(NO); // DEBUG時中断
+				[MocFunctions rollBack];	
 				return NO;
 			}
 			// e6part2 更新
+			e6part2.nNoCheck = [NSNumber numberWithInteger:1];//強制解除する
 			// E2リンク および .nAmount-E2,E7集計
 			iYearMMDD = [self partMakeE6:e6part2 forDue:iYearMMDD];
 			if (iYearMMDD==0) {
+				assert(NO); // DEBUG時中断
+				[MocFunctions rollBack];	
 				return NO;
 			}
 		}
 	}	
 	else {
+		assert(NO); // DEBUG時中断
+		[MocFunctions rollBack];	
 		return NO;
 	}
 	// 再描画
@@ -517,8 +536,6 @@
 	}
 	// テーブルビューを更新
 	[self.tableView reloadData];
-	
-	//MbModified = NO;
 }
 
 - (void)barButtonDelete 
@@ -638,7 +655,6 @@
 	}
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
-	//MbModified = NO; // クリア：これ以降に変更があればYES ⇒ ToolBarボタンを無効にする
 }
 
 
@@ -652,7 +668,6 @@
 	if (self) {
 		// 初期化
 		MbSaved = NO;
-		//MbE6dateChange = NO;
 		MbE1cardChange = NO;
 		MbModified = NO;
 #ifdef AzPAD
@@ -816,11 +831,14 @@
 	[RaE6parts sortUsingDescriptors:sortArray];
 	[sortArray release];
 	
+	MbE6checked = YES; // E6parts全チェック済
 	MbE6paid = NO;
 	for (E6part *e6 in RaE6parts) {
 		if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
 			MbE6paid = YES; // YES:PAIDあり、主要条件の変更禁止！
-			break;
+		}
+		if ([e6.nNoCheck integerValue]==1) { //未チェック
+			MbE6checked = NO; // E6parts未チェックが少なくとも1つあり
 		}
 	}
 	if (MbuDelete) {
@@ -1043,7 +1061,7 @@
 	switch (section) {
 		case 0:
 			if (!MbOptEnableInstallment || (Re3edit.e1card.nPayDay && [Re3edit.e1card.nPayDay integerValue]==0)) 
-			{									//[0.4]E3.dateUse を支払日とするモード
+			{												// [Debit]E3.dateUse を支払日とするモード
 				return 4; // 支払方法の選択不要
 			}
 			return 5; //[0.4]繰り返し対応
@@ -1158,7 +1176,7 @@
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 			}
 
-			if (MbE6paid) {
+			if (MbE6paid OR MbE6checked) {
 				cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -1250,8 +1268,11 @@
 						default: cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil); break;
 					}
 
-					if (MbE6paid) cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
-					else		  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+					if (MbE6paid OR MbE6checked) {
+						cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
+					} else {
+						cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+					}
 				} break;
 					
 				case 4: // nPayType
@@ -1397,15 +1418,6 @@
 				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
 #endif
 
-/*				if (MbModified) {
-					// E6影響項目（金額・支払方法）に変更あり、E6partsを非表示にする
-					cell.textLabel.text = NSLocalizedString(@"E6 Modified",nil);
-					cellLabel.hidden = YES;
-					cell.accessoryType = UITableViewCellAccessoryNone;
-					cell.userInteractionEnabled = NO;
-					break;
-				}*/
-				
 				if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
 				
 				// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞  [1.0.2]viewWithTagにより改善
@@ -1482,6 +1494,13 @@
 	//------------------＜＜ここでは保存しない！ 他の修正に影響するため、E3修正の cancelClose:でrollBack, save:でcommitする＞＞
 	// [EntityRelation commit];
 
+	MbE6checked = YES; // E6parts全チェック済
+	for (E6part *e6 in RaE6parts) {
+		if ([e6.nNoCheck integerValue]==1) { //未チェック
+			MbE6checked = NO; // E6parts未チェックが少なくとも1つあり
+		}
+	}
+	
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	apd.entityModified = YES;	//変更あり
 	//[self viewWillAppear:YES]; これえを呼ぶと、E6partsが非表示にされてしまう。
@@ -1497,13 +1516,19 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
 	switch (indexPath.section) {
-		case 0:
+		case 0: // Section-0 主要項目
 			if (MbE6paid) {
-				alertBox(NSLocalizedString(@"MAINTAIN",nil),
-						 NSLocalizedString(@"MAINTAIN msg",nil),
+				alertBox(NSLocalizedString(@"PAID Not change",nil),
+						 NSLocalizedString(@"PAID Not change msg",nil),
 						 NSLocalizedString(@"Roger",nil));
 				return;
 			}
+			else if (MbE6checked) {
+				alertBox(NSLocalizedString(@"Checked Not change",nil), nil, 
+						 NSLocalizedString(@"Roger",nil));
+				return;
+			}
+			
 			switch (indexPath.row) {
 				case 0: // Use date
 					if (!MbE6paid) {
@@ -1515,7 +1540,6 @@
 						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
 						[evc release];
-						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						// 変更ありを AppDelegateへ通知	// EditDateVC：内から通知している
 					}
 					break;
@@ -1523,7 +1547,6 @@
 				case 1: // Amount
 					if (MbE6paid) break;
 					[self showCalcAmount];
-					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					break;
 					
 				case 2: // Card
@@ -1538,7 +1561,6 @@
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
-						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						MbE1cardChange = YES;
 					}
 					break;
@@ -1551,7 +1573,6 @@
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
-						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					} break;
 					
 				case 4: // PayType
@@ -1564,7 +1585,6 @@
 						tvc.delegate = self;
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
-						//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 					}
 					break;
 			}
@@ -1585,7 +1605,6 @@
 #endif
 							[self.navigationController pushViewController:tvc animated:YES];
 							[tvc release];
-							//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 						}
 						break;
 					
@@ -1601,7 +1620,6 @@
 #endif
 					[self.navigationController pushViewController:tvc animated:YES];
 					[tvc release];
-					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
 					
 				case 2: // Memo
@@ -1615,56 +1633,54 @@
 					//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 					[self.navigationController pushViewController:evc animated:YES];
 					[evc release];
-					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				} break;
 			}
 			break;
 		case 2: //--------------------------------E6part: 全unpaid時に金額調整を可能にする予定
 			if (PiAdd <= 0) {  // Edit
 				if (MbE6paid) {  // PAID
-					alertBox(NSLocalizedString(@"MAINTAIN",nil),
-							 NSLocalizedString(@"MAINTAIN msg",nil),
+					// [PAID]につき変更禁止
+					alertBox(NSLocalizedString(@"PAID Not change",nil),
+							 NSLocalizedString(@"PAID Not change msg",nil),
 							 NSLocalizedString(@"Roger",nil));
 					return;
-				} else {
-					// 支払日の変更は、カードE1配下の編集＆移動により行う
-					//alertBox(NSLocalizedString(@"How to change Due",nil),
-					//		 NSLocalizedString(@"How to change Due msg",nil),
-					//		 NSLocalizedString(@"Roger",nil));
-					//[1.0.0]ここで支払日変更ができるようにする
-					//EditDateVC *evc = [[EditDateVC alloc] initWithE6row:indexPath.row]; //[1.0.0]E6date変更モード
-					EditDateVC *evc = [[EditDateVC alloc] initWithE3:nil orE6:[RaE6parts objectAtIndex:indexPath.row]];
+				}
+				else {
+					assert(0 <= indexPath.row && indexPath.row < [RaE6parts count]);
+					E6part *e6edit = [RaE6parts objectAtIndex:indexPath.row];
+					if ([e6edit.nNoCheck integerValue]==0) {
+						// チェック済につき変更禁止
+						alertBox(NSLocalizedString(@"Checked Not change",nil), nil,
+								 NSLocalizedString(@"Roger",nil));
+						return;
+					}
+					//
+					EditDateVC *evc = [[EditDateVC alloc] initWithE3:nil orE6:e6edit];
 					evc.title = NSLocalizedString(@"Due date", nil);
 					if (0 < indexPath.row) { // 前回あり
-						E6part *e6 = [RaE6parts objectAtIndex:indexPath.row-1];
+						E6part *e6 = [RaE6parts objectAtIndex:indexPath.row-1]; //(-1)前回
 						evc.PiMinYearMMDD = [e6.e2invoice.nYearMMDD integerValue];	//前回の支払日以降
 					} else {
 						evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
 					}
 					if (indexPath.row+1 < [RaE6parts count]) { // 次回あり
-						E6part *e6 = [RaE6parts objectAtIndex:indexPath.row+1];
+						E6part *e6 = [RaE6parts objectAtIndex:indexPath.row+1]; //(+1)次回
 						evc.PiMaxYearMMDD = [e6.e2invoice.nYearMMDD integerValue];	//次回の支払日以前
 					} else {
 						evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
 					}
 					evc.delegate = self;
+#ifdef AzPAD
+					//Popoverサイズが変わらないように、BottomBarを表示したままにする。
+#else
+					evc.hidesBottomBarWhenPushed = YES; // 現状PUSHして次の画面では非表示にする
+#endif
 					[self.navigationController pushViewController:evc animated:YES];
 					[evc release];
-					//MbModified = YES; // 変更あり ⇒ ToolBarボタンを無効にする
 				}
 			}
 			break;
 	}
-
-	// 変更ありを AppDelegateへ通知	// 配下VC：内で AppDelegate.entityModified = YES としている
-/*	if (MbModified) {
-		// 変更あり ⇒ ToolBarボタンを無効にする
-		for (id obj in self.toolbarItems) {
-			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
-				[obj setEnabled:NO];
-			}
-		}
-	}*/
 }
 
 

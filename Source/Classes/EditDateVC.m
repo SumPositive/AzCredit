@@ -116,9 +116,14 @@
 			bDuty = YES;
 		}
 		//
-		if ([Re6edit.nAmount compare:[NSDecimalNumber decimalNumberWithString:MlbAmount.text]] != NSOrderedSame) 
+		NSDecimalNumber *decNew = [NSDecimalNumber decimalNumberWithString:MlbAmount.text];
+		NSLog(@"decNew=%@", decNew);
+		if (decNew==[NSDecimalNumber notANumber]) {	// 万一前方に記号が入って変換できないとき、
+			decNew = [NSDecimalNumber zero];
+		}
+		if ([Re6edit.nAmount compare:decNew] != NSOrderedSame) 
 		{	// 金額に変化あり
-			Re6edit.nAmount = [NSDecimalNumber decimalNumberWithString:MlbAmount.text];
+			Re6edit.nAmount = decNew;
 			NSLog(@"New Re6edit.nAmount=%@", Re6edit.nAmount);
 			bDuty = YES;
 		}
@@ -306,7 +311,7 @@
 		} else {
 			rect.size.width = 200;
 			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-			rect.origin.y = self.view.bounds.size.height - 90;
+			rect.origin.y = self.view.bounds.size.height - 75;
 			MbuYearTime.frame = rect;
 			rect.origin.y += 32;
 			rect.size.width -= 20;
@@ -322,17 +327,17 @@
 		rect.size.width = 150;
 		rect.size.height = 30;
 		rect.origin.y = 10;
-		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+		rect.origin.x = 30;  //(self.view.bounds.size.width - rect.size.width) / 2;
 		MbuToday.frame = rect;
 		
 		if (Re3edit) {
-			rect.origin.x = self.view.bounds.size.width/2 + (self.view.bounds.size.width - rect.size.width)/2;
+			rect.origin.x = 250;  //self.view.bounds.size.width/2 + (self.view.bounds.size.width - rect.size.width)/2;
 			MbuYearTime.frame = rect;
 		} else {
-			rect.origin.x = (self.view.bounds.size.width/2) + 0;
-			rect.size.width = 60;
+			rect.origin.x = 200;  //(self.view.bounds.size.width/2) + 0;
+			rect.size.width = 80;
 			MbuYearTime.frame = rect;
-			rect.origin.x += 100;
+			rect.origin.x += (rect.size.width + 2);
 			rect.size.width = 180;
 			MlbAmount.frame = rect;
 		}
@@ -378,9 +383,8 @@
 		MdatePicker.date = GdateYearMMDD(iYearMMDD, 0, 0, 0);
 		// 金額表示
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
+		[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // 通貨記号なし ＜＜ラベル文字⇒数値変換時にエラー発生するため
 		[formatter setLocale:[NSLocale currentLocale]]; 
-		[formatter setNegativeFormat:@"¤-#,##0.####"];
 		MlbAmount.text = [formatter stringFromNumber:Re6edit.nAmount];
 		[formatter release];
 	}

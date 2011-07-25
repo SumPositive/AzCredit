@@ -42,16 +42,14 @@
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 #endif
 	//----------------------------------------------assign
-	//BOOL			MbE6dateChange;
 	BOOL			MbE1cardChange;
 	
 	BOOL			MbOptAntirotation;
 	BOOL			MbOptEnableInstallment;
 	BOOL			MbOptUseDateTime;
-	//BOOL			MbOptAmountCalc;
-	//BOOL			MbAddmode;			// cancel:
 	NSInteger		MiE1cardRow;
-	BOOL			MbE6paid;			// YES:PAIDあり、主要条件の変更禁止！
+	BOOL			MbE6checked;		// YES:全回Check済、主要条件の変更禁止！
+	BOOL			MbE6paid;				// YES:1回でもPAIDあり、主要条件の変更禁止！
 	BOOL			MbCopyAdd;			// YES:既存明細をコピーして新規追加している状態
 	BOOL			MbRotatShowCalc;	// YES:回転前に表示されていたので、回転後再表示する。
 	NSInteger		MiIndexE3lasts;
@@ -65,8 +63,6 @@
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
-// delegate method
-//- (void)closePopover;
 #endif
 
 // 公開メソッド
