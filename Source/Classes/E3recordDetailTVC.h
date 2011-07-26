@@ -67,7 +67,7 @@
 
 // 公開メソッド
 - (void)cancelClose:(id)sender ;
-- (BOOL)remakeE6change:(int)iChange;
+- (void)remakeE6change:(int)iChange;
 
 
 @end

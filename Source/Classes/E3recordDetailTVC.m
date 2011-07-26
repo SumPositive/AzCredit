@@ -35,7 +35,6 @@
 #define TAG_BAR_BUTTON_RETURN		913		// 戻す
 
 @interface E3recordDetailTVC (PrivateMethods)
-- (NSInteger)partMakeE6:(E6part*)e6part  forDue:(NSInteger)iYearMMDD;
 //- (void)cancel:(id)sender;  iPad対応のため公開メソッド(cancelClose:)になった。
 - (void)saveClose:(id)sender;
 - (void)viewDesign;
@@ -56,15 +55,11 @@
 
 #pragma mark - Delegate method
 
-// デリゲート・メソッド
-//- (void)editDateE6change {		// delegate: EditDateVC
-//	MbE6dateChange = YES;
-//}
-
 // E6partsに影響する項目が変更されたので、E6partsを再生成する　 ＜＜安全快適のため、1回と2回払いだけに限定、かつ未チェックに限る＞＞
 // return(BOOL) YES=OK, NO=E6変更禁止につき、保存禁止すること
-- (BOOL)remakeE6change:(int)iChange
+- (void)remakeE6change:(int)iChange
 {
+	assert(Re3edit);
 	// iChange　変化した項目番号：この項目を基（主）に関連項目を調整する
 	// (1) dateUse	利用日
 	// (2) nAmount	金額
@@ -72,260 +67,11 @@
 	// (4) nPayType	支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
 	// (5) E6part1	支払1回目（日付と金額）
 	// (6) E6part2	支払2回目（日付と金額）
-
-	assert(Re3edit);
-	NSInteger iPayType = [Re3edit.nPayType integerValue];
-	if (iPayType<1 OR 2<iPayType) { // ＜＜1と2回払いだけに限定＞＞
-		assert(NO); // DEBUG時中断
-		[MocFunctions rollBack];	
-		return NO;
+	if ([MocFunctions e3record:Re3edit makeE6change:iChange]) {
+		// 再描画
+		[self viewWillAppear:YES];
 	}
-	
-	E6part* e6part1 = nil;
-	E6part* e6part2 = nil;
-	for (E6part *e6 in Re3edit.e6parts) {
-		switch ([e6.nPartNo integerValue]) {
-			case 1:
-				e6part1 = e6;
-				break;
-			case 2:
-				e6part2 = e6;
-				break;
-		}
-	}
-
-	if (e6part1 && [e6part1.nNoCheck integerValue]==0) {
-		if (e6part2==nil OR [e6part2.nNoCheck integerValue]==0) {
-			assert(NO); // DEBUG時中断
-			[MocFunctions rollBack];	
-			return NO; // 全回チェック済につき変更禁止
-		}
-	}
-	
-	// カード規定の支払条件より決まる第1回目の支払日
-	NSInteger iYearMMDD = [MocFunctions yearMMDDpaymentE1card:Re3edit.e1card forUseDate:Re3edit.dateUse];
-
-	NSManagedObjectContext *moc = Re3edit.managedObjectContext;
-
-	if (iPayType==1)
-	{	// 1回払いのとき、
-		if (e6part1==nil)
-		{	// e6part1 生成
-			e6part1 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
-			e6part1.nPartNo = [NSNumber numberWithInteger:1];
-			e6part1.nNoCheck = [NSNumber numberWithInteger:1];
-			e6part1.e3record = Re3edit;  // E6 <<--> E3 リンク
-			e6part1.e2invoice = nil;  // E6 <<--> E2 リンク
-		}
-		// e6part1 更新
-		if (iChange==5) {
-			Re3edit.nAmount = [e6part1.nAmount copy];
-		} else	{
-			e6part1.nAmount = [Re3edit.nAmount copy];	// 1回払い
-			if (e6part1.e2invoice==nil) {
-				// E2リンク および .nAmount-E2,E7集計
-				iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];
-				if (iYearMMDD==0) {
-					assert(NO); // DEBUG時中断
-					[MocFunctions rollBack];	
-					return NO;
-				}
-			}
-		}
-		//
-		if (e6part2)
-		{	// e6part2 削除
-			E2invoice *e2 = e6part2.e2invoice; // 後のsumのため親E2を保存
-			e6part2.e3record = nil;  // E6 <<--> E3 リンク削除：これが無いと "LOGIC ERROR: E6 Delete NG" が出る
-			e6part2.e2invoice = nil; // E6 <<--> E2 リンク削除：切断してからE2,E7を再集計
-			// E6の所属が変わったので親となるE2,E7を再集計する
-			[MocFunctions e2e7update:e2];		//e6減
-			// E6削除
-			[moc deleteObject:e6part2];
-			e6part2 = nil;
-		}
-	}
-	else if (iPayType==2)
-	{	// 2回払いのとき、
-		//NSDecimalNumber *part2Amount = [NSDecimalNumber zero];
-		
-		if (e6part1==nil)
-		{	// e6part1 生成
-			e6part1 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
-			e6part1.nPartNo = [NSNumber numberWithInteger:1];
-			e6part1.nNoCheck = [NSNumber numberWithInteger:1];
-			e6part1.e3record = Re3edit;  // E6 <<--> E3 リンク
-			e6part1.e2invoice = nil;  // E6 <<--> E2 リンク
-		}
-		//
-		if (e6part2==nil)
-		{	// e6part2 生成
-			e6part2 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:moc];
-			e6part2.nPartNo = [NSNumber numberWithInteger:2];
-			e6part2.nNoCheck = [NSNumber numberWithInteger:1];
-			e6part2.e3record = Re3edit;  // E6 <<--> E3 リンク
-			e6part2.e2invoice = nil;  // E6 <<--> E2 リンク
-		}
-		//
-		if (iChange==6)		// (5)より先に評価すること
-		{	// (6)2回目を基準
-			assert(e6part1);
-			assert(e6part1.e2invoice);
-			//assert([e6part1.nNoCheck integerValue]==1);
-			assert(e6part2);
-			assert(e6part2.e2invoice);
-			assert([e6part2.nNoCheck integerValue]==1);
-			if ([e6part2.e2invoice.nYearMMDD integerValue] <= [e6part1.e2invoice.nYearMMDD integerValue]) {
-				NSLog(@"日付が逆転");
-				assert(NO); // DEBUG時中断
-				[MocFunctions rollBack];	
-				return NO;
-			}
-			if ([e6part1.nNoCheck integerValue]==0) 
-			{	// e6part1がチェック済なのでE3を更新する
-				Re3edit.nAmount = [e6part1.nAmount decimalNumberByAdding:e6part2.nAmount];  // E3 = E61 + E62
-			} else {
-				// 日付は調整変更しない
-				NSLog(@"e6part1.nAmount(%@) = Re3edit.nAmount(%@) - e6part2.nAmount(%@)", 
-					  e6part1.nAmount, Re3edit.nAmount, e6part2.nAmount);
-				e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
-				// E6の金額が変わったので親となるE2,E7を再集計する
-				[MocFunctions e2e7update:e6part1.e2invoice];
-			}
-			// e6part2 基準につき不変
-		}
-		else if (iChange==5 OR [e6part1.nNoCheck integerValue]==0)
-		{	// (5)1回目を基準　または　e6part1がチェック済のとき、 e6part2 を更新する
-			assert(e6part1);
-			assert(e6part1.e2invoice);
-			// e6part2
-			// 日付は調整変更しない
-			e6part2.nNoCheck = [NSNumber numberWithInteger:1];//強制解除する
-			e6part2.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part1.nAmount];  // E62 = E3 - E61
-			// E6の金額が変わったので親となるE2,E7を再集計する
-			[MocFunctions e2e7update:e6part2.e2invoice];
-		}
-		else
-		{	// 金額2分割
-			NSDecimalNumber *decPayType = [NSDecimalNumber decimalNumberWithString:@"2.0"]; //2回払い
-			//[0.4] Decimal対応  behavior
-			// 通貨型に合った丸め位置を取得
-			NSUInteger iRoundingScale = 2;
-			if ([[[NSLocale currentLocale] objectForKey:NSLocaleIdentifier] isEqualToString:@"ja_JP"]) { // 言語 + 国、地域
-				iRoundingScale = 0;
-			}
-			// 分割(÷)のための丸め
-			NSDecimalNumberHandler *behavior = [[NSDecimalNumberHandler alloc] initWithRoundingMode:NSRoundUp	// 切上
-																							  scale:iRoundingScale	// 丸めた後の桁数
-																				   raiseOnExactness:YES				// 精度
-																					raiseOnOverflow:YES				// オーバーフロー
-																				   raiseOnUnderflow:YES				// アンダーフロー
-																				raiseOnDivideByZero:YES ];			// アンダーフロー
-			// 2回目が多くなるように切上している。　＜＜クレジット分割では、誤差が後払いになるらしい。
-			e6part2.nAmount = [Re3edit.nAmount decimalNumberByDividingBy:decPayType withBehavior:behavior];	// E62 = E3 ÷ 2 (切上)
-			[behavior release];
-			// e6part1 更新
-			e6part1.nNoCheck = [NSNumber numberWithInteger:1]; //強制解除する
-			e6part1.nAmount = [Re3edit.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
-			// E2リンク および .nAmount-E2,E7集計
-			iYearMMDD = [self partMakeE6:e6part1 forDue:iYearMMDD];  //この中で.nAmount-E2,E7集計している
-			if (iYearMMDD==0) {
-				assert(NO); // DEBUG時中断
-				[MocFunctions rollBack];	
-				return NO;
-			}
-			// e6part2 更新
-			e6part2.nNoCheck = [NSNumber numberWithInteger:1];//強制解除する
-			// E2リンク および .nAmount-E2,E7集計
-			iYearMMDD = [self partMakeE6:e6part2 forDue:iYearMMDD];
-			if (iYearMMDD==0) {
-				assert(NO); // DEBUG時中断
-				[MocFunctions rollBack];	
-				return NO;
-			}
-		}
-	}	
-	else {
-		assert(NO); // DEBUG時中断
-		[MocFunctions rollBack];	
-		return NO;
-	}
-	// 再描画
-	[self viewWillAppear:YES];
-	return YES;
 }
-	
-// E2リンク および .nAmount-E2,E7集計
-- (NSInteger)partMakeE6:(E6part*)e6part  forDue:(NSInteger)iYearMMDD
-{
-	NSManagedObjectContext *moc = Re3edit.managedObjectContext;
-
-	//------------------------------------------------- E6 <<--> E2
-	if (e6part.e2invoice==nil) { // 新規で支払日未定のとき
-		for (E2invoice *e2 in Re3edit.e1card.e2paids) { // E2支払済 から探す
-			if ([e2.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
-				// E2にありましたが支払済なので、次を探す　＜＜新規の場合だけ＞＞
-				if (0 < [Re3edit.e1card.nPayDay integerValue]) {	// <=0:Debit
-					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 通常:翌月へ
-				} else {
-					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, 0, +1); // Debit:翌日へ
-				}
-			}
-		}
-		for (E2invoice *e2 in Re3edit.e1card.e2unpaids) { // E2未払い から探す
-			if ([e2.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
-				// E2発見！e6part更新
-				e6part.e2invoice = e2;	// E6-E2 リンク
-				break;
-			}
-		}
-		if (e6part.e2invoice==nil) 
-		{ // 既存E2なし：追加する
-			E2invoice *e2 = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:moc];
-			e2.nYearMMDD = [NSNumber numberWithInteger:iYearMMDD];
-			e2.e1paid = nil;  // 必ず一方は nil になる
-			e2.e1unpaid = Re3edit.e1card;  // E2-E1 リンク
-			// e6part更新
-			e6part.e2invoice = e2;	// E6-E2 リンク
-		}
-	}	
-
-	assert(e6part.e2invoice);
-	if (e6part.e2invoice.e1paid) {  // PAIDでここを通ることは無いハズ！
-		AzLOG(@"LOGIC ERROR: E2 NG PAID");
-		return 0;
-	}
-	//-------------------------------------------------e0root（固有ノード）を取得する　E7追加に必要となる
-	E0root *e0root = [MocFunctions e0root];
-	if (e0root == nil) {
-		return 0;
-	}
-	//------------------------------------------------- E2 <<--> E7
-	if (e6part.e2invoice.e7payment == nil) {
-		// E7がリンクされていないので探してリンクする
-		for (E7payment *e7obj in e0root.e7unpaids) {
-			if ([e7obj.nYearMMDD integerValue] == iYearMMDD) {
-				e6part.e2invoice.e7payment = e7obj; // E2 <<--> E7
-				break;
-			}
-		}
-	}
-	if (e6part.e2invoice.e7payment == nil) { // 探したが、E7が無いので追加する
-		E7payment *e7obj = [NSEntityDescription insertNewObjectForEntityForName:@"E7payment" inManagedObjectContext:moc];
-		e7obj.nYearMMDD = [NSNumber numberWithLong:iYearMMDD]; // 支払日 ＜＜締月日と違う＞＞
-		e7obj.e0paid = nil;
-		e7obj.e0unpaid = e0root;	// E7 <<--> E0 未払い
-		e6part.e2invoice.e7payment = e7obj; // E2 <<--> E7
-	}
-	// E6の所属が変わったので親となるE2,E7を再集計する
-	[MocFunctions e2e7update:e6part.e2invoice];		//e6増
-
-	// 次回（翌月）へ
-	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
-	return iYearMMDD;
-}
-
-
 
 
 #pragma mark - Action
@@ -412,14 +158,15 @@
 {
 	[McalcView hide]; // Calcが出てれば隠す
 	
-	// E4,E5で新規追加したものもcommitしていないので、ここでrollbackされる
-	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
-	
-	if (0 < PiAdd) {  // MbCopyAdd=YES:のRe3editも同様に削除してコミットしておく。
+	if (0 < PiAdd) {
 		// Add mode: 呼び出し元で挿入したオブジェクトはrollbackされないので削除する
-		[MocFunctions deleteEntity:Re3edit];
+		// E3配下のE6は、随時生成更新されているので、ここで同時に削除する
+		[MocFunctions e3delete:Re3edit]; //remakeE6change：処理により配下E6もあれば削除する
 		//[MocFunctions commit]; delete後のcommit不要
 	}
+	
+	// E4,E5で新規追加したものもcommitしていないので、ここでrollbackされる
+	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
 	
 	//[0.4]
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -462,14 +209,10 @@
 		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
 
-	//if (MbE6dateChange) PiFirstYearMMDD = (-1); //E6更新しない
-	// E3配下リンク等の更新処理
-	if ([MocFunctions e3saved:Re3edit inFirstYearMMDD:PiFirstYearMMDD]==NO) {
-		//return; // 中止
-		//[0.4]PAIDのときNOになるが、利用店以下変更可能にするためスルー
-		//[0.4]PAIDで変更禁止項目は、入力時に拒否するようになっている。
-	}
-	
+	// E3配下のE6は、随時更新されている。
+	// E3配下の E4,E5あれば更新
+	[MocFunctions e3saved:Re3edit]; 
+	// 保存
 	[MocFunctions commit];
 	//[0.4.17]この直後、前のViewへ戻るまでの間に、cellForRowAtIndexPath「支払明細(E6)のセル再描画」を通ると落ちる。
 	//[0.4.17]（原因）E3配下の更新処理にてE6が削除されることが原因。
@@ -792,7 +535,7 @@
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 
 	// データ更新＆再表示
-	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止。
+	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止するため
 	//--------------------------------------------------------------------------------.
 	// Me0root はArreyじゃない！からrelese不要
 	if (Me0root==nil) {
@@ -831,16 +574,21 @@
 	[RaE6parts sortUsingDescriptors:sortArray];
 	[sortArray release];
 	
-	MbE6checked = YES; // E6parts全チェック済
 	MbE6paid = NO;
-	for (E6part *e6 in RaE6parts) {
-		if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
-			MbE6paid = YES; // YES:PAIDあり、主要条件の変更禁止！
+	MbE6checked = NO;
+	int iChecked = [RaE6parts count];
+	if (0 < iChecked) {
+		for (E6part *e6 in RaE6parts) {
+			if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
+				MbE6paid = YES; // YES:PAIDあり、主要条件の変更禁止！
+			}
+			if ([e6.nNoCheck integerValue]==0) { //チェック
+				iChecked--;
+			}
 		}
-		if ([e6.nNoCheck integerValue]==1) { //未チェック
-			MbE6checked = NO; // E6parts未チェックが少なくとも1つあり
-		}
+		MbE6checked = (iChecked<=0); //YES=E6parts全チェック済
 	}
+
 	if (MbuDelete) {
 		// E3配下のE6に1つでもPAIDがあるならば、削除(ごみ箱)ボタンを無効にする     [0.3]
 		MbuDelete.enabled = !MbE6paid;
@@ -1050,7 +798,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	// if (0 < PiAdd) return 2; // 新規追加時、支払明細なし
     return 3;
 }
 
@@ -1070,7 +817,7 @@
 			return 3;
 			break;
 		case 2:
-			if (PiAdd <= 0) { // 金額または支払方法に変更があればE6partsを非表示にする
+			if (0 < [Re3edit.e6parts count]) {
 				return [Re3edit.e6parts count]; // 支払明細
 			} else {
 				return 1; // 新規追加時の電卓描画範囲を確保するためダミーセル表示する
@@ -1091,7 +838,8 @@
 			//if (PbAdd) return NSLocalizedString(@"Option",nil);
 			break;
 		case 2:
-			if (PiAdd <= 0) {
+			//if (PiAdd <= 0) {
+			if (0 < [Re3edit.e6parts count]) {
 				return NSLocalizedString(@"Payment Details",nil);
 			}
 			break;
@@ -1122,7 +870,7 @@
 			if (MbE6paid) {
 				return NSLocalizedString(@"E6PAID Help",nil);
 			}
-			else if (0 < PiAdd) {
+			else if ([Re3edit.e6parts count] <= 0) {
 				return	@"\n\n\n\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
 			}
 			break;
@@ -1154,7 +902,6 @@
     NSString *zCellIndex = [NSString stringWithFormat:@"E3detail%d:%d", (int)indexPath.section, (int)indexPath.row];
     static NSString *zCellE6part = @"CellE6part";
 	UITableViewCell *cell = nil;
-	UILabel *cellLabel = nil;
 	
 	switch (indexPath.section) {
 		case 0: //----------------------------------------------------------------------SECTION 必須
@@ -1361,116 +1108,110 @@
 				} break;
 			}
 			break;
-		case 2:  //----------------------------------------------------------------------SECTION 支払明細
-			if (0 < PiAdd) { // 新規追加、支払明細なし。 コピーライト表示
-				cell = [tableView dequeueReusableCellWithIdentifier:zCellE6part];
-				if (cell == nil) {
-					cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault // Subtitle
+			
+		case 2: {  //----------------------------------------------------------------------SECTION 支払明細
+			UILabel *cellLabel;
+			cell = [tableView dequeueReusableCellWithIdentifier:zCellE6part];
+			if (cell == nil) {
+				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault // Subtitle
 												   reuseIdentifier:zCellE6part] autorelease];
+				// 行毎に変化の無い定義は、ここで最初に1度だけする
 #ifdef AzPAD
-					cell.textLabel.font = [UIFont systemFontOfSize:16];
+				cell.textLabel.font = [UIFont systemFontOfSize:20];
 #else
-					cell.textLabel.font = [UIFont systemFontOfSize:14];
+				cell.textLabel.font = [UIFont systemFontOfSize:14];
 #endif
-					cell.textLabel.textAlignment = UITextAlignmentCenter;
-					cell.textLabel.text = @"©2000-2011 Azukid";
-					cell.accessoryType = UITableViewCellAccessoryNone; // なし
-					cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
-				}
-				return cell;
-			} 
-			else { // E6partTVC - cellForRowAtIndexPath 内よりコピー
-				cell = [tableView dequeueReusableCellWithIdentifier:zCellE6part];
-				if (cell == nil) {
-					cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault // Subtitle
-												   reuseIdentifier:zCellE6part] autorelease];
-					// 行毎に変化の無い定義は、ここで最初に1度だけする
-#ifdef AzPAD
-					cell.textLabel.font = [UIFont systemFontOfSize:20];
-#else
-					cell.textLabel.font = [UIFont systemFontOfSize:14];
-#endif
-					//cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-					//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
-					//cell.detailTextLabel.textColor = [UIColor blackColor];
-					cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
-					
-					cellLabel = [[UILabel alloc] init];
-					cellLabel.textAlignment = UITextAlignmentRight;
-					cellLabel.textColor = [UIColor blackColor];
-					cellLabel.backgroundColor = [UIColor clearColor]; //grayColor <<DEBUG範囲チェック用
-#ifdef AzPAD
-					cellLabel.font = [UIFont systemFontOfSize:20];
-#else
-					cellLabel.font = [UIFont systemFontOfSize:14];
-#endif
-					cellLabel.tag = -1;
-					[cell addSubview:cellLabel]; [cellLabel release];
-				}
-				else {
-					cellLabel = (UILabel *)[cell viewWithTag:-1];
-				}
-				// 回転対応のため
-#ifdef AzPAD
-				// -25 は、Popoverの余白分だと思われる
-				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125-25, 12, 90, 20);
-#else
-				cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
-#endif
-
-				if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
+				//cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+				//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+				//cell.detailTextLabel.textColor = [UIColor blackColor];
+				cell.accessoryType = UITableViewCellAccessoryNone; // 変更禁止
 				
-				// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞  [1.0.2]viewWithTagにより改善
-				NSInteger tag = indexPath.section * GD_SECTION_TIMES + indexPath.row;
-				UIButton *cellButton = (UIButton*)[cell.contentView viewWithTag:tag];
-				if (cellButton==nil) {
-					cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
-					cellButton.frame = CGRectMake(0,0, 44,44);
-					[cellButton addTarget:self action:@selector(cellButtonE6check:) forControlEvents:UIControlEventTouchUpInside];
-					cellButton.backgroundColor = [UIColor clearColor]; //背景透明
-					cellButton.showsTouchWhenHighlighted = YES;
-					cellButton.tag = tag;
-					[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
-				}
-				//------------------------------------------------------------------
-
-				E6part *e6obj = [RaE6parts objectAtIndex:indexPath.row];
-				//NSLog(@"*** e6obj.e2invoice=%@", e6obj.e2invoice); [0.4.17]SAVE直後E6が再生成されるため、ここで落ちた。
-
-				if (e6obj.e2invoice.e7payment.e0paid) {
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID.png"]; // PAID 変更禁止
-					cellButton.enabled = NO;
-					cell.accessoryType = UITableViewCellAccessoryNone;
-				}
-				else if ([e6obj.nNoCheck intValue] == 1) {
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"];
-					cellButton.enabled = YES;
-					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-				} 
-				else {
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"];
-					cellButton.enabled = YES;
-					cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-				}
-				
-				// 支払日
-				NSInteger iYearMMDD = [e6obj.e2invoice.e7payment.nYearMMDD integerValue];
-				if (e6obj.e2invoice.e1paid) {
-					cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD(iYearMMDD),
-										   NSLocalizedString(@"Pre",nil)];
-				} else {
-					cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD(iYearMMDD),
-										   NSLocalizedString(@"Due",nil)];
-				}
-				
-				// 金額
-				NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-				[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
-				[formatter setLocale:[NSLocale currentLocale]]; 
-				cellLabel.text = [formatter stringFromNumber:e6obj.nAmount];
-				[formatter release];
+				cellLabel = [[UILabel alloc] init];
+				cellLabel.textAlignment = UITextAlignmentRight;
+				cellLabel.textColor = [UIColor blackColor];
+				cellLabel.backgroundColor = [UIColor clearColor]; //grayColor <<DEBUG範囲チェック用
+#ifdef AzPAD
+				cellLabel.font = [UIFont systemFontOfSize:20];
+#else
+				cellLabel.font = [UIFont systemFontOfSize:14];
+#endif
+				cellLabel.tag = -1;
+				[cell addSubview:cellLabel]; [cellLabel release];
 			}
-			break;
+			else {
+				cellLabel = (UILabel *)[cell viewWithTag:-1];
+			}
+			// 回転対応のため
+#ifdef AzPAD
+			// -25 は、Popoverの余白分だと思われる
+			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125-25, 12, 90, 20);
+#else
+			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+#endif
+			if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
+			
+			if (RaE6parts==nil OR [RaE6parts count]<=0) {
+				//cellButton.enabled = NO;
+				//cell.imageView.image = nil;
+				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				cell.textLabel.text = @"(C)2000-2011 Azukid";
+				cellLabel.text = @"";
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.userInteractionEnabled = NO;
+				break;
+			} else {
+				cell.textLabel.textAlignment = UITextAlignmentLeft;
+				cell.userInteractionEnabled = YES;
+			}
+
+			// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞  [1.0.2]viewWithTagにより改善
+			// Ｓｅｃｔｉｏｎ２において cell は単一固有だが、cellButton は個別である。
+			NSInteger tagButton = indexPath.section * GD_SECTION_TIMES + indexPath.row;
+			UIButton *cellButton = (UIButton*)[cell.contentView viewWithTag:tagButton];
+			if (cellButton==nil) {
+				cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
+				cellButton.frame = CGRectMake(0,0, 44,44);
+				[cellButton addTarget:self action:@selector(cellButtonE6check:) forControlEvents:UIControlEventTouchUpInside];
+				cellButton.backgroundColor = [UIColor clearColor]; //背景透明
+				cellButton.showsTouchWhenHighlighted = YES;
+				cellButton.tag = tagButton;
+				[cell.contentView addSubview:cellButton]; //autorelese
+			}
+			//------------------------------------------------------------------
+
+			E6part *e6obj = [RaE6parts objectAtIndex:indexPath.row];
+			//NSLog(@"*** e6obj.e2invoice=%@", e6obj.e2invoice); [0.4.17]SAVE直後E6が再生成されるため、ここで落ちた。
+			if (e6obj.e2invoice.e7payment.e0paid) {
+				cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID.png"]; // PAID 変更禁止
+				cellButton.enabled = NO;
+				cell.accessoryType = UITableViewCellAccessoryNone;
+			}
+			else if ([e6obj.nNoCheck intValue] == 1) {
+				cell.imageView.image = [UIImage imageNamed:@"Icon32-Circle.png"];
+				cellButton.enabled = YES;
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+			} 
+			else {
+				cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleCheck.png"];
+				cellButton.enabled = YES;
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+			}
+			// 支払日
+			NSInteger iYearMMDD = [e6obj.e2invoice.e7payment.nYearMMDD integerValue];
+			if (e6obj.e2invoice.e1paid) {
+				cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD(iYearMMDD),
+									   NSLocalizedString(@"Pre",nil)];
+			} else {
+				cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD(iYearMMDD),
+									   NSLocalizedString(@"Due",nil)];
+			}
+			// 金額
+			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+			[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
+			[formatter setLocale:[NSLocale currentLocale]]; 
+			cellLabel.text = [formatter stringFromNumber:e6obj.nAmount];
+			[formatter release];
+		} break;
 	}
     return cell;
 }
@@ -1494,11 +1235,15 @@
 	//------------------＜＜ここでは保存しない！ 他の修正に影響するため、E3修正の cancelClose:でrollBack, save:でcommitする＞＞
 	// [EntityRelation commit];
 
-	MbE6checked = YES; // E6parts全チェック済
-	for (E6part *e6 in RaE6parts) {
-		if ([e6.nNoCheck integerValue]==1) { //未チェック
-			MbE6checked = NO; // E6parts未チェックが少なくとも1つあり
+	MbE6checked = NO;
+	int iChecked = [RaE6parts count];
+	if (0 < iChecked) {
+		for (E6part *e6 in RaE6parts) {
+			if ([e6.nNoCheck integerValue]==0) { //チェック
+				iChecked--;
+			}
 		}
+		MbE6checked = (iChecked<=0); //YES=E6parts全チェック済
 	}
 	
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -1537,6 +1282,7 @@
 						evc.title = NSLocalizedString(@"Use date", nil);
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
+						evc.delegate = self;
 						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:evc animated:YES];
 						[evc release];
@@ -1558,6 +1304,7 @@
 						tvc.title = NSLocalizedString(@"Card choice",nil);
 						tvc.Re0root = Me0root;
 						tvc.Re3edit = Re3edit;
+						tvc.delegate = self;
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						[tvc release];
@@ -1637,7 +1384,7 @@
 			}
 			break;
 		case 2: //--------------------------------E6part: 全unpaid時に金額調整を可能にする予定
-			if (PiAdd <= 0) {  // Edit
+			if (indexPath.row < [RaE6parts count]) {  // Edit
 				if (MbE6paid) {  // PAID
 					// [PAID]につき変更禁止
 					alertBox(NSLocalizedString(@"PAID Not change",nil),

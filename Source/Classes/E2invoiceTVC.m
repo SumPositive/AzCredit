@@ -129,6 +129,11 @@
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
 }
 
+- (void)deselectRow:(NSIndexPath*)indexPath
+{
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES]; // 選択状態を解除する
+}
+
 - (void)toPAID
 {
 	if ([RaE2list count] <= 1) return;	// Section
@@ -159,6 +164,11 @@
 		MbFirstAppear = YES; // ボタン位置調整のため
 		[self viewWillAppear:NO]; // Fech データセットさせるため
 		[self viewDesign:NO];
+
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE2list objectAtIndex:0] count]-1 inSection:0];
+		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
+
 #ifdef AzPAD
 		// TopMenuTVCにある 「未払合計額」を再描画するための処理
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -195,6 +205,11 @@
 		MbFirstAppear = YES; // ボタン位置調整のため
 		[self viewWillAppear:NO]; // Fech データセットさせるため
 		[self viewDesign:NO];
+
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+		[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
+
 #ifdef AzPAD
 		// TopMenuTVCにある 「未払合計額」を再描画するための処理
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];

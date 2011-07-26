@@ -668,7 +668,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	RaKeyButtons = [[NSArray alloc] initWithArray:maBu];
 	[maBu release];
 	
-	[self viewDesign:self.bounds]; // コントロール配置
+	[self viewDesign:rect]; // コントロール配置
 
 	// Calc 初期化
 	//RzCalc = [[NSMutableString alloc] init];
@@ -709,7 +709,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	//self.userInteractionEnabled = YES; //タッチの可否  どこでもDone
 }
 
-- (void)viewDesign:(CGRect)rect 
+- (void)viewDesign:(CGRect)rect
 {
 	AzLOG(@"viewDesign:rect (x,y)=(%f,%f) (w,h)=(%f,%f)", rect.origin.x,rect.origin.y, rect.size.width,rect.size.height);
 	
@@ -741,10 +741,10 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	if (rect.size.width < rect.size.height)
 	{	// タテ
 		//MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
-		fy = 170;
+		fy = 85;
 		MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
 		fy += MtextField.frame.size.height;
-		MscrollView.frame = CGRectMake(0,fy, 320,480-20-44-fy);
+		MscrollView.frame = CGRectMake(0,fy, 320,220);
 		fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
 		MscrollView.contentSize = CGSizeMake(320+(fW+fxGap)*2, MscrollView.frame.size.height);
 		// 以下、MscrollView座標
@@ -756,10 +756,10 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	}
 	else {	// ヨコ
 		//MlbCalc.frame = CGRectMake(fx,fy, 480-fx-fx,20);	// 1行
-		fy = 75;
+		fy = 40;
 		MtextField.frame = CGRectMake(5,fy, 480-10,30);	// 1行
 		fy += MtextField.frame.size.height;
-		MscrollView.frame = CGRectMake(0,fy, 480,320-20-32-fy);
+		MscrollView.frame = CGRectMake(0,fy, 480,180);
 		//fW = (480 - fxGap) / 5 - fxGap; // 5列まで表示
 		MscrollView.contentSize = MscrollView.frame.size;
 		// 以下、MscrollView座標

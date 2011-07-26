@@ -56,18 +56,15 @@
 	else
 	{	// 金額　：　電卓出現
 		assert(Re6edit);
-		if (McalcView) {
-			[McalcView hide];
-			McalcView.delegate = nil;
-			[McalcView removeFromSuperview];
-			McalcView = nil;
+		if (McalcView==nil) {
+			McalcView = [[CalcView alloc] initWithFrame:self.view.bounds withE3:nil];
+			McalcView.Rlabel = MlbAmount;  // 結果もこのラベルに戻る
+			McalcView.PoParentTableView = nil;
+			McalcView.delegate = self;	// viewWillAppear:を呼び出すため
+			//[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
+			[self.view addSubview:McalcView];
+			[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 		}
-		McalcView = [[CalcView alloc] initWithFrame:self.view.bounds withE3:nil];
-		McalcView.Rlabel = MlbAmount;  // 結果もこのラベルに戻る
-		McalcView.PoParentTableView = nil;
-		McalcView.delegate = self;	// viewWillAppear:を呼び出すため
-		[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
-		[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 		[McalcView show];
 	}
 }
@@ -214,6 +211,7 @@
 	self.view.backgroundColor = [UIColor lightGrayColor];
 #else
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+	[self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
 #endif
 
 	// DONEボタンを右側に追加する
@@ -225,11 +223,13 @@
 												   target:self action:@selector(done:)] autorelease];
 	
 	// とりあえず生成、位置はviewDesignにて決定
-	//------------------------------------------------------[NOW]ボタン
-	MbuToday = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[MbuToday setTitle:NSLocalizedString(@"Today",nil) forState:UIControlStateNormal];
-	[MbuToday addTarget:self action:@selector(buttonToday) forControlEvents:UIControlEventTouchDown];
-	[self.view addSubview:MbuToday]; //[MbuToday release]; autoreleaseされるため
+	if (Re3edit) {
+		//------------------------------------------------------[NOW]ボタン
+		MbuToday = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		[MbuToday setTitle:NSLocalizedString(@"Today",nil) forState:UIControlStateNormal];
+		[MbuToday addTarget:self action:@selector(buttonToday) forControlEvents:UIControlEventTouchDown];
+		[self.view addSubview:MbuToday]; //[MbuToday release]; autoreleaseされるため
+	}
 
 	//------------------------------------------------------[Time]ボタン
 	MbuYearTime = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -270,17 +270,18 @@
 	rect.size.height = GD_PickerHeight;
 	rect.origin.y = (self.view.bounds.size.height - rect.size.height) / 2;
 	MdatePicker.frame = rect;
-	
-	rect.size.width = 150;
-	rect.size.height = 30;
-	rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-	rect.origin.y = 60;
-	MbuToday.frame = rect;
-	
+
 	if (Re3edit) {
+		rect.size.height = 30;
+		rect.size.width = 150;
+		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+		rect.origin.y = 60;
+		MbuToday.frame = rect;
+		
 		rect.origin.y = self.view.bounds.size.height - 90;
 		MbuYearTime.frame = rect;
 	} else {
+		rect.size.height = 20;
 		rect.size.width = 200;
 		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
 		rect.origin.y = self.view.bounds.size.height - 110;
@@ -295,23 +296,28 @@
 
 	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
 	{	// タテ
-		rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
+		if (Re3edit) {
+			rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
+		} else {
+			rect.origin.y = 120;
+		}
 		rect.size.height = GD_PickerHeight;
 		MdatePicker.frame = rect;
 		
-		rect.size.width = 150;
-		rect.size.height = 30;
-		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-		rect.origin.y = 30;
-		MbuToday.frame = rect;
-		
 		if (Re3edit) {
+			rect.origin.y = 30;
+			rect.size.height = 30;
+			rect.size.width = 150;
+			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+			MbuToday.frame = rect;
+			
 			rect.origin.y = self.view.bounds.size.height - 60;
 			MbuYearTime.frame = rect;
 		} else {
+			rect.origin.y = 20;
+			rect.size.height = 30;
 			rect.size.width = 200;
 			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-			rect.origin.y = self.view.bounds.size.height - 75;
 			MbuYearTime.frame = rect;
 			rect.origin.y += 32;
 			rect.size.width -= 20;
@@ -324,21 +330,22 @@
 		rect.size.height = GD_PickerHeight;
 		MdatePicker.frame = rect;
 		
-		rect.size.width = 150;
-		rect.size.height = 30;
 		rect.origin.y = 10;
-		rect.origin.x = 30;  //(self.view.bounds.size.width - rect.size.width) / 2;
-		MbuToday.frame = rect;
-		
+		rect.size.height = 30;
+
 		if (Re3edit) {
+			rect.size.width = 150;
+			rect.origin.x = 30;  //(self.view.bounds.size.width - rect.size.width) / 2;
+			MbuToday.frame = rect;
+			
 			rect.origin.x = 250;  //self.view.bounds.size.width/2 + (self.view.bounds.size.width - rect.size.width)/2;
 			MbuYearTime.frame = rect;
 		} else {
-			rect.origin.x = 200;  //(self.view.bounds.size.width/2) + 0;
+			rect.origin.x = 100;  //(self.view.bounds.size.width/2) + 0;
 			rect.size.width = 80;
 			MbuYearTime.frame = rect;
 			rect.origin.x += (rect.size.width + 2);
-			rect.size.width = 180;
+			rect.size.width = 200;
 			MlbAmount.frame = rect;
 		}
 	}
@@ -417,6 +424,17 @@
 #endif
 }
 
+// 回転を始める前にこの処理が呼ばれる。
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
+								duration:(NSTimeInterval)duration {	// この時点では self.View は、まだ回転前の状態
+	// 電卓	アニメ効果を消さないように、回転後に破棄している
+	//[McalcView viewDesign:self.view.bounds];
+	if (McalcView) { // 閉じて破棄することにした。
+		[McalcView cancel];
+		[McalcView hide];
+	}
+}
+
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
 - (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation 
 													   duration:(NSTimeInterval)duration
@@ -425,14 +443,30 @@
 	[self viewDesign]; // これで回転しても編集が継続されるようになった。
 }
 
+// 回転した後に呼び出される
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	// 電卓	アニメ効果を消さないように、回転後に破棄している
+	if (McalcView) { // 閉じて破棄することにした。
+		McalcView.delegate = nil;
+		[McalcView removeFromSuperview];
+		McalcView = nil;
+	}
+}
+
+
 #pragma mark  View - Unload - dealloc
 
 - (void)dealloc    // 最後に1回だけ呼び出される（デストラクタ）
 {
 	//[sourceDate release], sourceDate = nil;
 	// 生成とは逆順に解放するのが好ましい
-	//[RzKey release], RzKey = nil;
-	//[Rentity release], Rentity = nil;
+	if (McalcView) {
+		[McalcView hide];
+		McalcView.delegate = nil;
+		[McalcView removeFromSuperview];
+		McalcView = nil;
+	}
 	[Re3edit release];
 	[Re6edit release];
 	[super dealloc];
