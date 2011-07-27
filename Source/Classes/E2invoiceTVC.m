@@ -134,94 +134,125 @@
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES]; // 選択状態を解除する
 }
 
+
 - (void)toPAID
 {
-	if ([RaE2list count] <= 1) return;	// Section
-	if ([[RaE2list objectAtIndex:1] count] <= 0) return;	// Row
+	assert(1 < [RaE2list count]); // Section:1
+	assert(0 < [[RaE2list objectAtIndex:1] count]); // Section:1 Row:0
 	E2temp* e2obj = [[RaE2list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
-	
-	if (e2obj && e2obj.bPaid==NO) 
-	{
-		if (0 < e2obj.iNoCheck) 
-		{	// E2配下に未チェックあり禁止
-			alertBox(NSLocalizedString(@"NoCheck",nil),
-					 NSLocalizedString(@"NoCheck msg",nil),
-					 NSLocalizedString(@"Roger",nil));
-			return; // 禁止
-		}
-		// このE2を PAID にする
-		for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
-			[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
-		}
-		[MocFunctions commit];		// context commit (SAVE)
-		// アニメ準備
-		CGRect rc = MbuPaid.frame; rc.origin.y -= 44; MbuPaid.frame = rc;
-		CGContextRef context = UIGraphicsGetCurrentContext();
-		[UIView beginAnimations:nil context:context];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		[UIView setAnimationDuration:1.0];
-		// 再描画
-		MbFirstAppear = YES; // ボタン位置調整のため
-		[self viewWillAppear:NO]; // Fech データセットさせるため
-		[self viewDesign:NO];
-
-		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE2list objectAtIndex:0] count]-1 inSection:0];
-		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
-
-#ifdef AzPAD
-		// TopMenuTVCにある 「未払合計額」を再描画するための処理
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
-		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-		}
-#endif
-		// アニメ開始
-		[UIView commitAnimations];
+	assert(e2obj);
+	assert(e2obj.bPaid==NO);
+	if (0 < e2obj.iNoCheck) 
+	{	// E2配下に未チェックあり禁止
+		alertBox(NSLocalizedString(@"NoCheck",nil),
+				 NSLocalizedString(@"NoCheck msg",nil),
+				 NSLocalizedString(@"Roger",nil));
+		return;
 	}
+	// 移動元の Unpaid 最上行Cell
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self performSelector:@selector(toPAID_After) withObject:nil afterDelay:0.5];
+	
+	// 内部移動処理
+	// このE2を PAID にする
+	for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
+		[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
+	}
+	[MocFunctions commit];		// context commit (SAVE)
+	// RaE7list が更新される。
+}
+
+- (void)toPAID_After
+{
+	// アニメ準備
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	[UIView beginAnimations:nil context:context];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:1.0];
+	
+	CGRect rc = MbuPaid.frame; rc.origin.y -= 40; MbuPaid.frame = rc;
+	
+	// 再描画
+	MbFirstAppear = YES; // ボタン位置調整のため
+	[self viewWillAppear:NO]; // RaE2list データ更新させるため
+	[self viewDesign:NO];
+
+	assert(0 < [RaE2list count]); // Section:0
+	assert(0 < [[RaE2list objectAtIndex:0] count]); // Section:0 Row:Bottom
+	// 移動先の PAID 最下行Cell
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE2list objectAtIndex:0] count]-1 inSection:0];
+	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 選択状態を解除する
+	
+#ifdef AzPAD
+	// TopMenuTVCにある 「未払合計額」を再描画するための処理
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
+	TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+	if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+		[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+	}
+#endif
+	// アニメ開始
+	[UIView commitAnimations];
 }
 
 - (void)toUnpaid
 {
-	if ([RaE2list count] <= 0) return;	// Section
+	assert(0 < [RaE2list count]); // Section:0
+	assert(0 < [[RaE2list objectAtIndex:0] count]); // Section:0 Row:Bottom
 	NSInteger iRowBottom = [[RaE2list objectAtIndex:0] count] - 1;
 	if (iRowBottom < 0) return;
 	E2temp* e2obj = [[RaE2list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
-	if (e2obj && e2obj.bPaid==YES) {
-		// このE2を Unpaid に戻す
-		for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
-			[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
-		}
-		[MocFunctions commit];		// context commit (SAVE)
-		// アニメ準備
-		CGRect rc = MbuUnpaid.frame; rc.origin.y += 44; MbuUnpaid.frame = rc;
-		CGContextRef context = UIGraphicsGetCurrentContext();
-		[UIView beginAnimations:nil context:context];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		[UIView setAnimationDuration:1.0];
-		// 再描画
-		MbFirstAppear = YES; // ボタン位置調整のため
-		[self viewWillAppear:NO]; // Fech データセットさせるため
-		[self viewDesign:NO];
-
-		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
-
-#ifdef AzPAD
-		// TopMenuTVCにある 「未払合計額」を再描画するための処理
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
-		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-		}
-#endif
-		// アニメ開始
-		[UIView commitAnimations];
+	assert(e2obj);
+	assert(e2obj.bPaid==YES);
+	// 移動元の PAID 最下行Cell
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:iRowBottom inSection:0];
+	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[self performSelector:@selector(toUnpaid_After) withObject:nil afterDelay:0.5];
+	// 内部移動処理
+	// このE2を Unpaid に戻す
+	for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
+		[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
 	}
+	[MocFunctions commit];		// context commit (SAVE)
+	// RaE7list が更新される。
+}
+
+- (void)toUnpaid_After
+{
+	// アニメ準備
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	[UIView beginAnimations:nil context:context];
+	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+	[UIView setAnimationDuration:1.0];
+	
+	CGRect rc = MbuUnpaid.frame; rc.origin.y += 40; MbuUnpaid.frame = rc;
+	
+	// 再描画
+	MbFirstAppear = YES; // ボタン位置調整のため
+	[self viewWillAppear:NO]; // RaE2list データ更新させるため
+	[self viewDesign:NO];
+	
+	assert(1 < [RaE2list count]); // Section:1
+	assert(0 < [[RaE2list objectAtIndex:1] count]); // Section:1 Row:0
+	// 移動先の Unpaid 最上行Cell
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
+	
+#ifdef AzPAD
+	// TopMenuTVCにある 「未払合計額」を再描画するための処理
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
+	TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+	if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+		[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+	}
+#endif
+	// アニメ開始
+	[UIView commitAnimations];
 }
 
 
