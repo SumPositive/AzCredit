@@ -61,12 +61,13 @@
 {
 	assert(Re3edit);
 	// iChange　変化した項目番号：この項目を基（主）に関連項目を調整する
-	// (1) dateUse	利用日
-	// (2) nAmount	金額
-	// (3) e1card		支払先
-	// (4) nPayType	支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
-	// (5) E6part1	支払1回目（日付と金額）
-	// (6) E6part2	支払2回目（日付と金額）
+	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
+	// (2) nAmount変更 ⇒ 
+	// (3) e1card変更 ⇒ 
+	// (4) nPayType	変更 ⇒ 　支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
+	// 以上は、E6partのうち1つでもPAIDになれば禁止。
+	// (5) E6part1変更 ⇒ E6part1を固定してE6part2またはE3を調整更新する。E6part2がCheckedならば解除する。
+	// (6) E6part2変更 ⇒ E6part2を固定してE6part1またはE3を調整更新する。E6part1がCheckedまたはPAIDならば禁止。
 	if ([MocFunctions e3record:Re3edit makeE6change:iChange]) {
 		// 再描画
 		[self viewWillAppear:YES];

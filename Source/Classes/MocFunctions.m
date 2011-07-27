@@ -1074,49 +1074,77 @@ static NSManagedObjectContext *scMoc = nil;
 #endif
 
 
-//LOCAL// e3rec 配下の e6part が属する E2リンク および .nAmount-E2,E7集計
+//LOCAL// e3rec 配下の e6part が属する E2リンク更新 および .nAmount-E2,E7集計
 + (NSInteger)e6part:(E6part*)e6part  forDue:(NSInteger)iYearMMDD
 {
 	E3record* e3rec = e6part.e3record;
 	assert(e3rec);
+	
+	// E1card および E2支払日 の変更に対応する
+	if (e6part.e2invoice) {	//既に支払日が決められている場合、
+		if (e6part.e2invoice.e1unpaid == e3rec.e1card	// E1cardに変化なし
+				&& [e6part.e2invoice.nYearMMDD integerValue] == iYearMMDD) {  // 新しい支払日と同じ
+			assert(e6part.e2invoice.e1paid==nil);
+			// 変更なし。だが、金額や回数が変化している可能性がある。
+			[MocFunctions e2e7update:e6part.e2invoice]; //　E2,E7を再集計する
+			// 次回（翌月）へ
+			iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
+			return iYearMMDD;
+		}
+		else {
+			// 現在のE2リンクを解除する
+			E2invoice *e2 = e6part.e2invoice;
+			if (e2.e1paid) {
+				AzLOG(@"LOGIC ERROR: E2 PAID");
+				assert(NO);
+				return 0;
+			}
+			e6part.e2invoice = nil; // E6 <<--> E2 リンク削除：切断してからE2,E7を再集計
+			[MocFunctions e2e7update:e2]; //e6減：　親であったE2,E7を再集計する
+		}
+	}
+	
+	assert(e6part.e2invoice==nil);
 	//------------------------------------------------- E6 <<--> E2
-	if (e6part.e2invoice==nil) { // 新規で支払日未定のとき
-		for (E2invoice *e2 in e3rec.e1card.e2paids) { // E2支払済 から探す
-			if ([e2.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
-				// E2にありましたが支払済なので、次を探す　＜＜新規の場合だけ＞＞
-				if (0 < [e3rec.e1card.nPayDay integerValue]) {	// <=0:Debit
-					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 通常:翌月へ
-				} else {
-					iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, 0, +1); // Debit:翌日へ
-				}
+	for (E2invoice *e2 in e3rec.e1card.e2paids) { // E2支払済 から探す
+		if ([e2.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
+			// E2にありましたが支払済なので、次を探す　＜＜新規の場合だけ＞＞
+			if (0 < [e3rec.e1card.nPayDay integerValue]) {	// <=0:Debit
+				iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 通常:翌月へ
+			} else {
+				iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, 0, +1); // Debit:翌日へ
 			}
 		}
-		for (E2invoice *e2 in e3rec.e1card.e2unpaids) { // E2未払い から探す
-			if ([e2.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
-				// E2発見！e6part更新
-				e6part.e2invoice = e2;	// E6-E2 リンク
-				break;
-			}
-		}
-		if (e6part.e2invoice==nil) 
-		{ // 既存E2なし：追加する
-			E2invoice *e2 = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:scMoc];
-			e2.nYearMMDD = [NSNumber numberWithInteger:iYearMMDD];
-			e2.e1paid = nil;  // 必ず一方は nil になる
-			e2.e1unpaid = e3rec.e1card;  // E2-E1 リンク
-			// e6part更新
+	}
+	
+	for (E2invoice *e2 in e3rec.e1card.e2unpaids) { // E2未払い から探す
+		if ([e2.nYearMMDD integerValue] == iYearMMDD) {  // 支払日
+			// E2発見！e6part更新
 			e6part.e2invoice = e2;	// E6-E2 リンク
+			break;
 		}
-	}	
+	}
+	
+	if (e6part.e2invoice==nil) 
+	{ // 既存E2なし：追加する
+		E2invoice *e2 = [NSEntityDescription insertNewObjectForEntityForName:@"E2invoice" inManagedObjectContext:scMoc];
+		e2.nYearMMDD = [NSNumber numberWithInteger:iYearMMDD];
+		e2.e1paid = nil;  // 必ず一方は nil になる
+		e2.e1unpaid = e3rec.e1card;  // E2-E1 リンク
+		// e6part更新
+		e6part.e2invoice = e2;	// E6-E2 リンク
+	}
 	
 	assert(e6part.e2invoice);
 	if (e6part.e2invoice.e1paid) {  // PAIDでここを通ることは無いハズ！
-		AzLOG(@"LOGIC ERROR: E2 NG PAID");
+		NSLog(@"LOGIC ERROR: E2 NG PAID");
+		assert(NO);
 		return 0;
 	}
 	//-------------------------------------------------e0root（固有ノード）を取得する　E7追加に必要となる
 	E0root *e0root = [MocFunctions e0root];
 	if (e0root == nil) {
+		assert(NO);
 		return 0;
 	}
 	//------------------------------------------------- E2 <<--> E7
@@ -1149,12 +1177,13 @@ static NSManagedObjectContext *scMoc = nil;
 + (BOOL)e3record:(E3record*)e3rec makeE6change:(int)iChange
 {
 	// iChange　変化した項目番号：この項目を基（主）に関連項目を調整する
-	// (1) dateUse	利用日
-	// (2) nAmount	金額
-	// (3) e1card		支払先
-	// (4) nPayType	支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
-	// (5) E6part1	支払1回目（日付と金額）
-	// (6) E6part2	支払2回目（日付と金額）
+	// (1) dateUse変更 ⇒ E6part1,2固定解除して支払先条件通りに更新する
+	// (2) nAmount変更 ⇒ E6part1固定ならばE6part2を調整更新する。E6part2固定は解除する。
+	// (3) e1card変更 　　　⇒ 上に同じ。ただし、E2invoice<-->E1card を更新する。
+	// (4) nPayType	変更 ⇒ 　上に同じ
+	// 以上は、E6partのうち1つでもPAIDになれば禁止。
+	// (5) E6part1操作 ⇒ E6part1固定してE6part2またはE3を調整更新する。E6part2固定ならば解除する。
+	// (6) E6part2操作 ⇒ E6part2固定してE6part1またはE3を調整更新する。E6part1固定またはPAIDならばE3を調整更新。
 	
 	assert(e3rec);
 	if (e3rec.e1card==nil) { // 支払先未定
@@ -1178,6 +1207,33 @@ static NSManagedObjectContext *scMoc = nil;
 				e6part2 = e6;
 				break;
 		}
+		//
+		switch (iChange) {
+			case 1:	// (1) dateUse変更 ⇒ E6part1,2固定解除
+				if ([e6.nNoCheck integerValue]==0) {
+					e6.nNoCheck = [NSNumber numberWithInteger:1]; // Check解除
+				}
+				break;
+				
+			case 3:	// (3) e1card変更 ⇒ 既存の E2invoice　<--> E1card を切断する。
+				if (e6.e2invoice) {
+					if (e6.e2invoice.e1paid) {
+						assert(e6.e2invoice.e1unpaid==nil);
+						assert(NO); // DEBUG時中断
+						[MocFunctions rollBack];	
+						return NO; // 少なくとも1つがPAIDになっているので変更禁止
+					} 
+					else if (e6.e2invoice.e1unpaid) {
+						assert(e6.e2invoice.e1paid==nil);
+						if (e6.e2invoice.e1unpaid != e3rec.e1card) { // E1cardが変更されたので、旧リンク破棄
+							E2invoice *e2 = e6.e2invoice; // 後のsumのため親E2を保存
+							e6.e2invoice = nil; // E6 <<--> E2 リンク削除：切断してからE2,E7を再集計
+							[MocFunctions e2e7update:e2];	//e6減
+						}
+					}
+				}
+				break;
+		}
 	}
 	
 	if (e6part1 && [e6part1.nNoCheck integerValue]==0) {
@@ -1187,7 +1243,7 @@ static NSManagedObjectContext *scMoc = nil;
 			return NO; // 全回チェック済につき変更禁止
 		}
 	}
-	
+
 	// カード規定の支払条件より決まる第1回目の支払日
 	NSInteger iYearMMDD = [MocFunctions yearMMDDpaymentE1card:e3rec.e1card forUseDate:e3rec.dateUse];
 	
@@ -1206,14 +1262,17 @@ static NSManagedObjectContext *scMoc = nil;
 			e3rec.nAmount = [e6part1.nAmount copy];
 		} else	{
 			e6part1.nAmount = [e3rec.nAmount copy];	// 1回払い
-			if (e6part1.e2invoice==nil) {
-				// E2リンク および .nAmount-E2,E7集計
+			if (iChange==1 OR e6part1.e2invoice==nil) {
+				// E2リンク更新 および .nAmount-E2,E7集計
 				iYearMMDD = [MocFunctions e6part:e6part1 forDue:iYearMMDD];
 				if (iYearMMDD==0) {
 					assert(NO); // DEBUG時中断
 					[MocFunctions rollBack];	
 					return NO;
 				}
+			} else {
+				// E6の金額が変わったので親となるE2,E7を再集計する
+				[MocFunctions e2e7update:e6part1.e2invoice];
 			}
 		}
 		//
@@ -1231,8 +1290,6 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 	else if (iPayType==2)
 	{	// 2回払いのとき、
-		//NSDecimalNumber *part2Amount = [NSDecimalNumber zero];
-		
 		if (e6part1==nil)
 		{	// e6part1 生成
 			e6part1 = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:scMoc];
@@ -1266,17 +1323,18 @@ static NSManagedObjectContext *scMoc = nil;
 				return NO;
 			}
 			if ([e6part1.nNoCheck integerValue]==0) 
-			{	// e6part1がチェック済なのでE3を更新する
+			{	// e6part1固定なのでE3を更新する
 				e3rec.nAmount = [e6part1.nAmount decimalNumberByAdding:e6part2.nAmount];  // E3 = E61 + E62
 			} else {
 				// 日付は調整変更しない
 				NSLog(@"e6part1.nAmount(%@) = e3rec.nAmount(%@) - e6part2.nAmount(%@)", 
 					  e6part1.nAmount, e3rec.nAmount, e6part2.nAmount);
 				e6part1.nAmount = [e3rec.nAmount decimalNumberBySubtracting:e6part2.nAmount];  // E61 = E3 - E62
-				// E6の金額が変わったので親となるE2,E7を再集計する
+				// e6part1の金額が変わったので親となるE2,E7を再集計する
 				[MocFunctions e2e7update:e6part1.e2invoice];
 			}
-			// e6part2 基準につき不変
+			// e6part2操作変更されている可能性があるので、親となるE2,E7を再集計する
+			[MocFunctions e2e7update:e6part2.e2invoice];
 		}
 		else if (iChange==5 OR [e6part1.nNoCheck integerValue]==0)
 		{	// (5)1回目を基準　または　e6part1がチェック済のとき、 e6part2 を更新する
@@ -1289,7 +1347,7 @@ static NSManagedObjectContext *scMoc = nil;
 			// E6の金額が変わったので親となるE2,E7を再集計する
 			[MocFunctions e2e7update:e6part2.e2invoice];
 		}
-		else
+		else	// iChange==1, 3 のときも、ここを通る
 		{	// 金額2分割
 			NSDecimalNumber *decPayType = [NSDecimalNumber decimalNumberWithString:@"2.0"]; //2回払い
 			//[0.4] Decimal対応  behavior
