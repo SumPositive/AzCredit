@@ -107,10 +107,10 @@
 	
 	MindexPathEdit = indexPath;
 
-#ifdef  AzPAD
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	apd.entityModified = (e3detail.PiAdd != 0);	// 追加は、常に「変更あり」とする
+	apd.entityModified = NO;  //リセット
 
+#ifdef  AzPAD
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -1120,10 +1120,23 @@
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 追加または変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+	if (apd.entityModified) {	// 変更あり
+		alertBox(NSLocalizedString(@"Cancel or Save",nil), 
+				 NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
 		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	} else {	// 追加や変更なし
+	}
+	else {	// 変更なし
+		// E3recordDetailTVC:cancelClose:【insertAutoEntity削除】を通ってないのでここで通す。
+		if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+			UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+			if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
+			{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が TopMenuTVC.m にもある＞＞＞
+				E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+				if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+					[e3tvc cancelClose:nil];	// 【insertAutoEntity削除】
+				}
+			}
+		}
 		return YES;	// Popover外部タッチで閉じるのを許可
 	}
 }

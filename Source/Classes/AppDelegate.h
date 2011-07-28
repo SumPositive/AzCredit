@@ -43,7 +43,7 @@
 	
 @private
 	//-------------------------------------retain
-	NSDate				*Me3dateUse;
+	NSDate				*Me3dateUse;			// autoreleseオブジェクト限定
 	//-------------------------------------assign
 }
 

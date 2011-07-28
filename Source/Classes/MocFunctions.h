@@ -43,7 +43,8 @@
 + (E3record *)replicateE3record:(E3record *)e3source;
 + (void)e3check:(BOOL)bCheckOn inE3obj:(E3record *)e3obj inAlert:(BOOL)bAlert;
 + (void)e3delete:(E3record *)e3obj;
-+ (BOOL)e3record:(E3record*)e3rec makeE6change:(int)iChange;
+//+ (BOOL)e3record:(E3record*)e3rec makeE6change:(int)iChange;
++ (BOOL)e3record:(E3record*)e3rec makeE6change:(int)iChange  withFirstYMD:(NSInteger)firstYMD;
 + (BOOL)e3saved:(E3record *)e3node;  //inFirstYearMMDD:(NSInteger)iFirstYearMMDD;
 
 + (void)e6check:(BOOL)bCheckOn inE6obj:(E6part *)e6obj inAlert:(BOOL)bAlert;

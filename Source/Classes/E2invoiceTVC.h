@@ -27,6 +27,7 @@
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
+	BOOL		MbAction;		// 連続タッチされると落ちるので、その対策
 	//E2temp		*Me2cellButton;		// cellLeftButton:にて button.tag をセットして、alertView:にて参照。
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }

@@ -103,6 +103,10 @@
 		E2invoice *e2new = [MocFunctions e2invoice:e3.e1card  inYearMMDD:iYearMMDD]; //変更後に属するE2
 		if (e2new.e1paid) {
 			NSLog(@"LOGIC ERROR: 変更先の支払日がPAIDである"); // [PAID]ならば変更禁止になっているので通らないハズ
+			// [PAID]となった日だけ拒否する。　それより前日は「支払遅延」を想定して許可しておく。
+			alertBox(NSLocalizedString(@"Due date PAID",nil),		// この日は、既に[PAID]です。
+					 NSLocalizedString(@"Due date PAID msg",nil),	// 他の支払日を指定してください。
+					 NSLocalizedString(@"Roger",nil));
 			return;
 		}
 		//
@@ -114,13 +118,28 @@
 		}
 		//
 		NSDecimalNumber *decNew = [NSDecimalNumber decimalNumberWithString:MlbAmount.text];
+		//NSDecimalNumber *decNew = [[NSDecimalNumber alloc] initWithString:MlbAmount.text];
 		NSLog(@"decNew=%@", decNew);
 		if (decNew==[NSDecimalNumber notANumber]) {	// 万一前方に記号が入って変換できないとき、
 			decNew = [NSDecimalNumber zero];
 		}
 		if ([Re6edit.nAmount compare:decNew] != NSOrderedSame) 
 		{	// 金額に変化あり
-			Re6edit.nAmount = decNew;
+			// 通貨型に合った丸め位置を取得
+			NSUInteger iRoundingScale = 2;
+			if ([[[NSLocale currentLocale] objectForKey:NSLocaleIdentifier] isEqualToString:@"ja_JP"]) { // 言語 + 国、地域
+				iRoundingScale = 0;
+			}
+			// 丸め（常に切り捨て）
+			NSDecimalNumberHandler *behavior = [[NSDecimalNumberHandler alloc] initWithRoundingMode:NSRoundDown	//切り捨て
+																							  scale:iRoundingScale	// 丸めた後の桁数
+																				   raiseOnExactness:YES				// 精度
+																					raiseOnOverflow:YES				// オーバーフロー
+																				   raiseOnUnderflow:YES				// アンダーフロー
+																				raiseOnDivideByZero:YES ];			// アンダーフロー
+			// 丸め処理
+			Re6edit.nAmount = [decNew decimalNumberByRoundingAccordingToBehavior:behavior];
+			[behavior release];
 			NSLog(@"New Re6edit.nAmount=%@", Re6edit.nAmount);
 			bDuty = YES;
 		}
@@ -281,10 +300,10 @@
 		rect.origin.y = self.view.bounds.size.height - 90;
 		MbuYearTime.frame = rect;
 	} else {
-		rect.size.height = 20;
+		rect.origin.y = 40;  //self.view.bounds.size.height - 110;
+		rect.size.height = 30;
 		rect.size.width = 200;
 		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-		rect.origin.y = self.view.bounds.size.height - 110;
 		MbuYearTime.frame = rect;
 		rect.origin.y += 32;
 		rect.size.width -= 20;
@@ -389,14 +408,14 @@
 		self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  (デフォルト[Save])
 		MdatePicker.date = GdateYearMMDD(iYearMMDD, 0, 0, 0);
 		// 金額表示
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+	/*	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // 通貨記号なし ＜＜ラベル文字⇒数値変換時にエラー発生するため
 		[formatter setLocale:[NSLocale currentLocale]]; 
 		MlbAmount.text = [formatter stringFromNumber:Re6edit.nAmount];
-		[formatter release];
+		[formatter release];*/
+		// 通貨記号もコンマも無しにする。 ＜＜ラベル文字⇒Decimal数値変換時にエラー発生するため
+		MlbAmount.text = [NSString stringWithFormat:@"%@", Re6edit.nAmount];
 	}
-
-	//sourceDate = [MdatePicker.date copy];	// 初期日付　　[Done]にて変化あれば AppDelegate.entityModified = YES にする
 
 	[self viewDesign];
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。

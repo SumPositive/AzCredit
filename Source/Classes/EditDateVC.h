@@ -27,7 +27,7 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIDatePicker	*MdatePicker;
-	UIButton		*MbuToday;			// Todayにリセットする
+	UIButton		*MbuToday;			// E3:Todayにリセットする
 	UIButton		*MbuYearTime;		// E3:時刻部有無　　　E6：金額
 	UILabel		*MlbAmount;
 	CalcView					*McalcView;

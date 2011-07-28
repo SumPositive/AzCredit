@@ -190,7 +190,6 @@
 			if ([MdecAnswer compare:decSource] != NSOrderedSame) 
 			{	// 変化あり
 				// デフォルト丸め処理
-				//[Rentity setValue:[MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault]  forKey:RzKey];
 				Re3edit.nAmount = [MdecAnswer decimalNumberByRoundingAccordingToBehavior:MbehaviorDefault];
 				
 				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -207,7 +206,7 @@
 		}
 		else {
 			// Entity更新なし。　ラベルだけ更新
-			// Rlabel.text により値を返す
+			// Rlabel.text により値を返す　＜＜＜この後、デフォルト丸め処理すること。
 		}
 	}
 }
@@ -262,7 +261,7 @@
 	if (RzLabelText) {
 		[RzLabelText release];
 	}
-	RzLabelText = [Rlabel.text copy];	//表示文字列をそのまま戻すために記録
+	RzLabelText = [Rlabel.text copy];	//表示文字列をそのまま戻すために記録  deallocにてrelease
 
 	//sourceDecimal = [NSDecimalNumber decimalNumberWithDecimal:[[Rentity valueForKey:RzKey] decimalValue]];	//初期値
 	//NSLog(@"sourceDecimal=%@", sourceDecimal);
@@ -723,9 +722,9 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	
 #ifdef AzPAD
 	if (Re3edit) {
-		fy = 100;
+		fy = 90;
 	} else {
-		fy = 180;
+		fy = 113;
 	}
 	MtextField.frame = CGRectMake(5,fy, rect.size.width-10,30);	// 1行
 	fy += MtextField.frame.size.height;

@@ -25,6 +25,7 @@
 	//----------------------------------------------assign
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
+	BOOL		MbAction;		// 連続タッチされると落ちるので、その対策
 	//E7payment	*Me7cellButton; // cellLeftButton:にて button.tag をセットして、alertView:にて参照。
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }

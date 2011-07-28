@@ -596,7 +596,7 @@ static NSManagedObjectContext *scMoc = nil;
 }
 
 // E2の Paid と Unpaid を切り替える
-// bE6noCheckNext = YES: E6未チェック分を翌月以降に移動する
+// bE6payNextMonth = YES: E6未チェック分を翌月以降に移動する ＜＜＜未使用
 // [0.4]nRepeat対応
 + (void)e2paid:(E2invoice *)e2obj inE6payNextMonth:(BOOL)bE6payNextMonth
 {
@@ -695,7 +695,7 @@ static NSManagedObjectContext *scMoc = nil;
 				}
 				e3add.dateUse = [cal dateFromComponents:comp];
 				// E3配下のE6更新（生成）
-				[MocFunctions e3record:e3add makeE6change:1]; // (1)UseDate変更 ⇒ 主要項目を優先して基本E6にする
+				[MocFunctions e3record:e3add makeE6change:1 withFirstYMD:0]; // (1)UseDate変更 ⇒ 主要項目を優先して基本E6にする
 				// E3配下のE4,E5等あれば更新
 				[MocFunctions e3saved:e3add];
 				//
@@ -763,7 +763,7 @@ static NSManagedObjectContext *scMoc = nil;
 }
 
 // E7の Paid と Unpaid を切り替える
-// bE6noCheckNext = YES: E6未チェック分を翌月以降に移動する
+// bE6payNextMonth = YES: E6未チェック分を翌月以降に移動する ＜＜＜未使用
 // [0.4]nRepeat対応
 + (void)e7paid:(E7payment *)e7obj inE6payNextMonth:(BOOL)bE6payNextMonth
 {
@@ -1174,16 +1174,17 @@ static NSManagedObjectContext *scMoc = nil;
 
 // E6partsに影響する項目が変更されたので、E6partsを再生成する　 ＜＜安全快適のため、1回と2回払いだけに限定、かつ未チェックに限る＞＞
 // return(BOOL) YES=OK, NO=E6変更禁止につき、保存禁止すること
-+ (BOOL)e3record:(E3record*)e3rec makeE6change:(int)iChange
++ (BOOL)e3record:(E3record*)e3rec  makeE6change:(int)iChange  withFirstYMD:(NSInteger)firstYMD
 {
-	// iChange　変化した項目番号：この項目を基（主）に関連項目を調整する
-	// (1) dateUse変更 ⇒ E6part1,2固定解除して支払先条件通りに更新する
-	// (2) nAmount変更 ⇒ E6part1固定ならばE6part2を調整更新する。E6part2固定は解除する。
-	// (3) e1card変更 　　　⇒ 上に同じ。ただし、E2invoice<-->E1card を更新する。
-	// (4) nPayType	変更 ⇒ 　上に同じ
+	// 【iChange】 変化した項目番号：この項目を基（主）に関連項目を調整する
+	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
+	// (2) nAmount変更 ⇒ 
+	// (3) e1card変更 ⇒ 
+	// (4) nPayType	変更 ⇒ 　支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
 	// 以上は、E6partのうち1つでもPAIDになれば禁止。
-	// (5) E6part1操作 ⇒ E6part1固定してE6part2またはE3を調整更新する。E6part2固定ならば解除する。
-	// (6) E6part2操作 ⇒ E6part2固定してE6part1またはE3を調整更新する。E6part1固定またはPAIDならばE3を調整更新。
+	// (5) E6part1変更 ⇒ E6part1を固定してE6part2またはE3を調整更新する。E6part2がCheckedならば解除する。
+	// (6) E6part2変更 ⇒ E6part2を固定してE6part1またはE3を調整更新する。E6part1がCheckedまたはPAIDならば禁止。
+	// 【withFirstYMD】 1回目の支払日を指定。　=0:指定なし
 	
 	assert(e3rec);
 	if (e3rec.e1card==nil) { // 支払先未定
@@ -1233,20 +1234,31 @@ static NSManagedObjectContext *scMoc = nil;
 					}
 				}
 				break;
+				
+			case 5:
+			case 6:
+				
+				break;
 		}
 	}
 	
-	if (e6part1 && [e6part1.nNoCheck integerValue]==0) {
-		if (e6part2==nil OR [e6part2.nNoCheck integerValue]==0) {
+	if (e6part1 && [e6part1.nNoCheck integerValue]==0) 
+	{	// 支払1回目固定
+		firstYMD = 0;	// 1回目の支払日指定は無効
+		if (e6part2==nil OR [e6part2.nNoCheck integerValue]==0) 
+		{	// 支払2回目固定
 			assert(NO); // DEBUG時中断
 			[MocFunctions rollBack];	
 			return NO; // 全回チェック済につき変更禁止
 		}
 	}
 
-	// カード規定の支払条件より決まる第1回目の支払日
-	NSInteger iYearMMDD = [MocFunctions yearMMDDpaymentE1card:e3rec.e1card forUseDate:e3rec.dateUse];
-	
+	NSInteger iYearMMDD = firstYMD;
+	if (firstYMD < AzMIN_YearMMDD) {
+		// カード規定の支払条件より決まる第1回目の支払日
+		iYearMMDD = [MocFunctions yearMMDDpaymentE1card:e3rec.e1card forUseDate:e3rec.dateUse];
+	}
+
 	if (iPayType==1)
 	{	// 1回払いのとき、
 		if (e6part1==nil)
@@ -1259,9 +1271,9 @@ static NSManagedObjectContext *scMoc = nil;
 		}
 		// e6part1 更新
 		if (iChange==5) {
-			e3rec.nAmount = [e6part1.nAmount copy];
+			e3rec.nAmount = [[e6part1.nAmount copy] autorelease]; //autoreleaseしなければ、どこかで.nAmount代入(変更)したとき、これがリークする
 		} else	{
-			e6part1.nAmount = [e3rec.nAmount copy];	// 1回払い
+			e6part1.nAmount = [[e3rec.nAmount copy] autorelease]; // 1回払い
 			if (iChange==1 OR e6part1.e2invoice==nil) {
 				// E2リンク更新 および .nAmount-E2,E7集計
 				iYearMMDD = [MocFunctions e6part:e6part1 forDue:iYearMMDD];
@@ -1350,9 +1362,8 @@ static NSManagedObjectContext *scMoc = nil;
 		else	// iChange==1, 3 のときも、ここを通る
 		{	// 金額2分割
 			NSDecimalNumber *decPayType = [NSDecimalNumber decimalNumberWithString:@"2.0"]; //2回払い
-			//[0.4] Decimal対応  behavior
 			// 通貨型に合った丸め位置を取得
-			NSUInteger iRoundingScale = 2;
+			NSUInteger iRoundingScale = 2; // JP以外はEN仕様として小数2桁にしている。
 			if ([[[NSLocale currentLocale] objectForKey:NSLocaleIdentifier] isEqualToString:@"ja_JP"]) { // 言語 + 国、地域
 				iRoundingScale = 0;
 			}

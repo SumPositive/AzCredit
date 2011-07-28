@@ -84,8 +84,11 @@
 
 - (void)toPAID
 {
-	if ([RaE7list count] <= 1) return;	// Section
-	if ([[RaE7list objectAtIndex:1] count] <= 0) return;	// Row
+	if (MbAction) return;	// 処理中につき拒否
+	MbAction = YES;	// 連続操作を拒否するため
+
+	assert(1 < [RaE7list count]); // Section:1
+	assert(0 < [[RaE7list objectAtIndex:1] count]); // Section:1 Row:0
 	E7payment* e7obj = [[RaE7list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
 	assert(e7obj);
 	assert(e7obj.e0paid==nil);
@@ -94,6 +97,7 @@
 		alertBox(NSLocalizedString(@"NoCheck",nil),
 				 NSLocalizedString(@"NoCheck msg",nil),
 				 NSLocalizedString(@"Roger",nil));
+		MbAction = NO; // Action操作許可
 		return;
 	}
 	// 移動元の Unpaid 最上行Cell
@@ -126,6 +130,8 @@
 	[self viewDesign:NO];
 	
 	// 移動先の PAID 最下行Cell
+	assert(0 < [RaE7list count]); // Section:0
+	assert(0 < [[RaE7list objectAtIndex:0] count]); // Section:0 Row:Bottom
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE7list objectAtIndex:0] count]-1 inSection:0];
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 選択状態を解除する
@@ -141,13 +147,17 @@
 #endif
 	// アニメ開始
 	[UIView commitAnimations];
+	MbAction = NO; // Action操作許可
 }
 
 - (void)toUnpaid
 {
-	if ([RaE7list count] <= 0) return;	// Section
+	if (MbAction) return;	// 処理中につき拒否
+	MbAction = YES;	// 連続操作を拒否するため
+	
+	assert(0 < [RaE7list count]); // Section:0
+	assert(0 < [[RaE7list objectAtIndex:0] count]); // Section:0 Row:Bottom
 	NSInteger iRowBottom = [[RaE7list objectAtIndex:0] count] - 1;
-	if (iRowBottom < 0) return;
 	E7payment* e7obj = [[RaE7list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
 	assert(e7obj);
 	assert(e7obj.e0unpaid==nil);
@@ -163,10 +173,6 @@
 
 - (void)toUnpaid_After
 {
-	if ([RaE7list count] <= 0) return;	// Section
-	NSInteger iRowBottom = [[RaE7list objectAtIndex:0] count] - 1;
-	if (iRowBottom < 0) return;
-
 	// アニメ準備
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	[UIView beginAnimations:nil context:context];
@@ -180,6 +186,9 @@
 	[self viewWillAppear:NO]; // Fech データセットさせるため
 	[self viewDesign:NO];
 	
+	// 移動先の Unpaid 最上行Cell
+	assert(1 < [RaE7list count]); // Section:1
+	assert(0 < [[RaE7list objectAtIndex:1] count]); // Section:1 Row:0
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
@@ -195,6 +204,7 @@
 #endif
 	// アニメ開始
 	[UIView commitAnimations];
+	MbAction = NO; // Action操作許可
 }
 
 
@@ -218,6 +228,7 @@ static UIColor *MpColorBlue(float percent) {
 	if (self) {
 		// 初期化成功
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
+		MbAction = NO;
 	}
 	return self;
 }

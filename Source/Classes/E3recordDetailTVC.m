@@ -60,7 +60,7 @@
 - (void)remakeE6change:(int)iChange
 {
 	assert(Re3edit);
-	// iChange　変化した項目番号：この項目を基（主）に関連項目を調整する
+	// 【iChange】 変化した項目番号：この項目を基（主）に関連項目を調整する
 	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
 	// (2) nAmount変更 ⇒ 
 	// (3) e1card変更 ⇒ 
@@ -68,7 +68,8 @@
 	// 以上は、E6partのうち1つでもPAIDになれば禁止。
 	// (5) E6part1変更 ⇒ E6part1を固定してE6part2またはE3を調整更新する。E6part2がCheckedならば解除する。
 	// (6) E6part2変更 ⇒ E6part2を固定してE6part1またはE3を調整更新する。E6part1がCheckedまたはPAIDならば禁止。
-	if ([MocFunctions e3record:Re3edit makeE6change:iChange]) {
+	// 【withFirstYMD】 1回目の支払日を指定。　=0:指定なし
+	if ([MocFunctions e3record:Re3edit makeE6change:iChange withFirstYMD:PiFirstYearMMDD]) {
 		// 再描画
 		[self viewWillAppear:YES];
 	}
@@ -86,8 +87,8 @@
 		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
-		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		app.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
+		//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+		app.Me3dateUse = [[Re3edit.dateUse copy] autorelease];  // Me3dateUseはretainプロパティ
 		[MocFunctions e3delete:Re3edit];
 		[MocFunctions commit];
 
@@ -171,7 +172,8 @@
 	
 	//[0.4]
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
+	app.Me3dateUse = nil; //1.0.0//
 
 #ifdef AzPAD
 	[selfPopover dismissPopoverAnimated:YES];
@@ -222,8 +224,8 @@
 	
 	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-	app.Me3dateUse = [Re3edit.dateUse copy];
+	//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+	app.Me3dateUse = [[Re3edit.dateUse copy] autorelease];
 	
 #ifdef AzPAD
 	if (selfPopover) {
@@ -411,6 +413,7 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化
+		PiFirstYearMMDD = 0;
 		MbSaved = NO;
 		MbE1cardChange = NO;
 		MbModified = NO;
@@ -1145,7 +1148,7 @@
 			// 回転対応のため
 #ifdef AzPAD
 			// -25 は、Popoverの余白分だと思われる
-			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125-25, 12, 90, 20);
+			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-180, 12, 125, 20);
 #else
 			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
 #endif

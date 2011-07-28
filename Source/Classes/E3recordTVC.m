@@ -123,8 +123,8 @@
 		e3detail.PiAdd = 0; // (0)Edit mode
 		//[0.4.2]Fix:
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		app.Me3dateUse = [e3detail.Re3edit.dateUse copy];
+		//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+		app.Me3dateUse = [[e3detail.Re3edit.dateUse copy] autorelease];
 		NSLog(@"app.Me3dateUse=%@", app.Me3dateUse);
 	}
 	else {
@@ -474,7 +474,8 @@
 		MmoreScrollPosition = UITableViewScrollPositionMiddle;
 		
 		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+		//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
+		app.Me3dateUse = nil; //1.0.0//
 		//
 #ifdef FREE_AD
 		RoAdMobView = nil;

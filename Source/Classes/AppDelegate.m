@@ -37,8 +37,9 @@
 
 - (void)dealloc 
 {
-	AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
-	[Me3dateUse release], Me3dateUse = nil;
+	//AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
+	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
+	Me3dateUse = nil;
 
 	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
 	mainController.delegate = nil;
