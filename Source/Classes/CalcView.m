@@ -585,6 +585,12 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	MscrollView.scrollsToTop = NO;
 	MscrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	MscrollView.backgroundColor = [UIColor blackColor];
+#ifdef AzPAD
+	MscrollView.delaysContentTouches = NO; //iPadではスクロール不要なのでＮＯにし、タッチ感度を向上させる。
+	//UIScrollView を止めて UIViewを試したが、ボタン隙間のタッチで touchesBegan:が呼び出されて閉じてしまう不具合により没。
+#else
+	MscrollView.delaysContentTouches = YES; //default//ボタンより先に 0.5s タッチを監視してスクロール操作であるか判断する
+#endif
 	[self addSubview:MscrollView]; [MscrollView release];
 	
 	//------------------------------------------
