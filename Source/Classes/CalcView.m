@@ -750,13 +750,16 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
 		fy += MtextField.frame.size.height;
 		MscrollView.frame = CGRectMake(0,fy, 320,220);
-		fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
-		MscrollView.contentSize = CGSizeMake(320+(fW+fxGap)*2, MscrollView.frame.size.height);
+		//fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
+		fW = (320 - fxGap) / 5 - fxGap; // 1ページ5列まで表示、6列目は2ページ目へ
+																								  //↓2ページ目の列数=1
+		MscrollView.contentSize = CGSizeMake(320+(fW+fxGap)*1, MscrollView.frame.size.height);
 		// 以下、MscrollView座標
 		fyGap = 5;	// Yボタン間隔
 		fy = 0;
 		//fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
-		fH = fW / GOLDENPER; // 黄金比
+		//fH = fW / GOLDENPER; // 黄金比
+		fH = fW / 1.30;
 		fyTop = fy + fyGap;
 	}
 	else {	// ヨコ

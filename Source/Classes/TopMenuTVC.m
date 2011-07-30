@@ -442,6 +442,7 @@
 #ifdef FREE_AD 
 	//--------------------------------------------AdMob
 	RoAdMobView = [[GADBannerView alloc] init];	//unloadRelease:にて破棄
+	RoAdMobView.alpha = 0;
 #ifdef AzPAD
 	RoAdMobView.frame = CGRectMake(0, 0, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
 	RoAdMobView.adUnitID = AdMobID_iPad;

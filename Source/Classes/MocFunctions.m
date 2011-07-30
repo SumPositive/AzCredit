@@ -133,173 +133,69 @@ static NSManagedObjectContext *scMoc = nil;
 #pragma mark - Delete
 
 + (void)allReset
-{
+{	// これは、FileCsv:Load と Google から利用される。
 	assert(scMoc);
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSError *error;
 	NSEntityDescription *entity;
 	NSArray *arFetch;
 
-	// E6削除　＜＜ E2,E3 より先に削除する
-	entity = [NSEntityDescription entityForName:@"E6part" inManagedObjectContext:scMoc];
-	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E6 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E6part *e6 in arFetch) {
-#if AzDEBUG
-		//if (!e6.e3record) AzLOG(@"allReset: E6.e3link Nothing");
-		//if (!e6.e2invoice) AzLOG(@"allReset: E6.e2link Nothing");
-		assert(e6.e3record);
-		assert(e6.e2invoice);
-#endif
-		[scMoc deleteObject:e6]; // 削除
-	}
+	//[1.0.2]までは、リンクを辿って削除する方式であったが、全て削除するのに、その必要は無い。
+	//[1.0.3]より、単純にエンティティ単位の一括削除に改めた。
 	
-	// E2削除
-	entity = [NSEntityDescription entityForName:@"E2invoice" inManagedObjectContext:scMoc];
-	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E2 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E2invoice *e2 in arFetch) {
-#if AzDEBUG
-		//if (!e2.e1paid && !e2.e1unpaid) AzLOG(@"allReset: E2.e1link Nothing");
-		//if (!e2.e7payment) AzLOG(@"allReset: E2.e7link Nothing");
-		assert(e2.e1paid OR e2.e1unpaid);
-		assert(e2.e7payment);
-#endif
-		[scMoc deleteObject:e2]; // 削除
-	}
-	
-	// E3削除
-	entity = [NSEntityDescription entityForName:@"E3record" inManagedObjectContext:scMoc];
-	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E3 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E3record *e3 in arFetch) {
-#if AzDEBUG
-		//if (!e3.e1card) AzLOG(@"allReset: E3.e1link Nothing");
-		assert(e3.e1card);
-#endif
-		[scMoc deleteObject:e3]; // 削除
-	}
-	
-	// E1削除　＜＜ E2,E3 から参照されているので、それらの後に削除すること
-	entity = [NSEntityDescription entityForName:@"E1card" inManagedObjectContext:scMoc];
-	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E1 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E1card *e1 in arFetch) {
-#if AzDEBUG
-		// E2を先に削除しているから、逆に残っていたらバグ
-		//if (0 < [e1.e2paids count]) AzLOG(@"allReset: E1.e2paids NoClear");
-		//if (0 < [e1.e2unpaids count]) AzLOG(@"allReset: E1.e2unpaids NoClear");
-		assert([e1.e2paids count]==0);
-		assert([e1.e2unpaids count]==0);
-#endif
-		[scMoc deleteObject:e1]; // 削除
-	}
-	
-	// E4削除
-	entity = [NSEntityDescription entityForName:@"E4shop" inManagedObjectContext:scMoc];
-	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E4 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E4shop *e4 in arFetch) {
-		[scMoc deleteObject:e4]; // 削除
-	}
-	
-	// E5削除
-	entity = [NSEntityDescription entityForName:@"E5category" inManagedObjectContext:scMoc];
-	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E5 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E5category *e5 in arFetch) {
-		[scMoc deleteObject:e5]; // 削除
-	}
-	
-	// E8削除
+	// E8
 	entity = [NSEntityDescription entityForName:@"E8bank" inManagedObjectContext:scMoc];
 	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E4 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E8bank *e8 in arFetch) {
-		[scMoc deleteObject:e8]; // 削除
-	}
-
-	// E7削除
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E7
 	entity = [NSEntityDescription entityForName:@"E7payment" inManagedObjectContext:scMoc];
 	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E7 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	for (E7payment *e7 in arFetch) {
-#if AzDEBUG
-		//if (!e7.e0paid && !e7.e0unpaid) AzLOG(@"allReset: E7.e0link Nothing");
-		assert(e7.e0paid OR e7.e0unpaid);
-#endif
-		[scMoc deleteObject:e7]; // 削除
-	}
-	
-#if AzDEBUG
-	// E0root
-	entity = [NSEntityDescription entityForName:@"E0root" inManagedObjectContext:scMoc];
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E6
+	entity = [NSEntityDescription entityForName:@"E6part" inManagedObjectContext:scMoc];
 	[fetchRequest setEntity:entity];
-	error = nil;
-	arFetch = [scMoc executeFetchRequest:fetchRequest error:&error]; // autorelease
-	if (error) {
-		[fetchRequest release];
-		AzLOG(@"allReset E0 Error: %@, %@", error, [error userInfo]);
-		return;
-	}
-	if ([arFetch count] == 1) {
-		E0root *e0 = [arFetch objectAtIndex:0]; // 未払い計を表示するためTopMenuTVCへ渡す
-		if (0 < [e0.e7paids count]) AzLOG(@"allReset: E0.e7paids NoClear");
-		if (0 < [e0.e7unpaids count]) AzLOG(@"allReset: E0.e7unpaids NoClear");
-	} else {
-		[fetchRequest release];
-		AzLOG(@"LOGIC ERR: E0root Nothing");
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E5
+	entity = [NSEntityDescription entityForName:@"E5category" inManagedObjectContext:scMoc];
+	[fetchRequest setEntity:entity];
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E4
+	entity = [NSEntityDescription entityForName:@"E4shop" inManagedObjectContext:scMoc];
+	[fetchRequest setEntity:entity];
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E3
+	entity = [NSEntityDescription entityForName:@"E3record" inManagedObjectContext:scMoc];
+	[fetchRequest setEntity:entity];
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E2
+	entity = [NSEntityDescription entityForName:@"E2invoice" inManagedObjectContext:scMoc];
+	[fetchRequest setEntity:entity];
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	// E1
+	entity = [NSEntityDescription entityForName:@"E1card" inManagedObjectContext:scMoc];
+	[fetchRequest setEntity:entity];
+	arFetch = [scMoc executeFetchRequest:fetchRequest error:nil];
+	for (id node in arFetch) [scMoc deleteObject:node];
+	
+	// E0　 ＜＜削除せずにクリアすること
+	arFetch = [self  select:@"E0root"  limit:1  offset:0  where:nil  sort:nil];
+	if (arFetch==nil || [arFetch count]<1) {
+		[self rollBack];
 		assert(NO);
+	} else {
+		// E0 クリア
+		E0root *e0root = [arFetch objectAtIndex:0];
+		e0root.e7paids = nil;
+		e0root.e7unpaids = nil;
+		// SAVE
+		[self commit];
 	}
-#endif
 
 	[fetchRequest release];
 }
@@ -313,7 +209,7 @@ static NSManagedObjectContext *scMoc = nil;
 	assert(scMoc);
 	E0root *e0root = nil;
 
-	NSArray *arFetch = [MocFunctions select:@"E0root" 
+	NSArray *arFetch = [self select:@"E0root" 
 										limit:1
 									   offset:0
 										where:nil
@@ -838,7 +734,7 @@ static NSManagedObjectContext *scMoc = nil;
 		// E6 削除
 		e6.e2invoice = nil;
 		e6.e3record = nil;	// E6 <<--> E3 リンク削除：これが無いと "LOGIC ERROR: E6 Delete NG" が出る
-		[moc deleteObject:e6];	//deleteObjectは即commitされる
+		[moc deleteObject:e6];	//deleteObjectは即commitされる ＜＜そんなことは無い！ roolback可能 save必要
 		e6 = nil;
 	}
 	[arrayE6 release];
@@ -849,8 +745,8 @@ static NSManagedObjectContext *scMoc = nil;
 	e3obj.e1card = nil;
 	e3obj.e4shop = nil;
 	e3obj.e5category = nil;
-	[moc deleteObject:e3obj];	//deleteObjectは即commitされる
-	e3obj = nil;
+	[moc deleteObject:e3obj];	//deleteObjectは即commitされる ＜＜そんなことは無い！ roolback可能 save必要
+	//NG//e3obj = nil;  ＜＜親元のdeallocにてreleaseされるため
 	// e4 sum
 	e4.sortAmount = [e4 valueForKeyPath:@"e3records.@sum.nAmount"];
 	e4.sortCount =  [e4 valueForKeyPath:@"e3records.@count"];

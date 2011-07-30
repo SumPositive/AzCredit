@@ -518,6 +518,9 @@
 				}
 				// Download前、既存データ全削除する
 				{
+					[MocFunctions allReset];
+					
+					/***********************NG** E8 が抜けている ---> allReset に統一
 					NSManagedObjectContext *context = Re0root.managedObjectContext;
 					NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
 					// E7
@@ -559,12 +562,8 @@
 					Re0root.e7paids = nil;
 					Re0root.e7unpaids = nil;
 					// SAVE
-					/*NSError *error = nil;
-					 if (![context save:&error]) {
-					 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-					 exit(-1);  // Fail
-					 }*/
 					[MocFunctions commit];
+					*****************************/
 				}
 				//-------------------------------------------------------------------------
 				// 最新版ダウンロード
