@@ -63,12 +63,7 @@
 		// E4shop 削除
 		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
 		[Re0root.managedObjectContext deleteObject:e4objDelete];
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-		/*NSError *error = nil;
-		 if (![Re0root.managedObjectContext save:&error]) {
-		 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		 exit(-1);  // Fail
-		 }*/
+		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
 		[MocFunctions commit];
 		[self.tableView reloadData];
 	}

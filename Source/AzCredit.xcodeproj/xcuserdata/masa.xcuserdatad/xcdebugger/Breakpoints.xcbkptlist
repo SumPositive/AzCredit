@@ -51,11 +51,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E8bankTVC.m"
-         timestampString = "332937570.40212"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "124"
-         endingLineNumber = "124"
+         startingLineNumber = "118"
+         endingLineNumber = "118"
          landmarkName = "-E8bankDatail:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -93,25 +93,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1158"
-         endingLineNumber = "1158"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "825"
-         endingLineNumber = "825"
+         startingLineNumber = "837"
+         endingLineNumber = "837"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -121,11 +107,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "827"
-         endingLineNumber = "827"
+         startingLineNumber = "839"
+         endingLineNumber = "839"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "831"
-         endingLineNumber = "831"
+         startingLineNumber = "843"
+         endingLineNumber = "843"
          landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -149,95 +135,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1153"
-         endingLineNumber = "1153"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1155"
-         endingLineNumber = "1155"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1219"
-         endingLineNumber = "1219"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1161"
-         endingLineNumber = "1161"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1162"
-         endingLineNumber = "1162"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1164"
-         endingLineNumber = "1164"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333527388.011112"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1165"
-         endingLineNumber = "1165"
+         startingLineNumber = "1232"
+         endingLineNumber = "1232"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -247,11 +149,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333512481.827686"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1191"
-         endingLineNumber = "1191"
+         startingLineNumber = "1190"
+         endingLineNumber = "1190"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -261,11 +163,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1266"
-         endingLineNumber = "1266"
+         startingLineNumber = "1265"
+         endingLineNumber = "1265"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -275,11 +177,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1274"
-         endingLineNumber = "1274"
+         startingLineNumber = "1273"
+         endingLineNumber = "1273"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -289,11 +191,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1276"
-         endingLineNumber = "1276"
+         startingLineNumber = "1275"
+         endingLineNumber = "1275"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -303,11 +205,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1279"
-         endingLineNumber = "1279"
+         startingLineNumber = "1278"
+         endingLineNumber = "1278"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -317,11 +219,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1299"
-         endingLineNumber = "1299"
+         startingLineNumber = "1298"
+         endingLineNumber = "1298"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -331,11 +233,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1307"
-         endingLineNumber = "1307"
+         startingLineNumber = "1306"
+         endingLineNumber = "1306"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -345,11 +247,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1316"
-         endingLineNumber = "1316"
+         startingLineNumber = "1315"
+         endingLineNumber = "1315"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -359,11 +261,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1325"
-         endingLineNumber = "1325"
+         startingLineNumber = "1324"
+         endingLineNumber = "1324"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -373,11 +275,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1353"
-         endingLineNumber = "1353"
+         startingLineNumber = "1392"
+         endingLineNumber = "1392"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -387,39 +289,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1364"
-         endingLineNumber = "1364"
-         landmarkName = "+e3record:makeE6change:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1393"
-         endingLineNumber = "1393"
-         landmarkName = "+e3record:makeE6change:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1406"
-         endingLineNumber = "1406"
+         startingLineNumber = "1405"
+         endingLineNumber = "1405"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -457,11 +331,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333512481.827686"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1231"
-         endingLineNumber = "1231"
+         startingLineNumber = "1230"
+         endingLineNumber = "1230"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -471,11 +345,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333512481.827686"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1215"
-         endingLineNumber = "1215"
+         startingLineNumber = "1214"
+         endingLineNumber = "1214"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -485,11 +359,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1384"
-         endingLineNumber = "1384"
+         startingLineNumber = "1383"
+         endingLineNumber = "1383"
          landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -499,11 +373,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333474038.45144"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1091"
-         endingLineNumber = "1091"
+         startingLineNumber = "1090"
+         endingLineNumber = "1090"
          landmarkName = "+e6part:forDue:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -513,11 +387,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333475994.480099"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1168"
-         endingLineNumber = "1168"
+         startingLineNumber = "1167"
+         endingLineNumber = "1167"
          landmarkName = "+e6part:forDue:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -527,11 +401,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333475994.480099"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1123"
-         endingLineNumber = "1123"
+         startingLineNumber = "1122"
+         endingLineNumber = "1122"
          landmarkName = "+e6part:forDue:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -541,11 +415,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333475617.204955"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1130"
-         endingLineNumber = "1130"
+         startingLineNumber = "1129"
+         endingLineNumber = "1129"
          landmarkName = "+e6part:forDue:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -555,11 +429,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333475628.541037"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1155"
-         endingLineNumber = "1155"
+         startingLineNumber = "1154"
+         endingLineNumber = "1154"
          landmarkName = "+e6part:forDue:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -569,40 +443,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333475634.669069"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1161"
-         endingLineNumber = "1161"
+         startingLineNumber = "1160"
+         endingLineNumber = "1160"
          landmarkName = "+e6part:forDue:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1346"
-         endingLineNumber = "1346"
-         landmarkName = "+e3record:makeE6change:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Classes/MocFunctions.m"
-         timestampString = "333525142.783496"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1349"
-         endingLineNumber = "1349"
-         landmarkName = "+e3record:makeE6change:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -625,11 +471,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/MocFunctions.m"
-         timestampString = "333731844.067291"
+         timestampString = "333904683.915254"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "853"
-         endingLineNumber = "853"
+         startingLineNumber = "852"
+         endingLineNumber = "852"
          landmarkName = "+e3delete:"
          landmarkType = "5">
       </FileBreakpoint>

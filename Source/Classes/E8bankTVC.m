@@ -62,12 +62,6 @@
 			e8obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
 		}
 		// Commit
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-		/*NSError *error = nil;
-		 if (![Re0root.managedObjectContext save:&error]) {
-		 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		 exit(-1);  // Fail
-		 }*/
 		[MocFunctions commit];
 		[self.tableView reloadData];
 	}

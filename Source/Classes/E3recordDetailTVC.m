@@ -24,15 +24,15 @@
 #import "CalcView.h"
 
 
-#define ACTIONSEET_TAG_DELETE		190
+#define ACTIONSEET_TAG_DELETE			190
 
 #define TAG_BAR_BUTTON_TOPVIEW		901		// viewWillAppear()にて、これ以上のものを無効にしている
-#define TAG_BAR_BUTTON_DEL			902
-#define TAG_BAR_BUTTON_ADD			903
+#define TAG_BAR_BUTTON_DEL				902
+#define TAG_BAR_BUTTON_ADD				903
 
-#define TAG_BAR_BUTTON_NEW			911		// 新規
-#define TAG_BAR_BUTTON_PAST			912		// 過去へ
-#define TAG_BAR_BUTTON_RETURN		913		// 戻す
+#define TAG_BAR_BUTTON_NEW				911		// ■ 新規
+#define TAG_BAR_BUTTON_PAST			912		// ＜ 過去へ
+#define TAG_BAR_BUTTON_RETURN		913		// ＞ 戻す
 
 @interface E3recordDetailTVC (PrivateMethods)
 //- (void)cancel:(id)sender;  iPad対応のため公開メソッド(cancelClose:)になった。
@@ -261,19 +261,31 @@
 	
 	// もし修正していた場合、それが保存されてしまわないように、まずrollBackする　＜＜Re3edit生成直後までrollBackされる＞＞
 	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
+	// entityModified リセット　　＜＜変化あれば C＋ ボタンが無効になり、ここを通らないハズだが、念のためにリセットしておく。
+	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	apd.entityModified = NO;	//リセット
+	MbModified = NO;
 	
+	// E3配下のE6クリア
+	if (RaE6parts) {
+		[RaE6parts release], RaE6parts = nil;
+	}
+	MbE6paid = NO;	//[0.3] NO = 配下のE6にPAIDは1つも無い ⇒ 主要項目も修正可能
+	MbE6checked = NO;
+
 	// Re3edit のコピーを生成して、Re3edit と置き換える。
 	E3record *e3new = [MocFunctions replicateE3record:Re3edit]; //retain されているので relese が必要
-	MbE6paid = NO;	//[0.3] NO = 配下のE6にPAIDは1つも無い ⇒ 主要項目も修正可能
 	// Replace
 	[e3new retain];		// Re3editが解放される前に確保する必要あり
 	[Re3edit release];	// 解放
 	Re3edit = e3new;	// 置換　e3new から Re3edit へオーナー移管。　Re3edit は dealloc で release される。
+
 	// Args
 	//self.title = NSLocalizedString(@"Add Record", nil);
 	self.title = NSLocalizedString(@"CopyAdd Record", nil);
 	PiAdd = (1); // (1)New Add
 	MbCopyAdd = YES; // YES:既存明細をコピーして新規追加している状態
+	
 	// Tool Bar ボタンを無効にする
 	for (id obj in self.toolbarItems) {
 		if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
@@ -314,7 +326,7 @@
 	
 	E3record *e3obj = nil;
 	switch (button.tag) {
-		case TAG_BAR_BUTTON_NEW:
+		case TAG_BAR_BUTTON_NEW:		// ■ 新規
 			// New
 			MiIndexE3lasts = (-1);
 			// 両方向の Tool Bar ボタンを有効にする
@@ -326,7 +338,7 @@
 			}
 			break;
 			
-		case TAG_BAR_BUTTON_PAST:
+		case TAG_BAR_BUTTON_PAST:		// ＜ 過去へ
 			if (MiIndexE3lasts < -1) {
 				// Min under
 				MiIndexE3lasts = (-1);
@@ -350,7 +362,7 @@
 			}
 			break;
 			
-		case TAG_BAR_BUTTON_RETURN:
+		case TAG_BAR_BUTTON_RETURN:		// ＞ 戻す
 			if (MiIndexE3lasts <= 0) {
 				// Min under
 				MiIndexE3lasts = (-1);
@@ -1155,13 +1167,12 @@
 			if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
 			
 			if (RaE6parts==nil OR [RaE6parts count]<=0) {
-				//cellButton.enabled = NO;
-				//cell.imageView.image = nil;
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
 				cell.textLabel.text = @"(C)2000-2011 Azukid";
 				cellLabel.text = @"";
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.userInteractionEnabled = NO;
+				cell.imageView.hidden = YES;
 				break;
 			} else {
 				cell.textLabel.textAlignment = UITextAlignmentLeft;
@@ -1180,6 +1191,8 @@
 				cellButton.showsTouchWhenHighlighted = YES;
 				cellButton.tag = tagButton;
 				[cell.contentView addSubview:cellButton]; //autorelese
+			} else {
+				cell.imageView.hidden = NO;
 			}
 			//------------------------------------------------------------------
 

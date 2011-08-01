@@ -65,12 +65,7 @@
 		// 削除
 		[RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
 		[Re0root.managedObjectContext deleteObject:e5objDelete];
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞
-		/*NSError *error = nil;
-		 if (![Re0root.managedObjectContext save:&error]) {
-		 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		 exit(-1);  // Fail
-		 }*/
+		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
 		[MocFunctions commit];
 		[self.tableView reloadData];
 	}

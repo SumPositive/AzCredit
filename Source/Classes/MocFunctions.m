@@ -27,9 +27,9 @@ static NSManagedObjectContext *scMoc = nil;
 {
 	assert(scMoc);
 	// Newが含まれているが、自動解放インスタンスが生成される。
-	// 即commitされる。つまり、rollbackやcommitの対象外である。
+	// 即commitされる。つまり、rollbackやcommitの対象外である。 ＜＜そんなことは無い！ roolback可能 save必要
 	return [NSEntityDescription insertNewObjectForEntityForName:zEntityName inManagedObjectContext:scMoc];
-	// ここで生成されたEntityは、rollBack では削除されない。　Cancel時には、deleteEntityが必要。
+	// ここで生成されたEntityは、rollBack では削除されない。　Cancel時には、deleteEntityが必要。 ＜＜そんなことは無い！ roolback可能 save必要
 }	
 
 + (void)deleteEntity:(NSManagedObject *)entity
@@ -37,7 +37,7 @@ static NSManagedObjectContext *scMoc = nil;
 	@synchronized(scMoc)
 	{
 		if (entity) {
-			[scMoc deleteObject:entity];	// 即commitされる。つまり、rollbackやcommitの対象外である。
+			[scMoc deleteObject:entity];	// 即commitされる。つまり、rollbackやcommitの対象外である。 ＜＜そんなことは無い！ roolback可能 save必要
 		}
 	}
 }	
@@ -678,7 +678,6 @@ static NSManagedObjectContext *scMoc = nil;
 {
 	E0root *e0root = [MocFunctions e0root];
 	BOOL bSave = NO;
-	//NSManagedObjectContext *moc = e0root.managedObjectContext;
 	
 	NSArray *aE7 = [[NSArray alloc] initWithArray:[e0root.e7unpaids allObjects]]; // Unpaid側だけ処理する
 	for (E7payment *e7 in aE7) // aE7一時配列要素は削除しないので reverseObjectEnumerator は不要 
