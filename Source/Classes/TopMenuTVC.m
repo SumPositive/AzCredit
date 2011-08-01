@@ -584,13 +584,21 @@
 // この画面が非表示になる直前に呼ばれる
 - (void)viewWillDisappear:(BOOL)animated 
 {
-	[super viewWillDisappear:animated];
-
 #if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
 	//Not iPad// Ad非表示にする
 	MbAdCanVisible = NO;  // 以後、Ad表示禁止
 	[self AdRefresh];
 #endif
+
+#ifdef AzPAD
+	if ([Mpopover isPopoverVisible]) 
+	{	//[1.1.0]Popover(E5categoryDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+		[MocFunctions rollBack];	// 修正取り消し
+		[Mpopover dismissPopoverAnimated:YES];
+	}
+#endif
+
+	[super viewWillDisappear:animated];
 }
 
 

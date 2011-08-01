@@ -618,14 +618,18 @@
 	}
 }
 
-/*
+#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {
-	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.Me3dateUse release], app.Me3dateUse = nil; //クリア
+	if ([Mpopover isPopoverVisible]) 
+	{	//[1.1.0]Popover(E3recordDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+		[MocFunctions rollBack];	// 修正取り消し
+		[Mpopover dismissPopoverAnimated:YES];
+	}
+    [super viewWillDisappear:animated];
 }
-*/
+#endif
+
 
 #pragma mark View - Rotate
 

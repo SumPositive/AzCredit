@@ -483,25 +483,18 @@
 	}
 }
 
-// ビューが非表示にされる前や解放される前ににこの処理が呼ばれる。
-// 次(前)画面が表示される前に処理される。
-- (void)viewWillDisappear:(BOOL)animated 
-{
+#ifdef AzPAD
+- (void)viewDidDisappear:(BOOL)animated
+{	// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
+	if ([Mpopover isPopoverVisible]) 
+	{	//[1.1.0]Popover(E5categoryDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+		[MocFunctions rollBack];	// 修正取り消し
+		[Mpopover dismissPopoverAnimated:YES];
+	}
     [super viewWillDisappear:animated];
-	
-	
-	/*[0.4.18]E3detailから Cancel で戻ったときに再読み込みしないようにしたため、ここでE2を削除すると落ちる場合あり。残しておくことにする。
-	 [0.4.18]レス向上のためTopMenu:viewDidAppearにて[EntityRelation e7e2clean]している。
-	 // E2(Unpaid)配下のE6が無ければ削除する。　　viewWillAppear:にて追加された前月と翌月のE2を削除するのが目的。
-	 NSArray *aE2 = [NSArray arrayWithArray:[Me2e1card.e2unpaids allObjects]];
-	 for (E2invoice *e2 in aE2) {
-	 if ([e2.e6parts count] <= 0) {
-	 [EntityRelation e2delete:e2]; // E2,E7削除
-	 }
-	 }
-	 [EntityRelation commit]; //--------------SAVE----------MOVE結果もこれにて保存される
-	 */
 }
+#endif
+
 
 
 #pragma mark  View - Rotate

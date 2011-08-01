@@ -410,6 +410,7 @@
 	vc.modalPresentationStyle = UIModalPresentationFullScreen;
 	vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	//[self.window  presentModalViewController:vc animated:YES];
+	//[mainController.navigationController presentModalViewController:vc animated:NO]; 
 	[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
 	[vc release];
 }

@@ -305,6 +305,19 @@
 	}
 }
 
+#ifdef AzPAD
+- (void)viewDidDisappear:(BOOL)animated
+{
+	if ([Mpopover isPopoverVisible]) 
+	{	//[1.1.0]Popover(E1cardDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+		[MocFunctions rollBack];	// 修正取り消し
+		[Mpopover dismissPopoverAnimated:YES];
+	}
+    [super viewWillDisappear:animated];
+}
+#endif
+
+
 #pragma mark View Rotate
 
 // 回転の許可　ここでは許可、禁止の判定だけする
