@@ -624,7 +624,7 @@
 	if ([Mpopover isPopoverVisible]) 
 	{	//[1.1.0]Popover(E3recordDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
 		[MocFunctions rollBack];	// 修正取り消し
-		[Mpopover dismissPopoverAnimated:YES];
+		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
 	}
     [super viewWillDisappear:animated];
 }
