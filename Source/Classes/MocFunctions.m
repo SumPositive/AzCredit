@@ -42,6 +42,11 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 }	
 
++ (BOOL)hasChanges		// YES=commit以後に変更あり
+{
+	return [scMoc hasChanges];
+}
+
 + (BOOL)commit
 {
 	assert(scMoc);

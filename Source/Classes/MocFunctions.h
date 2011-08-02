@@ -17,6 +17,7 @@
 + (void)setMoc:(NSManagedObjectContext *)moc;
 + (id)insertAutoEntity:(NSString *)zEntityName;
 + (void)deleteEntity:(NSManagedObject *)entity;
++ (BOOL)hasChanges;
 + (BOOL)commit;
 + (void)rollBack;
 + (NSArray *)select:(NSString *)zEntity

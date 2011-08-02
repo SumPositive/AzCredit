@@ -200,21 +200,23 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application 
 {	//iOS4: アプリケーションがアクティブでなくなる直前に呼ばれる
-	/*
-	 Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-	 Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-	 */
 	AzLOG(@"applicationWillResignActive");
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application 
 {	//iOS4: アプリケーションがバックグラウンドになったら呼ばれる
-	/*
-	 Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-	 If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
-	 */
 	AzLOG(@"applicationDidEnterBackground");
+
+#ifdef AzPAD
+	UINavigationController* naviLeft = [self.mainController.viewControllers objectAtIndex:0];	//[0]Left
+	if ([[naviLeft.viewControllers objectAtIndex:0] isMemberOfClass:[TopMenuTVC class]]) {
+		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+		if ([tvc respondsToSelector:@selector(popoverClose)]) {	// メソッドの存在を確認する
+			[tvc popoverClose];	// Popoverが開いておれば、rollbackして閉じる
+		}
+	}
+#endif
 	
 	[self applicationWillTerminate:application]; //iOS3以前の終了処理
 

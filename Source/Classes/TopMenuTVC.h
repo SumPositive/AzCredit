@@ -58,8 +58,9 @@
 
 #ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc;
-- (void)e3detailAdd;		//PadRootVCからdelegate呼び出しされる
+- (void)e3detailAdd;				//PadRootVCからdelegate呼び出しされる
 - (void)refreshTopMenuTVC;	// E3recordDetailTVC:から呼び出される
+- (void)popoverClose;				// AppDelegate:applicationDidEnterBackground: から呼び出される
 #endif
 
 @end
