@@ -112,6 +112,7 @@
 		//
 		if (e2new != e2old)
 		{	// 支払日に変化あり
+			Re6edit.e2invoice = nil;	//Fix[1.1.1] E6 <<--> E2 リンク削除：切断してからE2,E7を再集計
 			//Re6edit.nAmount 更新前に e2old 配下再集計
 			[MocFunctions e2e7update:e2old]; //Re6edit.nAmount = OLD 減
 			bDuty = YES;
