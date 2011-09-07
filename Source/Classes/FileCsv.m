@@ -284,7 +284,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	BOOL bDQSection = NO;
 	// 1行を切り出す
 	MlCsvLine++;
-	while (one = [fileHandle readDataOfLength:1]) { 
+	while ((one = [fileHandle readDataOfLength:1])) { 
 		if ([one length] <= 0) {
 			AzLOG(@"Break1");
 			break;	// ファイル終端

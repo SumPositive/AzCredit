@@ -204,7 +204,7 @@
 	
 	if (requestContentLength > 0)  // Process POST data
 	{
-		NSLog(@"processing post data: %i", requestContentLength);
+		NSLog(@"processing post data: %ld", (long)requestContentLength);
 		
 		if ([RaMultipartData count] < 2) return nil;
 		
