@@ -746,7 +746,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	if (rect.size.width < rect.size.height)
 	{	// タテ
 		//MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
-		fy = 85;
+		fy = 95;
 		MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
 		fy += MtextField.frame.size.height;
 		MscrollView.frame = CGRectMake(0,fy, 320,220);

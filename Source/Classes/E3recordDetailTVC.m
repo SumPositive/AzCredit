@@ -263,7 +263,7 @@
 	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
 	// entityModified リセット　　＜＜変化あれば C＋ ボタンが無効になり、ここを通らないハズだが、念のためにリセットしておく。
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	apd.entityModified = NO;	//リセット
+	apd.entityModified = NO;
 	MbModified = NO;
 	
 	// E3配下のE6クリア
@@ -292,6 +292,8 @@
 			[obj setEnabled:NO];
 		}
 	}
+	// [Save]ボタン表示   [1.01.001]複写したとき即Saveできるようにした（同金額で日付だけ当日にするケース）
+	self.navigationItem.rightBarButtonItem.enabled = ([Re3edit.nAmount doubleValue] != 0.0); //[1.01.001] 金額0で無ければYES
 	// テーブルビューを更新
 	[self.tableView reloadData];
 }
@@ -399,6 +401,8 @@
 		Re3edit.e1card		= e3obj.e1card;
 		Re3edit.e4shop		= e3obj.e4shop;
 		Re3edit.e5category  = e3obj.e5category;
+		// [Save]ボタン表示   [1.01.001]複写したとき即Saveできるようにした（同金額で日付だけ当日にするケース）
+		self.navigationItem.rightBarButtonItem.enabled = ([Re3edit.nAmount doubleValue] != 0.0); // 金額0で無ければYES
 	}
 	else { // New
 		// 初期化（未定）にする
@@ -410,6 +414,8 @@
 		if (PiAdd != 2) Re3edit.e1card = nil; // (2)Card固定時、消さない
 		if (PiAdd != 3) Re3edit.e4shop = nil;
 		if (PiAdd != 4) Re3edit.e5category = nil;
+		// [Save]ボタン表示
+		self.navigationItem.rightBarButtonItem.enabled = NO;	//[1.01.001][Save]無効
 	}
 	// テーブルビューを更新します。
 	[self.tableView reloadData];

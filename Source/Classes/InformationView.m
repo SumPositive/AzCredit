@@ -74,8 +74,14 @@ static UIColor *MpColorBlue(float percent) {
 	// OK
 	switch (alertView.tag) 
 	{
-		case ALERT_TAG_GoAppStore: { // Paid App Store																							 クレメモ	432458298
+		case ALERT_TAG_GoAppStore: { // Paid App Store
+#ifdef AzPAD
+			//iPad//																																					クレメモ	 for iPad	457542400
+			NSURL *url = [NSURL URLWithString:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
+#else
+			//iPhone//																																								クレメモ	432458298
 			NSURL *url = [NSURL URLWithString:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+#endif
 			[[UIApplication sharedApplication] openURL:url];
 		}	break;
 		
@@ -90,25 +96,41 @@ static UIColor *MpColorBlue(float percent) {
 			// To: 宛先
 			NSArray *toRecipients = [NSArray arrayWithObject:@"PayNote@azukid.com"];
 			[picker setToRecipients:toRecipients];
+			
 			// Subject: 件名
-			NSString* zSubj = [NSString stringWithFormat:@"%@ %@ ", 
-							   NSLocalizedString(@"Product Title",nil), 
-							   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+			NSString* zSubj = NSLocalizedString(@"Product Title",nil);
 #ifdef AzSTABLE
-			zSubj = [zSubj stringByAppendingString:@"Stable"];
+			//zSubj = [zSubj stringByAppendingString:@" Stable"];
 #else
-			zSubj = [zSubj stringByAppendingString:@"Free"];
+			zSubj = [zSubj stringByAppendingString:@" Free"];
+#endif
+#ifdef AzPAD
+			zSubj = [zSubj stringByAppendingString:@" for iPad"];
+#else
+			zSubj = [zSubj stringByAppendingString:@" for iPhone"];
+#endif
+			[picker setSubject:zSubj];  
+			
+			// Body: 本文
+			NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; // "Bundle version"
+			NSString *zBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+			NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
+#ifdef AzSTABLE
+			zBody = [zBody stringByAppendingFormat:@"Version: %@.%@ Stable\n",  zVersion, zBuild];
+#else
+			zBody = [zBody stringByAppendingFormat:@"Version: %@.%@\n",  zVersion, zBuild];
 #endif
 			UIDevice *device = [UIDevice currentDevice];
 			NSString* deviceID = [device platformString];	
-			zSubj = [zSubj stringByAppendingFormat:@" [%@-%@]", 
-					 deviceID, 
-					 [[ UIDevice currentDevice ] systemVersion]]; // OSの現在のバージョン
+			zBody = [zBody stringByAppendingFormat:@"Device: %@   iOS: %@\n\n", 
+					 deviceID,
+					 [[UIDevice currentDevice] systemVersion]]; // OSの現在のバージョン
 			
-			[picker setSubject:zSubj];  
-			// Body: 本文
-			[picker setMessageBody:NSLocalizedString(@"Contact message",nil) isHTML:NO];
-			[self hide];
+			zBody = [zBody stringByAppendingString:NSLocalizedString(@"Contact message",nil)];
+			
+			[picker setMessageBody:zBody isHTML:NO];
+			
+			//Bug//[self hide]; 上のアニメと競合してメール画面が表示されない。これより先にhideするように改めた。
 			AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 			[app.mainController presentModalViewController:picker animated:YES];
 			[picker release];
@@ -150,6 +172,8 @@ static UIColor *MpColorBlue(float percent) {
         return;
     }
 	
+	[self hide]; //アニメ競合しないように、先にhideしている。
+
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Contact mail",nil)
 													message:NSLocalizedString(@"Contact mail msg",nil)
 												   delegate:self		// clickedButtonAtIndexが呼び出される
@@ -158,32 +182,6 @@ static UIColor *MpColorBlue(float percent) {
 	alert.tag = ALERT_TAG_PostComment;
 	[alert show];
 	[alert autorelease];
-}
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller
-		  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{
-    switch (result){
-        case MFMailComposeResultCancelled:
-            //キャンセルした場合
-            break;
-        case MFMailComposeResultSaved:
-            //保存した場合
-            break;
-        case MFMailComposeResultSent:
-            //送信した場合
-			alertBox( NSLocalizedString(@"Contact Sent",nil), NSLocalizedString(@"Contact Sent msg",nil), @"OK" );
-            break;
-        case MFMailComposeResultFailed:
-            //[self setAlert:@"メール送信失敗！":@"メールの送信に失敗しました。ネットワークの設定などを確認して下さい"];
-			alertBox( NSLocalizedString(@"Contact Failed",nil), NSLocalizedString(@"Contact Failed msg",nil), @"OK" );
-            break;
-        default:
-            break;
-    }
-	// [self dismissModalViewControllerAnimated:YES];
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.mainController dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -247,29 +245,33 @@ static UIColor *MpColorBlue(float percent) {
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
-	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+50, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+40, 200, 40)];
 	label.text = NSLocalizedString(@"Product Title",nil);
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
-	//label.font = [UIFont boldSystemFontOfSize:25];
-	label.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:25];
+	label.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:35];
+	label.adjustsFontSizeToFitWidth = YES;
+	label.minimumFontSize = 16;
+	label.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
 	[self.view addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:Version
-	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; // "Bundle version"
-	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 30)];
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 45)];
+#ifdef AzSTABLE
+	NSString *zFree = @"PayNote";
+#else	
+	NSString *zFree = @"PayNote Free";
+#endif
 #ifdef AzPAD
 	NSString *zDevice = @"for iPad";
 #else	
 	NSString *zDevice = @"for iPhone";
 #endif
-#ifdef AzSTABLE
-	label.text = [NSString stringWithFormat:@"%@\nVersion %@ Stable",  zDevice, zVersion];
-#else
-	label.text = [NSString stringWithFormat:@"%@\nVersion %@ Free",  zDevice, zVersion];
-#endif
-	label.numberOfLines = 2;
+	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
+	NSString *zBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	label.text = [NSString stringWithFormat:@"%@\n%@\nVersion %@.%@", zFree, zDevice, zVersion, zBuild];
+	label.numberOfLines = 3;
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
@@ -292,13 +294,12 @@ static UIColor *MpColorBlue(float percent) {
 	[self.view addSubview:label]; [label release];
 	
 	//------------------------------------------Lable:著作権表示
-	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+120, 200, 80)];
-	label.text =	@"PayNote\n"
-						@"Born on March 26\n"
+	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+130, 200, 60)];
+	label.text =	@"Born on March 26\n"
 						@"© 2000-2011  Azukid\n"
 						@"Creator Sum Positive\n"
 						@"All Rights Reserved.";
-	label.numberOfLines = 5;
+	label.numberOfLines = 4;
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
@@ -313,7 +314,7 @@ static UIColor *MpColorBlue(float percent) {
 	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
 	
-#if defined(AzFREE) && !defined(AzPAD)
+#if defined(AzFREE)
 	//------------------------------------------Go to App Store
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:10];
@@ -428,6 +429,34 @@ static UIColor *MpColorBlue(float percent) {
 	return;
 }
 
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+		  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{
+    switch (result){
+        case MFMailComposeResultCancelled:
+            //キャンセルした場合
+            break;
+        case MFMailComposeResultSaved:
+            //保存した場合
+            break;
+        case MFMailComposeResultSent:
+            //送信した場合
+			alertBox( NSLocalizedString(@"Contact Sent",nil), NSLocalizedString(@"Contact Sent msg",nil), @"OK" );
+            break;
+        case MFMailComposeResultFailed:
+            //[self setAlert:@"メール送信失敗！":@"メールの送信に失敗しました。ネットワークの設定などを確認して下さい"];
+			alertBox( NSLocalizedString(@"Contact Failed",nil), NSLocalizedString(@"Contact Failed msg",nil), @"OK" );
+            break;
+        default:
+            break;
+    }
+	// [self dismissModalViewControllerAnimated:YES];
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[app.mainController dismissModalViewControllerAnimated:YES];
+}
 
 @end
 

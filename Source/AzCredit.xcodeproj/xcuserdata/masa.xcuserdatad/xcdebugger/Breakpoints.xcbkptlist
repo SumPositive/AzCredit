@@ -93,11 +93,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333904683.915254"
+         timestampString = "337094624.413548"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1232"
-         endingLineNumber = "1232"
+         startingLineNumber = "1238"
+         endingLineNumber = "1238"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -485,11 +485,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "333969335.955009"
+         timestampString = "337094624.413548"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "720"
-         endingLineNumber = "720"
+         startingLineNumber = "726"
+         endingLineNumber = "726"
          landmarkName = "-viewDidAppear:"
          landmarkType = "5">
       </FileBreakpoint>
