@@ -216,7 +216,7 @@
 		self.contentSizeForViewInPopover = CGSizeMake(320, 650);
 #endif
 		// インストールやアップデート後、1度だけ処理する
-		NSString *zNew = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+		NSString *zNew = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //(Version)
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		NSString* zDef = [defaults valueForKey:@"DefVersion"];
 		if (![zDef isEqualToString:zNew]) {

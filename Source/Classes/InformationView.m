@@ -112,13 +112,13 @@ static UIColor *MpColorBlue(float percent) {
 			[picker setSubject:zSubj];  
 			
 			// Body: 本文
-			NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; // "Bundle version"
-			NSString *zBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+			NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+			NSString *zBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
 			NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
 #ifdef AzSTABLE
-			zBody = [zBody stringByAppendingFormat:@"Version: %@.%@ Stable\n",  zVersion, zBuild];
+			zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@) Stable\n",  zVersion, zBuild];
 #else
-			zBody = [zBody stringByAppendingFormat:@"Version: %@.%@\n",  zVersion, zBuild];
+			zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@)\n",  zVersion, zBuild];
 #endif
 			UIDevice *device = [UIDevice currentDevice];
 			NSString* deviceID = [device platformString];	
@@ -268,9 +268,8 @@ static UIColor *MpColorBlue(float percent) {
 #else	
 	NSString *zDevice = @"for iPhone";
 #endif
-	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
-	NSString *zBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-	label.text = [NSString stringWithFormat:@"%@\n%@\nVersion %@.%@", zFree, zDevice, zVersion, zBuild];
+	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+	label.text = [NSString stringWithFormat:@"%@\n%@\nVersion %@", zFree, zDevice, zVersion];  // Build表示しない
 	label.numberOfLines = 3;
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
