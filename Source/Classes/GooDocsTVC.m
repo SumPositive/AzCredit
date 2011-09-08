@@ -117,39 +117,43 @@
 	// ユーザが既に設定済みであればその情報を表示する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	// Username
-	RtfUsername = [[UITextField alloc] init]; // viewDesignにてrect決定
-	RtfUsername.placeholder = NSLocalizedString(@"@gmail.com Optional",nil);
-	RtfUsername.text = [defaults objectForKey:GD_DefUsername];
+	if (RtfUsername==nil) {
+		RtfUsername = [[UITextField alloc] init]; // viewDesignにてrect決定
+		RtfUsername.placeholder = NSLocalizedString(@"@gmail.com Optional",nil);
+		RtfUsername.text = [defaults objectForKey:GD_DefUsername];
 #ifdef AzPAD
-	RtfUsername.font = [UIFont systemFontOfSize:20];
+		RtfUsername.font = [UIFont systemFontOfSize:20];
 #else
-	RtfUsername.font = [UIFont systemFontOfSize:14];
+		RtfUsername.font = [UIFont systemFontOfSize:14];
 #endif
-	RtfUsername.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
-	RtfUsername.keyboardType = UIKeyboardTypeEmailAddress;
-	RtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
-	RtfUsername.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
-	RtfUsername.delegate = self;
-	[MzOldUsername initWithString:RtfUsername.text];
+		RtfUsername.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
+		RtfUsername.keyboardType = UIKeyboardTypeEmailAddress;
+		RtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
+		RtfUsername.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
+		RtfUsername.delegate = self;
+		[MzOldUsername initWithString:RtfUsername.text];
+	}
 	
 	// Password
-	RtfPassword = [[UITextField alloc] init]; // viewDesignにてrect決定
-	// ラッパークラスを利用してKeyChainから保存しているパスワードを取得する処理
-	NSError *error; // nilを渡すと異常終了するので注意
-	RtfPassword.text = [SFHFKeychainUtils 
-						getPasswordForUsername:RtfUsername.text 
-								andServiceName:GD_PRODUCTNAME error:&error];
+	if (RtfPassword==nil) {
+		RtfPassword = [[UITextField alloc] init]; // viewDesignにてrect決定
+		// ラッパークラスを利用してKeyChainから保存しているパスワードを取得する処理
+		NSError *error; // nilを渡すと異常終了するので注意
+		RtfPassword.text = [SFHFKeychainUtils 
+							getPasswordForUsername:RtfUsername.text 
+							andServiceName:GD_PRODUCTNAME error:&error];
 #ifdef AzPAD
-	RtfPassword.font = [UIFont systemFontOfSize:20];
+		RtfPassword.font = [UIFont systemFontOfSize:20];
 #else
-	RtfPassword.font = [UIFont systemFontOfSize:14];
+		RtfPassword.font = [UIFont systemFontOfSize:14];
 #endif
-	RtfPassword.secureTextEntry = YES;    // パスワードを画面に表示しないようにする
-	RtfPassword.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
-	RtfPassword.keyboardType = UIKeyboardTypeASCIICapable;
-	RtfPassword.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
-	RtfPassword.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
-	RtfPassword.delegate = self;
+		RtfPassword.secureTextEntry = YES;    // パスワードを画面に表示しないようにする
+		RtfPassword.clearButtonMode = UITextFieldViewModeWhileEditing; // 全クリアボタン表示
+		RtfPassword.keyboardType = UIKeyboardTypeASCIICapable;
+		RtfPassword.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
+		RtfPassword.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
+		RtfPassword.delegate = self;
+	}
 
 	// 注意！ この時点では、まだ self.managedObjectContext などはセットされていない！
 }
@@ -1225,8 +1229,8 @@
 						[cell addSubview:RtfUsername]; // retain +1=> 2
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.textLabel.font = [UIFont systemFontOfSize:12];
+						cell.textLabel.text = NSLocalizedString(@"Username:",nil);
 					}
-					cell.textLabel.text = NSLocalizedString(@"Username:",nil);
 					return cell;
 					break;
 				case 1: // Password
@@ -1236,8 +1240,8 @@
 						[cell addSubview:RtfPassword]; // retain +1=> 2
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.textLabel.font = [UIFont systemFontOfSize:12];
+						cell.textLabel.text = NSLocalizedString(@"Password:",nil);
 					}
-					cell.textLabel.text = NSLocalizedString(@"Password:",nil);
 					return cell;
 					break;
 				case 2: // Login
@@ -1264,9 +1268,9 @@
 						[switchView addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
 						[cell addSubview:switchView];
 						[switchView release];
+						cell.textLabel.text = NSLocalizedString(@"Login",nil);
+						cell.textLabel.textAlignment = UITextAlignmentRight; 
 					}
-					cell.textLabel.text = NSLocalizedString(@"Login",nil);
-					cell.textLabel.textAlignment = UITextAlignmentRight; 
 					return cell;
 					break;
 			}
@@ -1400,9 +1404,10 @@
 			}
 			[MzOldUsername initWithString:RtfUsername.text];
 		}
-		if (0 < [RtfUsername.text length]) {
-			[RtfPassword becomeFirstResponder]; // パスワードへフォーカス移動
-		}
+		//NG//[Done]にて移動させているので不要。 iPadでは、この重複のためフォーカスが無効(どこに行ったのか解らない）になり入力できない症状が出た。
+		//NG	if (0 < [MtfUsername.text length]) {
+		//NG		[MtfPassword becomeFirstResponder]; // パスワードへフォーカス移動
+		//NG	}
 	}
 	else if (textField == RtfPassword) {
 		// Passwordは Remember Password == YES のときだけ保存
