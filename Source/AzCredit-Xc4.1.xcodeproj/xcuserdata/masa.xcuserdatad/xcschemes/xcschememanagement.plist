@@ -14,20 +14,15 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>PadFree.xcscheme</key>
+		<key>Pad Free.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>PadS1.xcscheme</key>
+		<key>Pad Stable.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
-		</dict>
-		<key>S1.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
 		</dict>
 		<key>Stable iPad.xcscheme</key>
 		<dict>
@@ -36,8 +31,6 @@
 		</dict>
 		<key>Stable.xcscheme</key>
 		<dict>
-			<key>isShown</key>
-			<true/>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
