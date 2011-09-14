@@ -150,6 +150,7 @@
 		alertBox(NSLocalizedString(@"NoCheck",nil),
 				 NSLocalizedString(@"NoCheck msg",nil),
 				 NSLocalizedString(@"Roger",nil));
+		MbAction = NO; // Action操作許可
 		return;
 	}
 	// 移動元の Unpaid 最上行Cell
