@@ -112,6 +112,12 @@
 														 inManagedObjectContext:Re0root.managedObjectContext];
 		e4detail.PbAdd = YES;
 		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
+
+		if (RzSearchText) {	//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
+			e4detail.Re4edit.zName = RzSearchText;
+			e4detail.Re4edit.sortName = RzSearchText;
+		}
+
 #ifdef  AzPAD
 		indexPath = [NSIndexPath indexPathForRow:[RaE4shops count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
 #endif
@@ -451,6 +457,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
+	[RzSearchText release], RzSearchText = nil;
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
@@ -474,6 +481,8 @@
 {
 	// Requery
 	[self requeryMe4shops:searchText];
+	//[1.1.2]
+	[RzSearchText release], RzSearchText = [searchText copy];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {

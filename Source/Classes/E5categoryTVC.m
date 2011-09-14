@@ -82,6 +82,12 @@
 														 inManagedObjectContext:Re0root.managedObjectContext];
 		e5detail.PbAdd = YES;
 		e5detail.Pe3edit = Pe3edit;
+
+		if (RzSearchText) {	//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
+			e5detail.Re5edit.zName = RzSearchText;
+			e5detail.Re5edit.sortName = RzSearchText;
+		}
+
 #ifdef  AzPAD
 		indexPath = [NSIndexPath indexPathForRow:[RaE5categorys count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
 #endif
@@ -483,6 +489,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
+	[RzSearchText release], RzSearchText = nil;
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
@@ -505,6 +512,8 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
 	// Requery
 	[self requeryMe5categorys:searchText];
+	//[1.1.2]
+	[RzSearchText release], RzSearchText = [searchText copy];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {

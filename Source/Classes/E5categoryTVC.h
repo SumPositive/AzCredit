@@ -30,6 +30,7 @@
 	E5category		*sourceE5category;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray			*RaE5categorys;
+	NSString					*RzSearchText;		//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 #ifdef AzPAD
