@@ -140,6 +140,8 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 	
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
 	assert(1 < [RaE2list count]); // Section:1
 	assert(0 < [[RaE2list objectAtIndex:1] count]); // Section:1 Row:0
 	E2temp* e2obj = [[RaE2list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
@@ -147,12 +149,16 @@
 	assert(e2obj.bPaid==NO);
 	if (0 < e2obj.iNoCheck) 
 	{	// E2配下に未チェックあり禁止
+		[appDelegate audioPlayer:@"Tock.caf"];  // キークリック音
 		alertBox(NSLocalizedString(@"NoCheck",nil),
 				 NSLocalizedString(@"NoCheck msg",nil),
 				 NSLocalizedString(@"Roger",nil));
 		MbAction = NO; // Action操作許可
 		return;
 	}
+	
+	[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
+
 	// 移動元の Unpaid 最上行Cell
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -175,6 +181,9 @@
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	[UIView setAnimationDuration:1.0];
 	
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationDidStopSelector:@selector(toPAID_After_AnimeEnd)]; //アニメーション終了後に呼び出す＜＜setAnimationDelegate必要
+
 	CGRect rc = MbuPaid.frame; rc.origin.y -= 40; MbuPaid.frame = rc;
 	
 	// 再描画
@@ -200,6 +209,15 @@
 #endif
 	// アニメ開始
 	[UIView commitAnimations];
+
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate audioPlayer:@"mail-sent.caf"];  // Mail.appの送信音
+}
+
+- (void)toPAID_After_AnimeEnd
+{	// アニメ終了後、
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
 
@@ -208,12 +226,17 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 	
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
 	assert(0 < [RaE2list count]); // Section:0
 	assert(0 < [[RaE2list objectAtIndex:0] count]); // Section:0 Row:Bottom
 	NSInteger iRowBottom = [[RaE2list objectAtIndex:0] count] - 1;
 	E2temp* e2obj = [[RaE2list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
 	assert(e2obj);
 	assert(e2obj.bPaid==YES);
+
+	[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
+
 	// 移動元の PAID 最下行Cell
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:iRowBottom inSection:0];
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -234,6 +257,9 @@
 	[UIView beginAnimations:nil context:context];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 	[UIView setAnimationDuration:1.0];
+	
+	[UIView setAnimationDelegate:self];
+	[UIView setAnimationDidStopSelector:@selector(toUnpaid_After_AnimeEnd)]; //アニメーション終了後に呼び出す＜＜setAnimationDelegate必要
 	
 	CGRect rc = MbuUnpaid.frame; rc.origin.y += 40; MbuUnpaid.frame = rc;
 	
@@ -260,6 +286,15 @@
 #endif
 	// アニメ開始
 	[UIView commitAnimations];
+
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate audioPlayer:@"ReceivedMessage.caf"];  // Mail.appの受信音
+}
+
+- (void)toUnpaid_After_AnimeEnd
+{	// アニメ終了後、
+	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
 

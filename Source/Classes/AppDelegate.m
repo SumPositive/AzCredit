@@ -7,6 +7,7 @@
 //
 // MainWindow.xlb を使用しない
 
+#import <TargetConditionals.h>  // TARGET_IPHONE_SIMULATOR のため
 #import "SFHFKeychainUtils.h"
 #import "Global.h"
 #import "AppDelegate.h"
@@ -416,6 +417,40 @@
 	[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
 	[vc release];
 }
+
+
+#pragma mark - AVAudioPlayer
+- (void)audioPlayer:(NSString*)filename
+{
+	//if (MfAudioVolume <= 0.0 || 1.0 < MfAudioVolume) return;
+#if (TARGET_IPHONE_SIMULATOR)
+	// シミュレータで動作している場合のコード
+	NSLog(@"AVAudioPlayer -　SIMULATOR");
+#else
+	// 実機で動作している場合のコード
+ 	NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@", filename]];
+	AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+	player.volume = 1.0;  //MfAudioVolume;  // 0.0〜1.0
+	player.delegate = self;		// audioPlayerDidFinishPlaying:にて release するため。
+	[player play];
+#endif
+}
+
+#pragma mark  <AVAudioPlayerDelegate>
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{	// 再生が終了したとき、破棄する	＜＜ シミュレータでは呼び出されない
+	NSLog(@"- audioPlayerDidFinishPlaying -");
+	player.delegate = nil;
+    [player release];
+}
+
+- (void)audioPlayerDecodeErrorDidOccur: (AVAudioPlayer*)player error:(NSError*)error
+{	// エラー発生
+	NSLog(@"- audioPlayerDecodeErrorDidOccur -");
+	player.delegate = nil;
+	[player release];
+}
+
 
 @end
 

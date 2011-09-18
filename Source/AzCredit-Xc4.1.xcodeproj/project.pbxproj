@@ -16,6 +16,10 @@
 		440328D311D81CAA002F321B /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
 		440AC51611299DBE00B89317 /* EditDateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 440AC51411299DBE00B89317 /* EditDateVC.h */; };
 		440AC51711299DBE00B89317 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
+		4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
+		4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
+		4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
+		4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */; };
 		442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */; };
 		442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
@@ -2068,6 +2072,7 @@
 		440328D211D81CAA002F321B /* azuki-320.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "azuki-320.jpg"; path = "Design/azuki-320.jpg"; sourceTree = "<group>"; };
 		440AC51411299DBE00B89317 /* EditDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDateVC.h; sourceTree = "<group>"; };
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDateVC.m; sourceTree = "<group>"; };
+		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginPassVC.h; sourceTree = "<group>"; };
 		442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPassVC.m; sourceTree = "<group>"; };
 		4434B82F111F0A2B00CCF7EE /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2612,6 +2617,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */,
 				44D374651361DDF200F36E36 /* SystemConfiguration.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
@@ -2644,6 +2650,7 @@
 				44B011EE133EF773005AD0EA /* MessageUI.framework in Frameworks */,
 				44B011EF133EF773005AD0EA /* QuartzCore.framework in Frameworks */,
 				44B011F0133EF773005AD0EA /* libGDataTouchStaticLib.a in Frameworks */,
+				4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2665,6 +2672,7 @@
 				44C0E43413A0A2D1003D0465 /* QuartzCore.framework in Frameworks */,
 				44C0E43513A0A2D1003D0465 /* libGDataTouchStaticLib.a in Frameworks */,
 				44C0E43613A0A2D1003D0465 /* libGoogleAdMobAds.a in Frameworks */,
+				4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2683,6 +2691,7 @@
 				44C0E65513A0A475003D0465 /* MessageUI.framework in Frameworks */,
 				44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */,
 				44C0E65713A0A475003D0465 /* libGDataTouchStaticLib.a in Frameworks */,
+				4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2755,6 +2764,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4425D23A1425AAF4004D3747 /* AVFoundation.framework */,
 				44D374641361DDF200F36E36 /* SystemConfiguration.framework */,
 				44C2A7D41108AD3C006445DC /* Security.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,

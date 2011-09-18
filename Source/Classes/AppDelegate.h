@@ -6,6 +6,7 @@
 //  Copyright __MyCompanyName__ 2009. All rights reserved.
 //
 
+#include <AVFoundation/AVFoundation.h>
 #ifdef AzPAD
 #import "padRootVC.h"
 #endif
@@ -13,7 +14,7 @@
 @class TopMenuTVC;
 @class LoginPassVC;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate>
+@interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate, AVAudioPlayerDelegate>
 {
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;	    
@@ -61,6 +62,8 @@
 #else
 @property (nonatomic, retain) UINavigationController		*mainController;
 #endif
+
+- (void)audioPlayer:(NSString*)filename;
 
 @end
 
