@@ -97,8 +97,12 @@
 		[MocFunctions commit];
 	}
 	
-	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
+	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで戻る
 		Pe3edit.e4shop = Re4edit;
+#ifdef AzPAD
+		[self.navigationController  popToRootViewControllerAnimated:YES];  // < RootViewへ戻る
+		return;
+#else
 		NSInteger iPos = [self.navigationController.viewControllers count];
 		if (3 < iPos) {
 			// 2つ前のViewへ戻る
@@ -106,7 +110,9 @@
 			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
 			return;
 		}
+#endif
 	}
+	
 #ifdef AzPAD
 	if (selfPopover) {
 		if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する

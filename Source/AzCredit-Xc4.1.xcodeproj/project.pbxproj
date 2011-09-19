@@ -1699,6 +1699,10 @@
 		44CB03E713C5B63100859E45 /* Icon90x70-toPAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D913C5B63100859E45 /* Icon90x70-toPAID.png */; };
 		44CB03E813C5B63100859E45 /* Icon90x70-toPAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D913C5B63100859E45 /* Icon90x70-toPAID.png */; };
 		44CB03E913C5B63100859E45 /* Icon90x70-toPAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D913C5B63100859E45 /* Icon90x70-toPAID.png */; };
+		44CEC514142636C4005D7850 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
+		44CEC516142636C5005D7850 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
+		44CEC517142636C6005D7850 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
+		44CEC518142636C7005D7850 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
 		44D00C3F112CCC25001BC4C8 /* E3recordTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D00C3D112CCC25001BC4C8 /* E3recordTVC.h */; };
 		44D00C40112CCC25001BC4C8 /* E3recordTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D00C3E112CCC25001BC4C8 /* E3recordTVC.m */; };
 		44D3745D1361BC2100F36E36 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374561361BC2100F36E36 /* libGoogleAdMobAds.a */; };
@@ -3784,6 +3788,7 @@
 				44D374611361BC2100F36E36 /* GADInterstitial.h in Headers */,
 				44D374621361BC2100F36E36 /* GADBannerViewDelegate.h in Headers */,
 				44D374631361BC2100F36E36 /* GADBannerView.h in Headers */,
+				44CEC514142636C4005D7850 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4165,6 +4170,7 @@
 				44B01374133EF773005AD0EA /* GDataYouTubeRating.h in Headers */,
 				44B01375133EF773005AD0EA /* GDataYouTubeStatistics.h in Headers */,
 				44BC4BD713594552009B995C /* UIDevice-Hardware.h in Headers */,
+				44CEC516142636C5005D7850 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4554,6 +4560,7 @@
 				44C0E5B413A0A2D1003D0465 /* GADBannerView.h in Headers */,
 				44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */,
 				442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
+				44CEC517142636C6005D7850 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4937,6 +4944,7 @@
 				44C0E7CF13A0A475003D0465 /* UIDevice-Hardware.h in Headers */,
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
 				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
+				44CEC518142636C7005D7850 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -85,6 +85,10 @@
 {
 	AzLOG(@"buttonCalc: text[%@] tag(%d)", button.titleLabel.text, (int)button.tag);
 	
+	//クリック音を入れてみたが、無い方が良さそう。
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//[appDelegate audioPlayer:@"Tock.caf"];  // キークリック音
+
 	switch (button.tag) 
 	{
 		case 1: // 数値
