@@ -520,6 +520,7 @@
 #endif
 
 	// TableCell表示で使う日付フォーマッタを定義する
+	assert(RcellDateFormatter==nil);
 	RcellDateFormatter = [[NSDateFormatter alloc] init];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -528,8 +529,15 @@
 	//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
 	[RcellDateFormatter setDateFormat:NSLocalizedString(@"E3listDate",nil)];
 
+	// TableCell表示で使う金額フォーマッタを定義する
+	assert(RcellNumberFormatter==nil);
+	RcellNumberFormatter = [[NSNumberFormatter alloc] init];
+	[RcellNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];  // CurrencyStyle]; // 通貨スタイル
+	[RcellNumberFormatter setLocale:[NSLocale currentLocale]]; 
+
 	
 #if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
+	assert(RoAdMobView==nil);
 	RoAdMobView = [[GADBannerView alloc]
                    initWithFrame:CGRectMake(0, 0,			// TableCell用
                                             GAD_SIZE_320x50.width,
@@ -726,6 +734,7 @@
 	[RaSection release],	RaSection = nil;
 	[RaIndex release],		RaIndex = nil;
 	[RcellDateFormatter release], RcellDateFormatter = nil;
+	[RcellNumberFormatter release], RcellNumberFormatter = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -965,11 +974,7 @@
 				cellLabel.textColor = [UIColor blackColor];
 			}
 			// Amount
-			NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-			[formatter setNumberStyle:NSNumberFormatterDecimalStyle];  // CurrencyStyle]; // 通貨スタイル
-			[formatter setLocale:[NSLocale currentLocale]]; 
-			cellLabel.text = [formatter stringFromNumber:e3obj.nAmount];
-			[formatter release];
+			cellLabel.text = [RcellNumberFormatter stringFromNumber:e3obj.nAmount];
 		}
 
 		// Cell 2行目

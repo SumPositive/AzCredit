@@ -24,7 +24,8 @@
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//----------------------------------------------loadViewにて生成 ⇒ unloadReleaseにて破棄
-	NSDateFormatter	*RcellDateFormatter;	//[1.1.2]TableCell高速化のため
+	NSDateFormatter		*RcellDateFormatter;			//[1.1.2]TableCell高速化のため
+	NSNumberFormatter	*RcellNumberFormatter;	//[1.1.2]TableCell高速化のため
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
