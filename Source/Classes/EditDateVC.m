@@ -176,10 +176,18 @@
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 	
-	if (120 * 24 * 60 * 60 < fabs([MdatePicker.date timeIntervalSinceNow])) {  //[0.4]日付チェック
-		alertBox(NSLocalizedString(@"DateUse Over",nil),
-				 NSLocalizedString(@"DateUse Over msg",nil),
-				 NSLocalizedString(@"Roger",nil));
+	//"DateUse Over" = "日付を確認してください";
+	//"DateUse Over msg" = "日先(未来)の日付です。\n年を間違っていませんか？\n念のために確認してください";
+	//"DateUse Under msg" = "日前(過去)の日付です。\n年を間違っていませんか？\n念のために確認してください";
+	long	days = (long)([MdatePicker.date timeIntervalSinceNow] / (24 * 60 * 60));
+	if (120 < abs(days)) {  //[0.4]日付チェック
+		if (days < 0) {	// 過去すぎる
+			NSString *zMsg = [NSString stringWithFormat:@"%ld%@", abs(days), NSLocalizedString(@"DateUse Under msg",nil)];
+			alertBox(NSLocalizedString(@"DateUse Over",nil), zMsg, NSLocalizedString(@"Roger",nil));
+		} else {	// 未来すぎる
+			NSString *zMsg = [NSString stringWithFormat:@"%ld%@", days, NSLocalizedString(@"DateUse Over msg",nil)];
+			alertBox(NSLocalizedString(@"DateUse Over",nil), zMsg, NSLocalizedString(@"Roger",nil));
+		}
 	}
 }
 
