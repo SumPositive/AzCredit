@@ -147,7 +147,9 @@
 		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		apd.entityModified = e4detail.PbAdd;
 
-		MindexPathEdit = indexPath;
+		//MindexPathEdit = indexPath;
+		[MindexPathEdit release], MindexPathEdit = [indexPath copy];
+
 		UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e4detail];
 		Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 		Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
@@ -457,7 +459,11 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
+#ifdef AzPAD
+	[MindexPathEdit release], MindexPathEdit = nil;
+#endif
 	[RzSearchText release], RzSearchText = nil;
+	[MindexPathActionDelete release], MindexPathActionDelete = nil;
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
@@ -487,6 +493,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
 	searchBar.text = @"";
+	[RzSearchText release], RzSearchText = nil;
 	[searchBar resignFirstResponder]; // キーボードを非表示にする
 }
 
@@ -594,7 +601,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	//[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 	
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = [tableView contentOffset];
@@ -655,7 +662,8 @@
 											forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
-		MindexPathActionDelete = indexPath;
+		//MindexPathActionDelete = indexPath;
+		[MindexPathActionDelete release], MindexPathActionDelete = [indexPath copy];
 		// 削除コマンド警告
 		UIActionSheet *action = [[UIActionSheet alloc] 
 						 initWithTitle:NSLocalizedString(@"DELETE Shop", nil)

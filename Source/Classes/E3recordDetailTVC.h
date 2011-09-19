@@ -36,7 +36,6 @@
 	UILabel					*MlbAmount;
 	CalcView					*McalcView;
 #ifdef AzPAD
-	//UIPopoverController*	MpopoverView;	// 回転時に強制的に閉じるため
 	NSInteger				MiSourceYearMMDD;	// 修正前の利用日、[Save]時に比較して同じならば修正行だけ再表示し、変化あれば全再表示する
 #else
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞

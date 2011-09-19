@@ -29,11 +29,11 @@
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray	*RaE2invoices;
 	NSMutableArray	*RaE6parts;		// (Pe2invoices,E6parts) 二次元
+	NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
 #ifdef FREE_AD
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	NSIndexPath*				MindexPathEdit;
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
 #endif

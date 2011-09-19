@@ -23,15 +23,17 @@
 	E8bank	*sourceE8bank;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE8banks;
+	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath	//[1.1.2]ポインタ代入注意！copyするように改善した。
+#ifdef AzPAD
+	NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+#endif
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
-	NSIndexPath*				MindexPathEdit;
 #endif
 	//----------------------------------------------------------------assign
-	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath
 	BOOL MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }

@@ -162,6 +162,7 @@
 		[sourceText release];
 	}
 	sourceText = [[NSString alloc] initWithString:MtextView.text];  //変更前の文字列を記録し、[Done]にて比較して変更の有無を判定している
+	//OK 上でも同じ//[sourceText release], sourceText = [MtextView.text copy];
 #endif
 	
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。

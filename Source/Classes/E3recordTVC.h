@@ -29,13 +29,15 @@
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
+#ifdef AzPAD
+	NSIndexPath				*MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+#endif
 #ifdef FREE_AD
 	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 #ifdef AzPAD
 	UIPopoverController	*Mpopover;
-	NSIndexPath				*MindexPathEdit;
 	UIPopoverController	*MpopSetting;			//回転時に閉じるため
 #endif
 	//----------------------------------------------assign
@@ -45,7 +47,6 @@
 	BOOL				PbAddMode;	//Stable// YES=表示直後、「新しい利用明細」へ遷移する
 	BOOL				MbOptAntirotation;
 	CGPoint			McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
-	//UITableViewScrollPositionTop
 	UITableViewScrollPosition	MmoreScrollPosition;
 }
 

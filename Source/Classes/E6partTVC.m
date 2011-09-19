@@ -34,7 +34,8 @@
 #ifdef AzPAD
 - (void)refreshE6partTVC:(BOOL)bSame	//=YES:支払先と支払日が変更なし、ならば行だけ再表示
 {
-/*　reloadData　や　reloadRowsAtIndexPaths でも落ちる！　まだ原因不明
+	//　reloadData　や　reloadRowsAtIndexPaths でも落ちる！　まだ原因不明 ⇒ [1.1.2]原因判明！ [indexPath copy] して解決。
+	
 	if (bSame && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
 		//NSArray* ar = [NSArray arrayWithObject:MindexPathEdit];
 		//[self.tableView reloadRowsAtIndexPaths:ar withRowAnimation:YES];
@@ -43,9 +44,7 @@
 	} else {
 		// 日付変更など行位置が変わる場合は、コンテナ配列から更新する必要あり
 		[self viewWillAppear:YES];
-	}*/
-
-	[self viewWillAppear:YES];
+	}
 }
 #endif
 
@@ -105,7 +104,8 @@
 		e3detail.PiFirstYearMMDD = [e2obj.nYearMMDD integerValue]; // E2,E7配下から追加されるとき、支払日をこのE2に合わせるため。
 	}
 	
-	MindexPathEdit = indexPath;
+	//MindexPathEdit = indexPath; 落ちる
+	[MindexPathEdit release], MindexPathEdit = [indexPath copy];
 
 	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	apd.entityModified = NO;  //リセット
@@ -614,6 +614,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
+	[MindexPathEdit release], MindexPathEdit = nil;
 	//--------------------------------@property (retain)
 	[super dealloc];
 }

@@ -44,7 +44,7 @@
 	
 @private
 	//-------------------------------------retain
-	NSDate				*Me3dateUse;			// autoreleseオブジェクト限定
+	NSDate				*Me3dateUse;			// autoreleseオブジェクト限定	//ポインタ代入注意！copyすること
 	//-------------------------------------assign
 }
 

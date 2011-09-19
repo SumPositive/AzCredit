@@ -67,6 +67,7 @@
 	[RtfPassword release];
 	AzRETAIN_CHECK(@"GooDocs MtfUsername", RtfUsername, 3)
 	[RtfUsername release];
+	[MzOldUsername release], MzOldUsername = nil;
 	
 	[mUploadTicket cancelTicket]; // キャンセルするため
 	[mDocListFetchTicket cancelTicket]; // キャンセルするため
@@ -131,7 +132,8 @@
 		RtfUsername.autocapitalizationType = UITextAutocapitalizationTypeNone; // 自動SHIFTなし
 		RtfUsername.returnKeyType = UIReturnKeyDone; // ReturnキーをDoneに変える
 		RtfUsername.delegate = self;
-		[MzOldUsername initWithString:RtfUsername.text];
+		//[MzOldUsername initWithString:RtfUsername.text];
+		[MzOldUsername release], MzOldUsername = [RtfUsername.text copy];
 	}
 	
 	// Password
@@ -1398,15 +1400,16 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
 	if (textField == RtfUsername) { //Password変更時に同時に保存するように改めた
-		if (![MzOldUsername isEqualToString:RtfUsername.text]) {
+		if (MzOldUsername==nil OR ![MzOldUsername isEqualToString:RtfUsername.text]) {
 			[defaults setObject:RtfUsername.text forKey:GD_DefUsername];
 			RtfPassword.text = @"";
-			if (MzOldUsername != nil) {
+			if (MzOldUsername) {
 				// ユーザ名が変更になっていた場合は、古いユーザ名で保存したパスワードを削除
 				[SFHFKeychainUtils deleteItemForUsername:MzOldUsername andServiceName:GD_PRODUCTNAME 
 												   error:&error];
 			}
-			[MzOldUsername initWithString:RtfUsername.text];
+			//[MzOldUsername initWithString:RtfUsername.text];
+			[MzOldUsername release], MzOldUsername = [RtfUsername.text copy];
 		}
 		//NG//[Done]にて移動させているので不要。 iPadでは、この重複のためフォーカスが無効(どこに行ったのか解らない）になり入力できない症状が出た。
 		//NG	if (0 < [MtfUsername.text length]) {

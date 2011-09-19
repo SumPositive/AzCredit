@@ -31,14 +31,16 @@
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray			*RaE5categorys;
 	NSString					*RzSearchText;		//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
+	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath		//[1.1.2]ポインタ代入注意！copyするように改善した。
+#ifdef AzPAD
+	NSIndexPath*				MindexPathEdit;		//[1.1.2]ポインタ代入注意！copyするように改善した。
+#endif
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
-	NSIndexPath*				MindexPathEdit;
 #endif
 	//----------------------------------------------------------------assign
-	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath
 	BOOL MbOptAntirotation;
 	NSInteger MiOptE5SortMode;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録

@@ -18,35 +18,24 @@
 	//--------------------------retain
 	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
 	NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
-	//id					Rentity;		// MOC Entity
-	//NSString		*RzKey;		// @"nAmount"
 	E3record		*Re3edit;
-	//E6part			*Re6edit;
 	//----------------------------------------------assign
 	id									delegate;
 	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
-	//NSDecimalNumber			*sourceDecimal;
-	// NSDecimalNumberの扱いが面倒で、単純に save:されたら「変更あり」にした。
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//NSMutableString			*RzCalc;
 	NSDecimalNumberHandler	*MbehaviorDefault;	// 通貨既定の丸め処理
 	NSDecimalNumberHandler	*MbehaviorCalc;		// 計算途中の丸め処理
-	NSArray					*RaKeyButtons;
+	NSArray							*RaKeyButtons;
 	NSDecimalNumber			*MdecAnswer;
 	
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	//UILabel			*MlbCalc;
 	UIScrollView		*MscrollView;
-	//UITextView		*MtextView;
 	UITextField			*MtextField;
-	//NSMutableArray	*MaObjects;
 
 	//----------------------------------------------assign
 	NSInteger			MiRoundingScale;
 	BOOL				MbShow;
-	//double				MdRegister; // 演算ボタンを押す度に記録される回答値
-	//NSDecimalNumber		*MdRegister; // 演算ボタンを押す度に記録される回答値
 	int					MiFunc;		// (0)Non (-4)+ (-5)- (-6)* (-7)/
 	CGRect				MrectInit;
 }

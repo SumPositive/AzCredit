@@ -90,7 +90,8 @@
 	apd.entityModified = (e1detail.PiAddRow != (-1));	//この後、EditTextVCにて変更があれば YES になる
 	//NSLog(@"apd.entityModified=%d", apd.entityModified);
 	
-	MindexPathEdit = indexPath;
+	[MindexPathEdit release], MindexPathEdit = [indexPath copy];
+
 	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e1detail];
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;  //閉じたとき再描画するため
@@ -386,10 +387,11 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
-	//[selfPopover release], selfPopover = nil;
-#endif
 	[self unloadRelease];
+#ifdef AzPAD
+	[MindexPathEdit release], MindexPathEdit = nil;
+#endif
+	[MindexPathActionDelete release], MindexPathActionDelete = nil;
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[Re3edit release];
@@ -697,7 +699,8 @@ static UIImage* GimageFromString(NSString* str)
 											forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
-		MindexPathActionDelete = indexPath;
+		//MindexPathActionDelete = indexPath; 落ちる
+		[MindexPathActionDelete release], MindexPathActionDelete = [indexPath copy];
 		// 削除コマンド警告
 		UIActionSheet *action = [[UIActionSheet alloc] 
 						 initWithTitle:NSLocalizedString(@"DELETE Card", nil)

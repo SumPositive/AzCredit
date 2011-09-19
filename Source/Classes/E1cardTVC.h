@@ -33,10 +33,10 @@
 	UIBarButtonItem *MbuAdd;
 #ifdef AzPAD
 	UIPopoverController*	Mpopover;
-	NSIndexPath*				MindexPathEdit;
+	NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
 #endif
 	//----------------------------------------------------------------assign
-	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath
+	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath  	//[1.1.2]ポインタ代入注意！copyするように改善した。
 	BOOL MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }

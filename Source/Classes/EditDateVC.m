@@ -276,14 +276,16 @@
 	//------------------------------------------------------Picker
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
 	MdatePicker = [[[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)] autorelease];
+	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
+	MdatePicker.locale = locale; 
+	[locale release];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	//NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	//[MdatePicker setCalendar:calendar];
 	//[calendar release];
 	//NG//UIDatePickerの言語表示を変えようと頑張ったがダメだった⇒ http://aosicode.blog94.fc2.com/blog-entry-32.html
 	//NG//Pickerが和暦になっても、表示は正しく西暦になるようなので、このままにしておく。
-	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
-	MdatePicker.locale = locale; [locale release];
+
 	[self.view addSubview:MdatePicker];  //auto//[MdatePicker release];
 	MintervalPrev = [MdatePicker.date timeIntervalSinceReferenceDate]; // 2001/1/1からの秒数
 	//------------------------------------------------------

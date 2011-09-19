@@ -158,7 +158,10 @@
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	[nc release];
-	MindexPathEdit = indexPath;
+	
+	//MindexPathEdit = indexPath;
+	[MindexPathEdit release], MindexPathEdit = [indexPath copy];
+	
 	CGRect rc;
 	if (indexPath) {
 		rc = [self.tableView rectForRowAtIndexPath:indexPath];
@@ -739,11 +742,12 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
+	[self unloadRelease];
 #ifdef AzPAD
 	delegate = nil;
 	[selfPopover release], selfPopover = nil;
+	[MindexPathEdit release], MindexPathEdit = nil;
 #endif
-	[self unloadRelease];
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];

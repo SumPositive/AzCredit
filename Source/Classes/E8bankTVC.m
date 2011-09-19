@@ -122,7 +122,10 @@
 	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
 	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
 	[nc release];
-	MindexPathEdit = indexPath;
+
+	//MindexPathEdit = indexPath;
+	[MindexPathEdit release], MindexPathEdit = [indexPath copy];
+	
 	CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
 	rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
 	rc.origin.y += 10;	rc.size.height -= 20;
@@ -363,6 +366,10 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
+#ifdef AzPAD
+	[MindexPathEdit release], MindexPathEdit = nil;
+#endif
+	[MindexPathActionDelete release], MindexPathActionDelete = nil;
 	//--------------------------------@property (retain)
 	[Re0root release];
 	[super dealloc];
@@ -537,7 +544,8 @@
 											forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
-		MindexPathActionDelete = indexPath;
+		//MindexPathActionDelete = indexPath;
+		[MindexPathActionDelete release], MindexPathActionDelete = [indexPath copy];
 		// 削除コマンド警告
 		UIActionSheet *action = [[UIActionSheet alloc] 
 								 initWithTitle:NSLocalizedString(@"DELETE Bank", nil)

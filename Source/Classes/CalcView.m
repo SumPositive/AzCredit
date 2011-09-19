@@ -62,8 +62,7 @@
 	if (MdecAnswer) {
 		if (ANSWER_MAX < fabs([MdecAnswer doubleValue])) {
 			Rlabel.text = @"Game Over";
-			[MdecAnswer release];
-			MdecAnswer = [[NSDecimalNumber alloc] initWithString:@"0.0"];
+			[MdecAnswer release], MdecAnswer = [[NSDecimalNumber alloc] initWithString:@"0.0"];
 			// textField.text は、そのままなので計算続行可能。
 			return;
 		}
@@ -103,10 +102,8 @@
 			
 		case 4: { // AC
 			if (MdecAnswer) {
-				[MdecAnswer release];
-				MdecAnswer = nil;
+				[MdecAnswer release], MdecAnswer = nil;
 			}
-			//MdecAnswer = nil;
 			MtextField.text = @"";
 			Rlabel.text = @"";
 			MtextField.hidden = YES;
@@ -120,10 +117,8 @@
 			}
 			else { // [AC]状態
 				if (MdecAnswer) {
-					[MdecAnswer release];
-					MdecAnswer = nil;
+					[MdecAnswer release], MdecAnswer = nil;
 				}
-				//MdecAnswer = nil;
 				MtextField.text = @"";
 				Rlabel.text = @"";
 				MtextField.hidden = YES;
@@ -227,8 +222,7 @@
 	MbShow = NO;
 	
 	if (MdecAnswer) {
-		[MdecAnswer release];
-		MdecAnswer = nil;
+		[MdecAnswer release], MdecAnswer = nil;
 	}
 	if (self.PoParentTableView) {
 		[self.PoParentTableView setScrollEnabled:YES]; //[0.3]元画面のスクロール許可
@@ -271,8 +265,7 @@
 	//NSLog(@"sourceDecimal=%@", sourceDecimal);
 	
 	if (MdecAnswer) {
-		[MdecAnswer release];
-		MdecAnswer = nil;
+		[MdecAnswer release], MdecAnswer = nil;
 	}
 	if (self.PoParentTableView) {
 		[self.PoParentTableView setScrollEnabled:NO]; //[0.3]元画面のスクロール禁止 ⇒ hideにて許可
@@ -812,7 +805,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 {
 	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
 	if (MdecAnswer) {
-		[MdecAnswer release];
+		[MdecAnswer release], MdecAnswer = nil;
 	}
 	
 	[MbehaviorCalc release];
@@ -855,8 +848,7 @@ replacementString:(NSString *)text
 {
 	if (0 < [textField.text length]) {
 		if (MdecAnswer) {
-			[MdecAnswer release];
-			MdecAnswer = nil;
+			[MdecAnswer release], MdecAnswer = nil;
 		}
 		if (MtextField.hidden) {  // 数値文字列
 			MdecAnswer = [[NSDecimalNumber alloc] initWithString:textField.text];

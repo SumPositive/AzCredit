@@ -31,7 +31,7 @@
 		[RhttpServer release];
 	}
 
-	[MdicAddresses release];
+	[MdicAddresses release], MdicAddresses = nil;
     [super dealloc];
 }
 
@@ -172,8 +172,7 @@
 	
 	if(notification)
 	{
-		[MdicAddresses release];
-		MdicAddresses = [[notification object] copy]; // 親側で直後に解放されるためcopyしている。
+		[MdicAddresses release], MdicAddresses = [[notification object] copy]; // 親側で直後に解放されるためcopyしている。
 		NSLog(@"MdicAddresses: %@", MdicAddresses);
 	}
 	
