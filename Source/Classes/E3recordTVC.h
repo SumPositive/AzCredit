@@ -23,12 +23,8 @@
 	id									delegate;
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
-	//----------------------------------------------assign
-	E4shop			*Pe4shop;		// 
-	E5category		*Pe5category;	// 
-	E8bank			*Pe8bank;		//[0.3]New
-	BOOL				PbAddMode;	//Stable// YES=表示直後、「新しい利用明細」へ遷移する
-	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
+	//----------------------------------------------loadViewにて生成 ⇒ unloadReleaseにて破棄
+	NSDateFormatter	*RcellDateFormatter;	//[1.1.2]TableCell高速化のため
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
@@ -37,15 +33,17 @@
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 #ifdef AzPAD
-	UIPopoverController*	Mpopover;
-	NSIndexPath*				MindexPathEdit;
-	UIPopoverController*	MpopSetting;			//回転時に閉じるため
-	//BOOL							PbFirstAdd;
-	//BOOL							MbModified;		//Pad// YES=変更した==>Popover外タッチで閉じさせない
+	UIPopoverController	*Mpopover;
+	NSIndexPath				*MindexPathEdit;
+	UIPopoverController	*MpopSetting;			//回転時に閉じるため
 #endif
 	//----------------------------------------------assign
-	BOOL			MbOptAntirotation;
-	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+	E4shop			*Pe4shop;		// 
+	E5category		*Pe5category;	// 
+	E8bank			*Pe8bank;		//[0.3]New
+	BOOL				PbAddMode;	//Stable// YES=表示直後、「新しい利用明細」へ遷移する
+	BOOL				MbOptAntirotation;
+	CGPoint			McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 	//UITableViewScrollPositionTop
 	UITableViewScrollPosition	MmoreScrollPosition;
 }

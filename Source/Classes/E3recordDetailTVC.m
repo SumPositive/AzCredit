@@ -959,6 +959,10 @@
 						cell.textLabel.text = NSLocalizedString(@"Use date",nil);
 					}
 					NSDateFormatter *df = [[NSDateFormatter alloc] init];
+					//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+					NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+					[df setCalendar:calendar];
+					[calendar release];
 					if (MbOptUseDateTime) {
 						[df setDateFormat:NSLocalizedString(@"E3detailDateTime",nil)];
 					} else {

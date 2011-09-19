@@ -372,6 +372,10 @@ static NSString *csvToStr( NSString *inCsv ) {
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];  // @finallyにてrelease
 	[dateFormatter setTimeStyle:NSDateFormatterFullStyle];
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZZ"];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	[dateFormatter setCalendar:calendar];
+	[calendar release];
 	
 	NSManagedObjectContext *context = Pe0root.managedObjectContext;
 	NSError *err = nil;

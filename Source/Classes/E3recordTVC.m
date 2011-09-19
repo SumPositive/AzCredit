@@ -320,7 +320,12 @@
 	[df_section setDateFormat:@"yyyy-M"]; // デフォルトのままで、iPhoneに設定されているタイムゾーンが使用される。
 	NSDateFormatter *df_index = [[NSDateFormatter alloc] init];
 	[df_index setDateFormat:@"M"];
-	
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	[df_section setCalendar:calendar];
+	[df_index setCalendar:calendar];
+	[calendar release];
+
 	NSMutableArray *e3days = [NSMutableArray new];
 	NSInteger iSec = 0;
 	NSInteger iRow = 0;
@@ -512,11 +517,17 @@
 															  target:self action:@selector(azSettingView)] autorelease];
 	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
 	[self setToolbarItems:buArray animated:YES];
-	//[buTop release];
-	//[buSet release];
 #endif
-	//[buAdd release];
-	//[buFlex release];
+
+	// TableCell表示で使う日付フォーマッタを定義する
+	RcellDateFormatter = [[NSDateFormatter alloc] init];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	[RcellDateFormatter setCalendar:calendar];
+	[calendar release];
+	//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
+	[RcellDateFormatter setDateFormat:NSLocalizedString(@"E3listDate",nil)];
+
 	
 #if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
 	RoAdMobView = [[GADBannerView alloc]
@@ -714,6 +725,7 @@
 	[RaE3list release],		RaE3list = nil;
 	[RaSection release],	RaSection = nil;
 	[RaIndex release],		RaIndex = nil;
+	[RcellDateFormatter release], RcellDateFormatter = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -935,12 +947,8 @@
 		}
 #endif
 		
-		// zDate 利用日
-		NSDateFormatter *df = [[NSDateFormatter alloc] init];
-		//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
-		[df setDateFormat:NSLocalizedString(@"E3listDate",nil)];
-		NSString *zDate = [df stringFromDate:e3obj.dateUse];
-		[df release];
+		// zDate 利用日		RcellDateFormatterを事前生成することにより高速化
+		NSString *zDate = [RcellDateFormatter stringFromDate:e3obj.dateUse];
 		// zName
 		NSString *zName = @"";
 		if (e3obj.zName != nil) zName = e3obj.zName;

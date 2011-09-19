@@ -824,6 +824,10 @@
 		
 		// zDate 利用日
 		NSDateFormatter *df = [[NSDateFormatter alloc] init];
+		//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		[df setCalendar:calendar];
+		[calendar release];
 		//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
 		[df setDateFormat:NSLocalizedString(@"E3listDate",nil)];
 		NSString *zDate = [df stringFromDate:e3obj.dateUse];

@@ -1293,6 +1293,10 @@
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
 			
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+			NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+			[dateFormatter setCalendar:calendar];
+			[calendar release];
 			//dateFormatter.dateFormat = @"yyyy/MM/dd HH:mm:ss";
 			dateFormatter.dateFormat = @"yyyy/MM/dd HH:mm";
 			// これがUploadファイル名として渡される

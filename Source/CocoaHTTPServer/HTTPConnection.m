@@ -618,6 +618,10 @@ static NSMutableArray *recentNonces;
 	[df setFormatterBehavior:NSDateFormatterBehavior10_4];
 	[df setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
 	[df setDateFormat:@"EEE, dd MMM y HH:mm:ss 'GMT'"];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	[df setCalendar:calendar];
+	[calendar release];
 	
 	// For some reason, using zzz in the format string produces GMT+00:00
 	

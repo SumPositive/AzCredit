@@ -226,6 +226,10 @@ NSDate *GdateYearMMDD( NSInteger PiYearMMDD, int PiHour, int PiMinute, int PiSec
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];  
 	[dateFormatter setTimeStyle:NSDateFormatterFullStyle];  
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];  
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	[dateFormatter setCalendar:calendar];
+	[calendar release];
 	NSDate *datetime = [dateFormatter dateFromString:dateStr];  //autorelease
 	[dateFormatter release];  	
 	[dateStr release];
