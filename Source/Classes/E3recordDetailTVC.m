@@ -212,6 +212,13 @@
 		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
 
+	//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
+	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (app.entityModified==NO) {
+		NSLog(@"BugFix [1.1.3] コピー新規追加で変更が無いとき");
+		[self remakeE6change:1];	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
+	}
+	
 	// E3配下のE6は、随時更新されている。
 	// E3配下の E4,E5あれば更新
 	[MocFunctions e3saved:Re3edit]; 
@@ -223,7 +230,6 @@
 	MbSaved = YES;
 	
 	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 	app.Me3dateUse = [[Re3edit.dateUse copy] autorelease];
 	
@@ -292,7 +298,8 @@
 			[obj setEnabled:NO];
 		}
 	}
-	// [Save]ボタン表示   [1.01.001]複写したとき即Saveできるようにした（同金額で日付だけ当日にするケース）
+	// [Save]ボタン表示   [1.1.1]複写したとき即Saveできるようにした（同金額で日付だけ当日にするケース）
+	//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
 	self.navigationItem.rightBarButtonItem.enabled = ([Re3edit.nAmount doubleValue] != 0.0); //[1.01.001] 金額0で無ければYES
 	// テーブルビューを更新
 	[self.tableView reloadData];
