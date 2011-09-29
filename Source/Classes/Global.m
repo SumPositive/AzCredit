@@ -89,11 +89,14 @@ NSInteger GiDay( NSInteger iYearMMDD )
 // NSDate --> lYearMMDD
 NSInteger GiYearMMDD( NSDate *dt )
 {
-	NSCalendar *cal = [NSCalendar currentCalendar];
+	//NSCalendar *cal = [NSCalendar currentCalendar];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-	NSDateComponents *comp = [cal components:unitFlags fromDate:dt];
+	NSDateComponents *comp = [calendar components:unitFlags fromDate:dt];
 	NSInteger iYearMMDD = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release]; autorelease
+	[calendar release];
 	return iYearMMDD;
 }
 
@@ -114,14 +117,16 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 						NSInteger iAddMM, 
 						NSInteger iAddDD )	// >= 28 ならば移動先の月の末日になる 
 {
-	NSCalendar *cal = [NSCalendar currentCalendar];
+	//NSCalendar *cal = [NSCalendar currentCalendar];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
 	NSDateComponents *comp = [[NSDateComponents alloc] init];
 	comp.year = iYearMMDD / 10000;
 	comp.month = (iYearMMDD - comp.year * 10000) / 100;
 	NSInteger iDay = iYearMMDD - (comp.year * 10000) - (comp.month * 100);
 	comp.day = 1; // 1日にする
-	NSDate *date1st = [cal dateFromComponents:comp]; // 年月1日
+	NSDate *date1st = [calendar dateFromComponents:comp]; // 年月1日
 	
 	if (28 <= iDay) {  //  月末指定は29だが、2/28 の翌月を 3/31 とするため
 		// 移動先の年月の「翌月の前日」にする
@@ -134,25 +139,28 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 		comp.month = iAddMM;
 		comp.day = (iDay - 1) + iAddDD;
 	}
-	NSDate *dateNew = [cal dateByAddingComponents:comp toDate:date1st options:0];
+	NSDate *dateNew = [calendar dateByAddingComponents:comp toDate:date1st options:0];
 	[comp release]; // alloc生成しているので必要
 	
-	comp = [cal components:unitFlags fromDate:dateNew];
+	comp = [calendar components:unitFlags fromDate:dateNew];
 	NSInteger iRet = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release];　こちらはautorelease
+	[calendar release];
 	return iRet;
 }
 
 NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDay )		// iDay>=29:月末
 {
-	NSCalendar *cal = [NSCalendar currentCalendar];
+	//NSCalendar *cal = [NSCalendar currentCalendar];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
 	NSDateComponents *comp = [[NSDateComponents alloc] init];
 	comp.year = iYearMMDD / 10000;
 	comp.month = (iYearMMDD - comp.year * 10000) / 100;
 	//NSInteger iDay = iYearMMDD - (comp.year * 10000) - (comp.month * 100);
 	comp.day = 1; // 1日にする
-	NSDate *date1st = [cal dateFromComponents:comp]; // 年月1日
+	NSDate *date1st = [calendar dateFromComponents:comp]; // 年月1日
 	
 	if (29 <= iDay) {  //  月末
 		// 移動先の年月の「翌月の前日」にする
@@ -165,12 +173,13 @@ NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDay )		// iDay>=
 		comp.month = 0;
 		comp.day = (iDay - 1);  // 加算分を指定する
 	}
-	NSDate *dateNew = [cal dateByAddingComponents:comp toDate:date1st options:0];
+	NSDate *dateNew = [calendar dateByAddingComponents:comp toDate:date1st options:0];
 	[comp release]; // alloc生成しているので必要
 	
-	comp = [cal components:unitFlags fromDate:dateNew];
+	comp = [calendar components:unitFlags fromDate:dateNew];
 	NSInteger iRet = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release];　こちらはautorelease
+	[calendar release];
 	return iRet;
 }
 

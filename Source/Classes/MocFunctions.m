@@ -284,19 +284,25 @@ static NSManagedObjectContext *scMoc = nil;
 	NSInteger iPayMonth = [Pe1card.nPayMonth integerValue]; // 支払月（0=当月、1=翌月、2=翌々月）
 	NSInteger iPayDay = [Pe1card.nPayDay integerValue];
 	
-	NSCalendar *cal = [NSCalendar currentCalendar];
+	//NSCalendar *cal = [NSCalendar currentCalendar];
+	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-	NSDateComponents *compUse = [cal components:unitFlags fromDate:PtUse]; // 利用日
+	NSDateComponents *compUse = [calendar components:unitFlags fromDate:PtUse]; // 利用日
 	
 	if (iClosingDay<=0) { // Debit 当日締
 		if (iPayDay<=0) {
+			[calendar release];
 			return GiYearMMDD( PtUse );  // 当日払
 		} else {
 			// PtUse の iPayDay 日後払
 			compUse.day += iPayDay;
-			return GiYearMMDD( [cal dateFromComponents:compUse] );
+			NSInteger iret = GiYearMMDD( [calendar dateFromComponents:compUse] );
+			[calendar release];
+			return iret;
 		}
 	}
+	[calendar release];
 	
 	// 支払日
 	NSInteger iYearMMDD = compUse.year * 10000 + compUse.month * 100 + iPayDay;
@@ -575,6 +581,11 @@ static NSManagedObjectContext *scMoc = nil;
 			e7paid.sumNoCheck = [e7paid valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
 		}
 		
+		//NSCalendar *cal = [NSCalendar currentCalendar];
+		//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
+
 		// [0.4]nRepeat対応　＜＜E2,E7をPAID移行完了してからRepeat処理すること。さもなくば落ちる＞＞
 		for (E6part *e6 in e2obj.e6parts) {
 			E3record *e3 = e6.e3record;
@@ -583,10 +594,7 @@ static NSManagedObjectContext *scMoc = nil;
 				E3record *e3add = [self replicateE3record:e3];	//autorelease
 				// 利用日を nRepeat ヶ月後の同日にする  ＜28日以上ならば各月末にする＞
 				// 元の日を求める
-				NSCalendar *cal = [NSCalendar currentCalendar];
-				unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-				| NSHourCalendarUnit | NSMinuteCalendarUnit;
-				NSDateComponents *comp = [cal components:unitFlags fromDate:e3.dateUse];
+				NSDateComponents *comp = [calendar components:unitFlags fromDate:e3.dateUse];
 				if (28 <= comp.day) {
 					// 28日以降ならば月末にするため　翌月の前日
 					comp.month += ([e3.nRepeat integerValue] + 1);	// ＋月数の翌月
@@ -594,7 +602,7 @@ static NSManagedObjectContext *scMoc = nil;
 				} else {
 					comp.month += [e3.nRepeat integerValue];		// ＋月数
 				}
-				e3add.dateUse = [cal dateFromComponents:comp];
+				e3add.dateUse = [calendar dateFromComponents:comp];
 				// E3配下のE6更新（生成）
 				[MocFunctions e3record:e3add makeE6change:1 withFirstYMD:0]; // (1)UseDate変更 ⇒ 主要項目を優先して基本E6にする
 				// E3配下のE4,E5等あれば更新
@@ -603,6 +611,7 @@ static NSManagedObjectContext *scMoc = nil;
 				e3.nRepeat = [NSNumber numberWithInteger:0]; // 繰り返しを取り消しておく
 			}
 		}
+		[calendar release];
 	}
 	else if (e2obj.e1paid) {
 		// e2obj を Unpaid にする

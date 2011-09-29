@@ -189,10 +189,6 @@
 
 - (void)setMe3list:(NSDate *)dateMiddle // この日時が画面の(MmoreScrollPosition)位置になるように前後最大50行読み込み表示する
 {
-	NSCalendar *cal = [NSCalendar currentCalendar];	// 言語設定のタイムゾーンに従う
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-	| NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
-	
 	NSLog(@"setMe3list: dateMiddle=%@", dateMiddle);
 	//BOOL bTargetBrink = YES; // 指定行を反転ブリンクさせる
 	if (dateMiddle==nil) {
@@ -324,10 +320,9 @@
 	NSDateFormatter *df_index = [[NSDateFormatter alloc] init];
 	[df_index setDateFormat:@"M"];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]; //「明細」セクションでも使っているため、df_sectionと同じ所でreleseしている。
 	[df_section setCalendar:calendar];
 	[df_index setCalendar:calendar];
-	[calendar release];
 
 	NSMutableArray *e3days = [NSMutableArray new];
 	NSInteger iSec = 0;
@@ -350,10 +345,11 @@
 	
 	// [RaE3list addObject:e3days] は、下記ループの最初に実行される。
 	
+	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
 	// 「明細」セクション
 	for (E3record *e3 in mE3array) 
 	{
-		NSDateComponents *compSec = [cal components:unitFlags fromDate:e3.dateUse];
+		NSDateComponents *compSec = [calendar components:unitFlags fromDate:e3.dateUse];
 		if (iYear != compSec.year || iMonth != compSec.month) 
 		{
 			[RaE3list addObject:e3days];	// 直前までの e3days を確定し、RaE3list へ追加する
@@ -363,7 +359,7 @@
 			iMonth = compSec.month;
 			compSec.day = 1;
 			compSec.hour = 0;
-			NSDate *dateSection = [cal dateFromComponents:compSec];
+			NSDate *dateSection = [calendar dateFromComponents:compSec];
 			AzLOG(@"-----:dateSection=[%@]", dateSection);
 			[RaSection addObject:[df_section stringFromDate:dateSection]]; // セクションタイトルに使う
 			[RaIndex addObject:[df_index stringFromDate:dateSection]]; // インデックスに使う
@@ -412,6 +408,8 @@
 	
 	[df_section release];
 	[df_index release];
+	[calendar release];
+	
 	// テーブルビューを更新
     [self.tableView reloadData];
 	
