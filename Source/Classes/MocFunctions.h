@@ -51,5 +51,6 @@
 + (void)e6check:(BOOL)bCheckOn inE6obj:(E6part *)e6obj inAlert:(BOOL)bAlert;
 + (void)e6payNextMonth:(E6part *)e6obj;
 
++ (void)bugFix113;		//[1.1.3.0]
 
 @end

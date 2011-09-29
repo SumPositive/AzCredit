@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "338998622.665726"
+         timestampString = "339004987.057207"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "706"
-         endingLineNumber = "706"
+         startingLineNumber = "709"
+         endingLineNumber = "709"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "338998622.665726"
+         timestampString = "339004987.057207"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "303"
-         endingLineNumber = "303"
+         startingLineNumber = "306"
+         endingLineNumber = "306"
          landmarkName = "-barButtonCopyAdd"
          landmarkType = "5">
       </FileBreakpoint>

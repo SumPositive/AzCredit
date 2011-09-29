@@ -1120,9 +1120,7 @@ static NSManagedObjectContext *scMoc = nil;
 		//
 		switch (iChange) {
 			case 1:	// (1) dateUse変更 ⇒ E6part1,2固定解除
-				if ([e6.nNoCheck integerValue]==0) {
-					e6.nNoCheck = [NSNumber numberWithInteger:1]; // Check解除
-				}
+				e6.nNoCheck = [NSNumber numberWithInteger:1]; // Check解除
 				break;
 				
 			case 3:	// (3) e1card変更 ⇒ 既存の E2invoice　<--> E1card を切断する。
@@ -1481,6 +1479,37 @@ static NSManagedObjectContext *scMoc = nil;
 	return YES;
 }
 
+
+#pragma mark - bugFix - 適時、除去する
+
+//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
+//このBugのためにE6の無いE3(Unpaid)が発生したので、それを見つけてE6生成する。
+//バージョンが変更されたとき、Information画面が自動に開くときに呼び出して1度だけ処理するようにした。
++ (void)bugFix113
+{
+	assert(scMoc);
+	NSArray *arFetch = [self select:@"E3record" 
+							  limit:10000
+							 offset:0
+							  where:nil
+							   sort:nil];
+	
+	if (arFetch==nil OR [arFetch count] < 1) return; 
+	
+	for (E3record *e3 in arFetch)
+	{
+		if (e3.e6parts==nil OR [e3.e6parts count] < 1)
+		{	//BugのためにE6の無いE3(Unpaid)が発生
+			NSLog(@"bugFix113: BUG: e3=%@", e3);
+			if ([MocFunctions e3record:e3 makeE6change:1 withFirstYMD:0]) { // E6partsを再生成する
+				// OK
+				[MocFunctions e3saved:e3];	// e3node.sumNoCheck の更新が必要
+				NSLog(@"bugFix113: FIX: e3=%@", e3);
+			}
+		}
+	}
+	[MocFunctions commit]; // SAVE
+}
 
 
 @end

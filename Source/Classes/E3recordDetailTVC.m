@@ -216,7 +216,10 @@
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (app.entityModified==NO) {
 		NSLog(@"BugFix [1.1.3] コピー新規追加で変更が無いとき");
-		[self remakeE6change:1];	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
+		//[self remakeE6change:1];	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
+		if ([MocFunctions e3record:Re3edit makeE6change:1 withFirstYMD:0]) { // E6partsを再生成する
+			//↓//[MocFunctions e3saved:Re3edit];	// e3node.sumNoCheck の更新が必要
+		}
 	}
 	
 	// E3配下のE6は、随時更新されている。
