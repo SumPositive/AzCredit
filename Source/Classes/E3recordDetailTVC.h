@@ -41,6 +41,7 @@
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 #endif
 	//----------------------------------------------assign
+	AppDelegate *appDelegate;
 	BOOL			MbE1cardChange;
 	
 	BOOL			MbOptAntirotation;

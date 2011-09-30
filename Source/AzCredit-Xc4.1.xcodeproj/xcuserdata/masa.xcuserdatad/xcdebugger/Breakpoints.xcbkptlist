@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Classes/E3recordDetailTVC.m"
-         timestampString = "339004987.057207"
+         timestampString = "339073995.426506"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "709"
-         endingLineNumber = "709"
+         startingLineNumber = "710"
+         endingLineNumber = "710"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>

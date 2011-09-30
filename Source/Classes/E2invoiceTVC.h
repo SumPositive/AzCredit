@@ -25,6 +25,7 @@
 	UIButton		*MbuPaid;
 	UIButton		*MbuUnpaid;
 	//----------------------------------------------assign
+	AppDelegate *appDelegate;
 	BOOL		MbFirstAppear;
 	BOOL		MbOptAntirotation;
 	BOOL		MbAction;		// 連続タッチされると落ちるので、その対策

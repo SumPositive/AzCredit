@@ -85,10 +85,10 @@
 	
 	if (Re3edit && actionSheet.tag == ACTIONSEET_TAG_DELETE) { // Re3edit 削除
 		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
 		//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		app.Me3dateUse = [[Re3edit.dateUse copy] autorelease];  // Me3dateUseはretainプロパティ
+		appDelegate.Me3dateUse = [[Re3edit.dateUse copy] autorelease];  // Me3dateUseはretainプロパティ
 		[MocFunctions e3delete:Re3edit];
 		[MocFunctions commit];
 
@@ -101,7 +101,7 @@
 				[delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
 			}
 			// TopMenuTVCにある 「未払合計額」を再描画するための処理
-			UINavigationController* naviLeft = [app.mainController.viewControllers objectAtIndex:0];	//[0]Left
+			UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
 			TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
 			if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
 				[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
@@ -171,9 +171,9 @@
 	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
 	
 	//[0.4]
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
-	app.Me3dateUse = nil; //1.0.0//
+	appDelegate.Me3dateUse = nil; //1.0.0//
 
 #ifdef AzPAD
 	[selfPopover dismissPopoverAnimated:YES];
@@ -213,8 +213,8 @@
 	}
 
 	//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.entityModified==NO) {
+	//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (appDelegate.entityModified==NO) {
 		NSLog(@"BugFix [1.1.3] コピー新規追加で変更が無いとき");
 		//[self remakeE6change:1];	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
 		if ([MocFunctions e3record:Re3edit makeE6change:1 withFirstYMD:0]) { // E6partsを再生成する
@@ -234,7 +234,7 @@
 	
 	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 	//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-	app.Me3dateUse = [[Re3edit.dateUse copy] autorelease];
+	appDelegate.Me3dateUse = [[Re3edit.dateUse copy] autorelease];
 	
 #ifdef AzPAD
 	if (selfPopover) {
@@ -248,7 +248,7 @@
 		}
 
 		// TopMenuTVCにある 「未払合計額」を再描画するための処理
-		UINavigationController* naviLeft = [app.mainController.viewControllers objectAtIndex:0];	//[0]Left
+		UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
 		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
 		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
 			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
@@ -271,8 +271,8 @@
 	// もし修正していた場合、それが保存されてしまわないように、まずrollBackする　＜＜Re3edit生成直後までrollBackされる＞＞
 	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
 	// entityModified リセット　　＜＜変化あれば C＋ ボタンが無効になり、ここを通らないハズだが、念のためにリセットしておく。
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	apd.entityModified = NO;
+	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	appDelegate.entityModified = NO;
 	MbModified = NO;
 	
 	// E3配下のE6クリア
@@ -441,6 +441,7 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化
+		appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		PiFirstYearMMDD = 0;
 		MbSaved = NO;
 		MbE1cardChange = NO;
@@ -705,8 +706,8 @@
 	// 変更あれば、ツールバー(Top, Add, Delete)を非表示にする
 	//if (PiAdd <= 0 && [Re3edit.managedObjectContext hasChanges]) {
 	//if (MbModified) {
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 変更あり
+	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (appDelegate.entityModified) {	// 変更あり
 		self.navigationItem.rightBarButtonItem.enabled = ([Re3edit.nAmount doubleValue] != 0.0); // 金額0で無ければYES
 		MbModified = YES; // titleForFooterInSection:にて参照
 		for (id obj in self.toolbarItems) {
@@ -1283,8 +1284,8 @@
 		MbE6checked = (iChecked<=0); //YES=E6parts全チェック済
 	}
 	
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	apd.entityModified = YES;	//変更あり
+	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	appDelegate.entityModified = YES;	//変更あり
 	//[self viewWillAppear:YES]; これえを呼ぶと、E6partsが非表示にされてしまう。
 	[self.tableView reloadData];
 	//[Save]ボタン表示だけ必要

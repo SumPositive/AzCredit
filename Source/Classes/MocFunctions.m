@@ -313,8 +313,8 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 	//[compUse release]; autorelease
 	// 支払月へ移動
-	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, iPayMonth, 0);	// これが支払日である
-	return iYearMMDD;
+	iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, iPayMonth, 0);	// これが支払日である 
+	return iYearMMDD; // ＜＜この日がPAIDであったときの繰り越し処理は、e6part:にて実施
 }
 
 // E1card UPDATE　締め支払条件の変更に対応  ＜＜PAID済の E6,E2,E7 は変更しない＞＞

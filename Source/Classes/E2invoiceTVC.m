@@ -140,7 +140,7 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 	
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	assert(1 < [RaE2list count]); // Section:1
 	assert(0 < [[RaE2list objectAtIndex:1] count]); // Section:1 Row:0
@@ -200,8 +200,8 @@
 	
 #ifdef AzPAD
 	// TopMenuTVCにある 「未払合計額」を再描画するための処理
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
+	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
 	TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
 	if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
 		[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
@@ -210,13 +210,13 @@
 	// アニメ開始
 	[UIView commitAnimations];
 
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate audioPlayer:@"mail-sent.caf"];  // Mail.appの送信音
 }
 
 - (void)toPAID_After_AnimeEnd
 {	// アニメ終了後、
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
@@ -226,7 +226,7 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 	
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	assert(0 < [RaE2list count]); // Section:0
 	assert(0 < [[RaE2list objectAtIndex:0] count]); // Section:0 Row:Bottom
@@ -277,8 +277,8 @@
 	
 #ifdef AzPAD
 	// TopMenuTVCにある 「未払合計額」を再描画するための処理
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviLeft = [apd.mainController.viewControllers objectAtIndex:0];	//[0]Left
+	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
 	TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
 	if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
 		[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
@@ -287,13 +287,13 @@
 	// アニメ開始
 	[UIView commitAnimations];
 
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate audioPlayer:@"ReceivedMessage.caf"];  // Mail.appの受信音
 }
 
 - (void)toUnpaid_After_AnimeEnd
 {	// アニメ終了後、
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
@@ -307,6 +307,7 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化成功
+		appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 	}
 	return self;
@@ -568,11 +569,11 @@
 #ifdef AzPAD
 	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
 	// SplitViewタテのとき [Menu] button を表示する
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
+	//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (appDelegate.barMenu) {
 		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: appDelegate.barMenu, buFlexible, buTitle, buFlexible, nil];
 		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 		toolBar.barStyle = UIBarStyleDefault;
 		[toolBar setItems:items animated:NO];
