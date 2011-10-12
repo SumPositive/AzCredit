@@ -16,7 +16,7 @@
                BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
                BuildableName = "AzCreditS1Pad.app"
                BlueprintName = "AzCreditS1Pad"
-               ReferencedContainer = "container:AzCredit-Xc4.1.xcodeproj">
+               ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,20 +28,31 @@
       buildConfiguration = "Debug">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
+            BuildableName = "AzCreditS1Pad.app"
+            BlueprintName = "AzCreditS1Pad"
+            ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release">
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
             BuildableName = "AzCreditS1Pad.app"
             BlueprintName = "AzCreditS1Pad"
-            ReferencedContainer = "container:AzCredit-Xc4.1.xcodeproj">
+            ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -51,14 +62,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release">
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
             BuildableName = "AzCreditS1Pad.app"
             BlueprintName = "AzCreditS1Pad"
-            ReferencedContainer = "container:AzCredit-Xc4.1.xcodeproj">
+            ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

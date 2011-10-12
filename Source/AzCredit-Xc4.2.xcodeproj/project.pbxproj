@@ -5029,9 +5029,9 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit-Xc4.1" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit-Xc4.2" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -5664,6 +5664,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -5684,7 +5688,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -5694,7 +5698,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -5711,7 +5718,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCredit;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 			};
@@ -5740,7 +5747,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCreditS1;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -5768,7 +5775,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCreditS1;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -5829,7 +5836,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCreditPadFree;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -5860,7 +5867,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCreditPadFree;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -5923,7 +5930,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCreditS1Pad;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -5954,7 +5961,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = AzCreditS1Pad;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -5994,7 +6001,10 @@
 		44D6024F111EF2F3004F27CC /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Masakazu Matsuyama";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
@@ -6021,6 +6031,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Masakazu Matsuyama";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -6046,7 +6060,10 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = AzDEBUG;
@@ -6062,7 +6079,7 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -6071,7 +6088,10 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
@@ -6089,7 +6109,7 @@
 					"-ObjC",
 					"-lxml2",
 				);
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4608AA2A-389C-484F-8689-6A3BA9677D70";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ACE0D48F-55DA-4F55-9A9F-0D5D6CE7A898";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -6138,7 +6158,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit-Xc4.1" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit-Xc4.2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
