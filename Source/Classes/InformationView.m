@@ -126,8 +126,12 @@ static UIColor *MpColorBlue(float percent) {
 					 deviceID,
 					 [[UIDevice currentDevice] systemVersion]]; // OSの現在のバージョン
 			
-			zBody = [zBody stringByAppendingString:NSLocalizedString(@"Contact message",nil)];
+			NSArray *languages = [NSLocale preferredLanguages];
+			zBody = [zBody stringByAppendingFormat:@"Locale: %@ (%@)\n\n",
+					 [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier],
+					 [languages objectAtIndex:0]];
 			
+			zBody = [zBody stringByAppendingString:NSLocalizedString(@"Contact message",nil)];
 			[picker setMessageBody:zBody isHTML:NO];
 			
 			//Bug//[self hide]; 上のアニメと競合してメール画面が表示されない。これより先にhideするように改めた。
