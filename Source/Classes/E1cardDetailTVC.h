@@ -10,7 +10,7 @@
 
 @class E0root;
 
-@interface E1cardDetailTVC : UITableViewController 
+@interface E1cardDetailTVC : UITableViewController
 {
 @private
 	//----------------------------------------------retain

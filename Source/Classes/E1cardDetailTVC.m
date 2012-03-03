@@ -275,7 +275,11 @@
 		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
 		cell.detailTextLabel.textColor = [UIColor blackColor];
 	}
-	
+	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	switch (indexPath.section) {
 		case 0: //-------------------------------------Indispensable
 			switch (indexPath.row) {
@@ -289,18 +293,24 @@
 				{
 					cell.textLabel.text = NSLocalizedString(@"PayDay",nil);
 
-					if ([Re1edit.nClosingDay integerValue] <= 0) {
+					if ([Re1edit.nClosingDay integerValue] <= 0) {	//Debit
 						if ([Re1edit.nPayDay integerValue] <= 0) {
-							//[0.4]当日締 ⇒ 当日払
+							//当日締⇒Debit⇒ 当日払
 							cell.detailTextLabel.text = NSLocalizedString(@"Closing-Debit",nil);
 						} else {
-							//[0.4]当日締 ⇒ ○○日後払
+							//当日締⇒Debit⇒ ○日後払
 							cell.detailTextLabel.text = [NSString stringWithFormat:
 														 NSLocalizedString(@"Closing-DebitAfter",nil),
 														 GstringDay([Re1edit.nPayDay integerValue])];
 						}
 					} 
 					else {
+						NSString *zClosingDay = nil;
+						if ([Re1edit.nClosingDay integerValue]==29) {
+							zClosingDay = NSLocalizedString(@"EndDay",nil); // 末日
+						} else {
+							zClosingDay = GstringDay([Re1edit.nClosingDay integerValue]);
+						}
 						NSString *zPayMonth = nil;
 						switch ([Re1edit.nPayMonth integerValue]) {
 							case 0:
@@ -316,10 +326,14 @@
 								zPayMonth = @"ERR:Debit?";
 								break;
 						}
-						cell.detailTextLabel.text = [NSString stringWithFormat:
-													 NSLocalizedString(@"Closing-Payment",nil),
-													 GstringDay([Re1edit.nClosingDay integerValue]), 
-													 zPayMonth, GstringDay([Re1edit.nPayDay integerValue])];
+						NSString *zPayDay = nil;
+						if ([Re1edit.nPayDay integerValue]==29) {
+							zPayDay = NSLocalizedString(@"EndDay",nil); // 末日
+						} else {
+							zPayDay = GstringDay([Re1edit.nPayDay integerValue]);
+						}
+						cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Closing-Payment",nil),
+																							zClosingDay, zPayMonth, zPayDay];
 					}
 				}
 					break;
@@ -412,7 +426,6 @@
 			}
 			break;
 	}
-    return cell;
 }
 
 

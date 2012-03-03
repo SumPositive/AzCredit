@@ -8,24 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
-@class E1card;
+//--------------------------------------------------------------------------
+// 締日	1〜28,29=末日, Debit(0)当日
+// 支払月 (0)当月　(1)翌月　(2)翌々月, Debit(0)当月
+// 支払日 1〜28,29=末日, Debit(0〜99)日後払
+//--------------------------------------------------------------------------
 
+@class E1card;
 @interface E1editPayDayVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 {
 @private
-	//--------------------------retain
 	E1card		*Re1edit;
-	//--------------------------assign
-	
-	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIPickerView	*Mpicker;
 	UILabel			*MlbClosing;
 	UILabel			*MlbPayMonth;
 	UILabel			*MlbPayDay;
 	UIButton			*MbuDebit;
 	UILabel			*MlbDebit;
-	//----------------------------------------------assign
 	BOOL MbOptAntirotation;
 	NSInteger	sourceClosingDay;
 	NSInteger	sourcePayMonth;

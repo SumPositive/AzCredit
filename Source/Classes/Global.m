@@ -61,12 +61,7 @@ NSString *GstringDay( NSInteger PlDay )
 			return NSLocalizedString(@"3rd",nil);
 			break;
 		default:
-			if (28 < PlDay) {
-				return NSLocalizedString(@"EndDay",nil); // 末日
-			}
-			else if (3 < PlDay) {
-				return [NSString stringWithFormat:@"%ld%@", PlDay, NSLocalizedString(@"th",nil)];
-			}
+			return [NSString stringWithFormat:@"%ld%@", PlDay, NSLocalizedString(@"th",nil)];
 			break;
 	}
 	return nil;

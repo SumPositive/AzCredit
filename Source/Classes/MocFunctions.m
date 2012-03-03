@@ -254,9 +254,9 @@ static NSManagedObjectContext *scMoc = nil;
 		e1.nRow = [NSNumber numberWithInt:2];
 		e1.zName = NSLocalizedString(@"Sample Rent",nil);
 		e1.zNote = NSLocalizedString(@"Sample Rent　note",nil);
-		e1.nClosingDay = [NSNumber numberWithInt:0];	// デビットと同じ条件、家賃支払日を利用日にする
-		e1.nPayMonth = [NSNumber numberWithInt:0];
-		e1.nPayDay = [NSNumber numberWithInt:0];
+		e1.nClosingDay = [NSNumber numberWithInt:29];	// 末日締
+		e1.nPayMonth = [NSNumber numberWithInt:0];		// 当月
+		e1.nPayDay = [NSNumber numberWithInt:29];		// 末日払
 		// SAVE
 		[self commit];
 	}

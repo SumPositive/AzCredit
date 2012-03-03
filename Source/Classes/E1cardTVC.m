@@ -559,19 +559,26 @@ static UIImage* GimageFromString(NSString* str)
 			cell.detailTextLabel.textColor = [UIColor blueColor];
 		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
+		NSString *zPayDay;
+		if ([e1obj.nClosingDay intValue] <= 0) { // Debit
+			if ([e1obj.nPayDay integerValue]<=0) {
+				zPayDay = NSLocalizedString(@"Debit day",nil); // 当日払
+			} else {
+				zPayDay = [NSString stringWithFormat:@"%@%@",
+						   GstringDay([e1obj.nPayDay integerValue]),	// 支払日
+						   NSLocalizedString(@"Debit After", nil)];			// 後
+			}
+		}
+		else if ([e1obj.nPayDay integerValue]==29) {
+				zPayDay = NSLocalizedString(@"EndDay",nil); // 末日
+		} else {
+			zPayDay = GstringDay([e1obj.nPayDay integerValue]);	// 支払日
+		}
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 		[formatter setLocale:[NSLocale currentLocale]]; 
-		if ([e1obj.nClosingDay intValue] <= 0) {
-			// Debit
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
-										 NSLocalizedString(@"Debit", nil),
-										 [formatter stringFromNumber:sumAmount]];
-		} else {
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
-										 GstringDay([e1obj.nPayDay intValue]),	// 支払日
-										 [formatter stringFromNumber:sumAmount]];
-		}
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", zPayDay,
+									 [formatter stringFromNumber:sumAmount]];
 		[formatter release];
 		
 		if (Re3edit == nil) {

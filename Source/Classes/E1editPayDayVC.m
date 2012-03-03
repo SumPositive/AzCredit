@@ -27,9 +27,8 @@
 - (void)buttonDebit		// [Debit]ボタンが押されたとき
 {
 	[Mpicker selectRow:0 inComponent:0 animated:YES];	//「当日締」
-	[Mpicker reloadAllComponents];						// 再描画
-	[Mpicker selectRow:0 inComponent:0 animated:YES];	// 2回目だが、こうしないと再描画されない
-	[Mpicker selectRow:0 inComponent:1 animated:YES];	//「⇒⇒⇒」
+	[Mpicker reloadAllComponents];  //Component:0の状態により:1:2の表示が変化するため、ここで再描画する
+	[Mpicker selectRow:0 inComponent:1 animated:YES];	//「⇒Debit⇒」
 	[Mpicker selectRow:0 inComponent:2 animated:YES];	//「当日払」
 }
 
@@ -39,16 +38,14 @@
 - (void)done:(id)sender
 {
 	// 結果更新
-	if ([Mpicker selectedRowInComponent:0] <= 0 
-		OR [Mpicker selectedRowInComponent:1] <= 0) {
-		// 0=Debit(自動引落し)
+	if ([Mpicker selectedRowInComponent:0] <= 0) {		//Debit(自動引落し)
 		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:(-1)];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:0];
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]]; // 日後払い
 	} else {
 		// 締め支払
 		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1] - 1];
+		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
 	}
 
@@ -231,18 +228,23 @@
 	// PICKER 指定されたコンポーネンツの行を選択する。
 	NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
 	sourceClosingDay = iDay;
-	if (iDay < 0 OR 29 < iDay) iDay = 20;
-	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 0=Debit
+	if (iDay < 0 OR 29 < iDay) iDay = 0;
+	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 締日	1〜28,29=末日, Debit(0)当日
+	[Mpicker reloadAllComponents];  //Component:0の状態により:1:2の表示が変化するため、ここで再描画する
 
 	iDay = [Re1edit.nPayMonth integerValue];
 	sourcePayMonth = iDay;
-	if (iDay < -1 OR 2 < iDay) iDay = 1;
-	[Mpicker selectRow:1+iDay inComponent:1 animated:NO]; // 0=Debit
+	if (iDay < 0 OR 2 < iDay) iDay = 0;
+	[Mpicker selectRow:iDay inComponent:1 animated:NO]; // 支払月 (0)当月　(1)翌月　(2)翌々月, Debit(0)当月
 	
 	iDay = [Re1edit.nPayDay integerValue];
 	sourcePayDay = iDay;
-	if (iDay < 0 OR 29 < iDay) iDay = 20;
-	[Mpicker selectRow:iDay inComponent:2 animated:NO];  // 0=Debit
+	if (sourceClosingDay==0) {
+		if (iDay < 0 OR 99 < iDay) iDay = 0;
+	} else {
+		if (iDay < 0 OR 29 < iDay) iDay = 29;
+	}
+	[Mpicker selectRow:iDay inComponent:2 animated:NO];  // 支払日 1〜28,29=末日, Debit(0〜99)日後払
 	
 	[self viewDesign];
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
@@ -301,11 +303,20 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
 	switch (component) {
-		case 0: return 30;
+		case 0: 
+			return 30;
 			break;
-		case 1: return 4;
+		case 1:
+			if ([Mpicker selectedRowInComponent:0] <= 0) { //Debit
+				return 1;
+			}
+			return 3;
 			break;
-		case 2: return 30;
+		case 2: 
+			if ([Mpicker selectedRowInComponent:0] <= 0) { //Debit
+				return 100;
+			}
+			return 30;
 			break;
 	}
 	return 0;
@@ -328,8 +339,11 @@
 {
 	switch (component) {
 		case 0:
-			if (row <= 0) {
-				return NSLocalizedString(@"Debit", nil); // 0=Debit(利用日⇒支払日)	
+			if (row <= 0) {		// 当日締
+				return NSLocalizedString(@"Debit", nil); //Debit: 利用日⇒支払日	
+			}
+			else if (row==29) {
+					return NSLocalizedString(@"EndDay",nil); // 末日
 			} else {
 				return [NSString stringWithFormat:@"%@%@", 
 						GstringDay( row ), 
@@ -337,39 +351,39 @@
 			}
 			break;
 		case 1:
-			if ([Mpicker selectedRowInComponent:0] <= 0) { // 当日締
-				if (row==0) {
-					return @"⇒ ⇒ ⇒";
-				}
+			if ([Mpicker selectedRowInComponent:0] <= 0) { //Debit: 当日締
+				return @"⇒Debit⇒";
 			}
 			else {
 				switch (row) {
 					case 0:
-						//return @"";
-						break;
-					case 1:
 						return NSLocalizedString(@"This month",nil);
 						break;
-					case 2:
+					case 1:
 						return NSLocalizedString(@"Next month",nil);
 						break;
-					case 3:
+					case 2:
 						return NSLocalizedString(@"Twice months",nil);
 						break;
 				}
 			}
 			break;
 		case 2:
-			if ([Mpicker selectedRowInComponent:0] <= 0) { 
+			if ([Mpicker selectedRowInComponent:0] <= 0) { //Debit: 当日締
 				if (row <= 0) {
 					return NSLocalizedString(@"Debit day", nil); // 当日払
-				} else if (row <= 28) {
+				} else {
 					return [NSString stringWithFormat:@"%@%@", 
 							GstringDay( row ), 
 							NSLocalizedString(@"Debit After", nil)];
 				}
 			} else {
-				if (0 < row && row <= 29) {
+				if (row <= 0) {
+					return @"";
+				}
+				else if (row==29) {
+					return NSLocalizedString(@"EndDay",nil); // 末日
+				} else {
 					return [NSString stringWithFormat:@"%@%@", 
 							GstringDay( row ), 
 							NSLocalizedString(@"Due", nil)];
@@ -382,19 +396,18 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-	[Mpicker reloadAllComponents];
+	[Mpicker reloadAllComponents];  //Component:0の状態により:1:2の表示が変化するため、ここで再描画する
 	
-	if ([Mpicker selectedRowInComponent:0] <= 0) {
-		// 0=Debit(自動引落し)
+	if ([Mpicker selectedRowInComponent:0] <= 0) {		//Debit(自動引落し)
 		[Mpicker selectRow:0 inComponent:1 animated:YES];
-		if (28<[Mpicker selectedRowInComponent:2]) {
+		/*if (28<[Mpicker selectedRowInComponent:2]) {
 			[Mpicker selectRow:28 inComponent:2 animated:YES];
-		}
+		}*/
 	} 
 	else {
-		if ([Mpicker selectedRowInComponent:1]<=0) {
+		/*if ([Mpicker selectedRowInComponent:1]<=0) {
 			[Mpicker selectRow:1 inComponent:1 animated:YES];
-		}
+		}*/
 		if ([Mpicker selectedRowInComponent:2]<=0) {
 			[Mpicker selectRow:1 inComponent:2 animated:YES];
 		}

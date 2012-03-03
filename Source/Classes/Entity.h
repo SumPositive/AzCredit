@@ -37,9 +37,9 @@
 }
 @property (nonatomic, retain) NSNumber	*nBonus1;		// ボーナス月1
 @property (nonatomic, retain) NSNumber	*nBonus2;		// ボーナス月2 
-@property (nonatomic, retain) NSNumber	*nClosingDay;	// 締日 1〜28,29=末日,    0=Debit(利用日⇒支払日)	
-@property (nonatomic, retain) NSNumber	*nPayDay;		// 支払日 1〜28,29=末日,  Debit(0〜99)日後支払
-@property (nonatomic, retain) NSNumber	*nPayMonth;		// 支払月 (0)当月　(1)翌月　(2)翌々月
+@property (nonatomic, retain) NSNumber	*nClosingDay;	// 締日	1〜28,29=末日, Debit(0)当日
+@property (nonatomic, retain) NSNumber	*nPayMonth;	// 支払月 (0)当月　(1)翌月　(2)翌々月, Debit(0)当月
+@property (nonatomic, retain) NSNumber	*nPayDay;		// 支払日 1〜28,29=末日, Debit(0〜99)日後払
 @property (nonatomic, retain) NSNumber	*nRow;
 @property (nonatomic, retain) NSString	*zName;
 @property (nonatomic, retain) NSString	*zNote;
