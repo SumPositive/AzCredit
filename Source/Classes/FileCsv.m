@@ -227,7 +227,16 @@ static NSString *csvToStr( NSString *inCsv ) {
 				[str release]; // autorelease使用せず！
 				
 				//----------------------------------------------------------E3-->>E6 [Pay]
-				for (E6part *e6node in e3node.e6parts) {
+				NSMutableArray *mE6 = [[NSMutableArray alloc] initWithArray:[e3node.e6parts allObjects]];
+				if (1 < [mE6 count]) {
+					//[1.1.5] nPartNo昇順にする
+					NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nPartNo" ascending:YES];
+					NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1,nil];
+					[mE6 sortUsingDescriptors:sortArray];
+					[sortArray release];
+					[sort1 release];
+				}
+				for (E6part *e6node in mE6) {
 					//--------------------------------------E6
 					NSInteger iYearMMDD = [e6node.e2invoice.nYearMMDD integerValue];
 					
@@ -247,6 +256,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 					[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
 					[str release]; // autorelease使用せず！
 				}
+				[mE6 release];
 			}
 		}
 		
@@ -365,6 +375,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	
 	E1card		*ActE1card = nil;
 	E3record	*ActE3record = nil;
+	E6part		*PrevE6part = nil;
 	NSInteger	iPrevE6YearMMDD = 0;
 	NSInteger	iE1nPayMonth = 0;
 	NSInteger	iE6partNo = 0;
@@ -584,18 +595,23 @@ static NSString *csvToStr( NSString *inCsv ) {
 				e3node.zNote = csvToStr([MaCsv objectAtIndex:8]);
 				ActE3record = e3node; // E6のため
 				iPrevE6YearMMDD = 0;
+				PrevE6part = nil;
 				iE6partNo = 1;
 			}
 			
 			//--------------------------------------------------------------------------------[Pay] E6
 			else if ([[MaCsv objectAtIndex:0] isEqualToString:@"Pay"] && ActE3record) 
 			{ // E6,iYearMMDD,zPaid,lAmount,fInterest,bChecked,
+				BOOL bPartNo_ReSort = NO;
 				NSInteger iYearMMDD = [[MaCsv objectAtIndex:1] integerValue]; // 支払日
 				if (iYearMMDD < AzMIN_YearMMDD OR AzMAX_YearMMDD < iYearMMDD) {
 					@throw NSLocalizedString(@"STOP E6iYearMMDDNG",nil);
 				}
 				else if (iYearMMDD/100 <= iPrevE6YearMMDD/100) {
-					@throw NSLocalizedString(@"STOP E6lYearMM-NG",nil);
+					//@throw NSLocalizedString(@"STOP E6lYearMM-NG",nil);
+					//[1.1.5]二回払いのときCSV保存時にE6.nPartNoの逆転が生じる場合があった。＞ 保存時に発生しないように改善済み。
+					//[1.1.5]既にE6.nPartNoが逆転したCSVのため、E6生成時、E6.nPartNoの付け替えを実施する
+					bPartNo_ReSort = YES;
 				}
 				iPrevE6YearMMDD = iYearMMDD;
 				
@@ -631,7 +647,14 @@ static NSString *csvToStr( NSString *inCsv ) {
 				
 				// Add E6
 				E6part *e6node = [NSEntityDescription insertNewObjectForEntityForName:@"E6part" inManagedObjectContext:context];
-				e6node.nPartNo = [NSNumber numberWithInteger:(iE6partNo++)]; // 代入してからインクリメント
+				if (bPartNo_ReSort && PrevE6part) {  // 逆転発生、nPartNoを逆にする
+					e6node.nPartNo = PrevE6part.nPartNo;		// 付け替え
+					PrevE6part.nPartNo = [NSNumber numberWithInteger:(iE6partNo++)];
+					PrevE6part = nil;
+				} else {
+					e6node.nPartNo = [NSNumber numberWithInteger:(iE6partNo++)]; // 代入してからインクリメント
+					PrevE6part = e6node;
+				}
 				e6node.nAmount = decAmount; //[NSNumber numberWithInteger:iAmount];
 				e6node.nInterest = decInterest; //[NSNumber numberWithFloat:fInterest];
 				e6node.nNoCheck = [NSNumber numberWithInteger:iNoCheck];
