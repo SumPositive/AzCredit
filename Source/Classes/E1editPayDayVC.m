@@ -48,6 +48,10 @@
 		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
 		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
 	}
+	
+	if (0<[Re1edit.nClosingDay integerValue] && [Re1edit.nPayDay integerValue]<=0) {
+		Re1edit.nPayDay = [NSNumber numberWithInteger:1];
+	}
 
 	if (sourceClosingDay != [Re1edit.nClosingDay integerValue]
 		|| sourcePayMonth != [Re1edit.nPayMonth integerValue]
@@ -352,7 +356,7 @@
 			break;
 		case 1:
 			if ([Mpicker selectedRowInComponent:0] <= 0) { //Debit: 当日締
-				return @"⇒Debit⇒";
+				return @"Debit";
 			}
 			else {
 				switch (row) {
@@ -400,17 +404,9 @@
 	
 	if ([Mpicker selectedRowInComponent:0] <= 0) {		//Debit(自動引落し)
 		[Mpicker selectRow:0 inComponent:1 animated:YES];
-		/*if (28<[Mpicker selectedRowInComponent:2]) {
-			[Mpicker selectRow:28 inComponent:2 animated:YES];
-		}*/
 	} 
-	else {
-		/*if ([Mpicker selectedRowInComponent:1]<=0) {
-			[Mpicker selectRow:1 inComponent:1 animated:YES];
-		}*/
-		if ([Mpicker selectedRowInComponent:2]<=0) {
-			[Mpicker selectRow:1 inComponent:2 animated:YES];
-		}
+	else if ([Mpicker selectedRowInComponent:2]<=0) {
+		[Mpicker selectRow:1 inComponent:2 animated:YES];
 	}
 }
 
