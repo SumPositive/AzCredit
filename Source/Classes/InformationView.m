@@ -299,7 +299,7 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Lable:著作権表示
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+130, 200, 60)];
 	label.text =	@"Born on March 26\n"
-						@"© 2000-2011  Azukid\n"
+						@"© 2000-2012  Azukid\n"
 						@"Creator Sum Positive\n"
 						@"All Rights Reserved.";
 	label.numberOfLines = 4;

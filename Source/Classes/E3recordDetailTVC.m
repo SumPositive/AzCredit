@@ -1189,7 +1189,7 @@
 			
 			if (RaE6parts==nil OR [RaE6parts count]<=0) {
 				cell.textLabel.textAlignment = UITextAlignmentCenter;
-				cell.textLabel.text = @"(C)2000-2011 Azukid";
+				cell.textLabel.text = @"(C)2000-2012 Azukid";
 				cellLabel.text = @"";
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.userInteractionEnabled = NO;

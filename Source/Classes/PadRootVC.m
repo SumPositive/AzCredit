@@ -180,7 +180,7 @@
 	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
 	UIViewController *rightVC = nc.visibleViewController;
 	NSLog(@"rightVC.title=%@", rightVC.title);
-	barButtonItem.title = @"    T o p    ";
+	barButtonItem.title = @"    M e n u    ";		// @"    T o p    ";
 	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
 	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: barButtonItem, buFlexible, buTitle, buFlexible, nil];

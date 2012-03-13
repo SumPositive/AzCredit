@@ -559,9 +559,9 @@
 	switch (section) {
 		case 3:
 #if defined(FREE_AD) && defined(AzPAD)
-			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2011 Azukid\n\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
+			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2012 Azukid\n\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
 #else
-			return	@"\nAzukiSoft Project\n©2000-2011 Azukid\n";
+			return	@"\nAzukiSoft Project\n©2000-2012 Azukid\n";
 #endif
 			break;
 	}
