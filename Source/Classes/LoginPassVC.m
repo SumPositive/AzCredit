@@ -135,6 +135,7 @@
 - (void)viewDidAppear:(BOOL)animated 
 {
 	[super viewDidAppear:animated];
+	[self viewDesign:self.interfaceOrientation]; //初期の回転方向に対応するため
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 	[[self.view viewWithTag:TAG_LOGINPASS] becomeFirstResponder];  //フォーカス＆キーボード表示
 }
@@ -199,8 +200,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
+{   // Return YES for supported orientations
 	return YES;
 }
 

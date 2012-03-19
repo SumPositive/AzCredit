@@ -16,5 +16,6 @@
 }
 
 @property (nonatomic, assign) id									delegate;
+//@property (nonatomic, strong) UIPopoverController* menuPopoverController;
 
 @end

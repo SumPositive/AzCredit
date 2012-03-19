@@ -449,7 +449,7 @@
 #ifdef AzPAD
 		MiSourceYearMMDD = 0;		// 初回のみ通すため
 		self.contentSizeForViewInPopover = GD_POPOVER_SIZE_INIT;
-		// この後、viewDidAppearにて GD_POPOVER_SIZE を設定することにより、ようやくPopoverサイズの変動が無くなった。
+		//この後、viewDidAppearにて GD_POPOVER_SIZE を設定することにより、ようやくPopoverサイズの変動が無くなった。
 #endif
 	}
 	return self;
@@ -727,7 +727,7 @@
 }
 
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
-- (void)viewDidAppear:(BOOL)animated 
+- (void)viewDidAppear:(BOOL)animated
 {
 #ifdef AzPAD
 	// init 時に GD_POPOVER_SIZE_INIT を設定してから、この処理により、ようやくPopoverサイズの変動が無くなった。
@@ -736,8 +736,6 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
-
-
 
 
 #pragma mark View - Rotate

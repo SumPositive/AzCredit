@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
-               BuildableName = "AzCreditS1Pad.app"
-               BlueprintName = "AzCreditS1Pad"
-               ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
+               BlueprintIdentifier = "44C0E3B413A0A2D1003D0465"
+               BuildableName = "AzCreditPadFree.app"
+               BlueprintName = "AzCreditPadFree"
+               ReferencedContainer = "container:AzCredit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,16 +32,16 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
-            BuildableName = "AzCreditS1Pad.app"
-            BlueprintName = "AzCreditS1Pad"
-            ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
+            BlueprintIdentifier = "44C0E3B413A0A2D1003D0465"
+            BuildableName = "AzCreditPadFree.app"
+            BlueprintName = "AzCreditPadFree"
+            ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
@@ -51,10 +51,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
-            BuildableName = "AzCreditS1Pad.app"
-            BlueprintName = "AzCreditS1Pad"
-            ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
+            BlueprintIdentifier = "44C0E3B413A0A2D1003D0465"
+            BuildableName = "AzCreditPadFree.app"
+            BlueprintName = "AzCreditPadFree"
+            ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -69,10 +69,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "44C0E5DA13A0A475003D0465"
-            BuildableName = "AzCreditS1Pad.app"
-            BlueprintName = "AzCreditS1Pad"
-            ReferencedContainer = "container:AzCredit-Xc4.2.xcodeproj">
+            BlueprintIdentifier = "44C0E3B413A0A2D1003D0465"
+            BuildableName = "AzCreditPadFree.app"
+            BlueprintName = "AzCreditPadFree"
+            ReferencedContainer = "container:AzCredit.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

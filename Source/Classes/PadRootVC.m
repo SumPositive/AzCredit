@@ -11,12 +11,14 @@
 #import "PadRootVC.h"
 #import "TopMenuTVC.h"
 
-@interface PadRootVC (PrivateMethods)
-@end
+
+//@interface PadRootVC (PrivateMethods)
+//@end
 
 
 @implementation PadRootVC
 @synthesize delegate;
+//@synthesize menuPopoverController;
 
 
 - (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
@@ -173,24 +175,26 @@
 {	//左ペインが消えたので、右ペインに[Menu]ボタンを表示する
 	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	app.barMenu = barButtonItem;	//下層のVCへも設置するため保持する
-#ifdef AzMAKE_SPLASHFACE
-	barButtonItem.enabled = NO;
-#endif
 	//
 	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
 	UIViewController *rightVC = nc.visibleViewController;
 	NSLog(@"rightVC.title=%@", rightVC.title);
 	barButtonItem.title = @"    M e n u    ";		// @"    T o p    ";
+	barButtonItem.enabled = YES;
+#ifdef AzMAKE_SPLASHFACE
+	barButtonItem.enabled = NO;
+#endif
 	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
 	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: barButtonItem, buFlexible, buTitle, buFlexible, nil];
-
 	UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 	toolBar.barStyle = UIBarStyleDefault;
 	[toolBar setItems:items animated:NO];
 	[toolBar sizeToFit];
 	rightVC.navigationItem.titleView = toolBar;
 	[items release];
+	//
+	//self.menuPopoverController = pc; //保持する
 }
 
 // 縦 => 横 ： 左ペインが現れる時に呼び出される
@@ -204,16 +208,19 @@
 	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
 	UIViewController *rightVC = nc.visibleViewController;
 	NSLog(@"rightVC.title=%@", rightVC.title);
+	barButtonItem.title = nil;
+	barButtonItem.enabled = NO;
 	UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 	UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
 	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFlexible, buTitle, buFlexible, nil];
-	
 	UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
 	toolBar.barStyle = UIBarStyleDefault;
 	[toolBar setItems:items animated:NO];
 	[toolBar sizeToFit];
 	rightVC.navigationItem.titleView = toolBar;
 	[items release];
+	//
+	//self.menuPopoverController = nil; //解放する
 }
 
 

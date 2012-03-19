@@ -28,7 +28,7 @@
 	<key>CFBundleURLTypes</key>
 	<array/>
 	<key>CFBundleVersion</key>
-	<string>1.1.6.0</string>
+	<string>1.1.6.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<string>YES</string>
 	<key>UIPrerenderedIcon</key>

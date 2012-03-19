@@ -2060,6 +2060,10 @@
 		44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
 		44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
+		44F0875B15177D5B00B84A44 /* Icon72S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875915177D5B00B84A44 /* Icon72S1@2x.png */; };
+		44F0875C15177D5B00B84A44 /* Icon72S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875915177D5B00B84A44 /* Icon72S1@2x.png */; };
+		44F0875D15177D5B00B84A44 /* Icon72Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */; };
+		44F0875E15177D5B00B84A44 /* Icon72Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */; };
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		44FDB09B13BA0BD700783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 		44FDB09C13BA0BEB00783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
@@ -2612,6 +2616,8 @@
 		44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E3selectRepeatTVC.m; sourceTree = "<group>"; };
 		44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CircleUnpaid.png"; path = "Design/Icon32-CircleUnpaid.png"; sourceTree = "<group>"; };
 		44EC041113422E79005071AC /* InfoS1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoS1.plist; sourceTree = "<group>"; };
+		44F0875915177D5B00B84A44 /* Icon72S1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72S1@2x.png"; sourceTree = "<group>"; };
+		44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72Free@2x.png"; sourceTree = "<group>"; };
 		44FB5C5911512063008DEC3E /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2953,6 +2959,8 @@
 		44C0E5BB13A0A2D2003D0465 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
+				44F0875915177D5B00B84A44 /* Icon72S1@2x.png */,
+				44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */,
 				445322CB13D7D56600CC99F8 /* Default-Landscape~ipad.png */,
 				445322CD13D7D56600CC99F8 /* Default-Portrait~ipad.png */,
 				44B4C07613A4988900CDD359 /* Icon72Free.png */,
@@ -5031,7 +5039,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit-Xc4.2" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -5297,6 +5305,8 @@
 				44C4B7BE13D1F29E00EB9B2B /* Icon32-Setting.png in Resources */,
 				44C4B7C213D1F29E00EB9B2B /* Icon32-Information.png in Resources */,
 				44C4B7C613D1F29E00EB9B2B /* Icon32-Information@2x.png in Resources */,
+				44F0875B15177D5B00B84A44 /* Icon72S1@2x.png in Resources */,
+				44F0875D15177D5B00B84A44 /* Icon72Free@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5380,6 +5390,8 @@
 				44C4B7BF13D1F29E00EB9B2B /* Icon32-Setting.png in Resources */,
 				44C4B7C313D1F29E00EB9B2B /* Icon32-Information.png in Resources */,
 				44C4B7C713D1F29E00EB9B2B /* Icon32-Information@2x.png in Resources */,
+				44F0875C15177D5B00B84A44 /* Icon72S1@2x.png in Resources */,
+				44F0875E15177D5B00B84A44 /* Icon72Free@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6167,7 +6179,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit-Xc4.2" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
