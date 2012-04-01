@@ -509,16 +509,19 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 }
 
-// e2obj配下のE3について、繰り返し(nRepeat)に従ってE3追加処理する
-+ (void)repeatE2:(E2invoice *)e2obj
+//[1.1.6] e2obj配下のE3について、繰り返し(nRepeat)に従ってE3追加処理する
++ (void)repeatE2:(E2invoice *)e2paid
 {
-	//NSCalendar *cal = [NSCalendar currentCalendar];
+	assert(e2paid.e7payment.e0paid);  //[1.1.7]処理対象を支払済み(PAID)に限定した ＜＜同日追加を
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
 	
 	// [0.4]nRepeat対応　＜＜E2,E7をPAID移行完了してからRepeat処理すること。さもなくば落ちる＞＞
-	for (E6part *e6 in e2obj.e6parts) {
+	//BugFix[1.1.7]この中で.e6partsリンクが変化し「Collection was mutated while being enumerated.」例外が発生した。
+	//BugFix[1.1.7](原因)コピーしたE3の支払日がコピー元と同じになるとき、同じ e2paid.e6parts にリンクされてしまい変化発生
+	//BugFix[1.1.7](対応)この処理をPAID限定にして、コピーしたE3が e2paid.e6parts にリンクされないようにした。(後日のUnpaidへリンクされる)
+	for (E6part *e6 in e2paid.e6parts) {
 		E3record *e3 = e6.e3record;
 		if (e3 && 0 < [e3.nRepeat integerValue]) 
 		{	// E3配下をコピーして利用日を nRepeat ヶ月後にする
@@ -568,8 +571,11 @@ static NSManagedObjectContext *scMoc = nil;
 				}
 			}
 		}
+
 		// nRepeat処理 ＜＜e2objが削除される場合があるため先に処理する
-		[self	repeatE2:e2obj];
+		//NG//[self	repeatE2:e2obj];
+		//NG//[1.1.7]Unpaid状態で繰り返し処理すると、同じ支払日(E2)にE6が生成されてしまう場合あり落ちた。
+		//NG//[1.1.7]以下でPAID後に処理するように改めた。
 		
 		//[1.1.6]E2集約処理：同E1cardの同E2.dateuseがあれば集約する
 		for (E2invoice *e2paid in  e1card.e2paids) {
@@ -588,6 +594,8 @@ static NSManagedObjectContext *scMoc = nil;
 				E7payment *e7paid = e2paid.e7payment;
 				e7paid.sumAmount = [e7paid valueForKeyPath:@"e2invoices.@sum.sumAmount"];
 				e7paid.sumNoCheck = [e7paid valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
+				// nRepeat処理  [1.1.7]PAID後に処理するように改めた
+				[self	repeatE2:e2paid];
 				return; //完了
 			}
 		}
@@ -600,8 +608,7 @@ static NSManagedObjectContext *scMoc = nil;
 		for (E7payment *e7 in e7old.e0unpaid.e7paids) {
 			if ([e7.nYearMMDD isEqualToNumber:e7old.nYearMMDD]) {
 				e7paid = e7; // 既存
-				// このE2を e7paid へ移す
-				e2obj.e7payment = e7paid;
+				e2obj.e7payment = e7paid; // E2を e7paid へ移す
 				// E7 sum
 				e7paid.sumAmount = [e7paid valueForKeyPath:@"e2invoices.@sum.sumAmount"];
 				e7paid.sumNoCheck = [e7paid valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
@@ -617,6 +624,8 @@ static NSManagedObjectContext *scMoc = nil;
 					[moc deleteObject:e7old]; // E7削除
 					e7old = nil;
 				}
+				// nRepeat処理  [1.1.7]PAID後に処理するように改めた
+				[self	repeatE2:e2obj];
 				return; //完了
 			}
 		}
@@ -638,10 +647,12 @@ static NSManagedObjectContext *scMoc = nil;
 		}
 		e7paid.e0paid = e7old.e0unpaid; // nil 代入の前に代入すること
 		e7paid.e0unpaid = nil;
-		e2obj.e7payment = e7paid;
+		e2obj.e7payment = e7paid;  	// E2を e7paid へ移す
 		// E7 sum
 		e7paid.sumAmount = [e7paid valueForKeyPath:@"e2invoices.@sum.sumAmount"];
 		e7paid.sumNoCheck = [e7paid valueForKeyPath:@"e2invoices.@sum.sumNoCheck"];
+		// nRepeat処理  [1.1.7]PAID後に処理するように改めた
+		[self	repeatE2:e2obj];
 		return; //完了
 	}
 	else if (e2obj.e1paid) {	// PAID --->>> Unpaid
@@ -1034,7 +1045,7 @@ static NSManagedObjectContext *scMoc = nil;
 #endif
 
 
-//LOCAL// e3rec 配下の e6part が属する E2リンク更新 および .nAmount-E2,E7集計
+//LOCAL// e3rec 配下の e6part が属する E2(Unpaid)リンク更新 および .nAmount-E2,E7集計
 + (NSInteger)e6part:(E6part*)e6part  forDue:(NSInteger)iYearMMDD
 {
 	E3record* e3rec = e6part.e3record;
@@ -1215,6 +1226,7 @@ static NSManagedObjectContext *scMoc = nil;
 	if (firstYMD < AzMIN_YearMMDD) {
 		// カード規定の支払条件より決まる第1回目の支払日
 		iYearMMDD = [self yearMMDDpaymentE1card:e3rec.e1card forUseDate:e3rec.dateUse];
+		//iYearMMDD が既にPAIDである場合、以下の[self e6part: forDue:]にて次回以降のUnpaidの支払日を求める
 	}
 
 	if (iPayType==1)
@@ -1234,7 +1246,7 @@ static NSManagedObjectContext *scMoc = nil;
 			e6part1.nAmount = [[e3rec.nAmount copy] autorelease]; // 1回払い
 			if (iChange==1 OR e6part1.e2invoice==nil) {
 				// E2リンク更新 および .nAmount-E2,E7集計
-				iYearMMDD = [self e6part:e6part1 forDue:iYearMMDD];
+				iYearMMDD = [self e6part:e6part1 forDue:iYearMMDD]; //Unpaidの支払日を求める
 				if (iYearMMDD==0) {
 					assert(NO); // DEBUG時中断
 					[self rollBack];	
