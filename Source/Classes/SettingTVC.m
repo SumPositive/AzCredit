@@ -432,6 +432,7 @@
 							  forServiceName:GD_PRODUCTNAME 
 							  updateExisting:YES error:&error];
 			if (error) {
+				GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 				alertBox(NSLocalizedString(@"OptLoginPass Error",nil), 
 						 [error localizedDescription],
 						 NSLocalizedString(@"Roger",nil));

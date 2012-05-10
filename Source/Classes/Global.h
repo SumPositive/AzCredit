@@ -128,6 +128,7 @@
 #endif
 
 
+
 //----------------------------------------------- Global.m グローバル関数
 UIColor *GcolorBlue(float percent) ;
 
@@ -162,3 +163,39 @@ NSDate *GdateYearMMDD(NSInteger PiMinYearMMDD,
 void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton );
 
 
+
+
+//----------------------------------------------- Google Analytics
+#import "GANTracker.h"
+
+#define __GA_INIT_TRACKER(ACCOUNT, PERIOD, DELEGATE) \
+[[GANTracker sharedTracker] startTrackerWithAccountID:ACCOUNT \
+dispatchPeriod:PERIOD delegate:DELEGATE];
+#ifdef DEBUG
+#define GA_INIT_TRACKER(ACCOUNT, PERIOD, DELEGATE) { \
+__GA_INIT_TRACKER(ACCOUNT, PERIOD, DELEGATE); \
+[GANTracker sharedTracker].debug = YES; \
+[GANTracker sharedTracker].dryRun = YES; }
+#else
+#define GA_INIT_TRACKER(ACCOUNT, PERIOD, DELEGATE) __GA_INIT_TRACKER(ACCOUNT, PERIOD, DELEGATE);
+#endif
+
+#define GA_TRACK_PAGE(PAGE) { NSError *error; if (![[GANTracker sharedTracker] \
+trackPageview:[NSString stringWithFormat:@"/%@", PAGE] \
+withError:&error]) { NSLog(@"GA_TRACK_PAGE: error: %@",error.helpAnchor);  } }
+
+#define GA_TRACK_EVENT(EVENT,ACTION,LABEL,VALUE) { \
+NSError *error; if (![[GANTracker sharedTracker] trackEvent:EVENT action:ACTION label:LABEL value:VALUE withError:&error]) \
+{ NSLog(@"GA_TRACK_EVENT: error: %@",error.helpAnchor); }  }
+
+#define GA_TRACK_EVENT_ERROR(LABEL,VALUE)  { \
+NSString *_zAction_ = [NSString stringWithFormat:@"%@:%@",NSStringFromClass([self class]), NSStringFromSelector(_cmd)]; \
+GA_TRACK_EVENT(@"ERROR",_zAction_,LABEL,VALUE); }
+
+#define GA_TRACK_CLASS  { GA_TRACK_PAGE(NSStringFromClass([self class])) }
+
+#define GA_TRACK_METHOD { GA_TRACK_EVENT(NSStringFromClass([self class]),NSStringFromSelector(_cmd),@"",0); }
+#define GA_TRACK_METHOD_LABEL(LABEL,VALUE) { GA_TRACK_EVENT(NSStringFromClass([self class]),NSStringFromSelector(_cmd),LABEL,VALUE); }
+
+
+//END

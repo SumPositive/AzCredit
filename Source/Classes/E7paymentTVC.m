@@ -834,8 +834,16 @@ static UIImage* GimageFromString(NSString* str)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
-
+	// セルから取得してタイトル名にする
+	UITableViewCell *cell = nil;
+	@try {
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+		cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	}
+	@catch (NSException *exception) {
+		GA_TRACK_EVENT_ERROR([exception description],0);
+		return;
+	}
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = [tableView contentOffset];
 	
@@ -844,8 +852,6 @@ static UIImage* GimageFromString(NSString* str)
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	tvc.Pe7select = e7obj;	// カード別明細一覧（支払日の変更はできない）
 	tvc.PiFirstSection = 0;
-	// セルから取得してタイトル名にする
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 #ifdef AzDEBUG
 	tvc.title = [NSString stringWithFormat:@"E6 %@", cell.textLabel.text];
 #else

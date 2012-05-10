@@ -74,6 +74,10 @@
 - (BOOL)application:(UIApplication *)application 
 					didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
+	GA_INIT_TRACKER(@"UA-30305032-6", 10, nil);	//-6:PayNote1
+	GA_TRACK_EVENT(@"Device", @"model", [[UIDevice currentDevice] model], 0);
+	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
+
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -402,6 +406,7 @@
 												andServiceName:GD_PRODUCTNAME error:&error];
 	if (error) {
 		NSLog(@"SFHFKeychainUtils: getPasswordForUsername %@", [error localizedDescription]);
+		GA_TRACK_EVENT_ERROR([error localizedDescription],0)
 		return;
 	}
 	if ([pass length]<=0) {

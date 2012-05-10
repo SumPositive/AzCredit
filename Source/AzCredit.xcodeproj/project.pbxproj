@@ -16,6 +16,15 @@
 		440328D311D81CAA002F321B /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
 		440AC51611299DBE00B89317 /* EditDateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 440AC51411299DBE00B89317 /* EditDateVC.h */; };
 		440AC51711299DBE00B89317 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
+		441377E9155BD2A1008047FC /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 441377E7155BD2A1008047FC /* GANTracker.h */; };
+		441377EA155BD2A1008047FC /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 441377E7155BD2A1008047FC /* GANTracker.h */; };
+		441377EB155BD2A1008047FC /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 441377E7155BD2A1008047FC /* GANTracker.h */; };
+		441377EC155BD2A1008047FC /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 441377E7155BD2A1008047FC /* GANTracker.h */; };
+		441377ED155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377E8155BD2A1008047FC /* libGoogleAnalytics.a */; };
+		441377EE155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377E8155BD2A1008047FC /* libGoogleAnalytics.a */; };
+		441377EF155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377E8155BD2A1008047FC /* libGoogleAnalytics.a */; };
+		441377F0155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377E8155BD2A1008047FC /* libGoogleAnalytics.a */; };
+		441377FE155BD5C7008047FC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
 		4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
@@ -2080,6 +2089,9 @@
 		440328D211D81CAA002F321B /* azuki-320.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "azuki-320.jpg"; path = "Design/azuki-320.jpg"; sourceTree = "<group>"; };
 		440AC51411299DBE00B89317 /* EditDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDateVC.h; sourceTree = "<group>"; };
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDateVC.m; sourceTree = "<group>"; };
+		441377E7155BD2A1008047FC /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
+		441377E8155BD2A1008047FC /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
+		441377FD155BD5C6008047FC /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginPassVC.h; sourceTree = "<group>"; };
 		442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPassVC.m; sourceTree = "<group>"; };
@@ -2627,6 +2639,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				441377FE155BD5C7008047FC /* libsqlite3.0.dylib in Frameworks */,
 				4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */,
 				44D374651361DDF200F36E36 /* SystemConfiguration.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -2642,6 +2655,7 @@
 				447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */,
 				44DB9F87130CE150000304BA /* libGDataTouchStaticLib.a in Frameworks */,
 				4481EC2D14C45095003FE1D9 /* libGoogleAdMobAds.a in Frameworks */,
+				441377ED155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2661,6 +2675,7 @@
 				44B011EF133EF773005AD0EA /* QuartzCore.framework in Frameworks */,
 				44B011F0133EF773005AD0EA /* libGDataTouchStaticLib.a in Frameworks */,
 				4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */,
+				441377EE155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2683,6 +2698,7 @@
 				44C0E43513A0A2D1003D0465 /* libGDataTouchStaticLib.a in Frameworks */,
 				4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */,
 				4481EC2E14C45095003FE1D9 /* libGoogleAdMobAds.a in Frameworks */,
+				441377EF155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2702,6 +2718,7 @@
 				44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */,
 				44C0E65713A0A475003D0465 /* libGDataTouchStaticLib.a in Frameworks */,
 				4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */,
+				441377F0155BD2A1008047FC /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2738,6 +2755,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				441377E5155BD2A1008047FC /* Google Analytics */,
 				4481EC1814C45095003FE1D9 /* GoogleAdMobAdsSDKiOS-5.0.5 */,
 				44DB9CC2130CD770000304BA /* GData */,
 				4464805911CFBCFD00305181 /* HTTP Server */,
@@ -2774,6 +2792,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				441377FD155BD5C6008047FC /* libsqlite3.0.dylib */,
 				4425D23A1425AAF4004D3747 /* AVFoundation.framework */,
 				44D374641361DDF200F36E36 /* SystemConfiguration.framework */,
 				44C2A7D41108AD3C006445DC /* Security.framework */,
@@ -2789,6 +2808,24 @@
 				447071CF12FC4F8C00C053D2 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		441377E5155BD2A1008047FC /* Google Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				441377E6155BD2A1008047FC /* GoogleAnalyticsiOS_1.4 */,
+			);
+			name = "Google Analytics";
+			path = "../../OpenCode/Google Analytics";
+			sourceTree = "<group>";
+		};
+		441377E6155BD2A1008047FC /* GoogleAnalyticsiOS_1.4 */ = {
+			isa = PBXGroup;
+			children = (
+				441377E7155BD2A1008047FC /* GANTracker.h */,
+				441377E8155BD2A1008047FC /* libGoogleAnalytics.a */,
+			);
+			path = GoogleAnalyticsiOS_1.4;
 			sourceTree = "<group>";
 		};
 		4464805911CFBCFD00305181 /* HTTP Server */ = {
@@ -3797,6 +3834,7 @@
 				4481EC2714C45095003FE1D9 /* GADInterstitialDelegate.h in Headers */,
 				4481EC2914C45095003FE1D9 /* GADRequest.h in Headers */,
 				4481EC2B14C45095003FE1D9 /* GADRequestError.h in Headers */,
+				441377E9155BD2A1008047FC /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4179,6 +4217,7 @@
 				44B01375133EF773005AD0EA /* GDataYouTubeStatistics.h in Headers */,
 				44BC4BD713594552009B995C /* UIDevice-Hardware.h in Headers */,
 				44CEC516142636C5005D7850 /* Global.h in Headers */,
+				441377EA155BD2A1008047FC /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4569,6 +4608,7 @@
 				4481EC2814C45095003FE1D9 /* GADInterstitialDelegate.h in Headers */,
 				4481EC2A14C45095003FE1D9 /* GADRequest.h in Headers */,
 				4481EC2C14C45095003FE1D9 /* GADRequestError.h in Headers */,
+				441377EB155BD2A1008047FC /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4953,6 +4993,7 @@
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
 				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC518142636C7005D7850 /* Global.h in Headers */,
+				441377EC155BD2A1008047FC /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5697,6 +5738,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/GoogleAdMobAdsSDKiOS-5.0.5\"",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -5729,6 +5771,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/GoogleAdMobAdsSDKiOS-5.0.5\"",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCredit;
@@ -5757,6 +5800,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -5785,6 +5829,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -5812,6 +5857,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -5847,6 +5893,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/GoogleAdMobAdsSDKiOS-5.0.5\"",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -5880,6 +5927,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/GoogleAdMobAdsSDKiOS-5.0.5\"",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCreditPadFree;
@@ -5911,6 +5959,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/GoogleAdMobAdsSDKiOS-5.0.5\"",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCreditPadFree;
@@ -5943,6 +5992,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -5974,6 +6024,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -6004,6 +6055,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
@@ -6067,6 +6119,7 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"\"$(SRCROOT)/GoogleAdMobAdsSDKiOS-5.0.5\"",
+					"\"$(SRCROOT)/../../OpenCode/Google Analytics/GoogleAnalyticsiOS_1.4\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = AzCredit;

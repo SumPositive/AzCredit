@@ -581,6 +581,7 @@
 		NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if (error) {
 			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 			exit(-1);  // Fail
 		}
 		[fetchRequest release];
@@ -590,6 +591,7 @@
 		}
 		else {
 			AzLOG(@"Error: Me0root count = %d", [arFetch count]);
+			GA_TRACK_EVENT_ERROR(@"Exit Error: Me0root count != 1",0);
 			exit(-1);  // Fail
 		}
 	}
@@ -672,6 +674,7 @@
 	NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
+		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 		exit(-1);  // Fail
 	}
 	[fetchRequest release];

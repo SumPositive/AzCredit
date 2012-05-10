@@ -1352,7 +1352,15 @@
 		case 1: // Upload Section
 			if (MbLogin) {
 				// セルからドキュメント名を取得してUploadドキュメント名として渡す
-				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+				//UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+				UITableViewCell *cell = nil;
+				@try {
+					cell = [self.tableView cellForRowAtIndexPath:indexPath];
+				}
+				@catch (NSException *exception) {
+					GA_TRACK_EVENT_ERROR([exception description],0);
+					return;
+				}
 				MzUploadName = [NSString stringWithString:cell.detailTextLabel.text]; // autorelease
 				UIActionSheet *sheet = [[UIActionSheet alloc] 
 										initWithTitle:MzUploadName

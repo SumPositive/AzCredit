@@ -400,7 +400,8 @@
 	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	if (Re1select && Re8select) {
-		AzLOG(@"LOGIC ERROR: Pe1select,Re8select != nil");
+		AzLOG(@"Exit ERROR: Pe1select,Re8select != nil");
+		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select != nil",0);
 		exit(-1);  // Fail
 	}
 	
@@ -527,7 +528,8 @@
 		[muE2unpaid release];
 	}
 	else {
-		AzLOG(@"LOGIC ERROR: Pe1select,Re8select == nil");
+		AzLOG(@"Exit ERROR: Pe1select,Re8select == nil");
+		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select == nil",0);
 		exit(-1);  // Fail
 	}
 	[sortAsc release];

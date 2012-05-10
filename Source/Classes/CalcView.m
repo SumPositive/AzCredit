@@ -169,6 +169,7 @@
 			
 		default:
 			NSLog(@"ERROR");
+			GA_TRACK_EVENT_ERROR(@"No Button",0)
 			break;
 	}
 	
@@ -515,13 +516,16 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		}
 		else {
 			@throw @"zRpnCalc:ERROR: [maStack count] != 1";
+			GA_TRACK_EVENT_ERROR(@"zRpnCalc:ERROR: [maStack count] != 1",0)
 		}
 	}
 	@catch (NSException * errEx) {
+		GA_TRACK_EVENT_ERROR([errEx description],0);
 		NSLog(@"Calc: error %@ : %@\n", [errEx name], [errEx reason]);
 		decAns = nil;
 	}
 	@catch (NSString *errMsg) {
+		GA_TRACK_EVENT_ERROR(errMsg,0);
 		NSLog(@"Calc: error=%@", errMsg);
 		decAns = nil;
 	}

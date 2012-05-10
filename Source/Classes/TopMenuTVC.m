@@ -339,6 +339,7 @@
 	NSError *error = nil;
 	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
+		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
@@ -696,9 +697,16 @@
 	}
 #endif
 
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
-	
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	UITableViewCell *cell = nil;
+	@try {	//[1.1.8]
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+		cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	}
+	@catch (NSException *exception) {
+		//alertBox([exception name], [exception reason], @"OK (705)");
+		GA_TRACK_EVENT_ERROR([exception description],0);
+		return;
+	}
 
 	switch (indexPath.section) {
 		case 0:

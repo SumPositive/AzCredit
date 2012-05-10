@@ -172,6 +172,7 @@
 	}
 	else {
 		NSLog(@"LOGIC ERROR");
+		GA_TRACK_EVENT_ERROR(@"LOGIC ERROR",0);
 	}
 
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -199,6 +200,7 @@
 {
 	if (e3 && e6) {
 		NSLog(@"LOGIC ERROR: e3 OR e6");
+		GA_TRACK_EVENT_ERROR(@"LOGIC ERROR",0);
 		return nil;
 	}
 	self = [super init];

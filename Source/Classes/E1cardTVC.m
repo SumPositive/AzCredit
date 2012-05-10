@@ -244,6 +244,7 @@
 	NSError *error = nil;
 	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
+		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
 		//exit(-1);  // Fail
 	}

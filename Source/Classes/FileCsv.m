@@ -99,6 +99,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		NSArray *e4shops = [Pe0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if (error) {
 			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 			exit(-1);  // Fail
 		}
 		
@@ -132,6 +133,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		NSArray *e5categorys = [Pe0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if (error) {
 			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 			exit(-1);  // Fail
 		}
 		
@@ -163,6 +165,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		NSArray *e8banks = [Pe0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if (error) {
 			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 			exit(-1);  // Fail
 		}
 		
@@ -191,6 +194,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		NSArray *e1cards = [Pe0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if (error) {
 			AzLOG(@"Error %@, %@", error, [error userInfo]);
+			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 			exit(-1);  // Fail
 		}
 		
@@ -799,12 +803,15 @@ static NSString *csvToStr( NSString *inCsv ) {
 		}*/
 		if (![MocFunctions commit]) {
 			@throw NSLocalizedString(@"File read error", @"CSV読み込み失敗");
+			GA_TRACK_EVENT_ERROR(@"CSV読み込み失敗",0);
 		}
 		// Compleat !!
 		zErrMsg = nil; // OK
 	}
 	@catch (NSException *errEx) {
+		GA_TRACK_EVENT_ERROR([errEx description],0);
 		if (!zErrMsg) zErrMsg = NSLocalizedString(@"File read error", @"CSV読み込み失敗");
+		GA_TRACK_EVENT_ERROR(zErrMsg,0);
 		NSString *name = [errEx name];
 		AzLOG(@"◆ %@ : %@\n", name, [errEx reason]);
 		if ([name isEqualToString:NSRangeException]) {
@@ -815,6 +822,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	}
 	@catch (NSString *errMsg) {
 		zErrMsg = [NSString stringWithFormat:@"FileCsv (%ld) %@", MlCsvLine, errMsg];
+		GA_TRACK_EVENT_ERROR(zErrMsg,0);
 	}
 	@finally {
 		// CLOSE

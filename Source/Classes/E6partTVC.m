@@ -377,6 +377,7 @@
 	}
 	else {
 		AzLOG(@"LOGIC ERROR: Pe2select,Pe7select,Pe2invoices == nil");
+		GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: Pe2select,Pe7select,Pe2invoices == nil",0);
 		return; // Fail
 	}
 
