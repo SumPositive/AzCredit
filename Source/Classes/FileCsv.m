@@ -51,6 +51,14 @@ static NSString *csvToStr( NSString *inCsv ) {
 	NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
 	NSString *csvPath = [doc_dir stringByAppendingPathComponent:PzFname]; //GD_CSVFILENAME]; // ローカルファイル名
 
+	NSDateFormatter *dtFmt = [[NSDateFormatter alloc] init];
+	[dtFmt setTimeStyle:NSDateFormatterFullStyle];
+	[dtFmt setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZZ"];
+	// システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	[dtFmt setCalendar:calendar];
+	[calendar release];
+
 	NSManagedObjectContext *context = Pe0root.managedObjectContext;
 	NSEntityDescription *entity;
 	NSError *error = nil;
@@ -106,7 +114,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 					str = [[NSString alloc] initWithFormat:@"Shop,\"%@\",\"%@\",%@,%ld,%@,\"%@\",\n", 
 						   strToCsv(zName), 
 						   strToCsv(e4node.zNote), 
-						   [e4node.sortDate description], 
+						   [dtFmt stringFromDate:e4node.sortDate],		//NG [e4node.sortDate description], ＜和暦のまま保存されてしまう
 						   (long)[e4node.sortCount integerValue], 
 						   [e4node.sortAmount descriptionWithLocale:nil],  //(long)[e4node.sortAmount integerValue], 
 						   strToCsv(e4node.sortName)];
@@ -137,7 +145,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 					str = [[NSString alloc] initWithFormat:@"Cat,\"%@\",\"%@\",%@,%ld,%@,\"%@\",\n", 
 						   strToCsv(zName), 
 						   strToCsv(e5node.zNote), 
-						   [e5node.sortDate description], 
+						   [dtFmt stringFromDate:e5node.sortDate],		//NG [e5node.sortDate description], ＜和暦のまま保存されてしまう
 						   (long)[e5node.sortCount integerValue], 
 						   [e5node.sortAmount descriptionWithLocale:nil],  //(long)[e5node.sortAmount integerValue], 
 						   strToCsv(e5node.sortName)];
@@ -213,7 +221,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 				// E3,dateUse,nAmount,nPayType,nAnnual,zShop,zCategory,zName,zNote,nRepeat,
 				//str = [NSString stringWithFormat:@"Rec,%@,%ld,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",\n", 
 				str = [[NSString alloc] initWithFormat:@"Rec,%@,%@,%d,%f,\"%@\",\"%@\",\"%@\",\"%@\",%d,\n", 
-					   [e3node.dateUse description], 
+					   [dtFmt stringFromDate:e3node.dateUse],		//NG [e3node.dateUse description], ＜和暦のまま保存されてしまう
 					   [e3node.nAmount descriptionWithLocale:nil],  //(long)[e3node.nAmount integerValue],	// [-99999999.99 〜 +99999999.99]
 					   [e3node.nPayType intValue], 
 					   [e3node.nAnnual floatValue], 
@@ -282,6 +290,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		[fetchRequest release];
 		[sortRow release];
 		[sortDate release];
+		[dtFmt release];
 		[autoPool release];
 	}
 	return zErrMsg;
@@ -386,7 +395,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	[dateFormatter setCalendar:calendar];
-	[calendar release];
+	NSDateComponents* dateComp;
 	
 	NSManagedObjectContext *context = Pe0root.managedObjectContext;
 	NSError *err = nil;
@@ -433,6 +442,12 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e4node.zName = zName; // csvToStr()後にトリム済み
 					e4node.zNote = csvToStr([MaCsv objectAtIndex:2]);
 					e4node.sortDate = [dateFormatter dateFromString:[MaCsv objectAtIndex:3]];
+					dateComp = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit	| NSDayCalendarUnit
+								| NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate: e4node.sortDate];
+					if (dateComp.year < 100) {	//[1.1.8]和暦で保存されたものを西暦に修正する
+						dateComp.year += 1988;	// 0024 + 1988 ⇒ 2012
+						e4node.sortDate = [calendar dateFromComponents:dateComp];
+					}
 					e4node.sortCount = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:4] integerValue]];
 					e4node.sortAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:5]];
 					e4node.sortName = csvToStr([MaCsv objectAtIndex:6]);
@@ -448,6 +463,12 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e5node.zName = zName;
 					e5node.zNote = csvToStr([MaCsv objectAtIndex:2]);
 					e5node.sortDate = [dateFormatter dateFromString:[MaCsv objectAtIndex:3]];
+					dateComp = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit	| NSDayCalendarUnit
+								| NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate: e5node.sortDate];
+					if (dateComp.year < 100) {	//[1.1.8]和暦で保存されたものを西暦に修正する
+						dateComp.year += 1988;	// 0024 + 1988 ⇒ 2012
+						e5node.sortDate = [calendar dateFromComponents:dateComp];
+					}
 					e5node.sortCount = [NSNumber numberWithInteger:[[MaCsv objectAtIndex:4] integerValue]];
 					e5node.sortAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:5]];
 					e5node.sortName = csvToStr([MaCsv objectAtIndex:6]);
@@ -515,6 +536,13 @@ static NSString *csvToStr( NSString *inCsv ) {
 				ActE3record = nil;
 				NSDate *dateUse = [dateFormatter dateFromString:[MaCsv objectAtIndex:1]];
 				assert(dateUse);
+				dateComp = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit	| NSDayCalendarUnit
+							| NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate: dateUse];
+				if (dateComp.year < 100) {	//[1.1.8]和暦で保存されたものを西暦に修正する
+					dateComp.year += 1988;	// 0024 + 1988 ⇒ 2012
+					dateUse = [calendar dateFromComponents:dateComp];
+				}
+
 				// AzLOG(@"(2)'%@'  (3)'%@'", [MaCsv objectAtIndex:2], [MaCsv objectAtIndex:3]);
 				//NSInteger lAmount = [[MaCsv objectAtIndex:2] integerValue];  // longValueだとFreeze
 				NSDecimalNumber *decAmount = [NSDecimalNumber decimalNumberWithString:[MaCsv objectAtIndex:2]]; //[0.4]
@@ -796,6 +824,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		[MdCR release];
 		[MdLF release];
 		[MzCsvStr release];
+		[calendar release];
 		[dateFormatter release];
 		[autoPool release];
 	}	
