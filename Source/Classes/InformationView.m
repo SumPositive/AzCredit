@@ -86,7 +86,7 @@ static UIColor *MpColorBlue(float percent) {
 		}	break;
 		
 		case ALERT_TAG_GoSupportSite: {
-			NSURL *url = [NSURL URLWithString:@"http://paynote.tumblr.com/"];
+			NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
 			[[UIApplication sharedApplication] openURL:url];
 		}	break;
 			
@@ -94,7 +94,7 @@ static UIColor *MpColorBlue(float percent) {
 			MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 			picker.mailComposeDelegate = self;
 			// To: 宛先
-			NSArray *toRecipients = [NSArray arrayWithObject:@"PayNote@azukid.com"];
+			NSArray *toRecipients = [NSArray arrayWithObject:@"post@azukid.com"];
 			[picker setToRecipients:toRecipients];
 			
 			// Subject: 件名
