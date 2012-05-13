@@ -581,110 +581,116 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    static NSString *CellIdentifier = @"CellMenu";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-									   reuseIdentifier:CellIdentifier] autorelease];
-
+	@try {	//[1.1.8]
+		static NSString *CellIdentifier = @"CellMenu";
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+										   reuseIdentifier:CellIdentifier] autorelease];
+			
 #ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:18];
+			cell.textLabel.font = [UIFont systemFontOfSize:18];
 #else
-		cell.textLabel.font = [UIFont systemFontOfSize:16];
+			cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
-		//cell.textLabel.textAlignment = UITextAlignmentCenter;
-		cell.textLabel.textColor = [UIColor blackColor];
-    }
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //[>]
-	
-	switch (indexPath.section) {
-		case 0: //-------------------------------------------------------------Statement
-		{
-			switch (indexPath.row) {
-				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
-					cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
-					break;
-				case 1:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Statements.png"];
-					cell.textLabel.text = NSLocalizedString(@"Record list", nil);
-					break;
-			}
-		} break;
-			
-		case 1: //-------------------------------------------------------------Paid/Unpaid
-		{
-			switch (indexPath.row) {
-				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Schedule.png"];
-					//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
-					// E7 未払い総額
-					cell.detailTextLabel.textAlignment = UITextAlignmentRight;
-					if ([Re0root.e7unpaids count] <= 0) {
-						cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
-											   NSLocalizedString(@"Payment list",nil), 
-											   NSLocalizedString(@"No unpaid",nil)];
-					} else {
-						NSDecimalNumber *decUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
-						// Amount
-						NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-						[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル（先頭に通貨記号が付く）
-						[formatter setLocale:[NSLocale currentLocale]]; 
-						cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", 
-											   NSLocalizedString(@"Payment list",nil), 
-											   [formatter stringFromNumber:decUnpaid]];
-						[formatter release];
-					}
-					break;
-				case 1:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Recipient.png"];
-					cell.textLabel.text = NSLocalizedString(@"Recipient list", nil);
-					break;
-				case 2:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Bank.png"];
-					cell.textLabel.text = NSLocalizedString(@"Bank list", nil);
-					break;
-			}
-		} break;
-			
-		case 2: //-------------------------------------------------------------Groups
-		{
-			switch (indexPath.row) {
-				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Shop.png"];
-					cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
-					break;
-				case 1:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Category.png"];
-					cell.textLabel.text = NSLocalizedString(@"Category list", nil);
-					break;
-			}
-		} break;
+			//cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.textLabel.textColor = [UIColor blackColor];
+		}
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //[>]
 		
-		case 3: //-------------------------------------------------------------Function
-		{
-			switch (indexPath.row) {
-				case 0:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
-					cell.textLabel.text = NSLocalizedString(@"Communicate with Google", nil);
-					break;
-				case 1:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-NearPC.png"];
-					cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
-					break;
-				case 2:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
-					cell.textLabel.text = NSLocalizedString(@"Setting", nil);
-					break;
-				case 3:
-					cell.imageView.image = [UIImage imageNamed:@"Icon32-Information.png"];
-					cell.textLabel.text = NSLocalizedString(@"Information", nil);
-					break;
-			}
-		} break;
-			
+		switch (indexPath.section) {
+			case 0: //-------------------------------------------------------------Statement
+			{
+				switch (indexPath.row) {
+					case 0:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
+						cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
+						break;
+					case 1:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Statements.png"];
+						cell.textLabel.text = NSLocalizedString(@"Record list", nil);
+						break;
+				}
+			} break;
+				
+			case 1: //-------------------------------------------------------------Paid/Unpaid
+			{
+				switch (indexPath.row) {
+					case 0:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Schedule.png"];
+						//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
+						// E7 未払い総額
+						cell.detailTextLabel.textAlignment = UITextAlignmentRight;
+						if ([Re0root.e7unpaids count] <= 0) {
+							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
+												   NSLocalizedString(@"Payment list",nil), 
+												   NSLocalizedString(@"No unpaid",nil)];
+						} else {
+							NSDecimalNumber *decUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
+							// Amount
+							NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+							[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル（先頭に通貨記号が付く）
+							[formatter setLocale:[NSLocale currentLocale]]; 
+							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", 
+												   NSLocalizedString(@"Payment list",nil), 
+												   [formatter stringFromNumber:decUnpaid]];
+							[formatter release];
+						}
+						break;
+					case 1:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Recipient.png"];
+						cell.textLabel.text = NSLocalizedString(@"Recipient list", nil);
+						break;
+					case 2:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Bank.png"];
+						cell.textLabel.text = NSLocalizedString(@"Bank list", nil);
+						break;
+				}
+			} break;
+				
+			case 2: //-------------------------------------------------------------Groups
+			{
+				switch (indexPath.row) {
+					case 0:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Shop.png"];
+						cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
+						break;
+					case 1:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Category.png"];
+						cell.textLabel.text = NSLocalizedString(@"Category list", nil);
+						break;
+				}
+			} break;
+				
+			case 3: //-------------------------------------------------------------Function
+			{
+				switch (indexPath.row) {
+					case 0:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
+						cell.textLabel.text = NSLocalizedString(@"Communicate with Google", nil);
+						break;
+					case 1:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-NearPC.png"];
+						cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
+						break;
+					case 2:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
+						cell.textLabel.text = NSLocalizedString(@"Setting", nil);
+						break;
+					case 3:
+						cell.imageView.image = [UIImage imageNamed:@"Icon32-Information.png"];
+						cell.textLabel.text = NSLocalizedString(@"Information", nil);
+						break;
+				}
+			} break;
+				
+		}
+		return cell;
 	}
-    return cell;
+	@catch (NSException *exception) {
+		GA_TRACK_EVENT_ERROR([exception description],0);
+		return nil;
+	}
 }
 
 
