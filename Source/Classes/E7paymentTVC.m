@@ -263,7 +263,7 @@ static UIColor *MpColorBlue(float percent) {
 	if (self) {
 		// 初期化成功
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
-		MbAction = NO;
+		MbAction = NO; // Action操作許可
 	}
 	return self;
 }

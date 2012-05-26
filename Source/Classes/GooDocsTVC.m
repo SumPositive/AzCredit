@@ -394,7 +394,7 @@
 		service = [[GDataServiceGoogleDocs alloc] init];
 		
 		[service setUserAgent:@"Azukid.com-AzCredit-0.3"]; // set this to yourName-appName-appVersion
-		[service setShouldCacheDatedData:YES];
+		//[service setShouldCacheDatedData:YES];
 		[service setServiceShouldFollowNextLinks:YES];
 		
 		// iPhone apps will typically disable caching dated data or will call
@@ -734,19 +734,40 @@
 												  ETag:nil
 											httpMethod:nil];
 		
-		GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+		//GTMHTTPFetcher *fetcher = [GTMHTTPFetcher httpFetcherWithRequest:request];  GData仕様変更
+		GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
 		[fetcher setUserData:savePath];
-		[fetcher beginFetchWithDelegate:self
-					  didFinishSelector:@selector(downloadFile:finishedWithData:)
-						didFailSelector:@selector(downloadFile:failedWithError:)];
+		//[fetcher beginFetchWithDelegate:self
+		//			  didFinishSelector:@selector(downloadFile:finishedWithData:)
+		//				didFailSelector:@selector(downloadFile:failedWithError:)];   GData仕様変更
+		[fetcher beginFetchWithDelegate:self didFinishSelector:@selector(downloadFile:finishedWithData:error:)];
 		MfetcherActive = fetcher;
 	}
 }
 
-- (void)downloadFile:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+- (void)downloadFile:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
 	// save the file to the local path specified by the user
+	if(error){
+		NSLog(@"Fetcher error: %@", error);
+		// ＜＜＜エラー発生！何らかのアラートを出すこと＞＞
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Download Fail", @"ダウンロード失敗")
+														message:NSLocalizedString(@"Login please try again.", @"ログインからやり直してみてください")
+													   delegate:self 
+											  cancelButtonTitle:nil 
+											  otherButtonTitles:@"OK", nil];
+		[alert show];
+		[alert release];
+		if (MfetcherActive) {
+			// Cancel the fetch of the request that's currently in progress
+			[MfetcherActive stopFetching];
+			MfetcherActive = nil;
+		}
+		[self indicatorOff]; // 進捗サインOFF
+		return;
+	}
+	
 	NSString *savePath = [fetcher userData];
-	NSError *error = nil;
+	error = nil;
 	BOOL didWrite = [data writeToFile:savePath
 							  options:NSAtomicWrite
 								error:&error];
@@ -826,7 +847,8 @@
 	}
 }
 
-- (void)downloadFile:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+/***  GData仕様変更
+- (void)downloadFile:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error {
 	NSLog(@"Fetcher error: %@", error);
 	// ＜＜＜エラー発生！何らかのアラートを出すこと＞＞
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Download Fail", @"ダウンロード失敗")
@@ -843,7 +865,7 @@
 	}
 	[self indicatorOff]; // 進捗サインOFF
 }
-
+***/
 
 #pragma mark - UPLOAD
 

@@ -309,6 +309,7 @@
 		// 初期化成功
 		appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
+		MbAction = NO; // Action操作許可
 	}
 	return self;
 }

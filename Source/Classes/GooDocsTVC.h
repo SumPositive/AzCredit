@@ -39,7 +39,7 @@
 	NSInteger		MiRowDownload;		// Download対象行
 	NSInteger		MiSelectedRow;
 	NSString			*MzOldUsername;  	//[1.1.2]ポインタ代入注意！copyするように改善した。
-	GDataHTTPFetcher *MfetcherActive;  // STOPのため保持
+	GTMHTTPFetcher *MfetcherActive;  // STOPのため保持
 	UIActionSheet	*MactionProgress;
 	//UIProgressView	*MprogressView;
 }
