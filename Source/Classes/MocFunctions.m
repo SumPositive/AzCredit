@@ -269,6 +269,7 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 	if (e0root == nil) {
 		AzLOG(@"LOGIC ERR: E0root Nothing");
+		GA_TRACK_EVENT_ERROR(@"LOGIC ERR: E0root Nothing",0);
 		exit(-1);  // Fail
 	}
 	return e0root;
@@ -564,7 +565,7 @@ static NSManagedObjectContext *scMoc = nil;
 	if (e2obj.e1unpaid) {	// Unpaid --->>> PAID
 		// 配下のE6に未チェックがあるか調べる
 		//NSLog(@"***e2paid: e2obj.e6parts=(%d)=%@\n", [e2obj.e6parts count], e2obj.e6parts);
-		for (E6part *e6 in e2obj.e6parts) {
+		for (E6part *e6 in [e2obj.e6parts allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
 			if (0 < [e6.nNoCheck intValue]) {
 				if (bE6payNextMonth) {	// e6 (Unpaid) の支払日を翌月へ移す
 					[self	e6payNextMonth:e6];
@@ -583,10 +584,23 @@ static NSManagedObjectContext *scMoc = nil;
 		//[1.1.6]E2集約処理：同E1cardの同E2.dateuseがあれば集約する
 		for (E2invoice *e2paid in  e1card.e2paids) {
 			if ([e2paid.nYearMMDD isEqualToNumber:e2obj.nYearMMDD]) {
+				NSLog(@"e2paid.nYearMMDD={%ld}", (long)[e2paid.nYearMMDD integerValue]);
+				NSLog(@"  e2obj.nYearMMDD={%ld}", (long)[e2obj.nYearMMDD integerValue]);
+				NSLog(@"  e2obj={%@}", e2obj);
+				NSLog(@"  e2obj.e6parts={%@}", e2obj.e6parts);
 				// 同日のE2paidあり >>> E6を集約する
+				/***[1.1.9]Bug 落ちる！ ＜＜e6.e2invoice を変更すると e2obj.e6parts が変化するため
+				 ******　同様のバグが残っていないか調べること。
 				for (E6part *e6 in e2obj.e6parts) {
+					NSLog(@"  e6.e2invoice={%@} <<< e2paid={%@}", e6.e2invoice, e2paid);
 					e6.e2invoice = e2paid;
 				}
+				 */
+				//[1.1.9]Fix 列挙子(allObjects)を使って e2obj.e6parts のコピーを使い、要素が変更されても落ちないようにした。
+				for (E6part *e6 in [e2obj.e6parts allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
+					e6.e2invoice = e2paid;
+				}
+				
 				// e2obj 配下が無くなったので削除する
 				[self	e2delete:e2obj];
 				e2obj = nil;
@@ -608,7 +622,7 @@ static NSManagedObjectContext *scMoc = nil;
 		e2obj.e1unpaid = nil;
 		// E7集約処理：同日のE7があれば集約する
 		E7payment *e7paid = nil;
-		for (E7payment *e7 in e7old.e0unpaid.e7paids) {
+		for (E7payment *e7 in [e7old.e0unpaid.e7paids allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
 			if ([e7.nYearMMDD isEqualToNumber:e7old.nYearMMDD]) {
 				e7paid = e7; // 既存
 				e2obj.e7payment = e7paid; // E2を e7paid へ移す
@@ -660,10 +674,10 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 	else if (e2obj.e1paid) {	// PAID --->>> Unpaid
 		//[1.1.6]E2集約処理：同E1cardの同E2.dateuseがあれば集約する
-		for (E2invoice *e2un in  e1card.e2unpaids) {
+		for (E2invoice *e2un in  [e1card.e2unpaids allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
 			if ([e2un.nYearMMDD isEqualToNumber:e2obj.nYearMMDD]) {
 				// 同日のE2unpaidあり >>> E6を集約する
-				for (E6part *e6 in e2obj.e6parts) {
+				for (E6part *e6 in [e2obj.e6parts allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
 					e6.e2invoice = e2un;
 				}
 				// e2obj 配下が無くなったので削除する
@@ -685,7 +699,7 @@ static NSManagedObjectContext *scMoc = nil;
 		e2obj.e1paid = nil;
 		// E7集約処理：同日のE7があれば集約する
 		E7payment *e7un = nil;
-		for (E7payment *e7 in e7old.e0paid.e7unpaids) {
+		for (E7payment *e7 in [e7old.e0paid.e7unpaids allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
 			if ([e7.nYearMMDD isEqualToNumber:e7old.nYearMMDD]) {
 				e7un = e7; // 既存
 				// このE2を e7un へ移す
@@ -733,6 +747,7 @@ static NSManagedObjectContext *scMoc = nil;
 		return; //完了
 	}
 	AzLOG(@"Abnormality (119033) e2paid NG");
+	GA_TRACK_EVENT_ERROR(@"Abnormality (119033) e2paid NG",0);
 	alertBox(NSLocalizedString(@"Abnormality",nil), @"(119033)", @"OK");
 	return; //NG
 }
@@ -742,13 +757,13 @@ static NSManagedObjectContext *scMoc = nil;
 // [0.4]nRepeat対応
 + (void)e7paid:(E7payment *)e7obj inE6payNextMonth:(BOOL)bE6payNextMonth
 {
-	NSArray *aE2 = [[NSArray alloc] initWithArray:[e7obj.e2invoices allObjects]];
+	//NSArray *aE2 = [[NSArray alloc] initWithArray:[e7obj.e2invoices allObjects]];
 	// e2paid:内で配下が無くなったe7objが削除される可能性があるためコピーを使用する。
-	for (E2invoice *e2 in aE2) 
+	for (E2invoice *e2 in [e7obj.e2invoices allObjects]) 	//[1.1.9]allObjectsにより一時Array生成
 	{	// 配下E2の Paid と Unpaid を切り替える
 		[self e2paid:e2 inE6payNextMonth:bE6payNextMonth];
 	}
-	[aE2 release];
+	//[aE2 release];
 }
 
 // E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
@@ -758,11 +773,11 @@ static NSManagedObjectContext *scMoc = nil;
 	E0root *e0root = [self e0root];
 	BOOL bSave = NO;
 	
-	NSArray *aE7 = [[NSArray alloc] initWithArray:[e0root.e7unpaids allObjects]]; // Unpaid側だけ処理する
-	for (E7payment *e7 in aE7) // aE7一時配列要素は削除しないので reverseObjectEnumerator は不要 
+	//NSArray *aE7 = [[NSArray alloc] initWithArray:[e0root.e7unpaids allObjects]]; // Unpaid側だけ処理する
+	for (E7payment *e7 in [e0root.e7unpaids allObjects]) 	//[1.1.9]allObjectsにより一時Array生成
 	{
-		NSArray *aE2 = [[NSArray alloc] initWithArray:[e7.e2invoices allObjects]];
-		for (E2invoice *e2 in aE2) // aE2一時配列要素は削除しないので reverseObjectEnumerator は不要 
+		//NSArray *aE2 = [[NSArray alloc] initWithArray:[e7.e2invoices allObjects]];
+		for (E2invoice *e2 in [e7.e2invoices allObjects]) 	//[1.1.9]allObjectsにより一時Array生成
 		{
 			if (e2.e6parts==nil OR [e2.e6parts count]<=0) {
 				e2.e1paid = nil;
@@ -773,7 +788,7 @@ static NSManagedObjectContext *scMoc = nil;
 				bSave = YES;
 			}
 		}
-		[aE2 release];
+		//[aE2 release];
 		
 		if (e7.e2invoices==nil OR [e7.e2invoices count]<=0) {
 			e7.e0paid = nil;
@@ -783,7 +798,7 @@ static NSManagedObjectContext *scMoc = nil;
 			bSave = YES;
 		}
 	}
-	[aE7 release];
+	//[aE7 release];
 	
 	if (bSave) [self commit]; // 保存
 }
@@ -800,8 +815,8 @@ static NSManagedObjectContext *scMoc = nil;
 	// E3 以下削除
 	// e3obj.e6parts 配下が削除されても配列位置がズレないようにコピー配列を用いる
 	//NSArray *arrayE6 = [NSArray arrayWithArray:[e3obj.e6parts allObjects]];  できるだけautoreleaseを使わないようにする
-	NSArray *arrayE6 = [[NSArray alloc] initWithArray:[e3obj.e6parts allObjects]];
-	for (E6part *e6 in arrayE6) {
+	//NSArray *arrayE6 = [[NSArray alloc] initWithArray:[e3obj.e6parts allObjects]];
+	for (E6part *e6 in [e3obj.e6parts allObjects]) {	//[1.1.9]allObjectsにより一時Array生成
 		E2invoice *e2 = e6.e2invoice;
 		if (e2) {
 			// E2配下から切り離す（まだここではE6削除しない）
@@ -815,7 +830,7 @@ static NSManagedObjectContext *scMoc = nil;
 		[moc deleteObject:e6];	//deleteObjectは即commitされる ＜＜そんなことは無い！ roolback可能 save必要
 		e6 = nil;
 	}
-	[arrayE6 release];
+	//[arrayE6 release];
 	
 	// E3 削除
 	E4shop *e4 = e3obj.e4shop;
@@ -904,8 +919,8 @@ static NSManagedObjectContext *scMoc = nil;
 		//------------------------------------------------------------E6 削除
 		// e3obj.e6parts 配下が削除されても配列位置がズレないようにコピー配列を用いる
 		//NSArray *arrayE6 = [NSArray arrayWithArray:[e3obj.e6parts allObjects]]; 
-		NSArray *arrayE6 = [[NSArray alloc] initWithArray:[e3obj.e6parts allObjects]]; 
-		for (E6part *e6 in arrayE6) {
+		//NSArray *arrayE6 = [[NSArray alloc] initWithArray:[e3obj.e6parts allObjects]]; 
+		for (E6part *e6 in [e3obj.e6parts allObjects]) {
 			// E6 削除
 			E2invoice *e2 = e6.e2invoice; // 後のsumのため親E2を保存
 			e6.e3record = nil;  // E6 <<--> E3 リンク削除：これが無いと "LOGIC ERROR: E6 Delete NG" が出る
@@ -915,7 +930,7 @@ static NSManagedObjectContext *scMoc = nil;
 			// E6削除
 			[scMoc deleteObject:e6];
 		}
-		[arrayE6 release];
+		//[arrayE6 release];
 		
 		//------------------------------------------------------------E6 新規追加
 		
@@ -1469,6 +1484,7 @@ static NSManagedObjectContext *scMoc = nil;
 			// ありましたが支払済なので、さらに翌月を探す　＜＜新規の場合だけ＞＞
 			//iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
 			AzLOG(@"LOGIC ERR: E6の移動先がPAIDになっている"); //　ここを通ることは無いハズ
+			GA_TRACK_EVENT_ERROR(@"LOGIC ERR: E6-PAID",0);
 			return;
 		}
 	}
