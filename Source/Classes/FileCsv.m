@@ -701,7 +701,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 				} else {
 					e2nodes = ActE1card.e2unpaids;
 				}
-				for (E2invoice *e2node in e2nodes) {
+				//NG//for (E2invoice *e2node in e2nodes) ＜＜e2nodesに変化あれば落ちる！キケン
+				for (E2invoice *e2node in [e2nodes allObjects]) {	//allObjectsによりArrayコピー生成される
 					if ([e2node.nYearMMDD integerValue] == iYearMMDD) {
 						e6node.e2invoice = e2node;
 						break;
@@ -730,7 +731,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 				} else {
 					e7nodes = Pe0root.e7unpaids;
 				}
-				for (E7payment *e7node in e7nodes) {
+				//NG//for (E7payment *e7node in e7nodes)  ＜＜e7nodesに変化あれば落ちる！キケン
+				for (E7payment *e7node in [e7nodes allObjects]) {	//allObjectsによりArrayコピー生成される
 					if ([e7node.nYearMMDD integerValue] == iYearMMDD) { // 支払日
 						e6node.e2invoice.e7payment = e7node;
 						break;
