@@ -55,9 +55,107 @@ static UIColor *MpColorBlue(float percent) {
 }
 
 
+
+#pragma mark - UUID　-　passCode生成
+#import <CommonCrypto/CommonDigest.h>  // MD5
+#include <sys/socket.h>
+#include <sys/sysctl.h>
+#include <net/if.h>
+#include <net/if_dl.h>
+NSString *getMacAddress()
+{	// cf. http://iphonedevelopertips.com/device/determine-mac-address.html
+	int                 mgmtInfoBase[6];
+	char                *msgBuffer = NULL;
+	size_t              length;
+	unsigned char       macAddress[6];
+	struct if_msghdr    *interfaceMsgStruct;
+	struct sockaddr_dl  *socketStruct;
+	NSString            *errorFlag = NULL;
+	
+	// Setup the management Information Base (mib)
+	mgmtInfoBase[0] = CTL_NET;        // Request network subsystem
+	mgmtInfoBase[1] = AF_ROUTE;       // Routing table info
+	mgmtInfoBase[2] = 0;              
+	mgmtInfoBase[3] = AF_LINK;        // Request link layer information
+	mgmtInfoBase[4] = NET_RT_IFLIST;  // Request all configured interfaces
+	
+	// With all configured interfaces requested, get handle index
+	if ((mgmtInfoBase[5] = if_nametoindex("en0")) == 0) 
+		errorFlag = @"if_nametoindex failure";
+	else
+	{
+		// Get the size of the data available (store in len)
+		if (sysctl(mgmtInfoBase, 6, NULL, &length, NULL, 0) < 0) 
+			errorFlag = @"sysctl mgmtInfoBase failure";
+		else
+		{
+			// Alloc memory based on above call
+			if ((msgBuffer = malloc(length)) == NULL)
+				errorFlag = @"buffer allocation failure";
+			else
+			{
+				// Get system information, store in buffer
+				if (sysctl(mgmtInfoBase, 6, msgBuffer, &length, NULL, 0) < 0)
+					errorFlag = @"sysctl msgBuffer failure";
+			}
+		}
+	}
+	
+	// Befor going any further...
+	if (errorFlag != NULL)
+	{
+		NSLog(@"Error: %@", errorFlag);
+		return errorFlag;
+	}
+	
+	// Map msgbuffer to interface message structure
+	interfaceMsgStruct = (struct if_msghdr *) msgBuffer;
+	
+	// Map to link-level socket structure
+	socketStruct = (struct sockaddr_dl *) (interfaceMsgStruct + 1);
+	
+	// Copy link layer address data in socket structure to an array
+	memcpy(&macAddress, socketStruct->sdl_data + socketStruct->sdl_nlen, 6);
+	
+	// Read from char array into a string object, into traditional Mac address format
+	//NSString *macAddressString = [NSString stringWithFormat:@"%02X:%02X:%02X:%02X:%02X:%02X", 
+	NSString *macAddressString = [NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X",
+								  macAddress[0], macAddress[1], macAddress[2], 
+								  macAddress[3], macAddress[4], macAddress[5]];
+	NSLog(@"Mac Address: %@", macAddressString);
+	
+	// Release the buffer memory
+	free(msgBuffer);
+	
+	return macAddressString;
+}
+
+// 「招待パス」生成　　＜＜固有セット＞＞を Version 2.0 にも実装して認証する
+NSString *passCode()
+{	// userPass : デバイスID（UDID） & MD5   （UDIDをそのまま利用するのはセキュリティ上好ましくないため）
+	//NSString *code = [UIDevice currentDevice].uniqueIdentifier;		// デバイスID文字列 ＜＜iOS5.1以降廃止のため
+	// MACアドレスにAzPackList固有文字を絡めて種コード生成
+	NSString *code = [NSString stringWithFormat:@"Syukugawa%@1618AzPayNote1", getMacAddress()]; //＜＜固有セット＞＞
+	NSLog(@"MAC address: code=%@", code);
+	// code を MD5ハッシュ化
+	const char *cstr = [code UTF8String];	// C文字列化
+	unsigned char ucMd5[CC_MD5_DIGEST_LENGTH];	// MD5結果領域 [16]bytes
+	CC_MD5(cstr, strlen(cstr), ucMd5);			// MD5生成
+	// 16進文字列化 ＜＜ucMd5[0]〜[15]のうち10文字分だけ使用する＞＞
+	code = [NSString stringWithFormat: @"%02X%02X%02X%02X%02X",  
+			ucMd5[14], ucMd5[5], ucMd5[8], ucMd5[2], ucMd5[10]]; //＜＜固有セット＞＞
+	AzLOG(@"passCode: code=%@", code);
+	return code;
+}
+
+
+
 #pragma mark - dealloc
 
 - (void)dealloc {
+#ifdef AzSTABLE
+	[zPassCode_ release];
+#endif
     [super dealloc];
 }
 
@@ -142,6 +240,35 @@ static UIColor *MpColorBlue(float percent) {
 	}
 }
 
+#ifdef AzSTABLE	//2.0移行のため、招待パスコードをコピーする機能を実装
+- (BOOL)canBecomeFirstResponder 
+{	// 編集メニュー[Copy]を表示するため、ファーストレスポンダになる
+	return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{	// [Copy]利用可能にする
+	if (@selector(copy:)==action) return YES;
+	return [super canPerformAction:action withSender:sender];
+}
+
+- (void)buPassCodeCopy
+{	// [Copy]メニュー表示
+	if ([self becomeFirstResponder]) {
+		UIMenuController *menu = [UIMenuController sharedMenuController];
+		//label = [[UILabel alloc] initWithFrame:CGRectMake(150, 240, 150, 40)];
+		[menu setTargetRect:CGRectMake(225, 265, 1, 1) inView:self.view];
+		[menu setMenuVisible:YES animated:YES];
+	}
+}
+
+- (void)copy:(id)sender
+{	// [Copy]タッチしたときに呼ばれる
+	[UIPasteboard generalPasteboard].string = zPassCode_;
+}
+#endif
+
+
 - (void)buGoAppStore:(UIButton *)button
 {
 	//alertBox( NSLocalizedString(@"Contact mail",nil), NSLocalizedString(@"Contact mail msg",nil), @"OK" );
@@ -192,7 +319,13 @@ static UIColor *MpColorBlue(float percent) {
 #pragma mark - Touch
 
 // タッチイベント
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+{
+#ifdef AzSTABLE
+	UITouch *tc = [touches anyObject];
+	CGPoint tp = [tc locationInView:self.view];
+	if (200<tp.y && tp.y<300) return;	// 招待コード [Copy] の範囲を除くため
+#endif
 	[self hide];
 }
 
@@ -309,10 +442,18 @@ static UIColor *MpColorBlue(float percent) {
 	label.font = [UIFont systemFontOfSize:12];
 	[self.view addSubview:label]; [label release];	
 	
-	//------------------------------------------Go to Support blog.
+	//------------------------------------------Post Comment
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+	bu.frame = CGRectMake(fX+20, fY+200, 280,30);
+	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
+	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:bu];  //autorelease
+	
+	//------------------------------------------Go to Support blog.
+	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-	bu.frame = CGRectMake(fX+20, fY+210, 120,26);
+	bu.frame = CGRectMake(fX+20, fY+245, 120,26);
 	[bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
@@ -321,20 +462,27 @@ static UIColor *MpColorBlue(float percent) {
 	//------------------------------------------Go to App Store
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:10];
-	bu.frame = CGRectMake(fX+150, fY+210, 150,26);
+	bu.frame = CGRectMake(fX+150, fY+245, 150,26);
 	[bu setTitle:NSLocalizedString(@"GoAppStore Paid",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
 #endif
 	
-	//------------------------------------------Post Comment
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	bu.frame = CGRectMake(fX+20, fY+255, 280,30);
-	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
-	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:bu];  //autorelease
-	
+#ifdef AzSTABLE
+	zPassCode_ = [passCode() retain];  // dealloc:にてrelease
+	label = [[UILabel alloc] initWithFrame:CGRectMake(150, 236, 150, 60)];
+	label.text = [NSString stringWithFormat:@"%@\n%@\n%@", NSLocalizedString(@"Invitation pass",nil), 
+				  zPassCode_, @"< Tap Copy >"];
+	label.numberOfLines = 3;
+	label.textAlignment = UITextAlignmentCenter;
+	label.textColor = [UIColor blackColor];
+	label.backgroundColor = [UIColor redColor]; //背景
+	label.font = [UIFont boldSystemFontOfSize:14];
+	label.userInteractionEnabled = YES;
+	[label addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buPassCodeCopy)]];
+	[self.view addSubview:label]; [label release];
+#endif
+
 	//------------------------------------------免責
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+300, 300, 50)];
 	label.text = NSLocalizedString(@"Disclaimer",nil);

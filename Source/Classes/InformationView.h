@@ -12,14 +12,12 @@
 
 @interface InformationView : UIViewController  <MFMailComposeViewControllerDelegate> {
 @private
-	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	//----------------------------------------------assign
+#ifdef AzSTABLE	//2.0移行のため、招待パスコードをコピーする機能を実装
+	NSString		*zPassCode_;
+#endif
 }
 
 // 公開メソッド
-//- (id)initWithFrame:(CGRect)rect;
-//- (void)show;
 - (id)init;
 - (void)hide;
 

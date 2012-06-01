@@ -188,14 +188,23 @@ withError:&error]) { NSLog(@"GA_TRACK_PAGE: error: %@",error.helpAnchor);  } }
 NSError *error; if (![[GANTracker sharedTracker] trackEvent:EVENT action:ACTION label:LABEL value:VALUE withError:&error]) \
 { NSLog(@"GA_TRACK_EVENT: error: %@",error.helpAnchor); }  }
 
-#define GA_TRACK_EVENT_ERROR(LABEL,VALUE)  { \
-NSString *_zAction_ = [NSString stringWithFormat:@"%@:%@",NSStringFromClass([self class]), NSStringFromSelector(_cmd)]; \
-GA_TRACK_EVENT(@"ERROR",_zAction_,LABEL,VALUE); }
-
 #define GA_TRACK_CLASS  { GA_TRACK_PAGE(NSStringFromClass([self class])) }
-
 #define GA_TRACK_METHOD { GA_TRACK_EVENT(NSStringFromClass([self class]),NSStringFromSelector(_cmd),@"",0); }
-#define GA_TRACK_METHOD_LABEL(LABEL,VALUE) { GA_TRACK_EVENT(NSStringFromClass([self class]),NSStringFromSelector(_cmd),LABEL,VALUE); }
+
+#define GA_TRACK_LOG(LABEL)  { \
+NSString *_zLabel_ = [NSString stringWithFormat:@"(%d)%@",__LINE__,LABEL]; \
+NSLog(@"GA_TRACK_LOG: %@:%@ %@",NSStringFromClass([self class]),NSStringFromSelector(_cmd),_zLabel_); \
+GA_TRACK_EVENT(NSStringFromClass([self class]),NSStringFromSelector(_cmd),_zLabel_,0); }
+
+#define GA_TRACK_ERROR(LABEL)  { \
+NSString *_zAction_ = [NSString stringWithFormat:@"%@:%@",NSStringFromClass([self class]),NSStringFromSelector(_cmd)]; \
+NSString *_zLabel_ = [NSString stringWithFormat:@"(%d)%@",__LINE__,LABEL]; \
+NSLog(@"GA_TRACK_ERROR: %@ %@",_zAction_,_zLabel_); \
+GA_TRACK_EVENT(@"ERROR",_zAction_,_zLabel_,0); }
+
+// 以下、非推奨
+#define GA_TRACK_METHOD_LABEL(LABEL,VALUE)		GA_TRACK_LOG(LABEL)
+#define GA_TRACK_EVENT_ERROR(LABEL,VALUE)			GA_TRACK_ERROR(LABEL)
 
 
 //END
