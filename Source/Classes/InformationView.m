@@ -131,11 +131,12 @@ NSString *getMacAddress()
 }
 
 // 「招待パス」生成　　＜＜固有セット＞＞を Version 2.0 にも実装して認証する
+#define PASS_SECRET		@"1618AzPayNote1" //＜＜固有セット＞＞
 NSString *passCode()
 {	// userPass : デバイスID（UDID） & MD5   （UDIDをそのまま利用するのはセキュリティ上好ましくないため）
 	//NSString *code = [UIDevice currentDevice].uniqueIdentifier;		// デバイスID文字列 ＜＜iOS5.1以降廃止のため
 	// MACアドレスにAzPackList固有文字を絡めて種コード生成
-	NSString *code = [NSString stringWithFormat:@"Syukugawa%@1618AzPayNote1", getMacAddress()]; //＜＜固有セット＞＞
+	NSString *code = [NSString stringWithFormat:@"Syukugawa%@%@", getMacAddress(), PASS_SECRET];
 	NSLog(@"MAC address: code=%@", code);
 	// code を MD5ハッシュ化
 	const char *cstr = [code UTF8String];	// C文字列化
@@ -143,7 +144,7 @@ NSString *passCode()
 	CC_MD5(cstr, strlen(cstr), ucMd5);			// MD5生成
 	// 16進文字列化 ＜＜ucMd5[0]〜[15]のうち10文字分だけ使用する＞＞
 	code = [NSString stringWithFormat: @"%02X%02X%02X%02X%02X",  
-			ucMd5[14], ucMd5[5], ucMd5[8], ucMd5[2], ucMd5[10]]; //＜＜固有セット＞＞
+			ucMd5[1], ucMd5[5], ucMd5[7], ucMd5[11], ucMd5[13]];	
 	AzLOG(@"passCode: code=%@", code);
 	return code;
 }

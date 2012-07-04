@@ -707,7 +707,8 @@
 	}
 #endif
 
-	if ([[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
+	if (indexPath.section < [RaE6parts count]	//Fix:落ちるのを回避
+		&& [[RaE6parts objectAtIndex:indexPath.section] count] <= indexPath.row) {
 		return 33; // Add Record
 	}
 	return 44; // デフォルト：44ピクセル
