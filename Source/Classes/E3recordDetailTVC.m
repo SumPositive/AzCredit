@@ -209,7 +209,7 @@
 	
 	if( AzMAX_NAME_LENGTH < [Re3edit.zName length] ){
 		// 長さがAzMAX_NAME_LENGTH超ならば、0文字目から50文字を切り出して保存　＜以下で切り出すとフリーズする＞
-		[Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
+		Re3edit.zName = [Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
 
 	//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
