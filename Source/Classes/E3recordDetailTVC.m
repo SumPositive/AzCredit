@@ -890,7 +890,7 @@
 					return NSLocalizedString(@"CopyAdd Msg", nil);
 			}
 			else if	(0 <= MiIndexE3lasts && !MbModified) {
-				return [NSString stringWithFormat:@"%@%ld%@", 
+				return [NSString stringWithFormat:@"%@%d%@", 
 						NSLocalizedString(@"PastCopyPre",nil),
 						1 + MiIndexE3lasts, 
 						NSLocalizedString(@"PastCopySuf",nil)];

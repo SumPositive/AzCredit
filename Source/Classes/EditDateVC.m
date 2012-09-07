@@ -183,7 +183,7 @@
 	long	days = (long)([MdatePicker.date timeIntervalSinceNow] / (24 * 60 * 60));
 	if (120 < abs(days)) {  //[0.4]日付チェック
 		if (days < 0) {	// 過去すぎる
-			NSString *zMsg = [NSString stringWithFormat:@"%ld%@", abs(days), NSLocalizedString(@"DateUse Under msg",nil)];
+			NSString *zMsg = [NSString stringWithFormat:@"%d%@", abs(days), NSLocalizedString(@"DateUse Under msg",nil)];
 			alertBox(NSLocalizedString(@"DateUse Over",nil), zMsg, NSLocalizedString(@"Roger",nil));
 		} else {	// 未来すぎる
 			NSString *zMsg = [NSString stringWithFormat:@"%ld%@", days, NSLocalizedString(@"DateUse Over msg",nil)];

@@ -61,7 +61,7 @@ NSString *GstringDay( NSInteger PlDay )
 			return NSLocalizedString(@"3rd",nil);
 			break;
 		default:
-			return [NSString stringWithFormat:@"%ld%@", PlDay, NSLocalizedString(@"th",nil)];
+			return [NSString stringWithFormat:@"%d%@", PlDay, NSLocalizedString(@"th",nil)];
 			break;
 	}
 	return nil;
