@@ -71,7 +71,7 @@
 {
 	E1cardDetailTVC *e1detail = [[E1cardDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	
-	if ([RaE1cards count] <= indexPath.row) {	// Add mode
+	if (indexPath == nil OR [RaE1cards count] <= indexPath.row) {	// Add mode
 		E1card *e1obj = [NSEntityDescription insertNewObjectForEntityForName:@"E1card"
 													  inManagedObjectContext:Re0root.managedObjectContext];
 		// Add
