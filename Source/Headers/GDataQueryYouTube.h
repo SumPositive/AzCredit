@@ -27,7 +27,7 @@
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
-#define _EXTERN extern
+#define _EXTERN GDATA_EXTERN
 #define _INITIALIZE_AS(x)
 #endif
 
@@ -84,6 +84,9 @@ _EXTERN NSString* const kGDataYouTubeCaptionTrackFormatSubrip     _INITIALIZE_AS
 
 - (void)setHasCaptions:(BOOL)flag;
 - (BOOL)hasCaptions;
+
+- (void)setShouldRequire3D:(BOOL)flag;
+- (BOOL)shouldRequire3D;
 
 // put video entries into link elements for activity feed entries
 - (void)setShouldInline:(BOOL)flag;

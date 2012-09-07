@@ -1,4 +1,4 @@
-/* Copyright (c) 2009 Google Inc.
+/* Copyright (c) 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,14 @@
  */
 
 //
-//  GDataEntryTranslationGlossary.h
+//  GDataEntryTableDoc.h
 //
 
-//
-// For access to ACLs, use the ACLLink category on the entry
-// from GDataEntryACL.h
-//
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_TRANSLATION_SERVICE
+#import "GDataEntryDocBase.h"
 
-#import "GDataEntryBase.h"
-#import "GDataTranslationElements.h"
-
-@interface GDataEntryTranslationGlossary : GDataEntryBase
-
-+ (GDataEntryTranslationGlossary *)glossaryWithTitle:(NSString *)title;
-
+@interface GDataEntryTableDoc : GDataEntryDocBase
 @end
 
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_TRANSLATION_SERVICE
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

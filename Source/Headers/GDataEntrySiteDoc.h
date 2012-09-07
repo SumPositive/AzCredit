@@ -1,4 +1,4 @@
-/* Copyright (c) 2009 Google Inc.
+/* Copyright (c) 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,14 @@
  */
 
 //
-//  GDataFeedHealthProfile.h
+//  GDataEntrySiteDoc.h
 //
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
-#import "GDataFeedBase.h"
+#import "GDataEntryDocBase.h"
 
-@interface GDataFeedHealthProfile : GDataFeedBase 
-+ (GDataFeedHealthProfile *)healthProfileFeed;
+@interface GDataEntrySiteDoc : GDataEntryDocBase
 @end
 
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

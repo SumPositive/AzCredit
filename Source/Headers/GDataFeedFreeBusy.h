@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2011 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,14 +13,18 @@
 * limitations under the License.
 */
 
-// 
-// GDataGoogleBase.h
+//
+//  GDataFeedFreeBusy.h
 //
 
-#import "GDataElements.h"
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
 
-// Google Base
-#import "GDataEntryGoogleBase.h"
-#import "GDataFeedGoogleBase.h"
-#import "GDataServiceGoogleBase.h"
-#import "GDataQueryGoogleBase.h"
+#import "GDataFeedBase.h"
+
+@interface GDataFeedFreeBusy : GDataFeedBase
+@end
+
+@interface GDataFeedGroupFreeBusy : GDataFeedBase
+@end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

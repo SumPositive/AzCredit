@@ -1,4 +1,4 @@
-/* Copyright (c) 2009 Google Inc.
+/* Copyright (c) 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
  */
 
 //
-//  GDataFeedTranslationGlossary.h
+//  GDataEntryDocChange.h
 //
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_TRANSLATION_SERVICE
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
-#import "GDataFeedBase.h"
+#import "GDataEntryDocBase.h"
 
-@interface GDataFeedTranslationGlossary : GDataFeedBase
-
-+ (GDataFeedTranslationGlossary *)glossaryFeed;
-
+@interface GDataEntryDocChange : GDataEntryDocBase
 @end
 
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_TRANSLATION_SERVICE
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

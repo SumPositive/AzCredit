@@ -14,27 +14,34 @@
  */
 
 //
-//  GDataTranslationDocumentSource.h
+//  GDataVolumePrice.h
 //
 
-// document source element, such as
-//   <gtt:documentSource type="wiki" url="http://example.com/stuff"/>
+// book price extension, like
+//  <gbs:price type="RetailPrice">
+//    <gd:money amount="15.00" currencyCode="USD" />
+//    <gbs:promotion value="print-digital-bundle" />
+//  </gbs:price>
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_TRANSLATION_SERVICE
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
 
 #import "GDataObject.h"
+#import "GDataMoney.h"
 
-@interface GDataTranslationDocumentSource : GDataObject <GDataExtension>
+@interface GDataVolumePrice : GDataObject <GDataExtension>
 
-+ (GDataTranslationDocumentSource *)documentSourceWithType:(NSString *)type
-                                                 URLString:(NSString *)urlString;
++ (GDataVolumePrice *)volumePriceWithType:(NSString *)type
+                                    money:(GDataMoney *)money;
 
 - (NSString *)type;
 - (void)setType:(NSString *)str;
 
-- (NSString *)URLString;
-- (void)setURLString:(NSString *)str;
+- (GDataMoney *)money;
+- (void)setMoney:(GDataMoney *)obj;
+
+- (NSString *)promotion;
+- (void)setPromotion:(NSString *)str;
 
 @end
 
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_TRANSLATION_SERVICE
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

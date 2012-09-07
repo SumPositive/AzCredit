@@ -1,4 +1,4 @@
-/* Copyright (c) 2009 Google Inc.
+/* Copyright (c) 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,22 @@
  * limitations under the License.
  */
 
-// 
-// GDataHealth.h
+//
+//  GDataFeedDocChange.h
 //
 
-#import "GDataElements.h"
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
-// Health
+#import "GDataFeedBase.h"
 
-#import "GDataHealthConstants.h"
-#import "GDataHealthElements.h"
-#import "GDataEntryHealthProfile.h"
-#import "GDataEntryHealthRegister.h"
-#import "GDataFeedHealthProfile.h"
-#import "GDataFeedHealthRegister.h"
-#import "GDataServiceGoogleHealth.h"
-#import "GDataQueryGoogleHealth.h"
+@interface GDataFeedDocChange : GDataFeedBase
+
+- (NSNumber *)largestChangestamp; // long long
+- (void)setLargestChangestamp:(NSNumber *)val;
+
+// convenience accessor
+- (NSNumber *)lastEntryChangestamp;
+
+@end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

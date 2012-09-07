@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 
 
 // This is a simple class to create a MIME document.  To use, allocate
-// a new GDataMIMEDocument and start adding parts as necessary.  When you are
+// a new GTMMIMEDocument and start adding parts as necessary.  When you are
 // done adding parts, call generateInputStream to get an NSInputStream
 // containing the contents of your MIME document.
 //
@@ -23,18 +23,20 @@
 
 #import <Foundation/Foundation.h>
 
-#if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4) || defined(GDATA_TARGET_NAMESPACE)
-  // we need NSInteger for the 10.4 SDK, or we're using target namespace macros
+#if defined(GTL_TARGET_NAMESPACE)
+  // we're using target namespace macros
+  #import "GTLDefines.h"
+#elif defined(GDATA_TARGET_NAMESPACE)
   #import "GDataDefines.h"
 #endif
 
-@interface GDataMIMEDocument : NSObject {
+@interface GTMMIMEDocument : NSObject {
   NSMutableArray* parts_;         // Contains an ordered set of MimeParts
   unsigned long long length_;     // Length in bytes of the document.
   u_int32_t randomSeed_;          // for testing
 }
 
-+ (GDataMIMEDocument *)MIMEDocument;
++ (GTMMIMEDocument *)MIMEDocument;
 
 // Adds a new part to this mime document with the given headers and body.  The
 // headers keys and values should be NSStrings
@@ -50,6 +52,6 @@
 // ------ UNIT TESTING ONLY BELOW ------
 
 // For unittesting only, seeds the random number generator
-- (void)seedRandomWith:(unsigned int)seed;
+- (void)seedRandomWith:(u_int32_t)seed;
 
 @end

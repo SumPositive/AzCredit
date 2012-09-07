@@ -27,7 +27,7 @@
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
-#define _EXTERN extern
+#define _EXTERN GDATA_EXTERN
 #define _INITIALIZE_AS(x)
 #endif
 
@@ -63,6 +63,10 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
 + (NSURL *)calendarFeedURLForUsername:(NSString *)username;
 
 + (NSURL *)settingsFeedURLForUsername:(NSString *)username;
+
++ (NSURL *)freeBusyURLForUsername:(NSString *)username;
+
++ (NSURL *)freeBusyURLForGroup:(NSString *)groupname;
 
 - (GDataServiceTicket *)fetchCalendarFeedForUsername:(NSString *)username
                                             delegate:(id)delegate
