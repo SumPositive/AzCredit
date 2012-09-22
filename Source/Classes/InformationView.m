@@ -469,7 +469,7 @@ NSString *passCode()
 	[self.view addSubview:bu];  //autorelease
 #endif
 	
-#ifdef AzSTABLE
+#ifdef AzSTABLExxxxxxxxxxxxxx
 	zPassCode_ = [passCode() retain];  // dealloc:にてrelease
 	label = [[UILabel alloc] initWithFrame:CGRectMake(150, 236, 150, 60)];
 	label.text = [NSString stringWithFormat:@"%@\n%@\n%@", NSLocalizedString(@"Invitation pass",nil), 

@@ -63,11 +63,13 @@
 {
 	[self indicatorOff]; // 念のため（リークしないように）入れた。
 
+
 	AzRETAIN_CHECK(@"GooDocs MtfPassword", RtfPassword, 3) // (1)alloc (2)addSubView (3)TableViewCell
 	[RtfPassword release];
 	AzRETAIN_CHECK(@"GooDocs MtfUsername", RtfUsername, 3)
 	[RtfUsername release];
 	[MzOldUsername release], MzOldUsername = nil;
+	[MzUploadName release], MzUploadName = nil;
 	
 	[mUploadTicket cancelTicket]; // キャンセルするため
 	[mDocListFetchTicket cancelTicket]; // キャンセルするため
@@ -202,8 +204,8 @@
 #endif
 
 	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	// この時点でようやく self.managedObjectContext self.bUpload などがセットされている。
 
@@ -268,8 +270,13 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+{
+#ifdef AzPAD
+	return YES;
+#else
+	// 回転禁止でも、正面は常に許可しておくこと。
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+#endif
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -497,8 +504,7 @@
 				[self indicatorOn];	// 進捗サインON
 				// Csv変換 ＆ Upload開始
 				[self performSelectorOnMainThread:@selector(uploadFile:)
-									   withObject:[NSString stringWithString:MzUploadName] // autorelease
-									waitUntilDone:NO];
+									   withObject:MzUploadName		waitUntilDone:NO];
 			}
 			break;
 			
@@ -869,7 +875,7 @@
 
 #pragma mark - UPLOAD
 
-- (void)uploadFile: (NSString *)docName 
+- (void)uploadFile: (NSString *)docName
 {
 	NSString *dir1 = NSHomeDirectory();
 	NSString *dir2 = [dir1 stringByAppendingPathComponent:@"Documents"];
@@ -1383,7 +1389,12 @@
 					GA_TRACK_EVENT_ERROR([exception description],0);
 					return;
 				}
-				MzUploadName = [NSString stringWithString:cell.detailTextLabel.text]; // autorelease
+				//NG//MzUploadName = [NSString stringWithString:cell.detailTextLabel.text];
+				//[iOS6]では、uploadFile:で参照する前に破棄されて落ちるため、allocに変更。
+				if (MzUploadName) {
+					[MzUploadName release];
+				}
+				MzUploadName = [[NSString alloc] initWithString:cell.detailTextLabel.text];
 				UIActionSheet *sheet = [[UIActionSheet alloc] 
 										initWithTitle:MzUploadName
 										delegate:self 

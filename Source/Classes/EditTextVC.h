@@ -22,7 +22,7 @@
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UITextView	*MtextView; // self.viewがOwner
 	//----------------------------------------------assign
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 }
 
 @property (nonatomic, retain) id			Rentity;

@@ -317,7 +317,11 @@ static UIColor *MpColorBlue(float percent) {
 {
 	// PAID ,Unpaid ボタン設置
 	CGRect rc = [self.tableView rectForFooterInSection:0];
-	MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
+	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
+	} else {
+		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+17,  90,70);
+	}
 	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
 	
 	MbuUnpaid.hidden = ([Re0root.e7paids count] <= 0);
@@ -351,8 +355,8 @@ static UIColor *MpColorBlue(float percent) {
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
 	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 
 	// Me7list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
@@ -450,7 +454,7 @@ static UIColor *MpColorBlue(float percent) {
 	return YES;
 #else
 	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 #endif
 }
 

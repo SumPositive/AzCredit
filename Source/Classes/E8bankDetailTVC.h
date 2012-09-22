@@ -28,7 +28,7 @@
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields
 	//----------------------------------------------assign
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 }
 
 @property (nonatomic, retain) E8bank	*Re8edit;

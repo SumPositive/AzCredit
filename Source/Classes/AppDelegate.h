@@ -11,6 +11,10 @@
 #import "padRootVC.h"
 #endif
 
+//iOS6以降、回転対応のためサブクラス化が必要になった。
+@interface AzNavigationController : UINavigationController
+@end
+
 @class TopMenuTVC;
 @class LoginPassVC;
 
@@ -28,7 +32,7 @@
 	UISplitViewController		*mainController;
     UIBarButtonItem				*barMenu;
 #else
-    UINavigationController	*mainController;
+    AzNavigationController	*mainController;
 #endif
 	
 //	NSMutableArray		*RaComebackIndex;	// an array of selections for each drill level

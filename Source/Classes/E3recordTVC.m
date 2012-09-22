@@ -559,8 +559,8 @@
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
 	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	
 #ifdef AzPAD
 	if (Pe4shop || Pe5category || Pe8bank) {
@@ -660,7 +660,7 @@
 	return YES;
 #else
 	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 #endif
 }
 

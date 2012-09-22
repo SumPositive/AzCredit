@@ -150,7 +150,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
 {
-    return YES;
+#ifdef AzPAD
+	return YES;
+#else
+	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
+#endif
 }
 
 //[Menu]Popoverが開いたときに呼び出される

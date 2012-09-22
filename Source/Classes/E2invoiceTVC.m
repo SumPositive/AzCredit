@@ -363,7 +363,11 @@
 {
 	// PAID ,Unpaid ボタン設置
 	CGRect rc = [self.tableView rectForFooterInSection:0];
-	MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
+	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
+	} else {
+		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+17,  90,70);
+	}
 	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
 	
 	MbuUnpaid.hidden = ([[RaE2list objectAtIndex:0] count] <= 0);		// Index: 0=Paid 1=Unpaid
@@ -397,8 +401,8 @@
 	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
 	
 	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	if (Re1select && Re8select) {
 		AzLOG(@"Exit ERROR: Pe1select,Re8select != nil");
@@ -606,7 +610,7 @@
 	return YES;
 #else
 	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 #endif
 }
 

@@ -27,7 +27,7 @@
 	UILabel		*MlbNote;
 	//----------------------------------------------assign - Entity fields
 	//----------------------------------------------assign
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 }
 
 @property (nonatomic, retain) E1card	*Re1edit;
