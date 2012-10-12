@@ -20,7 +20,7 @@
 	UILabel		*MlbTaxRate;
 	//----------------------------------------------assign
 	//BOOL MbOptBootTopView;
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 }
 
 @end

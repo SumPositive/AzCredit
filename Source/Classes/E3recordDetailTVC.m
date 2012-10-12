@@ -560,7 +560,7 @@
 
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptEnableInstallment = [defaults boolForKey:GD_OptEnableInstallment];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
 	//MbOptAmountCalc = [defaults boolForKey:GD_OptAmountCalc];
@@ -745,8 +745,9 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+{	//iPad//Popover内につき回転不要
+	// 回転禁止でも、正面は常に許可しておくこと。
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜OS 3.0以降は非推奨＞＞
@@ -890,7 +891,7 @@
 					return NSLocalizedString(@"CopyAdd Msg", nil);
 			}
 			else if	(0 <= MiIndexE3lasts && !MbModified) {
-				return [NSString stringWithFormat:@"%@%ld%@", 
+				return [NSString stringWithFormat:@"%@%d%@", 
 						NSLocalizedString(@"PastCopyPre",nil),
 						1 + MiIndexE3lasts, 
 						NSLocalizedString(@"PastCopySuf",nil)];

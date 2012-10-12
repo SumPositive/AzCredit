@@ -41,7 +41,7 @@
 	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
 #endif
 	//----------------------------------------------------------------assign
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 	NSInteger MiOptE5SortMode;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }

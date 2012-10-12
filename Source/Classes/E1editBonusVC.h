@@ -23,7 +23,7 @@
 	UILabel *MlbBonus1;
 	UILabel *MlbBonus2;
 	//----------------------------------------------assign
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 }
 
 @property (nonatomic, retain) E1card		*Re1edit;

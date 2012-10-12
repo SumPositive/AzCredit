@@ -44,7 +44,7 @@
 	AppDelegate *appDelegate;
 	BOOL			MbE1cardChange;
 	
-	BOOL			MbOptAntirotation;
+	//BOOL			MbOptAntirotation;
 	BOOL			MbOptEnableInstallment;
 	BOOL			MbOptUseDateTime;
 	NSInteger		MiE1cardRow;

@@ -303,6 +303,10 @@
 	}
 	[self AdRefresh];
 #else
+	//[iOS6+4inch]対策
+	//mAdPositionY = 568 - 44 - 50;
+	mAdPositionY = self.view.frame.size.height + 22 - 44 - 50;
+	
 	// iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
 	// AdMobは、常時開始とするためYES
 	MbAdCanVisible = YES;
@@ -322,8 +326,8 @@
 #endif
 	
 	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	//MbOptEnableSchedule = [defaults boolForKey:GD_OptEnableSchedule];
 	//MbOptEnableCategory = [defaults boolForKey:GD_OptEnableCategory];
 	
@@ -405,13 +409,12 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	// ここでは回転の許可、禁止だけを判定する  （現在の向きは、self.interfaceOrientation で取得できる）
 
-	if ([self.view viewWithTag:TAG_VIEW_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
+	//if ([self.view viewWithTag:TAG_VIEW_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
 
 #ifdef AzPAD
 	return YES;
 #else
-	if (interfaceOrientation==UIInterfaceOrientationPortrait) return YES; // 正面は常に許可
-	return !MbOptAntirotation; // Not MbOptAntirotation
+	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面は常に許可
 #endif
 }
 
@@ -976,7 +979,8 @@
 		[self.splitViewController.view addSubview:RoAdMobView];
 		[self AdMobWillRotate:self.splitViewController.interfaceOrientation];
 #else
-		RoAdMobView.frame = CGRectMake(0.0, 480 + 10, GAD_SIZE_320x50.width, GAD_SIZE_320x50.height); 	// 下部に隠す
+		RoAdMobView.frame = CGRectMake(0, mAdPositionY,
+										GAD_SIZE_320x50.width, GAD_SIZE_320x50.height); 	// 下部に隠す
 		RoAdMobView.adUnitID = AdMobID_iPhone;
 		RoAdMobView.rootViewController = self.navigationController;
 		[self.navigationController.view addSubview:RoAdMobView];
@@ -1062,13 +1066,15 @@
 		CGRect rc = RoAdMobView.frame;
 		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
 			if (RoAdMobView.alpha==0) {
-				rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+				//rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+				rc.origin.y = mAdPositionY;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
 				RoAdMobView.frame = rc;
 				RoAdMobView.alpha = 1;
 			}
 		} else {
 			if (RoAdMobView.alpha==1) {
-				rc.origin.y = 480 + 10;		//(+)下部へ隠す
+				//rc.origin.y = 480 + 10;		//(+)下部へ隠す
+				rc.origin.y = mAdPositionY + FREE_AD_OFFSET_Y;		//(+)下部へ隠す
 				RoAdMobView.frame = rc;
 				RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
 			}
@@ -1105,21 +1111,21 @@
 {	// 非表示中でも回転対応すること。表示するときの出発位置のため
 	if (MbannerView==nil) return;
 	
-	if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
+/*	if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
 		// iOS4.2より前
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
 		} else {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
 		}
-	} else {
+	} else {　*/	//1.1.12//iOS4.3以上になった。
 		// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
 		} else {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
 		}
-	}
+	//}
 	
 #ifdef AzPAD
 	if (MbAdCanVisible && MbannerView.alpha==1) {
@@ -1137,7 +1143,7 @@
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 		MbannerView.frame = CGRectMake(0, 320 - 32 - 32 + fYofs,  0,0);  // ヨコもToolbarあり
 	} else {
-		MbannerView.frame = CGRectMake(0, 480 - 44 - 50 + fYofs,  0,0);
+		MbannerView.frame = CGRectMake(0, mAdPositionY + fYofs,  0,0);
 	}
 #endif
 }

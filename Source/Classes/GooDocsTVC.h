@@ -34,7 +34,7 @@
 	NSString			*MzUploadName;
 	//----------------------------------------------------------------assign
 	BOOL			MbLogin;
-	BOOL			MbOptAntirotation;
+	//BOOL			MbOptAntirotation;
 	BOOL			MbUpload;
 	NSInteger		MiRowDownload;		// Download対象行
 	NSInteger		MiSelectedRow;

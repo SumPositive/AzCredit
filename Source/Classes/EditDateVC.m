@@ -183,7 +183,7 @@
 	long	days = (long)([MdatePicker.date timeIntervalSinceNow] / (24 * 60 * 60));
 	if (120 < abs(days)) {  //[0.4]日付チェック
 		if (days < 0) {	// 過去すぎる
-			NSString *zMsg = [NSString stringWithFormat:@"%ld%@", abs(days), NSLocalizedString(@"DateUse Under msg",nil)];
+			NSString *zMsg = [NSString stringWithFormat:@"%d%@", abs(days), NSLocalizedString(@"DateUse Under msg",nil)];
 			alertBox(NSLocalizedString(@"DateUse Over",nil), zMsg, NSLocalizedString(@"Roger",nil));
 		} else {	// 未来すぎる
 			NSString *zMsg = [NSString stringWithFormat:@"%ld%@", days, NSLocalizedString(@"DateUse Over msg",nil)];
@@ -278,9 +278,14 @@
 	//------------------------------------------------------Picker
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
 	MdatePicker = [[[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)] autorelease];
-	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
-	MdatePicker.locale = locale; 
-	[locale release];
+	
+	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+		//iOS6.0からは不要になった。@"dk_DK"にすると日本語でも英語モードになってしまう。
+		NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
+		MdatePicker.locale = locale;
+		[locale release];
+	}
+	
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	//NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	//[MdatePicker setCalendar:calendar];
@@ -397,7 +402,7 @@
 
 	// 画面表示に関係する Option Setting を取得する
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
+	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
 
 	if (AzMIN_YearMMDD < PiMinYearMMDD) {
@@ -453,13 +458,9 @@
 
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	
-#ifdef AzPAD
-	return NO;	// Popover内につき回転不要
-#else
+{	//iPad//Popover内につき回転不要
 	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 // 回転を始める前にこの処理が呼ばれる。

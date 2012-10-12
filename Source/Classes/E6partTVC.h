@@ -40,7 +40,7 @@
 	//----------------------------------------------assign
 	E1card		*Me2e1card;
 	E0root		*Me7e0root;
-	BOOL		MbOptAntirotation;
+	//BOOL		MbOptAntirotation;
 	BOOL		MbFirstOne;
 	NSInteger	MiForTheFirstSection;		// viewDidAppear内で最初に1回だけ画面スクロール位置調整するため
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録

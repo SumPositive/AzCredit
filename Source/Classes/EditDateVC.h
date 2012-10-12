@@ -30,7 +30,7 @@
 	CalcView					*McalcView;
 	//----------------------------------------------assign
 	//NSInteger	PiE6row;				//[1.0.0]E6date変更モード
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 	BOOL MbOptUseDateTime;
 	NSTimeInterval	MintervalPrev;
 }

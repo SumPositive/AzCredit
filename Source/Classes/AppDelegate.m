@@ -20,6 +20,21 @@
 #endif
 
 
+//iOS6以降、回転対応のためサブクラス化が必要になった。
+@implementation AzNavigationController
+- (NSUInteger)supportedInterfaceOrientations
+{	//iOS6以降
+	//トップビューの向きを返す
+	return self.topViewController.supportedInterfaceOrientations;
+}
+- (BOOL)shouldAutorotate
+{	//iOS6以降
+    return YES;
+}
+@end
+
+
+
 @interface AppDelegate (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
 - (void)appLoginPassView;
 @end
@@ -91,7 +106,7 @@
 	// このメソッドは，すでに同じキーの環境設定が存在する場合，上書きしないので，環境設定の初期値を定めることに使えます。
 	NSDictionary *azOptDef = [NSDictionary dictionaryWithObjectsAndKeys: // コンビニエンスコンストラクタにつきrelease不要
 					//[0.4]// @"NO",	GD_OptBootTopView,			// TopView
-							  @"NO",	GD_OptAntirotation,			// 回転防止
+						//	  @"NO",	GD_OptAntirotation,			// 回転防止
 						//	  @"YES",	GD_OptEnableSchedule,		// 支払予定
 						//	  @"YES",	GD_OptEnableCategory,		// 分類
 							  @"YES",	GD_OptEnableInstallment,	// 分割払い
@@ -118,11 +133,11 @@
 
 #ifdef AzPAD
 	// topMenu を [0] naviLeft へ登録
-	UINavigationController* naviLeft = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
+	AzNavigationController* naviLeft = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
 	// padRootVC を [1] naviRight へ登録
 	PadRootVC *padRootVC = [[[PadRootVC alloc] init] autorelease];
 	padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
-	UINavigationController* naviRight = [[UINavigationController alloc] initWithRootViewController:padRootVC];
+	AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:padRootVC];
 	// mainController へ登録
 	mainController = [[UISplitViewController alloc] init];
 	mainController.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
@@ -132,11 +147,12 @@
 	[naviRight release];
 #else
 	// topMenu を navigationController へ登録
-	mainController = [[UINavigationController alloc] initWithRootViewController:topMenuTvc];
+	mainController = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
 #endif
 	
 	// mainController を window へ登録
-	[window addSubview:mainController.view];
+	//[window addSubview:mainController.view];
+	[window setRootViewController: mainController];	//iOS6以降、こうしなければ回転しない。
 	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
 
 	[topMenuTvc release];

@@ -12,7 +12,7 @@
 #import "SettingTVC.h"
 
 //#define TAG_GD_OptBootTopView			992  // GD_OptAntirotation
-#define TAG_GD_OptAntirotation			983
+//#define TAG_GD_OptAntirotation			983
 #define TAG_GD_OptEnableSchedule		974
 #define TAG_GD_OptEnableCategory		965
 #define TAG_GD_OptEnableInstallment		956
@@ -100,8 +100,8 @@
 #endif
 	
 	// 画面表示に関係する Option Setting を取得する
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	MbOptAntirotation = [userDefaults boolForKey:GD_OptAntirotation];
+	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	//MbOptAntirotation = [userDefaults boolForKey:GD_OptAntirotation];
 	
 	// テーブルビューを更新します。
     [self.tableView reloadData];	// これにより修正結果が表示される
@@ -132,7 +132,7 @@
 	return YES;
 #else
 	// 回転禁止でも、正面は常に許可しておくこと。
-	return !MbOptAntirotation OR (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 #endif
 }
 /*
@@ -167,10 +167,10 @@
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	switch (sender.tag) {  // .tag は UIView にて NSInteger で存在する、　
-		case TAG_GD_OptAntirotation:
+	/*	case TAG_GD_OptAntirotation:
 			MbOptAntirotation = [sender isOn];  // このViewでも反映させるため。
 			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
-			break;
+			break;*/
 		case TAG_GD_OptEnableInstallment:
 			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
 			break;
@@ -191,11 +191,7 @@
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-#ifdef AzPAD
-	return 4;	// (0)回転は不要
-#else
-	return 5;
-#endif
+	return 4;
 }
 
 #if defined (FREE_AD) && defined (AzPAD)
@@ -211,11 +207,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	switch (indexPath.row) {
-#ifdef AzPAD
+		//case 0: //1.1.11//回転無しにした
+			
 		case 3:	// OptLoginPass
-#else
-		case 4:	// OptLoginPass
-#endif
 			return 70;
 			break;
 	}
@@ -250,14 +244,12 @@
 	
 #ifdef AzPAD
 	float fX = self.tableView.frame.size.width - 100 - 120;
-	int  iCase = indexPath.row + 1;
 #else
 	float fX = cell.frame.size.width - 120;
-	int  iCase = indexPath.row;
 #endif
 	
-	switch (iCase) {
-		case 0:
+	switch (indexPath.row) {
+/*		case 0:
 		{ // OptAntirotation
 			UISwitch *sw = (UISwitch*)[cell.contentView viewWithTag:TAG_GD_OptAntirotation];
 			if (sw==nil) {
@@ -274,9 +266,9 @@
 				cell.detailTextLabel.text = NSLocalizedString(@"OptAntirotation msg",nil);
 			}
 			sw.frame = CGRectMake(fX, 8, 120, 25); // 回転対応
-		} break;
+		} break;*/
 			
-		case 1:
+		case 0:
 		{ // OptEnableInstallment
 			UISwitch *sw = (UISwitch*)[cell.contentView viewWithTag:TAG_GD_OptEnableInstallment];
 			if (sw==nil) {
@@ -295,7 +287,7 @@
 			sw.frame = CGRectMake(fX, 8, 120, 25); // 回転対応
 		} break;
 			
-		case 2:
+		case 1:
 		{ // OptRoundBankers
 			UISwitch *sw = (UISwitch*)[cell.contentView viewWithTag:TAG_GD_OptRoundBankers];
 			if (sw==nil) {
@@ -314,7 +306,7 @@
 			sw.frame = CGRectMake(fX, 8, 120, 25); // 回転対応
 		} break;
 			
-		case 3:
+		case 2:
 		{ // OptTaxRate
 			cell.textLabel.text = NSLocalizedString(@"OptTaxRate",nil);
 			cell.detailTextLabel.text = NSLocalizedString(@"OptTaxRate msg",nil);
@@ -356,7 +348,7 @@
 			buRight.frame = CGRectMake(fX+55, 8, 35, 25); // 回転対応
 		} break;
 			
-		case 4:
+		case 3:
 		{ // OptLoginPass
 			cell.textLabel.text = NSLocalizedString(@"OptLoginPass",nil);
 			cell.detailTextLabel.text = NSLocalizedString(@"OptLoginPass msg",nil);

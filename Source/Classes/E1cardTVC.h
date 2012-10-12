@@ -37,7 +37,7 @@
 #endif
 	//----------------------------------------------------------------assign
 	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath  	//[1.1.2]ポインタ代入注意！copyするように改善した。
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 

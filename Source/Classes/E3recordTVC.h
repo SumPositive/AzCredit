@@ -45,7 +45,7 @@
 	E5category		*Pe5category;	// 
 	E8bank			*Pe8bank;		//[0.3]New
 	BOOL				PbAddMode;	//Stable// YES=表示直後、「新しい利用明細」へ遷移する
-	BOOL				MbOptAntirotation;
+	//BOOL				MbOptAntirotation;
 	CGPoint			McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 	UITableViewScrollPosition	MmoreScrollPosition;
 }

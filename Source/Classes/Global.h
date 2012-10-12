@@ -96,7 +96,7 @@
 
 // Option SettingTVC Plist KEY     初期値定義は、<applicationDidFinishLaunching>内
 //#define GD_OptBootTopView					@"OptBootTopView"		// 起動時トップ  [0.4]以降廃止(バックグランド復帰のとき無意味になるため）
-#define GD_OptAntirotation					@"OptAntirotation"		// 画面回転
+//#define GD_OptAntirotation					@"OptAntirotation"		// 画面回転
 //#define GD_OptEnableSchedule				@"OptEnableSchedule"	// 支払予定
 //#define GD_OptEnableCategory				@"OptEnableCategory"	// 分類
 #define GD_OptEnableInstallment				@"OptEnableInstallment"	// 分割払い

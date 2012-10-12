@@ -50,8 +50,9 @@
 #endif
 	//----------------------------------------------assign
 	NSInteger	MiE1cardCount;
-	BOOL			MbOptAntirotation;
+	//BOOL			MbOptAntirotation;
 	BOOL			MbInformationOpen;	//[1.0.2]InformationViewを初回自動表示するため
+	CGFloat		mAdPositionY;
 }
 
 @property (nonatomic, retain) E0root				*Re0root;

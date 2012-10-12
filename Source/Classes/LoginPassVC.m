@@ -201,7 +201,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {   // Return YES for supported orientations
+#ifdef AzPAD
 	return YES;
+#else
+	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
+#endif
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる

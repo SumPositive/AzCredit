@@ -25,7 +25,7 @@
 	UILabel			*MlbPayDay;
 	UIButton			*MbuDebit;
 	UILabel			*MlbDebit;
-	BOOL MbOptAntirotation;
+	//BOOL MbOptAntirotation;
 	NSInteger	sourceClosingDay;
 	NSInteger	sourcePayMonth;
 	NSInteger	sourcePayDay;
