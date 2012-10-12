@@ -19,10 +19,6 @@
 		44034762155F6BD600D1FFE4 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
 		440AC51611299DBE00B89317 /* EditDateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 440AC51411299DBE00B89317 /* EditDateVC.h */; };
 		440AC51711299DBE00B89317 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
-		440D54FC15FA2471006D7592 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 440D4EC015FA168E006D7592 /* libGDataTouchStaticLib.a */; };
-		440D54FD15FA247B006D7592 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 440D4EC015FA168E006D7592 /* libGDataTouchStaticLib.a */; };
-		440D54FE15FA2481006D7592 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 440D4EC015FA168E006D7592 /* libGDataTouchStaticLib.a */; };
-		440D54FF15FA2487006D7592 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 440D4EC015FA168E006D7592 /* libGDataTouchStaticLib.a */; };
 		440D563E15FA26C3006D7592 /* GData.h in Headers */ = {isa = PBXBuildFile; fileRef = 440D550115FA26C2006D7592 /* GData.h */; };
 		440D563F15FA26C3006D7592 /* GData.h in Headers */ = {isa = PBXBuildFile; fileRef = 440D550115FA26C2006D7592 /* GData.h */; };
 		440D564015FA26C3006D7592 /* GData.h in Headers */ = {isa = PBXBuildFile; fileRef = 440D550115FA26C2006D7592 /* GData.h */; };
@@ -1347,6 +1343,7 @@
 		442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 		442FF3A213B7809D00F8C2C4 /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 		4434B832111F0A3900CCF7EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4434B831111F0A3900CCF7EE /* InfoPlist.strings */; };
+		4437A88D160EEC1100039B8F /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4437A889160EEBB500039B8F /* libGDataTouchStaticLib.a */; };
 		443D439F160CCAB900866232 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 443D439C160CCAB900866232 /* Default-568h@2x.png */; };
 		443D43A0160CCAB900866232 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 443D439C160CCAB900866232 /* Default-568h@2x.png */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
@@ -1364,6 +1361,9 @@
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
 		4486956010F5ABCC00AD02D8 /* AzCredit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */; };
 		448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
+		448FA731160EF222007C7604 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4437A889160EEBB500039B8F /* libGDataTouchStaticLib.a */; };
+		448FA734160EF22D007C7604 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4437A889160EEBB500039B8F /* libGDataTouchStaticLib.a */; };
+		448FA737160EF23D007C7604 /* libGDataTouchStaticLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4437A889160EEBB500039B8F /* libGDataTouchStaticLib.a */; };
 		44931BED13B4E56E005CBE85 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
 		44931BEE13B4E56E005CBE85 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
 		44931BEF13B4E56E005CBE85 /* Icon32-Clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */; };
@@ -2021,37 +2021,37 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		440D4EBF15FA168E006D7592 /* PBXContainerItemProxy */ = {
+		4437A888160EEBB500039B8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 440D4EB815FA168D006D7592 /* GData.xcodeproj */;
+			containerPortal = 4437A881160EEBB500039B8F /* GData.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459;
 			remoteInfo = GDataTouchStaticLib;
 		};
-		440D54F415FA2442006D7592 /* PBXContainerItemProxy */ = {
+		4437A88B160EEBF400039B8F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 440D4EB815FA168D006D7592 /* GData.xcodeproj */;
+			containerPortal = 4437A881160EEBB500039B8F /* GData.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4F1C6E0E1027B3CE00B46459;
 			remoteInfo = GDataTouchStaticLib;
 		};
-		440D54F615FA2458006D7592 /* PBXContainerItemProxy */ = {
+		448FA72F160EF21A007C7604 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 440D4EB815FA168D006D7592 /* GData.xcodeproj */;
+			containerPortal = 4437A881160EEBB500039B8F /* GData.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4F1C6E0E1027B3CE00B46459;
 			remoteInfo = GDataTouchStaticLib;
 		};
-		440D54F815FA245D006D7592 /* PBXContainerItemProxy */ = {
+		448FA732160EF229007C7604 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 440D4EB815FA168D006D7592 /* GData.xcodeproj */;
+			containerPortal = 4437A881160EEBB500039B8F /* GData.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4F1C6E0E1027B3CE00B46459;
 			remoteInfo = GDataTouchStaticLib;
 		};
-		440D54FA15FA2462006D7592 /* PBXContainerItemProxy */ = {
+		448FA735160EF238007C7604 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 440D4EB815FA168D006D7592 /* GData.xcodeproj */;
+			containerPortal = 4437A881160EEBB500039B8F /* GData.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 4F1C6E0E1027B3CE00B46459;
 			remoteInfo = GDataTouchStaticLib;
@@ -2069,7 +2069,6 @@
 		440328D211D81CAA002F321B /* azuki-320.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "azuki-320.jpg"; path = "Design/azuki-320.jpg"; sourceTree = "<group>"; };
 		440AC51411299DBE00B89317 /* EditDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDateVC.h; sourceTree = "<group>"; };
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDateVC.m; sourceTree = "<group>"; };
-		440D4EB815FA168D006D7592 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../OpenCode/GData/GData.release/Source/GData.xcodeproj; sourceTree = "<group>"; };
 		440D550115FA26C2006D7592 /* GData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GData.h; sourceTree = "<group>"; };
 		440D550215FA26C2006D7592 /* GDataACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataACL.h; sourceTree = "<group>"; };
 		440D550315FA26C2006D7592 /* GDataACLKeyedRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataACLKeyedRole.h; sourceTree = "<group>"; };
@@ -2409,6 +2408,7 @@
 		442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPassVC.m; sourceTree = "<group>"; };
 		4434B82F111F0A2B00CCF7EE /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		4434B833111F0A4200CCF7EE /* Japanese */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4437A881160EEBB500039B8F /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../OpenCode/GData/GData.release/Source/GData.xcodeproj; sourceTree = "<group>"; };
 		443D439D160CCAB900866232 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
 		443D439E160CCAB900866232 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Japanese; path = "Japanese.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
 		445322CC13D7D56600CC99F8 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -2607,7 +2607,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				440D54FF15FA2487006D7592 /* libGDataTouchStaticLib.a in Frameworks */,
+				4437A88D160EEC1100039B8F /* libGDataTouchStaticLib.a in Frameworks */,
 				441377FE155BD5C7008047FC /* libsqlite3.0.dylib in Frameworks */,
 				4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */,
 				44D374651361DDF200F36E36 /* SystemConfiguration.framework in Frameworks */,
@@ -2631,8 +2631,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448FA731160EF222007C7604 /* libGDataTouchStaticLib.a in Frameworks */,
 				440D5B3215FA297B006D7592 /* SystemConfiguration.framework in Frameworks */,
-				440D54FE15FA2481006D7592 /* libGDataTouchStaticLib.a in Frameworks */,
 				44B011E4133EF773005AD0EA /* Foundation.framework in Frameworks */,
 				44B011E5133EF773005AD0EA /* UIKit.framework in Frameworks */,
 				44B011E6133EF773005AD0EA /* CoreGraphics.framework in Frameworks */,
@@ -2653,7 +2653,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				440D54FD15FA247B006D7592 /* libGDataTouchStaticLib.a in Frameworks */,
+				448FA734160EF22D007C7604 /* libGDataTouchStaticLib.a in Frameworks */,
 				44C0E42913A0A2D1003D0465 /* SystemConfiguration.framework in Frameworks */,
 				44C0E42A13A0A2D1003D0465 /* Foundation.framework in Frameworks */,
 				44C0E42B13A0A2D1003D0465 /* UIKit.framework in Frameworks */,
@@ -2677,8 +2677,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				448FA737160EF23D007C7604 /* libGDataTouchStaticLib.a in Frameworks */,
 				440D5B3315FA2998006D7592 /* SystemConfiguration.framework in Frameworks */,
-				440D54FC15FA2471006D7592 /* libGDataTouchStaticLib.a in Frameworks */,
 				44C0E64D13A0A475003D0465 /* Foundation.framework in Frameworks */,
 				44C0E64E13A0A475003D0465 /* UIKit.framework in Frameworks */,
 				44C0E64F13A0A475003D0465 /* CoreGraphics.framework in Frameworks */,
@@ -2728,7 +2728,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				440D4EB815FA168D006D7592 /* GData.xcodeproj */,
+				4437A881160EEBB500039B8F /* GData.xcodeproj */,
 				440D550015FA26C2006D7592 /* Headers */,
 				442FA9BE15711F5D003D19D8 /* OpenCode */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -2781,14 +2781,6 @@
 				447071CF12FC4F8C00C053D2 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		440D4EB915FA168D006D7592 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				440D4EC015FA168E006D7592 /* libGDataTouchStaticLib.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		440D550015FA26C2006D7592 /* Headers */ = {
@@ -3174,6 +3166,14 @@
 			);
 			name = AdMob.release;
 			path = ../../OpenCode/AdMob/AdMob.release;
+			sourceTree = "<group>";
+		};
+		4437A882160EEBB500039B8F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4437A889160EEBB500039B8F /* libGDataTouchStaticLib.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		4464805911CFBCFD00305181 /* HTTP Server */ = {
@@ -4925,7 +4925,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				440D54F515FA2442006D7592 /* PBXTargetDependency */,
+				4437A88C160EEBF400039B8F /* PBXTargetDependency */,
 			);
 			name = AzCredit;
 			productName = iPack;
@@ -4944,7 +4944,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				440D54F715FA2458006D7592 /* PBXTargetDependency */,
+				448FA730160EF21A007C7604 /* PBXTargetDependency */,
 			);
 			name = AzCreditS1;
 			productName = iPack;
@@ -4963,7 +4963,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				440D54F915FA245D006D7592 /* PBXTargetDependency */,
+				448FA733160EF229007C7604 /* PBXTargetDependency */,
 			);
 			name = AzCreditPadFree;
 			productName = iPack;
@@ -4982,7 +4982,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				440D54FB15FA2462006D7592 /* PBXTargetDependency */,
+				448FA736160EF238007C7604 /* PBXTargetDependency */,
 			);
 			name = AzCreditS1Pad;
 			productName = iPack;
@@ -5012,8 +5012,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 440D4EB915FA168D006D7592 /* Products */;
-					ProjectRef = 440D4EB815FA168D006D7592 /* GData.xcodeproj */;
+					ProductGroup = 4437A882160EEBB500039B8F /* Products */;
+					ProjectRef = 4437A881160EEBB500039B8F /* GData.xcodeproj */;
 				},
 			);
 			projectRoot = AzukiSoft;
@@ -5027,11 +5027,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		440D4EC015FA168E006D7592 /* libGDataTouchStaticLib.a */ = {
+		4437A889160EEBB500039B8F /* libGDataTouchStaticLib.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libGDataTouchStaticLib.a;
-			remoteRef = 440D4EBF15FA168E006D7592 /* PBXContainerItemProxy */;
+			remoteRef = 4437A888160EEBB500039B8F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -5592,25 +5592,25 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		440D54F515FA2442006D7592 /* PBXTargetDependency */ = {
+		4437A88C160EEBF400039B8F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GDataTouchStaticLib;
-			targetProxy = 440D54F415FA2442006D7592 /* PBXContainerItemProxy */;
+			targetProxy = 4437A88B160EEBF400039B8F /* PBXContainerItemProxy */;
 		};
-		440D54F715FA2458006D7592 /* PBXTargetDependency */ = {
+		448FA730160EF21A007C7604 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GDataTouchStaticLib;
-			targetProxy = 440D54F615FA2458006D7592 /* PBXContainerItemProxy */;
+			targetProxy = 448FA72F160EF21A007C7604 /* PBXContainerItemProxy */;
 		};
-		440D54F915FA245D006D7592 /* PBXTargetDependency */ = {
+		448FA733160EF229007C7604 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GDataTouchStaticLib;
-			targetProxy = 440D54F815FA245D006D7592 /* PBXContainerItemProxy */;
+			targetProxy = 448FA732160EF229007C7604 /* PBXContainerItemProxy */;
 		};
-		440D54FB15FA2462006D7592 /* PBXTargetDependency */ = {
+		448FA736160EF238007C7604 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GDataTouchStaticLib;
-			targetProxy = 440D54FA15FA2462006D7592 /* PBXContainerItemProxy */;
+			targetProxy = 448FA735160EF238007C7604 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

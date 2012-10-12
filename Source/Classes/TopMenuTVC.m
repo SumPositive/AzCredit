@@ -1111,21 +1111,21 @@
 {	// 非表示中でも回転対応すること。表示するときの出発位置のため
 	if (MbannerView==nil) return;
 	
-	if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
+/*	if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
 		// iOS4.2より前
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
 		} else {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
 		}
-	} else {
+	} else {　*/	//1.1.12//iOS4.3以上になった。
 		// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
 		} else {
 			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
 		}
-	}
+	//}
 	
 #ifdef AzPAD
 	if (MbAdCanVisible && MbannerView.alpha==1) {
