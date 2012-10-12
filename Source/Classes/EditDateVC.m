@@ -278,9 +278,14 @@
 	//------------------------------------------------------Picker
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
 	MdatePicker = [[[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)] autorelease];
-	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
-	MdatePicker.locale = locale; 
-	[locale release];
+	
+	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+		//iOS6.0からは不要になった。@"dk_DK"にすると日本語でも英語モードになってしまう。
+		NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
+		MdatePicker.locale = locale;
+		[locale release];
+	}
+	
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	//NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	//[MdatePicker setCalendar:calendar];
