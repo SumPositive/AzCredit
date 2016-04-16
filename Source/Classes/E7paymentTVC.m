@@ -818,11 +818,11 @@ static UIImage* GimageFromString(NSString* str)
 			UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();  
 			UIGraphicsEndImageContext();  
 			[cell.imageView setImage:resultingImage];
-			AzRETAIN_CHECK(@"E1 lNoCheck:imageView1", imageView1, 1)
+//			AzRETAIN_CHECK(@"E1 lNoCheck:imageView1", imageView1, 1)
 			[imageView1 release];
-			AzRETAIN_CHECK(@"E1 lNoCheck:imageView2", imageView2, 1)
+//			AzRETAIN_CHECK(@"E1 lNoCheck:imageView2", imageView2, 1)
 			[imageView2 release];
-			AzRETAIN_CHECK(@"E1 lNoCheck:resultingImage", resultingImage, 2) //=2:releaseするとフリーズ
+//			AzRETAIN_CHECK(@"E1 lNoCheck:resultingImage", resultingImage, 2) //=2:releaseするとフリーズ
 		}
 		//else if ([e7obj.sumAmount compare:[NSDecimalNumber zero]] == NSOrderedDescending)	// e7obj.sumAmount > 0
 		else if (0.0 < [e7obj.sumAmount doubleValue])	// e7obj.sumAmount > 0
@@ -845,7 +845,7 @@ static UIImage* GimageFromString(NSString* str)
 		cell = [self.tableView cellForRowAtIndexPath:indexPath];
 	}
 	@catch (NSException *exception) {
-		GA_TRACK_EVENT_ERROR([exception description],0);
+//		GA_TRACK_EVENT_ERROR([exception description],0);
 		return;
 	}
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）

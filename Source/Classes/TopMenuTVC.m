@@ -13,7 +13,7 @@
 #import "MocFunctions.h"
 #import "TopMenuTVC.h"
 #import "E1cardTVC.h"
-#import "GooDocsTVC.h"
+//#import "GooDocsTVC.h"
 #import "InformationView.h"
 #import "SettingTVC.h"
 #import "E2invoiceTVC.h"
@@ -24,7 +24,7 @@
 #import "E7paymentTVC.h"
 #import "E8bankTVC.h"
 #import "WebSiteVC.h"
-#import "HttpServerView.h"
+//#import "HttpServerView.h"
 
 #ifdef AzPAD
 #import "PadRootVC.h"
@@ -343,7 +343,7 @@
 	NSError *error = nil;
 	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
-		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
+//		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
@@ -473,10 +473,10 @@
 		[MbannerView release], MbannerView = nil;	// alloc解放	
 	}
 	
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;	// 破棄
-	}
+//	if (RoAdMobView) {
+//		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+//		[RoAdMobView release], RoAdMobView = nil;	// 破棄
+//	}
 #endif
 	
 #ifdef AzPAD
@@ -691,7 +691,7 @@
 		return cell;
 	}
 	@catch (NSException *exception) {
-		GA_TRACK_EVENT_ERROR([exception description],0);
+//		GA_TRACK_EVENT_ERROR([exception description],0);
 		return nil;
 	}
 }
@@ -713,7 +713,7 @@
 	}
 	@catch (NSException *exception) {
 		//alertBox([exception name], [exception reason], @"OK (705)");
-		GA_TRACK_EVENT_ERROR([exception description],0);
+//		GA_TRACK_EVENT_ERROR([exception description],0);
 		return;
 	}
 
@@ -859,47 +859,47 @@
 		{
 			switch (indexPath.row) {
 				case 0:
-				{ // Google Document
-					GooDocsTVC *goodocs = [[GooDocsTVC alloc] init];
-					// 以下は、GooDocsViewの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
-					goodocs.title = cell.textLabel.text;
-					goodocs.Re0root = Re0root;
-#ifdef AzPAD
-	#ifdef FREE_AD
-					MbAdCanVisible = YES; // iAd許可
-					[self AdRefresh];
-	#endif
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[GooDocsTVC class]];
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:goodocs animated:bAnime];
-#else
-					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-					[self.navigationController pushViewController:goodocs animated:YES];
-#endif
-					[goodocs release];
-				}
+//				{ // Google Document
+//					GooDocsTVC *goodocs = [[GooDocsTVC alloc] init];
+//					// 以下は、GooDocsViewの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
+//					goodocs.title = cell.textLabel.text;
+//					goodocs.Re0root = Re0root;
+//#ifdef AzPAD
+//	#ifdef FREE_AD
+//					MbAdCanVisible = YES; // iAd許可
+//					[self AdRefresh];
+//	#endif
+//					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+//					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[GooDocsTVC class]];
+//					[naviRight popToRootViewControllerAnimated:NO];
+//					[naviRight pushViewController:goodocs animated:bAnime];
+//#else
+//					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+//					[self.navigationController pushViewController:goodocs animated:YES];
+//#endif
+//					[goodocs release];
+//				}
 					break;
 				case 1:
-				{  // Backup/Restore for YourPC
-					//NG//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
-					//NG//ツールバーを消したいが、戻ったとき表示する方法が未定。
-					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
-					vi.Pe0root = Re0root;
-					vi.tag = TAG_VIEW_HttpServer; // 表示中は回転禁止にするために参照している
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					//[naviRight popToRootViewControllerAnimated:NO];
-					vi.frame = naviRight.view.bounds;
-					[naviRight.view addSubview:vi];
-#else
-					[self.view addSubview:vi];
-#endif
-					[vi show];
-					[vi release];
-				}
+//				{  // Backup/Restore for YourPC
+//					//NG//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
+//					//NG//ツールバーを消したいが、戻ったとき表示する方法が未定。
+//					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
+//					vi.Pe0root = Re0root;
+//					vi.tag = TAG_VIEW_HttpServer; // 表示中は回転禁止にするために参照している
+//#ifdef AzPAD
+//					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
+//					//[naviRight popToRootViewControllerAnimated:NO];
+//					vi.frame = naviRight.view.bounds;
+//					[naviRight.view addSubview:vi];
+//#else
+//					[self.view addSubview:vi];
+//#endif
+//					[vi show];
+//					[vi release];
+//				}
 					break;
 				case 2:
 				{  // Setting
@@ -966,30 +966,30 @@
 - (void)AdRefresh
 {
 	//----------------------------------------------------- AdMob  ＜＜loadView:に入れると起動時に生成失敗すると、以後非表示が続いてしまう。
-	if (RoAdMobView==nil) {
-		RoAdMobView = [[GADBannerView alloc] init];	//unloadRelease:にて破棄
-		// 初期化
-		RoAdMobView.alpha = 0;	// 現在状況、(0)非表示  (1)表示中
-		RoAdMobView.tag = 0;		// 広告受信状況  (0)なし (1)あり
-		RoAdMobView.delegate = self;
-#ifdef AzPAD
-		RoAdMobView.frame = CGRectMake(0, 1024+10, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);	// 下部に隠す
-		RoAdMobView.adUnitID = AdMobID_iPad;
-		RoAdMobView.rootViewController = self.splitViewController;
-		[self.splitViewController.view addSubview:RoAdMobView];
-		[self AdMobWillRotate:self.splitViewController.interfaceOrientation];
-#else
-		RoAdMobView.frame = CGRectMake(0, mAdPositionY,
-										GAD_SIZE_320x50.width, GAD_SIZE_320x50.height); 	// 下部に隠す
-		RoAdMobView.adUnitID = AdMobID_iPhone;
-		RoAdMobView.rootViewController = self.navigationController;
-		[self.navigationController.view addSubview:RoAdMobView];
-		[self AdMobWillRotate:self.navigationController.interfaceOrientation];
-#endif
-		// リクエスト
-		GADRequest *request = [GADRequest request];
-		[RoAdMobView loadRequest:request];	
-	}
+//	if (RoAdMobView==nil) {
+//		RoAdMobView = [[GADBannerView alloc] init];	//unloadRelease:にて破棄
+//		// 初期化
+//		RoAdMobView.alpha = 0;	// 現在状況、(0)非表示  (1)表示中
+//		RoAdMobView.tag = 0;		// 広告受信状況  (0)なし (1)あり
+//		RoAdMobView.delegate = self;
+//#ifdef AzPAD
+//		RoAdMobView.frame = CGRectMake(0, 1024+10, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);	// 下部に隠す
+//		RoAdMobView.adUnitID = AdMobID_iPad;
+//		RoAdMobView.rootViewController = self.splitViewController;
+//		[self.splitViewController.view addSubview:RoAdMobView];
+//		[self AdMobWillRotate:self.splitViewController.interfaceOrientation];
+//#else
+//		RoAdMobView.frame = CGRectMake(0, mAdPositionY,
+//										GAD_SIZE_320x50.width, GAD_SIZE_320x50.height); 	// 下部に隠す
+//		RoAdMobView.adUnitID = AdMobID_iPhone;
+//		RoAdMobView.rootViewController = self.navigationController;
+//		[self.navigationController.view addSubview:RoAdMobView];
+//		[self AdMobWillRotate:self.navigationController.interfaceOrientation];
+//#endif
+//		// リクエスト
+//		GADRequest *request = [GADRequest request];
+//		[RoAdMobView loadRequest:request];	
+//	}
 	
 	//----------------------------------------------------- iAd: AdMobの上層になるように後からaddSubviewする
 	if (MbannerView==nil && [[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
@@ -1007,13 +1007,13 @@
 		[self AdAppWillRotate:self.navigationController.interfaceOrientation];
 #endif
 	}
-	
-	NSLog(@"=== AdRefresh ===Can[%d] AdMob[%d⇒%d] iAd[%d⇒%d]", MbAdCanVisible, (int)RoAdMobView.alpha, (int)RoAdMobView.tag, (int)MbannerView.alpha, (int)MbannerView.tag);
-	
-	if (MbAdCanVisible && MbannerView.alpha==MbannerView.tag && RoAdMobView.alpha==RoAdMobView.tag) {
-		NSLog(@"   = 変化なし =");
-		return; // 変化なし
-	}
+//	
+//	NSLog(@"=== AdRefresh ===Can[%d] AdMob[%d⇒%d] iAd[%d⇒%d]", MbAdCanVisible, (int)RoAdMobView.alpha, (int)RoAdMobView.tag, (int)MbannerView.alpha, (int)MbannerView.tag);
+//	
+//	if (MbAdCanVisible && MbannerView.alpha==MbannerView.tag && RoAdMobView.alpha==RoAdMobView.tag) {
+//		NSLog(@"   = 変化なし =");
+//		return; // 変化なし
+//	}
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
@@ -1062,24 +1062,24 @@
 		}
 	}
 	
-	if (RoAdMobView) {
-		CGRect rc = RoAdMobView.frame;
-		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
-			if (RoAdMobView.alpha==0) {
-				//rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
-				rc.origin.y = mAdPositionY;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
-				RoAdMobView.frame = rc;
-				RoAdMobView.alpha = 1;
-			}
-		} else {
-			if (RoAdMobView.alpha==1) {
-				//rc.origin.y = 480 + 10;		//(+)下部へ隠す
-				rc.origin.y = mAdPositionY + FREE_AD_OFFSET_Y;		//(+)下部へ隠す
-				RoAdMobView.frame = rc;
-				RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
-			}
-		}
-	}
+//	if (RoAdMobView) {
+//		CGRect rc = RoAdMobView.frame;
+//		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
+//			if (RoAdMobView.alpha==0) {
+//				//rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+//				rc.origin.y = mAdPositionY;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+//				RoAdMobView.frame = rc;
+//				RoAdMobView.alpha = 1;
+//			}
+//		} else {
+//			if (RoAdMobView.alpha==1) {
+//				//rc.origin.y = 480 + 10;		//(+)下部へ隠す
+//				rc.origin.y = mAdPositionY + FREE_AD_OFFSET_Y;		//(+)下部へ隠す
+//				RoAdMobView.frame = rc;
+//				RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
+//			}
+//		}
+//	}
 #endif
 	
 	[UIView commitAnimations];
@@ -1087,7 +1087,7 @@
 
 - (void)AdMobWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
 {
-	if (RoAdMobView==nil) return;
+//	if (RoAdMobView==nil) return;
 	
 #ifdef AzPAD	
 	//iPad// AdMobは常に表示位置であり、移動はしない
@@ -1148,21 +1148,21 @@
 #endif
 }
 
-// AdMob delegate
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView
-{	// AdMob 広告あり
-	NSLog(@"AdMob - adViewDidReceiveAd");
-	bannerView.tag = 1;
-	[self AdRefresh];
-}
-
-// AdMob delegate
-- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error 
-{	// AdMob 広告なし
-	NSLog(@"AdMob - adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-	bannerView.tag = 0;
-	[self AdRefresh];
-}
+//// AdMob delegate
+//- (void)adViewDidReceiveAd:(GADBannerView *)bannerView
+//{	// AdMob 広告あり
+//	NSLog(@"AdMob - adViewDidReceiveAd");
+////	bannerView.tag = 1;
+//	[self AdRefresh];
+//}
+//
+//// AdMob delegate
+//- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error 
+//{	// AdMob 広告なし
+//	NSLog(@"AdMob - adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
+//	bannerView.tag = 0;
+//	[self AdRefresh];
+//}
 
 // iAd delegate  取得できたときに呼ばれる　⇒　表示する
 - (void)bannerViewDidLoadAd:(ADBannerView *)banner
@@ -1178,14 +1178,14 @@
 	AzLOG(@"=== iAd : didFailToReceiveAdWithError ===");
 	banner.tag = 0;
 
-	// AdMob 破棄　＜＜ ネット切断から復帰したとき、AdMobを再起動するための措置
-	if (RoAdMobView) {
-		//[1.1.0]ネット切断から復帰したとき、このように破棄⇒生成が必要。
-		RoAdMobView.alpha = 0; //これが無いと残骸が表示されたままになる。
-		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;	// 破棄
-		//[1.1.0]この後、AdRefresh:にて生成再開される。
-	}
+//	// AdMob 破棄　＜＜ ネット切断から復帰したとき、AdMobを再起動するための措置
+//	if (RoAdMobView) {
+//		//[1.1.0]ネット切断から復帰したとき、このように破棄⇒生成が必要。
+//		RoAdMobView.alpha = 0; //これが無いと残骸が表示されたままになる。
+//		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+//		[RoAdMobView release], RoAdMobView = nil;	// 破棄
+//		//[1.1.0]この後、AdRefresh:にて生成再開される。
+//	}
 	[self AdRefresh];
 }
 

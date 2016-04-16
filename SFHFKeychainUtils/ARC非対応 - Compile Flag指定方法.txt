@@ -1,0 +1,6 @@
+Projectが、ARC標準対応しているとき、ARC非対応ソースには下記のフラグ指定する。
+
+Build Phases
+  Compile Sources
+    Compile Flags:  -fno-objc-arc
+

@@ -57,18 +57,18 @@
 	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
 	Me3dateUse = nil;
 
-	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
+//	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
 	mainController.delegate = nil;
 	[mainController release], mainController = nil;
 
-	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
+//	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
 	[window release];
 
-	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
+//	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
     [persistentStoreCoordinator release];
-	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
+//	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
     [managedObjectContext release];
-	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
+//	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
     [managedObjectModel release];
 
 	[super dealloc];
@@ -89,9 +89,9 @@
 - (BOOL)application:(UIApplication *)application 
 					didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {    
-	GA_INIT_TRACKER(@"UA-30305032-6", 10, nil);	//-6:PayNote1
-	GA_TRACK_EVENT(@"Device", @"model", [[UIDevice currentDevice] model], 0);
-	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
+//	GA_INIT_TRACKER(@"UA-30305032-6", 10, nil);	//-6:PayNote1
+//	GA_TRACK_EVENT(@"Device", @"model", [[UIDevice currentDevice] model], 0);
+//	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
 
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -153,7 +153,7 @@
 	// mainController を window へ登録
 	//[window addSubview:mainController.view];
 	[window setRootViewController: mainController];	//iOS6以降、こうしなければ回転しない。
-	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
+//	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
 
 	[topMenuTvc release];
 	
@@ -422,7 +422,7 @@
 												andServiceName:GD_PRODUCTNAME error:&error];
 	if (error) {
 		NSLog(@"SFHFKeychainUtils: getPasswordForUsername %@", [error localizedDescription]);
-		GA_TRACK_EVENT_ERROR([error localizedDescription],0)
+//		GA_TRACK_EVENT_ERROR([error localizedDescription],0)
 		return;
 	}
 	if ([pass length]<=0) {

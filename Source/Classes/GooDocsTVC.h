@@ -15,8 +15,6 @@
 
 
 #import <UIKit/UIKit.h>
-#import "GData.h"
-#import "GDataFeedDocList.h"
 
 
 @interface GooDocsTVC : UITableViewController <UITextFieldDelegate, UIActionSheetDelegate> 
@@ -27,10 +25,10 @@
 	//-------------------------------------------------------viewDidLoadでnil, retain > release必要
 	UITextField			*RtfUsername;
 	UITextField			*RtfPassword;
-	GDataFeedDocList	*mDocListFeed;
+//	GDataFeedDocList	*mDocListFeed;
 	NSError				*mDocListFetchError;
-	GDataServiceTicket	*mDocListFetchTicket;
-	GDataServiceTicket	*mUploadTicket;
+//	GDataServiceTicket	*mDocListFetchTicket;
+//	GDataServiceTicket	*mUploadTicket;
 	NSString			*MzUploadName;
 	//----------------------------------------------------------------assign
 	BOOL			MbLogin;
@@ -39,7 +37,7 @@
 	NSInteger		MiRowDownload;		// Download対象行
 	NSInteger		MiSelectedRow;
 	NSString			*MzOldUsername;  	//[1.1.2]ポインタ代入注意！copyするように改善した。
-	GTMHTTPFetcher *MfetcherActive;  // STOPのため保持
+//	GTMHTTPFetcher *MfetcherActive;  // STOPのため保持
 	UIActionSheet	*MactionProgress;
 	//UIProgressView	*MprogressView;
 }

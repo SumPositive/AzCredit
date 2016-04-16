@@ -55,7 +55,7 @@ static NSManagedObjectContext *scMoc = nil;
 		// SAVE
 		NSError *err = nil;
 		if (![scMoc  save:&err]) {
-			GA_TRACK_EVENT_ERROR([err localizedDescription],0);
+//			GA_TRACK_EVENT_ERROR([err localizedDescription],0);
 			NSLog(@"*** MOC commit error ***\n%@\n%@\n***\n", err, [err userInfo]);
 			//exit(-1);  // Fail
 			alertBox(NSLocalizedString(@"MOC CommitErr",nil),
@@ -121,14 +121,14 @@ static NSManagedObjectContext *scMoc = nil;
 		NSArray *arFetch = [scMoc executeFetchRequest:req error:&error];
 		[req release], req = nil;
 		if (error) {
-			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
+//			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 			AzLOG(@"select: Error %@, %@", error, [error userInfo]);
 			return nil;
 		}
 		return arFetch; // autorelease
 	}
 	@catch (NSException *errEx) {
-		GA_TRACK_EVENT_ERROR([errEx description],0);
+//		GA_TRACK_EVENT_ERROR([errEx description],0);
 		NSLog(@"select @catch:NSException: %@ : %@", [errEx name], [errEx reason]);
 	}
 	@finally {
@@ -269,7 +269,7 @@ static NSManagedObjectContext *scMoc = nil;
 	}
 	if (e0root == nil) {
 		AzLOG(@"LOGIC ERR: E0root Nothing");
-		GA_TRACK_EVENT_ERROR(@"LOGIC ERR: E0root Nothing",0);
+//		GA_TRACK_EVENT_ERROR(@"LOGIC ERR: E0root Nothing",0);
 		exit(-1);  // Fail
 	}
 	return e0root;
@@ -748,7 +748,7 @@ static NSManagedObjectContext *scMoc = nil;
 		return; //完了
 	}
 	AzLOG(@"Abnormality (119033) e2paid NG");
-	GA_TRACK_EVENT_ERROR(@"Abnormality (119033) e2paid NG",0);
+//	GA_TRACK_EVENT_ERROR(@"Abnormality (119033) e2paid NG",0);
 	alertBox(NSLocalizedString(@"Abnormality",nil), @"(119033)", @"OK");
 	return; //NG
 }
@@ -872,7 +872,7 @@ static NSManagedObjectContext *scMoc = nil;
 			E2invoice *e2 = e6part.e2invoice;
 			if (e2.e1paid) {
 				AzLOG(@"LOGIC ERROR: E2 PAID");
-				GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: E2 PAID",0);
+//				GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: E2 PAID",0);
 				assert(NO);
 				return 0;
 			}
@@ -915,7 +915,7 @@ static NSManagedObjectContext *scMoc = nil;
 	assert(e6part.e2invoice);
 	if (e6part.e2invoice.e1paid) {  // PAIDでここを通ることは無いハズ！
 		NSLog(@"LOGIC ERROR: E2 NG PAID");
-		GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: E2 NG PAID",0);
+//		GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: E2 NG PAID",0);
 		assert(NO);
 		return 0;
 	}
@@ -1270,7 +1270,7 @@ static NSManagedObjectContext *scMoc = nil;
 			// ありましたが支払済なので、さらに翌月を探す　＜＜新規の場合だけ＞＞
 			//iYearMMDD = GiAddYearMMDD(iYearMMDD, 0, +1, 0); // 翌月へ
 			AzLOG(@"LOGIC ERR: E6の移動先がPAIDになっている"); //　ここを通ることは無いハズ
-			GA_TRACK_EVENT_ERROR(@"LOGIC ERR: E6-PAID",0);
+//			GA_TRACK_EVENT_ERROR(@"LOGIC ERR: E6-PAID",0);
 			return;
 		}
 	}
@@ -1294,7 +1294,7 @@ static NSManagedObjectContext *scMoc = nil;
 	if (e2new && e2new != e2old) {
 		if (e2new.e1paid) {  // PAIDでここを通ることは無いハズ！
 			AzLOG(@"LOGIC ERROR: E2 NG PAID");
-			GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: E2 NG PAID",0);
+//			GA_TRACK_EVENT_ERROR(@"LOGIC ERROR: E2 NG PAID",0);
 			return;
 		}
 		if (e2new.e7payment == nil) {

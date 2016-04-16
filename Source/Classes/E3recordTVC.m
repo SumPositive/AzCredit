@@ -484,7 +484,7 @@
 		app.Me3dateUse = nil; //1.0.0//
 		//
 #ifdef FREE_AD
-		RoAdMobView = nil;
+//		RoAdMobView = nil;
 #endif
 #ifdef AzPAD
 //		PbFirstAdd = NO;
@@ -537,18 +537,18 @@
 	[RcellNumberFormatter setLocale:[NSLocale currentLocale]]; 
 
 	
-#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
-	assert(RoAdMobView==nil);
-	RoAdMobView = [[GADBannerView alloc]
-                   initWithFrame:CGRectMake(0, 0,			// TableCell用
-                                            GAD_SIZE_320x50.width,
-                                            GAD_SIZE_320x50.height)]; // autoreleaseだめ：cellへaddSubする前に破棄されてしまうので、自己管理している
-	RoAdMobView.delegate = nil; //Delegateなし
-	RoAdMobView.adUnitID = AdMobID_iPhone;
-	RoAdMobView.rootViewController = self;
-	GADRequest *request = [GADRequest request];
-	[RoAdMobView loadRequest:request];	
-#endif
+//#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
+//	assert(RoAdMobView==nil);
+//	RoAdMobView = [[GADBannerView alloc]
+//                   initWithFrame:CGRectMake(0, 0,			// TableCell用
+//                                            GAD_SIZE_320x50.width,
+//                                            GAD_SIZE_320x50.height)]; // autoreleaseだめ：cellへaddSubする前に破棄されてしまうので、自己管理している
+//	RoAdMobView.delegate = nil; //Delegateなし
+//	RoAdMobView.adUnitID = AdMobID_iPhone;
+//	RoAdMobView.rootViewController = self;
+//	GADRequest *request = [GADRequest request];
+//	[RoAdMobView loadRequest:request];	
+//#endif
 }
 
 // 他のViewやキーボードが隠れて、現れる都度、呼び出される
@@ -669,16 +669,16 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
 								duration:(NSTimeInterval)duration
 {	
-	if (RoAdMobView) {
-		CGRect rc = RoAdMobView.frame;
-		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
-		{	// タテ
-			rc.origin.x = 0;
-		} else {
-			rc.origin.x += (480 - GAD_SIZE_320x50.width)/2.0;		// ヨコのとき中央にする
-		}	
-		RoAdMobView.frame = rc;
-	}
+//	if (RoAdMobView) {
+//		CGRect rc = RoAdMobView.frame;
+//		if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+//		{	// タテ
+//			rc.origin.x = 0;
+//		} else {
+//			rc.origin.x += (480 - GAD_SIZE_320x50.width)/2.0;		// ヨコのとき中央にする
+//		}	
+//		RoAdMobView.frame = rc;
+//	}
 }
 #endif
 
@@ -724,10 +724,10 @@
 	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	NSLog(@"--- unloadRelease --- E3recordTVC");
 #ifdef FREE_AD
-	if (RoAdMobView) {
-		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-		[RoAdMobView release], RoAdMobView = nil;	//cellへのaddSubなので、自己管理している。
-	}
+//	if (RoAdMobView) {
+//		RoAdMobView.delegate = nil;  //受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+//		[RoAdMobView release], RoAdMobView = nil;	//cellへのaddSubなので、自己管理している。
+//	}
 #endif
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
@@ -812,10 +812,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 #ifdef FREE_AD
-	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) 
-	{	// 先頭と末尾
-		return GAD_SIZE_320x50.height; // AdMob
-	}
+//	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) 
+//	{	// 先頭と末尾
+//		return GAD_SIZE_320x50.height; // AdMob
+//	}
 #endif
 	return 44; // デフォルト：44ピクセル
 }
@@ -849,22 +849,22 @@
 				cell.textLabel.textColor = [UIColor grayColor];
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
 #ifdef FREE_AD
-				if (RoAdMobView) { // Request an AdMob ad for this table view cell
-					[cell.contentView addSubview:RoAdMobView]; //自己管理ＯＢＪ： unloadReleaseにて解放
-				}
+//				if (RoAdMobView) { // Request an AdMob ad for this table view cell
+//					[cell.contentView addSubview:RoAdMobView]; //自己管理ＯＢＪ： unloadReleaseにて解放
+//				}
 #endif
 			}
 #ifdef FREE_AD
-			if (RoAdMobView) {
-				CGRect rc = RoAdMobView.frame;
-				if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
-				{	// タテ
-					rc.origin.x = 0;
-				} else {
-					rc.origin.x = (480 - rc.size.width) / 2.0;		// ヨコのとき中央にする
-				}	
-				RoAdMobView.frame = rc;
-			}
+//			if (RoAdMobView) {
+//				CGRect rc = RoAdMobView.frame;
+//				if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+//				{	// タテ
+//					rc.origin.x = 0;
+//				} else {
+//					rc.origin.x = (480 - rc.size.width) / 2.0;		// ヨコのとき中央にする
+//				}	
+//				RoAdMobView.frame = rc;
+//			}
 #endif
 		}
 		else {

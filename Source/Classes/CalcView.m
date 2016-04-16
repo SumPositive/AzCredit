@@ -55,9 +55,9 @@
 // zFomula を計算し、答えを MdecAnswer に保持しながら Rlabel.text に表示する
 - (void)finalAnswer:(NSString *)zFomula
 {
-	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer1", MdecAnswer, 9);
+//	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer1", MdecAnswer, 9);
 	MdecAnswer = [self decimalAnswerFomula:zFomula]; // retain
-	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer2", MdecAnswer, 9);
+//	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer2", MdecAnswer, 9);
 	//NSLog(@"**********1 MdecAnswer=%@", MdecAnswer);
 	if (MdecAnswer) {
 		if (ANSWER_MAX < fabs([MdecAnswer doubleValue])) {
@@ -161,7 +161,7 @@
 		} break;
 			
 		case 9: // [Done]
-			AzRETAIN_CHECK(@"[Done]: MdecAnswer", MdecAnswer, 0);
+//			AzRETAIN_CHECK(@"[Done]: MdecAnswer", MdecAnswer, 0);
 			NSLog(@"[Done] MdecAnswer=%@", MdecAnswer);
 			if (MdecAnswer) [self save]; // MdecAnswer を Rentity へ保存する
 			[self hide];
@@ -169,11 +169,11 @@
 			
 		default:
 			NSLog(@"ERROR");
-			GA_TRACK_EVENT_ERROR(@"No Button",0)
+//			GA_TRACK_EVENT_ERROR(@"No Button",0)
 			break;
 	}
 	
-	AzRETAIN_CHECK(@"buttonCalc: MdecAnswer", MdecAnswer, 0);
+//	AzRETAIN_CHECK(@"buttonCalc: MdecAnswer", MdecAnswer, 0);
 	//MtextView.text = RzCalc;
 	[self textFieldDidChange:MtextField];
 }
@@ -182,7 +182,7 @@
 {
 	if (MdecAnswer)
 	{
-		AzRETAIN_CHECK(@"save: MdecAnswer", MdecAnswer, 0);
+//		AzRETAIN_CHECK(@"save: MdecAnswer", MdecAnswer, 0);
 
 		if (Re3edit) {
 			NSDecimalNumber *decSource = Re3edit.nAmount;
@@ -321,7 +321,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	NSDecimalNumber *decAns = nil;
 	
 	//-------------------------------------------------localPool BEGIN >>> @finaly release
-	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init]; //イベント（タッチ）毎の解放では不足(落ちる)なので独自に解放する
+//	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init]; //イベント（タッチ）毎の解放では不足(落ちる)なので独自に解放する
 	@try {
 		NSString *zTokn;
 		NSString *zz;
@@ -516,21 +516,21 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		}
 		else {
 			@throw @"zRpnCalc:ERROR: [maStack count] != 1";
-			GA_TRACK_EVENT_ERROR(@"zRpnCalc:ERROR: [maStack count] != 1",0)
+//			GA_TRACK_EVENT_ERROR(@"zRpnCalc:ERROR: [maStack count] != 1",0)
 		}
 	}
 	@catch (NSException * errEx) {
-		GA_TRACK_EVENT_ERROR([errEx description],0);
+//		GA_TRACK_EVENT_ERROR([errEx description],0);
 		NSLog(@"Calc: error %@ : %@\n", [errEx name], [errEx reason]);
 		decAns = nil;
 	}
 	@catch (NSString *errMsg) {
-		GA_TRACK_EVENT_ERROR(errMsg,0);
+//		GA_TRACK_EVENT_ERROR(errMsg,0);
 		NSLog(@"Calc: error=%@", errMsg);
 		decAns = nil;
 	}
 	@finally {
-		[autoPool release];
+//		[autoPool release];
 		//-------------------------------------------------localPool END
 		[maRpn release];
 		[maStack release];
@@ -807,7 +807,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 #pragma mark  View - Unload - dealloc
 - (void)dealloc 
 {
-	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
+//	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
 	if (MdecAnswer) {
 		[MdecAnswer release], MdecAnswer = nil;
 	}

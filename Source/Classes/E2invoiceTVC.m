@@ -406,7 +406,7 @@
 
 	if (Re1select && Re8select) {
 		AzLOG(@"Exit ERROR: Pe1select,Re8select != nil");
-		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select != nil",0);
+//		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select != nil",0);
 		exit(-1);  // Fail
 	}
 	
@@ -534,7 +534,7 @@
 	}
 	else {
 		AzLOG(@"Exit ERROR: Pe1select,Re8select == nil");
-		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select == nil",0);
+//		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select == nil",0);
 		exit(-1);  // Fail
 	}
 	[sortAsc release];
@@ -896,12 +896,12 @@
 			UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();  
 			UIGraphicsEndImageContext();  
 			[cell.imageView setImage:resultingImage];
-			AzRETAIN_CHECK(@"E1 lNoCheck:imageView1", imageView1, 1)
+//			AzRETAIN_CHECK(@"E1 lNoCheck:imageView1", imageView1, 1)
 			[imageView1 release];
-			AzRETAIN_CHECK(@"E1 lNoCheck:imageView2", imageView2, 1)
+//			AzRETAIN_CHECK(@"E1 lNoCheck:imageView2", imageView2, 1)
 			[imageView2 release];
-			AzRETAIN_CHECK(@"E1 lNoCheck:resultingImage", resultingImage, 2) //=2:releaseするとフリーズ
-		} 
+//			AzRETAIN_CHECK(@"E1 lNoCheck:resultingImage", resultingImage, 2) //=2:releaseするとフリーズ
+		}
 		//else if ([e2obj.decSum compare:[NSDecimalNumber zero]] == NSOrderedDescending)	// e2obj.decSum > 0
 		else if (0.0 < [e2obj.decSum doubleValue])	// e2obj.decSum > 0
 		{

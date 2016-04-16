@@ -29,30 +29,6 @@
 		4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
-		442FA9C915711FA9003D19D8 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C115711FA9003D19D8 /* UIDevice-Hardware.h */; };
-		442FA9CA15711FA9003D19D8 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C115711FA9003D19D8 /* UIDevice-Hardware.h */; };
-		442FA9CB15711FA9003D19D8 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C115711FA9003D19D8 /* UIDevice-Hardware.h */; };
-		442FA9CC15711FA9003D19D8 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C115711FA9003D19D8 /* UIDevice-Hardware.h */; };
-		442FA9CD15711FA9003D19D8 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C215711FA9003D19D8 /* UIDevice-Hardware.m */; };
-		442FA9CE15711FA9003D19D8 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C215711FA9003D19D8 /* UIDevice-Hardware.m */; };
-		442FA9CF15711FA9003D19D8 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C215711FA9003D19D8 /* UIDevice-Hardware.m */; };
-		442FA9D015711FA9003D19D8 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C215711FA9003D19D8 /* UIDevice-Hardware.m */; };
-		442FA9D115711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C415711FA9003D19D8 /* SFHFKeychainUtils.h */; };
-		442FA9D215711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C415711FA9003D19D8 /* SFHFKeychainUtils.h */; };
-		442FA9D315711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C415711FA9003D19D8 /* SFHFKeychainUtils.h */; };
-		442FA9D415711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C415711FA9003D19D8 /* SFHFKeychainUtils.h */; };
-		442FA9D515711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C515711FA9003D19D8 /* SFHFKeychainUtils.m */; };
-		442FA9D615711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C515711FA9003D19D8 /* SFHFKeychainUtils.m */; };
-		442FA9D715711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C515711FA9003D19D8 /* SFHFKeychainUtils.m */; };
-		442FA9D815711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FA9C515711FA9003D19D8 /* SFHFKeychainUtils.m */; };
-		442FA9D915711FA9003D19D8 /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C715711FA9003D19D8 /* GANTracker.h */; };
-		442FA9DA15711FA9003D19D8 /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C715711FA9003D19D8 /* GANTracker.h */; };
-		442FA9DB15711FA9003D19D8 /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C715711FA9003D19D8 /* GANTracker.h */; };
-		442FA9DC15711FA9003D19D8 /* GANTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FA9C715711FA9003D19D8 /* GANTracker.h */; };
-		442FA9DD15711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 442FA9C815711FA9003D19D8 /* libGoogleAnalytics.a */; };
-		442FA9DE15711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 442FA9C815711FA9003D19D8 /* libGoogleAnalytics.a */; };
-		442FA9DF15711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 442FA9C815711FA9003D19D8 /* libGoogleAnalytics.a */; };
-		442FA9E015711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 442FA9C815711FA9003D19D8 /* libGoogleAnalytics.a */; };
 		442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */; };
 		442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */; };
 		442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
@@ -69,6 +45,22 @@
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
+		447B47601CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
+		447B47611CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
+		447B47621CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
+		447B47631CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
+		447B47641CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		447B47651CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
+		447B47661CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
+		447B47671CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
+		447B476A1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
+		447B476B1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
+		447B476C1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
+		447B476D1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
+		447B476E1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		447B476F1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
+		447B47701CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
+		447B47711CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
@@ -95,8 +87,6 @@
 		44A3D0EA1174AEFA00460EC2 /* Icon32-CopyAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0E81174AEFA00460EC2 /* Icon32-CopyAdd.png */; };
 		44A3DE00113BE60B00DE9242 /* FileCsv.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DDFE113BE60B00DE9242 /* FileCsv.h */; };
 		44A3DE01113BE60B00DE9242 /* FileCsv.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DDFF113BE60B00DE9242 /* FileCsv.m */; };
-		44A3DE04113BFDB100DE9242 /* GooDocsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DE02113BFDB100DE9242 /* GooDocsTVC.m */; };
-		44A3DE05113BFDB100DE9242 /* GooDocsTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DE03113BFDB100DE9242 /* GooDocsTVC.h */; };
 		44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44A4162211DB8447007DEB5B /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44A4162311DB8447007DEB5B /* E8bankDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */; };
@@ -210,28 +200,16 @@
 		44B011C0133EF773005AD0EA /* E6partTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD48891132B6B900FB19FB /* E6partTVC.m */; };
 		44B011C1133EF773005AD0EA /* E7paymentTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */; };
 		44B011C2133EF773005AD0EA /* FileCsv.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DDFF113BE60B00DE9242 /* FileCsv.m */; };
-		44B011C3133EF773005AD0EA /* GooDocsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DE02113BFDB100DE9242 /* GooDocsTVC.m */; };
 		44B011C4133EF773005AD0EA /* E3selectPayTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD35D7113EB7A900E40BD0 /* E3selectPayTypeTVC.m */; };
 		44B011C5133EF773005AD0EA /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		44B011C6133EF773005AD0EA /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		44B011C7133EF773005AD0EA /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		44B011C8133EF773005AD0EA /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		44B011C9133EF773005AD0EA /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
-		44B011CA133EF773005AD0EA /* HttpServerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BA328111D755A400856A35 /* HttpServerView.m */; };
 		44B011CB133EF773005AD0EA /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44B011CC133EF773005AD0EA /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44B011CD133EF773005AD0EA /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
 		44B011CE133EF773005AD0EA /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
-		44B011D9133EF773005AD0EA /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF485E1300F090006F70FF /* MyHTTPConnection.m */; };
-		44B011DA133EF773005AD0EA /* localhostAddresses.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48601300F090006F70FF /* localhostAddresses.m */; };
-		44B011DB133EF773005AD0EA /* HTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48611300F090006F70FF /* HTTPResponse.m */; };
-		44B011DC133EF773005AD0EA /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48631300F090006F70FF /* AsyncSocket.m */; };
-		44B011DD133EF773005AD0EA /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48641300F090006F70FF /* HTTPServer.m */; };
-		44B011DE133EF773005AD0EA /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48661300F090006F70FF /* HTTPConnection.m */; };
-		44B011DF133EF773005AD0EA /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486A1300F090006F70FF /* HTTPAuthenticationRequest.m */; };
-		44B011E0133EF773005AD0EA /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486C1300F090006F70FF /* DDRange.m */; };
-		44B011E1133EF773005AD0EA /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486E1300F090006F70FF /* DDNumber.m */; };
-		44B011E2133EF773005AD0EA /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48701300F090006F70FF /* DDData.m */; };
 		44B011E4133EF773005AD0EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		44B011E5133EF773005AD0EA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		44B011E6133EF773005AD0EA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
@@ -258,27 +236,15 @@
 		44B01201133EF773005AD0EA /* E6partTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD488A1132B6B900FB19FB /* E6partTVC.h */; };
 		44B01202133EF773005AD0EA /* E7paymentTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */; };
 		44B01203133EF773005AD0EA /* FileCsv.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DDFE113BE60B00DE9242 /* FileCsv.h */; };
-		44B01204133EF773005AD0EA /* GooDocsTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DE03113BFDB100DE9242 /* GooDocsTVC.h */; };
 		44B01205133EF773005AD0EA /* E3selectPayTypeTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */; };
 		44B01206133EF773005AD0EA /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
 		44B01207133EF773005AD0EA /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
 		44B01208133EF773005AD0EA /* MocFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ACA0C0114E698B000E9FD8 /* MocFunctions.h */; };
 		44B01209133EF773005AD0EA /* CalcView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A68B6211685110004A89ED /* CalcView.h */; };
-		44B0120A133EF773005AD0EA /* HttpServerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BA328011D755A400856A35 /* HttpServerView.h */; };
 		44B0120B133EF773005AD0EA /* E8bankDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */; };
 		44B0120C133EF773005AD0EA /* E8bankTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4162011DB8446007DEB5B /* E8bankTVC.h */; };
 		44B0120D133EF773005AD0EA /* E1editBonusVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */; };
 		44B0120E133EF773005AD0EA /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
-		44B0121D133EF773005AD0EA /* MyHTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF485F1300F090006F70FF /* MyHTTPConnection.h */; };
-		44B0121E133EF773005AD0EA /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48621300F090006F70FF /* HTTPServer.h */; };
-		44B0121F133EF773005AD0EA /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48651300F090006F70FF /* HTTPConnection.h */; };
-		44B01220133EF773005AD0EA /* localhostAddresses.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48671300F090006F70FF /* localhostAddresses.h */; };
-		44B01221133EF773005AD0EA /* AsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48681300F090006F70FF /* AsyncSocket.h */; };
-		44B01222133EF773005AD0EA /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48691300F090006F70FF /* HTTPResponse.h */; };
-		44B01223133EF773005AD0EA /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486B1300F090006F70FF /* HTTPAuthenticationRequest.h */; };
-		44B01224133EF773005AD0EA /* DDRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486D1300F090006F70FF /* DDRange.h */; };
-		44B01225133EF773005AD0EA /* DDNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486F1300F090006F70FF /* DDNumber.h */; };
-		44B01226133EF773005AD0EA /* DDData.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48711300F090006F70FF /* DDData.h */; };
 		44B332D01123B6AA007D3A15 /* TopMenuTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B332CE1123B6AA007D3A15 /* TopMenuTVC.m */; };
 		44B332D11123B6AA007D3A15 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44B332D41123B756007D3A15 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
@@ -292,8 +258,6 @@
 		44B85E8E1125B5A900383A34 /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
 		44B85E8F1125B5A900383A34 /* EditTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B85E8D1125B5A900383A34 /* EditTextVC.m */; };
 		44BA317411D7219500856A35 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44BA317311D7219500856A35 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		44BA328211D755A400856A35 /* HttpServerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BA328011D755A400856A35 /* HttpServerView.h */; };
-		44BA328311D755A400856A35 /* HttpServerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BA328111D755A400856A35 /* HttpServerView.m */; };
 		44BA33F511D78FAA00856A35 /* akihiro-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA33F411D78FAA00856A35 /* akihiro-320.jpg */; };
 		44BA346F11D79C0D00856A35 /* azuki-480.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA346E11D79C0D00856A35 /* azuki-480.jpg */; };
 		44BBEE861368558300DD6978 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BBEE821368558300DD6978 /* Default@2x.png */; };
@@ -338,26 +302,6 @@
 		44BC6F5D12FDABBB00703AEC /* Icon32-CopyAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5912FDABBB00703AEC /* Icon32-CopyAdd@2x.png */; };
 		44BC6F6112FDAE7800703AEC /* Icon32-Check.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5F12FDAE7800703AEC /* Icon32-Check.png */; };
 		44BC6F6212FDAE7800703AEC /* Icon32-Check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F6012FDAE7800703AEC /* Icon32-Check@2x.png */; };
-		44BF48721300F090006F70FF /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF485E1300F090006F70FF /* MyHTTPConnection.m */; };
-		44BF48731300F090006F70FF /* MyHTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF485F1300F090006F70FF /* MyHTTPConnection.h */; };
-		44BF48741300F090006F70FF /* localhostAddresses.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48601300F090006F70FF /* localhostAddresses.m */; };
-		44BF48751300F090006F70FF /* HTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48611300F090006F70FF /* HTTPResponse.m */; };
-		44BF48761300F090006F70FF /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48621300F090006F70FF /* HTTPServer.h */; };
-		44BF48771300F090006F70FF /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48631300F090006F70FF /* AsyncSocket.m */; };
-		44BF48781300F090006F70FF /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48641300F090006F70FF /* HTTPServer.m */; };
-		44BF48791300F090006F70FF /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48651300F090006F70FF /* HTTPConnection.h */; };
-		44BF487A1300F090006F70FF /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48661300F090006F70FF /* HTTPConnection.m */; };
-		44BF487B1300F090006F70FF /* localhostAddresses.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48671300F090006F70FF /* localhostAddresses.h */; };
-		44BF487C1300F090006F70FF /* AsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48681300F090006F70FF /* AsyncSocket.h */; };
-		44BF487D1300F090006F70FF /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48691300F090006F70FF /* HTTPResponse.h */; };
-		44BF487E1300F090006F70FF /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486A1300F090006F70FF /* HTTPAuthenticationRequest.m */; };
-		44BF487F1300F090006F70FF /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486B1300F090006F70FF /* HTTPAuthenticationRequest.h */; };
-		44BF48801300F090006F70FF /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486C1300F090006F70FF /* DDRange.m */; };
-		44BF48811300F090006F70FF /* DDRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486D1300F090006F70FF /* DDRange.h */; };
-		44BF48821300F090006F70FF /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486E1300F090006F70FF /* DDNumber.m */; };
-		44BF48831300F090006F70FF /* DDNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486F1300F090006F70FF /* DDNumber.h */; };
-		44BF48841300F090006F70FF /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48701300F090006F70FF /* DDData.m */; };
-		44BF48851300F090006F70FF /* DDData.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48711300F090006F70FF /* DDData.h */; };
 		44C0E3B613A0A2D1003D0465 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
 		44C0E3B713A0A2D1003D0465 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4434B831111F0A3900CCF7EE /* InfoPlist.strings */; };
 		44C0E3B813A0A2D1003D0465 /* Icon32-Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82740113A048B00F62E0E /* Icon32-Shop.png */; };
@@ -442,28 +386,16 @@
 		44C0E40E13A0A2D1003D0465 /* E6partTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD48891132B6B900FB19FB /* E6partTVC.m */; };
 		44C0E40F13A0A2D1003D0465 /* E7paymentTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */; };
 		44C0E41013A0A2D1003D0465 /* FileCsv.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DDFF113BE60B00DE9242 /* FileCsv.m */; };
-		44C0E41113A0A2D1003D0465 /* GooDocsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DE02113BFDB100DE9242 /* GooDocsTVC.m */; };
 		44C0E41213A0A2D1003D0465 /* E3selectPayTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD35D7113EB7A900E40BD0 /* E3selectPayTypeTVC.m */; };
 		44C0E41313A0A2D1003D0465 /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		44C0E41613A0A2D1003D0465 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		44C0E41713A0A2D1003D0465 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
-		44C0E41813A0A2D1003D0465 /* HttpServerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BA328111D755A400856A35 /* HttpServerView.m */; };
 		44C0E41913A0A2D1003D0465 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44C0E41A13A0A2D1003D0465 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44C0E41B13A0A2D1003D0465 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
 		44C0E41C13A0A2D1003D0465 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
-		44C0E41D13A0A2D1003D0465 /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF485E1300F090006F70FF /* MyHTTPConnection.m */; };
-		44C0E41E13A0A2D1003D0465 /* localhostAddresses.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48601300F090006F70FF /* localhostAddresses.m */; };
-		44C0E41F13A0A2D1003D0465 /* HTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48611300F090006F70FF /* HTTPResponse.m */; };
-		44C0E42013A0A2D1003D0465 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48631300F090006F70FF /* AsyncSocket.m */; };
-		44C0E42113A0A2D1003D0465 /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48641300F090006F70FF /* HTTPServer.m */; };
-		44C0E42213A0A2D1003D0465 /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48661300F090006F70FF /* HTTPConnection.m */; };
-		44C0E42313A0A2D1003D0465 /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486A1300F090006F70FF /* HTTPAuthenticationRequest.m */; };
-		44C0E42413A0A2D1003D0465 /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486C1300F090006F70FF /* DDRange.m */; };
-		44C0E42513A0A2D1003D0465 /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486E1300F090006F70FF /* DDNumber.m */; };
-		44C0E42613A0A2D1003D0465 /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48701300F090006F70FF /* DDData.m */; };
 		44C0E42913A0A2D1003D0465 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374641361DDF200F36E36 /* SystemConfiguration.framework */; };
 		44C0E42A13A0A2D1003D0465 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		44C0E42B13A0A2D1003D0465 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -492,27 +424,15 @@
 		44C0E44713A0A2D1003D0465 /* E6partTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD488A1132B6B900FB19FB /* E6partTVC.h */; };
 		44C0E44813A0A2D1003D0465 /* E7paymentTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */; };
 		44C0E44913A0A2D1003D0465 /* FileCsv.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DDFE113BE60B00DE9242 /* FileCsv.h */; };
-		44C0E44A13A0A2D1003D0465 /* GooDocsTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DE03113BFDB100DE9242 /* GooDocsTVC.h */; };
 		44C0E44B13A0A2D1003D0465 /* E3selectPayTypeTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */; };
 		44C0E44C13A0A2D1003D0465 /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
 		44C0E44D13A0A2D1003D0465 /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
 		44C0E44E13A0A2D1003D0465 /* MocFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ACA0C0114E698B000E9FD8 /* MocFunctions.h */; };
 		44C0E44F13A0A2D1003D0465 /* CalcView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A68B6211685110004A89ED /* CalcView.h */; };
-		44C0E45013A0A2D1003D0465 /* HttpServerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BA328011D755A400856A35 /* HttpServerView.h */; };
 		44C0E45113A0A2D1003D0465 /* E8bankDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */; };
 		44C0E45213A0A2D1003D0465 /* E8bankTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4162011DB8446007DEB5B /* E8bankTVC.h */; };
 		44C0E45313A0A2D1003D0465 /* E1editBonusVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */; };
 		44C0E45413A0A2D1003D0465 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
-		44C0E45513A0A2D1003D0465 /* MyHTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF485F1300F090006F70FF /* MyHTTPConnection.h */; };
-		44C0E45613A0A2D1003D0465 /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48621300F090006F70FF /* HTTPServer.h */; };
-		44C0E45713A0A2D1003D0465 /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48651300F090006F70FF /* HTTPConnection.h */; };
-		44C0E45813A0A2D1003D0465 /* localhostAddresses.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48671300F090006F70FF /* localhostAddresses.h */; };
-		44C0E45913A0A2D1003D0465 /* AsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48681300F090006F70FF /* AsyncSocket.h */; };
-		44C0E45A13A0A2D1003D0465 /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48691300F090006F70FF /* HTTPResponse.h */; };
-		44C0E45B13A0A2D1003D0465 /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486B1300F090006F70FF /* HTTPAuthenticationRequest.h */; };
-		44C0E45C13A0A2D1003D0465 /* DDRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486D1300F090006F70FF /* DDRange.h */; };
-		44C0E45D13A0A2D1003D0465 /* DDNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486F1300F090006F70FF /* DDNumber.h */; };
-		44C0E45E13A0A2D1003D0465 /* DDData.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48711300F090006F70FF /* DDData.h */; };
 		44C0E5DC13A0A475003D0465 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
 		44C0E5DD13A0A475003D0465 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4434B831111F0A3900CCF7EE /* InfoPlist.strings */; };
 		44C0E5E013A0A475003D0465 /* Icon57s1.png in Resources */ = {isa = PBXBuildFile; fileRef = 44D88BF81350942E008CEAF6 /* Icon57s1.png */; };
@@ -597,28 +517,16 @@
 		44C0E63213A0A475003D0465 /* E6partTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD48891132B6B900FB19FB /* E6partTVC.m */; };
 		44C0E63313A0A475003D0465 /* E7paymentTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */; };
 		44C0E63413A0A475003D0465 /* FileCsv.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DDFF113BE60B00DE9242 /* FileCsv.m */; };
-		44C0E63513A0A475003D0465 /* GooDocsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DE02113BFDB100DE9242 /* GooDocsTVC.m */; };
 		44C0E63613A0A475003D0465 /* E3selectPayTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD35D7113EB7A900E40BD0 /* E3selectPayTypeTVC.m */; };
 		44C0E63713A0A475003D0465 /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		44C0E63A13A0A475003D0465 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		44C0E63B13A0A475003D0465 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
-		44C0E63C13A0A475003D0465 /* HttpServerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BA328111D755A400856A35 /* HttpServerView.m */; };
 		44C0E63D13A0A475003D0465 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44C0E63E13A0A475003D0465 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44C0E63F13A0A475003D0465 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
 		44C0E64013A0A475003D0465 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
-		44C0E64113A0A475003D0465 /* MyHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF485E1300F090006F70FF /* MyHTTPConnection.m */; };
-		44C0E64213A0A475003D0465 /* localhostAddresses.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48601300F090006F70FF /* localhostAddresses.m */; };
-		44C0E64313A0A475003D0465 /* HTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48611300F090006F70FF /* HTTPResponse.m */; };
-		44C0E64413A0A475003D0465 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48631300F090006F70FF /* AsyncSocket.m */; };
-		44C0E64513A0A475003D0465 /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48641300F090006F70FF /* HTTPServer.m */; };
-		44C0E64613A0A475003D0465 /* HTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48661300F090006F70FF /* HTTPConnection.m */; };
-		44C0E64713A0A475003D0465 /* HTTPAuthenticationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486A1300F090006F70FF /* HTTPAuthenticationRequest.m */; };
-		44C0E64813A0A475003D0465 /* DDRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486C1300F090006F70FF /* DDRange.m */; };
-		44C0E64913A0A475003D0465 /* DDNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF486E1300F090006F70FF /* DDNumber.m */; };
-		44C0E64A13A0A475003D0465 /* DDData.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF48701300F090006F70FF /* DDData.m */; };
 		44C0E64D13A0A475003D0465 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		44C0E64E13A0A475003D0465 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		44C0E64F13A0A475003D0465 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
@@ -645,27 +553,15 @@
 		44C0E66813A0A475003D0465 /* E6partTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD488A1132B6B900FB19FB /* E6partTVC.h */; };
 		44C0E66913A0A475003D0465 /* E7paymentTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */; };
 		44C0E66A13A0A475003D0465 /* FileCsv.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DDFE113BE60B00DE9242 /* FileCsv.h */; };
-		44C0E66B13A0A475003D0465 /* GooDocsTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DE03113BFDB100DE9242 /* GooDocsTVC.h */; };
 		44C0E66C13A0A475003D0465 /* E3selectPayTypeTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */; };
 		44C0E66D13A0A475003D0465 /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
 		44C0E66E13A0A475003D0465 /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
 		44C0E66F13A0A475003D0465 /* MocFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ACA0C0114E698B000E9FD8 /* MocFunctions.h */; };
 		44C0E67013A0A475003D0465 /* CalcView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A68B6211685110004A89ED /* CalcView.h */; };
-		44C0E67113A0A475003D0465 /* HttpServerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BA328011D755A400856A35 /* HttpServerView.h */; };
 		44C0E67213A0A475003D0465 /* E8bankDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */; };
 		44C0E67313A0A475003D0465 /* E8bankTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4162011DB8446007DEB5B /* E8bankTVC.h */; };
 		44C0E67413A0A475003D0465 /* E1editBonusVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */; };
 		44C0E67513A0A475003D0465 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
-		44C0E67613A0A475003D0465 /* MyHTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF485F1300F090006F70FF /* MyHTTPConnection.h */; };
-		44C0E67713A0A475003D0465 /* HTTPServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48621300F090006F70FF /* HTTPServer.h */; };
-		44C0E67813A0A475003D0465 /* HTTPConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48651300F090006F70FF /* HTTPConnection.h */; };
-		44C0E67913A0A475003D0465 /* localhostAddresses.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48671300F090006F70FF /* localhostAddresses.h */; };
-		44C0E67A13A0A475003D0465 /* AsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48681300F090006F70FF /* AsyncSocket.h */; };
-		44C0E67B13A0A475003D0465 /* HTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48691300F090006F70FF /* HTTPResponse.h */; };
-		44C0E67C13A0A475003D0465 /* HTTPAuthenticationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486B1300F090006F70FF /* HTTPAuthenticationRequest.h */; };
-		44C0E67D13A0A475003D0465 /* DDRange.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486D1300F090006F70FF /* DDRange.h */; };
-		44C0E67E13A0A475003D0465 /* DDNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF486F1300F090006F70FF /* DDNumber.h */; };
-		44C0E67F13A0A475003D0465 /* DDData.h in Headers */ = {isa = PBXBuildFile; fileRef = 44BF48711300F090006F70FF /* DDData.h */; };
 		44C0E7F313A110BA003D0465 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		44C0E7F413A110BA003D0465 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
@@ -747,12 +643,6 @@
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDateVC.m; sourceTree = "<group>"; };
 		441377FD155BD5C6008047FC /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		442FA9C115711FA9003D19D8 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		442FA9C215711FA9003D19D8 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
-		442FA9C415711FA9003D19D8 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		442FA9C515711FA9003D19D8 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		442FA9C715711FA9003D19D8 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
-		442FA9C815711FA9003D19D8 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginPassVC.h; sourceTree = "<group>"; };
 		442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPassVC.m; sourceTree = "<group>"; };
 		4434B82F111F0A2B00CCF7EE /* English */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -774,6 +664,10 @@
 		447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		447071CD12FC4F8C00C053D2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		447071CF12FC4F8C00C053D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFHFKeychainUtils.h; path = ../../../paynote/SFHFKeychainUtils/SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = ../../../paynote/SFHFKeychainUtils/SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice-Hardware.h"; path = "../../../paynote/UIDevice-Hardware/UIDevice-Hardware.h"; sourceTree = "<group>"; };
+		447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice-Hardware.m"; path = "../../../paynote/UIDevice-Hardware/UIDevice-Hardware.m"; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationView.m; sourceTree = "<group>"; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTVC.m; sourceTree = "<group>"; };
@@ -798,8 +692,6 @@
 		44A3D0E81174AEFA00460EC2 /* Icon32-CopyAdd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CopyAdd.png"; path = "Design/Icon32-CopyAdd.png"; sourceTree = "<group>"; };
 		44A3DDFE113BE60B00DE9242 /* FileCsv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileCsv.h; sourceTree = "<group>"; };
 		44A3DDFF113BE60B00DE9242 /* FileCsv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileCsv.m; sourceTree = "<group>"; };
-		44A3DE02113BFDB100DE9242 /* GooDocsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooDocsTVC.m; sourceTree = "<group>"; };
-		44A3DE03113BFDB100DE9242 /* GooDocsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooDocsTVC.h; sourceTree = "<group>"; };
 		44A4161D11DB8446007DEB5B /* E8bankTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E8bankTVC.m; path = Classes/E8bankTVC.m; sourceTree = "<group>"; };
 		44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = E8bankDetailTVC.m; path = Classes/E8bankDetailTVC.m; sourceTree = "<group>"; };
 		44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = E8bankDetailTVC.h; path = Classes/E8bankDetailTVC.h; sourceTree = "<group>"; };
@@ -846,8 +738,6 @@
 		44B85E8C1125B5A900383A34 /* EditTextVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditTextVC.h; sourceTree = "<group>"; };
 		44B85E8D1125B5A900383A34 /* EditTextVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditTextVC.m; sourceTree = "<group>"; };
 		44BA317311D7219500856A35 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		44BA328011D755A400856A35 /* HttpServerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpServerView.h; sourceTree = "<group>"; };
-		44BA328111D755A400856A35 /* HttpServerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpServerView.m; sourceTree = "<group>"; };
 		44BA33F411D78FAA00856A35 /* akihiro-320.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "akihiro-320.jpg"; path = "Design/akihiro-320.jpg"; sourceTree = "<group>"; };
 		44BA346E11D79C0D00856A35 /* azuki-480.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "azuki-480.jpg"; path = "Design/azuki-480.jpg"; sourceTree = "<group>"; };
 		44BBEE831368558300DD6978 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default@2x.png"; sourceTree = "<group>"; };
@@ -892,26 +782,6 @@
 		44BC6F5912FDABBB00703AEC /* Icon32-CopyAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CopyAdd@2x.png"; path = "Design/Icon32-CopyAdd@2x.png"; sourceTree = "<group>"; };
 		44BC6F5F12FDAE7800703AEC /* Icon32-Check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Check.png"; path = "Design/Icon32-Check.png"; sourceTree = "<group>"; };
 		44BC6F6012FDAE7800703AEC /* Icon32-Check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Check@2x.png"; path = "Design/Icon32-Check@2x.png"; sourceTree = "<group>"; };
-		44BF485E1300F090006F70FF /* MyHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyHTTPConnection.m; path = CocoaHTTPServer/MyHTTPConnection.m; sourceTree = "<group>"; };
-		44BF485F1300F090006F70FF /* MyHTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyHTTPConnection.h; path = CocoaHTTPServer/MyHTTPConnection.h; sourceTree = "<group>"; };
-		44BF48601300F090006F70FF /* localhostAddresses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = localhostAddresses.m; path = CocoaHTTPServer/localhostAddresses.m; sourceTree = "<group>"; };
-		44BF48611300F090006F70FF /* HTTPResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPResponse.m; path = CocoaHTTPServer/HTTPResponse.m; sourceTree = "<group>"; };
-		44BF48621300F090006F70FF /* HTTPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPServer.h; path = CocoaHTTPServer/HTTPServer.h; sourceTree = "<group>"; };
-		44BF48631300F090006F70FF /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AsyncSocket.m; path = CocoaHTTPServer/AsyncSocket.m; sourceTree = "<group>"; };
-		44BF48641300F090006F70FF /* HTTPServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPServer.m; path = CocoaHTTPServer/HTTPServer.m; sourceTree = "<group>"; };
-		44BF48651300F090006F70FF /* HTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPConnection.h; path = CocoaHTTPServer/HTTPConnection.h; sourceTree = "<group>"; };
-		44BF48661300F090006F70FF /* HTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPConnection.m; path = CocoaHTTPServer/HTTPConnection.m; sourceTree = "<group>"; };
-		44BF48671300F090006F70FF /* localhostAddresses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = localhostAddresses.h; path = CocoaHTTPServer/localhostAddresses.h; sourceTree = "<group>"; };
-		44BF48681300F090006F70FF /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AsyncSocket.h; path = CocoaHTTPServer/AsyncSocket.h; sourceTree = "<group>"; };
-		44BF48691300F090006F70FF /* HTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPResponse.h; path = CocoaHTTPServer/HTTPResponse.h; sourceTree = "<group>"; };
-		44BF486A1300F090006F70FF /* HTTPAuthenticationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTTPAuthenticationRequest.m; path = CocoaHTTPServer/HTTPAuthenticationRequest.m; sourceTree = "<group>"; };
-		44BF486B1300F090006F70FF /* HTTPAuthenticationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPAuthenticationRequest.h; path = CocoaHTTPServer/HTTPAuthenticationRequest.h; sourceTree = "<group>"; };
-		44BF486C1300F090006F70FF /* DDRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDRange.m; path = CocoaHTTPServer/DDRange.m; sourceTree = "<group>"; };
-		44BF486D1300F090006F70FF /* DDRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDRange.h; path = CocoaHTTPServer/DDRange.h; sourceTree = "<group>"; };
-		44BF486E1300F090006F70FF /* DDNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDNumber.m; path = CocoaHTTPServer/DDNumber.m; sourceTree = "<group>"; };
-		44BF486F1300F090006F70FF /* DDNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDNumber.h; path = CocoaHTTPServer/DDNumber.h; sourceTree = "<group>"; };
-		44BF48701300F090006F70FF /* DDData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDData.m; path = CocoaHTTPServer/DDData.m; sourceTree = "<group>"; };
-		44BF48711300F090006F70FF /* DDData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDData.h; path = CocoaHTTPServer/DDData.h; sourceTree = "<group>"; };
 		44C0E5B913A0A2D1003D0465 /* AzCreditPadFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditPadFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44C0E5D813A0A3CF003D0465 /* Info-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iPad.plist"; sourceTree = "<group>"; };
 		44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditS1Pad.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -981,7 +851,6 @@
 				447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */,
 				447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */,
 				447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */,
-				442FA9DD15711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */,
 				2D4B7EF27949871255257020 /* libPods-AzCredit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1003,7 +872,6 @@
 				44B011EF133EF773005AD0EA /* QuartzCore.framework in Frameworks */,
 				4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */,
 				4403475F155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				442FA9DE15711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */,
 				FEF5F11A5B38A4D9B20428B0 /* libPods-AzCreditS1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1026,7 +894,6 @@
 				44C0E43413A0A2D1003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */,
 				44034761155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				442FA9DF15711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */,
 				31E9760087EF3FDD100065EB /* libPods-AzCreditPadFree.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1048,7 +915,6 @@
 				44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */,
 				44034762155F6BD600D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				442FA9E015711FA9003D19D8 /* libGoogleAnalytics.a in Frameworks */,
 				3C7A1C5B92187C8FA033AF75 /* libPods-AzCreditS1Pad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1166,69 +1032,30 @@
 		442FA9BE15711F5D003D19D8 /* OpenCode */ = {
 			isa = PBXGroup;
 			children = (
-				4464805911CFBCFD00305181 /* HTTP Server */,
-				442FA9C015711FA9003D19D8 /* UIDevice-Hardware.release */,
-				442FA9C315711FA9003D19D8 /* SFHFKeychainUtils.release */,
-				442FA9C615711FA9003D19D8 /* GoogleAnalytics.release */,
+				442FA9C015711FA9003D19D8 /* UIDevice-Hardware */,
+				442FA9C315711FA9003D19D8 /* SFHFKeychainUtils */,
 			);
 			name = OpenCode;
 			sourceTree = "<group>";
 		};
-		442FA9C015711FA9003D19D8 /* UIDevice-Hardware.release */ = {
+		442FA9C015711FA9003D19D8 /* UIDevice-Hardware */ = {
 			isa = PBXGroup;
 			children = (
-				442FA9C115711FA9003D19D8 /* UIDevice-Hardware.h */,
-				442FA9C215711FA9003D19D8 /* UIDevice-Hardware.m */,
+				447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */,
+				447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */,
 			);
-			name = "UIDevice-Hardware.release";
+			name = "UIDevice-Hardware";
 			path = "../../OpenCode/UIDevice-Hardware/UIDevice-Hardware.release";
 			sourceTree = "<group>";
 		};
-		442FA9C315711FA9003D19D8 /* SFHFKeychainUtils.release */ = {
+		442FA9C315711FA9003D19D8 /* SFHFKeychainUtils */ = {
 			isa = PBXGroup;
 			children = (
-				442FA9C415711FA9003D19D8 /* SFHFKeychainUtils.h */,
-				442FA9C515711FA9003D19D8 /* SFHFKeychainUtils.m */,
+				447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */,
+				447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */,
 			);
-			name = SFHFKeychainUtils.release;
+			name = SFHFKeychainUtils;
 			path = ../../OpenCode/SFHFKeychainUtils/SFHFKeychainUtils.release;
-			sourceTree = "<group>";
-		};
-		442FA9C615711FA9003D19D8 /* GoogleAnalytics.release */ = {
-			isa = PBXGroup;
-			children = (
-				442FA9C715711FA9003D19D8 /* GANTracker.h */,
-				442FA9C815711FA9003D19D8 /* libGoogleAnalytics.a */,
-			);
-			name = GoogleAnalytics.release;
-			path = ../../OpenCode/GoogleAnalytics/GoogleAnalytics.release;
-			sourceTree = "<group>";
-		};
-		4464805911CFBCFD00305181 /* HTTP Server */ = {
-			isa = PBXGroup;
-			children = (
-				44BF485F1300F090006F70FF /* MyHTTPConnection.h */,
-				44BF485E1300F090006F70FF /* MyHTTPConnection.m */,
-				44BF48671300F090006F70FF /* localhostAddresses.h */,
-				44BF48601300F090006F70FF /* localhostAddresses.m */,
-				44BF48611300F090006F70FF /* HTTPResponse.m */,
-				44BF48621300F090006F70FF /* HTTPServer.h */,
-				44BF48631300F090006F70FF /* AsyncSocket.m */,
-				44BF48641300F090006F70FF /* HTTPServer.m */,
-				44BF48651300F090006F70FF /* HTTPConnection.h */,
-				44BF48661300F090006F70FF /* HTTPConnection.m */,
-				44BF48681300F090006F70FF /* AsyncSocket.h */,
-				44BF48691300F090006F70FF /* HTTPResponse.h */,
-				44BF486A1300F090006F70FF /* HTTPAuthenticationRequest.m */,
-				44BF486B1300F090006F70FF /* HTTPAuthenticationRequest.h */,
-				44BF486C1300F090006F70FF /* DDRange.m */,
-				44BF486D1300F090006F70FF /* DDRange.h */,
-				44BF486E1300F090006F70FF /* DDNumber.m */,
-				44BF486F1300F090006F70FF /* DDNumber.h */,
-				44BF48701300F090006F70FF /* DDData.m */,
-				44BF48711300F090006F70FF /* DDData.h */,
-			);
-			name = "HTTP Server";
 			sourceTree = "<group>";
 		};
 		44A4160E11DB83F7007DEB5B /* E8bank */ = {
@@ -1272,10 +1099,6 @@
 				4483449C10F2235B0078FEF6 /* InformationView.m */,
 				448549031115726F00D10CC8 /* SettingTVC.h */,
 				448549021115726F00D10CC8 /* SettingTVC.m */,
-				44A3DE03113BFDB100DE9242 /* GooDocsTVC.h */,
-				44A3DE02113BFDB100DE9242 /* GooDocsTVC.m */,
-				44BA328011D755A400856A35 /* HttpServerView.h */,
-				44BA328111D755A400856A35 /* HttpServerView.m */,
 			);
 			name = TopMenu;
 			sourceTree = "<group>";
@@ -1472,35 +1295,22 @@
 				440AC51611299DBE00B89317 /* EditDateVC.h in Headers */,
 				44D00C3F112CCC25001BC4C8 /* E3recordTVC.h in Headers */,
 				44ABA3A6112FB92D0009E62E /* E4shopDetailTVC.h in Headers */,
+				447B476A1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44ABA3A8112FB92D0009E62E /* E4shopTVC.h in Headers */,
 				44AD488C1132B6B900FB19FB /* E6partTVC.h in Headers */,
 				44A19FDF11367A3B00DE0113 /* E7paymentTVC.h in Headers */,
 				44A3DE00113BE60B00DE9242 /* FileCsv.h in Headers */,
-				44A3DE05113BFDB100DE9242 /* GooDocsTVC.h in Headers */,
 				44AD35DA113EB7A900E40BD0 /* E3selectPayTypeTVC.h in Headers */,
 				4454C98D114941930063621D /* E5categoryTVC.h in Headers */,
 				4454C98E114941930063621D /* E5categoryDetailTVC.h in Headers */,
 				44ACA0C2114E698B000E9FD8 /* MocFunctions.h in Headers */,
 				44A68B6311685110004A89ED /* CalcView.h in Headers */,
-				44BA328211D755A400856A35 /* HttpServerView.h in Headers */,
 				44A4162311DB8447007DEB5B /* E8bankDetailTVC.h in Headers */,
 				44A4162411DB8447007DEB5B /* E8bankTVC.h in Headers */,
 				44A5AB3D11DF7CCD00C9A093 /* E1editBonusVC.h in Headers */,
+				447B47601CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */,
-				44BF48731300F090006F70FF /* MyHTTPConnection.h in Headers */,
-				44BF48761300F090006F70FF /* HTTPServer.h in Headers */,
-				44BF48791300F090006F70FF /* HTTPConnection.h in Headers */,
-				44BF487B1300F090006F70FF /* localhostAddresses.h in Headers */,
-				44BF487C1300F090006F70FF /* AsyncSocket.h in Headers */,
-				44BF487D1300F090006F70FF /* HTTPResponse.h in Headers */,
-				44BF487F1300F090006F70FF /* HTTPAuthenticationRequest.h in Headers */,
-				44BF48811300F090006F70FF /* DDRange.h in Headers */,
-				44BF48831300F090006F70FF /* DDNumber.h in Headers */,
-				44BF48851300F090006F70FF /* DDData.h in Headers */,
 				44CEC514142636C4005D7850 /* Global.h in Headers */,
-				442FA9C915711FA9003D19D8 /* UIDevice-Hardware.h in Headers */,
-				442FA9D115711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */,
-				442FA9D915711FA9003D19D8 /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1520,35 +1330,22 @@
 				44B011FD133EF773005AD0EA /* EditDateVC.h in Headers */,
 				44B011FE133EF773005AD0EA /* E3recordTVC.h in Headers */,
 				44B011FF133EF773005AD0EA /* E4shopDetailTVC.h in Headers */,
+				447B476B1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44B01200133EF773005AD0EA /* E4shopTVC.h in Headers */,
 				44B01201133EF773005AD0EA /* E6partTVC.h in Headers */,
 				44B01202133EF773005AD0EA /* E7paymentTVC.h in Headers */,
 				44B01203133EF773005AD0EA /* FileCsv.h in Headers */,
-				44B01204133EF773005AD0EA /* GooDocsTVC.h in Headers */,
 				44B01205133EF773005AD0EA /* E3selectPayTypeTVC.h in Headers */,
 				44B01206133EF773005AD0EA /* E5categoryTVC.h in Headers */,
 				44B01207133EF773005AD0EA /* E5categoryDetailTVC.h in Headers */,
 				44B01208133EF773005AD0EA /* MocFunctions.h in Headers */,
 				44B01209133EF773005AD0EA /* CalcView.h in Headers */,
-				44B0120A133EF773005AD0EA /* HttpServerView.h in Headers */,
 				44B0120B133EF773005AD0EA /* E8bankDetailTVC.h in Headers */,
 				44B0120C133EF773005AD0EA /* E8bankTVC.h in Headers */,
 				44B0120D133EF773005AD0EA /* E1editBonusVC.h in Headers */,
+				447B47611CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44B0120E133EF773005AD0EA /* E3selectRepeatTVC.h in Headers */,
-				44B0121D133EF773005AD0EA /* MyHTTPConnection.h in Headers */,
-				44B0121E133EF773005AD0EA /* HTTPServer.h in Headers */,
-				44B0121F133EF773005AD0EA /* HTTPConnection.h in Headers */,
-				44B01220133EF773005AD0EA /* localhostAddresses.h in Headers */,
-				44B01221133EF773005AD0EA /* AsyncSocket.h in Headers */,
-				44B01222133EF773005AD0EA /* HTTPResponse.h in Headers */,
-				44B01223133EF773005AD0EA /* HTTPAuthenticationRequest.h in Headers */,
-				44B01224133EF773005AD0EA /* DDRange.h in Headers */,
-				44B01225133EF773005AD0EA /* DDNumber.h in Headers */,
-				44B01226133EF773005AD0EA /* DDData.h in Headers */,
 				44CEC516142636C5005D7850 /* Global.h in Headers */,
-				442FA9CA15711FA9003D19D8 /* UIDevice-Hardware.h in Headers */,
-				442FA9D215711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */,
-				442FA9DA15711FA9003D19D8 /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1558,7 +1355,9 @@
 			files = (
 				44C0E43813A0A2D1003D0465 /* AzCredit_Prefix.pch in Headers */,
 				44C0E43A13A0A2D1003D0465 /* SettingTVC.h in Headers */,
+				447B476C1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44C0E43B13A0A2D1003D0465 /* TopMenuTVC.h in Headers */,
+				447B47621CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44C0E43C13A0A2D1003D0465 /* E1cardTVC.h in Headers */,
 				44C0E43D13A0A2D1003D0465 /* E3recordDetailTVC.h in Headers */,
 				44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */,
@@ -1572,33 +1371,18 @@
 				44C0E44713A0A2D1003D0465 /* E6partTVC.h in Headers */,
 				44C0E44813A0A2D1003D0465 /* E7paymentTVC.h in Headers */,
 				44C0E44913A0A2D1003D0465 /* FileCsv.h in Headers */,
-				44C0E44A13A0A2D1003D0465 /* GooDocsTVC.h in Headers */,
 				44C0E44B13A0A2D1003D0465 /* E3selectPayTypeTVC.h in Headers */,
 				44C0E44C13A0A2D1003D0465 /* E5categoryTVC.h in Headers */,
 				44C0E44D13A0A2D1003D0465 /* E5categoryDetailTVC.h in Headers */,
 				44C0E44E13A0A2D1003D0465 /* MocFunctions.h in Headers */,
 				44C0E44F13A0A2D1003D0465 /* CalcView.h in Headers */,
-				44C0E45013A0A2D1003D0465 /* HttpServerView.h in Headers */,
 				44C0E45113A0A2D1003D0465 /* E8bankDetailTVC.h in Headers */,
 				44C0E45213A0A2D1003D0465 /* E8bankTVC.h in Headers */,
 				44C0E45313A0A2D1003D0465 /* E1editBonusVC.h in Headers */,
 				44C0E45413A0A2D1003D0465 /* E3selectRepeatTVC.h in Headers */,
-				44C0E45513A0A2D1003D0465 /* MyHTTPConnection.h in Headers */,
-				44C0E45613A0A2D1003D0465 /* HTTPServer.h in Headers */,
-				44C0E45713A0A2D1003D0465 /* HTTPConnection.h in Headers */,
-				44C0E45813A0A2D1003D0465 /* localhostAddresses.h in Headers */,
-				44C0E45913A0A2D1003D0465 /* AsyncSocket.h in Headers */,
-				44C0E45A13A0A2D1003D0465 /* HTTPResponse.h in Headers */,
-				44C0E45B13A0A2D1003D0465 /* HTTPAuthenticationRequest.h in Headers */,
-				44C0E45C13A0A2D1003D0465 /* DDRange.h in Headers */,
-				44C0E45D13A0A2D1003D0465 /* DDNumber.h in Headers */,
-				44C0E45E13A0A2D1003D0465 /* DDData.h in Headers */,
 				44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */,
 				442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC517142636C6005D7850 /* Global.h in Headers */,
-				442FA9CB15711FA9003D19D8 /* UIDevice-Hardware.h in Headers */,
-				442FA9D315711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */,
-				442FA9DB15711FA9003D19D8 /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1608,7 +1392,9 @@
 			files = (
 				44C0E65913A0A475003D0465 /* AzCredit_Prefix.pch in Headers */,
 				44C0E65B13A0A475003D0465 /* SettingTVC.h in Headers */,
+				447B476D1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44C0E65C13A0A475003D0465 /* TopMenuTVC.h in Headers */,
+				447B47631CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44C0E65D13A0A475003D0465 /* E1cardTVC.h in Headers */,
 				44C0E65E13A0A475003D0465 /* E3recordDetailTVC.h in Headers */,
 				44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */,
@@ -1622,33 +1408,18 @@
 				44C0E66813A0A475003D0465 /* E6partTVC.h in Headers */,
 				44C0E66913A0A475003D0465 /* E7paymentTVC.h in Headers */,
 				44C0E66A13A0A475003D0465 /* FileCsv.h in Headers */,
-				44C0E66B13A0A475003D0465 /* GooDocsTVC.h in Headers */,
 				44C0E66C13A0A475003D0465 /* E3selectPayTypeTVC.h in Headers */,
 				44C0E66D13A0A475003D0465 /* E5categoryTVC.h in Headers */,
 				44C0E66E13A0A475003D0465 /* E5categoryDetailTVC.h in Headers */,
 				44C0E66F13A0A475003D0465 /* MocFunctions.h in Headers */,
 				44C0E67013A0A475003D0465 /* CalcView.h in Headers */,
-				44C0E67113A0A475003D0465 /* HttpServerView.h in Headers */,
 				44C0E67213A0A475003D0465 /* E8bankDetailTVC.h in Headers */,
 				44C0E67313A0A475003D0465 /* E8bankTVC.h in Headers */,
 				44C0E67413A0A475003D0465 /* E1editBonusVC.h in Headers */,
 				44C0E67513A0A475003D0465 /* E3selectRepeatTVC.h in Headers */,
-				44C0E67613A0A475003D0465 /* MyHTTPConnection.h in Headers */,
-				44C0E67713A0A475003D0465 /* HTTPServer.h in Headers */,
-				44C0E67813A0A475003D0465 /* HTTPConnection.h in Headers */,
-				44C0E67913A0A475003D0465 /* localhostAddresses.h in Headers */,
-				44C0E67A13A0A475003D0465 /* AsyncSocket.h in Headers */,
-				44C0E67B13A0A475003D0465 /* HTTPResponse.h in Headers */,
-				44C0E67C13A0A475003D0465 /* HTTPAuthenticationRequest.h in Headers */,
-				44C0E67D13A0A475003D0465 /* DDRange.h in Headers */,
-				44C0E67E13A0A475003D0465 /* DDNumber.h in Headers */,
-				44C0E67F13A0A475003D0465 /* DDData.h in Headers */,
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
 				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC518142636C7005D7850 /* Global.h in Headers */,
-				442FA9CC15711FA9003D19D8 /* UIDevice-Hardware.h in Headers */,
-				442FA9D415711FA9003D19D8 /* SFHFKeychainUtils.h in Headers */,
-				442FA9DC15711FA9003D19D8 /* GANTracker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1746,6 +1517,20 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0450;
+				TargetAttributes = {
+					1D6058900D05DD3D006BFB54 = {
+						DevelopmentTeam = 5C2UYK6F45;
+					};
+					44B01168133EF773005AD0EA = {
+						DevelopmentTeam = 5C2UYK6F45;
+					};
+					44C0E3B413A0A2D1003D0465 = {
+						DevelopmentTeam = 5C2UYK6F45;
+					};
+					44C0E5DA13A0A475003D0465 = {
+						DevelopmentTeam = 5C2UYK6F45;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -2317,30 +2102,18 @@
 				44AD488B1132B6B900FB19FB /* E6partTVC.m in Sources */,
 				44A19FE011367A3B00DE0113 /* E7paymentTVC.m in Sources */,
 				44A3DE01113BE60B00DE9242 /* FileCsv.m in Sources */,
-				44A3DE04113BFDB100DE9242 /* GooDocsTVC.m in Sources */,
 				44AD35D9113EB7A900E40BD0 /* E3selectPayTypeTVC.m in Sources */,
 				4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */,
 				4454C98C114941930063621D /* E5categoryTVC.m in Sources */,
 				44ACA0C3114E698B000E9FD8 /* MocFunctions.m in Sources */,
 				44FB5C5A11512063008DEC3E /* Global.m in Sources */,
+				447B476E1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44A68B6511685121004A89ED /* CalcView.m in Sources */,
-				44BA328311D755A400856A35 /* HttpServerView.m in Sources */,
 				44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */,
 				44A4162211DB8447007DEB5B /* E8bankDetailTVC.m in Sources */,
 				44A5AB3E11DF7CCD00C9A093 /* E1editBonusVC.m in Sources */,
 				44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */,
-				44BF48721300F090006F70FF /* MyHTTPConnection.m in Sources */,
-				44BF48741300F090006F70FF /* localhostAddresses.m in Sources */,
-				44BF48751300F090006F70FF /* HTTPResponse.m in Sources */,
-				44BF48771300F090006F70FF /* AsyncSocket.m in Sources */,
-				44BF48781300F090006F70FF /* HTTPServer.m in Sources */,
-				44BF487A1300F090006F70FF /* HTTPConnection.m in Sources */,
-				44BF487E1300F090006F70FF /* HTTPAuthenticationRequest.m in Sources */,
-				44BF48801300F090006F70FF /* DDRange.m in Sources */,
-				44BF48821300F090006F70FF /* DDNumber.m in Sources */,
-				44BF48841300F090006F70FF /* DDData.m in Sources */,
-				442FA9CD15711FA9003D19D8 /* UIDevice-Hardware.m in Sources */,
-				442FA9D515711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */,
+				447B47641CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2370,30 +2143,18 @@
 				44B011C0133EF773005AD0EA /* E6partTVC.m in Sources */,
 				44B011C1133EF773005AD0EA /* E7paymentTVC.m in Sources */,
 				44B011C2133EF773005AD0EA /* FileCsv.m in Sources */,
-				44B011C3133EF773005AD0EA /* GooDocsTVC.m in Sources */,
 				44B011C4133EF773005AD0EA /* E3selectPayTypeTVC.m in Sources */,
 				44B011C5133EF773005AD0EA /* E5categoryDetailTVC.m in Sources */,
 				44B011C6133EF773005AD0EA /* E5categoryTVC.m in Sources */,
 				44B011C7133EF773005AD0EA /* MocFunctions.m in Sources */,
 				44B011C8133EF773005AD0EA /* Global.m in Sources */,
+				447B476F1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44B011C9133EF773005AD0EA /* CalcView.m in Sources */,
-				44B011CA133EF773005AD0EA /* HttpServerView.m in Sources */,
 				44B011CB133EF773005AD0EA /* E8bankTVC.m in Sources */,
 				44B011CC133EF773005AD0EA /* E8bankDetailTVC.m in Sources */,
 				44B011CD133EF773005AD0EA /* E1editBonusVC.m in Sources */,
 				44B011CE133EF773005AD0EA /* E3selectRepeatTVC.m in Sources */,
-				44B011D9133EF773005AD0EA /* MyHTTPConnection.m in Sources */,
-				44B011DA133EF773005AD0EA /* localhostAddresses.m in Sources */,
-				44B011DB133EF773005AD0EA /* HTTPResponse.m in Sources */,
-				44B011DC133EF773005AD0EA /* AsyncSocket.m in Sources */,
-				44B011DD133EF773005AD0EA /* HTTPServer.m in Sources */,
-				44B011DE133EF773005AD0EA /* HTTPConnection.m in Sources */,
-				44B011DF133EF773005AD0EA /* HTTPAuthenticationRequest.m in Sources */,
-				44B011E0133EF773005AD0EA /* DDRange.m in Sources */,
-				44B011E1133EF773005AD0EA /* DDNumber.m in Sources */,
-				44B011E2133EF773005AD0EA /* DDData.m in Sources */,
-				442FA9CE15711FA9003D19D8 /* UIDevice-Hardware.m in Sources */,
-				442FA9D615711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */,
+				447B47651CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2422,32 +2183,20 @@
 				44C0E40E13A0A2D1003D0465 /* E6partTVC.m in Sources */,
 				44C0E40F13A0A2D1003D0465 /* E7paymentTVC.m in Sources */,
 				44C0E41013A0A2D1003D0465 /* FileCsv.m in Sources */,
-				44C0E41113A0A2D1003D0465 /* GooDocsTVC.m in Sources */,
 				44C0E41213A0A2D1003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E41313A0A2D1003D0465 /* E5categoryDetailTVC.m in Sources */,
 				44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */,
 				44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */,
 				44C0E41613A0A2D1003D0465 /* Global.m in Sources */,
 				44C0E41713A0A2D1003D0465 /* CalcView.m in Sources */,
-				44C0E41813A0A2D1003D0465 /* HttpServerView.m in Sources */,
 				44C0E41913A0A2D1003D0465 /* E8bankTVC.m in Sources */,
 				44C0E41A13A0A2D1003D0465 /* E8bankDetailTVC.m in Sources */,
 				44C0E41B13A0A2D1003D0465 /* E1editBonusVC.m in Sources */,
+				447B47701CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44C0E41C13A0A2D1003D0465 /* E3selectRepeatTVC.m in Sources */,
-				44C0E41D13A0A2D1003D0465 /* MyHTTPConnection.m in Sources */,
-				44C0E41E13A0A2D1003D0465 /* localhostAddresses.m in Sources */,
-				44C0E41F13A0A2D1003D0465 /* HTTPResponse.m in Sources */,
-				44C0E42013A0A2D1003D0465 /* AsyncSocket.m in Sources */,
-				44C0E42113A0A2D1003D0465 /* HTTPServer.m in Sources */,
-				44C0E42213A0A2D1003D0465 /* HTTPConnection.m in Sources */,
-				44C0E42313A0A2D1003D0465 /* HTTPAuthenticationRequest.m in Sources */,
-				44C0E42413A0A2D1003D0465 /* DDRange.m in Sources */,
-				44C0E42513A0A2D1003D0465 /* DDNumber.m in Sources */,
-				44C0E42613A0A2D1003D0465 /* DDData.m in Sources */,
+				447B47661CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 				44C0E7F313A110BA003D0465 /* PadRootVC.m in Sources */,
 				442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
-				442FA9CF15711FA9003D19D8 /* UIDevice-Hardware.m in Sources */,
-				442FA9D715711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2476,32 +2225,20 @@
 				44C0E63213A0A475003D0465 /* E6partTVC.m in Sources */,
 				44C0E63313A0A475003D0465 /* E7paymentTVC.m in Sources */,
 				44C0E63413A0A475003D0465 /* FileCsv.m in Sources */,
-				44C0E63513A0A475003D0465 /* GooDocsTVC.m in Sources */,
 				44C0E63613A0A475003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E63713A0A475003D0465 /* E5categoryDetailTVC.m in Sources */,
 				44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */,
 				44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */,
 				44C0E63A13A0A475003D0465 /* Global.m in Sources */,
 				44C0E63B13A0A475003D0465 /* CalcView.m in Sources */,
-				44C0E63C13A0A475003D0465 /* HttpServerView.m in Sources */,
 				44C0E63D13A0A475003D0465 /* E8bankTVC.m in Sources */,
 				44C0E63E13A0A475003D0465 /* E8bankDetailTVC.m in Sources */,
 				44C0E63F13A0A475003D0465 /* E1editBonusVC.m in Sources */,
+				447B47711CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44C0E64013A0A475003D0465 /* E3selectRepeatTVC.m in Sources */,
-				44C0E64113A0A475003D0465 /* MyHTTPConnection.m in Sources */,
-				44C0E64213A0A475003D0465 /* localhostAddresses.m in Sources */,
-				44C0E64313A0A475003D0465 /* HTTPResponse.m in Sources */,
-				44C0E64413A0A475003D0465 /* AsyncSocket.m in Sources */,
-				44C0E64513A0A475003D0465 /* HTTPServer.m in Sources */,
-				44C0E64613A0A475003D0465 /* HTTPConnection.m in Sources */,
-				44C0E64713A0A475003D0465 /* HTTPAuthenticationRequest.m in Sources */,
-				44C0E64813A0A475003D0465 /* DDRange.m in Sources */,
-				44C0E64913A0A475003D0465 /* DDNumber.m in Sources */,
-				44C0E64A13A0A475003D0465 /* DDData.m in Sources */,
+				447B47671CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 				44C0E7F413A110BA003D0465 /* PadRootVC.m in Sources */,
 				442FF3A213B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
-				442FA9D015711FA9003D19D8 /* UIDevice-Hardware.m in Sources */,
-				442FA9D815711FA9003D19D8 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2579,7 +2316,8 @@
 			baseConfigurationReference = 7715F22051C90F48DD891EB4 /* Pods-AzCredit.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2592,7 +2330,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2620,7 +2358,8 @@
 			baseConfigurationReference = 1AA0B93E9E313266FAA45108 /* Pods-AzCredit.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2630,7 +2369,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2658,6 +2397,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2669,7 +2409,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = InfoS1.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2697,6 +2437,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2705,7 +2446,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = InfoS1.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2733,6 +2474,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2741,7 +2483,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = InfoS1.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2769,6 +2511,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2784,7 +2527,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Info-iPad.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2813,6 +2556,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2825,7 +2569,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Info-iPad.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2853,6 +2597,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2865,7 +2610,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Info-iPad.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2893,6 +2638,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2907,7 +2653,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "InfoS1-iPad.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2935,6 +2681,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2946,7 +2693,7 @@
 				);
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "InfoS1-iPad.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2974,6 +2721,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2985,7 +2733,7 @@
 				);
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "InfoS1-iPad.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -3041,7 +2789,8 @@
 			baseConfigurationReference = 50F89B1A07237F336FF29CD8 /* Pods-AzCredit.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -3051,7 +2800,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",

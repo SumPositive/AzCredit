@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GADBannerView.h"
 
 
 @interface E3recordTVC : UITableViewController <UIActionSheetDelegate
@@ -33,7 +32,7 @@
 	NSIndexPath				*MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
 #endif
 #ifdef FREE_AD
-	GADBannerView		*RoAdMobView;
+//	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 #ifdef AzPAD

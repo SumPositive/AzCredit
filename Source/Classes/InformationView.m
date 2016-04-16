@@ -280,7 +280,7 @@ NSString *passCode()
 										  otherButtonTitles:@"OK", nil];
 	alert.tag = ALERT_TAG_GoAppStore;
 	[alert show];
-	[alert autorelease];
+//	[alert autorelease];
 }
 
 - (void)buGoSupportSite:(UIButton *)button
@@ -292,7 +292,7 @@ NSString *passCode()
 										  otherButtonTitles:@"OK", nil];
 	alert.tag = ALERT_TAG_GoSupportSite;
 	[alert show];
-	[alert autorelease];
+//	[alert autorelease];
 }
 
 -(void)buPostComment:(UIButton*)sender 
@@ -313,7 +313,7 @@ NSString *passCode()
 										  otherButtonTitles:@"OK", nil];
 	alert.tag = ALERT_TAG_PostComment;
 	[alert show];
-	[alert autorelease];
+//	[alert autorelease];
 }
 
 

@@ -10,8 +10,6 @@
 
 #ifdef FREE_AD
 #import <iAd/iAd.h>
-#import "GADBannerView.h"
-#import "GADBannerViewDelegate.h"
 #endif
 
 @class InformationView;
@@ -23,7 +21,7 @@
 #endif
 #ifdef FREE_AD
 	,ADBannerViewDelegate
-	,GADBannerViewDelegate
+//	,GADBannerViewDelegate
 #endif
 >
 {
@@ -45,7 +43,7 @@
 #endif
 #ifdef FREE_AD
 	ADBannerView		*MbannerView;
-	GADBannerView		*RoAdMobView;
+//	GADBannerView		*RoAdMobView;
 	BOOL						MbAdCanVisible;		//YES:表示可能な状況　 NO:表示してはいけない状況
 #endif
 	//----------------------------------------------assign
