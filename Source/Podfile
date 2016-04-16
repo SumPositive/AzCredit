@@ -1,0 +1,21 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '9.0'
+# Uncomment this line if you're using Swift
+# use_frameworks!
+
+target 'AzCredit' do
+
+end
+
+target 'AzCreditS1' do
+
+end
+
+target 'AzCreditPadFree' do
+
+end
+
+target 'AzCreditS1Pad' do
+
+end
+

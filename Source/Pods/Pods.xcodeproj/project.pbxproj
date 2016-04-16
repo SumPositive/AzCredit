@@ -1,0 +1,775 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1077A25050828422BDA8F43C70FAE169 /* Pods-AzCreditS1Pad-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB45C88C953A3211216EC68BD226A0 /* Pods-AzCreditS1Pad-dummy.m */; };
+		133FC67E8FE8D94DD51AA2A21FBC569F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3997E5D2953ECDF377B85B234FDF550D /* Foundation.framework */; };
+		15FAA9956069CC24659D7BED08A828E5 /* Pods-AzCreditS1-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5747549B10863036884B6730F30330CD /* Pods-AzCreditS1-dummy.m */; };
+		1F37F00C31F33B8F0DF1F909D3055B53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3997E5D2953ECDF377B85B234FDF550D /* Foundation.framework */; };
+		46C1C120BACE2CEBE841333936F29308 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3997E5D2953ECDF377B85B234FDF550D /* Foundation.framework */; };
+		77145DBFC97A0346C288331D0E1B8C00 /* Pods-AzCreditPadFree-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B0A90ADE699675E2FDCA75D026BC498F /* Pods-AzCreditPadFree-dummy.m */; };
+		CBC495DE8E16FAD785C7A9CC441DB36E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3997E5D2953ECDF377B85B234FDF550D /* Foundation.framework */; };
+		D7483D2CAB65380E3FB5E46B8EA64C95 /* Pods-AzCredit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B821E8172E7CDBC9641E1C69B5C5D5DB /* Pods-AzCredit-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		14574A808B861424AD68AD132C33C6E1 /* Pods-AzCreditPadFree-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditPadFree-frameworks.sh"; sourceTree = "<group>"; };
+		1BEBB8DA813D8BB6F7FB35DA8AD0C2C8 /* Pods-AzCredit-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AzCredit-acknowledgements.plist"; sourceTree = "<group>"; };
+		24A4E649AF399465BB9555EA55C959C3 /* Pods-AzCreditS1-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AzCreditS1-acknowledgements.markdown"; sourceTree = "<group>"; };
+		28C251F2C050A6C5C329C09D6E1F362D /* Pods-AzCreditS1-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditS1-resources.sh"; sourceTree = "<group>"; };
+		2B31C7C3AAE24385F9C5308943142A00 /* Pods-AzCreditPadFree-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AzCreditPadFree-acknowledgements.markdown"; sourceTree = "<group>"; };
+		2BCE2DE2CCF851C2E88162BBB62BC2C3 /* libPods-AzCreditS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2FAB45C88C953A3211216EC68BD226A0 /* Pods-AzCreditS1Pad-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AzCreditS1Pad-dummy.m"; sourceTree = "<group>"; };
+		314D28658CCA84930C9F24C4AC5342F3 /* Pods-AzCreditS1Pad-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AzCreditS1Pad-acknowledgements.plist"; sourceTree = "<group>"; };
+		34AE13D147BC0BE4034D085FA3B63D4D /* Pods-AzCreditPadFree-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AzCreditPadFree-acknowledgements.plist"; sourceTree = "<group>"; };
+		3997E5D2953ECDF377B85B234FDF550D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		4080F88F87F2E6A993A1D4296289EC19 /* Pods-AzCreditS1.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1.distribution.xcconfig"; sourceTree = "<group>"; };
+		41DCEB33EDC69B6FD67479F0D27D96F8 /* Pods-AzCredit-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCredit-frameworks.sh"; sourceTree = "<group>"; };
+		4546688F798CF7BD33F641F449065E11 /* Pods-AzCreditPadFree.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditPadFree.distribution.xcconfig"; sourceTree = "<group>"; };
+		4E9E952CF03C467CD76461CCA63AAD18 /* libPods-AzCreditPadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditPadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5747549B10863036884B6730F30330CD /* Pods-AzCreditS1-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AzCreditS1-dummy.m"; sourceTree = "<group>"; };
+		65B286D74561D0A9722260CAB295CC3F /* Pods-AzCreditS1-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditS1-frameworks.sh"; sourceTree = "<group>"; };
+		6B638C7FBD65D03AE44A287DA8B90737 /* Pods-AzCreditS1Pad-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditS1Pad-frameworks.sh"; sourceTree = "<group>"; };
+		6FDF4D6AA098F7FBEF019457DC2E81EA /* Pods-AzCreditS1Pad-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditS1Pad-resources.sh"; sourceTree = "<group>"; };
+		76ED3212923E13FDA13ACC167892E40F /* Pods-AzCreditPadFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditPadFree.debug.xcconfig"; sourceTree = "<group>"; };
+		795E8FEDC70696E14E16F5D2E786031B /* Pods-AzCredit-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCredit-resources.sh"; sourceTree = "<group>"; };
+		88CB9365AE45C6EE22B29A3B8C4ED99A /* libPods-AzCredit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCredit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FE226E42AB0E9207566DD481D43E601 /* Pods-AzCreditS1Pad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1Pad.release.xcconfig"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9FC666916F760770DB203B082C70269A /* Pods-AzCreditS1Pad.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1Pad.distribution.xcconfig"; sourceTree = "<group>"; };
+		A0C5CAAB49F84475CB59F9059EC0C79D /* Pods-AzCreditPadFree-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditPadFree-resources.sh"; sourceTree = "<group>"; };
+		AF233F31C99056B2ECD2BE00F4A71ECA /* Pods-AzCreditS1Pad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1Pad.debug.xcconfig"; sourceTree = "<group>"; };
+		AF425E7EE1553B11725CD39CC9BD4577 /* Pods-AzCredit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCredit.release.xcconfig"; sourceTree = "<group>"; };
+		B0A90ADE699675E2FDCA75D026BC498F /* Pods-AzCreditPadFree-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AzCreditPadFree-dummy.m"; sourceTree = "<group>"; };
+		B4153FE55ECF017EA0C1679D4D66442D /* Pods-AzCreditS1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1.debug.xcconfig"; sourceTree = "<group>"; };
+		B58E3D50ABD71868F7495B1D243A7A1B /* Pods-AzCreditS1-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AzCreditS1-acknowledgements.plist"; sourceTree = "<group>"; };
+		B821E8172E7CDBC9641E1C69B5C5D5DB /* Pods-AzCredit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AzCredit-dummy.m"; sourceTree = "<group>"; };
+		C6F98E31A65A835CC970DC312D430A18 /* Pods-AzCredit.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCredit.distribution.xcconfig"; sourceTree = "<group>"; };
+		C78575AE3963D20065FFDF0125E206E2 /* Pods-AzCredit-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AzCredit-acknowledgements.markdown"; sourceTree = "<group>"; };
+		D103B6D74009BBCAE99BA361AC3B0EFA /* Pods-AzCreditPadFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditPadFree.release.xcconfig"; sourceTree = "<group>"; };
+		D4C31523F23ED246D318B67EB59FB120 /* Pods-AzCreditS1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1.release.xcconfig"; sourceTree = "<group>"; };
+		D553CB7A1953C41E36E9DB13516D43AC /* libPods-AzCreditS1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE222BAA90B5A7C6FEA5BB61602D34AF /* Pods-AzCredit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCredit.debug.xcconfig"; sourceTree = "<group>"; };
+		E26B3A5EDB8CC611B73860020B02C691 /* Pods-AzCreditS1Pad-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AzCreditS1Pad-acknowledgements.markdown"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3168E1A3B328C5CCEA38F7DC95A4AC13 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F37F00C31F33B8F0DF1F909D3055B53 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB94963BBA4142D0A3AD6EE85F3486E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBC495DE8E16FAD785C7A9CC441DB36E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBAF2F162CB4E1BA52112C6871ABA2B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46C1C120BACE2CEBE841333936F29308 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F8E197E17F69CA258C23F28FF0D1EE2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				133FC67E8FE8D94DD51AA2A21FBC569F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		112C7921E3A497328D11F4930CBBC9CA /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3997E5D2953ECDF377B85B234FDF550D /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		2B81381869E2C9E000C71328B83DC447 /* Pods-AzCredit */ = {
+			isa = PBXGroup;
+			children = (
+				C78575AE3963D20065FFDF0125E206E2 /* Pods-AzCredit-acknowledgements.markdown */,
+				1BEBB8DA813D8BB6F7FB35DA8AD0C2C8 /* Pods-AzCredit-acknowledgements.plist */,
+				B821E8172E7CDBC9641E1C69B5C5D5DB /* Pods-AzCredit-dummy.m */,
+				41DCEB33EDC69B6FD67479F0D27D96F8 /* Pods-AzCredit-frameworks.sh */,
+				795E8FEDC70696E14E16F5D2E786031B /* Pods-AzCredit-resources.sh */,
+				DE222BAA90B5A7C6FEA5BB61602D34AF /* Pods-AzCredit.debug.xcconfig */,
+				C6F98E31A65A835CC970DC312D430A18 /* Pods-AzCredit.distribution.xcconfig */,
+				AF425E7EE1553B11725CD39CC9BD4577 /* Pods-AzCredit.release.xcconfig */,
+			);
+			name = "Pods-AzCredit";
+			path = "Target Support Files/Pods-AzCredit";
+			sourceTree = "<group>";
+		};
+		58AD095B2C0429FBFC9E1683C3D04D0B /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				2B81381869E2C9E000C71328B83DC447 /* Pods-AzCredit */,
+				E58DE710FDD0E3D0A1CD030F8D6EC106 /* Pods-AzCreditPadFree */,
+				6653CABEC4D65D7DACDBC6F45B12782D /* Pods-AzCreditS1 */,
+				64FA08519CC36FE69BAB9267D40073EE /* Pods-AzCreditS1Pad */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		64FA08519CC36FE69BAB9267D40073EE /* Pods-AzCreditS1Pad */ = {
+			isa = PBXGroup;
+			children = (
+				E26B3A5EDB8CC611B73860020B02C691 /* Pods-AzCreditS1Pad-acknowledgements.markdown */,
+				314D28658CCA84930C9F24C4AC5342F3 /* Pods-AzCreditS1Pad-acknowledgements.plist */,
+				2FAB45C88C953A3211216EC68BD226A0 /* Pods-AzCreditS1Pad-dummy.m */,
+				6B638C7FBD65D03AE44A287DA8B90737 /* Pods-AzCreditS1Pad-frameworks.sh */,
+				6FDF4D6AA098F7FBEF019457DC2E81EA /* Pods-AzCreditS1Pad-resources.sh */,
+				AF233F31C99056B2ECD2BE00F4A71ECA /* Pods-AzCreditS1Pad.debug.xcconfig */,
+				9FC666916F760770DB203B082C70269A /* Pods-AzCreditS1Pad.distribution.xcconfig */,
+				8FE226E42AB0E9207566DD481D43E601 /* Pods-AzCreditS1Pad.release.xcconfig */,
+			);
+			name = "Pods-AzCreditS1Pad";
+			path = "Target Support Files/Pods-AzCreditS1Pad";
+			sourceTree = "<group>";
+		};
+		6653CABEC4D65D7DACDBC6F45B12782D /* Pods-AzCreditS1 */ = {
+			isa = PBXGroup;
+			children = (
+				24A4E649AF399465BB9555EA55C959C3 /* Pods-AzCreditS1-acknowledgements.markdown */,
+				B58E3D50ABD71868F7495B1D243A7A1B /* Pods-AzCreditS1-acknowledgements.plist */,
+				5747549B10863036884B6730F30330CD /* Pods-AzCreditS1-dummy.m */,
+				65B286D74561D0A9722260CAB295CC3F /* Pods-AzCreditS1-frameworks.sh */,
+				28C251F2C050A6C5C329C09D6E1F362D /* Pods-AzCreditS1-resources.sh */,
+				B4153FE55ECF017EA0C1679D4D66442D /* Pods-AzCreditS1.debug.xcconfig */,
+				4080F88F87F2E6A993A1D4296289EC19 /* Pods-AzCreditS1.distribution.xcconfig */,
+				D4C31523F23ED246D318B67EB59FB120 /* Pods-AzCreditS1.release.xcconfig */,
+			);
+			name = "Pods-AzCreditS1";
+			path = "Target Support Files/Pods-AzCreditS1";
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				E3B67D62243BE1272C3AF126EF10813E /* Products */,
+				58AD095B2C0429FBFC9E1683C3D04D0B /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				112C7921E3A497328D11F4930CBBC9CA /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E3B67D62243BE1272C3AF126EF10813E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				88CB9365AE45C6EE22B29A3B8C4ED99A /* libPods-AzCredit.a */,
+				4E9E952CF03C467CD76461CCA63AAD18 /* libPods-AzCreditPadFree.a */,
+				D553CB7A1953C41E36E9DB13516D43AC /* libPods-AzCreditS1.a */,
+				2BCE2DE2CCF851C2E88162BBB62BC2C3 /* libPods-AzCreditS1Pad.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E58DE710FDD0E3D0A1CD030F8D6EC106 /* Pods-AzCreditPadFree */ = {
+			isa = PBXGroup;
+			children = (
+				2B31C7C3AAE24385F9C5308943142A00 /* Pods-AzCreditPadFree-acknowledgements.markdown */,
+				34AE13D147BC0BE4034D085FA3B63D4D /* Pods-AzCreditPadFree-acknowledgements.plist */,
+				B0A90ADE699675E2FDCA75D026BC498F /* Pods-AzCreditPadFree-dummy.m */,
+				14574A808B861424AD68AD132C33C6E1 /* Pods-AzCreditPadFree-frameworks.sh */,
+				A0C5CAAB49F84475CB59F9059EC0C79D /* Pods-AzCreditPadFree-resources.sh */,
+				76ED3212923E13FDA13ACC167892E40F /* Pods-AzCreditPadFree.debug.xcconfig */,
+				4546688F798CF7BD33F641F449065E11 /* Pods-AzCreditPadFree.distribution.xcconfig */,
+				D103B6D74009BBCAE99BA361AC3B0EFA /* Pods-AzCreditPadFree.release.xcconfig */,
+			);
+			name = "Pods-AzCreditPadFree";
+			path = "Target Support Files/Pods-AzCreditPadFree";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		38D900AE9B22F4FE12C90405ED03CCC1 /* Pods-AzCredit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CBAD2F65D2FF9A8E794BDFAF4116E51 /* Build configuration list for PBXNativeTarget "Pods-AzCredit" */;
+			buildPhases = (
+				FC23067A38D84B874E8CC9B38EBD286A /* Sources */,
+				AB94963BBA4142D0A3AD6EE85F3486E7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-AzCredit";
+			productName = "Pods-AzCredit";
+			productReference = 88CB9365AE45C6EE22B29A3B8C4ED99A /* libPods-AzCredit.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		B62D64BB672413EC1CBCD120EDBBEBE3 /* Pods-AzCreditS1Pad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 195D82E90A054189A27113E1192576DA /* Build configuration list for PBXNativeTarget "Pods-AzCreditS1Pad" */;
+			buildPhases = (
+				91AD486CD3E67D65C4419E5AA253E2E3 /* Sources */,
+				EBAF2F162CB4E1BA52112C6871ABA2B3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-AzCreditS1Pad";
+			productName = "Pods-AzCreditS1Pad";
+			productReference = 2BCE2DE2CCF851C2E88162BBB62BC2C3 /* libPods-AzCreditS1Pad.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		C800C7F59CEAEBD93B5580D1375FDB21 /* Pods-AzCreditS1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 868ED3DF60AD308E74246DAB1BD0195B /* Build configuration list for PBXNativeTarget "Pods-AzCreditS1" */;
+			buildPhases = (
+				7587DB92C307D5AA4B781C0BC6FF9DAE /* Sources */,
+				3168E1A3B328C5CCEA38F7DC95A4AC13 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-AzCreditS1";
+			productName = "Pods-AzCreditS1";
+			productReference = D553CB7A1953C41E36E9DB13516D43AC /* libPods-AzCreditS1.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D988CAD19321200A1EBD4E6C70AC25D8 /* Pods-AzCreditPadFree */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BAA0B177E53F58F492932E8F99CA32E5 /* Build configuration list for PBXNativeTarget "Pods-AzCreditPadFree" */;
+			buildPhases = (
+				23BF6256414E0658C6D7721F66CFA306 /* Sources */,
+				F8E197E17F69CA258C23F28FF0D1EE2C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-AzCreditPadFree";
+			productName = "Pods-AzCreditPadFree";
+			productReference = 4E9E952CF03C467CD76461CCA63AAD18 /* libPods-AzCreditPadFree.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = E3B67D62243BE1272C3AF126EF10813E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				38D900AE9B22F4FE12C90405ED03CCC1 /* Pods-AzCredit */,
+				D988CAD19321200A1EBD4E6C70AC25D8 /* Pods-AzCreditPadFree */,
+				C800C7F59CEAEBD93B5580D1375FDB21 /* Pods-AzCreditS1 */,
+				B62D64BB672413EC1CBCD120EDBBEBE3 /* Pods-AzCreditS1Pad */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		23BF6256414E0658C6D7721F66CFA306 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77145DBFC97A0346C288331D0E1B8C00 /* Pods-AzCreditPadFree-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7587DB92C307D5AA4B781C0BC6FF9DAE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15FAA9956069CC24659D7BED08A828E5 /* Pods-AzCreditS1-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91AD486CD3E67D65C4419E5AA253E2E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1077A25050828422BDA8F43C70FAE169 /* Pods-AzCreditS1Pad-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC23067A38D84B874E8CC9B38EBD286A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7483D2CAB65380E3FB5E46B8EA64C95 /* Pods-AzCredit-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		129E6CB325933C15EC99A42210FA7834 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9FC666916F760770DB203B082C70269A /* Pods-AzCreditS1Pad.distribution.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		143005D40455E14494B6267BE6CAEBA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE222BAA90B5A7C6FEA5BB61602D34AF /* Pods-AzCredit.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3FF49A07DFFF70A71EFE06926542573B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4153FE55ECF017EA0C1679D4D66442D /* Pods-AzCreditS1.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		57203D76B1F5E77076F03B7E34B45C92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		611A8BC9A27AFA5D7C2123C8C33EE18A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8FE226E42AB0E9207566DD481D43E601 /* Pods-AzCreditS1Pad.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		61F11DEF70B3A39617CC137EEC3AE920 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF233F31C99056B2ECD2BE00F4A71ECA /* Pods-AzCreditS1Pad.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		7497016FA04C8997ABD772F6F6B599D3 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C6F98E31A65A835CC970DC312D430A18 /* Pods-AzCredit.distribution.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		7C57E197BD1D5D8695EC400CFCBDE16F /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4546688F798CF7BD33F641F449065E11 /* Pods-AzCreditPadFree.distribution.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		A35ACF3FB66334CEB1F3C8C605A27A76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4C31523F23ED246D318B67EB59FB120 /* Pods-AzCreditS1.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		A7566992C31F66CD6BF8711184200884 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D103B6D74009BBCAE99BA361AC3B0EFA /* Pods-AzCreditPadFree.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		BCE40D5AE457F1B88472BA924A6D9BC4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		CC5A5251B50A1775A9B64DCE8710BEC5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF425E7EE1553B11725CD39CC9BD4577 /* Pods-AzCredit.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		DD6AAD670BB2695A44AD827E08A24D81 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4080F88F87F2E6A993A1D4296289EC19 /* Pods-AzCreditS1.distribution.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		EF6077995ED81B765B972DE19BB30CD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 76ED3212923E13FDA13ACC167892E40F /* Pods-AzCreditPadFree.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F0E4D1307B67182280AFF61A4F04B1DC /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DISTRIBUTION=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				STRIP_INSTALLED_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		195D82E90A054189A27113E1192576DA /* Build configuration list for PBXNativeTarget "Pods-AzCreditS1Pad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61F11DEF70B3A39617CC137EEC3AE920 /* Debug */,
+				129E6CB325933C15EC99A42210FA7834 /* Distribution */,
+				611A8BC9A27AFA5D7C2123C8C33EE18A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCE40D5AE457F1B88472BA924A6D9BC4 /* Debug */,
+				F0E4D1307B67182280AFF61A4F04B1DC /* Distribution */,
+				57203D76B1F5E77076F03B7E34B45C92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3CBAD2F65D2FF9A8E794BDFAF4116E51 /* Build configuration list for PBXNativeTarget "Pods-AzCredit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				143005D40455E14494B6267BE6CAEBA6 /* Debug */,
+				7497016FA04C8997ABD772F6F6B599D3 /* Distribution */,
+				CC5A5251B50A1775A9B64DCE8710BEC5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		868ED3DF60AD308E74246DAB1BD0195B /* Build configuration list for PBXNativeTarget "Pods-AzCreditS1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3FF49A07DFFF70A71EFE06926542573B /* Debug */,
+				DD6AAD670BB2695A44AD827E08A24D81 /* Distribution */,
+				A35ACF3FB66334CEB1F3C8C605A27A76 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BAA0B177E53F58F492932E8F99CA32E5 /* Build configuration list for PBXNativeTarget "Pods-AzCreditPadFree" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF6077995ED81B765B972DE19BB30CD5 /* Debug */,
+				7C57E197BD1D5D8695EC400CFCBDE16F /* Distribution */,
+				A7566992C31F66CD6BF8711184200884 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}
