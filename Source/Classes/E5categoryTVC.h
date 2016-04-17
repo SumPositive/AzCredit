@@ -26,7 +26,7 @@
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
-	E3record			*Pe3edit;		// =nil:マスタモード  !=nil:選択モード
+	E3record			*__weak Pe3edit;		// =nil:マスタモード  !=nil:選択モード
 	E5category		*sourceE5category;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray			*RaE5categorys;
@@ -46,8 +46,8 @@
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic, retain) E0root	*Re0root;
-@property (nonatomic, assign) E3record	*Pe3edit;
+@property (nonatomic, strong) E0root	*Re0root;
+@property (nonatomic, weak) E3record	*Pe3edit;
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;

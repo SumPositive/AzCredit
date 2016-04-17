@@ -31,10 +31,6 @@
 }
 */
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -68,12 +64,12 @@
 #endif
 #else	
 #ifdef AzSTABLE
-	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
+	iv.image = [UIImage imageNamed:@"Icon57s1.png"];
 #else
 	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
 #endif
-	[self.view addSubview:iv]; [iv release];
+	[self.view addSubview:iv]; 
 	//------------------------------------------ログイン
 	UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(83,120, 154,28)];
 	tf.tag = TAG_LOGINPASS;
@@ -83,13 +79,13 @@
 	tf.secureTextEntry = YES;
 	tf.returnKeyType = UIReturnKeyDone;
 	tf.delegate = self;			//<UITextFieldDelegate>
-	[self.view addSubview:tf]; [tf release];
+	[self.view addSubview:tf]; 
 	//------------------------------------------■注意■
 	UILabel *lb = [[UILabel alloc] initWithFrame:CGRectMake(34, 170, 266, 80)];
 	lb.tag = TAG_MSG1;
 	lb.text = NSLocalizedString(@"LoginPass Attention",nil);
 	lb.numberOfLines = 4;
-	lb.textAlignment = UITextAlignmentLeft;
+	lb.textAlignment = NSTextAlignmentLeft; //UITextAlignmentLeft;
 	lb.textColor = [UIColor whiteColor];
 	lb.backgroundColor = [UIColor clearColor]; //背景透明
 #ifdef AzPAD
@@ -97,13 +93,13 @@
 #else
 	lb.font = [UIFont systemFontOfSize:12];
 #endif
-	[self.view addSubview:lb]; [lb release];	
+	[self.view addSubview:lb]; 	
 	//------------------------------------------パスワードを忘れた場合
 	lb = [[UILabel alloc] initWithFrame:CGRectMake(34, 270, 266, 120)];
 	lb.tag = TAG_MSG2;
 	lb.text = NSLocalizedString(@"LoginPass Lost",nil);
 	lb.numberOfLines = 7;
-	lb.textAlignment = UITextAlignmentLeft;
+	lb.textAlignment = NSTextAlignmentLeft;
 	lb.textColor = [UIColor whiteColor];
 	lb.backgroundColor = [UIColor clearColor]; //背景透明
 #ifdef AzPAD
@@ -111,7 +107,7 @@
 #else
 	lb.font = [UIFont systemFontOfSize:12];
 #endif
-	[self.view addSubview:lb]; [lb release];	
+	[self.view addSubview:lb]; 	
 
 }
 
@@ -135,7 +131,9 @@
 - (void)viewDidAppear:(BOOL)animated 
 {
 	[super viewDidAppear:animated];
-	[self viewDesign:self.interfaceOrientation]; //初期の回転方向に対応するため
+	
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+	[self viewDesign:orientation]; //初期の回転方向に対応するため
 	//viewWillAppearでキーを表示すると画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 	[[self.view viewWithTag:TAG_LOGINPASS] becomeFirstResponder];  //フォーカス＆キーボード表示
 }
@@ -227,14 +225,14 @@
 													andServiceName:GD_PRODUCTNAME error:&error];
 		if (error) {
 			alertBox(NSLocalizedString(@"OptLoginPass Error",nil), 
-					 [error localizedDescription],
+					 error.localizedDescription,
 					 NSLocalizedString(@"Roger",nil));
 			return YES;
 		}
 		[sender resignFirstResponder];
 		if ([pass isEqualToString:sender.text]) {
 			// OK
-			[self dismissModalViewControllerAnimated:YES];
+			[self dismissViewControllerAnimated:YES completion:nil];
 //			MbLoginShow = NO;
 			//[MviewLogin removeFromSuperview];  	self.windowへaddSubviewしてrelease済みである
 			//MviewLogin = nil;　　　バックグランド中も有効、self.windowが破棄されるまで有効のまま残す

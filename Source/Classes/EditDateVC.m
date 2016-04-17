@@ -63,7 +63,7 @@
 			McalcView.delegate = self;	// viewWillAppear:を呼び出すため
 			//[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
 			[self.view addSubview:McalcView];
-			[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
+			 // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 		}
 		[McalcView show];
 	}
@@ -82,7 +82,7 @@
 		{	// 変更あり
 			Re3edit.dateUse = MdatePicker.date;
 		
-			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 			apd.entityModified = YES;	//変更あり
 			// E6更新
 			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
@@ -140,7 +140,6 @@
 																				raiseOnDivideByZero:YES ];			// アンダーフロー
 			// 丸め処理
 			Re6edit.nAmount = [decNew decimalNumberByRoundingAccordingToBehavior:behavior];
-			[behavior release];
 			NSLog(@"New Re6edit.nAmount=%@", Re6edit.nAmount);
 			bDuty = YES;
 		}
@@ -154,11 +153,11 @@
 		//
 		if (bDuty) 
 		{	//変更あり
-			AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+			AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 			apd.entityModified = YES;	//変更あり
 			// E6更新　　このRe6editを基準(固定)にして処理する
 			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
-				if ([Re6edit.nPartNo integerValue]==1) {
+				if ((Re6edit.nPartNo).integerValue==1) {
 					[delegate remakeE6change:5];		// (5) E6part1を固定してE6part2またはE3を調整更新する
 				} else {
 					[delegate remakeE6change:6];		// (6) E6part2を固定してE6part1またはE3を調整更新する
@@ -180,7 +179,7 @@
 	//"DateUse Over" = "日付を確認してください";
 	//"DateUse Over msg" = "日先(未来)の日付です。\n年を間違っていませんか？\n念のために確認してください";
 	//"DateUse Under msg" = "日前(過去)の日付です。\n年を間違っていませんか？\n念のために確認してください";
-	long	days = (long)([MdatePicker.date timeIntervalSinceNow] / (24 * 60 * 60));
+	long	days = (long)((MdatePicker.date).timeIntervalSinceNow / (24 * 60 * 60));
 	if (120 < abs(days)) {  //[0.4]日付チェック
 		if (days < 0) {	// 過去すぎる
 			NSString *zMsg = [NSString stringWithFormat:@"%d%@", abs(days), NSLocalizedString(@"DateUse Under msg",nil)];
@@ -196,7 +195,7 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithE3:(E3record*)e3 orE6:(E6part*)e6
+- (instancetype)initWithE3:(E3record*)e3 orE6:(E6part*)e6
 {
 	if (e3 && e6) {
 		NSLog(@"LOGIC ERROR: e3 OR e6");
@@ -206,8 +205,8 @@
 	self = [super init];
 	if (self) {
 		// 初期化成功
-		Re3edit = [e3 retain];	// どちらか必ずnil
-		Re6edit = [e6 retain];	// どちらか必ずnil
+		Re3edit = e3;	// どちらか必ずnil
+		Re6edit = e6;	// どちらか必ずnil
 #ifdef AzPAD
 		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
 #endif
@@ -248,9 +247,9 @@
 	// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
 	// 右側にある[DONE]ボタンを押して、また右側にある[SAVE]ボタンを押す流れが安全
 	// 左側の[BACK]で戻ると、次に現れる[CANCEL]を押してしまう危険が大きい。
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemDone  //[DONE]
-												   target:self action:@selector(done:)] autorelease];
+												   target:self action:@selector(done:)];
 	
 	// とりあえず生成、位置はviewDesignにて決定
 	if (Re3edit) {
@@ -269,21 +268,20 @@
 	if (Re6edit) 
 	{
 		[MbuYearTime setTitle:NSLocalizedString(@"Due Amount",nil) forState:UIControlStateNormal]; // 表示は逆
-		MlbAmount = [[[UILabel alloc] init] autorelease];
+		MlbAmount = [[UILabel alloc] init];
 		MlbAmount.font = [UIFont systemFontOfSize:20];
-		MlbAmount.textAlignment = UITextAlignmentCenter;
+		MlbAmount.textAlignment = NSTextAlignmentCenter;
 		[self.view addSubview:MlbAmount]; // autorelease
 	}
 	
 	//------------------------------------------------------Picker
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
-	MdatePicker = [[[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)] autorelease];
+	MdatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)];
 	
-	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+	if ([[UIDevice currentDevice].systemVersion compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
 		//iOS6.0からは不要になった。@"dk_DK"にすると日本語でも英語モードになってしまう。
 		NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
 		MdatePicker.locale = locale;
-		[locale release];
 	}
 	
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
@@ -294,7 +292,7 @@
 	//NG//Pickerが和暦になっても、表示は正しく西暦になるようなので、このままにしておく。
 
 	[self.view addSubview:MdatePicker];  //auto//[MdatePicker release];
-	MintervalPrev = [MdatePicker.date timeIntervalSinceReferenceDate]; // 2001/1/1からの秒数
+	MintervalPrev = (MdatePicker.date).timeIntervalSinceReferenceDate; // 2001/1/1からの秒数
 	//------------------------------------------------------
 }
 /*
@@ -337,7 +335,7 @@
 
 #else
 
-	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+	if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
 	{	// タテ
 		if (Re3edit) {
 			rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
@@ -428,7 +426,7 @@
 	} 
 	else { // E6 常に時刻不要
 		MdatePicker.datePickerMode = UIDatePickerModeDate;
-		NSInteger iYearMMDD = [Re6edit.e2invoice.e7payment.nYearMMDD integerValue];
+		NSInteger iYearMMDD = (Re6edit.e2invoice.e7payment.nYearMMDD).integerValue;
 		self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone; //[Done]  (デフォルト[Save])
 		MdatePicker.date = GdateYearMMDD(iYearMMDD, 0, 0, 0);
 		// 金額表示
@@ -506,9 +504,6 @@
 		[McalcView removeFromSuperview];
 		McalcView = nil;
 	}
-	[Re3edit release];
-	[Re6edit release];
-	[super dealloc];
 }
 
 

@@ -33,8 +33,8 @@
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic, retain) E1card	*Re1select;
-@property (nonatomic, retain) E8bank	*Re8select;
+@property (nonatomic, strong) E1card	*Re1select;
+@property (nonatomic, strong) E8bank	*Re8select;
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 

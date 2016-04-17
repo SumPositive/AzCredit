@@ -51,15 +51,15 @@
 	if (actionSheet.tag == ACTIONSEET_TAG_DELETE && buttonIndex == 0) {
 		//========== E1 削除実行 ==========
 		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E8bank *e8objDelete = [RaE8banks objectAtIndex:MindexPathActionDelete.row];
+		E8bank *e8objDelete = RaE8banks[MindexPathActionDelete.row];
 		// E8bank 削除
 		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
 		[Re0root.managedObjectContext deleteObject:e8objDelete];
 		// 削除行の次の行以下 E8.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE8banks count] ; i++) 
+		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE8banks.count ; i++) 
 		{  // .nRow + 1 削除行の次から
-			E8bank *e8obj = [RaE8banks objectAtIndex:i];
-			e8obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
+			E8bank *e8obj = RaE8banks[i];
+			e8obj.nRow = @(i-1);     // .nRow--; とする
 		}
 		// Commit
 		[MocFunctions commit];
@@ -91,21 +91,20 @@
 													  inManagedObjectContext:Re0root.managedObjectContext];
 		// Add
 		e8detail.title = NSLocalizedString(@"Add Bank",nil);
-		e8detail.PiAddRow = [RaE8banks count]; // 追加モード
+		e8detail.PiAddRow = RaE8banks.count; // 追加モード
 		e8detail.Re8edit = e8obj;
 		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
 #ifdef  AzPAD
 		indexPath = [NSIndexPath indexPathForRow:e8detail.PiAddRow inSection:0];
 #endif
 	} 
-	else if ([RaE8banks count] <= indexPath.row) {
-		[e8detail release];
+	else if (RaE8banks.count <= indexPath.row) {
 		return;  // Addボタン行などの場合パスする
 	}
 	else {
 		e8detail.title = NSLocalizedString(@"Edit Bank",nil);
 		e8detail.PiAddRow = (-1); // 修正モード
-		e8detail.Re8edit = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
+		e8detail.Re8edit = RaE8banks[indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
 	}
 	
 	if (Pe1card) {
@@ -138,7 +137,7 @@
 	e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e8detail animated:YES];
 #endif
-	[e8detail release]; // self.navigationControllerがOwnerになる
+	 // self.navigationControllerがOwnerになる
 }
 
 #ifdef AzPAD
@@ -152,7 +151,7 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
@@ -178,9 +177,9 @@
 											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 #else
 	// Set up NEXT Left Back [<<] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
 #endif
 
 	if (Pe1card == nil) {
@@ -189,18 +188,18 @@
 	}
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil] autorelease];
-	MbuAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-															target:self action:@selector(barButtonAdd)] autorelease];
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
+	MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+															target:self action:@selector(barButtonAdd)];
 	if (Pe1card) {  // !=nil:選択モード
 		// 「未定」ボタン
-		UIBarButtonItem *buUntitled = [[[UIBarButtonItem alloc] 
+		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
 									   style:UIBarButtonItemStyleBordered
-										target:self action:@selector(barButtonUntitled)] autorelease];
+										target:self action:@selector(barButtonUntitled)];
 		//NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, MbuAdd, nil];
-		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, nil];	//[1.0.2]Addなしにした。
+		NSArray *buArray = @[buUntitled, buFlex];	//[1.0.2]Addなしにした。
 		[self setToolbarItems:buArray animated:YES];
 		//[buUntitled release];
 	}
@@ -209,10 +208,10 @@
 		NSArray *buArray = [NSArray arrayWithObjects: buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
 #else
-		MbuTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 												  style:UIBarButtonItemStylePlain  //Bordered
-												  target:self action:@selector(barButtonTop)] autorelease];
-		NSArray *buArray = [NSArray arrayWithObjects: MbuTop, buFlex, MbuAdd, nil];
+												  target:self action:@selector(barButtonTop)];
+		NSArray *buArray = @[MbuTop, buFlex, MbuAdd];
 		[self setToolbarItems:buArray animated:YES];
 #endif
 	}
@@ -232,7 +231,7 @@
 	
 	if (MbuTop) {
 		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = ![Re0root.managedObjectContext hasChanges]; // YES:contextに変更あり
+		MbuTop.enabled = !(Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
 		//MbuAdd.enabled = MbuTop.enabled;
 	}
 	
@@ -240,18 +239,16 @@
 	//--------------------------------------------------------------------------------
 	// Sorting
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nRow" ascending:YES];
-	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1, nil];
-	[sort1 release];
+	NSArray *sortArray = @[sort1];
 	
 	NSArray *arFetch = [MocFunctions select:@"E8bank" 
 										limit:0
 									   offset:0
 										where:nil
 										 sort:sortArray];
-	[sortArray release];
 	
 	if (RaE8banks) {
-		[RaE8banks release], RaE8banks = nil;
+		RaE8banks = nil;
 	}
 	RaE8banks = [[NSMutableArray alloc] initWithArray:arFetch];
 	
@@ -365,7 +362,7 @@
 	NSLog(@"--- unloadRelease --- E8bankTVC");
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
-	[RaE8banks release], RaE8banks = nil;
+	RaE8banks = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -374,10 +371,8 @@
 #ifdef AzPAD
 	[MindexPathEdit release], MindexPathEdit = nil;
 #endif
-	[MindexPathActionDelete release], MindexPathActionDelete = nil;
+	MindexPathActionDelete = nil;
 	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
 }
 
 
@@ -391,9 +386,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	if (Pe1card) {  // !=nil:選択モード
-		return [RaE8banks count];	
+		return RaE8banks.count;	
 	}
-	return [RaE8banks count] + 1; // (+1)Add
+	return RaE8banks.count + 1; // (+1)Add
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -402,14 +397,14 @@
 	static NSString *zCellAdd = @"CellAdd";
     UITableViewCell *cell = nil;
 
-	NSInteger rows = [RaE8banks count] - indexPath.row;
+	NSInteger rows = RaE8banks.count - indexPath.row;
 	if (0 < rows) {
 		// E8bank セル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellCard];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] 
+			cell = [[UITableViewCell alloc] 
 					 initWithStyle:UITableViewCellStyleValue1
-					 reuseIdentifier:zCellCard] autorelease];
+					 reuseIdentifier:zCellCard];
 
 #ifdef AzPAD
 			cell.textLabel.font = [UIFont systemFontOfSize:20];
@@ -419,14 +414,14 @@
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 #endif
 
-			cell.textLabel.textAlignment = UITextAlignmentLeft;
+			cell.textLabel.textAlignment = NSTextAlignmentLeft;
 			cell.textLabel.textColor = [UIColor blackColor];
 			
-			cell.detailTextLabel.textAlignment = UITextAlignmentRight;
+			cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 		}
 		
-		E8bank *e8obj = [RaE8banks objectAtIndex:indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
+		E8bank *e8obj = RaE8banks[indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
 		
 #ifdef AzDEBUG
 		if ([e8obj.zName length] <= 0) 
@@ -436,7 +431,7 @@
 			cell.textLabel.text = [NSString stringWithFormat:@"%ld) %@", 
 								   (long)[e8obj.nRow integerValue], e8obj.zName];
 #else
-		if ([e8obj.zName length] <= 0) 
+		if ((e8obj.zName).length <= 0) 
 			cell.textLabel.text = NSLocalizedString(@"(Untitled)", nil);
 		else
 			cell.textLabel.text = e8obj.zName;
@@ -452,10 +447,9 @@
 		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		[formatter setLocale:[NSLocale currentLocale]]; 
+		formatter.numberStyle = NSNumberFormatterDecimalStyle;
+		formatter.locale = [NSLocale currentLocale]; 
 		cell.detailTextLabel.text = [formatter stringFromNumber:sumAmount];
-		[formatter release];
 		
 		if (Pe1card == nil) {
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton; // ディスクロージャボタン
@@ -466,15 +460,15 @@
 		// Add ボタンセル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellAdd];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
-										   reuseIdentifier:zCellAdd] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
+										   reuseIdentifier:zCellAdd];
 		}
 #ifdef AzPAD
 		cell.textLabel.font = [UIFont systemFontOfSize:20];
 #else
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 #endif
-		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
+		cell.textLabel.textAlignment = NSTextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -493,13 +487,13 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
-	McontentOffsetDidSelect = [tableView contentOffset];
+	McontentOffsetDidSelect = tableView.contentOffset;
 
-	if (indexPath.row < [RaE8banks count]) {
+	if (indexPath.row < RaE8banks.count) {
 		if (Pe1card) { // 選択モード
-			Pe1card.e8bank = [RaE8banks objectAtIndex:indexPath.row]; 
+			Pe1card.e8bank = RaE8banks[indexPath.row]; 
 			if (sourceE8bank != Pe1card.e8bank) {
-				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 			}
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -509,7 +503,7 @@
 		} 
 		else {
 			// E2invoice へ
-			E8bank *e8obj = [RaE8banks objectAtIndex:indexPath.row];
+			E8bank *e8obj = RaE8banks[indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
 #ifdef AzDEBUG
 			tvc.title = [NSString stringWithFormat:@"E2 %@", e8obj.zName];
@@ -519,7 +513,6 @@
 			tvc.Re1select = nil;
 			tvc.Re8select = e8obj;
 			[self.navigationController pushViewController:tvc animated:YES];
-			[tvc release];
 		}
 	}
 	else {
@@ -550,7 +543,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
 		//MindexPathActionDelete = indexPath;
-		[MindexPathActionDelete release], MindexPathActionDelete = [indexPath copy];
+		MindexPathActionDelete = [indexPath copy];
 		// 削除コマンド警告
 		UIActionSheet *action = [[UIActionSheet alloc] 
 								 initWithTitle:NSLocalizedString(@"DELETE Bank", nil)
@@ -559,15 +552,15 @@
 								 destructiveButtonTitle:NSLocalizedString(@"DELETE Bank button", nil)
 								 otherButtonTitles:nil];
 		action.tag = ACTIONSEET_TAG_DELETE;
-		if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-			OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+		if (orientation == UIInterfaceOrientationPortrait
+			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
 			// タテ：ToolBar表示
 			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
 		} else {
 			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
 			[action showInView:self.view]; //windowから出すと回転対応しない
 		}
-		[action release];
 	}
 }
 
@@ -585,13 +578,13 @@
 
 // Editモード時の行Edit可否　　 YESを返した行は、左にスペースが入って右寄りになる
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row < [RaE8banks count]) return YES;
+	if (indexPath.row < RaE8banks.count) return YES;
 	return NO;  // 最終行のAdd行は、右寄せさせない
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	NSInteger rows = [RaE8banks count] - indexPath.row;
+	NSInteger rows = RaE8banks.count - indexPath.row;
 	if (0 < rows) {
 		return UITableViewCellEditingStyleDelete;
     }
@@ -603,7 +596,7 @@
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if (indexPath.row < [RaE8banks count]) return YES;
+	if (indexPath.row < RaE8banks.count) return YES;
 	return NO;  // 最終行のAdd行は移動禁止
 }
 
@@ -612,7 +605,7 @@
 															toProposedIndexPath:(NSIndexPath *)newPath {
     NSIndexPath *target = newPath;
     // Add行が異動先になった場合、その1つ前の通常行を返すことにより、Add行への移動禁止となる。
-	NSInteger rows = [RaE8banks count] - 1; // 移動可能な行数（Add行を除く）
+	NSInteger rows = RaE8banks.count - 1; // 移動可能な行数（Add行を除く）
 	// セクション０限定仕様
 	if (newPath.section != 0 || rows < newPath.row  ) {
         target = [NSIndexPath indexPathForRow:rows inSection:0];
@@ -627,7 +620,7 @@
 	// この 属性"ascend"の値を行異動後に更新するための処理
 
 	// RE8banks 更新 ==>> なんと、managedObjectContextも更新される。 ただし、削除や挿入は反映されない！！！
-	E8bank *e8obj = [RaE8banks objectAtIndex:oldPath.row]; //[MfetchE8bank objectAtIndexPath:oldPath];
+	E8bank *e8obj = RaE8banks[oldPath.row]; //[MfetchE8bank objectAtIndexPath:oldPath];
 
 	[RaE8banks removeObjectAtIndex:oldPath.row];
 	[RaE8banks insertObject:e8obj atIndex:newPath.row];
@@ -639,8 +632,8 @@
 		end = oldPath.row;
 	}
 	for (NSInteger i = start; i <= end; i++) {
-		e8obj = [RaE8banks objectAtIndex:i];
-		e8obj.nRow = [NSNumber numberWithInteger:i];
+		e8obj = RaE8banks[i];
+		e8obj.nRow = @(i);
 	}
 	
 	// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞

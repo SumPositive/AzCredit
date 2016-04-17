@@ -31,6 +31,6 @@
 	NSInteger	sourcePayDay;
 }
 
-@property (nonatomic, retain) E1card		*Re1edit;
+@property (nonatomic, strong) E1card		*Re1edit;
 
 @end

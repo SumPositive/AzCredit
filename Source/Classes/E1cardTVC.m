@@ -57,7 +57,7 @@
 }
 
 - (void)barButtonUntitled {
-	if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+	if (Re3edit.e1card && 0 < (Re3edit.e6parts).count) {
 		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
 		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		return;
@@ -71,17 +71,17 @@
 {
 	E1cardDetailTVC *e1detail = [[E1cardDetailTVC alloc] init]; // popViewで戻れば解放されているため、毎回alloc必要。
 	
-	if (indexPath == nil OR [RaE1cards count] <= indexPath.row) {	// Add mode
+	if (indexPath == nil OR RaE1cards.count <= indexPath.row) {	// Add mode
 		E1card *e1obj = [NSEntityDescription insertNewObjectForEntityForName:@"E1card"
 													  inManagedObjectContext:Re0root.managedObjectContext];
 		// Add
 		e1detail.title = NSLocalizedString(@"Add Card",nil);
-		e1detail.PiAddRow = [RaE1cards count]; // 追加モード
+		e1detail.PiAddRow = RaE1cards.count; // 追加モード
 		e1detail.Re1edit = e1obj;
 	} else {
 		e1detail.title = NSLocalizedString(@"Edit Card",nil);
 		e1detail.PiAddRow = (-1); // 修正モード
-		e1detail.Re1edit = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
+		e1detail.Re1edit = RaE1cards[indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 	}
 
 #ifdef  AzPAD
@@ -106,7 +106,7 @@
 	e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e1detail animated:YES];
 #endif
-	[e1detail release]; // self.navigationControllerがOwnerになる
+	 // self.navigationControllerがOwnerになる
 }
 
 // UIActionSheetDelegate 処理部
@@ -116,14 +116,14 @@
 	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_CARD && buttonIndex == 0) {
 		//========== E1 削除実行 ==========
 		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E1card *e1objDelete = [RaE1cards objectAtIndex:MindexPathActionDelete.row];
+		E1card *e1objDelete = RaE1cards[MindexPathActionDelete.row];
 		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
 		[MocFunctions e1delete:e1objDelete];
 		// 削除行の次の行以下 E1.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < [RaE1cards count] ; i++) 
+		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE1cards.count ; i++) 
 		{  // .nRow + 1 削除行の次から
-			E1card *e1obj = [RaE1cards objectAtIndex:i];
-			e1obj.nRow = [NSNumber numberWithInteger:i-1];     // .nRow--; とする
+			E1card *e1obj = RaE1cards[i];
+			e1obj.nRow = @(i-1);     // .nRow--; とする
 		}
 		// Commit
 		[MocFunctions commit];
@@ -144,7 +144,7 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
@@ -170,9 +170,9 @@
 											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 #else
 	// Set up NEXT Left Back [<<] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
 #endif
 	
 	if (Re3edit == nil) {	//編集モード
@@ -181,20 +181,20 @@
 	}
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil] autorelease];
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
 	
 	if (Re3edit == nil) {	//編集モード　／ 選択モードならば、MbuAdd = MbuTop = nill;
-		MbuAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																target:self action:@selector(barButtonAdd)] autorelease];
+		MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																target:self action:@selector(barButtonAdd)];
 #ifdef AzPAD
 		NSArray *buArray = [NSArray arrayWithObjects: buFlex, MbuAdd, nil];
 		[self setToolbarItems:buArray animated:YES];
 #else
-		UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+		UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 																   style:UIBarButtonItemStylePlain  //Bordered
-																  target:self action:@selector(barButtonTop)] autorelease];
-		NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, MbuAdd, nil];
+																  target:self action:@selector(barButtonTop)];
+		NSArray *buArray = @[buTop, buFlex, MbuAdd];
 		[self setToolbarItems:buArray animated:YES];
 		//[buTop release];
 #endif
@@ -202,11 +202,11 @@
 	}
 	else {  //選択モード
 		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
-		UIBarButtonItem *buUntitled = [[[UIBarButtonItem alloc] 
+		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 										initWithTitle:NSLocalizedString(@"Untitled",nil)
 										style:UIBarButtonItemStyleBordered
-										target:self action:@selector(barButtonUntitled)] autorelease];
-		NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, nil];
+										target:self action:@selector(barButtonUntitled)];
+		NSArray *buArray = @[buUntitled, buFlex];
 		[self setToolbarItems:buArray animated:YES];
 		//[buUntitled release];
 	}
@@ -228,18 +228,16 @@
 	// Me1cards Requery. 
 	//--------------------------------------------------------------------------------
 	if (RaE1cards) {
-		[RaE1cards release], RaE1cards = nil;
+		RaE1cards = nil;
 	}
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E1card" 
 											  inManagedObjectContext:Re0root.managedObjectContext];
-	[fetchRequest setEntity:entity];
+	fetchRequest.entity = entity;
 	// Sorting
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nRow" ascending:YES];
-	NSArray *sortArray = [[NSArray alloc] initWithObjects:sort1, nil];
-	[fetchRequest setSortDescriptors:sortArray];
-	[sortArray release];
-	[sort1 release];
+	NSArray *sortArray = @[sort1];
+	fetchRequest.sortDescriptors = sortArray;
 	// Fitch
 	NSError *error = nil;
 	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -248,7 +246,6 @@
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
 		//exit(-1);  // Fail
 	}
-	[fetchRequest release];
 	//
 	RaE1cards = [[NSMutableArray alloc] initWithArray:arFetch];
 	
@@ -262,7 +259,7 @@
 	}
 
 	if (Re3edit) {
-		if (Re3edit.e1card && 0 < [Re3edit.e6parts count]) {
+		if (Re3edit.e1card && 0 < (Re3edit.e6parts).count) {
 			[self setToolbarItems:nil animated:NO]; //[未定]ボタンを消す ＜＜＜E6があればE1未定禁止
 		}
 		sourceE1card = Re3edit.e1card;	//初期値
@@ -383,7 +380,7 @@
 	NSLog(@"--- unloadRelease --- E1cardTVC");
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// ただし、他オブジェクトからの参照無く、viewWillAppearにて生成されるものは破棄可能
-	[RaE1cards release], RaE1cards = nil;
+	RaE1cards = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -392,11 +389,8 @@
 #ifdef AzPAD
 	[MindexPathEdit release], MindexPathEdit = nil;
 #endif
-	[MindexPathActionDelete release], MindexPathActionDelete = nil;
+	MindexPathActionDelete = nil;
 	//--------------------------------@property (retain)
-	[Re0root release];
-	[Re3edit release];
-	[super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -449,9 +443,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	if (Re3edit) { //選択モード
-		return [RaE1cards count]; 
+		return RaE1cards.count; 
 	}
-	return [RaE1cards count] + 2; // (+1)Add  (+2)Help
+	return RaE1cards.count + 2; // (+1)Add  (+2)Help
 }
 
 /*
@@ -510,14 +504,14 @@ static UIImage* GimageFromString(NSString* str)
     UITableViewCell *cell = nil;
 
 	//NSLog(@"RaE1cards=%@", RaE1cards);
-	NSInteger rows = [RaE1cards count] - indexPath.row;
+	NSInteger rows = RaE1cards.count - indexPath.row;
 	if (0 < rows) {
 		// E1card セル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellCard];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] 
+			cell = [[UITableViewCell alloc] 
 					 initWithStyle:UITableViewCellStyleValue1
-					 reuseIdentifier:zCellCard] autorelease];
+					 reuseIdentifier:zCellCard];
 
 #ifdef AzPAD
 			cell.textLabel.font = [UIFont systemFontOfSize:20];
@@ -527,14 +521,14 @@ static UIImage* GimageFromString(NSString* str)
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 #endif
 
-			cell.textLabel.textAlignment = UITextAlignmentLeft;
+			cell.textLabel.textAlignment = NSTextAlignmentLeft;
 			cell.textLabel.textColor = [UIColor blackColor];
 			
-			cell.detailTextLabel.textAlignment = UITextAlignmentRight;
+			cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 		}
 		
-		E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
+		E1card *e1obj = RaE1cards[indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 		
 #ifdef AzDEBUG
 		if ([e1obj.zName length] <= 0) 
@@ -544,7 +538,7 @@ static UIImage* GimageFromString(NSString* str)
 			cell.textLabel.text = [NSString stringWithFormat:@"%ld) %@", 
 								   (long)[e1obj.nRow integerValue], e1obj.zName];
 #else
-		if ([e1obj.zName length] <= 0) 
+		if ((e1obj.zName).length <= 0) 
 			cell.textLabel.text = NSLocalizedString(@"(Untitled)", nil);
 		else
 			cell.textLabel.text = e1obj.zName;
@@ -561,26 +555,25 @@ static UIImage* GimageFromString(NSString* str)
 		}
 		// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 		NSString *zPayDay;
-		if ([e1obj.nClosingDay intValue] <= 0) { // Debit
-			if ([e1obj.nPayDay integerValue]<=0) {
+		if ((e1obj.nClosingDay).intValue <= 0) { // Debit
+			if ((e1obj.nPayDay).integerValue<=0) {
 				zPayDay = NSLocalizedString(@"Debit day",nil); // 当日払
 			} else {
 				zPayDay = [NSString stringWithFormat:@"%@%@",
-						   GstringDay([e1obj.nPayDay integerValue]),	// 支払日
+						   GstringDay((e1obj.nPayDay).integerValue),	// 支払日
 						   NSLocalizedString(@"Debit After", nil)];			// 後
 			}
 		}
-		else if ([e1obj.nPayDay integerValue]==29) {
+		else if ((e1obj.nPayDay).integerValue==29) {
 				zPayDay = NSLocalizedString(@"EndDay",nil); // 末日
 		} else {
-			zPayDay = GstringDay([e1obj.nPayDay integerValue]);	// 支払日
+			zPayDay = GstringDay((e1obj.nPayDay).integerValue);	// 支払日
 		}
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		[formatter setLocale:[NSLocale currentLocale]]; 
+		formatter.numberStyle = NSNumberFormatterDecimalStyle;
+		formatter.locale = [NSLocale currentLocale]; 
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", zPayDay,
 									 [formatter stringFromNumber:sumAmount]];
-		[formatter release];
 		
 		if (Re3edit == nil) {
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton; // ディスクロージャボタン
@@ -591,15 +584,15 @@ static UIImage* GimageFromString(NSString* str)
 		// Add ボタンセル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellAdd];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
-										   reuseIdentifier:zCellAdd] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
+										   reuseIdentifier:zCellAdd];
 		}
 #ifdef AzPAD
 		cell.textLabel.font = [UIFont systemFontOfSize:20];
 #else
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
 #endif
-		cell.textLabel.textAlignment = UITextAlignmentCenter; // 中央寄せ
+		cell.textLabel.textAlignment = NSTextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
@@ -610,11 +603,11 @@ static UIImage* GimageFromString(NSString* str)
 		// Helpセル
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellHelp];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
-										   reuseIdentifier:zCellHelp] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
+										   reuseIdentifier:zCellHelp];
 		}
 		cell.textLabel.font = [UIFont systemFontOfSize:14];
-		cell.textLabel.textAlignment = UITextAlignmentRight;
+		cell.textLabel.textAlignment = NSTextAlignmentRight;
 		cell.textLabel.textColor = [UIColor grayColor];
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		cell.showsReorderControl = NO; // Move禁止
@@ -632,13 +625,13 @@ static UIImage* GimageFromString(NSString* str)
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
 	
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
-	McontentOffsetDidSelect = [tableView contentOffset];
+	McontentOffsetDidSelect = tableView.contentOffset;
 	
-	if (indexPath.row < [RaE1cards count]) {
+	if (indexPath.row < RaE1cards.count) {
 		if (Re3edit) {			// 選択モード
-			Re3edit.e1card = [RaE1cards objectAtIndex:indexPath.row]; 
+			Re3edit.e1card = RaE1cards[indexPath.row]; 
 			if (sourceE1card != Re3edit.e1card) {
-				AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 				// E6更新
 				if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
@@ -656,7 +649,7 @@ static UIImage* GimageFromString(NSString* str)
 		} 
 		else {
 			// E2invoice へ
-			E1card *e1obj = [RaE1cards objectAtIndex:indexPath.row];
+			E1card *e1obj = RaE1cards[indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
 #ifdef AzDEBUG
 			tvc.title = [NSString stringWithFormat:@"E2 %@", e1obj.zName];
@@ -666,10 +659,9 @@ static UIImage* GimageFromString(NSString* str)
 			tvc.Re1select = e1obj;
 			tvc.Re8select = nil;
 			[self.navigationController pushViewController:tvc animated:YES];
-			[tvc release];
 		}
 	}
-	else if (indexPath.row == [RaE1cards count]) {	// Add Plan
+	else if (indexPath.row == RaE1cards.count) {	// Add Plan
 		[self e1cardDatail:indexPath]; // 改めて Add 判断している
 	}
 }
@@ -692,7 +684,7 @@ static UIImage* GimageFromString(NSString* str)
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	NSInteger rows = [RaE1cards count] - indexPath.row;
+	NSInteger rows = RaE1cards.count - indexPath.row;
 	if (0 < rows) {
 		return UITableViewCellEditingStyleDelete;
     }
@@ -708,7 +700,7 @@ static UIImage* GimageFromString(NSString* str)
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
 		//MindexPathActionDelete = indexPath; 落ちる
-		[MindexPathActionDelete release], MindexPathActionDelete = [indexPath copy];
+		MindexPathActionDelete = [indexPath copy];
 		// 削除コマンド警告
 		UIActionSheet *action = [[UIActionSheet alloc] 
 						 initWithTitle:NSLocalizedString(@"DELETE Card", nil)
@@ -717,15 +709,15 @@ static UIImage* GimageFromString(NSString* str)
 						 destructiveButtonTitle:NSLocalizedString(@"DELETE Card button", nil)
 						 otherButtonTitles:nil];
 		action.tag = ACTIONSEET_TAG_DELETE_CARD;
-		if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-			OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+		if (orientation == UIInterfaceOrientationPortrait
+			OR orientation == UIInterfaceOrientationPortraitUpsideDown) {
 			// タテ：ToolBar表示
 			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
 		} else {
 			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
 			[action showInView:self.view]; //windowから出すと回転対応しない
 		}
-		[action release];
 	}
 }
 
@@ -744,7 +736,7 @@ static UIImage* GimageFromString(NSString* str)
 
  // Editモード時の行Edit可否　　 YESを返した行は、左にスペースが入って右寄りになる
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row < [RaE1cards count]) return YES;
+	if (indexPath.row < RaE1cards.count) return YES;
 	return NO;  // 最終行のAdd行は右寄せさせない
 }
 
@@ -753,7 +745,7 @@ static UIImage* GimageFromString(NSString* str)
 // Editモード時の行移動の可否　　＜＜最終行のAdd専用行を移動禁止にしている＞＞
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if (indexPath.row < [RaE1cards count]) return YES;
+	if (indexPath.row < RaE1cards.count) return YES;
 	return NO;  // 最終行のAdd行は移動禁止
 }
 
@@ -762,7 +754,7 @@ static UIImage* GimageFromString(NSString* str)
 															toProposedIndexPath:(NSIndexPath *)newPath {
     NSIndexPath *target = newPath;
     // Add行が異動先になった場合、その1つ前の通常行を返すことにより、Add行への移動禁止となる。
-	NSInteger rows = [RaE1cards count] - 1; // 移動可能な行数（Add行を除く）
+	NSInteger rows = RaE1cards.count - 1; // 移動可能な行数（Add行を除く）
 	// セクション０限定仕様
 	if (newPath.section != 0 || rows < newPath.row  ) {
         target = [NSIndexPath indexPathForRow:rows inSection:0];
@@ -777,7 +769,7 @@ static UIImage* GimageFromString(NSString* str)
 	// この 属性"ascend"の値を行異動後に更新するための処理
 
 	// Re1cards 更新 ==>> なんと、managedObjectContextも更新される。 ただし、削除や挿入は反映されない！！！
-	E1card *e1obj = [RaE1cards objectAtIndex:oldPath.row]; //[MfetchE1card objectAtIndexPath:oldPath];
+	E1card *e1obj = RaE1cards[oldPath.row]; //[MfetchE1card objectAtIndexPath:oldPath];
 
 	[RaE1cards removeObjectAtIndex:oldPath.row];
 	[RaE1cards insertObject:e1obj atIndex:newPath.row];
@@ -789,8 +781,8 @@ static UIImage* GimageFromString(NSString* str)
 		end = oldPath.row;
 	}
 	for (NSInteger i = start; i <= end; i++) {
-		e1obj = [RaE1cards objectAtIndex:i];
-		e1obj.nRow = [NSNumber numberWithInteger:i];
+		e1obj = RaE1cards[i];
+		e1obj.nRow = @(i);
 	}
 	
 	// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する方針＞＞

@@ -35,29 +35,24 @@
 }
 @property (nonatomic, assign) NSInteger			iYearMMDD;
 @property (nonatomic, assign) BOOL				bPaid;
-@property (nonatomic, retain) NSDecimalNumber	*decSum;
+@property (nonatomic, strong) NSDecimalNumber	*decSum;
 @property (nonatomic, assign) NSInteger			iNoCheck;
-@property (nonatomic, retain) NSMutableSet		*e2invoices;
-- (void)dealloc;
-- (id)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP;
+@property (nonatomic, strong) NSMutableSet		*e2invoices;
+//- (void)dealloc;
+- (instancetype)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP NS_DESIGNATED_INITIALIZER;
 @end
 //-------------------------------------------E2invoiceTVCローカル使用一時作業クラス実装
 @implementation E2temp
 @synthesize iYearMMDD, bPaid, decSum, iNoCheck, e2invoices;
 
-- (void)dealloc {   // 生成とは逆順に解放するのが好ましい
-	[decSum release];
-	[e2invoices release];
-	[super dealloc];
-}
 
-- (id)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP {
+- (instancetype)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP {
 	self = [super init];
 	if (self != nil) {
 		iYearMMDD = iY;
 		bPaid = bP;
 		//iSum = 0;
-		decSum = [[NSDecimalNumber zero] retain]; // dealloc で release されるため。
+		decSum = [NSDecimalNumber zero]; // dealloc で release されるため。
 		iNoCheck = 0;
 		e2invoices = [NSMutableSet new];
 	}
@@ -143,8 +138,8 @@
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	assert(1 < [RaE2list count]); // Section:1
-	assert(0 < [[RaE2list objectAtIndex:1] count]); // Section:1 Row:0
-	E2temp* e2obj = [[RaE2list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
+	assert(0 < [RaE2list[1] count]); // Section:1 Row:0
+	E2temp* e2obj = RaE2list[1][0]; // Unpaidの最上行
 	assert(e2obj);
 	assert(e2obj.bPaid==NO);
 	if (0 < e2obj.iNoCheck) 
@@ -166,7 +161,7 @@
 	
 	// 内部移動処理
 	// このE2を PAID にする
-	for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
+	for (E2invoice *e2 in (e2obj.e2invoices).allObjects) {
 		[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
 	}
 	[MocFunctions commit];		// context commit (SAVE)
@@ -193,8 +188,8 @@
 
 	// 移動先の PAID 最下行Cell
 	assert(0 < [RaE2list count]); // Section:0
-	assert(0 < [[RaE2list objectAtIndex:0] count]); // Section:0 Row:Bottom
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE2list objectAtIndex:0] count]-1 inSection:0];
+	assert(0 < [RaE2list[0] count]); // Section:0 Row:Bottom
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[RaE2list[0] count]-1 inSection:0];
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 選択状態を解除する
 	
@@ -229,9 +224,9 @@
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 	assert(0 < [RaE2list count]); // Section:0
-	assert(0 < [[RaE2list objectAtIndex:0] count]); // Section:0 Row:Bottom
-	NSInteger iRowBottom = [[RaE2list objectAtIndex:0] count] - 1;
-	E2temp* e2obj = [[RaE2list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
+	assert(0 < [RaE2list[0] count]); // Section:0 Row:Bottom
+	NSInteger iRowBottom = [RaE2list[0] count] - 1;
+	E2temp* e2obj = RaE2list[0][iRowBottom]; // PAIDの最下行
 	assert(e2obj);
 	assert(e2obj.bPaid==YES);
 
@@ -243,7 +238,7 @@
 	[self performSelector:@selector(toUnpaid_After) withObject:nil afterDelay:0.5];
 	// 内部移動処理
 	// このE2を Unpaid に戻す
-	for (E2invoice *e2 in [e2obj.e2invoices allObjects]) {
+	for (E2invoice *e2 in (e2obj.e2invoices).allObjects) {
 		[MocFunctions e2paid:e2 inE6payNextMonth:NO]; // Paid <> Unpaid を切り替える
 	}
 	[MocFunctions commit];		// context commit (SAVE)
@@ -270,7 +265,7 @@
 	
 	// 移動先の Unpaid 最上行Cell
 	assert(1 < [RaE2list count]); // Section:1
-	assert(0 < [[RaE2list objectAtIndex:1] count]); // Section:1 Row:0
+	assert(0 < [RaE2list[1] count]); // Section:1 Row:0
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
@@ -302,12 +297,12 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化成功
-		appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		MbFirstAppear = YES; // Load後、最初に1回だけ処理するため
 		MbAction = NO; // Action操作許可
 	}
@@ -327,21 +322,21 @@
 											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 #else
 	// Set up NEXT Left Back [<<<] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return3.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
 #endif
 	
 #ifdef AzPAD
 	// Tool Bar Button なし
 #else
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil] autorelease];
-	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)] autorelease];
-	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
+															  target:self action:@selector(barButtonTop)];
+	NSArray *buArray = @[buTop, buFlex];
 	[self setToolbarItems:buArray animated:YES];
 #endif
 
@@ -363,15 +358,15 @@
 {
 	// PAID ,Unpaid ボタン設置
 	CGRect rc = [self.tableView rectForFooterInSection:0];
-	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+	if ([[UIDevice currentDevice].systemVersion compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
 		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
 	} else {
 		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+17,  90,70);
 	}
 	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
 	
-	MbuUnpaid.hidden = ([[RaE2list objectAtIndex:0] count] <= 0);		// Index: 0=Paid 1=Unpaid
-	MbuPaid.hidden = ([[RaE2list objectAtIndex:1] count] <= 0);			// Index: 0=Paid 1=Unpaid
+	MbuUnpaid.hidden = ([RaE2list[0] count] <= 0);		// Index: 0=Paid 1=Unpaid
+	MbuPaid.hidden = ([RaE2list[1] count] <= 0);			// Index: 0=Paid 1=Unpaid
 	
 	[self.tableView bringSubviewToFront:MbuPaid];	//改めてtitleForFooterInSection:でも呼び出している
 	[self.tableView bringSubviewToFront:MbuUnpaid];
@@ -412,7 +407,7 @@
 	
 	// Me2list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
 	if (RaE2list != nil) {
-		[RaE2list release], RaE2list = nil;
+		RaE2list = nil;
 	}
 
 	//E7E2クリーンアップ
@@ -420,11 +415,9 @@
 
 	// Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
-	NSArray *sortAsc = [[NSArray alloc] initWithObjects:sort1,nil]; // 支払日昇順
-	[sort1 release];
+	NSArray *sortAsc = @[sort1]; // 支払日昇順
 	sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:NO];
-	NSArray *sortDesc = [[NSArray alloc] initWithObjects:sort1,nil]; // 支払日降順：Limit抽出に使用
-	[sort1 release];
+	NSArray *sortDesc = @[sort1]; // 支払日降順：Limit抽出に使用
 	
 	NSArray *arFetch = nil;
 	if (Re1select) {	//------------------------------E1card
@@ -438,15 +431,13 @@
 									sort:sortDesc]; // 日付降順の先頭から20件抽出
 		muE2tmp = [NSMutableArray new];
 		for (E2invoice *e2 in [arFetch reverseObjectEnumerator]) { // arFetchは降順なのでreverseしている
-			E2temp *e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:YES];
+			E2temp *e2t = [[E2temp alloc] initWithYearMMDD:(e2.nYearMMDD).integerValue inPaid:YES];
 			e2t.decSum = e2.sumAmount;
-			e2t.iNoCheck = [e2.sumNoCheck integerValue];
+			e2t.iNoCheck = (e2.sumNoCheck).integerValue;
 			[e2t.e2invoices addObject:e2];
 			[muE2tmp addObject:e2t];
-			[e2t release];
 		}
 		RaE2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
-		[muE2tmp release];
 		// E2unpaid 未払い（全件）
 		arFetch = [MocFunctions select:@"E2invoice" 
 								   limit:0 // 全件
@@ -455,15 +446,13 @@
 									sort:sortAsc]; // 日付昇順で全件抽出
 		muE2tmp = [NSMutableArray new];
 		for (E2invoice *e2 in arFetch) { // arFetchは昇順
-			E2temp *e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:NO];
+			E2temp *e2t = [[E2temp alloc] initWithYearMMDD:(e2.nYearMMDD).integerValue inPaid:NO];
 			e2t.decSum = e2.sumAmount;
-			e2t.iNoCheck = [e2.sumNoCheck integerValue];
+			e2t.iNoCheck = (e2.sumNoCheck).integerValue;
 			[e2t.e2invoices addObject:e2];
 			[muE2tmp addObject:e2t];
-			[e2t release];
 		}
 		[RaE2list addObject:muE2tmp]; // 一次元追加
-		[muE2tmp release];
 	}
 	else if (Re8select) { //---------------------------E8bank
 		assert(Re1select==nil);
@@ -490,62 +479,52 @@
 		NSMutableArray *muE2tmp = [NSMutableArray new];
 		E2temp *e2t = nil;
 		for (E2invoice *e2 in muE2paid) {
-			if (e2t==nil OR e2t.iYearMMDD != [e2.nYearMMDD integerValue]) {
+			if (e2t==nil OR e2t.iYearMMDD != (e2.nYearMMDD).integerValue) {
 				if (e2t) {
 					[muE2tmp addObject:e2t];
-					[e2t release];
 				}
-				e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:YES];
+				e2t = [[E2temp alloc] initWithYearMMDD:(e2.nYearMMDD).integerValue inPaid:YES];
 			}
 			e2t.decSum = [e2t.decSum decimalNumberByAdding:e2.sumAmount];
-			e2t.iNoCheck += [e2.sumNoCheck integerValue];
+			e2t.iNoCheck += (e2.sumNoCheck).integerValue;
 			[e2t.e2invoices addObject:e2];
 		}
 		if (e2t) {
 			[muE2tmp addObject:e2t];
-			[e2t release];
 		}
 		RaE2list = [[NSMutableArray alloc] initWithObjects:muE2tmp,nil]; // 一次元追加
-		[muE2tmp release];
-		[muE2paid release];
 		// Paid
 		muE2tmp = [NSMutableArray new];
 		e2t = nil;
 		for (E2invoice *e2 in muE2unpaid) {
-			if (e2t==nil OR e2t.iYearMMDD != [e2.nYearMMDD integerValue]) {
+			if (e2t==nil OR e2t.iYearMMDD != (e2.nYearMMDD).integerValue) {
 				if (e2t) {
 					[muE2tmp addObject:e2t];
-					[e2t release];
 				}
-				e2t = [[E2temp alloc] initWithYearMMDD:[e2.nYearMMDD integerValue] inPaid:NO];
+				e2t = [[E2temp alloc] initWithYearMMDD:(e2.nYearMMDD).integerValue inPaid:NO];
 			}
 			//e2t.iSum += [e2.sumAmount integerValue];
 			e2t.decSum = [e2t.decSum decimalNumberByAdding:e2.sumAmount];
-			e2t.iNoCheck += [e2.sumNoCheck integerValue];
+			e2t.iNoCheck += (e2.sumNoCheck).integerValue;
 			[e2t.e2invoices addObject:e2];
 		}
 		if (e2t) {
 			[muE2tmp addObject:e2t];
-			[e2t release];
 		}
 		[RaE2list addObject:muE2tmp]; // 一次元追加
-		[muE2tmp release];
-		[muE2unpaid release];
 	}
 	else {
 		AzLOG(@"Exit ERROR: Pe1select,Re8select == nil");
 //		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select == nil",0);
 		exit(-1);  // Fail
 	}
-	[sortAsc release];
-	[sortDesc release];
 	
 	// テーブルビューを更新します。
     [self.tableView reloadData];
 
-	if (!MbFirstAppear OR [RaE2list count] < 2) return;
+	if (!MbFirstAppear OR RaE2list.count < 2) return;
 
-	if (1 <= [[RaE2list objectAtIndex:1] count]) {  
+	if (1 <= [RaE2list[1] count]) {  
 		// Unpaid の先頭へ
 		MbFirstAppear = NO;
 		// 未払いの先頭を画面中央に表示する
@@ -553,11 +532,11 @@
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
-	else if (1 <= [[RaE2list objectAtIndex:0] count]) {
+	else if (1 <= [RaE2list[0] count]) {
 		// PAID の末尾へ
 		MbFirstAppear = NO;
 		// 未払いの先頭を画面中央に表示する
-		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[[RaE2list objectAtIndex:0] count]-1 inSection:0];
+		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[RaE2list[0] count]-1 inSection:0];
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 	}
@@ -700,16 +679,13 @@
 	NSLog(@"--- unloadRelease --- E2invoiceTVC");
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
-	[RaE2list release], RaE2list = nil;
+	RaE2list = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-	[Re1select release];
-	[Re8select release];
-	[super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -726,14 +702,14 @@
 #pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [RaE2list count];  // Me2listは、(0)e2paids (1)e2unpaids の二次元配列
+	return RaE2list.count;  // Me2listは、(0)e2paids (1)e2unpaids の二次元配列
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[RaE2list objectAtIndex:section] count];
+	return [RaE2list[section] count];
 }
 
 // TableView セクション名を応答
@@ -745,7 +721,7 @@
 			break;
 		case 1:
 			// E2 未払い総額
-			if ([[RaE2list objectAtIndex:1] count] <= 0) {  // Index: 0=Paid 1=Unpaid
+			if ([RaE2list[1] count] <= 0) {  // Index: 0=Paid 1=Unpaid
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			} 
 			return NSLocalizedString(@"Unpaid",nil);
@@ -797,8 +773,8 @@
 	
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-									   reuseIdentifier:zCellIndex] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
@@ -807,11 +783,11 @@
 #else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
-		cell.textLabel.textAlignment = UITextAlignmentLeft;
+		cell.textLabel.textAlignment = NSTextAlignmentLeft;
 		cell.textLabel.textColor = [UIColor blackColor];
 
 		cellLabel = [[UILabel alloc] init];
-		cellLabel.textAlignment = UITextAlignmentRight;
+		cellLabel.textAlignment = NSTextAlignmentRight;
 		//cellLabel.textColor = [UIColor blackColor];
 		cellLabel.backgroundColor = [UIColor clearColor];
 #ifdef AzPAD
@@ -820,7 +796,7 @@
 		cellLabel.font = [UIFont systemFontOfSize:14];
 #endif
 		cellLabel.tag = -1;
-		[cell addSubview:cellLabel]; [cellLabel release];
+		[cell addSubview:cellLabel]; 
 	}
 	else {
 		cellLabel = (UILabel *)[cell viewWithTag:-1];
@@ -843,7 +819,7 @@
 	// 左ボタン ------------------------------------------------------------------ */
 
 	//E2invoice *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	E2temp *e2obj = [[RaE2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E2temp *e2obj = RaE2list[indexPath.section][indexPath.row];
 
 	// 支払日
 	if (e2obj.bPaid) {
@@ -865,10 +841,9 @@
 	}
 	//[0.4] Amount 多通貨対応
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-	[formatter setLocale:[NSLocale currentLocale]]; 
+	formatter.numberStyle = NSNumberFormatterDecimalStyle;
+	formatter.locale = [NSLocale currentLocale]; 
 	cellLabel.text = [formatter stringFromNumber:e2obj.decSum];
-	[formatter release];
 	
 	if (indexPath.section == 0) {
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID.png"];  // PAID 支払済
@@ -884,26 +859,20 @@
 			imageView1.image = [UIImage imageNamed:@"Icon32-CircleUnpaid.png"];
 			imageView2.image = GimageFromString([NSString stringWithFormat:@"%ld", (long)lNoCheck]);
 
-			if (UIGraphicsBeginImageContextWithOptions != NULL) { // iOS4.0以上
-				UIGraphicsBeginImageContextWithOptions(imageView1.image.size, NO, 0.0); //[0.4.18]Retina対応
-			} else { // Old
-				UIGraphicsBeginImageContext(imageView1.image.size);
-			}			
+			UIGraphicsBeginImageContextWithOptions(imageView1.image.size, NO, 0.0); //[0.4.18]Retina対応
 
 			CGRect rect = CGRectMake(0, 0, imageView1.image.size.width, imageView1.image.size.height);
 			[imageView1.image drawInRect:rect];  
 			[imageView2.image drawInRect:rect blendMode:kCGBlendModeMultiply alpha:1.0];  
 			UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();  
 			UIGraphicsEndImageContext();  
-			[cell.imageView setImage:resultingImage];
+			(cell.imageView).image = resultingImage;
 //			AzRETAIN_CHECK(@"E1 lNoCheck:imageView1", imageView1, 1)
-			[imageView1 release];
 //			AzRETAIN_CHECK(@"E1 lNoCheck:imageView2", imageView2, 1)
-			[imageView2 release];
 //			AzRETAIN_CHECK(@"E1 lNoCheck:resultingImage", resultingImage, 2) //=2:releaseするとフリーズ
 		}
 		//else if ([e2obj.decSum compare:[NSDecimalNumber zero]] == NSOrderedDescending)	// e2obj.decSum > 0
-		else if (0.0 < [e2obj.decSum doubleValue])	// e2obj.decSum > 0
+		else if (0.0 < (e2obj.decSum).doubleValue)	// e2obj.decSum > 0
 		{
 			cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleChkUnpaid.png"];  // PAY
 		} else {
@@ -1016,11 +985,11 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
-	McontentOffsetDidSelect = [tableView contentOffset];
+	McontentOffsetDidSelect = tableView.contentOffset;
 
 	//E2invoice *e2obj = [[Me2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	E2temp *e2t = [[RaE2list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	if ([e2t.e2invoices count] <= 0) return;
+	E2temp *e2t = RaE2list[indexPath.section][indexPath.row];
+	if ((e2t.e2invoices).count <= 0) return;
 	// E6parts へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	if (Re1select) {
@@ -1030,7 +999,7 @@
 		tvc.title =  Re1select.zName;
 #endif
 		// 編集移動により支払日の変更が可能
-		tvc.Pe2select = [[e2t.e2invoices allObjects] objectAtIndex:0];  //[[Me2list objectAtIndex:lSec] objectAtIndex:lRow];
+		tvc.Pe2select = (e2t.e2invoices).allObjects[0];  //[[Me2list objectAtIndex:lSec] objectAtIndex:lRow];
 	} else {
 		NSInteger iYear = e2t.iYearMMDD / 10000;
 		NSInteger iDD = e2t.iYearMMDD - (iYear * 10000);
@@ -1051,7 +1020,6 @@
 	}
 	tvc.PiFirstSection = indexPath.section;
 	[self.navigationController pushViewController:tvc animated:YES];
-	[tvc release];
 }
 
 @end

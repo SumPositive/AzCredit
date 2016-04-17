@@ -27,8 +27,8 @@
 - (void)done:(id)sender
 {
 	// 結果更新
-	Re1edit.nBonus1 = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
-	Re1edit.nBonus2 = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
+	Re1edit.nBonus1 = @([Mpicker selectedRowInComponent:0]);
+	Re1edit.nBonus2 = @([Mpicker selectedRowInComponent:1]);
 	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
@@ -36,7 +36,7 @@
 
 #pragma mark - UIViewController
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self) {
@@ -57,31 +57,31 @@
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
 	// DONEボタンを右側に追加する
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-											   target:self action:@selector(done:)] autorelease];
+											   target:self action:@selector(done:)];
 	
 	// とりあえず生成、位置はviewDesignにて決定
 	//------------------------------------------------------
-	Mpicker = [[[UIPickerView alloc] init] autorelease];
+	Mpicker = [[UIPickerView alloc] init];
 	Mpicker.delegate = self;
 	Mpicker.dataSource = self;
 	Mpicker.showsSelectionIndicator = YES;
 	[self.view addSubview:Mpicker]; //[Mpicker release];
 	//------------------------------------------------------
-	MlbBonus1 = [[[UILabel alloc] init] autorelease];
+	MlbBonus1 = [[UILabel alloc] init];
 	MlbBonus1.text = NSLocalizedString(@"Bonus1",nil);
 	//MlbBonus1.numberOfLines = 2;
-	MlbBonus1.textAlignment = UITextAlignmentCenter;
+	MlbBonus1.textAlignment = NSTextAlignmentCenter;
 	MlbBonus1.font = [UIFont systemFontOfSize:14];
 	MlbBonus1.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbBonus1]; //[MlbBonus1 release];
 	//------------------------------------------------------
-	MlbBonus2 = [[[UILabel alloc] init] autorelease];
+	MlbBonus2 = [[UILabel alloc] init];
 	MlbBonus2.text = NSLocalizedString(@"Bonus2",nil);
 	//MlbBonus2.numberOfLines = 2;
 	MlbBonus2.font = [UIFont systemFontOfSize:14];
-	MlbBonus2.textAlignment = UITextAlignmentCenter;
+	MlbBonus2.textAlignment = NSTextAlignmentCenter;
 	MlbBonus2.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbBonus2]; //[MlbBonus2 release];
 	//------------------------------------------------------
@@ -91,8 +91,9 @@
 {
 	CGRect rect = self.view.bounds;
 	
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait 
-		OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+	if (orientation == UIInterfaceOrientationPortrait
+		OR orientation == UIInterfaceOrientationPortraitUpsideDown)
 	{	// タテ
 		rect.origin.y = self.view.bounds.size.height/2 - GD_PickerHeight/2;
 	}
@@ -125,11 +126,11 @@
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	// PICKER 指定されたコンポーネンツの行を選択する。
-	NSInteger iMon = [Re1edit.nBonus1 integerValue];
+	NSInteger iMon = (Re1edit.nBonus1).integerValue;
 	if (iMon < 0 OR 12 < iMon) iMon = 1;
 	[Mpicker selectRow:iMon inComponent:0 animated:NO];
 
-	iMon = [Re1edit.nBonus2 integerValue];
+	iMon = (Re1edit.nBonus2).integerValue;
 	if (iMon < 0 OR 12 < iMon) iMon = 8;
 	[Mpicker selectRow:iMon inComponent:1 animated:NO];
 
@@ -166,13 +167,6 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	//--------------------------------Private Alloc
-	//--------------------------------@property (retain)
-	[Re1edit release];
-	[super dealloc];
-}
 
 
 #pragma mark - UIPickerView

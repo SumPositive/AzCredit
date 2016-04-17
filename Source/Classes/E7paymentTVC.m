@@ -87,14 +87,14 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	
 	assert(1 < [RaE7list count]); // Section:1
-	assert(0 < [[RaE7list objectAtIndex:1] count]); // Section:1 Row:0
-	E7payment* e7obj = [[RaE7list objectAtIndex:1] objectAtIndex:0]; // Unpaidの最上行
+	assert(0 < [RaE7list[1] count]); // Section:1 Row:0
+	E7payment* e7obj = RaE7list[1][0]; // Unpaidの最上行
 	assert(e7obj);
 	assert(e7obj.e0paid==nil);
-	if (0 < [e7obj.sumNoCheck integerValue]) 
+	if (0 < (e7obj.sumNoCheck).integerValue) 
 	{	// E7配下に未チェックあり禁止
 		[appDelegate audioPlayer:@"Tock.caf"];  // キークリック音
 		alertBox(NSLocalizedString(@"NoCheck",nil),
@@ -119,8 +119,8 @@
 
 - (void)toPAID_After
 {
-	if ([RaE7list count] <= 1) return;	// Section
-	if ([[RaE7list objectAtIndex:1] count] <= 0) return;	// Row
+	if (RaE7list.count <= 1) return;	// Section
+	if ([RaE7list[1] count] <= 0) return;	// Row
 	
 	// アニメ準備
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -140,8 +140,8 @@
 	
 	// 移動先の PAID 最下行Cell
 	assert(0 < [RaE7list count]); // Section:0
-	assert(0 < [[RaE7list objectAtIndex:0] count]); // Section:0 Row:Bottom
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE7list objectAtIndex:0] count]-1 inSection:0];
+	assert(0 < [RaE7list[0] count]); // Section:0 Row:Bottom
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[RaE7list[0] count]-1 inSection:0];
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 選択状態を解除する
 	
@@ -157,13 +157,13 @@
 	// アニメ開始
 	[UIView commitAnimations];
 
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	[appDelegate audioPlayer:@"mail-sent.caf"];  // Mail.appの送信音
 }
 
 - (void)toPAID_After_AnimeEnd
 {	// アニメ終了後、
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
@@ -173,19 +173,19 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 	
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
 	assert(0 < [RaE7list count]); // Section:0
-	assert(0 < [[RaE7list objectAtIndex:0] count]); // Section:0 Row:Bottom
-	NSInteger iRowBottom = [[RaE7list objectAtIndex:0] count] - 1;
-	E7payment* e7obj = [[RaE7list objectAtIndex:0] objectAtIndex:iRowBottom]; // PAIDの最下行
+	assert(0 < [RaE7list[0] count]); // Section:0 Row:Bottom
+	NSInteger iRowBottom = [RaE7list[0] count] - 1;
+	E7payment* e7obj = RaE7list[0][iRowBottom]; // PAIDの最下行
 	assert(e7obj);
 	assert(e7obj.e0unpaid==nil);
 
 	[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
 
 	// 移動元の PAID 最下行Cell
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[[RaE7list objectAtIndex:0] count]-1 inSection:0];
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[RaE7list[0] count]-1 inSection:0];
 	[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(toUnpaid_After) withObject:nil afterDelay:0.5];
 	// 内部移動処理
@@ -214,7 +214,7 @@
 	
 	// 移動先の Unpaid 最上行Cell
 	assert(1 < [RaE7list count]); // Section:1
-	assert(0 < [[RaE7list objectAtIndex:1] count]); // Section:1 Row:0
+	assert(0 < [RaE7list[1] count]); // Section:1 Row:0
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
@@ -231,13 +231,13 @@
 	// アニメ開始
 	[UIView commitAnimations];
 
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	[appDelegate audioPlayer:@"ReceivedMessage.caf"];  // Mail.appの受信音
 }
 
 - (void)toUnpaid_After_AnimeEnd
 {	// アニメ終了後、
-	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
@@ -257,7 +257,7 @@ static UIColor *MpColorBlue(float percent) {
 }
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
@@ -282,20 +282,20 @@ static UIColor *MpColorBlue(float percent) {
 											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
 #else
 	// Set up NEXT Left Back [<<] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
 #endif
 	
 #ifdef AzPAD
 	// Tool Bar Button なし
 #else
-	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil] autorelease];
-	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)] autorelease];
-	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, nil];
+															  target:self action:@selector(barButtonTop)];
+	NSArray *buArray = @[buTop, buFlex];
 	[self setToolbarItems:buArray animated:YES];
 #endif
 	
@@ -317,15 +317,15 @@ static UIColor *MpColorBlue(float percent) {
 {
 	// PAID ,Unpaid ボタン設置
 	CGRect rc = [self.tableView rectForFooterInSection:0];
-	if ([[[UIDevice currentDevice] systemVersion] compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+	if ([[UIDevice currentDevice].systemVersion compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
 		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+10,  90,70);
 	} else {
 		MbuPaid.frame = CGRectMake(rc.size.width/2-70, rc.origin.y+17,  90,70);
 	}
 	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
 	
-	MbuUnpaid.hidden = ([Re0root.e7paids count] <= 0);
-	MbuPaid.hidden = ([Re0root.e7unpaids count] <= 0);
+	MbuUnpaid.hidden = ((Re0root.e7paids).count <= 0);
+	MbuPaid.hidden = ((Re0root.e7unpaids).count <= 0);
 
 	[self.tableView bringSubviewToFront:MbuPaid];	//改めてtitleForFooterInSection:でも呼び出している
 	[self.tableView bringSubviewToFront:MbuUnpaid];
@@ -361,7 +361,7 @@ static UIColor *MpColorBlue(float percent) {
 
 	// Me7list : Pe1select.e2invoices 全データ取得 >>> (0)支払済セクション　(1)未払いセクション に分割
 	if (RaE7list) {
-		[RaE7list release], RaE7list = nil;
+		RaE7list = nil;
 	}
 	
 	//E7E2クリーンアップ
@@ -369,12 +369,10 @@ static UIColor *MpColorBlue(float percent) {
 
 	// E2 Sort条件
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
-	NSArray *sortAsc = [[NSArray alloc] initWithObjects:sort1,nil]; // 支払日昇順
-	[sort1 release];
+	NSArray *sortAsc = @[sort1]; // 支払日昇順
 
 	sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:NO];
-	NSArray *sortDesc = [[NSArray alloc] initWithObjects:sort1,nil]; // 支払日降順：Limit抽出に使用
-	[sort1 release];
+	NSArray *sortDesc = @[sort1]; // 支払日降順：Limit抽出に使用
 	
 	NSArray *arFetch = [MocFunctions select:@"E7payment" 
 										limit:GD_PAIDLIST_MAX
@@ -385,20 +383,16 @@ static UIColor *MpColorBlue(float percent) {
 	NSMutableArray *muE7tmp = [[NSMutableArray alloc] initWithArray:arFetch];
 	[muE7tmp sortUsingDescriptors:sortAsc];
 	RaE7list = [[NSMutableArray alloc] initWithObjects:muE7tmp,nil]; // [0][muE7tmp]  RaE7list は、Read Only.
-	[muE7tmp release];
 	
 	// E7未払い　（全て）
-	muE7tmp = [[NSMutableArray alloc] initWithArray:[Re0root.e7unpaids allObjects]];
+	muE7tmp = [[NSMutableArray alloc] initWithArray:(Re0root.e7unpaids).allObjects];
 	[muE7tmp sortUsingDescriptors:sortAsc];
 	[RaE7list addObject:muE7tmp];	// [1][muE7tmp]
-	[muE7tmp release];
-	[sortAsc release];
-	[sortDesc release];
 	
 	// テーブルビューを更新します。
     [self.tableView reloadData];
 
-	if (MbFirstAppear && 2 <= [RaE7list count] && 1 <= [[RaE7list objectAtIndex:1] count]) {
+	if (MbFirstAppear && 2 <= RaE7list.count && 1 <= [RaE7list[1] count]) {
 		MbFirstAppear = NO;
 		// 未払いの先頭を画面中央に表示する
 		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
@@ -480,15 +474,13 @@ static UIColor *MpColorBlue(float percent) {
 	NSLog(@"--- unloadRelease --- E7paymentTVC");
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
-	[RaE7list release], RaE7list = nil;
+	RaE7list = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -537,14 +529,14 @@ static UIColor *MpColorBlue(float percent) {
 #pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [RaE7list count];  // Me7listは、(0)e2paids (1)e2unpaids の二次元配列
+	return RaE7list.count;  // Me7listは、(0)e2paids (1)e2unpaids の二次元配列
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[RaE7list objectAtIndex:section] count];
+	return [RaE7list[section] count];
 }
 
 // TableView セクション名を応答
@@ -557,7 +549,7 @@ static UIColor *MpColorBlue(float percent) {
 			
 		case 1:
 			// E7 未払い総額
-			if ([Re0root.e7unpaids count] <= 0) {
+			if ((Re0root.e7unpaids).count <= 0) {
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			}
 			return NSLocalizedString(@"Unpaid",nil);
@@ -719,8 +711,8 @@ static UIImage* GimageFromString(NSString* str)
 	
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-									   reuseIdentifier:zCellIndex] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
@@ -729,11 +721,11 @@ static UIImage* GimageFromString(NSString* str)
 #else
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
-		cell.textLabel.textAlignment = UITextAlignmentLeft;
+		cell.textLabel.textAlignment = NSTextAlignmentLeft;
 		cell.textLabel.textColor = [UIColor blackColor];
 		
 		cellLabel = [[UILabel alloc] init];
-		cellLabel.textAlignment = UITextAlignmentRight;
+		cellLabel.textAlignment = NSTextAlignmentRight;
 		//cellLabel.textColor = [UIColor blackColor];
 		cellLabel.backgroundColor = [UIColor clearColor];
 #ifdef AzPAD
@@ -742,7 +734,7 @@ static UIImage* GimageFromString(NSString* str)
 		cellLabel.font = [UIFont systemFontOfSize:14];
 #endif
 		cellLabel.tag = -1;
-		[cell addSubview:cellLabel]; [cellLabel release];
+		[cell addSubview:cellLabel]; 
 	}
 	else {
 		cellLabel = (UILabel *)[cell viewWithTag:-1];
@@ -764,14 +756,14 @@ static UIImage* GimageFromString(NSString* str)
 	[cell.contentView addSubview:cellButton]; //[bu release]; buttonWithTypeにてautoreleseされるため不要。UIButtonにinitは無い。
 	// 左ボタン ------------------------------------------------------------------ */
 	
-	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E7payment *e7obj = RaE7list[indexPath.section][indexPath.row];
 
 	// 支払日
 	if (e7obj.e0paid) {
-		cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD([e7obj.nYearMMDD integerValue]),
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD((e7obj.nYearMMDD).integerValue),
 																		NSLocalizedString(@"Pre",nil)];
 	} else {
-		cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD([e7obj.nYearMMDD integerValue]), 
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", GstringYearMMDD((e7obj.nYearMMDD).integerValue), 
 																		NSLocalizedString(@"Due",nil)];
 	}
 
@@ -784,13 +776,12 @@ static UIImage* GimageFromString(NSString* str)
 	}
 	// Amount JPY専用　＜＜日本以外に締支払いする国はないハズ＞＞
 	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-	[formatter setNumberStyle:NSNumberFormatterDecimalStyle]; // CurrencyStyle]; // 通貨スタイル
+	formatter.numberStyle = NSNumberFormatterDecimalStyle; // CurrencyStyle]; // 通貨スタイル
 //	NSLocale *localeJP = [[NSLocale alloc] initWithLocaleIdentifier:@"ja-JP"];
 //	[formatter setLocale:localeJP];
 //	[localeJP release];
-	[formatter setLocale:[NSLocale currentLocale]]; 
+	formatter.locale = [NSLocale currentLocale]; 
 	cellLabel.text = [formatter stringFromNumber:e7obj.sumAmount];
-	[formatter release];
 
 
 	if (indexPath.section == 0) {
@@ -799,33 +790,27 @@ static UIImage* GimageFromString(NSString* str)
 	else {
 		//cell.imageView.image = [UIImage imageNamed:@"Unpaid32.png"]; // 未払い
 		// sumNoCheck を Circle 内に表示
-		NSInteger lNoCheck = [e7obj.sumNoCheck integerValue];
+		NSInteger lNoCheck = (e7obj.sumNoCheck).integerValue;
 		if (0 < lNoCheck) {
 			UIImageView *imageView1 = [[UIImageView alloc] init];
 			UIImageView *imageView2 = [[UIImageView alloc] init];
 			imageView1.image = [UIImage imageNamed:@"Icon32-CircleUnpaid.png"];	// Unpaid
 			imageView2.image = GimageFromString([NSString stringWithFormat:@"%ld", (long)lNoCheck]);
 			
-			if (UIGraphicsBeginImageContextWithOptions != NULL) { // iOS4.0以上
-				UIGraphicsBeginImageContextWithOptions(imageView1.image.size, NO, 0.0); //[0.4.18]Retina対応
-			} else { // Old
-				UIGraphicsBeginImageContext(imageView1.image.size);
-			}			
+			UIGraphicsBeginImageContextWithOptions(imageView1.image.size, NO, 0.0); //[0.4.18]Retina対応
 			
 			CGRect rect = CGRectMake(0, 0, imageView1.image.size.width, imageView1.image.size.height);
 			[imageView1.image drawInRect:rect];  
 			[imageView2.image drawInRect:rect blendMode:kCGBlendModeMultiply alpha:1.0];  
 			UIImage *resultingImage = UIGraphicsGetImageFromCurrentImageContext();  
 			UIGraphicsEndImageContext();  
-			[cell.imageView setImage:resultingImage];
+			(cell.imageView).image = resultingImage;
 //			AzRETAIN_CHECK(@"E1 lNoCheck:imageView1", imageView1, 1)
-			[imageView1 release];
 //			AzRETAIN_CHECK(@"E1 lNoCheck:imageView2", imageView2, 1)
-			[imageView2 release];
 //			AzRETAIN_CHECK(@"E1 lNoCheck:resultingImage", resultingImage, 2) //=2:releaseするとフリーズ
 		}
 		//else if ([e7obj.sumAmount compare:[NSDecimalNumber zero]] == NSOrderedDescending)	// e7obj.sumAmount > 0
-		else if (0.0 < [e7obj.sumAmount doubleValue])	// e7obj.sumAmount > 0
+		else if (0.0 < (e7obj.sumAmount).doubleValue)	// e7obj.sumAmount > 0
 		{
 			cell.imageView.image = [UIImage imageNamed:@"Icon32-CircleChkUnpaid.png"];  // Unpaid & Check
 		}
@@ -849,9 +834,9 @@ static UIImage* GimageFromString(NSString* str)
 		return;
 	}
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
-	McontentOffsetDidSelect = [tableView contentOffset];
+	McontentOffsetDidSelect = tableView.contentOffset;
 	
-	E7payment *e7obj = [[RaE7list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	E7payment *e7obj = RaE7list[indexPath.section][indexPath.row];
 	// (0)TopMenu >> (1)E7payment >> (2)E6part(CardMixMode) へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	tvc.Pe7select = e7obj;	// カード別明細一覧（支払日の変更はできない）
@@ -862,7 +847,6 @@ static UIImage* GimageFromString(NSString* str)
 	tvc.title = cell.textLabel.text;  // GstringYearMMDD( [e7obj.nYearMMDD integerValue] );
 #endif
 	[self.navigationController pushViewController:tvc animated:YES];
-	[tvc release];
 }
 
 

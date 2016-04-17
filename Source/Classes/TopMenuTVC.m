@@ -84,14 +84,15 @@
 	[naviRight pushViewController:vc animated:bAnime];
 	[vc release];
 #else
-	if (self.interfaceOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
+	if ([UIApplication sharedApplication].statusBarOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
 	// モーダル UIViewController
 	if (MinformationView) {
-		[MinformationView release], MinformationView = nil;
+		MinformationView = nil;
 	}
 	MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
 	MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	[self presentModalViewController:MinformationView animated:YES];
+	//dep//[self presentModalViewController:MinformationView animated:YES];
+	[self presentViewController:MinformationView animated:YES completion:nil];
 	//[MinformationView release];
 	//[MinformationView show];
 #endif
@@ -111,7 +112,6 @@
 #else
 	SettingTVC *view = [[SettingTVC alloc] init];
 	[self.navigationController pushViewController:view animated:YES];
-	[view release];
 #endif
 }
 
@@ -146,7 +146,7 @@
 	e3detail.Re3edit = e3obj;
 	e3detail.PiAdd = (1); // (1)New Add
 	
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	apd.entityModified = NO;  //リセット
 	
 #ifdef AzPAD
@@ -168,7 +168,7 @@
 #else
 	[self.navigationController pushViewController:e3detail animated: YES];
 #endif
-	[e3detail release]; // self.navigationControllerがOwnerになる
+	 // self.navigationControllerがOwnerになる
 }
 
 - (void)e3record
@@ -193,7 +193,6 @@
 #else
 	[self.navigationController pushViewController:tvc animated: YES];
 #endif
-	[tvc release];
 }
 
 
@@ -207,7 +206,7 @@
 #pragma mark - View lifecycle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
@@ -216,7 +215,7 @@
 		self.contentSizeForViewInPopover = CGSizeMake(320, 650);
 #endif
 		// インストールやアップデート後、1度だけ処理する
-		NSString *zNew = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //(Version)
+		NSString *zNew = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //(Version)
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		NSString* zDef = [defaults valueForKey:@"DefVersion"];
 		if (![zDef isEqualToString:zNew]) {
@@ -245,9 +244,9 @@
 	self.navigationItem.hidesBackButton = YES;
 #else
 	// Set up NEXT Left [Back] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
 #endif
 	
 #if defined(AzFREE) && !defined(AzPAD) //Not iPad//
@@ -263,17 +262,17 @@
 #ifdef AzPAD
 	// Cell配置により、ボタンなし
 #else
-	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil] autorelease];
-	MbuToolBarInfo = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
+	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
 													   style:UIBarButtonItemStylePlain  //Bordered
-													  target:self action:@selector(azInformationView)] autorelease];
-	UIBarButtonItem *buSet = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+													  target:self action:@selector(azInformationView)];
+	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
 															   style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(azSettingView)] autorelease];
-	UIBarButtonItem *buAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																			target:self action:@selector(barButtonAdd)] autorelease];
-	NSArray *buArray = [NSArray arrayWithObjects: MbuToolBarInfo, buFlex, buAdd, buFlex, buSet, nil];
+															  target:self action:@selector(azSettingView)];
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)];
+	NSArray *buArray = @[MbuToolBarInfo, buFlex, buAdd, buFlex, buSet];
 	[self setToolbarItems:buArray animated:YES];
 #endif
 #endif	
@@ -338,7 +337,7 @@
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E1card" 
 											  inManagedObjectContext:Re0root.managedObjectContext];
-	[fetchRequest setEntity:entity];
+	fetchRequest.entity = entity;
 	// Fitch
 	NSError *error = nil;
 	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -347,8 +346,7 @@
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
-	MiE1cardCount = [arFetch count];
-	[fetchRequest release];
+	MiE1cardCount = arFetch.count;
 	
 	// TableView Reflesh
 	[self.tableView reloadData];
@@ -407,7 +405,7 @@
 // YES を返すと、回転と同時に willRotateToInterfaceOrientation が呼び出され、
 //				回転後に didRotateFromInterfaceOrientation が呼び出される。
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{	// ここでは回転の許可、禁止だけを判定する  （現在の向きは、self.interfaceOrientation で取得できる）
+{	// ここでは回転の許可、禁止だけを判定する  （現在の向きは、[[UIApplication sharedApplication] statusBarOrientation] で取得できる）
 
 	//if ([self.view viewWithTag:TAG_VIEW_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
 
@@ -445,7 +443,7 @@
 								  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 	}
 #else
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait) {
+	if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
 		// 正面：infoボタン表示
 		MbuToolBarInfo.enabled = YES;
 	} else {
@@ -482,7 +480,7 @@
 #ifdef AzPAD
 #else
 	[MinformationView hide];
-	[MinformationView release], MinformationView = nil;	// azInformationViewにて生成
+	MinformationView = nil;	// azInformationViewにて生成
 #endif
 }
 
@@ -490,8 +488,7 @@
 {
 	[self unloadRelease];
 	// @property (retain)
-	[Re0root release], Re0root = nil;
-	[super dealloc];
+	Re0root = nil;
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -538,7 +535,7 @@
 #ifdef AzPAD
 			return 4;
 #else
-			if (self.interfaceOrientation == UIInterfaceOrientationPortrait) return 4;
+			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) return 4;
 			return 3;
 #endif
 			break;
@@ -588,15 +585,15 @@
 		static NSString *CellIdentifier = @"CellMenu";
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-										   reuseIdentifier:CellIdentifier] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+										   reuseIdentifier:CellIdentifier];
 			
 #ifdef AzPAD
 			cell.textLabel.font = [UIFont systemFontOfSize:18];
 #else
 			cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
-			//cell.textLabel.textAlignment = UITextAlignmentCenter;
+			//cell.textLabel.textAlignment = NSTextAlignmentCenter;
 			cell.textLabel.textColor = [UIColor blackColor];
 		}
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //[>]
@@ -623,8 +620,8 @@
 						cell.imageView.image = [UIImage imageNamed:@"Icon32-Schedule.png"];
 						//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
 						// E7 未払い総額
-						cell.detailTextLabel.textAlignment = UITextAlignmentRight;
-						if ([Re0root.e7unpaids count] <= 0) {
+						cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
+						if ((Re0root.e7unpaids).count <= 0) {
 							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
 												   NSLocalizedString(@"Payment list",nil), 
 												   NSLocalizedString(@"No unpaid",nil)];
@@ -632,12 +629,11 @@
 							NSDecimalNumber *decUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
 							// Amount
 							NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-							[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル（先頭に通貨記号が付く）
-							[formatter setLocale:[NSLocale currentLocale]]; 
+							formatter.numberStyle = NSNumberFormatterCurrencyStyle; // 通貨スタイル（先頭に通貨記号が付く）
+							formatter.locale = [NSLocale currentLocale]; 
 							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", 
 												   NSLocalizedString(@"Payment list",nil), 
 												   [formatter stringFromNumber:decUnpaid]];
-							[formatter release];
 						}
 						break;
 					case 1:
@@ -753,7 +749,6 @@
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
-					[tvc release];
 				}
 					break;
 				case 1: // カード一覧  E1 < E2 < E6 < E3detail
@@ -776,7 +771,6 @@
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
-					[tvc release];
 				}
 					break;
 				case 2: // 銀行等口座一覧  E8 
@@ -799,7 +793,6 @@
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
-					[tvc release];
 				}
 					break;
 			}
@@ -827,7 +820,6 @@
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
-					[tvc release];
 				}
 					break;
 				case 1: // 分類一覧  E5 < E3 < E3detail
@@ -849,7 +841,6 @@
 #else
 					[self.navigationController pushViewController:tvc animated:YES];
 #endif
-					[tvc release];
 				}
 					break;
 			}

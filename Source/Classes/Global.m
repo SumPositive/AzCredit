@@ -91,7 +91,6 @@ NSInteger GiYearMMDD( NSDate *dt )
 	NSDateComponents *comp = [calendar components:unitFlags fromDate:dt];
 	NSInteger iYearMMDD = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release]; autorelease
-	[calendar release];
 	return iYearMMDD;
 }
 
@@ -135,12 +134,11 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 		comp.day = (iDay - 1) + iAddDD;
 	}
 	NSDate *dateNew = [calendar dateByAddingComponents:comp toDate:date1st options:0];
-	[comp release]; // alloc生成しているので必要
+	 // alloc生成しているので必要
 	
 	comp = [calendar components:unitFlags fromDate:dateNew];
 	NSInteger iRet = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release];　こちらはautorelease
-	[calendar release];
 	return iRet;
 }
 
@@ -169,12 +167,11 @@ NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDay )		// iDay>=
 		comp.day = (iDay - 1);  // 加算分を指定する
 	}
 	NSDate *dateNew = [calendar dateByAddingComponents:comp toDate:date1st options:0];
-	[comp release]; // alloc生成しているので必要
+	 // alloc生成しているので必要
 	
 	comp = [calendar components:unitFlags fromDate:dateNew];
 	NSInteger iRet = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release];　こちらはautorelease
-	[calendar release];
 	return iRet;
 }
 
@@ -228,15 +225,12 @@ NSDate *GdateYearMMDD( NSInteger PiYearMMDD, int PiHour, int PiMinute, int PiSec
 							(int)iYear,(int)iMM,(int)iDD, PiHour,PiMinute,PiSecond];
 	// strをNSDate型に変換
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];  
-	[dateFormatter setTimeStyle:NSDateFormatterFullStyle];  
-	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];  
+	dateFormatter.timeStyle = NSDateFormatterFullStyle;  
+	dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";  
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	[dateFormatter setCalendar:calendar];
-	[calendar release];
+	dateFormatter.calendar = calendar;
 	NSDate *datetime = [dateFormatter dateFromString:dateStr];  //autorelease
-	[dateFormatter release];  	
-	[dateStr release];
 	return datetime; // NSDateは、常にUTC(+0000)協定世界時間である。
 }
 
@@ -248,5 +242,4 @@ void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton )
 										  cancelButtonTitle:nil
 										  otherButtonTitles:zButton, nil];
 	[alert show];
-	[alert release];
 }

@@ -21,7 +21,7 @@
 	//----------------------------------------------assign
 	BOOL		PbAdd;		// =YES:新規追加モード
 	BOOL		PbSave;		//
-	E3record	*Pe3edit;	// =nil:マスタモード  !=nil:選択モード
+	E3record	*__weak Pe3edit;	// =nil:マスタモード  !=nil:選択モード
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -29,10 +29,10 @@
 	//BOOL MbOptAntirotation;
 }
 
-@property (nonatomic, retain) E4shop	*Re4edit;
+@property (nonatomic, strong) E4shop	*Re4edit;
 @property BOOL							PbAdd;
 @property BOOL							PbSave;
-@property (nonatomic, assign) E3record	*Pe3edit;
+@property (nonatomic, weak) E3record	*Pe3edit;
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;

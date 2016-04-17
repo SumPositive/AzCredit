@@ -25,8 +25,8 @@
 	//BOOL MbOptAntirotation;
 }
 
-@property (nonatomic, retain) id			Rentity;
-@property (nonatomic, retain) NSString		*RzKey;	
+@property (nonatomic, strong) id			Rentity;
+@property (nonatomic, strong) NSString		*RzKey;	
 @property NSInteger	PiMaxLength;
 @property NSInteger	PiSuffixLength;
 

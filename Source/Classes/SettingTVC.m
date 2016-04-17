@@ -33,16 +33,12 @@
 
 #pragma mark - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[super dealloc];
-}
 
 
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {  // セクションありテーブル
 		// OK
@@ -154,7 +150,7 @@
 
 - (void)buttonTaxRate:(UIButton *)button
 {
-	long lRate = (long)[MlbTaxRate.text integerValue] + button.tag;
+	long lRate = (long)(MlbTaxRate.text).integerValue + button.tag;
 	if (0 <= lRate && lRate <= 99) {
 		MlbTaxRate.text = [NSString stringWithFormat:@"%ld", lRate];
 		[[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%ld", lRate] 
@@ -172,10 +168,10 @@
 			[defaults setBool:MbOptAntirotation forKey:GD_OptAntirotation];
 			break;*/
 		case TAG_GD_OptEnableInstallment:
-			[defaults setBool:[sender isOn] forKey:GD_OptEnableInstallment];
+			[defaults setBool:sender.on forKey:GD_OptEnableInstallment];
 			break;
 		case TAG_GD_OptRoundBankers:
-			[defaults setBool:[sender isOn] forKey:GD_OptRoundBankers];
+			[defaults setBool:sender.on forKey:GD_OptRoundBankers];
 			break;
 	}
 }
@@ -226,8 +222,8 @@
 
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-									   reuseIdentifier:zCellIndex] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		cell.showsReorderControl = NO; // Move禁止
 		
@@ -280,7 +276,6 @@
 				sw.tag = TAG_GD_OptEnableInstallment;
 				sw.backgroundColor = [UIColor clearColor]; //背景透明
 				[cell.contentView addSubview:sw]; 
-				[sw release];
 				cell.textLabel.text = NSLocalizedString(@"OptEnableInstallment",nil);
 				cell.detailTextLabel.text = NSLocalizedString(@"OptEnableInstallment msg",nil);
 			}
@@ -299,7 +294,6 @@
 				sw.tag = TAG_GD_OptRoundBankers;
 				sw.backgroundColor = [UIColor clearColor]; //背景透明
 				[cell.contentView addSubview:sw]; 
-				[sw release];
 				cell.textLabel.text = NSLocalizedString(@"OptRoundBankers",nil);
 				cell.detailTextLabel.text = NSLocalizedString(@"OptRoundBankers msg",nil);
 			}
@@ -318,10 +312,9 @@
 				MlbTaxRate.text = [NSString stringWithFormat:@"%ld", (long)iOpt];
 				MlbTaxRate.tag = TAG_GD_OptTaxRate;
 				MlbTaxRate.backgroundColor = [UIColor clearColor]; //背景透明
-				MlbTaxRate.textAlignment = UITextAlignmentCenter;
+				MlbTaxRate.textAlignment = NSTextAlignmentCenter;
 				MlbTaxRate.font = [UIFont boldSystemFontOfSize:20];
 				[cell.contentView  addSubview:MlbTaxRate]; 
-				[MlbTaxRate release];
 			}
 			MlbTaxRate.frame = CGRectMake(fX+5, 8, 50, 25); // 回転対応
 			// Left UIButton
@@ -367,7 +360,6 @@
 				MtfPass1.text = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
 														   andServiceName:GD_PRODUCTNAME error:&error];
 				[cell.contentView  addSubview:MtfPass1];
-				[MtfPass1 release];
 			}
 			MtfPass1.frame = CGRectMake(fX-35, 8, 130, 25); // 回転対応
 			// add UITextField2
@@ -382,7 +374,6 @@
 				MtfPass2.delegate = self;
 				MtfPass2.text = MtfPass1.text;
 				[cell.contentView  addSubview:MtfPass2];
-				[MtfPass2 release];
 			}
 			MtfPass2.frame = CGRectMake(fX-35,38, 130, 25); // 回転対応
 		} break;
@@ -403,7 +394,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)sender 
 {
 	if (sender==MtfPass1) {
-		if (20 < [sender.text length]) {
+		if (20 < (sender.text).length) {
 			sender.text = @"";
 			alertBox(NSLocalizedString(@"OptLoginPass Over",nil), 
 					 NSLocalizedString(@"OptLoginPass Over msg",nil), 
@@ -426,7 +417,7 @@
 			if (error) {
 //				GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 				alertBox(NSLocalizedString(@"OptLoginPass Error",nil),
-						 [error localizedDescription],
+						 error.localizedDescription,
 						 NSLocalizedString(@"Roger",nil));
 			} else {
 				alertBox(NSLocalizedString(@"OptLoginPass Changed",nil), 

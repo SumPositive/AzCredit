@@ -30,7 +30,7 @@
 
 #pragma mark - View lifecicle
 
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -71,7 +71,7 @@
 
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
-	sourceRepeat = [Re3edit.nRepeat integerValue]; //初期値
+	sourceRepeat = (Re3edit.nRepeat).integerValue; //初期値
 }
 
 
@@ -91,15 +91,6 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-#ifdef xxxAzPAD
-	delegate = nil;
-	[selfPopover release], selfPopover = nil;
-#endif
-	[Re3edit release];
-	[super dealloc];
-}
 
 
 #pragma mark - TableView lifecicle
@@ -139,8 +130,8 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  // Subtitle
-									   reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  // Subtitle
+									   reuseIdentifier:CellIdentifier];
 
 #ifdef AzPAD
 		cell.textLabel.font = [UIFont systemFontOfSize:20];
@@ -148,7 +139,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.textLabel.textAlignment = UITextAlignmentLeft;
+		cell.textLabel.textAlignment = NSTextAlignmentLeft;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -156,22 +147,22 @@
 	switch (indexPath.row) {
 		case 0:
 			cell.textLabel.text = NSLocalizedString(@"Repeat00", nil);
-			if ([Re3edit.nRepeat integerValue] == 0)
+			if ((Re3edit.nRepeat).integerValue == 0)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 1:
 			cell.textLabel.text = NSLocalizedString(@"Repeat01", nil);
-			if ([Re3edit.nRepeat integerValue] == 1)
+			if ((Re3edit.nRepeat).integerValue == 1)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 2:
 			cell.textLabel.text = NSLocalizedString(@"Repeat02", nil);
-			if ([Re3edit.nRepeat integerValue] == 2)
+			if ((Re3edit.nRepeat).integerValue == 2)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 3:
 			cell.textLabel.text = NSLocalizedString(@"Repeat12", nil);
-			if ([Re3edit.nRepeat integerValue] == 12)
+			if ((Re3edit.nRepeat).integerValue == 12)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 	}
@@ -185,14 +176,14 @@
 	
 	// DONE
 	switch (indexPath.row) {
-		case  1: Re3edit.nRepeat = [NSNumber numberWithInteger: 1]; break;
-		case  2: Re3edit.nRepeat = [NSNumber numberWithInteger: 2]; break;
-		case  3: Re3edit.nRepeat = [NSNumber numberWithInteger:12]; break;
-		default: Re3edit.nRepeat = [NSNumber numberWithInteger: 0]; break;
+		case  1: Re3edit.nRepeat = @1; break;
+		case  2: Re3edit.nRepeat = @2; break;
+		case  3: Re3edit.nRepeat = @12; break;
+		default: Re3edit.nRepeat = @0; break;
 	}
 
-	if (sourceRepeat != [Re3edit.nRepeat integerValue]) {
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (sourceRepeat != (Re3edit.nRepeat).integerValue) {
+		AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		apd.entityModified = YES;	//変更あり
 		
 		// E6更新：関係なし

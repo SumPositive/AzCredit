@@ -39,30 +39,30 @@
 {
 	// 結果更新
 	if ([Mpicker selectedRowInComponent:0] <= 0) {		//Debit(自動引落し)
-		Re1edit.nClosingDay = [NSNumber numberWithInteger:0];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:0];
-		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]]; // 日後払い
+		Re1edit.nClosingDay = @0;
+		Re1edit.nPayMonth = @0;
+		Re1edit.nPayDay = @([Mpicker selectedRowInComponent:2]); // 日後払い
 	} else {
 		// 締め支払
-		Re1edit.nClosingDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:0]];
-		Re1edit.nPayMonth = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:1]];
-		Re1edit.nPayDay = [NSNumber numberWithInteger:[Mpicker selectedRowInComponent:2]];
+		Re1edit.nClosingDay = @([Mpicker selectedRowInComponent:0]);
+		Re1edit.nPayMonth = @([Mpicker selectedRowInComponent:1]);
+		Re1edit.nPayDay = @([Mpicker selectedRowInComponent:2]);
 	}
 	
-	if (0<[Re1edit.nClosingDay integerValue] && [Re1edit.nPayDay integerValue]<=0) {
-		Re1edit.nPayDay = [NSNumber numberWithInteger:1];
+	if (0<(Re1edit.nClosingDay).integerValue && (Re1edit.nPayDay).integerValue<=0) {
+		Re1edit.nPayDay = @1;
 	}
 
-	if (sourceClosingDay != [Re1edit.nClosingDay integerValue]
-		|| sourcePayMonth != [Re1edit.nPayMonth integerValue]
-		|| sourcePayDay != [Re1edit.nPayDay integerValue]	)
+	if (sourceClosingDay != (Re1edit.nClosingDay).integerValue
+		|| sourcePayMonth != (Re1edit.nPayMonth).integerValue
+		|| sourcePayDay != (Re1edit.nPayDay).integerValue	)
 	{
 		/*NSLog(@"*** (source:done) (%ld:%ld) (%ld:%ld) (%ld:%ld) ***",
 			  sourceClosingDay, [Re1edit.nClosingDay integerValue], 
 			  sourcePayMonth, [Re1edit.nPayMonth integerValue],  
 			  sourcePayDay, [Re1edit.nPayDay integerValue]); */
 		
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		apd.entityModified = YES;	//変更あり
 	}
 	
@@ -72,7 +72,7 @@
 
 #pragma mark - UIViewController
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self) {
@@ -97,39 +97,39 @@
 #endif
 	
 	// DONEボタンを右側に追加する
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-											   target:self action:@selector(done:)] autorelease];
+											   target:self action:@selector(done:)];
 	
 	// とりあえず生成、位置はviewDesignにて決定
 	//------------------------------------------------------
-	Mpicker = [[[UIPickerView alloc] init] autorelease];
+	Mpicker = [[UIPickerView alloc] init];
 	Mpicker.delegate = self;
 	Mpicker.dataSource = self;
 	Mpicker.showsSelectionIndicator = YES;
 	[self.view addSubview:Mpicker]; //[Mpicker release];
 	//------------------------------------------------------
-	MlbClosing = [[[UILabel alloc] init] autorelease];
+	MlbClosing = [[UILabel alloc] init];
 	MlbClosing.text = NSLocalizedString(@"Closing day",nil);
 	//MlbClosing.numberOfLines = 2;
-	MlbClosing.textAlignment = UITextAlignmentCenter;
+	MlbClosing.textAlignment = NSTextAlignmentCenter;
 	MlbClosing.font = [UIFont systemFontOfSize:14];
 	MlbClosing.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbClosing]; //[MlbClosing release];
 	//------------------------------------------------------
-	MlbPayMonth = [[[UILabel alloc] init] autorelease];
+	MlbPayMonth = [[UILabel alloc] init];
 	MlbPayMonth.text = NSLocalizedString(@"Payment month",nil);
 	//MlbPayMonth.numberOfLines = 2;
 	MlbPayMonth.font = [UIFont systemFontOfSize:14];
-	MlbPayMonth.textAlignment = UITextAlignmentCenter;
+	MlbPayMonth.textAlignment = NSTextAlignmentCenter;
 	MlbPayMonth.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbPayMonth]; //[MlbPayMonth release];
 	//------------------------------------------------------
-	MlbPayDay = [[[UILabel alloc] init] autorelease];
+	MlbPayDay = [[UILabel alloc] init];
 	MlbPayDay.text = NSLocalizedString(@"Payment day",nil);
 	//MlbPayDay.numberOfLines = 2;
 	MlbPayDay.font = [UIFont systemFontOfSize:14];
-	MlbPayDay.textAlignment = UITextAlignmentCenter;
+	MlbPayDay.textAlignment = NSTextAlignmentCenter;
 	MlbPayDay.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbPayDay]; //[MlbPayDay release];
 	//------------------------------------------------------
@@ -138,7 +138,7 @@
 	[MbuDebit addTarget:self action:@selector(buttonDebit) forControlEvents:UIControlEventTouchDown];
 	[self.view addSubview:MbuDebit]; //[MbuDebit release]; autoreleaseされるため
 	//------------------------------------------------------
-	MlbDebit = [[[UILabel alloc] init] autorelease];
+	MlbDebit = [[UILabel alloc] init];
 	MlbDebit.text = NSLocalizedString(@"PayDay Debit msg",nil);
 #ifdef AzPAD
 	MlbDebit.font = [UIFont systemFontOfSize:14];
@@ -185,7 +185,7 @@
 	MlbPayDay.frame = rect;
 	
 	//---------------------------- Debit
-	if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+	if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
 	{	// タテ
 		// 中央
 		rect.origin.y += (GD_PickerHeight + 80);
@@ -199,7 +199,7 @@
 		rect.origin.x = fXofs + 160 - (rect.size.width / 2);
 		rect.size.height = 50;
 		MlbDebit.frame = rect;
-		MlbDebit.textAlignment = UITextAlignmentCenter;
+		MlbDebit.textAlignment = NSTextAlignmentCenter;
 		MlbDebit.numberOfLines = 3;
 	}
 	else {	// ヨコ
@@ -215,7 +215,7 @@
 		rect.origin.y = 110;
 		rect.size.height = 100;
 		MlbDebit.frame = rect;
-		MlbDebit.textAlignment = UITextAlignmentLeft;
+		MlbDebit.textAlignment = NSTextAlignmentLeft;
 		MlbDebit.numberOfLines = 6;
 	}
 }	
@@ -230,18 +230,18 @@
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	// PICKER 指定されたコンポーネンツの行を選択する。
-	NSInteger iDay = [Re1edit.nClosingDay integerValue]; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
+	NSInteger iDay = (Re1edit.nClosingDay).integerValue; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
 	sourceClosingDay = iDay;
 	if (iDay < 0 OR 29 < iDay) iDay = 0;
 	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 締日	1〜28,29=末日, Debit(0)当日
 	[Mpicker reloadAllComponents];  //Component:0の状態により:1:2の表示が変化するため、ここで再描画する
 
-	iDay = [Re1edit.nPayMonth integerValue];
+	iDay = (Re1edit.nPayMonth).integerValue;
 	sourcePayMonth = iDay;
 	if (iDay < 0 OR 2 < iDay) iDay = 0;
 	[Mpicker selectRow:iDay inComponent:1 animated:NO]; // 支払月 (0)当月　(1)翌月　(2)翌々月, Debit(0)当月
 	
-	iDay = [Re1edit.nPayDay integerValue];
+	iDay = (Re1edit.nPayDay).integerValue;
 	sourcePayDay = iDay;
 	if (sourceClosingDay==0) {
 		if (iDay < 0 OR 99 < iDay) iDay = 0;
@@ -283,14 +283,6 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-#ifdef xxxAzPAD
-	[selfPopover release], selfPopover = nil;
-#endif
-	[Re1edit release];
-	[super dealloc];
-}
 
 #pragma mark  - UIPickerView
 

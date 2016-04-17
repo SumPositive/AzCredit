@@ -20,8 +20,8 @@
 	NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
 	E3record		*Re3edit;
 	//----------------------------------------------assign
-	id									delegate;
-	UITableView	*PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
+	id									__weak delegate;
+	UITableView	*__weak PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSDecimalNumberHandler	*MbehaviorDefault;	// 通貨既定の丸め処理
@@ -40,20 +40,20 @@
 	CGRect				MrectInit;
 }
 
-@property (nonatomic, retain) UILabel				*Rlabel;
+@property (nonatomic, strong) UILabel				*Rlabel;
 //@property (nonatomic, retain) id						Rentity;
 //@property (nonatomic, retain) NSString			*RzKey;	
-@property (nonatomic, assign) UITableView	*PoParentTableView;
-@property (nonatomic, assign) id						delegate;
+@property (nonatomic, weak) UITableView	*PoParentTableView;
+@property (nonatomic, weak) id						delegate;
 
 // 公開メソッド
 //- (id)initWithFrame:(CGRect)rect;
-- (id)initWithFrame:(CGRect)rect withE3:(E3record*)e3;
+- (instancetype)initWithFrame:(CGRect)rect withE3:(E3record*)e3 NS_DESIGNATED_INITIALIZER;
 - (void)show;
 - (void)save;
 - (void)cancel;
 - (void)hide;
 - (void)viewDesign:(CGRect)rect;	// 回転時に呼び出す
-- (BOOL)isShow;
+@property (NS_NONATOMIC_IOSONLY, getter=isShow, readonly) BOOL show;
 
 @end

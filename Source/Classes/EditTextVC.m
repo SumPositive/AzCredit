@@ -32,7 +32,7 @@
 - (void)done:(id)sender
 {
 	if (![sourceText isEqualToString:MtextView.text] ) {
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		apd.entityModified = YES;	//変更あり
 	}
 	
@@ -44,7 +44,6 @@
 			[mstr appendString:@"\n"];
 		}
 		[Rentity setValue:mstr forKey:RzKey];
-		[mstr release];
 	}
 	else {
 		//AzLOG(@"---[%@:%@]---",MtextView.text, PzKey);
@@ -57,7 +56,7 @@
 
 #pragma mark - View lifecicle
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	if (self) {
@@ -90,18 +89,18 @@
 	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 	
 	// DONEボタンを右側に追加する
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-											   target:self action:@selector(done:)] autorelease];
+											   target:self action:@selector(done:)];
 
 	// とりあえず生成、位置はviewDesignにて決定
-	MtextView = [[[UITextView alloc] init] autorelease];
+	MtextView = [[UITextView alloc] init];
 #ifdef AzPAD
 	MtextView.font = [UIFont systemFontOfSize:20];
 #else
 	MtextView.font = [UIFont systemFontOfSize:16];
 #endif
-	MtextView.textAlignment = UITextAlignmentLeft;
+	MtextView.textAlignment = NSTextAlignmentLeft;
 	MtextView.keyboardType = UIKeyboardTypeDefault;
 	MtextView.returnKeyType = UIReturnKeyDefault; // Return
 	MtextView.delegate = self;
@@ -127,7 +126,9 @@
 	rect.origin.y += 10;
 	rect.size.width -= 20;
 	float	fKeyHeight;
-	if (self.interfaceOrientation == UIInterfaceOrientationPortrait OR self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+	if (orientation == UIInterfaceOrientationPortrait
+		OR orientation == UIInterfaceOrientationPortraitUpsideDown){
 		fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
 	} else {
 		fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
@@ -151,10 +152,10 @@
 	MtextView.text = [Rentity valueForKey:RzKey];
 	if (0 < PiSuffixLength) {
 		// 末尾改行文字("\n")を PiSuffixLength 個除く -->> doneにて追加する
-		if ([MtextView.text length] <= PiSuffixLength) {
+		if ((MtextView.text).length <= PiSuffixLength) {
 			MtextView.text = @"";  //この処理が無いと新規のときフリーズする
 		} else {
-			MtextView.text = [MtextView.text substringToIndex:([MtextView.text length] - PiSuffixLength)];
+			MtextView.text = [MtextView.text substringToIndex:((MtextView.text).length - PiSuffixLength)];
 		}
 	}
 #ifdef AzPAD
@@ -198,10 +199,7 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-	[sourceText release], sourceText = nil;
-	[RzKey release];
-	[Rentity release];
-	[super dealloc];
+	sourceText = nil;
 }
 
 
@@ -214,10 +212,10 @@
 	if (PiMaxLength <= 0) return YES; // 無制限
 	
 	// senderは、MtextView だけ
-    NSMutableString *zText = [[textView.text mutableCopy] autorelease];
+    NSMutableString *zText = [textView.text mutableCopy];
     [zText replaceCharactersInRange:range withString:zReplace];
 	// 置き換えた後の長さをチェックする
-	return ([zText length] <= PiMaxLength); // PiMaxLength以下YES
+	return (zText.length <= PiMaxLength); // PiMaxLength以下YES
 }
 
 

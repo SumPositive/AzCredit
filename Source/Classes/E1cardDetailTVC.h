@@ -30,7 +30,7 @@
 	//BOOL MbOptAntirotation;
 }
 
-@property (nonatomic, retain) E1card	*Re1edit;
+@property (nonatomic, strong) E1card	*Re1edit;
 @property NSInteger						PiAddRow;
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;

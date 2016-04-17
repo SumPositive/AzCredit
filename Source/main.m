@@ -10,9 +10,9 @@
 
 int main(int argc, char *argv[])
 {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
   //int retVal = UIApplicationMain(argc, argv, nil, nil); ------ MainWindow.xlb を使う場合（標準）
-	int retVal = UIApplicationMain(argc, argv, nil, @"AppDelegate");
-    [pool release];
+		int retVal = UIApplicationMain(argc, argv, nil, @"AppDelegate");
     return retVal;
+    }
 }

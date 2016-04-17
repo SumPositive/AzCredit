@@ -19,7 +19,7 @@
 	//--------------------------retain
 	E0root		*Re0root;
 	//--------------------------assign
-	E1card		*Pe1card;		// =nil:マスタモード  !=nil:選択モード
+	E1card		*__weak Pe1card;		// =nil:マスタモード  !=nil:選択モード
 	E8bank	*sourceE8bank;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE8banks;
@@ -38,8 +38,8 @@
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic, retain) E0root	*Re0root;
-@property (nonatomic, assign) E1card	*Pe1card;
+@property (nonatomic, strong) E0root	*Re0root;
+@property (nonatomic, weak) E1card	*Pe1card;
 
 #ifdef AzPAD
 // delegate method

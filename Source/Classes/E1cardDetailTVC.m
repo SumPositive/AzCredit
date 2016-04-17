@@ -59,7 +59,7 @@
 - (void)saveClose:(id)sender 
 {
 	if (0 <= PiAddRow) { // Add
-		Re1edit.nRow = [NSNumber numberWithInteger:PiAddRow];
+		Re1edit.nRow = @(PiAddRow);
 	}
 	
 	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
@@ -92,7 +92,7 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
 	if (self) {
@@ -119,18 +119,18 @@
 #endif
 	
 	// Set up NEXT Left [Back] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
 	
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											  target:self action:@selector(cancelClose:)] autorelease];
+											  target:self action:@selector(cancelClose:)];
 	// SAVEボタンを右側に追加する
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 											   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-											   target:self action:@selector(saveClose:)] autorelease];
+											   target:self action:@selector(saveClose:)];
 }
 
 - (void)viewDesign
@@ -193,15 +193,6 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-#ifdef AzPAD
-	//delegate = nil;
-	[selfPopover release], selfPopover = nil;
-#endif
-	[Re1edit release];
-	[super dealloc];
-}
 
 /*
  - (void)viewDidUnload 
@@ -260,8 +251,8 @@
 
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
-									   reuseIdentifier:zCellIndex] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 #ifdef AzPAD
@@ -271,9 +262,9 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
 #endif
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
-		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+		//cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
 		cell.detailTextLabel.textColor = [UIColor blackColor];
 	}
 	return cell;
@@ -294,26 +285,26 @@
 				{
 					cell.textLabel.text = NSLocalizedString(@"PayDay",nil);
 
-					if ([Re1edit.nClosingDay integerValue] <= 0) {	//Debit
-						if ([Re1edit.nPayDay integerValue] <= 0) {
+					if ((Re1edit.nClosingDay).integerValue <= 0) {	//Debit
+						if ((Re1edit.nPayDay).integerValue <= 0) {
 							//当日締⇒Debit⇒ 当日払
 							cell.detailTextLabel.text = NSLocalizedString(@"Closing-Debit",nil);
 						} else {
 							//当日締⇒Debit⇒ ○日後払
 							cell.detailTextLabel.text = [NSString stringWithFormat:
 														 NSLocalizedString(@"Closing-DebitAfter",nil),
-														 GstringDay([Re1edit.nPayDay integerValue])];
+														 GstringDay((Re1edit.nPayDay).integerValue)];
 						}
 					} 
 					else {
 						NSString *zClosingDay = nil;
-						if ([Re1edit.nClosingDay integerValue]==29) {
+						if ((Re1edit.nClosingDay).integerValue==29) {
 							zClosingDay = NSLocalizedString(@"EndDay",nil); // 末日
 						} else {
-							zClosingDay = GstringDay([Re1edit.nClosingDay integerValue]);
+							zClosingDay = GstringDay((Re1edit.nClosingDay).integerValue);
 						}
 						NSString *zPayMonth = nil;
-						switch ([Re1edit.nPayMonth integerValue]) {
+						switch ((Re1edit.nPayMonth).integerValue) {
 							case 0:
 								zPayMonth = NSLocalizedString(@"This month",nil);
 								break;
@@ -328,10 +319,10 @@
 								break;
 						}
 						NSString *zPayDay = nil;
-						if ([Re1edit.nPayDay integerValue]==29) {
+						if ((Re1edit.nPayDay).integerValue==29) {
 							zPayDay = NSLocalizedString(@"EndDay",nil); // 末日
 						} else {
-							zPayDay = GstringDay([Re1edit.nPayDay integerValue]);
+							zPayDay = GstringDay((Re1edit.nPayDay).integerValue);
 						}
 						cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Closing-Payment",nil),
 																							zClosingDay, zPayMonth, zPayDay];
@@ -383,9 +374,9 @@
 						MlbNote.font = [UIFont systemFontOfSize:14];
 #endif
 						MlbNote.numberOfLines = 0;
-						MlbNote.lineBreakMode = UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
+						MlbNote.lineBreakMode = NSLineBreakByWordWrapping; //UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
 						MlbNote.backgroundColor = [UIColor clearColor];
-						[cell.contentView addSubview:MlbNote];  [MlbNote release];
+						[cell.contentView addSubview:MlbNote];  
 					}
 #ifdef AzPAD
 					MlbNote.frame = CGRectMake(20,10, self.tableView.frame.size.width-110,180);
@@ -403,24 +394,24 @@
 				case 1: // 
 				{
 					cell.textLabel.text = NSLocalizedString(@"Bonus1",nil);
-					if ([Re1edit.nBonus1 integerValue] <= 0) {
+					if ((Re1edit.nBonus1).integerValue <= 0) {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
 					} else {
 						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2d月 %@", 
-													 [Re1edit.nBonus1 integerValue],
-													 GstringMonth([Re1edit.nBonus1 integerValue])];
+													 (Re1edit.nBonus1).integerValue,
+													 GstringMonth((Re1edit.nBonus1).integerValue)];
 					}
 				}
 					break;
 				case 2: // 
 				{
 					cell.textLabel.text = NSLocalizedString(@"Bonus2",nil);
-					if ([Re1edit.nBonus2 integerValue] <= 0) {
+					if ((Re1edit.nBonus2).integerValue <= 0) {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
 					} else {
 						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2d月 %@", 
-													 [Re1edit.nBonus2 integerValue],
-													 GstringMonth([Re1edit.nBonus2 integerValue])];
+													 (Re1edit.nBonus2).integerValue,
+													 GstringMonth((Re1edit.nBonus2).integerValue)];
 					}
 				}
 					break;
@@ -447,7 +438,6 @@
 					evc.PiSuffixLength = 0;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-					[evc release];
 					// 変更ありを AppDelegateへ通知	// EditTextVC：内から通知している
 				}
 					break;
@@ -458,7 +448,6 @@
 					evc.Re1edit = Re1edit;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-					[evc release];
 					// 変更ありを AppDelegateへ通知	// E1editPayDayVC：内から通知している
 				}
 					break;
@@ -470,7 +459,6 @@
 					tvc.Re0root = [MocFunctions e0root];
 					tvc.Pe1card = Re1edit;
 					[self.navigationController pushViewController:tvc animated:YES];
-					[tvc release];
 					// 変更ありを AppDelegateへ通知	// E8bankTVC：内から通知している
 				}
 					break;
@@ -488,7 +476,6 @@
 					evc.PiSuffixLength = 0;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-					[evc release];
 					// 変更ありを AppDelegateへ通知	// EditTextVC：内から通知している
 				}
 					break;

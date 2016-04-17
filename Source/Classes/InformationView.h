@@ -18,7 +18,7 @@
 }
 
 // 公開メソッド
-- (id)init;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (void)hide;
 
 @end

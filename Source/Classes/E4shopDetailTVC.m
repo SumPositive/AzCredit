@@ -64,7 +64,7 @@
 	NSManagedObjectContext *contx = Re4edit.managedObjectContext;
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
 	NSString *zName = [Re4edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	if ([zName length] <= 0) {
+	if (zName.length <= 0) {
 		alertBox(NSLocalizedString(@"E4zNameLess",nil),
 				 NSLocalizedString(@"E4zNameLessMsg",nil),
 				 NSLocalizedString(@"Roger",nil));
@@ -73,17 +73,16 @@
 	// 重複が無いか調べる
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
 	// 取り出すエンティティを設定する
-	[request setEntity:[NSEntityDescription entityForName:@"E4shop" inManagedObjectContext:contx]];
+	request.entity = [NSEntityDescription entityForName:@"E4shop" inManagedObjectContext:contx];
 	// NSPredicateを使って、検索条件式を設定する
 	//	[request setPredicate:[NSPredicate predicateWithFormat:@"(%K != %ld) AND (%K = %@)", 
 	//						   @"nRow", [Re4edit.nRow longValue], @"zName", zName]];
-	[request setPredicate:[NSPredicate predicateWithFormat:@"(%K = %@)", @"zName", zName]];
+	request.predicate = [NSPredicate predicateWithFormat:@"(%K = %@)", @"zName", zName];
 	// コンテキストにリクエストを送る
 	NSArray* aRes = [contx executeFetchRequest:request error:&err];
-	[request release];
 	NSInteger iCnt = 2;
 	if (PbAdd) iCnt = 1;
-	if (iCnt < [aRes count]) {
+	if (iCnt < aRes.count) {
 		alertBox(NSLocalizedString(@"E4zNameDups",nil),
 				 NSLocalizedString(@"E4zNameDupsMsg",nil),
 				 NSLocalizedString(@"Roger",nil));
@@ -103,10 +102,10 @@
 		[self.navigationController  popToRootViewControllerAnimated:YES];  // < RootViewへ戻る
 		return;
 #else
-		NSInteger iPos = [self.navigationController.viewControllers count];
+		NSInteger iPos = (self.navigationController.viewControllers).count;
 		if (3 < iPos) {
 			// 2つ前のViewへ戻る
-			UIViewController *vc = [self.navigationController.viewControllers objectAtIndex:iPos-3];
+			UIViewController *vc = (self.navigationController.viewControllers)[iPos-3];
 			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
 			return;
 		}
@@ -131,7 +130,7 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
@@ -152,24 +151,24 @@
     [super loadView];
 
 	// Set up NEXT Left [Back] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
 									   initWithTitle:NSLocalizedString(@"Cancel",nil) 
-									   style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
+									   style:UIBarButtonItemStylePlain  target:nil  action:nil];
 	
 	// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-											  target:self action:@selector(cancelClose:)] autorelease];
+											  target:self action:@selector(cancelClose:)];
 	if (PbSave) {
 		// SAVE「保存」ボタンを右側に追加する
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-												   target:self action:@selector(saveClose:)] autorelease];
+												   target:self action:@selector(saveClose:)];
 	} else {
 		// DONE「完了」ボタンを右側に追加する　＜＜E3recordDetailTVCから呼び出されたとき＞＞
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-												   target:self action:@selector(saveClose:)] autorelease];
+												   target:self action:@selector(saveClose:)];
 	}
 
 }
@@ -223,15 +222,6 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-#ifdef AzPAD
-	[selfPopover release], selfPopover = nil;
-#endif
-	//--------------------------------@property (retain)
-	[Re4edit release];
-	[super dealloc];
-}
 
 
 #pragma mark - TableView lifecicle
@@ -275,8 +265,8 @@
 
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
-									   reuseIdentifier:zCellIndex] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
@@ -287,10 +277,10 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:12];
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
 #endif
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
+		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
 		
-		//cell.detailTextLabel.textAlignment = UITextAlignmentLeft;
+		//cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
 		cell.detailTextLabel.textColor = [UIColor blackColor];
 	}
 	
@@ -347,7 +337,6 @@
 					evc.PiSuffixLength = 0;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-					[evc release];
 				}
 					break;
 			}
@@ -368,7 +357,6 @@
 					evc.PiSuffixLength = 0;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-					[evc release];
 				}
 					break;
 				case 1: // Note
@@ -385,7 +373,6 @@
 					evc.PiSuffixLength = 0;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
-					[evc release];
 				}
 					break;
 			}

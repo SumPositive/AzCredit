@@ -53,7 +53,7 @@
 	CGFloat		mAdPositionY;
 }
 
-@property (nonatomic, retain) E0root				*Re0root;
+@property (nonatomic, strong) E0root				*Re0root;
 
 #ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc;

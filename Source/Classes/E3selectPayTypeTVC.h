@@ -14,7 +14,7 @@
 @private
 	//--------------------------retain
 	E3record			*Re3edit;
-	id						delegate;
+	id						__weak delegate;
 	//--------------------------assign
 	NSInteger	sourcePayType;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -23,7 +23,7 @@
 	//BOOL MbOptAntirotation;
 }
 
-@property (nonatomic, retain) E3record		*Re3edit;
-@property (nonatomic, assign) id					delegate;
+@property (nonatomic, strong) E3record		*Re3edit;
+@property (nonatomic, weak) id					delegate;
 
 @end

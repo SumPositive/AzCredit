@@ -24,7 +24,7 @@
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 #endif
 	//--------------------------assign
-	id						delegate;	
+	id						__weak delegate;	
 	E1card				*sourceE1card;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE1cards;
@@ -41,9 +41,9 @@
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic, retain) E0root			*Re0root;
-@property (nonatomic, retain) E3record		*Re3edit;
-@property (nonatomic, assign) id					delegate;
+@property (nonatomic, strong) E0root			*Re0root;
+@property (nonatomic, strong) E3record		*Re3edit;
+@property (nonatomic, weak) id					delegate;
 #ifdef AzPAD
 //@property (nonatomic, retain) UIPopoverController*	selfPopover;
 // デリゲート・メソッド

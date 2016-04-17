@@ -50,7 +50,7 @@
 		447B47621CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
 		447B47631CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
 		447B47641CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		447B47651CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
+		447B47651CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		447B47661CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
 		447B47671CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
 		447B476A1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
@@ -58,7 +58,7 @@
 		447B476C1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
 		447B476D1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
 		447B476E1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		447B476F1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
+		447B476F1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		447B47701CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
 		447B47711CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
@@ -2317,6 +2317,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2359,6 +2360,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2396,7 +2398,8 @@
 			baseConfigurationReference = 75C36D305EC3025B3677712D /* Pods-AzCreditS1.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2436,7 +2439,8 @@
 			baseConfigurationReference = D067ED2DA7CF450D0442D101 /* Pods-AzCreditS1.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2473,7 +2477,8 @@
 			baseConfigurationReference = B2EB26C1937A08AEDC94EF4C /* Pods-AzCreditS1.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -2790,6 +2795,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;

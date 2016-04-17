@@ -74,7 +74,7 @@
 		}
 		MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
 		CGRect rcArrow;
-		if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+		if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
 			rcArrow = CGRectMake(768-32, 1027-60, 32,32);
 		} else {
 			rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
@@ -86,7 +86,6 @@
 	SettingTVC *view = [[SettingTVC alloc] init];
 	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:view animated:YES];
-	[view release];
 #endif
 }
 
@@ -115,16 +114,16 @@
 
 	// 以下は、E3detailTVCの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
 	if (indexPath != nil && indexPath.section >= 1
-		&& indexPath.section < [RaE3list count]  
-		&& indexPath.row < [[RaE3list objectAtIndex:indexPath.section] count]) {
+		&& indexPath.section < RaE3list.count  
+		&& indexPath.row < [RaE3list[indexPath.section] count]) {
 		// Edit Item
 		e3detail.title = NSLocalizedString(@"Edit Record", nil);
-		e3detail.Re3edit = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		e3detail.Re3edit = RaE3list[indexPath.section][indexPath.row];
 		e3detail.PiAdd = 0; // (0)Edit mode
 		//[0.4.2]Fix:
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		app.Me3dateUse = [[e3detail.Re3edit.dateUse copy] autorelease];
+		app.Me3dateUse = [e3detail.Re3edit.dateUse copy];
 		NSLog(@"app.Me3dateUse=%@", app.Me3dateUse);
 	}
 	else {
@@ -150,7 +149,7 @@
 		}
 	}
 
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	apd.entityModified = NO;  //リセット
 
 #ifdef  AzPAD
@@ -184,7 +183,6 @@
 	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
 	[self.navigationController pushViewController:e3detail animated:YES];
 #endif
-	[e3detail release];
 }
 
 - (void)setMe3list:(NSDate *)dateMiddle // この日時が画面の(MmoreScrollPosition)位置になるように前後最大50行読み込み表示する
@@ -202,11 +200,9 @@
 	NSMutableArray *mE3array = [NSMutableArray new];
 	// Sorting
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:YES];
-	NSArray *sortAsc = [[NSArray alloc] initWithObjects:sort1,nil]; // 利用日昇順
-	[sort1 release];
+	NSArray *sortAsc = @[sort1]; // 利用日昇順
 	sort1 = [[NSSortDescriptor alloc] initWithKey:@"dateUse" ascending:NO];
-	NSArray *sortDesc = [[NSArray alloc] initWithObjects:sort1,nil]; // 利用日降順：Limit抽出に使用
-	[sort1 release];
+	NSArray *sortDesc = @[sort1]; // 利用日降順：Limit抽出に使用
 	NSArray *arFetch = nil;
 	BOOL  bPrev = NO;
 	BOOL  bNext = NO;
@@ -218,7 +214,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse <= %@", Pe4shop, dateMiddle]
 								  sort:sortDesc];
-		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		arFetch = [MocFunctions select:@"E3record" 
@@ -226,7 +222,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse > %@", Pe4shop, dateMiddle]
 								  sort:sortAsc];
-		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
 	else if (Pe5category) {
@@ -236,7 +232,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse <= %@", Pe5category, dateMiddle]
 								  sort:sortDesc];
-		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		arFetch = [MocFunctions select:@"E3record" 
@@ -244,7 +240,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse > %@", Pe5category, dateMiddle]
 								  sort:sortAsc];
-		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
 	else if (Pe8bank) { 
@@ -255,7 +251,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse <= %@", Pe8bank, dateMiddle]
 								  sort:sortDesc];
-		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		arFetch = [MocFunctions select:@"E3record" 
@@ -263,7 +259,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse > %@", Pe8bank, dateMiddle]
 								  sort:sortAsc];
-		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
 	else 
@@ -273,7 +269,7 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"dateUse <= %@", dateMiddle]
 								  sort:sortDesc];
-		bPrev = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
 		[mE3array sortUsingDescriptors:sortAsc]; // 降順から昇順にソートする
 		
@@ -282,31 +278,28 @@
 								offset:0
 								 where:[NSPredicate predicateWithFormat:@"dateUse > %@", dateMiddle]
 								  sort:sortAsc];
-		bNext = (GD_E3_SELECT_LIMIT <= [arFetch count]);
+		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
-	[sortAsc release];
-	[sortDesc release];
 	
 	//---------------------------------Tableソース生成（クリア）
 	// テーブル ソース
 	if (RaE3list) {
-		[RaE3list release]; RaE3list = nil;
+		 RaE3list = nil;
 	}
 	RaE3list = [NSMutableArray new];
 	// セクションヘッダ ソース
 	if (RaSection) {
-		[RaSection release]; RaSection = nil;
+		 RaSection = nil;
 	}
 	RaSection = [NSMutableArray new];
 	// インデックス ソース
 	if (RaIndex) {
-		[RaIndex release]; RaIndex = nil;
+		 RaIndex = nil;
 	}
 	RaIndex = [NSMutableArray new];
 	
-	if ([mE3array count] <= 0) {
-		[mE3array release];
+	if (mE3array.count <= 0) {
 		// テーブルビューを更新「クリア」します。
 		[self.tableView reloadData];
 		// 明細なし ＞ ここではまだ表示されていないので、viewDidAppear にて Alert 表示している。
@@ -316,13 +309,13 @@
 	//---------------------------------------------------------ここから、mE3arrayを月別に2次元配列にする処理
 	//---------------------------------Msection, Mindex 生成
 	NSDateFormatter *df_section = [[NSDateFormatter alloc] init];
-	[df_section setDateFormat:@"yyyy-M"]; // デフォルトのままで、iPhoneに設定されているタイムゾーンが使用される。
+	df_section.dateFormat = @"yyyy-M"; // デフォルトのままで、iPhoneに設定されているタイムゾーンが使用される。
 	NSDateFormatter *df_index = [[NSDateFormatter alloc] init];
-	[df_index setDateFormat:@"M"];
+	df_index.dateFormat = @"M";
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]; //「明細」セクションでも使っているため、df_sectionと同じ所でreleseしている。
-	[df_section setCalendar:calendar];
-	[df_index setCalendar:calendar];
+	df_section.calendar = calendar;
+	df_index.calendar = calendar;
 
 	NSMutableArray *e3days = [NSMutableArray new];
 	NSInteger iSec = 0;
@@ -333,7 +326,7 @@
 	NSInteger iMonth = 0;
 	
 	if (bPrev) {
-		E3record *e3 = [mE3array objectAtIndex:0];
+		E3record *e3 = mE3array[0];
 		[e3days addObject:e3.dateUse]; // PREV表示時に中央にする日付
 		[RaSection addObject:@"▲"];
 		[RaIndex addObject:@"▲"];
@@ -353,7 +346,7 @@
 		if (iYear != compSec.year || iMonth != compSec.month) 
 		{
 			[RaE3list addObject:e3days];	// 直前までの e3days を確定し、RaE3list へ追加する
-			[e3days release]; e3days = nil; // Me3list にaddしたものを切り離してMe3listに任せる。
+			 e3days = nil; // Me3list にaddしたものを切り離してMe3listに任せる。
 			e3days = [NSMutableArray new]; // 新しいセクション領域を確保する。
 			iYear = compSec.year;
 			iMonth = compSec.month;
@@ -378,11 +371,10 @@
 		iRow++;
 	}
 	[RaE3list addObject:e3days]; // 最後の e3days を確定し、RaE3list へ追加する
-	[e3days release];
 	
 	// 最後「さらに次へ」セクション
 	e3days = [NSMutableArray new]; // 新しい領域を確保する。
-	E3record *e3last = [mE3array lastObject];
+	E3record *e3last = mE3array.lastObject;
 	if (bNext && e3last) {
 		[e3days addObject:e3last.dateUse]; // NEXT表示時に中央にする日付
 		[RaSection addObject:@"▼"];
@@ -393,9 +385,7 @@
 		[RaIndex addObject:@"■"];
 	}
 	[RaE3list addObject:e3days]; // Section=End になる
-	[e3days release];
 	//
-	[mE3array release];
 #ifdef AzDEBUG
 	AzLOG(@"[RaSection count]=%d  [RaE3list count]=%d", [RaSection count], [RaE3list count]);
 	for (int i=0 ; i<[RaE3list count] && i<[RaSection count] ; i++) {
@@ -406,18 +396,15 @@
 	}
 #endif
 	
-	[df_section release];
-	[df_index release];
-	[calendar release];
 	
 	// テーブルビューを更新
     [self.tableView reloadData];
 	
-	if (3 <= [RaE3list count]) { // 少なくとも、Top + Monthly + End の3セクションある
+	if (3 <= RaE3list.count) { // 少なくとも、Top + Monthly + End の3セクションある
 		NSIndexPath *indexPath;
 		if (iSecMiddle < 0) { // 現在以降の明細が無いとき
 			// 最新行（最終ページ）を表示する　＜＜最終行を画面下部に表示する＞＞  +Add行まで表示するためMiddleにした。
-			indexPath = [NSIndexPath indexPathForRow:0 inSection:[RaE3list count]-1]; // 行末セクションへ
+			indexPath = [NSIndexPath indexPathForRow:0 inSection:RaE3list.count-1]; // 行末セクションへ
 			[self.tableView scrollToRowAtIndexPath:indexPath			//  Middle 中央へ
 								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 		} else {
@@ -429,16 +416,16 @@
 					} else {
 						if (0 < iSecMiddle) {
 							iSecMiddle--;
-							iRowMiddle = [[RaE3list objectAtIndex:iSecMiddle] count] - 1;
+							iRowMiddle = [RaE3list[iSecMiddle] count] - 1;
 						}
 					}
 					break;
 				case UITableViewScrollPositionBottom:
 					// 次の行へ
-					if (iRowMiddle < [[RaE3list objectAtIndex:iSecMiddle] count] - 1) {
+					if (iRowMiddle < [RaE3list[iSecMiddle] count] - 1) {
 						iRowMiddle++;
 					} else {
-						if (iSecMiddle < [RaE3list count] - 1) {
+						if (iSecMiddle < RaE3list.count - 1) {
 							iSecMiddle++;
 							iRowMiddle = 0;
 						}
@@ -468,7 +455,7 @@
 #pragma mark - View lifecicle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
-- (id)initWithStyle:(UITableViewStyle)style 
+- (instancetype)initWithStyle:(UITableViewStyle)style 
 {
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
@@ -479,7 +466,7 @@
 		self.PbAddMode = NO;
 		MmoreScrollPosition = UITableViewScrollPositionMiddle;
 		
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+		AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
 		app.Me3dateUse = nil; //1.0.0//
 		//
@@ -502,21 +489,21 @@
 	//self.title =  親からセットする。 E4,E5などから呼び出されるため
 	
 	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil] autorelease];
-	UIBarButtonItem *buAdd = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																			target:self action:@selector(barButtonAdd)] autorelease];
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)];
 #ifdef AzPAD
 	NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
 	[self setToolbarItems:buArray animated:YES];
 #else
-	UIBarButtonItem *buTop = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)] autorelease];
-	UIBarButtonItem *buSet = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+															  target:self action:@selector(barButtonTop)];
+	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
 															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(azSettingView)] autorelease];
-	NSArray *buArray = [NSArray arrayWithObjects: buTop, buFlex, buAdd, buFlex, buSet, nil];
+															  target:self action:@selector(azSettingView)];
+	NSArray *buArray = @[buTop, buFlex, buAdd, buFlex, buSet];
 	[self setToolbarItems:buArray animated:YES];
 #endif
 
@@ -525,16 +512,15 @@
 	RcellDateFormatter = [[NSDateFormatter alloc] init];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	[RcellDateFormatter setCalendar:calendar];
-	[calendar release];
+	RcellDateFormatter.calendar = calendar;
 	//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
 	[RcellDateFormatter setDateFormat:NSLocalizedString(@"E3listDate",nil)];
 
 	// TableCell表示で使う金額フォーマッタを定義する
 	assert(RcellNumberFormatter==nil);
 	RcellNumberFormatter = [[NSNumberFormatter alloc] init];
-	[RcellNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];  // CurrencyStyle]; // 通貨スタイル
-	[RcellNumberFormatter setLocale:[NSLocale currentLocale]]; 
+	RcellNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;  // CurrencyStyle]; // 通貨スタイル
+	RcellNumberFormatter.locale = [NSLocale currentLocale]; 
 
 	
 //#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
@@ -571,7 +557,7 @@
 #endif
 	
 	// テーブルソース セット
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	if (RaE3list==nil || app.Me3dateUse) {
 		//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 		NSLog(@"viewWillAppear: app.Me3dateUse=%@", app.Me3dateUse);
@@ -617,7 +603,7 @@
 	
     [super viewDidAppear:animated];
 	
-	if (self.PbAddMode==NO && [RaE3list count] < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
+	if (self.PbAddMode==NO && RaE3list.count < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
 		// 明細なし ＞ 前画面に戻す
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E3list NoData",nil)
 														message:NSLocalizedString(@"E3list NoData msg",nil)
@@ -626,7 +612,6 @@
 											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
 		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
 		[alert show];
-		[alert release];
 		return;
 	}
 	
@@ -731,11 +716,11 @@
 #endif
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
-	[RaE3list release],		RaE3list = nil;
-	[RaSection release],	RaSection = nil;
-	[RaIndex release],		RaIndex = nil;
-	[RcellDateFormatter release], RcellDateFormatter = nil;
-	[RcellNumberFormatter release], RcellNumberFormatter = nil;
+	RaE3list = nil;
+	RaSection = nil;
+	RaIndex = nil;
+	RcellDateFormatter = nil;
+	RcellNumberFormatter = nil;
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -747,8 +732,6 @@
 	[MindexPathEdit release], MindexPathEdit = nil;
 #endif
 	//--------------------------------@property (retain)
-	[Re0root release];
-	[super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -765,14 +748,14 @@
 #pragma mark - TableView delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [RaE3list count]; // [0]さらに前へ  [1〜End-1]E3record  [End]さらに次へ
+	return RaE3list.count; // [0]さらに前へ  [1〜End-1]E3record  [End]さらに次へ
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[RaE3list objectAtIndex:section] count];
+	return [RaE3list[section] count];
 }
 
 
@@ -780,7 +763,7 @@
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
 	// NSMutableArray を NSArray にする
-	NSArray *ar = [[RaIndex copy] autorelease];
+	NSArray *ar = [RaIndex copy];
 	return ar;
 }
 
@@ -788,23 +771,22 @@
 // TableView セクション名を応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
-	if (0 < section && section < [RaE3list count]-1 && 0 < [[RaE3list objectAtIndex:section] count]) 
+	if (0 < section && section < RaE3list.count-1 && 0 < [RaE3list[section] count]) 
 	{
 		// 年-月  月計 99,999,999
 		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle]; // 通貨スタイル
-		[formatter setLocale:[NSLocale currentLocale]]; 
-		NSString *zSum = [formatter stringFromNumber:[[RaE3list objectAtIndex:section] 
+		formatter.numberStyle = NSNumberFormatterCurrencyStyle; // 通貨スタイル
+		formatter.locale = [NSLocale currentLocale]; 
+		NSString *zSum = [formatter stringFromNumber:[RaE3list[section] 
 													  valueForKeyPath:@"@sum.nAmount"]];
-		[formatter release];
 		//
 		NSString *zHeader = [NSString stringWithFormat:@"%@   %@ %@",
-							 [RaSection objectAtIndex:section], 
+							 RaSection[section], 
 							 NSLocalizedString(@"Monthly total",nil), zSum];
 		return zHeader; // autoreleseされる
 	}
 	// 年-月
-	return [RaSection objectAtIndex:section];
+	return RaSection[section];
 }
 
 
@@ -831,21 +813,21 @@
 	UILabel *cellLabel = nil;
 	
 	
-	if (indexPath.section <= 0 || [RaE3list count]-1 <= indexPath.section) 
+	if (indexPath.section <= 0 || RaE3list.count-1 <= indexPath.section) 
 	{
 		// Top End
-		if ([[RaE3list objectAtIndex:indexPath.section] objectAtIndex:0] == [NSNull null]) {
+		if (RaE3list[indexPath.section][0] == [NSNull null]) {
 			// No More & AdMob
 			cell = [tableView dequeueReusableCellWithIdentifier:zCellAdMob];
 			if (cell == nil) {
-				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-											   reuseIdentifier:zCellAdMob] autorelease];
+				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+											   reuseIdentifier:zCellAdMob];
 				
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 				cell.showsReorderControl = NO;		// Move禁止
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
-				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				cell.textLabel.textAlignment = NSTextAlignmentCenter;
 				cell.textLabel.textColor = [UIColor grayColor];
 				cell.textLabel.text = NSLocalizedString(@"E3list No More",nil);
 #ifdef FREE_AD
@@ -857,7 +839,7 @@
 #ifdef FREE_AD
 //			if (RoAdMobView) {
 //				CGRect rc = RoAdMobView.frame;
-//				if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+//				if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 //				{	// タテ
 //					rc.origin.x = 0;
 //				} else {
@@ -871,10 +853,10 @@
 			// More...
 			cell = [tableView dequeueReusableCellWithIdentifier:zCellTopEnd];
 			if (cell == nil) {
-				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-											   reuseIdentifier:zCellTopEnd] autorelease];
+				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+											   reuseIdentifier:zCellTopEnd];
 				cell.textLabel.font = [UIFont systemFontOfSize:14];
-				cell.textLabel.textAlignment = UITextAlignmentLeft;
+				cell.textLabel.textAlignment = NSTextAlignmentLeft;
 				cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"E3list More",nil), (long)GD_E3_SELECT_LIMIT];
 				cell.showsReorderControl = NO; // Move禁止
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -886,8 +868,8 @@
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier:zCellE3record];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-											reuseIdentifier:zCellE3record] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+											reuseIdentifier:zCellE3record];
 			// 行毎に変化の無い定義は、ここで最初に1度だけする
 #ifdef AzPAD
 			cell.textLabel.font = [UIFont systemFontOfSize:18];
@@ -896,11 +878,11 @@
 			cell.textLabel.font = [UIFont systemFontOfSize:14];
 			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 #endif
-			cell.detailTextLabel.textAlignment = UITextAlignmentLeft; //金額が欠けないように左寄せにした
+			cell.detailTextLabel.textAlignment = NSTextAlignmentLeft; //金額が欠けないように左寄せにした
 			cell.showsReorderControl = NO; // Move禁止
 
 			cellLabel = [[UILabel alloc] init];
-			cellLabel.textAlignment = UITextAlignmentRight;
+			cellLabel.textAlignment = NSTextAlignmentRight;
 			//cellLabel.textColor = [UIColor blackColor];
 			cellLabel.backgroundColor = [UIColor whiteColor];
 #ifdef AzPAD
@@ -909,7 +891,7 @@
 			cellLabel.font = [UIFont systemFontOfSize:14];
 #endif
 			cellLabel.tag = -1;
-			[cell addSubview:cellLabel]; [cellLabel release];
+			[cell addSubview:cellLabel]; 
 		 }
 		else {
 			cellLabel = (UILabel *)[cell viewWithTag:-1];
@@ -921,9 +903,9 @@
 		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
 #endif
 		
-		E3record *e3obj = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		E3record *e3obj = RaE3list[indexPath.section][indexPath.row];
 		
-		if (e3obj.e1card && 0 < [e3obj.e6parts count]) {
+		if (e3obj.e1card && 0 < (e3obj.e6parts).count) {
 			BOOL bPaid = YES;
 			for (E6part *e6node in e3obj.e6parts) {
 				if (e6node.e2invoice.e7payment.e0unpaid) {
@@ -934,15 +916,15 @@
 			if (bPaid) {
 				cell.imageView.image = [UIImage imageNamed:@"Icon32-PAID"]; // PAID
 			}
-			else if (1 < [e3obj.e6parts count]) {
-				if ([e3obj.sumNoCheck intValue]==0) {
+			else if (1 < (e3obj.e6parts).count) {
+				if ((e3obj.sumNoCheck).intValue==0) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check"];
 				} else {
 					cell.imageView.image = nil; //[UIImage imageNamed:@"CircleW32"];
 				}
 			}
 			else {
-				if ([e3obj.sumNoCheck intValue]==0) {
+				if ((e3obj.sumNoCheck).intValue==0) {
 					cell.imageView.image = [UIImage imageNamed:@"Icon32-Check"];
 				} else {
 					cell.imageView.image = nil; //左画像なし：少しでも幅広くするため。見栄えも問題なさそうだ。
@@ -966,11 +948,11 @@
 		// Cell 1行目
 		cell.textLabel.text = [NSString stringWithFormat:@"%@　%@", zDate, zName];
 		// 金額
-		if ([e3obj.nAmount doubleValue] == 0) {
+		if ((e3obj.nAmount).doubleValue == 0) {
 			cellLabel.textColor = [UIColor redColor]; // これだけは赤にした。
 			cellLabel.text = @"Zero! 0";
 		} else {
-			if ([e3obj.nAmount doubleValue] < 0) {
+			if ((e3obj.nAmount).doubleValue < 0) {
 				cellLabel.textColor = [UIColor blueColor];
 			} else {
 				cellLabel.textColor = [UIColor blackColor];
@@ -985,7 +967,7 @@
 		NSString *zRepeat = @"";
 		if (e3obj.e4shop != nil) zShop = e3obj.e4shop.zName;
 		if (e3obj.e5category != nil) zCategory = e3obj.e5category.zName;
-		if (0 < [e3obj.nRepeat integerValue]) zRepeat = @"〃 ";
+		if (0 < (e3obj.nRepeat).integerValue) zRepeat = @"〃 ";
 		if (e3obj.e1card) {
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"  %@%@  %@  %@", zRepeat, e3obj.e1card.zName, 
 										 zShop, zCategory];
@@ -1041,27 +1023,27 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
 
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
-	McontentOffsetDidSelect = [tableView contentOffset];
+	McontentOffsetDidSelect = tableView.contentOffset;
 	//NSLog(@"***didSelectRowAtIndexPath: McontentOffsetDidSelect=(%f,%f)", McontentOffsetDidSelect.x, McontentOffsetDidSelect.y);
 	
 	if (indexPath.section <=0)
 	{	//「さらに前へ」
-		id datePrev = [[RaE3list objectAtIndex:0] objectAtIndex:0];
+		id datePrev = RaE3list[0][0];
 		if (datePrev != [NSNull null]) {
 			//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 			MmoreScrollPosition = UITableViewScrollPositionTop;
-			[self setMe3list:[datePrev retain]]; [datePrev release]; // retain必要
+			[self setMe3list:datePrev];  // retain必要
 			//0.5//[autoPool release];
 		}
 		return;
 	}
-	else if ([RaE3list count]-1 <= indexPath.section)
+	else if (RaE3list.count-1 <= indexPath.section)
 	{	//「さらに次へ」
-		id dateNext = [[RaE3list objectAtIndex:indexPath.section] objectAtIndex:0];
+		id dateNext = RaE3list[indexPath.section][0];
 		if (dateNext != [NSNull null]) {
 			//0.5//NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];
 			MmoreScrollPosition = UITableViewScrollPositionBottom;
-			[self setMe3list:[dateNext retain]]; [dateNext release]; // retain必要
+			[self setMe3list:dateNext];  // retain必要
 			//0.5//[autoPool release];
 		}
 		return;

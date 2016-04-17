@@ -18,7 +18,7 @@
 	E3record		*Re3edit;			// !=nil : E3record変更モード（日付）
 	E6part			*Re6edit;			// !=nil : E6part変更モード（日付、金額）
 	//--------------------------assign
-	id						delegate;			// editDateE6change を呼び出すため
+	id						__weak delegate;			// editDateE6change を呼び出すため
 	NSInteger	PiMinYearMMDD;
 	NSInteger	PiMaxYearMMDD;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
@@ -37,12 +37,12 @@
 
 //@property (nonatomic, retain) id					Rentity;
 //@property (nonatomic, retain) NSString		*RzKey;	
-@property (nonatomic, assign) id					delegate;
+@property (nonatomic, weak) id					delegate;
 @property (nonatomic, assign) NSInteger	PiMinYearMMDD;
 @property (nonatomic, assign) NSInteger	PiMaxYearMMDD;
 
 //- (id)init;	//E3.dateUser
 //- (id)initWithE6row:(NSUInteger)iRow;	//[1.0.0]E6date変更モード
-- (id)initWithE3:(E3record*)e3 orE6:(E6part*)e6;
+- (instancetype)initWithE3:(E3record*)e3 orE6:(E6part*)e6 NS_DESIGNATED_INITIALIZER;
 
 @end

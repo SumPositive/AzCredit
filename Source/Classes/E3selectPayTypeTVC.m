@@ -27,7 +27,7 @@
 
 #pragma mark - View lifecicle
 
-- (id)initWithStyle:(UITableViewStyle)style {
+- (instancetype)initWithStyle:(UITableViewStyle)style {
     if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
 		// OK
 #ifdef AzPAD
@@ -66,7 +66,7 @@
 
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
-	sourcePayType = [Re3edit.nPayType integerValue]; //初期値
+	sourcePayType = (Re3edit.nPayType).integerValue; //初期値
 }
 
 
@@ -86,11 +86,6 @@
 
 #pragma mark  View - Unload - dealloc
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[Re3edit release];
-	[super dealloc];
-}
 
 
 #pragma mark - TableView lifecicle
@@ -130,8 +125,8 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  // Subtitle
-									   reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  // Subtitle
+									   reuseIdentifier:CellIdentifier];
 
 #ifdef AzPAD
 		cell.textLabel.font = [UIFont systemFontOfSize:20];
@@ -139,7 +134,7 @@
 		cell.textLabel.font = [UIFont systemFontOfSize:16];
 #endif
 		cell.textLabel.textColor = [UIColor blackColor];
-		cell.textLabel.textAlignment = UITextAlignmentLeft;
+		cell.textLabel.textAlignment = NSTextAlignmentLeft;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -147,22 +142,22 @@
 	switch (indexPath.row) {
 		case 0:
 			cell.textLabel.text = NSLocalizedString(@"PayType 001", nil);
-			if ([Re3edit.nPayType integerValue] == 1)
+			if ((Re3edit.nPayType).integerValue == 1)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 1:
 			cell.textLabel.text = NSLocalizedString(@"PayType 002", nil);
-			if ([Re3edit.nPayType integerValue] == 2)
+			if ((Re3edit.nPayType).integerValue == 2)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 2:
 			cell.textLabel.text = NSLocalizedString(@"PayType 101", nil);
-			if ([Re3edit.nPayType integerValue] == 101)
+			if ((Re3edit.nPayType).integerValue == 101)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 3:
 			cell.textLabel.text = NSLocalizedString(@"PayType 201", nil);
-			if ([Re3edit.nPayType integerValue] == 201)
+			if ((Re3edit.nPayType).integerValue == 201)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		default:
@@ -179,24 +174,24 @@
 	// DONE
 	switch (indexPath.row) {
 		case 0:
-			Re3edit.nPayType = [NSNumber numberWithInt:1];
+			Re3edit.nPayType = @1;
 			break;
 		case 1:
-			Re3edit.nPayType = [NSNumber numberWithInt:2];
+			Re3edit.nPayType = @2;
 			break;
 		case 2:
-			Re3edit.nPayType = [NSNumber numberWithInt:101];
+			Re3edit.nPayType = @101;
 			break;
 		case 3:
-			Re3edit.nPayType = [NSNumber numberWithInt:201];
+			Re3edit.nPayType = @201;
 			break;
 		default:
-			Re3edit.nPayType = [NSNumber numberWithInt:1];
+			Re3edit.nPayType = @1;
 			break;
 	}
 
-	if (sourcePayType != [Re3edit.nPayType integerValue]) {
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+	if (sourcePayType != (Re3edit.nPayType).integerValue) {
+		AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		apd.entityModified = YES;	//変更あり
 
 		// E6更新

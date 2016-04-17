@@ -21,7 +21,7 @@
 	//----------------------------------------------assign
 	NSInteger	PiAddRow;	// (-1)Edit
 	BOOL		PbSave;		//
-	E1card		*Pe1edit;	// =nil:マスタモード  !=nil:選択モード
+	E1card		*__weak Pe1edit;	// =nil:マスタモード  !=nil:選択モード
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -31,10 +31,10 @@
 	//BOOL MbOptAntirotation;
 }
 
-@property (nonatomic, retain) E8bank	*Re8edit;
+@property (nonatomic, strong) E8bank	*Re8edit;
 @property NSInteger						PiAddRow;
 @property BOOL								PbSave;
-@property (nonatomic, assign) E1card	*Pe1edit;
+@property (nonatomic, weak) E1card	*Pe1edit;
 #ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;

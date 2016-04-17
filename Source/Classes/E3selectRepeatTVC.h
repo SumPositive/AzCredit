@@ -23,6 +23,6 @@
 	//BOOL MbOptAntirotation;
 }
 
-@property (nonatomic, retain) E3record		*Re3edit;
+@property (nonatomic, strong) E3record		*Re3edit;
 
 @end

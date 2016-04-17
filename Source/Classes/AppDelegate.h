@@ -52,19 +52,19 @@
 	//-------------------------------------assign
 }
 
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, assign, readonly) NSString		*applicationDocumentsDirectory;
-@property (nonatomic, retain) UIWindow						*window;
-@property (nonatomic, retain) NSDate							*Me3dateUse;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, weak, readonly) NSString		*applicationDocumentsDirectory;
+@property (nonatomic, strong) UIWindow						*window;
+@property (nonatomic, strong) NSDate							*Me3dateUse;
 @property (nonatomic, assign) BOOL							entityModified;
 
 #ifdef AzPAD
 @property (nonatomic, retain) UISplitViewController		*mainController;
 @property (nonatomic, assign) UIBarButtonItem				*barMenu;
 #else
-@property (nonatomic, retain) UINavigationController		*mainController;
+@property (nonatomic, strong) UINavigationController		*mainController;
 #endif
 
 - (void)audioPlayer:(NSString*)filename;

@@ -22,7 +22,7 @@
 
 //iOS6以降、回転対応のためサブクラス化が必要になった。
 @implementation AzNavigationController
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {	//iOS6以降
 	//トップビューの向きを返す
 	return self.topViewController.supportedInterfaceOrientations;
@@ -55,23 +55,17 @@
 {
 	//AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
 	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
-	Me3dateUse = nil;
 
 //	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
 	mainController.delegate = nil;
-	[mainController release], mainController = nil;
+	mainController = nil;
 
 //	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
-	[window release];
 
 //	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
-    [persistentStoreCoordinator release];
 //	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
-    [managedObjectContext release];
 //	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
-    [managedObjectModel release];
 
-	[super dealloc];
 }
 
 
@@ -94,7 +88,7 @@
 //	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
 
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
-	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -104,19 +98,13 @@
 	// [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 	// ここで，appDefaultsは環境設定で初期値となるキー・バリューペアのNSDictonaryオブジェクトです。
 	// このメソッドは，すでに同じキーの環境設定が存在する場合，上書きしないので，環境設定の初期値を定めることに使えます。
-	NSDictionary *azOptDef = [NSDictionary dictionaryWithObjectsAndKeys: // コンビニエンスコンストラクタにつきrelease不要
-					//[0.4]// @"NO",	GD_OptBootTopView,			// TopView
-						//	  @"NO",	GD_OptAntirotation,			// 回転防止
-						//	  @"YES",	GD_OptEnableSchedule,		// 支払予定
-						//	  @"YES",	GD_OptEnableCategory,		// 分類
-							  @"YES",	GD_OptEnableInstallment,	// 分割払い
-							  @"NO",	GD_OptUseDateTime,			// 利用日：時刻なし
-							  @"NO",	GD_OptNumAutoShow,			// ＜保留＞ テンキー自動表示
-							  @"NO",	GD_OptFixedPriority,		// ＜保留＞ 修正を優先
+	NSDictionary *azOptDef = @{GD_OptEnableInstallment: @"YES",	// 分割払い
+							  GD_OptUseDateTime: @"NO",			// 利用日：時刻なし
+							  GD_OptNumAutoShow: @"NO",			// ＜保留＞ テンキー自動表示
+							  GD_OptFixedPriority: @"NO",		// ＜保留＞ 修正を優先
 						//	  @"YES",	GD_OptAmountCalc,			// [0.3.1] 電卓使用
-							  @"NO",	GD_OptRoundBankers,			// [0.4] 偶数丸め
-							  NSLocalizedString(@"OptTaxRate_PER",nil), GD_OptTaxRate,	// [0.4] 消費税率(%)
-							  nil];
+							  GD_OptRoundBankers: @"NO",			// [0.4] 偶数丸め
+							  GD_OptTaxRate: NSLocalizedString(@"OptTaxRate_PER",nil)};
 
 	[userDefaults registerDefaults:azOptDef];	// 未定義のKeyのみ更新される
 	[userDefaults synchronize]; // plistへ書き出す ＜＜通常は一定の間隔で自動的に保存されるので、特別に保存したいときにこのメソッドを使う＞＞
@@ -152,10 +140,9 @@
 	
 	// mainController を window へ登録
 	//[window addSubview:mainController.view];
-	[window setRootViewController: mainController];	//iOS6以降、こうしなければ回転しない。
+	window.rootViewController = mainController;	//iOS6以降、こうしなければ回転しない。
 //	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
 
-	[topMenuTvc release];
 	
 	
 #ifdef AzMAKE_SPLASHFACE
@@ -324,10 +311,10 @@
         return managedObjectContext;
     }
 	
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
     if (coordinator != nil) {
         managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
+        managedObjectContext.persistentStoreCoordinator = coordinator;
     }
     return managedObjectContext;
 }
@@ -364,12 +351,12 @@
         return persistentStoreCoordinator;
     }
 	
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] 
+    NSURL *storeUrl = [NSURL fileURLWithPath: [self.applicationDocumentsDirectory 
 													stringByAppendingPathComponent:GD_COREDATANAME]];
 	
 	NSError *error;
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] 
-											initWithManagedObjectModel: [self managedObjectModel]];
+											initWithManagedObjectModel: self.managedObjectModel];
 
 	/*
 	 if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
@@ -381,9 +368,8 @@
 	 }    
 	 */
 
-	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-				 [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,	// 自動移行
-				[NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];	// 自動マッピング推論して処理
+	NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,	// 自動移行
+				NSInferMappingModelAutomaticallyOption: @YES};	// 自動マッピング推論して処理
 	// NSInferMappingModelAutomaticallyOption が無ければ「マッピングモデル」を使って移行処理される。
 	
 	if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
@@ -406,7 +392,7 @@
 - (NSString *)applicationDocumentsDirectory {
 	
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    NSString *basePath = (paths.count > 0) ? paths[0] : nil;
     return basePath;
 }
 
@@ -425,7 +411,7 @@
 //		GA_TRACK_EVENT_ERROR([error localizedDescription],0)
 		return;
 	}
-	if ([pass length]<=0) {
+	if (pass.length<=0) {
 		return; // パスなし、自動ログイン
 	}
 
@@ -436,7 +422,6 @@
 	//[self.window  presentModalViewController:vc animated:YES];
 	//[mainController.navigationController presentModalViewController:vc animated:NO]; 
 	[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
-	[vc release];
 }
 
 
@@ -462,14 +447,12 @@
 {	// 再生が終了したとき、破棄する	＜＜ シミュレータでは呼び出されない
 	NSLog(@"- audioPlayerDidFinishPlaying -");
 	player.delegate = nil;
-    [player release];
 }
 
 - (void)audioPlayerDecodeErrorDidOccur: (AVAudioPlayer*)player error:(NSError*)error
 {	// エラー発生
 	NSLog(@"- audioPlayerDecodeErrorDidOccur -");
 	player.delegate = nil;
-	[player release];
 }
 
 

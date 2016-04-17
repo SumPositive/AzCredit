@@ -139,7 +139,7 @@ NSString *passCode()
 	NSString *code = [NSString stringWithFormat:@"Syukugawa%@%@", getMacAddress(), PASS_SECRET];
 	NSLog(@"MAC address: code=%@", code);
 	// code を MD5ハッシュ化
-	const char *cstr = [code UTF8String];	// C文字列化
+	const char *cstr = code.UTF8String;	// C文字列化
 	unsigned char ucMd5[CC_MD5_DIGEST_LENGTH];	// MD5結果領域 [16]bytes
 	CC_MD5(cstr, strlen(cstr), ucMd5);			// MD5生成
 	// 16進文字列化 ＜＜ucMd5[0]〜[15]のうち10文字分だけ使用する＞＞
@@ -153,12 +153,6 @@ NSString *passCode()
 
 #pragma mark - dealloc
 
-- (void)dealloc {
-#ifdef AzSTABLE
-	[zPassCode_ release];
-#endif
-    [super dealloc];
-}
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
@@ -193,7 +187,7 @@ NSString *passCode()
 			MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 			picker.mailComposeDelegate = self;
 			// To: 宛先
-			NSArray *toRecipients = [NSArray arrayWithObject:@"post@azukid.com"];
+			NSArray *toRecipients = @[@"post@azukid.com"];
 			[picker setToRecipients:toRecipients];
 			
 			// Subject: 件名
@@ -211,8 +205,8 @@ NSString *passCode()
 			[picker setSubject:zSubj];  
 			
 			// Body: 本文
-			NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
-			NSString *zBuild = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
+			NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+			NSString *zBuild = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]; //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
 			NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
 #ifdef AzSTABLE
 			zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@) Stable\n",  zVersion, zBuild];
@@ -223,20 +217,20 @@ NSString *passCode()
 			NSString* deviceID = [device platformString];	
 			zBody = [zBody stringByAppendingFormat:@"Device: %@   iOS: %@\n", 
 					 deviceID,
-					 [[UIDevice currentDevice] systemVersion]]; // OSの現在のバージョン
+					 [UIDevice currentDevice].systemVersion]; // OSの現在のバージョン
 			
 			NSArray *languages = [NSLocale preferredLanguages];
 			zBody = [zBody stringByAppendingFormat:@"Locale: %@ (%@)\n\n",
 					 [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier],
-					 [languages objectAtIndex:0]];
+					 languages[0]];
 			
 			zBody = [zBody stringByAppendingString:NSLocalizedString(@"Contact message",nil)];
 			[picker setMessageBody:zBody isHTML:NO];
 			
 			//Bug//[self hide]; 上のアニメと競合してメール画面が表示されない。これより先にhideするように改めた。
-			AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-			[app.mainController presentModalViewController:picker animated:YES];
-			[picker release];
+			AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+			//[app.mainController presentModalViewController:picker animated:YES];
+			[app.mainController presentViewController:picker animated:YES completion:nil];
 		}	break;
 	}
 }
@@ -334,7 +328,7 @@ NSString *passCode()
 #pragma mark - View
 
 //- (id)initWithFrame:(CGRect)rect 
-- (id)init
+- (instancetype)init
 {
 	// アニメションの開始位置
 	//rect.origin.y = 20.0f - rect.size.height;
@@ -374,25 +368,25 @@ NSString *passCode()
 #else	
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+50, 57, 57)];
 #ifdef AzSTABLE
-	[iv setImage:[UIImage imageNamed:@"Icon57s1.png"]];
+	iv.image = [UIImage imageNamed:@"Icon57s1.png"];
 #else
 	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
 #endif
-	[self.view addSubview:iv]; [iv release];
+	[self.view addSubview:iv]; 
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+40, 200, 40)];
 	label.text = NSLocalizedString(@"Product Title",nil);
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:35];
 	label.adjustsFontSizeToFitWidth = YES;
 	label.minimumFontSize = 16;
 	label.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
-	[self.view addSubview:label]; [label release];
+	[self.view addSubview:label]; 
 	
 	//------------------------------------------Lable:Version
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 45)];
@@ -406,14 +400,14 @@ NSString *passCode()
 #else	
 	NSString *zDevice = @"for iPhone";
 #endif
-	NSString *zVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+	NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
 	label.text = [NSString stringWithFormat:@"%@\n%@\nVersion %@", zFree, zDevice, zVersion];  // Build表示しない
 	label.numberOfLines = 3;
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont boldSystemFontOfSize:12];
-	[self.view addSubview:label]; [label release];
+	[self.view addSubview:label]; 
 
 	//------------------------------------------Lable:Azuki Color
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+110, 100, 77)];
@@ -424,11 +418,11 @@ NSString *passCode()
 				 @"tradition\n"
 				 @"color.";
 	label.numberOfLines = 6;
-	label.textAlignment = UITextAlignmentLeft;
+	label.textAlignment = NSTextAlignmentLeft;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont boldSystemFontOfSize:10];
-	[self.view addSubview:label]; [label release];
+	[self.view addSubview:label]; 
 	
 	//------------------------------------------Lable:著作権表示
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+130, 200, 60)];
@@ -437,11 +431,11 @@ NSString *passCode()
 						@"Creator Sum Positive\n"
 						@"All Rights Reserved.";
 	label.numberOfLines = 4;
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont systemFontOfSize:12];
-	[self.view addSubview:label]; [label release];	
+	[self.view addSubview:label]; 	
 	
 	//------------------------------------------Post Comment
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -475,7 +469,7 @@ NSString *passCode()
 	label.text = [NSString stringWithFormat:@"%@\n%@\n%@", NSLocalizedString(@"Invitation pass",nil), 
 				  zPassCode_, @"< Tap Copy >"];
 	label.numberOfLines = 3;
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor blackColor];
 	label.backgroundColor = [UIColor redColor]; //背景
 	label.font = [UIFont boldSystemFontOfSize:14];
@@ -487,22 +481,22 @@ NSString *passCode()
 	//------------------------------------------免責
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+300, 300, 50)];
 	label.text = NSLocalizedString(@"Disclaimer",nil);
-	label.textAlignment = UITextAlignmentLeft;
+	label.textAlignment = NSTextAlignmentLeft;
 	label.numberOfLines = 4;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Courier" size:10];
-	[self.view addSubview:label]; [label release];	
+	[self.view addSubview:label]; 	
 	
 	//------------------------------------------注意
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+360, 300, 65)];
 	label.text = NSLocalizedString(@"Security Alert",nil);
-	label.textAlignment = UITextAlignmentLeft;
+	label.textAlignment = NSTextAlignmentLeft;
 	label.numberOfLines = 5;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Courier" size:10];
-	[self.view addSubview:label]; [label release];	
+	[self.view addSubview:label]; 	
 
 	
 	//------------------------------------------CLOSE
@@ -511,11 +505,11 @@ NSString *passCode()
 #else
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+440, 280, 25)];
 	label.text = NSLocalizedString(@"Information Open",nil);
-	label.textAlignment = UITextAlignmentCenter;
+	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	[self.view addSubview:label]; [label release];	
+	[self.view addSubview:label]; 	
 #endif
 
     return self;
@@ -573,7 +567,7 @@ NSString *passCode()
 
 - (void)hide
 {
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)show
@@ -606,8 +600,8 @@ NSString *passCode()
             break;
     }
 	// [self dismissModalViewControllerAnimated:YES];
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[app.mainController dismissModalViewControllerAnimated:YES];
+	AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	[app.mainController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
