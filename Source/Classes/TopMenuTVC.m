@@ -30,7 +30,6 @@
 #import "PadRootVC.h"
 #endif
 
-#define TAG_ALERT_SupportSite		109
 #define TAG_VIEW_HttpServer			118
 
 
@@ -113,18 +112,6 @@
 	SettingTVC *view = [[SettingTVC alloc] init];
 	[self.navigationController pushViewController:view animated:YES];
 #endif
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	switch (alertView.tag) {
-		case TAG_ALERT_SupportSite:
-			if (buttonIndex == 1) { // OK
-				[[UIApplication sharedApplication] 
-				 openURL:[NSURL URLWithString:@"http://paynote.tumblr.com/"]];
-			}
-			break;
-	}
 }
 
 - (void)e3detailAdd		//PadRootVCからdelegate呼び出しされる

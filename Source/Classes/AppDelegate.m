@@ -421,7 +421,8 @@
 	vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	//[self.window  presentModalViewController:vc animated:YES];
 	//[mainController.navigationController presentModalViewController:vc animated:NO]; 
-	[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
+	//[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
+	[mainController presentViewController:vc animated:NO completion:nil];
 }
 
 
