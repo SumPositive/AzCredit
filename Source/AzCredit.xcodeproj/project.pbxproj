@@ -45,22 +45,6 @@
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
-		447B47601CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
-		447B47611CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
-		447B47621CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
-		447B47631CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */; };
-		447B47641CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		447B47651CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		447B47661CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
-		447B47671CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */; };
-		447B476A1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
-		447B476B1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
-		447B476C1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
-		447B476D1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */; };
-		447B476E1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		447B476F1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		447B47701CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
-		447B47711CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
@@ -617,6 +601,24 @@
 		44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
 		44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
+		44EC56001E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44EC55FD1E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt */; };
+		44EC56011E7D7D8D006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
+		44EC56021E7D7D8D006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; };
+		44EC56071E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44EC56041E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt */; };
+		44EC56081E7D7DA9006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
+		44EC56091E7D7DA9006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; };
+		44EC560A1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		44EC560B1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; };
+		44EC560C1E7D7DF8006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; };
+		44EC560D1E7D7DFB006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
+		44EC560E1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
+		44EC560F1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
+		44EC56101E7D7E00006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
+		44EC56111E7D7E00006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
+		44EC56121E7D7E01006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
+		44EC56131E7D7E04006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		44EC56141E7D7E04006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; };
+		44EC56151E7D7E05006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; };
 		44F0875B15177D5B00B84A44 /* Icon72S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875915177D5B00B84A44 /* Icon72S1@2x.png */; };
 		44F0875C15177D5B00B84A44 /* Icon72S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875915177D5B00B84A44 /* Icon72S1@2x.png */; };
 		44F0875D15177D5B00B84A44 /* Icon72Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */; };
@@ -664,10 +666,6 @@
 		447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		447071CD12FC4F8C00C053D2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		447071CF12FC4F8C00C053D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFHFKeychainUtils.h; path = ../../../paynote/SFHFKeychainUtils/SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = ../../../paynote/SFHFKeychainUtils/SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice-Hardware.h"; path = "../../../paynote/UIDevice-Hardware/UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice-Hardware.m"; path = "../../../paynote/UIDevice-Hardware/UIDevice-Hardware.m"; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationView.m; sourceTree = "<group>"; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTVC.m; sourceTree = "<group>"; };
@@ -813,6 +811,12 @@
 		44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E3selectRepeatTVC.m; sourceTree = "<group>"; };
 		44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CircleUnpaid.png"; path = "Design/Icon32-CircleUnpaid.png"; sourceTree = "<group>"; };
 		44EC041113422E79005071AC /* InfoS1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoS1.plist; sourceTree = "<group>"; };
+		44EC55FD1E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ARC非対応 - Compile Flag指定方法.txt"; sourceTree = "<group>"; };
+		44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
+		44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
+		44EC56041E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ARC非対応 - Compile Flag指定方法.txt"; sourceTree = "<group>"; };
+		44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		44F0875915177D5B00B84A44 /* Icon72S1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72S1@2x.png"; sourceTree = "<group>"; };
 		44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72Free@2x.png"; sourceTree = "<group>"; };
 		44FB5C5911512063008DEC3E /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
@@ -1032,30 +1036,10 @@
 		442FA9BE15711F5D003D19D8 /* OpenCode */ = {
 			isa = PBXGroup;
 			children = (
-				442FA9C015711FA9003D19D8 /* UIDevice-Hardware */,
-				442FA9C315711FA9003D19D8 /* SFHFKeychainUtils */,
+				44EC56031E7D7DA9006B044A /* SFHFKeychainUtils */,
+				44EC55FC1E7D7D8D006B044A /* UIDevice-Hardware */,
 			);
 			name = OpenCode;
-			sourceTree = "<group>";
-		};
-		442FA9C015711FA9003D19D8 /* UIDevice-Hardware */ = {
-			isa = PBXGroup;
-			children = (
-				447B47681CC204B60079B5C7 /* UIDevice-Hardware.h */,
-				447B47691CC204B60079B5C7 /* UIDevice-Hardware.m */,
-			);
-			name = "UIDevice-Hardware";
-			path = "../../OpenCode/UIDevice-Hardware/UIDevice-Hardware.release";
-			sourceTree = "<group>";
-		};
-		442FA9C315711FA9003D19D8 /* SFHFKeychainUtils */ = {
-			isa = PBXGroup;
-			children = (
-				447B475E1CC1FDBB0079B5C7 /* SFHFKeychainUtils.h */,
-				447B475F1CC1FDBB0079B5C7 /* SFHFKeychainUtils.m */,
-			);
-			name = SFHFKeychainUtils;
-			path = ../../OpenCode/SFHFKeychainUtils/SFHFKeychainUtils.release;
 			sourceTree = "<group>";
 		};
 		44A4160E11DB83F7007DEB5B /* E8bank */ = {
@@ -1198,6 +1182,28 @@
 			name = iPad;
 			sourceTree = "<group>";
 		};
+		44EC55FC1E7D7D8D006B044A /* UIDevice-Hardware */ = {
+			isa = PBXGroup;
+			children = (
+				44EC55FD1E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt */,
+				44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */,
+				44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */,
+			);
+			name = "UIDevice-Hardware";
+			path = "../UIDevice-Hardware";
+			sourceTree = "<group>";
+		};
+		44EC56031E7D7DA9006B044A /* SFHFKeychainUtils */ = {
+			isa = PBXGroup;
+			children = (
+				44EC56041E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt */,
+				44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */,
+				44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */,
+			);
+			name = SFHFKeychainUtils;
+			path = ../SFHFKeychainUtils;
+			sourceTree = "<group>";
+		};
 		44F0737F1105D9D80024B707 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -1292,10 +1298,11 @@
 				44B85E8E1125B5A900383A34 /* EditTextVC.h in Headers */,
 				44B605F61126FADD00E82C54 /* E1editPayDayVC.h in Headers */,
 				44D7351611279ACB00997A37 /* E2invoiceTVC.h in Headers */,
+				44EC56081E7D7DA9006B044A /* SFHFKeychainUtils.h in Headers */,
 				440AC51611299DBE00B89317 /* EditDateVC.h in Headers */,
 				44D00C3F112CCC25001BC4C8 /* E3recordTVC.h in Headers */,
 				44ABA3A6112FB92D0009E62E /* E4shopDetailTVC.h in Headers */,
-				447B476A1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
+				44EC56011E7D7D8D006B044A /* UIDevice-Hardware.h in Headers */,
 				44ABA3A8112FB92D0009E62E /* E4shopTVC.h in Headers */,
 				44AD488C1132B6B900FB19FB /* E6partTVC.h in Headers */,
 				44A19FDF11367A3B00DE0113 /* E7paymentTVC.h in Headers */,
@@ -1308,7 +1315,6 @@
 				44A4162311DB8447007DEB5B /* E8bankDetailTVC.h in Headers */,
 				44A4162411DB8447007DEB5B /* E8bankTVC.h in Headers */,
 				44A5AB3D11DF7CCD00C9A093 /* E1editBonusVC.h in Headers */,
-				447B47601CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */,
 				44CEC514142636C4005D7850 /* Global.h in Headers */,
 			);
@@ -1330,12 +1336,12 @@
 				44B011FD133EF773005AD0EA /* EditDateVC.h in Headers */,
 				44B011FE133EF773005AD0EA /* E3recordTVC.h in Headers */,
 				44B011FF133EF773005AD0EA /* E4shopDetailTVC.h in Headers */,
-				447B476B1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44B01200133EF773005AD0EA /* E4shopTVC.h in Headers */,
 				44B01201133EF773005AD0EA /* E6partTVC.h in Headers */,
 				44B01202133EF773005AD0EA /* E7paymentTVC.h in Headers */,
 				44B01203133EF773005AD0EA /* FileCsv.h in Headers */,
 				44B01205133EF773005AD0EA /* E3selectPayTypeTVC.h in Headers */,
+				44EC560D1E7D7DFB006B044A /* SFHFKeychainUtils.h in Headers */,
 				44B01206133EF773005AD0EA /* E5categoryTVC.h in Headers */,
 				44B01207133EF773005AD0EA /* E5categoryDetailTVC.h in Headers */,
 				44B01208133EF773005AD0EA /* MocFunctions.h in Headers */,
@@ -1343,8 +1349,8 @@
 				44B0120B133EF773005AD0EA /* E8bankDetailTVC.h in Headers */,
 				44B0120C133EF773005AD0EA /* E8bankTVC.h in Headers */,
 				44B0120D133EF773005AD0EA /* E1editBonusVC.h in Headers */,
-				447B47611CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44B0120E133EF773005AD0EA /* E3selectRepeatTVC.h in Headers */,
+				44EC56101E7D7E00006B044A /* UIDevice-Hardware.h in Headers */,
 				44CEC516142636C5005D7850 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1355,9 +1361,7 @@
 			files = (
 				44C0E43813A0A2D1003D0465 /* AzCredit_Prefix.pch in Headers */,
 				44C0E43A13A0A2D1003D0465 /* SettingTVC.h in Headers */,
-				447B476C1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44C0E43B13A0A2D1003D0465 /* TopMenuTVC.h in Headers */,
-				447B47621CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44C0E43C13A0A2D1003D0465 /* E1cardTVC.h in Headers */,
 				44C0E43D13A0A2D1003D0465 /* E3recordDetailTVC.h in Headers */,
 				44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */,
@@ -1377,10 +1381,12 @@
 				44C0E44E13A0A2D1003D0465 /* MocFunctions.h in Headers */,
 				44C0E44F13A0A2D1003D0465 /* CalcView.h in Headers */,
 				44C0E45113A0A2D1003D0465 /* E8bankDetailTVC.h in Headers */,
+				44EC56111E7D7E00006B044A /* UIDevice-Hardware.h in Headers */,
 				44C0E45213A0A2D1003D0465 /* E8bankTVC.h in Headers */,
 				44C0E45313A0A2D1003D0465 /* E1editBonusVC.h in Headers */,
 				44C0E45413A0A2D1003D0465 /* E3selectRepeatTVC.h in Headers */,
 				44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */,
+				44EC560E1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */,
 				442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC517142636C6005D7850 /* Global.h in Headers */,
 			);
@@ -1392,9 +1398,7 @@
 			files = (
 				44C0E65913A0A475003D0465 /* AzCredit_Prefix.pch in Headers */,
 				44C0E65B13A0A475003D0465 /* SettingTVC.h in Headers */,
-				447B476D1CC204B60079B5C7 /* UIDevice-Hardware.h in Headers */,
 				44C0E65C13A0A475003D0465 /* TopMenuTVC.h in Headers */,
-				447B47631CC1FDBB0079B5C7 /* SFHFKeychainUtils.h in Headers */,
 				44C0E65D13A0A475003D0465 /* E1cardTVC.h in Headers */,
 				44C0E65E13A0A475003D0465 /* E3recordDetailTVC.h in Headers */,
 				44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */,
@@ -1414,10 +1418,12 @@
 				44C0E66F13A0A475003D0465 /* MocFunctions.h in Headers */,
 				44C0E67013A0A475003D0465 /* CalcView.h in Headers */,
 				44C0E67213A0A475003D0465 /* E8bankDetailTVC.h in Headers */,
+				44EC56121E7D7E01006B044A /* UIDevice-Hardware.h in Headers */,
 				44C0E67313A0A475003D0465 /* E8bankTVC.h in Headers */,
 				44C0E67413A0A475003D0465 /* E1editBonusVC.h in Headers */,
 				44C0E67513A0A475003D0465 /* E3selectRepeatTVC.h in Headers */,
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
+				44EC560F1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */,
 				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC518142636C7005D7850 /* Global.h in Headers */,
 			);
@@ -1430,13 +1436,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "AzCredit" */;
 			buildPhases = (
-				D1651ED055099C6309607FB2 /* 📦 Check Pods Manifest.lock */,
+				D1651ED055099C6309607FB2 /* [CP] Check Pods Manifest.lock */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				4486936410F5907F00AD02D8 /* Headers */,
-				5F809ECB8ABBB5038A1C811C /* 📦 Embed Pods Frameworks */,
-				0C59ECDB8EC144E535CDBD1D /* 📦 Copy Pods Resources */,
+				5F809ECB8ABBB5038A1C811C /* [CP] Embed Pods Frameworks */,
+				0C59ECDB8EC144E535CDBD1D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1451,13 +1457,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "AzCreditS1" */;
 			buildPhases = (
-				4ABBDAFB4F127DA770EEA65E /* 📦 Check Pods Manifest.lock */,
+				4ABBDAFB4F127DA770EEA65E /* [CP] Check Pods Manifest.lock */,
 				44B01169133EF773005AD0EA /* Resources */,
 				44B011AB133EF773005AD0EA /* Sources */,
 				44B011E3133EF773005AD0EA /* Frameworks */,
 				44B011F1133EF773005AD0EA /* Headers */,
-				65037237564CCD8AD976282A /* 📦 Embed Pods Frameworks */,
-				70D30C8900BD8E149E210EC7 /* 📦 Copy Pods Resources */,
+				65037237564CCD8AD976282A /* [CP] Embed Pods Frameworks */,
+				70D30C8900BD8E149E210EC7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1472,13 +1478,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPadFree" */;
 			buildPhases = (
-				3D1A1A918C567182BE77F0AB /* 📦 Check Pods Manifest.lock */,
+				3D1A1A918C567182BE77F0AB /* [CP] Check Pods Manifest.lock */,
 				44C0E3B513A0A2D1003D0465 /* Resources */,
 				44C0E3F913A0A2D1003D0465 /* Sources */,
 				44C0E42813A0A2D1003D0465 /* Frameworks */,
 				44C0E43713A0A2D1003D0465 /* Headers */,
-				64C22F76EA6B591D69EC2BF7 /* 📦 Embed Pods Frameworks */,
-				709BF1CE1F9FB4CB74560622 /* 📦 Copy Pods Resources */,
+				64C22F76EA6B591D69EC2BF7 /* [CP] Embed Pods Frameworks */,
+				709BF1CE1F9FB4CB74560622 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1493,13 +1499,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */;
 			buildPhases = (
-				CDA5E84A35ED72E2E4A9FF13 /* 📦 Check Pods Manifest.lock */,
+				CDA5E84A35ED72E2E4A9FF13 /* [CP] Check Pods Manifest.lock */,
 				44C0E5DB13A0A475003D0465 /* Resources */,
 				44C0E61D13A0A475003D0465 /* Sources */,
 				44C0E64C13A0A475003D0465 /* Frameworks */,
 				44C0E65813A0A475003D0465 /* Headers */,
-				62CBB5EF3875493529EC5F78 /* 📦 Embed Pods Frameworks */,
-				77D12FDD35D5FF9D0A95BCD6 /* 📦 Copy Pods Resources */,
+				62CBB5EF3875493529EC5F78 /* [CP] Embed Pods Frameworks */,
+				77D12FDD35D5FF9D0A95BCD6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1516,10 +1522,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0820;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 5C2UYK6F45;
+						ProvisioningStyle = Automatic;
 					};
 					44B01168133EF773005AD0EA = {
 						DevelopmentTeam = 5C2UYK6F45;
@@ -1616,6 +1623,7 @@
 				44BC6EE412FDA61400703AEC /* Icon-DrumPush.png in Resources */,
 				44BC6EE512FDA61400703AEC /* Icon-DrumPush@2x.png in Resources */,
 				44BC6EE612FDA61400703AEC /* Icon-Drum@2x.png in Resources */,
+				44EC56071E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */,
 				44BC6EE712FDA61400703AEC /* Icon-Drum.png in Resources */,
 				44BC6F5A12FDABBB00703AEC /* Icon32-CopyRight@2x.png in Resources */,
 				44BC6F5B12FDABBB00703AEC /* Icon32-CopyLeft@2x.png in Resources */,
@@ -1632,6 +1640,7 @@
 				44CB03E213C5B63100859E45 /* Icon90x70-toPAID@2x.png in Resources */,
 				44CB03E613C5B63100859E45 /* Icon90x70-toPAID.png in Resources */,
 				44C4B7B813D1F29D00EB9B2B /* Icon32-Setting@2x.png in Resources */,
+				44EC56001E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */,
 				44C4B7BC13D1F29D00EB9B2B /* Icon32-Setting.png in Resources */,
 				44C4B7C013D1F29E00EB9B2B /* Icon32-Information.png in Resources */,
 				44C4B7C413D1F29E00EB9B2B /* Icon32-Information@2x.png in Resources */,
@@ -1893,14 +1902,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C59ECDB8EC144E535CDBD1D /* 📦 Copy Pods Resources */ = {
+		0C59ECDB8EC144E535CDBD1D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1908,14 +1917,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3D1A1A918C567182BE77F0AB /* 📦 Check Pods Manifest.lock */ = {
+		3D1A1A918C567182BE77F0AB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1923,14 +1932,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		4ABBDAFB4F127DA770EEA65E /* 📦 Check Pods Manifest.lock */ = {
+		4ABBDAFB4F127DA770EEA65E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1938,14 +1947,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		5F809ECB8ABBB5038A1C811C /* 📦 Embed Pods Frameworks */ = {
+		5F809ECB8ABBB5038A1C811C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1953,14 +1962,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		62CBB5EF3875493529EC5F78 /* 📦 Embed Pods Frameworks */ = {
+		62CBB5EF3875493529EC5F78 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1968,14 +1977,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		64C22F76EA6B591D69EC2BF7 /* 📦 Embed Pods Frameworks */ = {
+		64C22F76EA6B591D69EC2BF7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1983,14 +1992,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		65037237564CCD8AD976282A /* 📦 Embed Pods Frameworks */ = {
+		65037237564CCD8AD976282A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1998,14 +2007,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		709BF1CE1F9FB4CB74560622 /* 📦 Copy Pods Resources */ = {
+		709BF1CE1F9FB4CB74560622 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2013,14 +2022,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		70D30C8900BD8E149E210EC7 /* 📦 Copy Pods Resources */ = {
+		70D30C8900BD8E149E210EC7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2028,14 +2037,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		77D12FDD35D5FF9D0A95BCD6 /* 📦 Copy Pods Resources */ = {
+		77D12FDD35D5FF9D0A95BCD6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2043,14 +2052,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CDA5E84A35ED72E2E4A9FF13 /* 📦 Check Pods Manifest.lock */ = {
+		CDA5E84A35ED72E2E4A9FF13 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2058,14 +2067,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		D1651ED055099C6309607FB2 /* 📦 Check Pods Manifest.lock */ = {
+		D1651ED055099C6309607FB2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2104,16 +2113,16 @@
 				44A3DE01113BE60B00DE9242 /* FileCsv.m in Sources */,
 				44AD35D9113EB7A900E40BD0 /* E3selectPayTypeTVC.m in Sources */,
 				4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */,
+				44EC56091E7D7DA9006B044A /* SFHFKeychainUtils.m in Sources */,
 				4454C98C114941930063621D /* E5categoryTVC.m in Sources */,
 				44ACA0C3114E698B000E9FD8 /* MocFunctions.m in Sources */,
 				44FB5C5A11512063008DEC3E /* Global.m in Sources */,
-				447B476E1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
+				44EC56021E7D7D8D006B044A /* UIDevice-Hardware.m in Sources */,
 				44A68B6511685121004A89ED /* CalcView.m in Sources */,
 				44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */,
 				44A4162211DB8447007DEB5B /* E8bankDetailTVC.m in Sources */,
 				44A5AB3E11DF7CCD00C9A093 /* E1editBonusVC.m in Sources */,
 				44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */,
-				447B47641CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2123,10 +2132,12 @@
 			files = (
 				44FDB09C13BA0BEB00783B8E /* LoginPassVC.m in Sources */,
 				44B011AC133EF773005AD0EA /* main.m in Sources */,
+				44EC560A1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */,
 				44B011AD133EF773005AD0EA /* AppDelegate.m in Sources */,
 				44B011AE133EF773005AD0EA /* Entity.m in Sources */,
 				44B011AF133EF773005AD0EA /* InformationView.m in Sources */,
 				44B011B1133EF773005AD0EA /* SettingTVC.m in Sources */,
+				44EC56131E7D7E04006B044A /* UIDevice-Hardware.m in Sources */,
 				44B011B2133EF773005AD0EA /* TopMenuTVC.m in Sources */,
 				44B011B3133EF773005AD0EA /* E1cardTVC.m in Sources */,
 				44B011B4133EF773005AD0EA /* AzCredit.xcmappingmodel in Sources */,
@@ -2148,13 +2159,11 @@
 				44B011C6133EF773005AD0EA /* E5categoryTVC.m in Sources */,
 				44B011C7133EF773005AD0EA /* MocFunctions.m in Sources */,
 				44B011C8133EF773005AD0EA /* Global.m in Sources */,
-				447B476F1CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44B011C9133EF773005AD0EA /* CalcView.m in Sources */,
 				44B011CB133EF773005AD0EA /* E8bankTVC.m in Sources */,
 				44B011CC133EF773005AD0EA /* E8bankDetailTVC.m in Sources */,
 				44B011CD133EF773005AD0EA /* E1editBonusVC.m in Sources */,
 				44B011CE133EF773005AD0EA /* E3selectRepeatTVC.m in Sources */,
-				447B47651CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2186,15 +2195,15 @@
 				44C0E41213A0A2D1003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E41313A0A2D1003D0465 /* E5categoryDetailTVC.m in Sources */,
 				44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */,
+				44EC560B1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */,
 				44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */,
 				44C0E41613A0A2D1003D0465 /* Global.m in Sources */,
+				44EC56141E7D7E04006B044A /* UIDevice-Hardware.m in Sources */,
 				44C0E41713A0A2D1003D0465 /* CalcView.m in Sources */,
 				44C0E41913A0A2D1003D0465 /* E8bankTVC.m in Sources */,
 				44C0E41A13A0A2D1003D0465 /* E8bankDetailTVC.m in Sources */,
 				44C0E41B13A0A2D1003D0465 /* E1editBonusVC.m in Sources */,
-				447B47701CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44C0E41C13A0A2D1003D0465 /* E3selectRepeatTVC.m in Sources */,
-				447B47661CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 				44C0E7F313A110BA003D0465 /* PadRootVC.m in Sources */,
 				442FF3A113B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
 			);
@@ -2228,15 +2237,15 @@
 				44C0E63613A0A475003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E63713A0A475003D0465 /* E5categoryDetailTVC.m in Sources */,
 				44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */,
+				44EC560C1E7D7DF8006B044A /* SFHFKeychainUtils.m in Sources */,
 				44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */,
 				44C0E63A13A0A475003D0465 /* Global.m in Sources */,
+				44EC56151E7D7E05006B044A /* UIDevice-Hardware.m in Sources */,
 				44C0E63B13A0A475003D0465 /* CalcView.m in Sources */,
 				44C0E63D13A0A475003D0465 /* E8bankTVC.m in Sources */,
 				44C0E63E13A0A475003D0465 /* E8bankDetailTVC.m in Sources */,
 				44C0E63F13A0A475003D0465 /* E1editBonusVC.m in Sources */,
-				447B47711CC204B60079B5C7 /* UIDevice-Hardware.m in Sources */,
 				44C0E64013A0A475003D0465 /* E3selectRepeatTVC.m in Sources */,
-				447B47671CC1FDBB0079B5C7 /* SFHFKeychainUtils.m in Sources */,
 				44C0E7F413A110BA003D0465 /* PadRootVC.m in Sources */,
 				442FF3A213B7809D00F8C2C4 /* LoginPassVC.m in Sources */,
 			);
@@ -2316,11 +2325,11 @@
 			baseConfigurationReference = 7715F22051C90F48DD891EB4 /* Pods-AzCredit.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 5C2UYK6F45;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2331,7 +2340,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2345,6 +2354,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCredit;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2359,11 +2369,11 @@
 			baseConfigurationReference = 1AA0B93E9E313266FAA45108 /* Pods-AzCredit.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 5C2UYK6F45;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
@@ -2371,7 +2381,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2384,6 +2394,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCredit;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2398,7 +2409,6 @@
 			baseConfigurationReference = 75C36D305EC3025B3677712D /* Pods-AzCreditS1.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2412,7 +2422,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = InfoS1.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2425,6 +2435,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2439,7 +2450,6 @@
 			baseConfigurationReference = D067ED2DA7CF450D0442D101 /* Pods-AzCreditS1.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2450,7 +2460,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = InfoS1.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2463,6 +2473,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2477,7 +2488,6 @@
 			baseConfigurationReference = B2EB26C1937A08AEDC94EF4C /* Pods-AzCreditS1.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -2488,7 +2498,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = InfoS1.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2501,6 +2511,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2515,7 +2526,6 @@
 			baseConfigurationReference = EFFF7076C3BBAECF8BE215FB /* Pods-AzCreditPadFree.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2546,6 +2556,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditPadFree;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2560,7 +2571,6 @@
 			baseConfigurationReference = D3E72667FCFC1433D37A545D /* Pods-AzCreditPadFree.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2587,6 +2597,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditPadFree;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2601,7 +2612,6 @@
 			baseConfigurationReference = 98A2B8512C089A44B092B576 /* Pods-AzCreditPadFree.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -2628,6 +2638,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditPadFree;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2642,7 +2653,6 @@
 			baseConfigurationReference = 98D365F0A9BC882599D9EAE0 /* Pods-AzCreditS1Pad.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2671,6 +2681,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2685,7 +2696,6 @@
 			baseConfigurationReference = FB220CD5816ABDB58F2C2822 /* Pods-AzCreditS1Pad.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2711,6 +2721,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2725,7 +2736,6 @@
 			baseConfigurationReference = 158A77262DA7F8FF7C7ADB9D /* Pods-AzCreditS1Pad.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -2751,6 +2761,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2763,17 +2774,32 @@
 		44D6024F111EF2F3004F27CC /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Masakazu Matsuyama";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -2794,11 +2820,11 @@
 			baseConfigurationReference = 50F89B1A07237F336FF29CD8 /* Pods-AzCredit.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 5C2UYK6F45;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
@@ -2806,7 +2832,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2819,6 +2845,7 @@
 					"-lxml2",
 					"-all_load",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCredit;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2831,19 +2858,36 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = AzDEBUG;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -2859,18 +2903,33 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Masakazu Matsuyama (RL5WRC28AG)";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "";
 				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

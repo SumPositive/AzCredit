@@ -634,12 +634,12 @@ static UIImage* GimageFromString(NSString* str)
 				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 				// E6更新
-				if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
-					[delegate remakeE6change:3];		// (3) e1card		支払先
+				if ([self.delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+					[self.delegate remakeE6change:3];		// (3) e1card		支払先
 				}
 				// 再描画
-				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-					[delegate viewWillAppear:YES];	
+				if ([self.delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+					[self.delegate viewWillAppear:YES];
 				}
 			}
 			[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
