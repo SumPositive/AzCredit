@@ -1,21 +1,19 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, ’10.0'
+
+platform :ios, ’10.0'
 # Uncomment this line if you're using Swift
 # use_frameworks!
 
-target 'AzCredit' do
 
+# インストールするpodをまとめた定数
+def install_pods
+	pod 'SFHFKeychainUtils'
+	pod 'UIDevice-Hardware'
 end
+
 
 target 'AzCreditS1' do
-
+	install_pods
 end
 
-target 'AzCreditPadFree' do
-
-end
-
-target 'AzCreditS1Pad' do
-
-end
 

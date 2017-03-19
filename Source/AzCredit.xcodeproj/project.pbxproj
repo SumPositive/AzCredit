@@ -13,9 +13,6 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28860BE50F44EE6400985440 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28860BE40F44EE6400985440 /* CoreData.framework */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
-		2D4B7EF27949871255257020 /* libPods-AzCredit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3590519B0E84E061C780DF82 /* libPods-AzCredit.a */; };
-		31E9760087EF3FDD100065EB /* libPods-AzCreditPadFree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0EFDAC5D7DCD4F30B9C2C2 /* libPods-AzCreditPadFree.a */; };
-		3C7A1C5B92187C8FA033AF75 /* libPods-AzCreditS1Pad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */; };
 		440328D311D81CAA002F321B /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
 		4403475F155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
 		44034761155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
@@ -601,24 +598,6 @@
 		44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
 		44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
-		44EC56001E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44EC55FD1E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt */; };
-		44EC56011E7D7D8D006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
-		44EC56021E7D7D8D006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; };
-		44EC56071E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */ = {isa = PBXBuildFile; fileRef = 44EC56041E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt */; };
-		44EC56081E7D7DA9006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
-		44EC56091E7D7DA9006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; };
-		44EC560A1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		44EC560B1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; };
-		44EC560C1E7D7DF8006B044A /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */; };
-		44EC560D1E7D7DFB006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
-		44EC560E1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
-		44EC560F1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */; };
-		44EC56101E7D7E00006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
-		44EC56111E7D7E00006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
-		44EC56121E7D7E01006B044A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */; };
-		44EC56131E7D7E04006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		44EC56141E7D7E04006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; };
-		44EC56151E7D7E05006B044A /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */; };
 		44F0875B15177D5B00B84A44 /* Icon72S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875915177D5B00B84A44 /* Icon72S1@2x.png */; };
 		44F0875C15177D5B00B84A44 /* Icon72S1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875915177D5B00B84A44 /* Icon72S1@2x.png */; };
 		44F0875D15177D5B00B84A44 /* Icon72Free@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */; };
@@ -630,8 +609,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		158A77262DA7F8FF7C7ADB9D /* Pods-AzCreditS1Pad.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1Pad.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad.distribution.xcconfig"; sourceTree = "<group>"; };
-		1AA0B93E9E313266FAA45108 /* Pods-AzCredit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCredit.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit.release.xcconfig"; sourceTree = "<group>"; };
+		0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.distribution.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -811,29 +789,15 @@
 		44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = E3selectRepeatTVC.m; sourceTree = "<group>"; };
 		44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CircleUnpaid.png"; path = "Design/Icon32-CircleUnpaid.png"; sourceTree = "<group>"; };
 		44EC041113422E79005071AC /* InfoS1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoS1.plist; sourceTree = "<group>"; };
-		44EC55FD1E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ARC非対応 - Compile Flag指定方法.txt"; sourceTree = "<group>"; };
-		44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
-		44EC56041E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ARC非対応 - Compile Flag指定方法.txt"; sourceTree = "<group>"; };
-		44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		44F0875915177D5B00B84A44 /* Icon72S1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72S1@2x.png"; sourceTree = "<group>"; };
 		44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72Free@2x.png"; sourceTree = "<group>"; };
 		44FB5C5911512063008DEC3E /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
-		50F89B1A07237F336FF29CD8 /* Pods-AzCredit.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCredit.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit.distribution.xcconfig"; sourceTree = "<group>"; };
-		75C36D305EC3025B3677712D /* Pods-AzCreditS1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.debug.xcconfig"; sourceTree = "<group>"; };
-		7715F22051C90F48DD891EB4 /* Pods-AzCredit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCredit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit.debug.xcconfig"; sourceTree = "<group>"; };
 		7731E810163CA96606A9F44C /* libPods-AzCreditS1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.release.xcconfig"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		98A2B8512C089A44B092B576 /* Pods-AzCreditPadFree.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditPadFree.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree.distribution.xcconfig"; sourceTree = "<group>"; };
-		98D365F0A9BC882599D9EAE0 /* Pods-AzCreditS1Pad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1Pad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad.debug.xcconfig"; sourceTree = "<group>"; };
 		9E0EFDAC5D7DCD4F30B9C2C2 /* libPods-AzCreditPadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditPadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2EB26C1937A08AEDC94EF4C /* Pods-AzCreditS1.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.distribution.xcconfig"; sourceTree = "<group>"; };
+		BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.debug.xcconfig"; sourceTree = "<group>"; };
 		C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D067ED2DA7CF450D0442D101 /* Pods-AzCreditS1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.release.xcconfig"; sourceTree = "<group>"; };
-		D3E72667FCFC1433D37A545D /* Pods-AzCreditPadFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditPadFree.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree.release.xcconfig"; sourceTree = "<group>"; };
-		EFFF7076C3BBAECF8BE215FB /* Pods-AzCreditPadFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditPadFree.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree.debug.xcconfig"; sourceTree = "<group>"; };
-		FB220CD5816ABDB58F2C2822 /* Pods-AzCreditS1Pad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1Pad.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -855,7 +819,6 @@
 				447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */,
 				447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */,
 				447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */,
-				2D4B7EF27949871255257020 /* libPods-AzCredit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -898,7 +861,6 @@
 				44C0E43413A0A2D1003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */,
 				44034761155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				31E9760087EF3FDD100065EB /* libPods-AzCreditPadFree.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -919,7 +881,6 @@
 				44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */,
 				44034762155F6BD600D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				3C7A1C5B92187C8FA033AF75 /* libPods-AzCreditS1Pad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,36 +914,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1B5EE8C35ABC1894695FE5C9 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7715F22051C90F48DD891EB4 /* Pods-AzCredit.debug.xcconfig */,
-				1AA0B93E9E313266FAA45108 /* Pods-AzCredit.release.xcconfig */,
-				50F89B1A07237F336FF29CD8 /* Pods-AzCredit.distribution.xcconfig */,
-				EFFF7076C3BBAECF8BE215FB /* Pods-AzCreditPadFree.debug.xcconfig */,
-				D3E72667FCFC1433D37A545D /* Pods-AzCreditPadFree.release.xcconfig */,
-				98A2B8512C089A44B092B576 /* Pods-AzCreditPadFree.distribution.xcconfig */,
-				75C36D305EC3025B3677712D /* Pods-AzCreditS1.debug.xcconfig */,
-				D067ED2DA7CF450D0442D101 /* Pods-AzCreditS1.release.xcconfig */,
-				B2EB26C1937A08AEDC94EF4C /* Pods-AzCreditS1.distribution.xcconfig */,
-				98D365F0A9BC882599D9EAE0 /* Pods-AzCreditS1Pad.debug.xcconfig */,
-				FB220CD5816ABDB58F2C2822 /* Pods-AzCreditS1Pad.release.xcconfig */,
-				158A77262DA7F8FF7C7ADB9D /* Pods-AzCreditS1Pad.distribution.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				442FA9BE15711F5D003D19D8 /* OpenCode */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				44F0737F1105D9D80024B707 /* Images */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				44C0E5BB13A0A2D2003D0465 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				1B5EE8C35ABC1894695FE5C9 /* Pods */,
+				8C43B28CA07FFBC217F3E466 /* Pods */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1031,15 +972,6 @@
 				C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		442FA9BE15711F5D003D19D8 /* OpenCode */ = {
-			isa = PBXGroup;
-			children = (
-				44EC56031E7D7DA9006B044A /* SFHFKeychainUtils */,
-				44EC55FC1E7D7D8D006B044A /* UIDevice-Hardware */,
-			);
-			name = OpenCode;
 			sourceTree = "<group>";
 		};
 		44A4160E11DB83F7007DEB5B /* E8bank */ = {
@@ -1182,28 +1114,6 @@
 			name = iPad;
 			sourceTree = "<group>";
 		};
-		44EC55FC1E7D7D8D006B044A /* UIDevice-Hardware */ = {
-			isa = PBXGroup;
-			children = (
-				44EC55FD1E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt */,
-				44EC55FE1E7D7D8D006B044A /* UIDevice-Hardware.h */,
-				44EC55FF1E7D7D8D006B044A /* UIDevice-Hardware.m */,
-			);
-			name = "UIDevice-Hardware";
-			path = "../UIDevice-Hardware";
-			sourceTree = "<group>";
-		};
-		44EC56031E7D7DA9006B044A /* SFHFKeychainUtils */ = {
-			isa = PBXGroup;
-			children = (
-				44EC56041E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt */,
-				44EC56051E7D7DA9006B044A /* SFHFKeychainUtils.h */,
-				44EC56061E7D7DA9006B044A /* SFHFKeychainUtils.m */,
-			);
-			name = SFHFKeychainUtils;
-			path = ../SFHFKeychainUtils;
-			sourceTree = "<group>";
-		};
 		44F0737F1105D9D80024B707 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -1282,6 +1192,16 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		8C43B28CA07FFBC217F3E466 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */,
+				85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */,
+				0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1298,11 +1218,9 @@
 				44B85E8E1125B5A900383A34 /* EditTextVC.h in Headers */,
 				44B605F61126FADD00E82C54 /* E1editPayDayVC.h in Headers */,
 				44D7351611279ACB00997A37 /* E2invoiceTVC.h in Headers */,
-				44EC56081E7D7DA9006B044A /* SFHFKeychainUtils.h in Headers */,
 				440AC51611299DBE00B89317 /* EditDateVC.h in Headers */,
 				44D00C3F112CCC25001BC4C8 /* E3recordTVC.h in Headers */,
 				44ABA3A6112FB92D0009E62E /* E4shopDetailTVC.h in Headers */,
-				44EC56011E7D7D8D006B044A /* UIDevice-Hardware.h in Headers */,
 				44ABA3A8112FB92D0009E62E /* E4shopTVC.h in Headers */,
 				44AD488C1132B6B900FB19FB /* E6partTVC.h in Headers */,
 				44A19FDF11367A3B00DE0113 /* E7paymentTVC.h in Headers */,
@@ -1341,7 +1259,6 @@
 				44B01202133EF773005AD0EA /* E7paymentTVC.h in Headers */,
 				44B01203133EF773005AD0EA /* FileCsv.h in Headers */,
 				44B01205133EF773005AD0EA /* E3selectPayTypeTVC.h in Headers */,
-				44EC560D1E7D7DFB006B044A /* SFHFKeychainUtils.h in Headers */,
 				44B01206133EF773005AD0EA /* E5categoryTVC.h in Headers */,
 				44B01207133EF773005AD0EA /* E5categoryDetailTVC.h in Headers */,
 				44B01208133EF773005AD0EA /* MocFunctions.h in Headers */,
@@ -1350,7 +1267,6 @@
 				44B0120C133EF773005AD0EA /* E8bankTVC.h in Headers */,
 				44B0120D133EF773005AD0EA /* E1editBonusVC.h in Headers */,
 				44B0120E133EF773005AD0EA /* E3selectRepeatTVC.h in Headers */,
-				44EC56101E7D7E00006B044A /* UIDevice-Hardware.h in Headers */,
 				44CEC516142636C5005D7850 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1381,12 +1297,10 @@
 				44C0E44E13A0A2D1003D0465 /* MocFunctions.h in Headers */,
 				44C0E44F13A0A2D1003D0465 /* CalcView.h in Headers */,
 				44C0E45113A0A2D1003D0465 /* E8bankDetailTVC.h in Headers */,
-				44EC56111E7D7E00006B044A /* UIDevice-Hardware.h in Headers */,
 				44C0E45213A0A2D1003D0465 /* E8bankTVC.h in Headers */,
 				44C0E45313A0A2D1003D0465 /* E1editBonusVC.h in Headers */,
 				44C0E45413A0A2D1003D0465 /* E3selectRepeatTVC.h in Headers */,
 				44C0E7F513A110BA003D0465 /* PadRootVC.h in Headers */,
-				44EC560E1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */,
 				442FF39F13B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC517142636C6005D7850 /* Global.h in Headers */,
 			);
@@ -1418,12 +1332,10 @@
 				44C0E66F13A0A475003D0465 /* MocFunctions.h in Headers */,
 				44C0E67013A0A475003D0465 /* CalcView.h in Headers */,
 				44C0E67213A0A475003D0465 /* E8bankDetailTVC.h in Headers */,
-				44EC56121E7D7E01006B044A /* UIDevice-Hardware.h in Headers */,
 				44C0E67313A0A475003D0465 /* E8bankTVC.h in Headers */,
 				44C0E67413A0A475003D0465 /* E1editBonusVC.h in Headers */,
 				44C0E67513A0A475003D0465 /* E3selectRepeatTVC.h in Headers */,
 				44C0E7F613A110BA003D0465 /* PadRootVC.h in Headers */,
-				44EC560F1E7D7DFC006B044A /* SFHFKeychainUtils.h in Headers */,
 				442FF3A013B7809D00F8C2C4 /* LoginPassVC.h in Headers */,
 				44CEC518142636C7005D7850 /* Global.h in Headers */,
 			);
@@ -1436,13 +1348,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "AzCredit" */;
 			buildPhases = (
-				D1651ED055099C6309607FB2 /* [CP] Check Pods Manifest.lock */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				4486936410F5907F00AD02D8 /* Headers */,
-				5F809ECB8ABBB5038A1C811C /* [CP] Embed Pods Frameworks */,
-				0C59ECDB8EC144E535CDBD1D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1478,13 +1387,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPadFree" */;
 			buildPhases = (
-				3D1A1A918C567182BE77F0AB /* [CP] Check Pods Manifest.lock */,
 				44C0E3B513A0A2D1003D0465 /* Resources */,
 				44C0E3F913A0A2D1003D0465 /* Sources */,
 				44C0E42813A0A2D1003D0465 /* Frameworks */,
 				44C0E43713A0A2D1003D0465 /* Headers */,
-				64C22F76EA6B591D69EC2BF7 /* [CP] Embed Pods Frameworks */,
-				709BF1CE1F9FB4CB74560622 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1499,13 +1405,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */;
 			buildPhases = (
-				CDA5E84A35ED72E2E4A9FF13 /* [CP] Check Pods Manifest.lock */,
 				44C0E5DB13A0A475003D0465 /* Resources */,
 				44C0E61D13A0A475003D0465 /* Sources */,
 				44C0E64C13A0A475003D0465 /* Frameworks */,
 				44C0E65813A0A475003D0465 /* Headers */,
-				62CBB5EF3875493529EC5F78 /* [CP] Embed Pods Frameworks */,
-				77D12FDD35D5FF9D0A95BCD6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1551,6 +1454,7 @@
 				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = AzukiSoft;
 			targets = (
@@ -1623,7 +1527,6 @@
 				44BC6EE412FDA61400703AEC /* Icon-DrumPush.png in Resources */,
 				44BC6EE512FDA61400703AEC /* Icon-DrumPush@2x.png in Resources */,
 				44BC6EE612FDA61400703AEC /* Icon-Drum@2x.png in Resources */,
-				44EC56071E7D7DA9006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */,
 				44BC6EE712FDA61400703AEC /* Icon-Drum.png in Resources */,
 				44BC6F5A12FDABBB00703AEC /* Icon32-CopyRight@2x.png in Resources */,
 				44BC6F5B12FDABBB00703AEC /* Icon32-CopyLeft@2x.png in Resources */,
@@ -1640,7 +1543,6 @@
 				44CB03E213C5B63100859E45 /* Icon90x70-toPAID@2x.png in Resources */,
 				44CB03E613C5B63100859E45 /* Icon90x70-toPAID.png in Resources */,
 				44C4B7B813D1F29D00EB9B2B /* Icon32-Setting@2x.png in Resources */,
-				44EC56001E7D7D8D006B044A /* ARC非対応 - Compile Flag指定方法.txt in Resources */,
 				44C4B7BC13D1F29D00EB9B2B /* Icon32-Setting.png in Resources */,
 				44C4B7C013D1F29E00EB9B2B /* Icon32-Information.png in Resources */,
 				44C4B7C413D1F29E00EB9B2B /* Icon32-Information@2x.png in Resources */,
@@ -1902,36 +1804,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C59ECDB8EC144E535CDBD1D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3D1A1A918C567182BE77F0AB /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		4ABBDAFB4F127DA770EEA65E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1944,52 +1816,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		5F809ECB8ABBB5038A1C811C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCredit/Pods-AzCredit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		62CBB5EF3875493529EC5F78 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		64C22F76EA6B591D69EC2BF7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		65037237564CCD8AD976282A /* [CP] Embed Pods Frameworks */ = {
@@ -2007,21 +1834,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		709BF1CE1F9FB4CB74560622 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditPadFree/Pods-AzCreditPadFree-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		70D30C8900BD8E149E210EC7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2035,51 +1847,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		77D12FDD35D5FF9D0A95BCD6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1Pad/Pods-AzCreditS1Pad-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CDA5E84A35ED72E2E4A9FF13 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		D1651ED055099C6309607FB2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2113,11 +1880,9 @@
 				44A3DE01113BE60B00DE9242 /* FileCsv.m in Sources */,
 				44AD35D9113EB7A900E40BD0 /* E3selectPayTypeTVC.m in Sources */,
 				4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */,
-				44EC56091E7D7DA9006B044A /* SFHFKeychainUtils.m in Sources */,
 				4454C98C114941930063621D /* E5categoryTVC.m in Sources */,
 				44ACA0C3114E698B000E9FD8 /* MocFunctions.m in Sources */,
 				44FB5C5A11512063008DEC3E /* Global.m in Sources */,
-				44EC56021E7D7D8D006B044A /* UIDevice-Hardware.m in Sources */,
 				44A68B6511685121004A89ED /* CalcView.m in Sources */,
 				44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */,
 				44A4162211DB8447007DEB5B /* E8bankDetailTVC.m in Sources */,
@@ -2132,12 +1897,10 @@
 			files = (
 				44FDB09C13BA0BEB00783B8E /* LoginPassVC.m in Sources */,
 				44B011AC133EF773005AD0EA /* main.m in Sources */,
-				44EC560A1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */,
 				44B011AD133EF773005AD0EA /* AppDelegate.m in Sources */,
 				44B011AE133EF773005AD0EA /* Entity.m in Sources */,
 				44B011AF133EF773005AD0EA /* InformationView.m in Sources */,
 				44B011B1133EF773005AD0EA /* SettingTVC.m in Sources */,
-				44EC56131E7D7E04006B044A /* UIDevice-Hardware.m in Sources */,
 				44B011B2133EF773005AD0EA /* TopMenuTVC.m in Sources */,
 				44B011B3133EF773005AD0EA /* E1cardTVC.m in Sources */,
 				44B011B4133EF773005AD0EA /* AzCredit.xcmappingmodel in Sources */,
@@ -2195,10 +1958,8 @@
 				44C0E41213A0A2D1003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E41313A0A2D1003D0465 /* E5categoryDetailTVC.m in Sources */,
 				44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */,
-				44EC560B1E7D7DF7006B044A /* SFHFKeychainUtils.m in Sources */,
 				44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */,
 				44C0E41613A0A2D1003D0465 /* Global.m in Sources */,
-				44EC56141E7D7E04006B044A /* UIDevice-Hardware.m in Sources */,
 				44C0E41713A0A2D1003D0465 /* CalcView.m in Sources */,
 				44C0E41913A0A2D1003D0465 /* E8bankTVC.m in Sources */,
 				44C0E41A13A0A2D1003D0465 /* E8bankDetailTVC.m in Sources */,
@@ -2237,10 +1998,8 @@
 				44C0E63613A0A475003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E63713A0A475003D0465 /* E5categoryDetailTVC.m in Sources */,
 				44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */,
-				44EC560C1E7D7DF8006B044A /* SFHFKeychainUtils.m in Sources */,
 				44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */,
 				44C0E63A13A0A475003D0465 /* Global.m in Sources */,
-				44EC56151E7D7E05006B044A /* UIDevice-Hardware.m in Sources */,
 				44C0E63B13A0A475003D0465 /* CalcView.m in Sources */,
 				44C0E63D13A0A475003D0465 /* E8bankTVC.m in Sources */,
 				44C0E63E13A0A475003D0465 /* E8bankDetailTVC.m in Sources */,
@@ -2322,7 +2081,6 @@
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7715F22051C90F48DD891EB4 /* Pods-AzCredit.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2340,7 +2098,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2366,7 +2124,6 @@
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AA0B93E9E313266FAA45108 /* Pods-AzCredit.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2381,7 +2138,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2406,7 +2163,7 @@
 		};
 		44B01377133EF773005AD0EA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 75C36D305EC3025B3677712D /* Pods-AzCreditS1.debug.xcconfig */;
+			baseConfigurationReference = BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2426,15 +2183,11 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\"$(SRCROOT)/../../OpenCode/GoogleAnalytics/GoogleAnalytics.release\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2447,7 +2200,7 @@
 		};
 		44B01378133EF773005AD0EA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D067ED2DA7CF450D0442D101 /* Pods-AzCreditS1.release.xcconfig */;
+			baseConfigurationReference = 85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2464,15 +2217,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\"$(SRCROOT)/../../OpenCode/GoogleAnalytics/GoogleAnalytics.release\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2485,7 +2233,7 @@
 		};
 		44B0137A133EF773005AD0EA /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2EB26C1937A08AEDC94EF4C /* Pods-AzCreditS1.distribution.xcconfig */;
+			baseConfigurationReference = 0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2502,15 +2250,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
-					"\"$(SRCROOT)/../../OpenCode/GoogleAnalytics/GoogleAnalytics.release\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-all_load",
-				);
+				OTHER_LDFLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2523,7 +2266,6 @@
 		};
 		44C0E5B613A0A2D1003D0465 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EFFF7076C3BBAECF8BE215FB /* Pods-AzCreditPadFree.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2568,7 +2310,6 @@
 		};
 		44C0E5B713A0A2D1003D0465 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D3E72667FCFC1433D37A545D /* Pods-AzCreditPadFree.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2609,7 +2350,6 @@
 		};
 		44C0E5B813A0A2D1003D0465 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98A2B8512C089A44B092B576 /* Pods-AzCreditPadFree.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2650,7 +2390,6 @@
 		};
 		44C0E7D113A0A475003D0465 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98D365F0A9BC882599D9EAE0 /* Pods-AzCreditS1Pad.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2693,7 +2432,6 @@
 		};
 		44C0E7D213A0A475003D0465 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB220CD5816ABDB58F2C2822 /* Pods-AzCreditS1Pad.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2733,7 +2471,6 @@
 		};
 		44C0E7D313A0A475003D0465 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 158A77262DA7F8FF7C7ADB9D /* Pods-AzCreditS1Pad.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2817,7 +2554,6 @@
 		};
 		44D60250111EF2F3004F27CC /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 50F89B1A07237F336FF29CD8 /* Pods-AzCredit.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2832,7 +2568,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2956,7 +2692,7 @@
 				44D60250111EF2F3004F27CC /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "AzCreditS1" */ = {
 			isa = XCConfigurationList;
@@ -2966,7 +2702,7 @@
 				44B0137A133EF773005AD0EA /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPadFree" */ = {
 			isa = XCConfigurationList;
@@ -2976,7 +2712,7 @@
 				44C0E5B813A0A2D1003D0465 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */ = {
 			isa = XCConfigurationList;
@@ -2986,7 +2722,7 @@
 				44C0E7D313A0A475003D0465 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit" */ = {
 			isa = XCConfigurationList;
@@ -2996,7 +2732,7 @@
 				44D6024F111EF2F3004F27CC /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
