@@ -40,15 +40,15 @@
 
 @implementation InformationView
 
-static UIColor *MpColorBlue(float percent) {
-	float red = percent * 255.0f;
-	float green = (red + 20.0f) / 255.0f;
-	float blue = (red + 45.0f) / 255.0f;
-	if (green > 1.0) green = 1.0f;
-	if (blue > 1.0f) blue = 1.0f;
-	
-	return [UIColor colorWithRed:percent green:green blue:blue alpha:1.0f];
-}
+//static UIColor *MpColorBlue(float percent) {
+//	float red = percent * 255.0f;
+//	float green = (red + 20.0f) / 255.0f;
+//	float blue = (red + 45.0f) / 255.0f;
+//	if (green > 1.0) green = 1.0f;
+//	if (blue > 1.0f) blue = 1.0f;
+//	
+//	return [UIColor colorWithRed:percent green:green blue:blue alpha:1.0f];
+//}
 
 
 

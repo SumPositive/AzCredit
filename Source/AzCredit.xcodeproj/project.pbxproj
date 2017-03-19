@@ -33,6 +33,11 @@
 		4434B832111F0A3900CCF7EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4434B831111F0A3900CCF7EE /* InfoPlist.strings */; };
 		443D439F160CCAB900866232 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 443D439C160CCAB900866232 /* Default-568h@2x.png */; };
 		443D43A0160CCAB900866232 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 443D439C160CCAB900866232 /* Default-568h@2x.png */; };
+		4450BE141E7ED613001305D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
+		4450BE161E7EDB18001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE151E7EDB18001305D1 /* Launch Screen.storyboard */; };
+		4450BE171E7EDB18001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE151E7EDB18001305D1 /* Launch Screen.storyboard */; };
+		4450BE181E7EDB18001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE151E7EDB18001305D1 /* Launch Screen.storyboard */; };
+		4450BE191E7EDB18001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE151E7EDB18001305D1 /* Launch Screen.storyboard */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
@@ -629,6 +634,8 @@
 		4434B833111F0A4200CCF7EE /* Japanese */ = {isa = PBXFileReference; explicitFileType = text.plist.strings; fileEncoding = 10; lineEnding = 0; name = Japanese; path = Japanese.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		443D439D160CCAB900866232 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
 		443D439E160CCAB900866232 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Japanese; path = "Japanese.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
+		4450BE131E7ED613001305D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AzCreditS1/Images.xcassets; sourceTree = "<group>"; };
+		4450BE151E7EDB18001305D1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		445322CC13D7D56600CC99F8 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		445322CE13D7D56600CC99F8 /* English */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = English; path = "English.lproj/Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		445322D113D7D5E700CC99F8 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Japanese; path = "Japanese.lproj/Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -931,6 +938,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4450BE131E7ED613001305D1 /* Images.xcassets */,
 				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				44BBEE841368558300DD6978 /* Default.png */,
 				44BBEE821368558300DD6978 /* Default@2x.png */,
@@ -945,6 +953,7 @@
 				44EC041113422E79005071AC /* InfoS1.plist */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
 				44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */,
+				4450BE151E7EDB18001305D1 /* Launch Screen.storyboard */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1477,6 +1486,7 @@
 				44BBEE861368558300DD6978 /* Default@2x.png in Resources */,
 				448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */,
 				4434B832111F0A3900CCF7EE /* InfoPlist.strings in Resources */,
+				4450BE161E7EDB18001305D1 /* Launch Screen.storyboard in Resources */,
 				44BC4C2C13599FE4009B995C /* Icon24-Free.png in Resources */,
 				44BC4C2D13599FE4009B995C /* Icon24-Free@2x.png in Resources */,
 				44A8274A113A048B00F62E0E /* Icon32-Shop.png in Resources */,
@@ -1600,11 +1610,13 @@
 				44B01192133EF773005AD0EA /* Icon16-Return1@2x.png in Resources */,
 				44B01193133EF773005AD0EA /* Icon16-Return3.png in Resources */,
 				44B01194133EF773005AD0EA /* Icon16-Return2.png in Resources */,
+				4450BE171E7EDB18001305D1 /* Launch Screen.storyboard in Resources */,
 				44B01195133EF773005AD0EA /* Icon16-Return1.png in Resources */,
 				44B01196133EF773005AD0EA /* Icon16-Information.png in Resources */,
 				44B01197133EF773005AD0EA /* Icon16-Information@2x.png in Resources */,
 				44B01198133EF773005AD0EA /* Icon16-Setting@2x.png in Resources */,
 				44B01199133EF773005AD0EA /* Icon16-Setting.png in Resources */,
+				4450BE141E7ED613001305D1 /* Images.xcassets in Resources */,
 				44B0119A133EF773005AD0EA /* Icon-DrumPush.png in Resources */,
 				44B0119B133EF773005AD0EA /* Icon-DrumPush@2x.png in Resources */,
 				44B0119C133EF773005AD0EA /* Icon-Drum@2x.png in Resources */,
@@ -1672,6 +1684,7 @@
 				44C0E3D313A0A2D1003D0465 /* Icon32-PAID@2x.png in Resources */,
 				44C0E3D413A0A2D1003D0465 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
 				44C0E3D513A0A2D1003D0465 /* Icon32-CircleUnpaid@2x.png in Resources */,
+				4450BE181E7EDB18001305D1 /* Launch Screen.storyboard in Resources */,
 				44C0E3D613A0A2D1003D0465 /* Icon32-CircleCheck@2x.png in Resources */,
 				44C0E3D713A0A2D1003D0465 /* Icon32-Safari@2x.png in Resources */,
 				44C0E3D813A0A2D1003D0465 /* Icon32-Safari.png in Resources */,
@@ -1757,6 +1770,7 @@
 				44C0E5FD13A0A475003D0465 /* Icon32-PAID@2x.png in Resources */,
 				44C0E5FE13A0A475003D0465 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
 				44C0E5FF13A0A475003D0465 /* Icon32-CircleUnpaid@2x.png in Resources */,
+				4450BE191E7EDB18001305D1 /* Launch Screen.storyboard in Resources */,
 				44C0E60013A0A475003D0465 /* Icon32-CircleCheck@2x.png in Resources */,
 				44C0E60113A0A475003D0465 /* Icon32-Safari@2x.png in Resources */,
 				44C0E60213A0A475003D0465 /* Icon32-Safari.png in Resources */,
@@ -2166,6 +2180,7 @@
 			baseConfigurationReference = BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2203,6 +2218,7 @@
 			baseConfigurationReference = 85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2236,6 +2252,7 @@
 			baseConfigurationReference = 0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
