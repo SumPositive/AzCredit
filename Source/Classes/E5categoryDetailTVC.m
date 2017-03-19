@@ -137,7 +137,7 @@
 		PbAdd = NO;
 		Pe3edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
+		self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
@@ -327,7 +327,7 @@
 				case 0: // Name
 				{
 #ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
 #else
 					EditTextVC *evc = [[EditTextVC alloc] init];
 #endif
@@ -347,7 +347,7 @@
 				case 0: // sortName
 				{
 #ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
 #else
 					EditTextVC *evc = [[EditTextVC alloc] init];
 #endif
@@ -363,7 +363,7 @@
 				case 1: // Note
 				{
 #ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
 #else
 					EditTextVC *evc = [[EditTextVC alloc] init];
 #endif

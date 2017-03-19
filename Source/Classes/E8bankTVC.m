@@ -157,7 +157,7 @@
 	if (self) {
 		// 初期化成功
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.preferredContentSize = GD_POPOVER_SIZE;
 #endif
 	}
 	return self;

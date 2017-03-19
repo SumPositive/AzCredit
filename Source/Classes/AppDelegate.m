@@ -313,7 +313,8 @@
 	
     NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
     if (coordinator != nil) {
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
+		managedObjectContext = [[NSManagedObjectContext alloc]
+								initWithConcurrencyType:NSMainQueueConcurrencyType]; // メインスレッドで実行
         managedObjectContext.persistentStoreCoordinator = coordinator;
     }
     return managedObjectContext;

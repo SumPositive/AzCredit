@@ -148,7 +148,7 @@
 		// 初期化成功
 		Pe1edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
+		self.preferredContentSize = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
 #endif
   	}
 	return self;
@@ -369,7 +369,7 @@
 				case 0: // Card name
 				{
 #ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
 #else
 					EditTextVC *evc = [[EditTextVC alloc] init];
 #endif
@@ -389,7 +389,7 @@
 				case 0: // Note
 				{
 #ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.contentSizeForViewInPopover];
+					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
 #else
 					EditTextVC *evc = [[EditTextVC alloc] init];
 #endif

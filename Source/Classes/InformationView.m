@@ -216,7 +216,9 @@ NSString *passCode()
 												NSURL *url = [NSURL URLWithString:
 															  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
 #endif
-												[[UIApplication sharedApplication] openURL:url];
+												[[UIApplication sharedApplication] openURL:url
+																				   options:@{}
+																		 completionHandler:nil];
 											}]];
 	[self presentViewController:alert animated:YES completion:nil];
 }
@@ -244,7 +246,9 @@ NSString *passCode()
 											handler:^(UIAlertAction *action){
 												// サポートサイトへ
 												NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
-												[[UIApplication sharedApplication] openURL:url];
+												[[UIApplication sharedApplication] openURL:url
+																				   options:@{}
+																		 completionHandler:nil];
 											}]];
 	[self presentViewController:alert animated:YES completion:nil];
 }
@@ -360,7 +364,7 @@ NSString *passCode()
 
 	float fX = 0, fY = 0;
 #ifdef AzPAD
-	//self.contentSizeForViewInPopover = CGSizeMake(320, 510);
+	//self.preferredContentSize = CGSizeMake(320, 510);
 	self.navigationItem.hidesBackButton = YES;
 	fX = (768 - 320) / 2.0;
 	fY = 100;
@@ -405,7 +409,8 @@ NSString *passCode()
 	label.backgroundColor = [UIColor clearColor]; //背景透明
 	label.font = [UIFont fontWithName:@"Futura-CondensedExtraBold" size:35];
 	label.adjustsFontSizeToFitWidth = YES;
-	label.minimumFontSize = 16;
+	//iOS6//label.minimumFontSize = 16;
+	[label setMinimumScaleFactor:16.0/[UIFont labelFontSize]];
 	label.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
 	[self.view addSubview:label]; 
 	

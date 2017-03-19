@@ -43,7 +43,7 @@
 	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {  // セクションありテーブル
 		// OK
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = CGSizeMake(480, 300);
+		self.preferredContentSize = CGSizeMake(480, 300);
 		self.navigationItem.hidesBackButton = YES;
 #endif
 	}

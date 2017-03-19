@@ -186,7 +186,7 @@
 	if (self) {
 		// 初期化成功
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.preferredContentSize = GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
@@ -231,7 +231,7 @@
 					   NSLocalizedString(@"Sort Index",nil)]; // autorelease
 	UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:aItems];
 	segment.frame = CGRectMake(0,0, 220,30);
-	segment.segmentedControlStyle = UISegmentedControlStyleBar;
+	//segment.segmentedControlStyle = UISegmentedControlStyleBar;
 	MiOptE5SortMode = 0; //[[NSUserDefaults standardUserDefaults] integerForKey:GD_OptE5SortMode];
 	segment.selectedSegmentIndex = MiOptE5SortMode;
 	// .selectedSegmentIndex 代入より後に addTarget:指定すること。 逆になると代入によりaction:コールされてしまう。
@@ -248,7 +248,7 @@
 		MbuTop = nil;
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
-									   style:UIBarButtonItemStyleBordered
+									   style:UIBarButtonItemStylePlain
 										target:self action:@selector(barButtonUntitled)];
 		NSArray *buArray = @[buUntitled, buFlex, buSort, buFlex, buAdd];
 		[self setToolbarItems:buArray animated:YES];

@@ -199,7 +199,7 @@
 	if (self) {
 		// 初期化成功
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = CGSizeMake(320, 650);
+		self.preferredContentSize = CGSizeMake(320, 650);
 #endif
 		// インストールやアップデート後、1度だけ処理する
 		NSString *zNew = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //(Version)

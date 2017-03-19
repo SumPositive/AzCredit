@@ -150,7 +150,8 @@
 	if (self) {
 		// 初期化成功
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		//iOS7//self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.preferredContentSize = GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
@@ -204,7 +205,7 @@
 		// この「未定」ボタンは、「新規追加中」でE3配下のE6が無いときにだけ有効にする
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 										initWithTitle:NSLocalizedString(@"Untitled",nil)
-										style:UIBarButtonItemStyleBordered
+										style:UIBarButtonItemStylePlain
 										target:self action:@selector(barButtonUntitled)];
 		NSArray *buArray = @[buUntitled, buFlex];
 		[self setToolbarItems:buArray animated:YES];
@@ -470,7 +471,7 @@ static UIImage* GimageFromString(NSString* str)
     UIGraphicsPushContext(context);
     
 	CGContextSetRGBFillColor(context, 255, 0, 0, 1.0f);
-	[str drawAtPoint:CGPointMake(16.0f - (size.width / 2.0f), -23.0f) withFont:font];
+	[str drawAtPoint:CGPointMake(16.0f - (size.width / 2.0f), -23.0f) withAttributes:@{NSFontAttributeName:font}];
 	
 	// 描画終了
 	UIGraphicsPopContext();

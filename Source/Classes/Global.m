@@ -179,7 +179,8 @@ NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDay )		// iDay>=
 UIImage *GimageFromString(NSString* str)
 {
     UIFont* font = [UIFont systemFontOfSize:24]; //12.0; [0.4.17]Retina対応
-    CGSize size = [str sizeWithFont:font];
+    //iOS7//CGSize size = [str sizeWithFont:font];
+	CGSize size = [str sizeWithAttributes:@{NSFontAttributeName:font}];
     int width = 64; //32; [0.4.17]Retina対応
     int height = 64; //32;
     int pitch = width * 4;
@@ -198,7 +199,8 @@ UIImage *GimageFromString(NSString* str)
     
 	CGContextSetRGBFillColor(context, 255, 0, 0, 1.0f);
 	//[str drawAtPoint:CGPointMake(16.0f - (size.width / 2.0f), -23.5f) withFont:font];
-	[str drawAtPoint:CGPointMake(32.0f - (size.width / 2.0f), -47.0f) withFont:font]; //[0.4.17]Retina対応
+	//iOS7//[str drawAtPoint:CGPointMake(32.0f - (size.width / 2.0f), -47.0f) withFont:font]; //[0.4.17]Retina対応
+	[str drawAtPoint:CGPointMake(32.0f - (size.width / 2.0f), -47.0f) withAttributes:@{NSFontAttributeName:font}];
 	
 	// 描画終了
 	UIGraphicsPopContext();

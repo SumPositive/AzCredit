@@ -208,7 +208,7 @@
 		Re3edit = e3;	// どちらか必ずnil
 		Re6edit = e6;	// どちらか必ずnil
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.preferredContentSize = GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
@@ -223,7 +223,7 @@
 		PiE6row = iRow;
 		Re6edit = nil;
 #ifdef AzPAD
-		self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+		self.preferredContentSize = GD_POPOVER_SIZE;
 #endif
 	}
 	return self;
