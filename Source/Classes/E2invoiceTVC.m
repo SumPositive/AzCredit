@@ -38,13 +38,14 @@
 @property (nonatomic, strong) NSDecimalNumber	*decSum;
 @property (nonatomic, assign) NSInteger			iNoCheck;
 @property (nonatomic, strong) NSMutableSet		*e2invoices;
-//- (void)dealloc;
+// init禁止
+- (id)init __attribute__((unavailable("init is not available")));
 - (instancetype)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP NS_DESIGNATED_INITIALIZER;
+//- (void)dealloc;
 @end
 //-------------------------------------------E2invoiceTVCローカル使用一時作業クラス実装
 @implementation E2temp
 @synthesize iYearMMDD, bPaid, decSum, iNoCheck, e2invoices;
-
 
 - (instancetype)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP {
 	self = [super init];

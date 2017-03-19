@@ -312,7 +312,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		}
 	}
 	
-	MulEnd = fileHandle.offsetInFile; // [LF]または[CR]の次の位置を示す
+	MulEnd = (unsigned long)fileHandle.offsetInFile; // [LF]または[CR]の次の位置を示す
 	if (MulEnd <= MulStart) {
 		AzLOG(@"Break2");
 		return NO;	// ファイル終端
