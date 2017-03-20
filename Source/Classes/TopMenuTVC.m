@@ -519,43 +519,56 @@
 			return 2;
 			break;
 		case 3:			// 機能
-#ifdef AzPAD
-			return 4;
-#else
-			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) return 4;
-			return 3;
-#endif
+//#ifdef AzPAD
+//			return 4;
+//#else
+//			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) return 4;
+//			return 3;
+//#endif
+			return 2;
 			break;
 	}
 	return 0;
 #endif
 }
 
-#if defined(FREE_AD) && defined(AzPAD)
-// TableView セクションタイトルを応答
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
-{
-	if (section==0) return @"\n     Free Edition.\n\n";	// iAd上部スペース
-	return nil;
-}
-#endif
+//// セクションのヘッダの高さを返却
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//	return 1.0;
+//}
 
-// TableView セクションフッタを応答
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
-{
-#ifndef AzMAKE_SPLASHFACE
-	switch (section) {
-		case 3:
-#if defined(FREE_AD) && defined(AzPAD)
-			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2017 Azukid\n\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
-#else
-			return	@"\nAzukiSoft Project\n©2000-2017 Azukid\n";
-#endif
-			break;
-	}
-#endif
-	return nil;
-}
+//#if defined(FREE_AD) && defined(AzPAD)
+//// TableView セクションタイトルを応答
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+//{
+//	if (section==0) return @"\n     Free Edition.\n\n";	// iAd上部スペース
+//	return nil;
+//}
+//#endif
+
+//// セクションのフッタの高さを返却
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//	return 0.0;
+//}
+
+//// TableView セクションフッタを応答
+//- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
+//{
+//#ifndef AzMAKE_SPLASHFACE
+//	switch (section) {
+//		case 3:
+//#if defined(FREE_AD) && defined(AzPAD)
+//			return	@"\n\n\n\n\n\nAzukiSoft Project\n©2000-2017 Azukid\n\n\n\n\n\n\n";  //iPad//AdMobが表示されているとき最終セルが隠れないようにする
+//#else
+//			return	@"\nAzukiSoft Project  ©2000-2017 Azukid\n";
+//#endif
+//			break;
+//	}
+//#endif
+//	return nil;
+//}
 
 /*
 // セルの高さを指示する
@@ -651,19 +664,19 @@
 			case 3: //-------------------------------------------------------------Function
 			{
 				switch (indexPath.row) {
+//					case 0:
+//						cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
+//						cell.textLabel.text = NSLocalizedString(@"Communicate with Google", nil);
+//						break;
+//					case 1:
+//						cell.imageView.image = [UIImage imageNamed:@"Icon32-NearPC.png"];
+//						cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
+//						break;
 					case 0:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
-						cell.textLabel.text = NSLocalizedString(@"Communicate with Google", nil);
-						break;
-					case 1:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-NearPC.png"];
-						cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
-						break;
-					case 2:
 						cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
 						cell.textLabel.text = NSLocalizedString(@"Setting", nil);
 						break;
-					case 3:
+					case 1:
 						cell.imageView.image = [UIImage imageNamed:@"Icon32-Information.png"];
 						cell.textLabel.text = NSLocalizedString(@"Information", nil);
 						break;
@@ -836,7 +849,7 @@
 		case 3: // Function
 		{
 			switch (indexPath.row) {
-				case 0:
+//				case 0:
 //				{ // Google Document
 //					GooDocsTVC *goodocs = [[GooDocsTVC alloc] init];
 //					// 以下は、GooDocsViewの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
@@ -858,8 +871,8 @@
 //#endif
 //					[goodocs release];
 //				}
-					break;
-				case 1:
+//					break;
+//				case 1:
 //				{  // Backup/Restore for YourPC
 //					//NG//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
 //					//NG//ツールバーを消したいが、戻ったとき表示する方法が未定。
@@ -878,8 +891,8 @@
 //					[vi show];
 //					[vi release];
 //				}
-					break;
-				case 2:
+//					break;
+				case 0:
 				{  // Setting
 #if defined(FREE_AD) && defined(AzPAD)
 					MbAdCanVisible = YES; // iAd許可
@@ -888,7 +901,7 @@
 					[self azSettingView];
 				}
 					break;
-				case 3:
+				case 1:
 				{  // Information
 #if defined(FREE_AD) && defined(AzPAD)
 					MbAdCanVisible = YES; // iAd許可
