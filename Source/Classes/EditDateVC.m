@@ -85,12 +85,12 @@
 			AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 			apd.entityModified = YES;	//変更あり
 			// E6更新
-			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
-				[delegate remakeE6change:1];		// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
+			if ([self.delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+				[self.delegate remakeE6change:1];		// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
 			}
 			// 再描画
-			if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-				[delegate viewWillAppear:YES];	
+			if ([self.delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+				[self.delegate viewWillAppear:YES];
 			}
 		}
 	}
@@ -156,16 +156,16 @@
 			AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 			apd.entityModified = YES;	//変更あり
 			// E6更新　　このRe6editを基準(固定)にして処理する
-			if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+			if ([self.delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
 				if ((Re6edit.nPartNo).integerValue==1) {
-					[delegate remakeE6change:5];		// (5) E6part1を固定してE6part2またはE3を調整更新する
+					[self.delegate remakeE6change:5];		// (5) E6part1を固定してE6part2またはE3を調整更新する
 				} else {
-					[delegate remakeE6change:6];		// (6) E6part2を固定してE6part1またはE3を調整更新する
+					[self.delegate remakeE6change:6];		// (6) E6part2を固定してE6part1またはE3を調整更新する
 				}
 			}
 			// 再描画
-			if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-				[delegate viewWillAppear:YES];	
+			if ([self.delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+				[self.delegate viewWillAppear:YES];
 			}
 		}
 	}
