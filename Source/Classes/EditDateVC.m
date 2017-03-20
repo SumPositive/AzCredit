@@ -278,18 +278,15 @@
 	//MdatePicker = [[[UIDatePicker alloc] init] autorelease]; iPadでは不具合発生する
 	MdatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0,0, 320,216)];
 	
-	if ([[UIDevice currentDevice].systemVersion compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
-		//iOS6.0からは不要になった。@"dk_DK"にすると日本語でも英語モードになってしまう。
-		NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
-		MdatePicker.locale = locale;
-	}
+//	if ([[UIDevice currentDevice].systemVersion compare:@"6.0"]==NSOrderedAscending) { // ＜ "6.0"
+//		//iOS6.0からは不要になった。@"dk_DK"にすると日本語でも英語モードになってしまう。
+//		NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"dk_DK"];  // AM/PMを消すため ＜＜実機でのみ有効らしい＞＞
+//		MdatePicker.locale = locale;
+//	}
 	
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	//NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	//[MdatePicker setCalendar:calendar];
-	//[calendar release];
-	//NG//UIDatePickerの言語表示を変えようと頑張ったがダメだった⇒ http://aosicode.blog94.fc2.com/blog-entry-32.html
-	//NG//Pickerが和暦になっても、表示は正しく西暦になるようなので、このままにしておく。
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	[MdatePicker setCalendar:calendar];
 
 	[self.view addSubview:MdatePicker];  //auto//[MdatePicker release];
 	MintervalPrev = (MdatePicker.date).timeIntervalSinceReferenceDate; // 2001/1/1からの秒数
@@ -346,16 +343,16 @@
 		MdatePicker.frame = rect;
 		
 		if (Re3edit) {
-			rect.origin.y = 30;
+			rect.origin.y = MdatePicker.frame.origin.y - 40;
 			rect.size.height = 30;
 			rect.size.width = 150;
 			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
 			MbuToday.frame = rect;
 			
-			rect.origin.y = self.view.bounds.size.height - 60;
+			rect.origin.y = MdatePicker.frame.origin.y + MdatePicker.frame.size.height + 10; //self.view.bounds.size.height - 60;
 			MbuYearTime.frame = rect;
 		} else {
-			rect.origin.y = 20;
+			rect.origin.y = MdatePicker.frame.origin.y - 40 - 32;
 			rect.size.height = 30;
 			rect.size.width = 200;
 			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;

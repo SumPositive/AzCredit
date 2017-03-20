@@ -363,6 +363,9 @@ NSString *passCode()
 	if (!self) return nil;
 
 	float fX = 0, fY = 0;
+	if (320.0 < self.view.frame.size.width) {  //iPhone6以降対応
+		fX += (self.view.frame.size.width - 320.0) / 2.0;
+	}
 #ifdef AzPAD
 	//self.preferredContentSize = CGSizeMake(320, 510);
 	self.navigationItem.hidesBackButton = YES;
@@ -453,7 +456,7 @@ NSString *passCode()
 	//------------------------------------------Lable:著作権表示
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+130, 200, 60)];
 	label.text =	@"Born on March 26\n"
-						@"© 2000-2012  Azukid\n"
+						@"© 2000-2017  Azukid\n"
 						@"Creator Sum Positive\n"
 						@"All Rights Reserved.";
 	label.numberOfLines = 4;

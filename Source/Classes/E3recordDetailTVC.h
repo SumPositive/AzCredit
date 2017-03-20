@@ -35,6 +35,7 @@
 	UIBarButtonItem		*MbuDelete;		// BarButton ＜PAID時に無効にするため＞ [0.3]
 	UILabel					*MlbAmount;
 	CalcView					*McalcView;
+	UIView						*McalcMaskView;
 #ifdef AzPAD
 	NSInteger				MiSourceYearMMDD;	// 修正前の利用日、[Save]時に比較して同じならば修正行だけ再表示し、変化あれば全再表示する
 #else

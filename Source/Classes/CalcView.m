@@ -36,7 +36,7 @@
 //----------------------------------------------------------NSMutableArray Stack Method
 
 
-@interface CalcView (PrivateMethods)
+@interface CalcView ()
 //- (void)MtextFieldDidChange:(UITextField *)textField;
 - (NSDecimalNumber *)decimalAnswerFomula:(NSString *)strFomula;	// autorelease
 - (void)textFieldDidChange:(UITextField *)textField;
@@ -194,12 +194,12 @@
 				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 				// E6更新
-				if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
-					[delegate remakeE6change:2];		// (2) nAmount	金額
+				if ([self.delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+					[self.delegate remakeE6change:2];		// (2) nAmount	金額
 				}
 				// 再描画
-				if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-					[delegate viewWillAppear:YES];	
+				if ([self.delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+					[self.delegate viewWillAppear:YES];
 				}
 			}
 		}
@@ -714,7 +714,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	
 	float fxGap = 2;	// Xボタン間隔
 	float fyGap;		// Yボタン間隔
-	float fx = fxGap;
+	float fx = 0;
 	float fy;
 	float fyTop;
 	float fW;
@@ -737,13 +737,17 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	fH = fW / GOLDENPER; // 黄金比
 	fyTop = fy + fyGap;
 #else
+	if (320.0 < rect.size.width) {  // iPhone6以降対応
+		fx += (rect.size.width - 320.0)/2.0;
+	}
+	
 	if (rect.size.width < rect.size.height)
 	{	// タテ
 		//MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
 		fy = 95;
 		MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
 		fy += MtextField.frame.size.height;
-		MscrollView.frame = CGRectMake(0,fy, 320,220);
+		MscrollView.frame = CGRectMake(fx, fy, 320,220);
 		//fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
 		fW = (320 - fxGap) / 5 - fxGap; // 1ページ5列まで表示、6列目は2ページ目へ
 																								  //↓2ページ目の列数=1
@@ -775,6 +779,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	}
 #endif
 	
+	fx = fxGap;
 	NSInteger iIndex = 0;
 	for (int iCol=0; iCol<6; iCol++)
 	{

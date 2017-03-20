@@ -242,6 +242,9 @@
 	float fX = self.tableView.frame.size.width - 100 - 120;
 #else
 	float fX = cell.frame.size.width - 120;
+	if (320.0 < self.view.frame.size.width) {  //iPhone6以降対応
+		fX += (self.view.frame.size.width - 320.0);
+	}
 #endif
 	
 	switch (indexPath.row) {

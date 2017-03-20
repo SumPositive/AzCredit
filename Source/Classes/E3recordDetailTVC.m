@@ -120,7 +120,7 @@
 	// ToolBar常時表示
 #else
 	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
-	[self.navigationController setToolbarHidden:YES];
+	//[self.navigationController setToolbarHidden:YES];
 #endif
 	
 	if (McalcView) {
@@ -131,6 +131,9 @@
 	}
 	
 	CGRect rect = self.view.bounds;
+//	if (320.0 < self.view.frame.size.width) {  // iPhone6以降対応
+//		rect.origin.x = (self.view.frame.size.width - 320.0) / 2.0;
+//	}
 	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0]; // 利用金額行
 	if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
 		// 横
@@ -147,12 +150,12 @@
 		rect.origin.y = 65; //0;
 	}
 	
+	// CalcView
 	McalcView = [[CalcView alloc] initWithFrame:rect withE3:Re3edit];
 	McalcView.Rlabel = MlbAmount;  // MlbAmount.tag にはCalc入力された数値(long)が記録される
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	McalcView.delegate = self;	// viewWillAppear:を呼び出すため
 	[self.navigationController.view addSubview:McalcView];	//[1.0.1]万一広告が残ってもキーが上になるようにした。
-	//[McalcView release]; // addSubviewにてretain(+1)されるため、こちらはrelease(-1)して解放
 	[McalcView show];
 }
 
@@ -1193,7 +1196,7 @@
 			
 			if (RaE6parts==nil OR RaE6parts.count<=0) {
 				cell.textLabel.textAlignment = NSTextAlignmentCenter;
-				cell.textLabel.text = @"(C)2000-2012 Azukid";
+				cell.textLabel.text = @"(C)2000-2017 Azukid";
 				cellLabel.text = @"";
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.userInteractionEnabled = NO;
