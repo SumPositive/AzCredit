@@ -278,8 +278,9 @@
 	// Where
 	NSPredicate *predicate = nil;
 	if (zSearch && 0 < zSearch.length) {  // NSPredicateを使って、検索条件式を設定する
+		// [c]大文字・小文字の区別なし(case-insensitive)
 		predicate = [NSPredicate predicateWithFormat:
-					 @"(sortName contains %@) OR (zName contains %@)", zSearch, zSearch];
+					 @"(sortName contains[c] %@) OR (zName contains[c] %@)", zSearch, zSearch];
 	}
 	
 	// Sorting
