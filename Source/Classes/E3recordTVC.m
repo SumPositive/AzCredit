@@ -366,7 +366,7 @@
 			&& [dateMiddle compare:e3.dateUse] != NSOrderedDescending) { // dateMiddle <= e3.dateUse ( ! > )
 			iSecMiddle = iSec;
 			iRowMiddle = iRow;
-			AzLOG(@"-----:MIDDLE indexPath=(%d,%d)", iSecMiddle, iRowMiddle);
+			AzLOG(@"-----:MIDDLE indexPath=(%ld,%ld)", (long)iSecMiddle, (long)iRowMiddle);
 		}
 		iRow++;
 	}
@@ -387,12 +387,12 @@
 	[RaE3list addObject:e3days]; // Section=End になる
 	//
 #ifdef AzDEBUG
-	AzLOG(@"[RaSection count]=%d  [RaE3list count]=%d", [RaSection count], [RaE3list count]);
+	AzLOG(@"[RaSection count]=%lu  [RaE3list count]=%lu", (unsigned long)[RaSection count], (unsigned long)[RaE3list count]);
 	for (int i=0 ; i<[RaE3list count] && i<[RaSection count] ; i++) {
-		AzLOG(@"RaSection=(%@) RaE3list=[%d][%d]", 
+		AzLOG(@"RaSection=(%@) RaE3list=[%d][%lu]", 
 			  [RaSection objectAtIndex:i],
 			  i,
-			  [[RaE3list objectAtIndex:i] count]);
+			  (unsigned long)[[RaE3list objectAtIndex:i] count]);
 	}
 #endif
 	

@@ -592,7 +592,7 @@
 			Me0root = arFetch[0];
 		}
 		else {
-			AzLOG(@"Error: Me0root count = %d", [arFetch count]);
+			AzLOG(@"Error: Me0root count = %lu", (unsigned long)[arFetch count]);
 //			GA_TRACK_EVENT_ERROR(@"Exit Error: Me0root count != 1",0);
 			exit(-1);  // Fail
 		}
@@ -613,7 +613,7 @@
 	
 	MbE6paid = NO;
 	MbE6checked = NO;
-	int iChecked = RaE6parts.count;
+	NSInteger iChecked = RaE6parts.count;
 	if (0 < iChecked) {
 		for (E6part *e6 in RaE6parts) {
 			if (e6.e2invoice.e1paid OR e6.e2invoice.e7payment.e0paid) {
@@ -893,9 +893,9 @@
 					return NSLocalizedString(@"CopyAdd Msg", nil);
 			}
 			else if	(0 <= MiIndexE3lasts && !MbModified) {
-				return [NSString stringWithFormat:@"%@%d%@", 
+				return [NSString stringWithFormat:@"%@%ld%@",
 						NSLocalizedString(@"PastCopyPre",nil),
-						1 + MiIndexE3lasts, 
+						(long)(1 + MiIndexE3lasts),
 						NSLocalizedString(@"PastCopySuf",nil)];
 			}
 			else if (0 < PiAdd && !MbCopyAdd && (-1) <= MiIndexE3lasts && !MbModified) {
@@ -1278,7 +1278,7 @@
 	// [EntityRelation commit];
 
 	MbE6checked = NO;
-	int iChecked = RaE6parts.count;
+	NSInteger iChecked = RaE6parts.count;
 	if (0 < iChecked) {
 		for (E6part *e6 in RaE6parts) {
 			if ((e6.nNoCheck).integerValue==0) { //チェック

@@ -137,7 +137,7 @@ NSString *passCode()
 	// code を MD5ハッシュ化
 	const char *cstr = code.UTF8String;	// C文字列化
 	unsigned char ucMd5[CC_MD5_DIGEST_LENGTH];	// MD5結果領域 [16]bytes
-	CC_MD5(cstr, strlen(cstr), ucMd5);			// MD5生成
+	CC_MD5(cstr, (CC_LONG)strlen(cstr), ucMd5);			// MD5生成
 	// 16進文字列化 ＜＜ucMd5[0]〜[15]のうち10文字分だけ使用する＞＞
 	code = [NSString stringWithFormat: @"%02X%02X%02X%02X%02X",  
 			ucMd5[1], ucMd5[5], ucMd5[7], ucMd5[11], ucMd5[13]];	

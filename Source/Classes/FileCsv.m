@@ -252,8 +252,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 					if (0 < (e6node.nNoCheck).intValue) zCheck = @""; // 未Check
 					
 					// E6,iYearMMDD,zPaid,lAmount,fInterest,bChecked,
-					str = [[NSString alloc] initWithFormat:@"Pay,%d,%@,%@,%@,%@,\n", 
-						   iYearMMDD, 
+					str = [[NSString alloc] initWithFormat:@"Pay,%ld,%@,%@,%@,%@,\n", 
+						   (long)iYearMMDD,
 						   zPaid, 
 						   [e6node.nAmount descriptionWithLocale:nil],    //[e6node.nAmount longValue], 
 						   [e6node.nInterest descriptionWithLocale:nil],  //[e6node.nInterest longValue], 

@@ -61,7 +61,7 @@ NSString *GstringDay( NSInteger PlDay )
 			return NSLocalizedString(@"3rd",nil);
 			break;
 		default:
-			return [NSString stringWithFormat:@"%d%@", PlDay, NSLocalizedString(@"th",nil)];
+			return [NSString stringWithFormat:@"%ld%@", (long)PlDay, NSLocalizedString(@"th",nil)];
 			break;
 	}
 	return nil;
@@ -215,7 +215,7 @@ UIImage *GimageFromString(NSString* str)
     return uiImage;
 }
 
-NSDate *GdateYearMMDD( NSInteger PiYearMMDD, int PiHour, int PiMinute, int PiSecond )
+NSDate *GdateYearMMDD( NSInteger PiYearMMDD, NSInteger PiHour, NSInteger PiMinute, NSInteger PiSecond )
 {
 	NSInteger iYear = PiYearMMDD / 10000;
 	NSInteger iDD = PiYearMMDD - (iYear * 10000);

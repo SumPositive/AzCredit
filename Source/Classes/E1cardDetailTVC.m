@@ -397,8 +397,8 @@
 					if ((Re1edit.nBonus1).integerValue <= 0) {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
 					} else {
-						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2d月 %@", 
-													 (Re1edit.nBonus1).integerValue,
+						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2ld月 %@", 
+													 (long)(Re1edit.nBonus1).integerValue,
 													 GstringMonth((Re1edit.nBonus1).integerValue)];
 					}
 				}
@@ -409,8 +409,8 @@
 					if ((Re1edit.nBonus2).integerValue <= 0) {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
 					} else {
-						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2d月 %@", 
-													 (Re1edit.nBonus2).integerValue,
+						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2ld月 %@", 
+													 (long)(Re1edit.nBonus2).integerValue,
 													 GstringMonth((Re1edit.nBonus2).integerValue)];
 					}
 				}
