@@ -1,6 +1,6 @@
 PODS:
   - SFHFKeychainUtils (0.0.1)
-  - UIDevice-Hardware (0.1.9)
+  - UIDevice-Hardware (0.1.10)
 
 DEPENDENCIES:
   - SFHFKeychainUtils
@@ -8,8 +8,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
-  UIDevice-Hardware: 70f06071af0b01f3b30ec5a274360254e7d3326c
+  UIDevice-Hardware: 4bb15b9bd9878762ab879ac86185baad17b6c3ff
 
 PODFILE CHECKSUM: 4adeed62c83efb9d3bfc409a993a28b2f238fd27
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1
