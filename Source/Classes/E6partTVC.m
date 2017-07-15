@@ -31,7 +31,7 @@
 
 #pragma mark - Delegate
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)refreshE6partTVC:(BOOL)bSame	//=YES:支払先と支払日が変更なし、ならば行だけ再表示
 {
 	//　reloadData　や　reloadRowsAtIndexPaths でも落ちる！　まだ原因不明 ⇒ [1.1.2]原因判明！ [indexPath copy] して解決。
@@ -46,7 +46,7 @@
 		[self viewWillAppear:YES];
 	}
 }
-#endif
+//#endif
 
 
 #pragma mark - Action
@@ -109,22 +109,22 @@
 	AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	apd.entityModified = NO;  //リセット
 
-#ifdef  AzPAD
-	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
-	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-	[nc release];
-	CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-	rc.size.width /= 2;
-	rc.origin.y += 10;	rc.size.height -= 20;
-	[Mpopover presentPopoverFromRect:rc
-							  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
-	e3detail.delegate = self;		// refreshTable: callback
-#else
-	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:YES];
-#endif
+    if (IS_PAD) {
+        UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
+        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+        //[nc release];
+        CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+        rc.size.width /= 2;
+        rc.origin.y += 10;	rc.size.height -= 20;
+        [Mpopover presentPopoverFromRect:rc
+                                  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        e3detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+        e3detail.delegate = self;		// refreshTable: callback
+    }else{
+        //[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+        [self.navigationController pushViewController:e3detail animated:YES];
+    }
 }
 
 
@@ -156,26 +156,24 @@
 {
     [super loadView];
 	
-#ifdef AzPAD
-	// E7-->E6 [<]Backボタンが表示されない症状。下記の策も効果なし。
-	//self.navigationItem.leftBarButtonItem = nil;
-	//[self.navigationItem setHidesBackButton:NO animated:NO];
-	//self.navigationItem.hidesBackButton = NO; 
-	//＜＜＜ E7⇒E6⇒E7への[<]ボタンが現れない件、実機では発生しない。＞＞＞
-
-	// Tool Bar Button なし
-#else
-	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-															   style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)];
-	NSArray *buArray = @[buTop, buFlex];
-	[self setToolbarItems:buArray animated:YES];
-	//[buTop release];
-	//[buFlex release];
-#endif
+    if (IS_PAD) {
+        // E7-->E6 [<]Backボタンが表示されない症状。下記の策も効果なし。
+        //self.navigationItem.leftBarButtonItem = nil;
+        //[self.navigationItem setHidesBackButton:NO animated:NO];
+        //self.navigationItem.hidesBackButton = NO;
+        //＜＜＜ E7⇒E6⇒E7への[<]ボタンが現れない件、実機では発生しない。＞＞＞
+        
+        // Tool Bar Button なし
+    }else{
+        // Tool Bar Button
+        UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                target:nil action:nil];
+        UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+                                                                  style:UIBarButtonItemStylePlain  //Bordered
+                                                                 target:self action:@selector(barButtonTop)];
+        NSArray *buArray = @[buTop, buFlex];
+        [self setToolbarItems:buArray animated:YES];
+    }
 	
 //#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
 //	RoAdMobView = [[GADBannerView alloc]
@@ -414,22 +412,22 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
-#ifdef AzPAD
-	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
-	// SplitViewタテのとき [Menu] button を表示する
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[items release];
-	}
-#endif
+    if (IS_PAD) {
+        // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+        // SplitViewタテのとき [Menu] button を表示する
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (app.barMenu) {
+            UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+            NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+            UIToolbar* toolBar = [[UIToolbar alloc] init];
+            toolBar.barStyle = UIBarStyleDefault;
+            [toolBar setItems:items animated:NO];
+            [toolBar sizeToFit];
+            self.navigationItem.titleView = toolBar;
+            //[items release];
+        }
+    }
 
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
@@ -473,7 +471,7 @@
 	}
 }
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {	// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
 	if ([Mpopover isPopoverVisible]) 
@@ -483,7 +481,7 @@
 	}
     [super viewWillDisappear:animated];
 }
-#endif
+//#endif
 
 
 
@@ -492,12 +490,12 @@
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {	
-#ifdef AzPAD
-	return YES;
-#else
-	// 回転禁止でも、正面は常に許可しておくこと。
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        // 回転禁止でも、正面は常に許可しておくこと。
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 #ifdef FREE_AD
@@ -531,24 +529,24 @@
 {
 	[self.tableView reloadData];  // cellLable位置調整する
 	
-#ifdef AzPAD
-	if ([Mpopover isPopoverVisible]) {
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.size.width /= 2;
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
-					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-		} 
-		else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
-		}
-	}
-#endif
+    if (IS_PAD) {
+        if ([Mpopover isPopoverVisible]) {
+            // Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+            if (MindexPathEdit) {
+                [self.tableView scrollToRowAtIndexPath:MindexPathEdit
+                                      atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+                CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+                rc.size.width /= 2;
+                rc.origin.y += 10;	rc.size.height -= 20;
+                [Mpopover presentPopoverFromRect:rc  inView:self.tableView
+                        permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+            } 
+            else {
+                // 回転後のアンカー位置が再現不可なので閉じる
+                [Mpopover dismissPopoverAnimated:YES];
+            }
+        }
+    }
 }
 
 
@@ -745,15 +743,15 @@
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
 											reuseIdentifier:zCellE6part];
 			// 行毎に変化の無い定義は、ここで最初に1度だけする
-#ifdef AzPAD
-			cell.textLabel.font = [UIFont systemFontOfSize:18];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-			cell.accessoryType = UITableViewCellAccessoryNone;  // Popoverになるから
-#else
-			cell.textLabel.font = [UIFont systemFontOfSize:14];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // ＞
-#endif
+            if (IS_PAD) {
+                cell.textLabel.font = [UIFont systemFontOfSize:18];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+                cell.accessoryType = UITableViewCellAccessoryNone;  // Popoverになるから
+            }else{
+                cell.textLabel.font = [UIFont systemFontOfSize:14];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; // ＞
+            }
 			//cell.textLabel.textAlignment = NSTextAlignmentLeft;
 			//cell.textLabel.textColor = [UIColor blackColor];
 			cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
@@ -764,11 +762,11 @@
 			cellLabel.textAlignment = NSTextAlignmentRight;
 			//cellLabel.textColor = [UIColor blackColor];
 			cellLabel.backgroundColor = [UIColor whiteColor];
-#ifdef AzPAD
-			cellLabel.font = [UIFont systemFontOfSize:20];
-#else
-			cellLabel.font = [UIFont systemFontOfSize:14];
-#endif
+            if (IS_PAD) {
+                cellLabel.font = [UIFont systemFontOfSize:20];
+            }else{
+                cellLabel.font = [UIFont systemFontOfSize:14];
+            }
 			cellLabel.tag = -1;
 			[cell addSubview:cellLabel]; 
 		}
@@ -776,12 +774,12 @@
 			cellLabel = (UILabel *)[cell viewWithTag:-1];
 		}
 		// 回転対応のため
-#ifdef AzPAD
-		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
-#else
-		//cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 2, 80, 20);
-		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
-#endif
+        if (IS_PAD) {
+            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
+        }else{
+            //cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 2, 80, 20);
+            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
+        }
 
 		// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 		UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
@@ -855,13 +853,13 @@
 										   reuseIdentifier:zCellAdd];
 		}
 		cell.textLabel.text = NSLocalizedString(@"PayDay Add Record",nil);
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:16];
-		cell.accessoryType = UITableViewCellAccessoryNone;
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:16];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
+        }
 		//cell.accessoryType = UITableViewCellEditingStyleInsert; // (+)
 		cell.textLabel.textAlignment = NSTextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor grayColor];
@@ -1100,7 +1098,7 @@
 }
 
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
@@ -1125,7 +1123,7 @@
 		return YES;	// Popover外部タッチで閉じるのを許可
 	}
 }
-#endif
+//#endif
 
 @end
 

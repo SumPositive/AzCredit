@@ -47,10 +47,10 @@
 @synthesize Re3edit;
 @synthesize PiAdd;
 @synthesize PiFirstYearMMDD;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
-#endif
+//#endif
 
 
 #pragma mark - Delegate method
@@ -92,36 +92,36 @@
 		[MocFunctions e3delete:Re3edit];
 		[MocFunctions commit];
 
-#ifdef AzPAD
-		if (selfPopover) {
-			if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
-				[delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
-			}
-			else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
-				[delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
-			}
-			// TopMenuTVCにある 「未払合計額」を再描画するための処理
-			UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
-			TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-			if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-				[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-			}
-			[selfPopover dismissPopoverAnimated:YES];
-		}
-#else
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+        if (IS_PAD) {
+            if (selfPopover) {
+                if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+                    [delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
+                }
+                else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+                    [delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
+                }
+                // TopMenuTVCにある 「未払合計額」を再描画するための処理
+                UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+                TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+                if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+                    [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+                }
+                [selfPopover dismissPopoverAnimated:YES];
+            }
+        }else{
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
 	}
 }
 
 - (void)showCalcAmount
 {
-#ifdef AzPAD
-	// ToolBar常時表示
-#else
-	// ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
-	//[self.navigationController setToolbarHidden:YES];
-#endif
+//    if (IS_PAD) {
+//        // ToolBar常時表示
+//    }else{
+//        // ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
+//        //[self.navigationController setToolbarHidden:YES];
+//    }
 	
 	if (McalcView) {
 		[McalcView hide];
@@ -178,15 +178,15 @@
 	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
 	appDelegate.Me3dateUse = nil; //1.0.0//
 
-#ifdef AzPAD
-	[selfPopover dismissPopoverAnimated:YES];
-#else
-	if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
-		[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
-#endif
+    if (IS_PAD) {
+        [selfPopover dismissPopoverAnimated:YES];
+    }else{
+        if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
+            [self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
+    }
 }
 
 // 編集フィールドの値を self.e3target にセットする
@@ -239,29 +239,29 @@
 	//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
 	appDelegate.Me3dateUse = [Re3edit.dateUse copy];
 	
-#ifdef AzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
-			BOOL bSame = (MiSourceYearMMDD == GiYearMMDD( Re3edit.dateUse ));
-			[delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
-		}
-		else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
-			BOOL bSame = !MbE1cardChange;
-			[delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
-		}
-
-		// TopMenuTVCにある 「未払合計額」を再描画するための処理
-		UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
-		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-		if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-			[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-		}
-
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+                BOOL bSame = (MiSourceYearMMDD == GiYearMMDD( Re3edit.dateUse ));
+                [delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
+            }
+            else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+                BOOL bSame = !MbE1cardChange;
+                [delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
+            }
+            
+            // TopMenuTVCにある 「未払合計額」を再描画するための処理
+            UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+            TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+            if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+                [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+            }
+            
+            [selfPopover dismissPopoverAnimated:YES];
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
 
@@ -451,11 +451,11 @@
 		MbSaved = NO;
 		MbE1cardChange = NO;
 		MbModified = NO;
-#ifdef AzPAD
-		MiSourceYearMMDD = 0;		// 初回のみ通すため
-		self.preferredContentSize = GD_POPOVER_SIZE_INIT;
-		//この後、viewDidAppearにて GD_POPOVER_SIZE を設定することにより、ようやくPopoverサイズの変動が無くなった。
-#endif
+        if (IS_PAD) {
+            MiSourceYearMMDD = 0;		// 初回のみ通すため
+            self.preferredContentSize = GD_POPOVER_SIZE_INIT;
+            //この後、viewDidAppearにて GD_POPOVER_SIZE を設定することにより、ようやくPopoverサイズの変動が無くなった。
+        }
 	}
 	return self;
 }
@@ -521,14 +521,14 @@
 	else {
 		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																				 target:nil action:nil];
-#ifdef AzPAD
-		// Top不要
-#else
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-												  style:UIBarButtonItemStylePlain  //Bordered
-												  target:self action:@selector(cancelClose:)]; // ＜＜ cancelClose:YES<<--TopView ＞＞
-		MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancelClose:にて判断に使用
-#endif
+        if (IS_PAD) {
+            // Top不要
+        }else{
+            MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+                                                      style:UIBarButtonItemStylePlain  //Bordered
+                                                     target:self action:@selector(cancelClose:)]; // ＜＜ cancelClose:YES<<--TopView ＞＞
+            MbuTop.tag = TAG_BAR_BUTTON_TOPVIEW; // cancelClose:にて判断に使用
+        }
 		
 		UIBarButtonItem *buCopyAdd = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-CopyAdd.png"]
 																	  style:UIBarButtonItemStylePlain  //Bordered
@@ -539,18 +539,14 @@
 																   target:self action:@selector(barButtonDelete)];
 		MbuDelete.tag = TAG_BAR_BUTTON_DEL;
 		
-#ifdef AzPAD
-		// Top不要
-		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buCopyAdd, buFlex, MbuDelete, nil];
-		[self setToolbarItems:buArray animated:YES];
-#else
-		NSArray *buArray = @[MbuTop, buFlex, buCopyAdd, buFlex, MbuDelete];
-		[self setToolbarItems:buArray animated:YES];
-		//[MbuTop release];
-#endif
-		//[buCopyAdd release];
-		//[MbuDelete release];
-		//[buFlex release];
+        if (IS_PAD) {
+            // Top不要
+            NSArray *buArray = [NSArray arrayWithObjects: buFlex, buCopyAdd, buFlex, MbuDelete, nil];
+            [self setToolbarItems:buArray animated:YES];
+        }else{
+            NSArray *buArray = @[MbuTop, buFlex, buCopyAdd, buFlex, MbuDelete];
+            [self setToolbarItems:buArray animated:YES];
+        }
 	}
 
 	// 初回処理のため
@@ -692,11 +688,11 @@
 	if (Re3edit.dateUse == nil) {
 		Re3edit.dateUse = [NSDate date]; // Now
 	}
-#ifdef AzPAD
-	if (PiAdd==0 && MiSourceYearMMDD==0) {	// 初回のみ通す
-		MiSourceYearMMDD = GiYearMMDD( Re3edit.dateUse ); // saveClose:にて日付の変化を判定するため
-	}
-#endif
+    if (IS_PAD) {
+        if (PiAdd==0 && MiSourceYearMMDD==0) {	// 初回のみ通す
+            MiSourceYearMMDD = GiYearMMDD( Re3edit.dateUse ); // saveClose:にて日付の変化を判定するため
+        }
+    }
 	
 	if (Re3edit.e1card == nil) {
 		// Re3edit.e1card = 最上行のカードにする
@@ -737,10 +733,10 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
-#ifdef AzPAD
-	// init 時に GD_POPOVER_SIZE_INIT を設定してから、この処理により、ようやくPopoverサイズの変動が無くなった。
-	self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+    if (IS_PAD) {
+        // init 時に GD_POPOVER_SIZE_INIT を設定してから、この処理により、ようやくPopoverサイズの変動が無くなった。
+        self.preferredContentSize = GD_POPOVER_SIZE;
+    }
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
@@ -814,9 +810,9 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-#ifdef AzPAD
-	[selfPopover release], selfPopover = nil;
-#endif
+    if (IS_PAD) {
+        selfPopover = nil;
+    }
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	Re3edit = nil;
@@ -926,11 +922,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	if (indexPath.section==0 && 3<=indexPath.row) {
-#ifdef AzPAD
-		return 36; // Repeat, Payment
-#else
-		return 30; // Repeat, Payment
-#endif
+        if (IS_PAD) {
+            return 36; // Repeat, Payment
+        }else{
+            return 30; // Repeat, Payment
+        }
 	}
 	return 44; // デフォルト：44ピクセル
 }
@@ -950,13 +946,13 @@
 				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 											   reuseIdentifier:zCellIndex];
 				cell.showsReorderControl = NO; // Move禁止
-#ifdef AzPAD
-				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
-				cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 必須内容表示　大きく
-#else
-				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
-				cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
-#endif
+                if (IS_PAD) {
+                    cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+                    cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 必須内容表示　大きく
+                }else{
+                    cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+                    cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
+                }
 				cell.textLabel.textAlignment = NSTextAlignmentCenter;
 				cell.textLabel.textColor = [UIColor grayColor];
 				
@@ -987,9 +983,9 @@
 						[df setDateFormat:NSLocalizedString(@"E3detailDate",nil)];
 					}
 					//AzLOG(@"Me3zDateUse=%@", Me3zDateUse);
-#ifdef AzPAD
-					cell.detailTextLabel.font = [UIFont systemFontOfSize:24]; // 特に大きく
-#endif
+                    if (IS_PAD) {
+                        cell.detailTextLabel.font = [UIFont systemFontOfSize:24]; // 特に大きく
+                    }
 					cell.detailTextLabel.text = [df stringFromDate:Re3edit.dateUse];
 					
 				} break;
@@ -1046,11 +1042,11 @@
 				case 3: // Repeat	//[0.4] (0)なし　(1)1ヶ月後　(2)2ヶ月後　(12)1年後
 				{
 					cell.textLabel.text = NSLocalizedString(@"Use Repeat",nil);
-#ifdef AzPAD
-					cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-#else
-					cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-#endif
+                    if (IS_PAD) {
+                        cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+                    }else{
+                        cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+                    }
 					switch ((Re3edit.nRepeat).integerValue) {
 						case  0: cell.detailTextLabel.text = NSLocalizedString(@"Repeat00", nil); break;
 						case  1: cell.detailTextLabel.text = NSLocalizedString(@"Repeat01", nil); break;
@@ -1068,11 +1064,11 @@
 					
 				case 4:{ // nPayType
 					cell.textLabel.text = NSLocalizedString(@"Use Payment",nil);
-#ifdef AzPAD
-					cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-#else
-					cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-#endif
+                    if (IS_PAD) {
+                        cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+                    }else{
+                        cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+                    }
 					switch ((Re3edit.nPayType).integerValue) {
 						case 1:
 							cell.detailTextLabel.text = NSLocalizedString(@"PayType 001",nil);
@@ -1100,13 +1096,13 @@
 				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
 											   reuseIdentifier:zCellIndex];
 				cell.showsReorderControl = NO; // Move禁止
-#ifdef AzPAD
-				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
-				cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 任意内容表示
-#else
-				cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
-				cell.detailTextLabel.font = [UIFont systemFontOfSize:16]; // 任意内容表示
-#endif
+                if (IS_PAD) {
+                    cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+                    cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 任意内容表示
+                }else{
+                    cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
+                    cell.detailTextLabel.font = [UIFont systemFontOfSize:16]; // 任意内容表示
+                }
 				cell.textLabel.textAlignment = NSTextAlignmentCenter;
 				cell.textLabel.textColor = [UIColor grayColor];
 				cell.detailTextLabel.textColor = [UIColor blackColor];
@@ -1160,11 +1156,11 @@
 				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault // Subtitle
 												   reuseIdentifier:zCellE6part];
 				// 行毎に変化の無い定義は、ここで最初に1度だけする
-#ifdef AzPAD
-				cell.textLabel.font = [UIFont systemFontOfSize:20];
-#else
-				cell.textLabel.font = [UIFont systemFontOfSize:14];
-#endif
+                if (IS_PAD) {
+                    cell.textLabel.font = [UIFont systemFontOfSize:20];
+                }else{
+                    cell.textLabel.font = [UIFont systemFontOfSize:14];
+                }
 				//cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 				//cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
 				//cell.detailTextLabel.textColor = [UIColor blackColor];
@@ -1174,11 +1170,11 @@
 				cellLabel.textAlignment = NSTextAlignmentRight;
 				cellLabel.textColor = [UIColor blackColor];
 				cellLabel.backgroundColor = [UIColor clearColor]; //grayColor <<DEBUG範囲チェック用
-#ifdef AzPAD
-				cellLabel.font = [UIFont systemFontOfSize:20];
-#else
-				cellLabel.font = [UIFont systemFontOfSize:14];
-#endif
+                if (IS_PAD) {
+                    cellLabel.font = [UIFont systemFontOfSize:20];
+                }else{
+                    cellLabel.font = [UIFont systemFontOfSize:14];
+                }
 				cellLabel.tag = -1;
 				[cell addSubview:cellLabel];
 			}
@@ -1186,12 +1182,12 @@
 				cellLabel = (UILabel *)[cell viewWithTag:-1];
 			}
 			// 回転対応のため
-#ifdef AzPAD
-			// -25 は、Popoverの余白分だと思われる
-			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-180, 12, 125, 20);
-#else
-			cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
-#endif
+            if (IS_PAD) {
+                // -25 は、Popoverの余白分だと思われる
+                cellLabel.frame = CGRectMake(self.tableView.frame.size.width-180, 12, 125, 20);
+            }else{
+                cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+            }
 			if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
 			
 			if (RaE6parts==nil OR RaE6parts.count<=0) {
@@ -1392,9 +1388,9 @@
 							tvc.title = NSLocalizedString(@"Shop choice",nil);
 							tvc.Re0root = Me0root;
 							tvc.Pe3edit = Re3edit;
-#ifdef AzPAD
-							tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#endif
+                            if (IS_PAD) {
+                                tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
+                            }
 							[self.navigationController pushViewController:tvc animated:YES];
 							
 						}
@@ -1407,9 +1403,9 @@
 					tvc.title = NSLocalizedString(@"Category choice",nil);
 					tvc.Re0root = Me0root;
 					tvc.Pe3edit = Re3edit;
-#ifdef AzPAD
-					tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
-#endif
+                    if (IS_PAD) {
+                        tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
+                    }
 					[self.navigationController pushViewController:tvc animated:YES];
 					
 				} break;
@@ -1462,11 +1458,11 @@
 						evc.PiMaxYearMMDD = AzMAX_YearMMDD;	
 					}
 					evc.delegate = self;
-#ifdef AzPAD
-					//Popoverサイズが変わらないように、BottomBarを表示したままにする。
-#else
-					evc.hidesBottomBarWhenPushed = YES; // 現状PUSHして次の画面では非表示にする
-#endif
+                    if (IS_PAD) {
+                        //Popoverサイズが変わらないように、BottomBarを表示したままにする。
+                    }else{
+                        evc.hidesBottomBarWhenPushed = YES; // 現状PUSHして次の画面では非表示にする
+                    }
 					[self.navigationController pushViewController:evc animated:YES];
 					
 				}

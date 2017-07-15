@@ -41,9 +41,9 @@
 	self = [super init];
 	if (self) {
 		// 初期化成功
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
 	}
 	return self;
 }

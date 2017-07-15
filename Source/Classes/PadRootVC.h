@@ -12,7 +12,7 @@
 @interface PadRootVC : UIViewController <UISplitViewControllerDelegate>
 {
 @private
-	id										delegate;
+	//id										delegate;
 }
 
 @property (nonatomic, assign) id									delegate;

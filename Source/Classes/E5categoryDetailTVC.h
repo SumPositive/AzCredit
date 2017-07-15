@@ -14,10 +14,10 @@
 @private
 	//----------------------------------------------retain
 	E5category	*Re5edit;
-#ifdef AzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+//#ifdef AzPAD
+	//id									delegate;
+	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+//#endif
 	//----------------------------------------------assign
 	BOOL		PbAdd;		//
 	BOOL		PbSave;		//
@@ -33,10 +33,10 @@
 @property BOOL								PbAdd;
 @property BOOL								PbSave;
 @property (nonatomic, weak) E3record		*Pe3edit;
-#ifdef AzPAD
+//#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
+//#endif
 
 // 公開メソッド
 - (void)cancelClose:(id)sender ;

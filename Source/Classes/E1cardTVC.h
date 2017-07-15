@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface E1cardTVC : UITableViewController <UIActionSheetDelegate
-#ifdef AzPAD
+//#ifdef AzPAD
 	,UIPopoverControllerDelegate
-#endif
+//#endif
 >
 {
 @private
@@ -19,10 +19,10 @@
 	E0root				*Re0root;
 	E3record			*Re3edit;		// =nil:マスタモード  !=nil:選択モード
 
-#ifdef AzPAD
+//#ifdef AzPAD
 	// E3recordDetailTVC から Popover で呼び出されるときにセットする
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+//#endif
 	//--------------------------assign
 	id						__weak delegate;	
 	E1card				*sourceE1card;
@@ -31,10 +31,10 @@
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	//UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
-#ifdef AzPAD
+//#ifdef AzPAD
 	UIPopoverController*	Mpopover;
 	NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
-#endif
+//#endif
 	//----------------------------------------------------------------assign
 	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath  	//[1.1.2]ポインタ代入注意！copyするように改善した。
 	//BOOL MbOptAntirotation;
@@ -44,11 +44,11 @@
 @property (nonatomic, strong) E0root			*Re0root;
 @property (nonatomic, strong) E3record		*Re3edit;
 @property (nonatomic, weak) id					delegate;
-#ifdef AzPAD
+//#ifdef AzPAD
 //@property (nonatomic, retain) UIPopoverController*	selfPopover;
 // デリゲート・メソッド
 - (void)refreshTable;
-#endif
+//#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

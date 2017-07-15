@@ -26,9 +26,9 @@
 #import "WebSiteVC.h"
 //#import "HttpServerView.h"
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #import "PadRootVC.h"
-#endif
+//#endif
 
 #define TAG_VIEW_HttpServer			118
 
@@ -48,7 +48,7 @@
 
 #pragma mark - Delegate
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc
 {
 	selfPopover = pc;
@@ -67,58 +67,56 @@
 		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
 	}
 }
-#endif
+//#endif
 
 
 #pragma mark - Action
 
 - (void)azInformationView
 {
-#ifdef  AzPAD
-	InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-	BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[InformationView class]];
-	[naviRight popToRootViewControllerAnimated:NO];
-	[naviRight pushViewController:vc animated:bAnime];
-	[vc release];
-#else
-	if ([UIApplication sharedApplication].statusBarOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
-	// モーダル UIViewController
-	if (MinformationView) {
-		MinformationView = nil;
-	}
-	MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-	MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	//dep//[self presentModalViewController:MinformationView animated:YES];
-	[self presentViewController:MinformationView animated:YES completion:nil];
-	//[MinformationView release];
-	//[MinformationView show];
-#endif
+    if (IS_PAD) {
+        InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[InformationView class]];
+        [naviRight popToRootViewControllerAnimated:NO];
+        [naviRight pushViewController:vc animated:bAnime];
+    }else{
+        if ([UIApplication sharedApplication].statusBarOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
+        // モーダル UIViewController
+        if (MinformationView) {
+            MinformationView = nil;
+        }
+        MinformationView = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+        MinformationView.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        //dep//[self presentModalViewController:MinformationView animated:YES];
+        [self presentViewController:MinformationView animated:YES completion:nil];
+        //[MinformationView show];
+    }
 }
 
 - (void)azSettingView
 {
-#ifdef  AzPAD
-	SettingTVC *view = [[SettingTVC alloc] init];
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-	BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[SettingTVC class]];
-	[naviRight popToRootViewControllerAnimated:NO];
-	[naviRight pushViewController:view animated:bAnime];
-	[view release];
-
-#else
-	SettingTVC *view = [[SettingTVC alloc] init];
-	[self.navigationController pushViewController:view animated:YES];
-#endif
+    if (IS_PAD) {
+        SettingTVC *view = [[SettingTVC alloc] init];
+        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[SettingTVC class]];
+        [naviRight popToRootViewControllerAnimated:NO];
+        [naviRight pushViewController:view animated:bAnime];
+    }else{
+        SettingTVC *view = [[SettingTVC alloc] init];
+        [self.navigationController pushViewController:view animated:YES];
+    }
 }
 
 - (void)e3detailAdd		//PadRootVCからdelegate呼び出しされる
 {
-#if defined (FREE_AD) && defined (AzPAD)
-	MbAdCanVisible = YES;	//iPad// E3Add状態のときだけｉＡｄ表示する
-	[self AdRefresh];
+#if defined (FREE_AD)
+    if (IS_PAD) {
+        MbAdCanVisible = YES;	//iPad// E3Add状態のときだけｉＡｄ表示する
+        [self AdRefresh];
+    }
 #endif
 	// Add E3  【注意】同じE3Addが、E3recordTVC内にもある。
 	E3record *e3obj = [MocFunctions insertAutoEntity:@"E3record"]; // autorelese
@@ -136,25 +134,24 @@
 	AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	apd.entityModified = NO;  //リセット
 	
-#ifdef AzPAD
-	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-	[naviRight popToRootViewControllerAnimated:NO];
-	
-	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
-	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-	[nc release];
-	// [+]Add mode
-	CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
-	rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
-	rc.origin.y += (rc.size.height - 30);		rc.size.height = 1;
-	[Mpopover presentPopoverFromRect:rc
-							  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-	e3detail.selfPopover = Mpopover;  [Mpopover release];
-	e3detail.delegate = nil;		// 不要
-#else
-	[self.navigationController pushViewController:e3detail animated: YES];
-#endif
+    if (IS_PAD) {
+        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+        [naviRight popToRootViewControllerAnimated:NO];
+        
+        UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
+        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+        // [+]Add mode
+        CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
+        rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
+        rc.origin.y += (rc.size.height - 30);		rc.size.height = 1;
+        [Mpopover presentPopoverFromRect:rc
+                                  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+        e3detail.selfPopover = Mpopover;  //[Mpopover release];
+        e3detail.delegate = nil;		// 不要
+    }else{
+        [self.navigationController pushViewController:e3detail animated: YES];
+    }
 	 // self.navigationControllerがOwnerになる
 }
 
@@ -171,15 +168,16 @@
 	tvc.title = NSLocalizedString(@"Record list", nil);
 	tvc.Re0root = Re0root;
 	tvc.PbAddMode = NO; //Default
-#ifdef AzPAD
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-	BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]];
-	[naviRight popToRootViewControllerAnimated:NO];
-	[naviRight pushViewController:tvc animated:bAnime];
-#else
-	[self.navigationController pushViewController:tvc animated: YES];
-#endif
+
+    if (IS_PAD) {
+        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]];
+        [naviRight popToRootViewControllerAnimated:NO];
+        [naviRight pushViewController:tvc animated:bAnime];
+    }else{
+        [self.navigationController pushViewController:tvc animated: YES];
+    }
 }
 
 
@@ -198,9 +196,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
 	if (self) {
 		// 初期化成功
-#ifdef AzPAD
-		self.preferredContentSize = CGSizeMake(320, 650);
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = CGSizeMake(320, 650);
+        }
 		// インストールやアップデート後、1度だけ処理する
 		NSString *zNew = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //(Version)
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -227,42 +225,43 @@
 
 	self.title = NSLocalizedString(@"Product Title",nil);
 
-#ifdef AzPAD
-	self.navigationItem.hidesBackButton = YES;
-#else
-	// Set up NEXT Left [Back] buttons.
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
-#endif
+    if (IS_PAD) {
+        self.navigationItem.hidesBackButton = YES;
+    }else{
+        // Set up NEXT Left [Back] buttons.
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                 initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+                                                 style:UIBarButtonItemStylePlain  target:nil  action:nil];
+    }
 	
-#if defined(AzFREE) && !defined(AzPAD) //Not iPad//
-	UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free.png"]];
-	UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
-	self.navigationItem.leftBarButtonItem	= bui;
-	[bui release];
-	[iv release];
+#if defined(AzFREE) //&& !defined(AzPAD) //Not iPad//
+    if (IS_PAD) {
+    }else{
+        UIImageView* iv = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon24-Free.png"]];
+        UIBarButtonItem* bui = [[UIBarButtonItem alloc] initWithCustomView:iv];
+        self.navigationItem.leftBarButtonItem	= bui;
+    }
 #endif
 
-#ifndef AzMAKE_SPLASHFACE
-	// Tool Bar Button
-#ifdef AzPAD
-	// Cell配置により、ボタンなし
-#else
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil];
-	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
-													   style:UIBarButtonItemStylePlain  //Bordered
-													  target:self action:@selector(azInformationView)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-															   style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(azSettingView)];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																			target:self action:@selector(barButtonAdd)];
-	NSArray *buArray = @[MbuToolBarInfo, buFlex, buAdd, buFlex, buSet];
-	[self setToolbarItems:buArray animated:YES];
-#endif
-#endif	
+//#ifndef AzMAKE_SPLASHFACE
+//	// Tool Bar Button
+//#ifdef AzPAD
+//	// Cell配置により、ボタンなし
+//#else
+//	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//																			 target:nil action:nil];
+//	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
+//													   style:UIBarButtonItemStylePlain  //Bordered
+//													  target:self action:@selector(azInformationView)];
+//	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+//															   style:UIBarButtonItemStylePlain  //Bordered
+//															  target:self action:@selector(azSettingView)];
+//	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+//																			target:self action:@selector(barButtonAdd)];
+//	NSArray *buArray = @[MbuToolBarInfo, buFlex, buAdd, buFlex, buSet];
+//	[self setToolbarItems:buArray animated:YES];
+//#endif
+//#endif	
 	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
@@ -275,29 +274,28 @@
     [super viewDidLoad];
 	
 #ifdef FREE_AD
-#ifdef AzPAD			// viewDidAppear:はタテから起動したとき通らないのでAd表示されない。
-	if (selfPopover) {
-		MbAdCanVisible = NO; //Popover Menuとして表示されるときはAd非表示
-	} else {
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-		if ([naviRight.visibleViewController isMemberOfClass:[PadRootVC class]]) {
-			MbAdCanVisible = YES; // タテ⇒ヨコになったとき、右ペインVCが PadRootVC ならば iAd許可
-		} else {
-			MbAdCanVisible = NO;
-		}
-	}
-	[self AdRefresh];
-#else
-	//[iOS6+4inch]対策
-	//mAdPositionY = 568 - 44 - 50;
-	mAdPositionY = self.view.frame.size.height + 22 - 44 - 50;
-	
-	// iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
-	// AdMobは、常時開始とするためYES
-	MbAdCanVisible = YES;
-	[self AdRefresh];
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            MbAdCanVisible = NO; //Popover Menuとして表示されるときはAd非表示
+        } else {
+            AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+            if ([naviRight.visibleViewController isMemberOfClass:[PadRootVC class]]) {
+                MbAdCanVisible = YES; // タテ⇒ヨコになったとき、右ペインVCが PadRootVC ならば iAd許可
+            } else {
+                MbAdCanVisible = NO;
+            }
+        }
+    }else{
+        //[iOS6+4inch]対策
+        //mAdPositionY = 568 - 44 - 50;
+        mAdPositionY = self.view.frame.size.height + 22 - 44 - 50;
+        
+        // iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
+        // AdMobは、常時開始とするためYES
+        MbAdCanVisible = YES;
+    }
+    [self AdRefresh];
 #endif
 }
 
@@ -305,11 +303,11 @@
 {
     [super viewWillAppear:animated];
 
-#ifdef AzPAD
-	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
-#else
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
-#endif
+    if (IS_PAD) {
+        [self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+    }else{
+        [self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
+    }
 	
 	// 画面表示に関係する Option Setting を取得する
 	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -354,10 +352,12 @@
     [super viewDidAppear:animated];
 	//Menuは不要でしょう [self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
-#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
-	//iPhone// Ad表示する
-	MbAdCanVisible = YES;  // Ad表示
-	[self AdRefresh];
+#if defined (FREE_AD) //Not iPad//
+    if (IS_PHONE) {
+        //iPhone// Ad表示する
+        MbAdCanVisible = YES;  // Ad表示
+        [self AdRefresh];
+    }
 #endif
 
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
@@ -376,10 +376,12 @@
 {
 	//iPad// [Mpopover dismissPopoverAnimated:NO] ＜＜ TopMenuだけ、AppDelegate:applicationDidEnterBackground:から (void)popoverClose を呼び出して処理している。
 	
-#if defined (FREE_AD) && !defined (AzPAD) //Not iPad//
+#if defined (FREE_AD)  //Not iPad//
 	//Not iPad// Ad非表示にする
-	MbAdCanVisible = NO;  // 以後、Ad表示禁止
-	[self AdRefresh];
+    if (IS_PHONE) {
+        MbAdCanVisible = NO;  // 以後、Ad表示禁止
+        [self AdRefresh];
+    }
 #endif
 
 	[super viewWillDisappear:animated];
@@ -396,11 +398,11 @@
 
 	//if ([self.view viewWithTag:TAG_VIEW_HttpServer]) return NO;		// HttpServerView が表示中なので回転禁止
 
-#ifdef AzPAD
-	return YES;
-#else
-	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面は常に許可
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面は常に許可
+    }
 }
 
 // shouldAutorotateToInterfaceOrientation で YES を返すと、回転開始時に呼び出される
@@ -416,30 +418,30 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-#ifdef AzPAD
-	if ([Mpopover isPopoverVisible]) 
-	{	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		// アンカー位置 [Menu]
-		// [+]Add mode
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-		CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
-		rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
-		rc.origin.y += (rc.size.height - 30);		rc.size.height = 1;
-		[Mpopover presentPopoverFromRect:rc
-								  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
-	}
-#else
-	if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-		// 正面：infoボタン表示
-		MbuToolBarInfo.enabled = YES;
-	} else {
-		MbuToolBarInfo.enabled = NO;
-		if (MinformationView) {
-			[MinformationView hide]; // 正面でなければhide
-		}
-	}
-#endif
+    if (IS_PAD) {
+        if ([Mpopover isPopoverVisible])
+        {	// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+            // アンカー位置 [Menu]
+            // [+]Add mode
+            AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+            CGRect rc = naviRight.view.bounds;  //  .navigationController.toolbar.frame;
+            rc.origin.x += (rc.size.width/2 + 2);		rc.size.width = 1;
+            rc.origin.y += (rc.size.height - 30);		rc.size.height = 1;
+            [Mpopover presentPopoverFromRect:rc
+                                      inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+        }
+    }else{
+        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
+            // 正面：infoボタン表示
+            MbuToolBarInfo.enabled = YES;
+        } else {
+            MbuToolBarInfo.enabled = NO;
+            if (MinformationView) {
+                [MinformationView hide]; // 正面でなければhide
+            }
+        }
+    }
 }
 
 
@@ -464,11 +466,10 @@
 //	}
 #endif
 	
-#ifdef AzPAD
-#else
-	[MinformationView hide];
-	MinformationView = nil;	// azInformationViewにて生成
-#endif
+    if (IS_PHONE) {
+        [MinformationView hide];
+        MinformationView = nil;	// azInformationViewにて生成
+    }
 }
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
@@ -588,11 +589,11 @@
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
 										   reuseIdentifier:CellIdentifier];
 			
-#ifdef AzPAD
-			cell.textLabel.font = [UIFont systemFontOfSize:18];
-#else
-			cell.textLabel.font = [UIFont systemFontOfSize:16];
-#endif
+            if (IS_PAD) {
+                cell.textLabel.font = [UIFont systemFontOfSize:18];
+            }else{
+                cell.textLabel.font = [UIFont systemFontOfSize:16];
+            }
 			//cell.textLabel.textAlignment = NSTextAlignmentCenter;
 			cell.textLabel.textColor = [UIColor blackColor];
 		}
@@ -695,11 +696,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#if defined(FREE_AD) && defined(AzPAD)
-	if (indexPath.section!=0 || indexPath.row!=0) {
-		MbAdCanVisible = NO;	// E3Addでなければ、ｉＡｄ非表示
-		[self AdRefresh];
-	}
+#if defined(FREE_AD)
+    if (IS_PAD) {
+        if (indexPath.section!=0 || indexPath.row!=0) {
+            MbAdCanVisible = NO;	// E3Addでなければ、ｉＡｄ非表示
+            [self AdRefresh];
+        }
+    }
 #endif
 
 	UITableViewCell *cell = nil;
@@ -740,15 +743,16 @@
 					tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
 #endif
 					tvc.Re0root = Re0root;
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]];
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:bAnime];
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
-#endif
+                    
+                    if (IS_PAD) {
+                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]];
+                        [naviRight popToRootViewControllerAnimated:NO];
+                        [naviRight pushViewController:tvc animated:bAnime];
+                    }else{
+                        [self.navigationController pushViewController:tvc animated:YES];
+                    }
 				}
 					break;
 				case 1: // カード一覧  E1 < E2 < E6 < E3detail
@@ -762,15 +766,16 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Re3edit = nil;
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]];
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:bAnime];
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
-#endif
+                    
+                    if (IS_PAD) {
+                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]];
+                        [naviRight popToRootViewControllerAnimated:NO];
+                        [naviRight pushViewController:tvc animated:bAnime];
+                    }else{
+                        [self.navigationController pushViewController:tvc animated:YES];
+                    }
 				}
 					break;
 				case 2: // 銀行等口座一覧  E8 
@@ -784,15 +789,16 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Pe1card = nil;
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]];
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:bAnime];
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
-#endif
+                    
+                    if (IS_PAD) {
+                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]];
+                        [naviRight popToRootViewControllerAnimated:NO];
+                        [naviRight pushViewController:tvc animated:bAnime];
+                    }else{
+                        [self.navigationController pushViewController:tvc animated:YES];
+                    }
 				}
 					break;
 			}
@@ -811,15 +817,16 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Pe3edit = nil;
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]];
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:bAnime];
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
-#endif
+
+                    if (IS_PAD) {
+                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]];
+                        [naviRight popToRootViewControllerAnimated:NO];
+                        [naviRight pushViewController:tvc animated:bAnime];
+                    }else{
+                        [self.navigationController pushViewController:tvc animated:YES];
+                    }
 				}
 					break;
 				case 1: // 分類一覧  E5 < E3 < E3detail
@@ -832,15 +839,16 @@
 #endif
 					tvc.Re0root = Re0root;
 					tvc.Pe3edit = nil;
-#ifdef AzPAD
-					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]];
-					[naviRight popToRootViewControllerAnimated:NO];
-					[naviRight pushViewController:tvc animated:bAnime];
-#else
-					[self.navigationController pushViewController:tvc animated:YES];
-#endif
+                    
+                    if (IS_PAD) {
+                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]];
+                        [naviRight popToRootViewControllerAnimated:NO];
+                        [naviRight pushViewController:tvc animated:bAnime];
+                    }else{
+                        [self.navigationController pushViewController:tvc animated:YES];
+                    }
 				}
 					break;
 			}
@@ -894,18 +902,22 @@
 //					break;
 				case 0:
 				{  // Setting
-#if defined(FREE_AD) && defined(AzPAD)
-					MbAdCanVisible = YES; // iAd許可
-					[self AdRefresh];
+#if defined(FREE_AD)
+                    if (IS_PAD) {
+                        MbAdCanVisible = YES; // iAd許可
+                        [self AdRefresh];
+                    }
 #endif
 					[self azSettingView];
 				}
 					break;
 				case 1:
 				{  // Information
-#if defined(FREE_AD) && defined(AzPAD)
-					MbAdCanVisible = YES; // iAd許可
-					[self AdRefresh];
+#if defined(FREE_AD)
+                    if (IS_PAD) {
+                        MbAdCanVisible = YES; // iAd許可
+                        [self AdRefresh];
+                    }
 #endif
 					[self azInformationView];
 				}
@@ -914,15 +926,14 @@
 		}
 			break;
 	}
-#ifdef AzPAD
-	if (selfPopover) {		//選択後、Popoverならば閉じる
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#endif
+
+    if (IS_PAD && selfPopover) {		//選択後、Popoverならば閉じる
+        [selfPopover dismissPopoverAnimated:YES];
+    }
 }
 
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
@@ -947,7 +958,7 @@
 		return YES;	// Popover外部タッチで閉じるのを許可
 	}
 }
-#endif
+//#endif
 
 
 
@@ -990,13 +1001,14 @@
 		MbannerView.alpha = 0;		// 現在状況、(0)非表示  (1)表示中
 		MbannerView.tag = 0;		// 広告受信状況  (0)なし (1)あり
 		MbannerView.delegate = self;
-#ifdef AzPAD
-		[self.splitViewController.view addSubview:MbannerView];
-		[self AdAppWillRotate:self.splitViewController.interfaceOrientation];
-#else
-		[self.navigationController.view addSubview:MbannerView];
-		[self AdAppWillRotate:self.navigationController.interfaceOrientation];
-#endif
+        
+        if (IS_PAD) {
+            [self.splitViewController.view addSubview:MbannerView];
+            [self AdAppWillRotate:self.splitViewController.interfaceOrientation];
+        }else{
+            [self.navigationController.view addSubview:MbannerView];
+            [self AdAppWillRotate:self.navigationController.interfaceOrientation];
+        }
 	}
 //	
 //	NSLog(@"=== AdRefresh ===Can[%d] AdMob[%d⇒%d] iAd[%d⇒%d]", MbAdCanVisible, (int)RoAdMobView.alpha, (int)RoAdMobView.tag, (int)MbannerView.alpha, (int)MbannerView.tag);
@@ -1010,68 +1022,68 @@
 	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
 	[UIView setAnimationDuration:1.2];
 	
-#ifdef AzPAD
-	if (MbannerView) {
-		CGRect rc = MbannerView.frame;
-		if (MbAdCanVisible && MbannerView.tag==1) {
-			if (MbannerView.alpha==0) {
-				rc.origin.y += FREE_AD_OFFSET_Y;
-				MbannerView.frame = rc;
-				MbannerView.alpha = 1;
-			}
-		} else {
-			if (MbannerView.alpha==1) {
-				rc.origin.y -= FREE_AD_OFFSET_Y;	//(-)上へ隠す
-				MbannerView.frame = rc;
-				MbannerView.alpha = 0;
-			}
-		}
-	}
-	
-	if (RoAdMobView) {
-		if (RoAdMobView.tag==1) { //Pad//AdMob常時表示なので、MbAdCanVisible判定不要
-			RoAdMobView.alpha = 1;
-		} else {
-			RoAdMobView.alpha = 0;
-		}
-	}
-#else
-	if (MbannerView) {
-		CGRect rc = MbannerView.frame;
-		if (MbAdCanVisible && MbannerView.tag==1) {
-			if (MbannerView.alpha==0) {
-				rc.origin.y -= FREE_AD_OFFSET_Y;
-				MbannerView.frame = rc;
-				MbannerView.alpha = 1;
-			}
-		} else {
-			if (MbannerView.alpha==1) {
-				rc.origin.y += FREE_AD_OFFSET_Y;	//(+)下へ隠す
-				MbannerView.frame = rc;
-				MbannerView.alpha = 0;
-			}
-		}
-	}
-	
-//	if (RoAdMobView) {
-//		CGRect rc = RoAdMobView.frame;
-//		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
-//			if (RoAdMobView.alpha==0) {
-//				//rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
-//				rc.origin.y = mAdPositionY;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
-//				RoAdMobView.frame = rc;
-//				RoAdMobView.alpha = 1;
-//			}
-//		} else {
-//			if (RoAdMobView.alpha==1) {
-//				//rc.origin.y = 480 + 10;		//(+)下部へ隠す
-//				rc.origin.y = mAdPositionY + FREE_AD_OFFSET_Y;		//(+)下部へ隠す
-//				RoAdMobView.frame = rc;
-//				RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
-//			}
-//		}
-//	}
-#endif
+    if (IS_PAD) {
+        if (MbannerView) {
+            CGRect rc = MbannerView.frame;
+            if (MbAdCanVisible && MbannerView.tag==1) {
+                if (MbannerView.alpha==0) {
+                    rc.origin.y += FREE_AD_OFFSET_Y;
+                    MbannerView.frame = rc;
+                    MbannerView.alpha = 1;
+                }
+            } else {
+                if (MbannerView.alpha==1) {
+                    rc.origin.y -= FREE_AD_OFFSET_Y;	//(-)上へ隠す
+                    MbannerView.frame = rc;
+                    MbannerView.alpha = 0;
+                }
+            }
+        }
+        
+//        if (RoAdMobView) {
+//            if (RoAdMobView.tag==1) { //Pad//AdMob常時表示なので、MbAdCanVisible判定不要
+//                RoAdMobView.alpha = 1;
+//            } else {
+//                RoAdMobView.alpha = 0;
+//            }
+//        }
+    }else{
+        if (MbannerView) {
+            CGRect rc = MbannerView.frame;
+            if (MbAdCanVisible && MbannerView.tag==1) {
+                if (MbannerView.alpha==0) {
+                    rc.origin.y -= FREE_AD_OFFSET_Y;
+                    MbannerView.frame = rc;
+                    MbannerView.alpha = 1;
+                }
+            } else {
+                if (MbannerView.alpha==1) {
+                    rc.origin.y += FREE_AD_OFFSET_Y;	//(+)下へ隠す
+                    MbannerView.frame = rc;
+                    MbannerView.alpha = 0;
+                }
+            }
+        }
+        
+        //	if (RoAdMobView) {
+        //		CGRect rc = RoAdMobView.frame;
+        //		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
+        //			if (RoAdMobView.alpha==0) {
+        //				//rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+        //				rc.origin.y = mAdPositionY;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
+        //				RoAdMobView.frame = rc;
+        //				RoAdMobView.alpha = 1;
+        //			}
+        //		} else {
+        //			if (RoAdMobView.alpha==1) {
+        //				//rc.origin.y = 480 + 10;		//(+)下部へ隠す
+        //				rc.origin.y = mAdPositionY + FREE_AD_OFFSET_Y;		//(+)下部へ隠す
+        //				RoAdMobView.frame = rc;
+        //				RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
+        //			}
+        //		}
+        //	}
+    }
 	
 	[UIView commitAnimations];
 }
@@ -1080,22 +1092,22 @@
 {
 //	if (RoAdMobView==nil) return;
 	
-#ifdef AzPAD	
-	//iPad// AdMobは常に表示位置であり、移動はしない
-	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
-		RoAdMobView.frame = CGRectMake(
-									   768-150-GAD_SIZE_300x250.width,
-									   1024-64-GAD_SIZE_300x250.height,
-									   GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
-	} else {	// ヨコ
-		RoAdMobView.frame = CGRectMake(
-									   10,
-									   768-24-GAD_SIZE_300x250.height,
-									   GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
-	}
-#else
-	//iPhone// 常に下部定位置（タテ:表示、ヨコ:範囲外になり非表示）
-#endif
+    if (IS_PAD) {
+        //iPad// AdMobは常に表示位置であり、移動はしない
+//        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
+//            RoAdMobView.frame = CGRectMake(
+//                                           768-150-GAD_SIZE_300x250.width,
+//                                           1024-64-GAD_SIZE_300x250.height,
+//                                           GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
+//        } else {	// ヨコ
+//            RoAdMobView.frame = CGRectMake(
+//                                           10,
+//                                           768-24-GAD_SIZE_300x250.height,
+//                                           GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
+//        }
+    }else{
+        //iPhone// 常に下部定位置（タテ:表示、ヨコ:範囲外になり非表示）
+    }
 }
 
 - (void)AdAppWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
@@ -1118,25 +1130,25 @@
 		}
 	//}
 	
-#ifdef AzPAD
-	if (MbAdCanVisible && MbannerView.alpha==1) {
-		MbannerView.frame = CGRectMake(0, 40,  0,0);	// 表示
-	} else {
-		MbannerView.frame = CGRectMake(0, 40 - FREE_AD_OFFSET_Y,  0,0);  // 非表示
-	}
-#else
-	float fYofs = 0;
-	if (MbAdCanVisible && MbannerView.alpha==1) {
-		// 表示
-	} else {
-		fYofs = FREE_AD_OFFSET_Y;  // 非表示：下へ隠す ＜＜ヨコからタテになっても見えないように大きめにすること
-	}
-	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		MbannerView.frame = CGRectMake(0, 320 - 32 - 32 + fYofs,  0,0);  // ヨコもToolbarあり
-	} else {
-		MbannerView.frame = CGRectMake(0, mAdPositionY + fYofs,  0,0);
-	}
-#endif
+    if (IS_PAD) {
+        if (MbAdCanVisible && MbannerView.alpha==1) {
+            MbannerView.frame = CGRectMake(0, 40,  0,0);	// 表示
+        } else {
+            MbannerView.frame = CGRectMake(0, 40 - FREE_AD_OFFSET_Y,  0,0);  // 非表示
+        }
+    }else{
+        float fYofs = 0;
+        if (MbAdCanVisible && MbannerView.alpha==1) {
+            // 表示
+        } else {
+            fYofs = FREE_AD_OFFSET_Y;  // 非表示：下へ隠す ＜＜ヨコからタテになっても見えないように大きめにすること
+        }
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+            MbannerView.frame = CGRectMake(0, 320 - 32 - 32 + fYofs,  0,0);  // ヨコもToolbarあり
+        } else {
+            MbannerView.frame = CGRectMake(0, mAdPositionY + fYofs,  0,0);
+        }
+    }
 }
 
 //// AdMob delegate

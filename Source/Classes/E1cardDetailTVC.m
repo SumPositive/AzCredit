@@ -26,10 +26,10 @@
 @implementation E1cardDetailTVC
 @synthesize Re1edit;
 @synthesize PiAddRow;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
-#endif
+//#endif
 
 
 
@@ -44,15 +44,15 @@
 		[MocFunctions deleteEntity:Re1edit];
 	}
 	
-#ifdef AzPAD
-	if (selfPopover) {
-		[selfPopover dismissPopoverAnimated:YES];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            [selfPopover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
 // 編集フィールドの値を self.e3target にセットする
@@ -66,26 +66,26 @@
 	[MocFunctions e1update:Re1edit];
 	[MocFunctions commit];
 	
-#ifdef AzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
-			[delegate refreshTable];// 親の再描画を呼び出す
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+                [delegate refreshTable];// 親の再描画を呼び出す
+            }
+            [selfPopover dismissPopoverAnimated:YES];
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
-#ifdef xxxAzPAD
-- (void)closePopover
-{
-	if (MpopoverView) {	//dismissPopoverCancel
-		[MpopoverView dismissPopoverAnimated:YES];
-	}
-}
-#endif
+//#ifdef xxxAzPAD
+//- (void)closePopover
+//{
+//	if (MpopoverView) {	//dismissPopoverCancel
+//		[MpopoverView dismissPopoverAnimated:YES];
+//	}
+//}
+//#endif
 
 
 
@@ -97,9 +97,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
 	if (self) {
 		// 初期化成功
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
   	}
 	return self;
 }
@@ -113,10 +113,10 @@
 	// ここは、alloc直後に呼ばれるため、下記のようなパラは未セット状態である。==>> viewWillAppearで参照すること
 
 	//self.tableView.backgroundColor = [UIColor brownColor];
-#ifdef AzPAD
-	//Popoverサイズが変わらないようにするため、ToolBarを常時表示する
-	[self.navigationController setToolbarHidden:NO animated:NO]; // ツールバー表示
-#endif
+    if (IS_PAD) {
+        //Popoverサイズが変わらないようにするため、ToolBarを常時表示する
+        [self.navigationController setToolbarHidden:NO animated:NO]; // ツールバー表示
+    }
 	
 	// Set up NEXT Left [Back] buttons.
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
@@ -149,11 +149,11 @@
 {
     [super viewWillAppear:YES];
 	
-#ifdef AzPAD
-#else
-	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
-#endif
+    if (IS_PAD) {
+    }else{
+        //[0.4]以降、ヨコでもツールバーを表示するようにした。
+        [self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+    }
 	
 	// 画面表示に関係する Option Setting を取得する
 	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -255,13 +255,13 @@
 									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+        }
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
 		//cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
@@ -368,21 +368,21 @@
 					//cell.detailTextLabel.text = Re1edit.zNote;
 					if (MlbNote == nil) {
 						MlbNote = [[UILabel alloc] init];
-#ifdef AzPAD
-						MlbNote.font = [UIFont systemFontOfSize:20];
-#else
-						MlbNote.font = [UIFont systemFontOfSize:14];
-#endif
+                        if (IS_PAD) {
+                            MlbNote.font = [UIFont systemFontOfSize:20];
+                        }else{
+                            MlbNote.font = [UIFont systemFontOfSize:14];
+                        }
 						MlbNote.numberOfLines = 0;
 						MlbNote.lineBreakMode = NSLineBreakByWordWrapping; //UILineBreakModeWordWrap; // 単語を途切れさせないように改行する
 						MlbNote.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbNote];  
 					}
-#ifdef AzPAD
-					MlbNote.frame = CGRectMake(20,10, self.tableView.frame.size.width-110,180);
-#else
-					MlbNote.frame = CGRectMake(20,10, self.tableView.frame.size.width-60,180);
-#endif
+                    if (IS_PAD) {
+                        MlbNote.frame = CGRectMake(20,10, self.tableView.frame.size.width-110,180);
+                    }else{
+                        MlbNote.frame = CGRectMake(20,10, self.tableView.frame.size.width-60,180);
+                    }
 					if (Re1edit.zNote == nil) {
 						MlbNote.text = @"";  // TextViewは、(nil) と表示されるので、それを消すため。
 					} else {

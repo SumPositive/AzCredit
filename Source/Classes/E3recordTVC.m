@@ -30,16 +30,16 @@
 @synthesize Pe5category;
 @synthesize Pe8bank;
 @synthesize PbAddMode;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
 //@synthesize PbFirstAdd;
-#endif
+//#endif
 
 
 #pragma mark - Delegate
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)refreshE3recordTVC:(BOOL)bSameDate
 {
 	if (bSameDate && MindexPathEdit) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
@@ -58,35 +58,35 @@
 	MbModified = bModified;
 }*/
 
-#endif
+//#endif
 
 
 #pragma mark - Action
 
 - (void)azSettingView
 {
-#ifdef  AzPAD
-	if ([MpopSetting isPopoverVisible]==NO) {
-		if (!MpopSetting) { //無ければ1度だけ生成する
-			SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-			MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
-			[vc release];
-		}
-		MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
-		CGRect rcArrow;
-		if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-			rcArrow = CGRectMake(768-32, 1027-60, 32,32);
-		} else {
-			rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
-		}
-		[MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view  
-				   permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
-	}
-#else
-	SettingTVC *view = [[SettingTVC alloc] init];
-	//view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:view animated:YES];
-#endif
+    if (IS_PAD) {
+        if ([MpopSetting isPopoverVisible]==NO) {
+            if (!MpopSetting) { //無ければ1度だけ生成する
+                SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+                MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
+                //[vc release];
+            }
+            MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+            CGRect rcArrow;
+            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+                rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+            } else {
+                rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+            }
+            [MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view
+                       permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+        }
+    }else{
+        SettingTVC *view = [[SettingTVC alloc] init];
+        //view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+        [self.navigationController pushViewController:view animated:YES];
+    }
 }
 
 - (void)barButtonTop {
@@ -152,37 +152,37 @@
 	AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	apd.entityModified = NO;  //リセット
 
-#ifdef  AzPAD
-	UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
-	Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-	Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-	[nc release];
-	
-	//MindexPathEdit = indexPath;
-	[MindexPathEdit release], MindexPathEdit = [indexPath copy];
-	
-	CGRect rc;
-	if (indexPath) {
-		rc = [self.tableView rectForRowAtIndexPath:indexPath];
-		rc.size.width /= 2;
-		rc.origin.y += 10;	rc.size.height -= 20;
-		[Mpopover presentPopoverFromRect:rc inView:self.tableView  
-				permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-	} else {
-		// [+]Add mode
-		rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-		rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
-		rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
-		//NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
-		[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
-				permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
-	}
-	e3detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
-	e3detail.delegate = self;		// refresh callback
-#else
-	//[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e3detail animated:YES];
-#endif
+    if (IS_PAD) {
+        UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
+        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+        //[nc release];
+        
+        //MindexPathEdit = indexPath;
+        MindexPathEdit = [indexPath copy];
+        
+        CGRect rc;
+        if (indexPath) {
+            rc = [self.tableView rectForRowAtIndexPath:indexPath];
+            rc.size.width /= 2;
+            rc.origin.y += 10;	rc.size.height -= 20;
+            [Mpopover presentPopoverFromRect:rc inView:self.tableView
+                    permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+        } else {
+            // [+]Add mode
+            rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+            rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
+            rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
+            //NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
+            [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+                    permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
+        }
+        e3detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+        e3detail.delegate = self;		// refresh callback
+    }else{
+        //[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+        [self.navigationController pushViewController:e3detail animated:YES];
+    }
 }
 
 - (void)setMe3list:(NSDate *)dateMiddle // この日時が画面の(MmoreScrollPosition)位置になるように前後最大50行読み込み表示する
@@ -473,9 +473,9 @@
 #ifdef FREE_AD
 //		RoAdMobView = nil;
 #endif
-#ifdef AzPAD
-//		PbFirstAdd = NO;
-#endif
+//        if (IS_PAD) {
+//            //		PbFirstAdd = NO;
+//        }
 	}
 	return self;
 }
@@ -493,19 +493,19 @@
 																			 target:nil action:nil];
 	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																			target:self action:@selector(barButtonAdd)];
-#ifdef AzPAD
-	NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
-	[self setToolbarItems:buArray animated:YES];
-#else
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(azSettingView)];
-	NSArray *buArray = @[buTop, buFlex, buAdd, buFlex, buSet];
-	[self setToolbarItems:buArray animated:YES];
-#endif
+    if (IS_PAD) {
+        NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
+        [self setToolbarItems:buArray animated:YES];
+    }else{
+        UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+                                                                  style:UIBarButtonItemStylePlain  //Bordered
+                                                                 target:self action:@selector(barButtonTop)];
+        UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+                                                                  style:UIBarButtonItemStylePlain  //Bordered
+                                                                 target:self action:@selector(azSettingView)];
+        NSArray *buArray = @[buTop, buFlex, buAdd, buFlex, buSet];
+        [self setToolbarItems:buArray animated:YES];
+    }
 
 	// TableCell表示で使う日付フォーマッタを定義する
 	assert(RcellDateFormatter==nil);
@@ -548,13 +548,13 @@
 	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	
-#ifdef AzPAD
-	if (Pe4shop || Pe5category || Pe8bank) {
-		self.navigationItem.hidesBackButton = NO;
-	} else {
-		self.navigationItem.hidesBackButton = YES;
-	}
-#endif
+    if (IS_PAD) {
+        if (Pe4shop || Pe5category || Pe8bank) {
+            self.navigationItem.hidesBackButton = NO;
+        } else {
+            self.navigationItem.hidesBackButton = YES;
+        }
+    }
 	
 	// テーブルソース セット
 	AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -584,22 +584,22 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
-#ifdef AzPAD
-	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
-	// SplitViewタテのとき [Menu] button を表示する
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[items release];
-	}
-#endif
+    if (IS_PAD) {
+        // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+        // SplitViewタテのとき [Menu] button を表示する
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (app.barMenu) {
+            UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+            NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+            UIToolbar* toolBar = [[UIToolbar alloc] init];
+            toolBar.barStyle = UIBarStyleDefault;
+            [toolBar setItems:items animated:NO];
+            [toolBar sizeToFit];
+            self.navigationItem.titleView = toolBar;
+            //[items release];
+        }
+    }
 	
     [super viewDidAppear:animated];
 	
@@ -623,7 +623,7 @@
 	}
 }
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {
 	if ([Mpopover isPopoverVisible]) 
@@ -633,7 +633,7 @@
 	}
     [super viewWillDisappear:animated];
 }
-#endif
+//#endif
 
 
 #pragma mark View - Rotate
@@ -641,12 +641,12 @@
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-#ifdef AzPAD
-	return YES;
-#else
-	// 回転禁止でも、正面は常に許可しておくこと。
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        // 回転禁止でも、正面は常に許可しておくこと。
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 #ifdef FREE_AD
@@ -672,34 +672,34 @@
 {
 	[self.tableView reloadData];  // cellLable位置調整するため
 
-#ifdef AzPAD
-	if ([MpopSetting isPopoverVisible]) {
-		[MpopSetting dismissPopoverAnimated:YES];
-	}
-	
-	if ([Mpopover isPopoverVisible]) {
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
-			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.size.width /= 2;
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView 
-					permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-		} else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			//[Mpopover dismissPopoverAnimated:YES];
-			// アンカー位置 [+]
-			CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-			rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
-			rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
-			[Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
-					permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
-		}
-	}
-#endif
+    if (IS_PAD) {
+        if ([MpopSetting isPopoverVisible]) {
+            [MpopSetting dismissPopoverAnimated:YES];
+        }
+        
+        if ([Mpopover isPopoverVisible]) {
+            // Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+            if (MindexPathEdit) {
+                //NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+                [self.tableView scrollToRowAtIndexPath:MindexPathEdit
+                                      atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+                CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+                rc.size.width /= 2;
+                rc.origin.y += 10;	rc.size.height -= 20;
+                [Mpopover presentPopoverFromRect:rc  inView:self.tableView
+                        permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+            } else {
+                // 回転後のアンカー位置が再現不可なので閉じる
+                //[Mpopover dismissPopoverAnimated:YES];
+                // アンカー位置 [+]
+                CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+                rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
+                rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
+                [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+                        permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
+            }
+        }
+    }
 }
 
 
@@ -726,12 +726,11 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
-#ifdef AzPAD
-	delegate = nil;
-	[selfPopover release], selfPopover = nil;
-	[MindexPathEdit release], MindexPathEdit = nil;
-#endif
-	//--------------------------------@property (retain)
+    if (IS_PAD) {
+        delegate = nil;
+        selfPopover = nil;
+        MindexPathEdit = nil;
+    }
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -871,13 +870,13 @@
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
 											reuseIdentifier:zCellE3record];
 			// 行毎に変化の無い定義は、ここで最初に1度だけする
-#ifdef AzPAD
-			cell.textLabel.font = [UIFont systemFontOfSize:18];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-#else
-			cell.textLabel.font = [UIFont systemFontOfSize:14];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-#endif
+            if (IS_PAD) {
+                cell.textLabel.font = [UIFont systemFontOfSize:18];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+            }else{
+                cell.textLabel.font = [UIFont systemFontOfSize:14];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+            }
 			cell.detailTextLabel.textAlignment = NSTextAlignmentLeft; //金額が欠けないように左寄せにした
 			cell.showsReorderControl = NO; // Move禁止
 
@@ -885,11 +884,11 @@
 			cellLabel.textAlignment = NSTextAlignmentRight;
 			//cellLabel.textColor = [UIColor blackColor];
 			cellLabel.backgroundColor = [UIColor whiteColor];
-#ifdef AzPAD
-			cellLabel.font = [UIFont systemFontOfSize:20];
-#else
-			cellLabel.font = [UIFont systemFontOfSize:14];
-#endif
+            if (IS_PAD) {
+                cellLabel.font = [UIFont systemFontOfSize:20];
+            }else{
+                cellLabel.font = [UIFont systemFontOfSize:14];
+            }
 			cellLabel.tag = -1;
 			[cell addSubview:cellLabel]; 
 		 }
@@ -897,11 +896,11 @@
 			cellLabel = (UILabel *)[cell viewWithTag:-1];
 		}
 		// 回転対応のため
-#ifdef AzPAD
-		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
-#else
-		cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
-#endif
+        if (IS_PAD) {
+            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
+        }else{
+            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
+        }
 		
 		E3record *e3obj = RaE3list[indexPath.section][indexPath.row];
 		
@@ -934,11 +933,11 @@
 			// クイック追加にてカード(未定)のとき
 			cell.imageView.image = nil;
 		}
-#ifdef AzPAD
-		if (cell.imageView.image==nil) {
-			cell.imageView.image = [UIImage imageNamed:@"Icon32-Clear"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
-		}
-#endif
+        if (IS_PAD) {
+            if (cell.imageView.image==nil) {
+                cell.imageView.image = [UIImage imageNamed:@"Icon32-Clear"]; //幅に余裕があるので、画像を入れて揃えた方が見栄え良いと判断した。
+            }
+        }
 		
 		// zDate 利用日		RcellDateFormatterを事前生成することにより高速化
 		NSString *zDate = [RcellDateFormatter stringFromDate:e3obj.dateUse];
@@ -1056,7 +1055,7 @@
 }
 
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
@@ -1081,7 +1080,7 @@
 		return YES;	// Popover外部タッチで閉じるのを許可
 	}
 }
-#endif
+//#endif
 
 @end
 

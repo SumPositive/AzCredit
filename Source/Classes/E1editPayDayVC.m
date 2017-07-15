@@ -77,9 +77,9 @@
 	self = [super init];
 	if (self) {
 		// 初期化成功
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
 	}
 	return self;
 }
@@ -90,11 +90,11 @@
 {
     [super loadView];
 	
-#ifdef AzPAD
-	self.view.backgroundColor = [UIColor lightGrayColor];
-#else
-	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-#endif
+    if (IS_PAD) {
+        self.view.backgroundColor = [UIColor lightGrayColor];
+    }else{
+        self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    }
 	
 	// DONEボタンを右側に追加する
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -140,11 +140,11 @@
 	//------------------------------------------------------
 	MlbDebit = [[UILabel alloc] init];
 	MlbDebit.text = NSLocalizedString(@"PayDay Debit msg",nil);
-#ifdef AzPAD
-	MlbDebit.font = [UIFont systemFontOfSize:14];
-#else
-	MlbDebit.font = [UIFont systemFontOfSize:12];
-#endif
+    if (IS_PAD) {
+        MlbDebit.font = [UIFont systemFontOfSize:14];
+    }else{
+        MlbDebit.font = [UIFont systemFontOfSize:12];
+    }
 	MlbDebit.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:MlbDebit]; //[MlbDebit release];
 	//------------------------------------------------------
@@ -154,13 +154,12 @@
 {
 	CGRect rect = self.view.bounds;
 
-#ifdef AzPAD
-	float fXofs = (rect.size.width - 320) / 2.0;
-	float fYofs = 60;
-#else
-	float fXofs = 0;
-	float fYofs = 0;
-#endif
+    float fXofs = 0;
+    float fYofs = 0;
+    if (IS_PAD) {
+        fXofs = (rect.size.width - 320) / 2.0;
+        fYofs = 60;
+    }
 
 	rect.origin.x = fXofs;
 	//---------------------------- Picker

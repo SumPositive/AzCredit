@@ -207,15 +207,16 @@ NSString *passCode()
 	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
 											  style:UIAlertActionStyleDefault
 											handler:^(UIAlertAction *action){
-#ifdef AzPAD
-												//iPad//								クレメモ	 for iPad	457542400
-												NSURL *url = [NSURL URLWithString:
-															  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
-#else
-												//iPhone//									クレメモ	432458298
-												NSURL *url = [NSURL URLWithString:
-															  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-#endif
+                                                NSURL *url;
+                                                if (IS_PAD) {
+                                                    //iPad//								クレメモ	 for iPad	457542400
+                                                    url = [NSURL URLWithString:
+                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
+                                                }else{
+                                                    //iPhone//									クレメモ	432458298
+                                                    url = [NSURL URLWithString:
+                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+                                                }
 												[[UIApplication sharedApplication] openURL:url
 																				   options:@{}
 																		 completionHandler:nil];
@@ -297,11 +298,11 @@ NSString *passCode()
 #else
 												zSubj = [zSubj stringByAppendingString:@" Free"];
 #endif
-#ifdef AzPAD
-												zSubj = [zSubj stringByAppendingString:@" for iPad"];
-#else
-												zSubj = [zSubj stringByAppendingString:@" for iPhone"];
-#endif
+                                                if (IS_PAD) {
+                                                    zSubj = [zSubj stringByAppendingString:@" for iPad"];
+                                                }else{
+                                                    zSubj = [zSubj stringByAppendingString:@" for iPhone"];
+                                                }
 												[picker setSubject:zSubj];
 												
 												// Body: 本文
@@ -330,7 +331,11 @@ NSString *passCode()
 												//Bug//[self hide]; 上のアニメと競合してメール画面が表示されない。これより先にhideするように改めた。
 												AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 												//[app.mainController presentModalViewController:picker animated:YES];
-												[app.mainController presentViewController:picker animated:YES completion:nil];
+                                                if (IS_PAD) {
+                                                    [app.mainSplit presentViewController:picker animated:YES completion:nil];
+                                                }else{
+                                                    [app.mainNavi presentViewController:picker animated:YES completion:nil];
+                                                }
 											}]];
 	[self presentViewController:alert animated:YES completion:nil];
 }
@@ -366,42 +371,42 @@ NSString *passCode()
 	if (320.0 < self.view.frame.size.width) {  //iPhone6以降対応
 		fX += (self.view.frame.size.width - 320.0) / 2.0;
 	}
-#ifdef AzPAD
-	//self.preferredContentSize = CGSizeMake(320, 510);
-	self.navigationItem.hidesBackButton = YES;
-	fX = (768 - 320) / 2.0;
-	fY = 100;
-#endif
+    if (IS_PAD) {
+        //self.preferredContentSize = CGSizeMake(320, 510);
+        self.navigationItem.hidesBackButton = YES;
+        fX = (768 - 320) / 2.0;
+        fY = 100;
+    }
 	
 	// 小豆色 RGB(152,81,75) #98514B
 	self.view.backgroundColor = [UIColor colorWithRed:152/255.0f 
 												green:81/255.0f 
 												 blue:75/255.0f
 												alpha:1.0f];
-#ifdef AzPAD
-	// Popover
-#else	
-	self.view.userInteractionEnabled = YES; //タッチの可否
-#endif
-
+    if (IS_PAD) {
+        // Popover
+    }else{
+        self.view.userInteractionEnabled = YES; //タッチの可否
+    }
 	
 	//------------------------------------------アイコン
-#ifdef AzPAD
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+35, 72, 72)];
+    UIImageView *iv;
+    if (IS_PAD) {
+        iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+35, 72, 72)];
 #ifdef AzSTABLE
-	[iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
+        [iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
 #else
-	[iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
+        [iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
 #endif
-#else	
-	UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+50, 57, 57)];
+    }else{
+        iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+50, 57, 57)];
 #ifdef AzSTABLE
-	iv.image = [UIImage imageNamed:@"Icon57s1.png"];
+        iv.image = [UIImage imageNamed:@"Icon57s1.png"];
 #else
-	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
+        [iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
-#endif
-	[self.view addSubview:iv]; 
+    }
+	[self.view addSubview:iv];
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
@@ -424,11 +429,12 @@ NSString *passCode()
 #else	
 	NSString *zFree = @"PayNote Free";
 #endif
-#ifdef AzPAD
-	NSString *zDevice = @"for iPad";
-#else	
-	NSString *zDevice = @"for iPhone";
-#endif
+    NSString *zDevice;
+    if (IS_PAD) {
+        zDevice = @"for iPad";
+    }else{
+        zDevice = @"for iPhone";
+    }
 	NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
 	label.text = [NSString stringWithFormat:@"%@\n%@\nVersion %@", zFree, zDevice, zVersion];  // Build表示しない
 	label.numberOfLines = 3;
@@ -529,56 +535,50 @@ NSString *passCode()
 
 	
 	//------------------------------------------CLOSE
-#ifdef AzPAD
-	//label.text = NSLocalizedString(@"Information Open Pad",nil);
-#else
-	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+440, 280, 25)];
-	label.text = NSLocalizedString(@"Information Open",nil);
-	label.textAlignment = NSTextAlignmentCenter;
-	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor clearColor]; //背景透明
-	label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	[self.view addSubview:label]; 	
-#endif
-
+    if (IS_PAD) {
+        //label.text = NSLocalizedString(@"Information Open Pad",nil);
+    }else{
+        label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+440, 280, 25)];
+        label.text = NSLocalizedString(@"Information Open",nil);
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor]; //背景透明
+        label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+        [self.view addSubview:label]; 	
+    }
     return self;
 }
 
 - (void)loadView
 {
     [super loadView];
-#ifdef AzPAD
-	self.navigationItem.hidesBackButton = YES;
-#endif
+    if (IS_PAD) {
+        self.navigationItem.hidesBackButton = YES;
+    }
 	self.title = NSLocalizedString(@"Information", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-#ifdef AzPAD
-	//Popover [Menu] button
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[toolBar release];
-		[items release];
-	}
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
-#else
-	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
-#endif
+    if (IS_PAD) {
+        //Popover [Menu] button
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (app.barMenu) {
+            UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+            UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+            NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+            UIToolbar* toolBar = [[UIToolbar alloc] init];
+            toolBar.barStyle = UIBarStyleDefault;
+            [toolBar setItems:items animated:NO];
+            [toolBar sizeToFit];
+            self.navigationItem.titleView = toolBar;
+        }
+        [self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+    }else{
+        [self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+    }
 	
 //	self.title = NSLocalizedString(@"Setting", nil);
 }
@@ -586,11 +586,11 @@ NSString *passCode()
 // 回転サポート
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-#ifdef AzPAD
-	return YES;
-#else
-	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
+    }
 }
 
 
@@ -630,7 +630,11 @@ NSString *passCode()
     }
 	// [self dismissModalViewControllerAnimated:YES];
 	AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-	[app.mainController dismissViewControllerAnimated:YES completion:nil];
+    if (IS_PAD) {
+        [app.mainSplit dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        [app.mainNavi dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end

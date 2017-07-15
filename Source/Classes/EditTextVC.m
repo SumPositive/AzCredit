@@ -61,14 +61,14 @@
 	self = [super init];
 	if (self) {
 		// 初期化成功
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
 	}
 	return self;
 }
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (id)initWithFrameSize:(CGSize)size
 {
 	self = [super init];
@@ -78,7 +78,7 @@
 	}
 	return self;
 }
-#endif
+//#endif
 
 // IBを使わずにviewオブジェクトをプログラム上でcreateするときに使う（viewDidLoadは、nibファイルでロードされたオブジェクトを初期化するために使う）
 //【Tips】ここでaddSubviewするオブジェクトは全てautoreleaseにすること。メモリ不足時には自動的に解放後、改めてここを通るので、初回同様に生成するだけ。
@@ -95,11 +95,11 @@
 
 	// とりあえず生成、位置はviewDesignにて決定
 	MtextView = [[UITextView alloc] init];
-#ifdef AzPAD
-	MtextView.font = [UIFont systemFontOfSize:20];
-#else
-	MtextView.font = [UIFont systemFontOfSize:16];
-#endif
+    if (IS_PAD) {
+        MtextView.font = [UIFont systemFontOfSize:20];
+    }else{
+        MtextView.font = [UIFont systemFontOfSize:16];
+    }
 	MtextView.textAlignment = NSTextAlignmentLeft;
 	MtextView.keyboardType = UIKeyboardTypeDefault;
 	MtextView.returnKeyType = UIReturnKeyDefault; // Return
@@ -117,26 +117,26 @@
 
 - (void)viewDesign
 {
-#ifdef AzPAD
-	MtextView.frame = self.view.bounds;
-#else
-	CGRect rect;
-	rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
-	rect.origin.x += 10;
-	rect.origin.y += 10;
-	rect.size.width -= 20;
-	float	fKeyHeight;
-	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-	if (orientation == UIInterfaceOrientationPortrait
-		OR orientation == UIInterfaceOrientationPortraitUpsideDown){
-		fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
-	} else {
-		fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
-	}
-	rect.size.height -= (20 + fKeyHeight);
-	MtextView.frame = rect;	
-#endif
-}	
+    if (IS_PAD) {
+        MtextView.frame = self.view.bounds;
+    }else{
+        CGRect rect;
+        rect = self.view.bounds;  // ＜＜課題！これでは、ToolBar表示時には、高さが小さくなってしまう＞＞
+        rect.origin.x += 10;
+        rect.origin.y += 10;
+        rect.size.width -= 20;
+        float	fKeyHeight;
+        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (orientation == UIInterfaceOrientationPortrait
+            OR orientation == UIInterfaceOrientationPortraitUpsideDown){
+            fKeyHeight = GD_KeyboardHeightPortrait;	 // タテ
+        } else {
+            fKeyHeight = GD_KeyboardHeightLandscape; // ヨコ
+        }
+        rect.size.height -= (20 + fKeyHeight);
+        MtextView.frame = rect;	
+    }
+}
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる
 - (void)viewWillAppear:(BOOL)animated 
@@ -158,13 +158,10 @@
 			MtextView.text = [MtextView.text substringToIndex:((MtextView.text).length - PiSuffixLength)];
 		}
 	}
-#ifdef AzPAD
-	if (sourceText) {
-		[sourceText release];
-	}
-	sourceText = [[NSString alloc] initWithString:MtextView.text];  //変更前の文字列を記録し、[Done]にて比較して変更の有無を判定している
-	//OK 上でも同じ//[sourceText release], sourceText = [MtextView.text copy];
-#endif
+    if (IS_PAD) {
+        sourceText = [[NSString alloc] initWithString:MtextView.text];  //変更前の文字列を記録し、[Done]にて比較して変更の有無を判定している
+        //OK 上でも同じ//[sourceText release], sourceText = [MtextView.text copy];
+    }
 	
 	//ここでキーを呼び出すと画面表示が無いまま待たされてしまうので、viewDidAppearでキー表示するように改良した。
 }

@@ -207,9 +207,9 @@
 		// 初期化成功
 		Re3edit = e3;	// どちらか必ずnil
 		Re6edit = e6;	// どちらか必ずnil
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
 	}
 	return self;
 }
@@ -236,12 +236,12 @@
 {
     [super loadView];
 
-#ifdef AzPAD
-	self.view.backgroundColor = [UIColor lightGrayColor];
-#else
-	self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-	[self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
-#endif
+    if (IS_PAD) {
+        self.view.backgroundColor = [UIColor lightGrayColor];
+    }else{
+        self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        [self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
+    }
 
 	// DONEボタンを右側に追加する
 	// 前画面に[SAVE]があるから、この[DONE]を無くして戻るだけで更新するように試してみたが、
@@ -302,92 +302,90 @@
 {
 	CGRect rect = self.view.bounds;
 
-#ifdef AzPAD
-	rect.size.width = 320;
-	rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-	rect.size.height = GD_PickerHeight;
-	rect.origin.y = (self.view.bounds.size.height - rect.size.height) / 2;
-	MdatePicker.frame = rect;
-
-	if (Re3edit) {
-		rect.size.height = 30;
-		rect.size.width = 150;
-		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-		rect.origin.y = 60;
-		MbuToday.frame = rect;
-		
-		rect.origin.y = self.view.bounds.size.height - 90;
-		MbuYearTime.frame = rect;
-	} else {
-		rect.origin.y = 40;  //self.view.bounds.size.height - 110;
-		rect.size.height = 30;
-		rect.size.width = 200;
-		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-		MbuYearTime.frame = rect;
-		rect.origin.y += 32;
-		rect.size.width -= 20;
-		rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-		MlbAmount.frame = rect;
-	}
-
-#else
-
-	if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
-	{	// タテ
-		if (Re3edit) {
-			rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
-		} else {
-			rect.origin.y = 120;
-		}
-		rect.size.height = GD_PickerHeight;
-		MdatePicker.frame = rect;
-		
-		if (Re3edit) {
-			rect.origin.y = MdatePicker.frame.origin.y - 40;
-			rect.size.height = 30;
-			rect.size.width = 150;
-			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-			MbuToday.frame = rect;
-			
-			rect.origin.y = MdatePicker.frame.origin.y + MdatePicker.frame.size.height + 10; //self.view.bounds.size.height - 60;
-			MbuYearTime.frame = rect;
-		} else {
-			rect.origin.y = MdatePicker.frame.origin.y - 40 - 32;
-			rect.size.height = 30;
-			rect.size.width = 200;
-			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-			MbuYearTime.frame = rect;
-			rect.origin.y += 32;
-			rect.size.width -= 20;
-			rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
-			MlbAmount.frame = rect;
-		}
-	}
-	else {	// ヨコ
-		rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
-		rect.size.height = GD_PickerHeight;
-		MdatePicker.frame = rect;
-		
-		rect.origin.y = 10;
-		rect.size.height = 30;
-
-		if (Re3edit) {
-			rect.size.width = 150;
-			rect.origin.x = 30;  //(self.view.bounds.size.width - rect.size.width) / 2;
-			MbuToday.frame = rect;
-			
-			rect.origin.x = 250;  //self.view.bounds.size.width/2 + (self.view.bounds.size.width - rect.size.width)/2;
-			MbuYearTime.frame = rect;
-		} else {
-			rect.origin.x = 100;  //(self.view.bounds.size.width/2) + 0;
-			rect.size.width = 80;
-			MbuYearTime.frame = rect;
-			rect.origin.x += (rect.size.width + 2);
-			rect.size.width = 200;
-			MlbAmount.frame = rect;
-		}
-	}
-#endif
+    if (IS_PAD) {
+        rect.size.width = 320;
+        rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+        rect.size.height = GD_PickerHeight;
+        rect.origin.y = (self.view.bounds.size.height - rect.size.height) / 2;
+        MdatePicker.frame = rect;
+        
+        if (Re3edit) {
+            rect.size.height = 30;
+            rect.size.width = 150;
+            rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+            rect.origin.y = 60;
+            MbuToday.frame = rect;
+            
+            rect.origin.y = self.view.bounds.size.height - 90;
+            MbuYearTime.frame = rect;
+        } else {
+            rect.origin.y = 40;  //self.view.bounds.size.height - 110;
+            rect.size.height = 30;
+            rect.size.width = 200;
+            rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+            MbuYearTime.frame = rect;
+            rect.origin.y += 32;
+            rect.size.width -= 20;
+            rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+            MlbAmount.frame = rect;
+        }
+    }else{
+        if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
+        {	// タテ
+            if (Re3edit) {
+                rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
+            } else {
+                rect.origin.y = 120;
+            }
+            rect.size.height = GD_PickerHeight;
+            MdatePicker.frame = rect;
+            
+            if (Re3edit) {
+                rect.origin.y = MdatePicker.frame.origin.y - 40;
+                rect.size.height = 30;
+                rect.size.width = 150;
+                rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+                MbuToday.frame = rect;
+                
+                rect.origin.y = MdatePicker.frame.origin.y + MdatePicker.frame.size.height + 10; //self.view.bounds.size.height - 60;
+                MbuYearTime.frame = rect;
+            } else {
+                rect.origin.y = MdatePicker.frame.origin.y - 40 - 32;
+                rect.size.height = 30;
+                rect.size.width = 200;
+                rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+                MbuYearTime.frame = rect;
+                rect.origin.y += 32;
+                rect.size.width -= 20;
+                rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+                MlbAmount.frame = rect;
+            }
+        }
+        else {	// ヨコ
+            rect.origin.y = self.view.bounds.size.height - GD_PickerHeight;
+            rect.size.height = GD_PickerHeight;
+            MdatePicker.frame = rect;
+            
+            rect.origin.y = 10;
+            rect.size.height = 30;
+            
+            if (Re3edit) {
+                rect.size.width = 150;
+                rect.origin.x = 30;  //(self.view.bounds.size.width - rect.size.width) / 2;
+                MbuToday.frame = rect;
+                
+                rect.origin.x = 250;  //self.view.bounds.size.width/2 + (self.view.bounds.size.width - rect.size.width)/2;
+                MbuYearTime.frame = rect;
+            } else {
+                rect.origin.x = 100;  //(self.view.bounds.size.width/2) + 0;
+                rect.size.width = 80;
+                MbuYearTime.frame = rect;
+                rect.origin.x += (rect.size.width + 2);
+                rect.size.width = 200;
+                MlbAmount.frame = rect;
+            }
+        }
+    }
 }	
 
 // viewWillAppear はView表示直前に呼ばれる。よって、Viewの変化要素はここに記述する。　 　// viewDidAppear はView表示直後に呼ばれる

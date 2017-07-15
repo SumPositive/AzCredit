@@ -30,8 +30,8 @@
 @property NSInteger	PiMaxLength;
 @property NSInteger	PiSuffixLength;
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (id)initWithFrameSize:(CGSize)size;
-#endif
+//#endif
 
 @end

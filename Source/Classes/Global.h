@@ -22,12 +22,12 @@
 	// 広告なし
 #else // AzFREE
 	#define FREE_AD
-	#ifdef AzPAD
+	//#ifdef AzPAD
 		//FREE_ADに統一// #define FREE_AD_PAD
 		#define AdMobID_iPad		@"a14df22df88250c";		//AdMobパブリッシャー ID  "クレメモ Free for iPad"
-	#else
+	//#else
 		#define AdMobID_iPhone	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free for iPhone"　
-	#endif
+	//#endif
 #endif
 
 #define OR  ||
@@ -43,6 +43,8 @@
 #define AzRETAIN_CHECK(...) 
 #endif
 
+#define IS_PAD      ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+#define IS_PHONE    ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
 
 #define GD_PRODUCTNAME	@"AzCredit"  // IMPORTANT PRODUCT NAME  和名「クレメモ」
 													//↑↑変更禁止！！Keychainの'ServiceName'に使っているので読み出せなくなる。
@@ -114,18 +116,18 @@
 #define GD_OptE5SortMode					@"OptE5SortMode"
 
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #define GD_PAIDLIST_MAX			30		// E2,E7一覧で表示するPAID側の最大件数、Unpaid側は全件
 #define GD_E3_SELECT_LIMIT		100		// 明細一覧で中央日付から前後抽出する件数(Limit)
-#else
+//#else
 #define GD_PAIDLIST_MAX			20		// E2,E7一覧で表示するPAID側の最大件数、Unpaid側は全件
 #define GD_E3_SELECT_LIMIT		50		// 明細一覧で中央日付から前後抽出する件数(Limit)
-#endif
+//#endif
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #define GD_POPOVER_SIZE_INIT		CGSizeMake(480-1, 500-1)	//init初期化時に使用　＜＜＜変化ありにするため1廻り小さくする
 #define GD_POPOVER_SIZE				CGSizeMake(480, 500)			//viewDidAppear時に使用
-#endif
+//#endif
 
 
 

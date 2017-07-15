@@ -14,9 +14,9 @@
 #import "E5categoryDetailTVC.h"
 #import "E3recordTVC.h"
 
-#ifdef AzPAD
+//#ifdef AzPAD
 //#import "PadPopoverInNaviCon.h"
-#endif
+//#endif
 
 #define ACTIONSEET_TAG_DELETE_SHOP	199
 
@@ -30,15 +30,15 @@
 @implementation E5categoryTVC
 @synthesize Re0root;
 @synthesize Pe3edit;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
-#endif
+//#endif
 
 
 #pragma mark - Delegate
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)refreshTable
 {
 	if (MindexPathEdit && MindexPathEdit.row < [RaE5categorys count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
@@ -49,7 +49,7 @@
 		[self viewWillAppear:YES];
 	}
 }
-#endif
+//#endif
 
 
 #pragma mark - Action
@@ -88,9 +88,9 @@
 			e5detail.Re5edit.sortName = RzSearchText;
 		}
 
-#ifdef  AzPAD
-		indexPath = [NSIndexPath indexPathForRow:[RaE5categorys count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
-#endif
+        if (IS_PAD) {
+            indexPath = [NSIndexPath indexPathForRow:[RaE5categorys count] inSection:0];	//Add行、回転時にPopoverの矢印位置のため
+        }
 	}
 	else if (RaE5categorys.count <= indexPath.row) {
 		return; // Add行以降、パスする
@@ -108,34 +108,34 @@
 		e5detail.PbSave = YES;	// マスタモード：
 	}
 	
-#ifdef  AzPAD
-	if (Pe3edit) { // 選択モード
-		e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-		[self.navigationController pushViewController:e5detail animated:YES];
-	} else {
-		AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		apd.entityModified = e5detail.PbAdd;
-
-		//MindexPathEdit = indexPath;
-		[MindexPathEdit release], MindexPathEdit = [indexPath copy];
-
-		UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e5detail];
-		Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-		Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-		[nc release];
-		CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-		rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-		rc.origin.y += 10;	rc.size.height -= 20;
-		[Mpopover presentPopoverFromRect:rc
-								  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-		e5detail.selfPopover = Mpopover;  [Mpopover release]; //(retain)  内から閉じるときに必要になる
-		e5detail.delegate = self;		// refreshTable callback
-	}
-#else
-	// 呼び出し側(親)にてツールバーを常に非表示にする
-	e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-	[self.navigationController pushViewController:e5detail animated:YES];
-#endif
+    if (IS_PAD) {
+        if (Pe3edit) { // 選択モード
+            e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+            [self.navigationController pushViewController:e5detail animated:YES];
+        } else {
+            AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            apd.entityModified = e5detail.PbAdd;
+            
+            //MindexPathEdit = indexPath;
+            MindexPathEdit = [indexPath copy];
+            
+            UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e5detail];
+            Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+            Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+            //[nc release];
+            CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+            rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+            rc.origin.y += 10;	rc.size.height -= 20;
+            [Mpopover presentPopoverFromRect:rc
+                                      inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+            e5detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+            e5detail.delegate = self;		// refreshTable callback
+        }
+    }else{
+        // 呼び出し側(親)にてツールバーを常に非表示にする
+        e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
+        [self.navigationController pushViewController:e5detail animated:YES];
+    }
 	 // self.navigationControllerがOwnerになる
 }
 
@@ -151,16 +151,16 @@
 - (void)barButtonUntitled {
 	// 未定(nil)にする
 	Pe3edit.e5category = nil; 
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
+//#ifdef xxxAzPAD
+//	if (selfPopover) {
+//		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+//			[delegate viewWillAppear:YES];// 再描画
+//		}
+//		[selfPopover dismissPopoverAnimated:YES];
+//	}
+//#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+//#endif
 }
 
 - (void)barSegmentSort:(id)sender {
@@ -169,12 +169,12 @@
 	[self requeryMe5categorys:nil];
 }
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)cancelClose:(id)sender
 {
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
-#endif
+//#endif
 
 
 #pragma mark - View lifecicle
@@ -185,9 +185,9 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
 	}
 	return self;
 }
@@ -198,18 +198,18 @@
 {
 	[super loadView];
 	
-#ifdef AzPAD
-	self.navigationItem.hidesBackButton = YES;
-	// Set up NEXT Left Back [<] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-											  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
-#else
-	// Set up NEXT Left Back [<<] buttons.
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
-#endif
+    if (IS_PAD) {
+        self.navigationItem.hidesBackButton = YES;
+        // Set up NEXT Left Back [<] buttons.
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                  initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
+    }else{
+        // Set up NEXT Left Back [<<] buttons.
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                 initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
+                                                 style:UIBarButtonItemStylePlain  target:nil  action:nil];
+    }
 
 	if (Pe3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -255,22 +255,17 @@
 		//[buUntitled release];
 	}
 	else {
-#ifdef AzPAD
-		NSArray *buArray = [NSArray arrayWithObjects: buFlex, buSort, buFlex, buAdd, nil];
-		[self setToolbarItems:buArray animated:YES];
-#else
-		MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-												  style:UIBarButtonItemStylePlain  //Bordered
-												  target:self action:@selector(barButtonTop)];
-		NSArray *buArray = @[MbuTop, buFlex, buSort, buFlex, buAdd];
-		[self setToolbarItems:buArray animated:YES];
-		//[MbuTop release];
-#endif
+        if (IS_PAD) {
+            NSArray *buArray = [NSArray arrayWithObjects: buFlex, buSort, buFlex, buAdd, nil];
+            [self setToolbarItems:buArray animated:YES];
+        }else{
+            MbuTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+                                                      style:UIBarButtonItemStylePlain  //Bordered
+                                                     target:self action:@selector(barButtonTop)];
+            NSArray *buArray = @[MbuTop, buFlex, buSort, buFlex, buAdd];
+            [self setToolbarItems:buArray animated:YES];
+        }
 	}
-	//[buAdd release];
-	//[buFlex release];
-	//[buSort release];
-	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
 
@@ -355,29 +350,29 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
-#ifdef AzPAD
-	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
-	// SplitViewタテのとき [Menu] button を表示する
-	if (Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
-		AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		if (app.barMenu) {
-			UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-			UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
-			NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
-			UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
-			toolBar.barStyle = UIBarStyleDefault;
-			[toolBar setItems:items animated:NO];
-			[toolBar sizeToFit];
-			self.navigationItem.titleView = toolBar;
-			[items release];
-		}
-	} else {
-		// CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
-		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc]
-												  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-												  target:self action:@selector(cancelClose:)] autorelease];
-	}
-#endif
+    if (IS_PAD) {
+        // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+        // SplitViewタテのとき [Menu] button を表示する
+        if (Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            if (app.barMenu) {
+                UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+                UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+                NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: app.barMenu, buFlexible, buTitle, buFlexible, nil];
+                UIToolbar* toolBar = [[UIToolbar alloc] init];
+                toolBar.barStyle = UIBarStyleDefault;
+                [toolBar setItems:items animated:NO];
+                [toolBar sizeToFit];
+                self.navigationItem.titleView = toolBar;
+                //[items release];
+            }
+        } else {
+            // CANCELボタンを左側に追加する  Navi標準の戻るボタンでは cancelClose:処理ができないため
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                                                      initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                      target:self action:@selector(cancelClose:)];
+        }
+    }
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
@@ -397,7 +392,7 @@
  }
  */
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {	// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
 	if ([Mpopover isPopoverVisible]) 
@@ -407,7 +402,7 @@
 	}
     [super viewWillDisappear:animated];
 }
-#endif
+//#endif
 
 
 #pragma mark  View - Rotate
@@ -415,12 +410,12 @@
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-#ifdef AzPAD
-	return YES;
-#else
-	// 回転禁止でも、正面は常に許可しておくこと。
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        // 回転禁止でも、正面は常に許可しておくこと。
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -430,7 +425,7 @@
 	[self viewDesign];
 }
 
-#ifdef AzPAD
+//#ifdef AzPAD
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
@@ -450,7 +445,7 @@
 		}
 	}
 }
-#endif
+//#endif
 
 /*
 // カムバック処理（復帰再現）：親から呼ばれる
@@ -488,12 +483,11 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	[self unloadRelease];
-#ifdef AzPAD
-	[MindexPathEdit release], MindexPathEdit = nil;
-#endif
+    if (IS_PAD) {
+        MindexPathEdit = nil;
+    }
 	RzSearchText = nil;
 	MindexPathActionDelete = nil;
-	//--------------------------------@property (retain)
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
@@ -560,13 +554,13 @@
 					 initWithStyle:UITableViewCellStyleValue1
 					 reuseIdentifier:zCellNode];
 
-#ifdef AzPAD
-			cell.textLabel.font = [UIFont systemFontOfSize:20];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
-#else
-			cell.textLabel.font = [UIFont systemFontOfSize:18];
-			cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-#endif
+            if (IS_PAD) {
+                cell.textLabel.font = [UIFont systemFontOfSize:20];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+            }else{
+                cell.textLabel.font = [UIFont systemFontOfSize:18];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+            }
 			//cell.textLabel.textAlignment = NSTextAlignmentLeft;
 			cell.textLabel.textColor = [UIColor blackColor];
 			
@@ -593,11 +587,11 @@
 			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault      // Default型
 										   reuseIdentifier:zCellAdd];
 		}
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:14];
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:14];
+        }
 		cell.textLabel.textAlignment = NSTextAlignmentCenter; // 中央寄せ
 		cell.textLabel.textColor = [UIColor grayColor];
 		cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
@@ -758,7 +752,7 @@
 }
 */
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #pragma mark - <UIPopoverControllerDelegate>
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {	// Popoverの外部をタップして閉じる前に通知
@@ -770,7 +764,7 @@
 		return YES;	// Popover外部タッチで閉じるのを許可
 	}
 }
-#endif
+//#endif
 
 
 @end

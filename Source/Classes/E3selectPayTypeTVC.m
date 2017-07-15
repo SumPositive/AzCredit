@@ -30,9 +30,9 @@
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
 		// OK
-#ifdef AzPAD
-		self.preferredContentSize = GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = GD_POPOVER_SIZE;
+        }
     }
     return self;
 }
@@ -128,11 +128,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  // Subtitle
 									   reuseIdentifier:CellIdentifier];
 
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:16];
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:16];
+        }
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.textLabel.textAlignment = NSTextAlignmentLeft;
     }

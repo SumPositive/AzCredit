@@ -12,9 +12,9 @@
 @class E7payment;
 
 @interface E6partTVC : UITableViewController
-#ifdef AzPAD
+//#ifdef AzPAD
 	<UIPopoverControllerDelegate>
-#endif
+//#endif
 {
 @private
 	//----------------------------------------------retain
@@ -33,9 +33,9 @@
 //	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-#ifdef AzPAD
+//#ifdef AzPAD
 	UIPopoverController*	Mpopover;
-#endif
+//#endif
 	//----------------------------------------------assign
 	E1card		*Me2e1card;
 	E0root		*Me7e0root;
@@ -50,10 +50,10 @@
 @property (nonatomic, weak) NSMutableSet	*Pe2invoices;
 @property (nonatomic, assign) NSInteger		PiFirstSection;
 
-#ifdef AzPAD
+//#ifdef AzPAD
 // delegate method
 - (void)refreshE6partTVC:(BOOL)bSame;
-#endif
+//#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 

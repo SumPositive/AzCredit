@@ -18,10 +18,10 @@
 @private
 	//--------------------------retain
 	E3record		*Re3edit;
-#ifdef AzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+//#ifdef AzPAD
+	//id									delegate;
+	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+//#endif
 	//--------------------------assign
 	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する  ＜iPad:変更無ければPopover外タッチでCancel＞
 												// (1)New (2)Card固定 (3)Shop固定 (4)Category固定  ＜iPad:Popover外タッチで閉じさせない＞
@@ -36,11 +36,11 @@
 	UILabel					*MlbAmount;
 	CalcView					*McalcView;
 	UIView						*McalcMaskView;
-#ifdef AzPAD
+//#ifdef AzPAD
 	NSInteger				MiSourceYearMMDD;	// 修正前の利用日、[Save]時に比較して同じならば修正行だけ再表示し、変化あれば全再表示する
-#else
+//#else
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
-#endif
+//#endif
 	//----------------------------------------------assign
 	AppDelegate *appDelegate;
 	BOOL			MbE1cardChange;
@@ -61,10 +61,10 @@
 @property (nonatomic, retain) E3record		*Re3edit;
 @property NSInteger							PiAdd;
 @property NSInteger							PiFirstYearMMDD;	
-#ifdef AzPAD
+//#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
-#endif
+//#endif
 
 // 公開メソッド
 - (void)cancelClose:(id)sender ;

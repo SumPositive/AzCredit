@@ -15,9 +15,9 @@
 #import "MocFunctions.h"
 #import "TopMenuTVC.h"
 #import "LoginPassVC.h"
-#ifdef AzPAD
-#import "padRootVC.h"
-#endif
+//#ifdef AzPAD
+#import "PadRootVC.h"
+//#endif
 
 
 //iOS6以降、回転対応のためサブクラス化が必要になった。
@@ -43,12 +43,12 @@
 @implementation AppDelegate
 
 @synthesize window;
-@synthesize mainController;
+@synthesize mainSplit, mainNavi;
 @synthesize	Me3dateUse;
 @synthesize entityModified;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize barMenu;
-#endif
+//#endif
 
 
 - (void)dealloc 
@@ -57,8 +57,13 @@
 	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
 
 //	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
-	mainController.delegate = nil;
-	mainController = nil;
+    if (IS_PAD) {
+        mainSplit.delegate = nil;
+        mainSplit = nil;
+    } else {
+        mainNavi.delegate = nil;
+        mainNavi = nil;
+    }
 
 //	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
 
@@ -119,28 +124,27 @@
 	TopMenuTVC *topMenuTvc = [[TopMenuTVC alloc] init];
 	topMenuTvc.Re0root = e0node; // TopMenuTVC側でretain
 
-#ifdef AzPAD
-	// topMenu を [0] naviLeft へ登録
-	AzNavigationController* naviLeft = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
-	// padRootVC を [1] naviRight へ登録
-	PadRootVC *padRootVC = [[[PadRootVC alloc] init] autorelease];
-	padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
-	AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:padRootVC];
-	// mainController へ登録
-	mainController = [[UISplitViewController alloc] init];
-	mainController.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
-	mainController.delegate = padRootVC; 
-	//[padRootVC release];
-	[naviLeft release];
-	[naviRight release];
-#else
-	// topMenu を navigationController へ登録
-	mainController = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
-#endif
+    if (IS_PAD) {
+        // topMenu を [0] naviLeft へ登録
+        AzNavigationController* naviLeft = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
+        // padRootVC を [1] naviRight へ登録
+        PadRootVC *padRootVC = [[PadRootVC alloc] init];
+        padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
+        AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:padRootVC];
+        // mainController へ登録
+        mainSplit = [[UISplitViewController alloc] init];
+        mainSplit.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
+        mainSplit.delegate = padRootVC;
+        mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
+        window.rootViewController = mainSplit;	//iOS6以降、こうしなければ回転しない。
+    } else {
+        // topMenu を navigationController へ登録
+        mainNavi = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
+        window.rootViewController = mainNavi;	//iOS6以降、こうしなければ回転しない。
+    }
 	
 	// mainController を window へ登録
 	//[window addSubview:mainController.view];
-	window.rootViewController = mainController;	//iOS6以降、こうしなければ回転しない。
 //	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
 
 	
@@ -216,15 +220,15 @@
 {	//iOS4: アプリケーションがバックグラウンドになったら呼ばれる
 	AzLOG(@"applicationDidEnterBackground");
 
-#ifdef AzPAD
-	UINavigationController* naviLeft = [self.mainController.viewControllers objectAtIndex:0];	//[0]Left
-	if ([[naviLeft.viewControllers objectAtIndex:0] isMemberOfClass:[TopMenuTVC class]]) {
-		TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-		if ([tvc respondsToSelector:@selector(popoverClose)]) {	// メソッドの存在を確認する
-			[tvc popoverClose];	// Popoverが開いておれば、rollbackして閉じる
-		}
-	}
-#endif
+    if (IS_PAD) {
+        UINavigationController* naviLeft = [self.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+        if ([[naviLeft.viewControllers objectAtIndex:0] isMemberOfClass:[TopMenuTVC class]]) {
+            TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+            if ([tvc respondsToSelector:@selector(popoverClose)]) {	// メソッドの存在を確認する
+                [tvc popoverClose];	// Popoverが開いておれば、rollbackして閉じる
+            }
+        }
+    }
 	
 	[self applicationWillTerminate:application]; //iOS3以前の終了処理
 
@@ -423,39 +427,44 @@
 	//[self.window  presentModalViewController:vc animated:YES];
 	//[mainController.navigationController presentModalViewController:vc animated:NO]; 
 	//[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
-	[mainController presentViewController:vc animated:NO completion:nil];
+    if (IS_PAD) {
+        [mainSplit presentViewController:vc animated:NO completion:nil];
+    }else{
+        [mainNavi presentViewController:vc animated:NO completion:nil];
+    }
 }
 
 
-#pragma mark - AVAudioPlayer
-- (void)audioPlayer:(NSString*)filename
-{
-	//if (MfAudioVolume <= 0.0 || 1.0 < MfAudioVolume) return;
-#if (TARGET_IPHONE_SIMULATOR)
-	// シミュレータで動作している場合のコード
-	NSLog(@"AVAudioPlayer -　SIMULATOR");
-#else
-	// 実機で動作している場合のコード
- 	NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@", filename]];
-	AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-	player.volume = 1.0;  //MfAudioVolume;  // 0.0〜1.0
-	player.delegate = self;		// audioPlayerDidFinishPlaying:にて release するため。
-	[player play];
-#endif
-}
-
-#pragma mark  <AVAudioPlayerDelegate>
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-{	// 再生が終了したとき、破棄する	＜＜ シミュレータでは呼び出されない
-	NSLog(@"- audioPlayerDidFinishPlaying -");
-	player.delegate = nil;
-}
-
-- (void)audioPlayerDecodeErrorDidOccur: (AVAudioPlayer*)player error:(NSError*)error
-{	// エラー発生
-	NSLog(@"- audioPlayerDecodeErrorDidOccur -");
-	player.delegate = nil;
-}
+//音出すと音楽再生が止まるので廃止
+//#pragma mark - AVAudioPlayer
+//- (void)audioPlayer:(NSString*)filename
+//{
+//	//if (MfAudioVolume <= 0.0 || 1.0 < MfAudioVolume) return;
+//#if (TARGET_IPHONE_SIMULATOR)
+//	// シミュレータで動作している場合のコード
+//	NSLog(@"AVAudioPlayer -　SIMULATOR");
+//#else
+//	// 実機で動作している場合のコード
+// 	NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@", filename]];
+//	AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+//	player.volume = 1.0;  //MfAudioVolume;  // 0.0〜1.0
+//	player.delegate = self;		// audioPlayerDidFinishPlaying:にて release するため。
+//	[player play];
+//#endif
+//}
+//
+//#pragma mark  <AVAudioPlayerDelegate>
+//- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+//{	// 再生が終了したとき、破棄する	＜＜ シミュレータでは呼び出されない
+//	NSLog(@"- audioPlayerDidFinishPlaying -");
+//	player.delegate = nil;
+//}
+//
+//- (void)audioPlayerDecodeErrorDidOccur: (AVAudioPlayer*)player error:(NSError*)error
+//{	// エラー発生
+//	NSLog(@"- audioPlayerDecodeErrorDidOccur -");
+//	player.delegate = nil;
+//}
 
 
 @end

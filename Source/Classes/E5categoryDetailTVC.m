@@ -26,10 +26,10 @@
 @synthesize PbAdd;
 @synthesize PbSave;
 @synthesize Pe3edit;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
-#endif
+//#endif
 
 
 #pragma mark - Action
@@ -45,15 +45,15 @@
 		[MocFunctions deleteEntity:Re5edit];
 	}
 	
-#ifdef AzPAD
-	if (selfPopover) {
-		[selfPopover dismissPopoverAnimated:YES];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            [selfPopover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
 // 編集フィールドの値を self.e3target にセットする
@@ -97,32 +97,32 @@
 	
 	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
 		Pe3edit.e5category = Re5edit;
-#ifdef AzPAD
-		[self.navigationController  popToRootViewControllerAnimated:YES];  // < RootViewへ戻る
-		return;
-#else
-		NSInteger iPos = (self.navigationController.viewControllers).count;
-		if (3 < iPos) {
-			// 2つ前のViewへ戻る
-			UIViewController *vc = (self.navigationController.viewControllers)[iPos-3];
-			[self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
-			return;
-		}
-#endif
+        if (IS_PAD) {
+            [self.navigationController  popToRootViewControllerAnimated:YES];  // < RootViewへ戻る
+            return;
+        }else{
+            NSInteger iPos = (self.navigationController.viewControllers).count;
+            if (3 < iPos) {
+                // 2つ前のViewへ戻る
+                UIViewController *vc = (self.navigationController.viewControllers)[iPos-3];
+                [self.navigationController popToViewController:vc animated:YES];	// < vcまで戻る
+                return;
+            }
+        }
 	}
 
-#ifdef AzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
-			[delegate refreshTable];// 親の再描画を呼び出す
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+                [delegate refreshTable];// 親の再描画を呼び出す
+            }
+            [selfPopover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
 
@@ -136,9 +136,9 @@
 		// 初期値
 		PbAdd = NO;
 		Pe3edit = nil;
-#ifdef AzPAD
-		self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
+        }
 	}
 	return self;
 }
@@ -271,13 +271,13 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+        }
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
 		
@@ -326,11 +326,12 @@
 			switch (indexPath.row) {
 				case 0: // Name
 				{
-#ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
-#else
-					EditTextVC *evc = [[EditTextVC alloc] init];
-#endif
+                    EditTextVC *evc;
+                    if (IS_PAD) {
+                        evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
+                    }else{
+                        evc = [[EditTextVC alloc] init];
+                    }
 					evc.title = NSLocalizedString(@"Category name", nil);
 					evc.Rentity = Re5edit;
 					evc.RzKey = @"zName";
@@ -346,11 +347,12 @@
 			switch (indexPath.row) {
 				case 0: // sortName
 				{
-#ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
-#else
-					EditTextVC *evc = [[EditTextVC alloc] init];
-#endif
+                    EditTextVC *evc;
+                    if (IS_PAD) {
+                        evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
+                    }else{
+                        evc = [[EditTextVC alloc] init];
+                    }
 					evc.title = NSLocalizedString(@"Category index", nil);
 					evc.Rentity = Re5edit;
 					evc.RzKey = @"sortName";
@@ -362,11 +364,12 @@
 					break;
 				case 1: // Note
 				{
-#ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
-#else
-					EditTextVC *evc = [[EditTextVC alloc] init];
-#endif
+                    EditTextVC *evc;
+                    if (IS_PAD) {
+                        evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
+                    }else{
+                        evc = [[EditTextVC alloc] init];
+                    }
 					evc.title = NSLocalizedString(@"Category note", nil);
 					evc.Rentity = Re5edit;
 					evc.RzKey = @"zNote";

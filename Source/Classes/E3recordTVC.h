@@ -10,35 +10,35 @@
 
 
 @interface E3recordTVC : UITableViewController <UIActionSheetDelegate
-#ifdef AzPAD
+//#ifdef AzPAD
 	,UIPopoverControllerDelegate
-#endif
+//#endif
 >
 {
 @private
 	//----------------------------------------------retain
 	E0root				*Re0root;
-#ifdef AzPAD
-	id									delegate;
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+//#ifdef AzPAD
+	//id									delegate;
+	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+//#endif
 	//----------------------------------------------loadViewにて生成 ⇒ unloadReleaseにて破棄
 	NSDateFormatter		*RcellDateFormatter;			//[1.1.2]TableCell高速化のため
 	NSNumberFormatter	*RcellNumberFormatter;	//[1.1.2]TableCell高速化のため
 	NSMutableArray		*RaE3list;
 	NSMutableArray		*RaSection;
 	NSMutableArray		*RaIndex;
-#ifdef AzPAD
+//#ifdef AzPAD
 	NSIndexPath				*MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
-#endif
+//#endif
 #ifdef FREE_AD
 //	GADBannerView		*RoAdMobView;
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-#ifdef AzPAD
+//#ifdef AzPAD
 	UIPopoverController	*Mpopover;
 	UIPopoverController	*MpopSetting;			//回転時に閉じるため
-#endif
+//#endif
 	//----------------------------------------------assign
 	E4shop			*__weak Pe4shop;		// 
 	E5category		*__weak Pe5category;	// 
@@ -54,14 +54,14 @@
 @property (nonatomic, weak) E5category		*Pe5category;
 @property (nonatomic, weak) E8bank			*Pe8bank;
 @property (nonatomic, assign) BOOL				PbAddMode;
-#ifdef AzPAD
+//#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 @property (nonatomic, retain) UIPopoverController*	selfPopover;
 //@property (nonatomic, assign) BOOL							PbFirstAdd;
 // delegate method
 - (void)refreshE3recordTVC:(BOOL)bSameDate;
 //- (void)e3modified:(BOOL)bModified;
-#endif
+//#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 

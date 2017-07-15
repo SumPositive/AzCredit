@@ -580,13 +580,13 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	MscrollView.scrollsToTop = NO;
 	MscrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	MscrollView.backgroundColor = [UIColor blackColor];
-#ifdef AzPAD
-	MscrollView.delaysContentTouches = NO; //iPadではスクロール不要なのでＮＯにし、タッチ感度を向上させる。
-	//UIScrollView を止めて UIViewを試したが、ボタン隙間のタッチで touchesBegan:が呼び出されて閉じてしまう不具合により没。
-#else
-	MscrollView.delaysContentTouches = YES; //default//ボタンより先に 0.5s タッチを監視してスクロール操作であるか判断する
-#endif
-	[self addSubview:MscrollView]; 
+    if (IS_PAD) {
+        MscrollView.delaysContentTouches = NO; //iPadではスクロール不要なのでＮＯにし、タッチ感度を向上させる。
+        //UIScrollView を止めて UIViewを試したが、ボタン隙間のタッチで touchesBegan:が呼び出されて閉じてしまう不具合により没。
+    }else{
+        MscrollView.delaysContentTouches = YES; //default//ボタンより先に 0.5s タッチを監視してスクロール操作であるか判断する
+    }
+	[self addSubview:MscrollView];
 	
 	//------------------------------------------
 	NSMutableArray *maBu = [NSMutableArray new];
@@ -720,64 +720,64 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	float fW;
 	float fH;
 	
-#ifdef AzPAD
-	if (Re3edit) {
-		fy = 90;
-	} else {
-		fy = 113;
-	}
-	MtextField.frame = CGRectMake(5,fy, rect.size.width-10,30);	// 1行
-	fy += MtextField.frame.size.height;
-	MscrollView.frame = CGRectMake(5,fy, rect.size.width-10, 214);
-	fW = (rect.size.width-10 - fxGap) / 6 - fxGap; //Pad//6列まで全部表示
-	MscrollView.contentSize = MscrollView.frame.size; //同じ＝1ページのみ固定
-	// 以下、MscrollView座標
-	fyGap = 5;	// Yボタン間隔
-	fy = 0;
-	fH = fW / GOLDENPER; // 黄金比
-	fyTop = fy + fyGap;
-#else
-	if (320.0 < rect.size.width) {  // iPhone6以降対応
-		fx += (rect.size.width - 320.0)/2.0;
-	}
-	
-	if (rect.size.width < rect.size.height)
-	{	// タテ
-		//MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
-		fy = 95;
-		MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
-		fy += MtextField.frame.size.height;
-		MscrollView.frame = CGRectMake(fx, fy, 320,220);
-		//fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
-		fW = (320 - fxGap) / 5 - fxGap; // 1ページ5列まで表示、6列目は2ページ目へ
-																								  //↓2ページ目の列数=1
-		MscrollView.contentSize = CGSizeMake(320+(fW+fxGap)*1, MscrollView.frame.size.height);
-		// 以下、MscrollView座標
-		fyGap = 5;	// Yボタン間隔
-		fy = 0;
-		//fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
-		//fH = fW / GOLDENPER; // 黄金比
-		fH = fW / 1.30;
-		fyTop = fy + fyGap;
-	}
-	else {	// ヨコ
-		//MlbCalc.frame = CGRectMake(fx,fy, 480-fx-fx,20);	// 1行
-		fy = 40;
-		MtextField.frame = CGRectMake(5,fy, 480-10,30);	// 1行
-		fy += MtextField.frame.size.height;
-		MscrollView.frame = CGRectMake(0,fy, 480,180);
-		//fW = (480 - fxGap) / 5 - fxGap; // 5列まで表示
-		MscrollView.contentSize = MscrollView.frame.size;
-		// 以下、MscrollView座標
-		fyGap = 4;	// Yボタン間隔
-		fy = 0;
-		fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
-		fW = fH * GOLDENPER; // 黄金比
-		fx = (480 - (fxGap + (fW+fxGap)*6 + fxGap)) / 2;
-		fx += fxGap;
-		fyTop = fy + fyGap;
-	}
-#endif
+    if (IS_PAD) {
+        if (Re3edit) {
+            fy = 90;
+        } else {
+            fy = 113;
+        }
+        MtextField.frame = CGRectMake(5,fy, rect.size.width-10,30);	// 1行
+        fy += MtextField.frame.size.height;
+        MscrollView.frame = CGRectMake(5,fy, rect.size.width-10, 214);
+        fW = (rect.size.width-10 - fxGap) / 6 - fxGap; //Pad//6列まで全部表示
+        MscrollView.contentSize = MscrollView.frame.size; //同じ＝1ページのみ固定
+        // 以下、MscrollView座標
+        fyGap = 5;	// Yボタン間隔
+        fy = 0;
+        fH = fW / GOLDENPER; // 黄金比
+        fyTop = fy + fyGap;
+    }else{
+        if (320.0 < rect.size.width) {  // iPhone6以降対応
+            fx += (rect.size.width - 320.0)/2.0;
+        }
+        
+        if (rect.size.width < rect.size.height)
+        {	// タテ
+            //MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
+            fy = 95;
+            MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
+            fy += MtextField.frame.size.height;
+            MscrollView.frame = CGRectMake(fx, fy, 320,220);
+            //fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
+            fW = (320 - fxGap) / 5 - fxGap; // 1ページ5列まで表示、6列目は2ページ目へ
+            //↓2ページ目の列数=1
+            MscrollView.contentSize = CGSizeMake(320+(fW+fxGap)*1, MscrollView.frame.size.height);
+            // 以下、MscrollView座標
+            fyGap = 5;	// Yボタン間隔
+            fy = 0;
+            //fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
+            //fH = fW / GOLDENPER; // 黄金比
+            fH = fW / 1.30;
+            fyTop = fy + fyGap;
+        }
+        else {	// ヨコ
+            //MlbCalc.frame = CGRectMake(fx,fy, 480-fx-fx,20);	// 1行
+            fy = 40;
+            MtextField.frame = CGRectMake(5,fy, 480-10,30);	// 1行
+            fy += MtextField.frame.size.height;
+            MscrollView.frame = CGRectMake(0,fy, 480,180);
+            //fW = (480 - fxGap) / 5 - fxGap; // 5列まで表示
+            MscrollView.contentSize = MscrollView.frame.size;
+            // 以下、MscrollView座標
+            fyGap = 4;	// Yボタン間隔
+            fy = 0;
+            fH = (MscrollView.frame.size.height - fyGap) / 4 - fyGap;
+            fW = fH * GOLDENPER; // 黄金比
+            fx = (480 - (fxGap + (fW+fxGap)*6 + fxGap)) / 2;
+            fx += fxGap;
+            fyTop = fy + fyGap;
+        }
+    }
 	
 	fx = fxGap;
 	NSInteger iIndex = 0;

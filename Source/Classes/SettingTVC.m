@@ -42,10 +42,10 @@
 {
 	if ((self = [super initWithStyle:UITableViewStyleGrouped])) {  // セクションありテーブル
 		// OK
-#ifdef AzPAD
-		self.preferredContentSize = CGSizeMake(480, 300);
-		self.navigationItem.hidesBackButton = YES;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = CGSizeMake(480, 300);
+            self.navigationItem.hidesBackButton = YES;
+        }
 	}
 	return self;
 }
@@ -61,9 +61,9 @@
 - (void)loadView
 {
     [super loadView];
-#ifdef AzPAD
-	self.navigationItem.hidesBackButton = YES;
-#endif
+    if (IS_PAD) {
+        self.navigationItem.hidesBackButton = YES;
+    }
 	self.title = NSLocalizedString(@"Setting", nil);
 }
 
@@ -71,29 +71,24 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-#ifdef AzPAD
-	//Popover [Menu] button
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (app.barMenu) {
-		UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-		UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
-		[buTitle release], buTitle = nil;
-		[buFixed release], buFixed = nil;
-		[buFlexible release], buFlexible = nil;
-		UIToolbar* toolBar = [[UIToolbar alloc] init];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		self.navigationItem.titleView = toolBar;
-		[toolBar release];
-		[items release];
-	}
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
-#else
-	[self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
-#endif
+    if (IS_PAD) {
+        //Popover [Menu] button
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (app.barMenu) {
+            UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem* buFixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+            UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+            NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFixed, app.barMenu, buFlexible, buTitle, buFlexible, nil];
+            UIToolbar* toolBar = [[UIToolbar alloc] init];
+            toolBar.barStyle = UIBarStyleDefault;
+            [toolBar setItems:items animated:NO];
+            [toolBar sizeToFit];
+            self.navigationItem.titleView = toolBar;
+        }
+        [self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+    }else{
+        [self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+    }
 	
 	// 画面表示に関係する Option Setting を取得する
 	//NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -124,12 +119,12 @@
 // 回転の許可
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-#ifdef AzPAD
-	return YES;
-#else
-	// 回転禁止でも、正面は常に許可しておくこと。
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        // 回転禁止でも、正面は常に許可しておくこと。
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 /*
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる　＜＜このタイミングで配置転換すると見栄え良い＞＞
@@ -190,7 +185,7 @@
 	return 4;
 }
 
-#if defined (FREE_AD) && defined (AzPAD)
+#if defined (FREE_AD) //&& defined (AzPAD)
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {
@@ -238,14 +233,15 @@
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
-#ifdef AzPAD
-	float fX = self.tableView.frame.size.width - 100 - 120;
-#else
-	float fX = cell.frame.size.width - 120;
-	if (320.0 < self.view.frame.size.width) {  //iPhone6以降対応
-		fX += (self.view.frame.size.width - 320.0);
-	}
-#endif
+    float fX;
+    if (IS_PAD) {
+        fX = self.tableView.frame.size.width - 100 - 120;
+    }else{
+        fX = cell.frame.size.width - 120;
+        if (320.0 < self.view.frame.size.width) {  //iPhone6以降対応
+            fX += (self.view.frame.size.width - 320.0);
+        }
+    }
 	
 	switch (indexPath.row) {
 /*		case 0:

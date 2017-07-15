@@ -43,6 +43,8 @@
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
 		4454C98E114941930063621D /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
 		4457518410C7A65900419205 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4457518310C7A65900419205 /* Entity.m */; };
+		445B32421F1A7ECF00A3FE13 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
+		445B32431F1A7ED500A3FE13 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		447071CA12FC4F8C00C053D2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071C912FC4F8C00C053D2 /* AudioToolbox.framework */; };
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -1271,6 +1273,7 @@
 				44B01205133EF773005AD0EA /* E3selectPayTypeTVC.h in Headers */,
 				44B01206133EF773005AD0EA /* E5categoryTVC.h in Headers */,
 				44B01207133EF773005AD0EA /* E5categoryDetailTVC.h in Headers */,
+				445B32421F1A7ECF00A3FE13 /* PadRootVC.h in Headers */,
 				44B01208133EF773005AD0EA /* MocFunctions.h in Headers */,
 				44B01209133EF773005AD0EA /* CalcView.h in Headers */,
 				44B0120B133EF773005AD0EA /* E8bankDetailTVC.h in Headers */,
@@ -1921,6 +1924,7 @@
 				44B011B3133EF773005AD0EA /* E1cardTVC.m in Sources */,
 				44B011B4133EF773005AD0EA /* AzCredit.xcmappingmodel in Sources */,
 				44B011B5133EF773005AD0EA /* AzCredit.xcdatamodeld in Sources */,
+				445B32431F1A7ED500A3FE13 /* PadRootVC.m in Sources */,
 				44B011B6133EF773005AD0EA /* E3recordDetailTVC.m in Sources */,
 				44B011B8133EF773005AD0EA /* E1cardDetailTVC.m in Sources */,
 				44B011B9133EF773005AD0EA /* EditTextVC.m in Sources */,
@@ -2205,7 +2209,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = InfoS1.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
@@ -2215,7 +2219,7 @@
 				PRODUCT_NAME = AzCreditS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = arm64;
 			};
@@ -2237,7 +2241,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = InfoS1.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
@@ -2247,7 +2251,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 			};
 			name = Release;
@@ -2268,7 +2272,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = InfoS1.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
@@ -2278,7 +2282,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 			};
 			name = Distribution;
@@ -2555,7 +2559,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -2639,7 +2643,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
@@ -2684,7 +2688,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "";
 				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

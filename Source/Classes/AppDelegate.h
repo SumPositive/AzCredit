@@ -7,9 +7,9 @@
 //
 
 #include <AVFoundation/AVFoundation.h>
-#ifdef AzPAD
-#import "padRootVC.h"
-#endif
+//#ifdef AzPAD
+#import "PadRootVC.h"
+//#endif
 
 //iOS6以降、回転対応のためサブクラス化が必要になった。
 @interface AzNavigationController : UINavigationController
@@ -24,16 +24,16 @@
     NSManagedObjectContext *managedObjectContext;	    
     NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-    UIWindow			*window;
+    //UIWindow			*window;
 
-	BOOL				entityModified;		// E1,3,4,5,8detail詳細の一部でも変更あり ==> YES
+	//BOOL				entityModified;		// E1,3,4,5,8detail詳細の一部でも変更あり ==> YES
 
-#ifdef AzPAD
-	UISplitViewController		*mainController;
-    UIBarButtonItem				*barMenu;
-#else
-    AzNavigationController	*mainController;
-#endif
+//#ifdef AzPAD
+	//UISplitViewController		*mainSplit;
+    //UIBarButtonItem				*barMenu;
+//#else
+    //AzNavigationController      *mainNavi;
+//#endif
 	
 //	NSMutableArray		*RaComebackIndex;	// an array of selections for each drill level
 	// i.e.
@@ -57,15 +57,15 @@
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, weak, readonly) NSString		*applicationDocumentsDirectory;
 @property (nonatomic, strong) UIWindow						*window;
-@property (nonatomic, strong) NSDate							*Me3dateUse;
+@property (nonatomic, strong) NSDate						*Me3dateUse;
 @property (nonatomic, assign) BOOL							entityModified;
 
-#ifdef AzPAD
-@property (nonatomic, retain) UISplitViewController		*mainController;
-@property (nonatomic, assign) UIBarButtonItem				*barMenu;
-#else
-@property (nonatomic, strong) UINavigationController		*mainController;
-#endif
+//#ifdef AzPAD
+@property (nonatomic, retain) UISplitViewController		*mainSplit;
+@property (nonatomic, assign) UIBarButtonItem			*barMenu;
+//#else
+@property (nonatomic, strong) UINavigationController	*mainNavi;
+//#endif
 
 - (void)audioPlayer:(NSString*)filename;
 

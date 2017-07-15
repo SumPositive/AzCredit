@@ -10,9 +10,9 @@
 
 
 @interface E8bankTVC : UITableViewController <UIActionSheetDelegate
-#ifdef AzPAD
+//#ifdef AzPAD
 	,UIPopoverControllerDelegate
-#endif
+//#endif
 >
 {
 @private
@@ -24,15 +24,15 @@
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE8banks;
 	NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath	//[1.1.2]ポインタ代入注意！copyするように改善した。
-#ifdef AzPAD
+//#ifdef AzPAD
 	NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
-#endif
+//#endif
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
-#ifdef AzPAD
+//#ifdef AzPAD
 	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
-#endif
+//#endif
 	//----------------------------------------------------------------assign
 	//BOOL MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
@@ -41,10 +41,10 @@
 @property (nonatomic, strong) E0root	*Re0root;
 @property (nonatomic, weak) E1card	*Pe1card;
 
-#ifdef AzPAD
+//#ifdef AzPAD
 // delegate method
 - (void)refreshTable;
-#endif
+//#endif
 
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

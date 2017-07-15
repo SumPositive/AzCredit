@@ -26,23 +26,23 @@
 @synthesize PiAddRow;
 @synthesize PbSave;
 @synthesize Pe1edit;
-#ifdef AzPAD
+//#ifdef AzPAD
 @synthesize delegate;
 @synthesize selfPopover;
-#endif
+//#endif
 
 
 #pragma mark - Delegate method
 
 
-#ifdef xxxAzPAD
-- (void)closePopover	// 回転したとき表示中のPopoverがあれば矢印位置が不定になるので強制的に閉じる。親から呼び出される
-{
-	if (MpopoverView) {	//dismissPopoverCancel
-		[MpopoverView dismissPopoverAnimated:YES];
-	}
-}
-#endif
+//#ifdef xxxAzPAD
+//- (void)closePopover	// 回転したとき表示中のPopoverがあれば矢印位置が不定になるので強制的に閉じる。親から呼び出される
+//{
+//	if (MpopoverView) {	//dismissPopoverCancel
+//		[MpopoverView dismissPopoverAnimated:YES];
+//	}
+//}
+//#endif
 
 
 
@@ -59,15 +59,15 @@
 		[MocFunctions deleteEntity:Re8edit];
 	}
 	
-#ifdef AzPAD
-	if (selfPopover) {
-		[selfPopover dismissPopoverAnimated:YES];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            [selfPopover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
 // 編集フィールドの値を self.e3target にセットする
@@ -123,18 +123,18 @@
 		}
 	}
 	
-#ifdef AzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
-			[delegate refreshTable];// 親の再描画を呼び出す
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-	}
-#else
-	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+    if (IS_PAD) {
+        if (selfPopover) {
+            if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+                [delegate refreshTable];// 親の再描画を呼び出す
+            }
+            [selfPopover dismissPopoverAnimated:YES];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+    }
 }
 
 
@@ -147,9 +147,9 @@
 	if (self) {
 		// 初期化成功
 		Pe1edit = nil;
-#ifdef AzPAD
-		self.preferredContentSize = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
-#endif
+        if (IS_PAD) {
+            self.preferredContentSize = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
+        }
   	}
 	return self;
 }
@@ -302,13 +302,13 @@
 									   reuseIdentifier:zCellIndex];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:12];
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:12];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
+        }
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		cell.textLabel.textColor = [UIColor grayColor];
 		//cell.detailTextLabel.textAlignment = NSTextAlignmentLeft;
@@ -336,11 +336,11 @@
 						MlbNote.numberOfLines = 0;
 						MlbNote.lineBreakMode = NSLineBreakByWordWrapping; // 単語を途切れさせないように改行する
 						//MlbNote.textAlignment = NSTextAlignmentLeft; // 左寄せ(Default)
-#ifdef AzPAD
-						MlbNote.font = [UIFont systemFontOfSize:20];
-#else
-						MlbNote.font = [UIFont systemFontOfSize:14];
-#endif
+                        if (IS_PAD) {
+                            MlbNote.font = [UIFont systemFontOfSize:20];
+                        }else{
+                            MlbNote.font = [UIFont systemFontOfSize:14];
+                        }
 						MlbNote.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbNote]; 
 					}
@@ -368,11 +368,12 @@
 			switch (indexPath.row) {
 				case 0: // Card name
 				{
-#ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
-#else
-					EditTextVC *evc = [[EditTextVC alloc] init];
-#endif
+                    EditTextVC *evc;
+                    if (IS_PAD) {
+                        evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
+                    }else{
+                        evc = [[EditTextVC alloc] init];
+                    }
 					evc.title = NSLocalizedString(@"BankName", nil);
 					evc.Rentity = Re8edit;
 					evc.RzKey = @"zName";
@@ -388,11 +389,12 @@
 			switch (indexPath.row) {
 				case 0: // Note
 				{
-#ifdef AzPAD
-					EditTextVC *evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
-#else
-					EditTextVC *evc = [[EditTextVC alloc] init];
-#endif
+                    EditTextVC *evc;
+                    if (IS_PAD) {
+                        evc = [[EditTextVC alloc] initWithFrameSize:self.preferredContentSize];
+                    }else{
+                        evc = [[EditTextVC alloc] init];
+                    }
 					evc.title = NSLocalizedString(@"BankNote", nil);
 					evc.Rentity = Re8edit;
 					evc.RzKey = @"zNote";

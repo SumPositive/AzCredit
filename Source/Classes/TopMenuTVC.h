@@ -16,9 +16,9 @@
 @class E0root;
 
 @interface TopMenuTVC : UITableViewController  <UITextFieldDelegate
-#ifdef AzPAD
+//#ifdef AzPAD
 	,UIPopoverControllerDelegate
-#endif
+//#endif
 #ifdef FREE_AD
 	,ADBannerViewDelegate
 //	,GADBannerViewDelegate
@@ -28,19 +28,19 @@
 @private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	E0root				*Re0root;
-#ifdef AzPAD
+//#ifdef AzPAD
 	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
-#endif
+//#endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-#ifdef AzPAD
+//#ifdef AzPAD
 	UIPopoverController*	Mpopover;
-#else
+//#else
 	InformationView		*MinformationView;
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
-#endif
+//#endif
 #ifdef FREE_AD
 	ADBannerView		*MbannerView;
 //	GADBannerView		*RoAdMobView;
@@ -55,11 +55,11 @@
 
 @property (nonatomic, strong) E0root				*Re0root;
 
-#ifdef AzPAD
+//#ifdef AzPAD
 - (void)setPopover:(UIPopoverController*)pc;
 - (void)e3detailAdd;				//PadRootVCからdelegate呼び出しされる
 - (void)refreshTopMenuTVC;	// E3recordDetailTVC:から呼び出される
 - (void)popoverClose;				// AppDelegate:applicationDidEnterBackground: から呼び出される
-#endif
+//#endif
 
 @end

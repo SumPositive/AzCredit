@@ -56,20 +56,21 @@
 	//------------------------------------------アイコン
 	UIImageView *iv = [[UIImageView alloc] init];
 	iv.tag = TAG_ICON;
-#ifdef AzPAD
+    if (IS_PAD) {
 #ifdef AzSTABLE
-	[iv setImage:[UIImage imageNamed:@"Icon72s1.png"]];
+        [iv setImage:[UIImage imageNamed:@"Icon72s1.png"]];
 #else
-	[iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
+        [iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
 #endif
-#else	
+    }else{
 #ifdef AzSTABLE
-	iv.image = [UIImage imageNamed:@"Icon57s1.png"];
+        iv.image = [UIImage imageNamed:@"Icon57s1.png"];
 #else
-	[iv setImage:[UIImage imageNamed:@"Icon57.png"]];
+        [iv setImage:[UIImage imageNamed:@"Icon57.png"]];
 #endif
-#endif
-	[self.view addSubview:iv]; 
+    }
+
+    [self.view addSubview:iv];
 	//------------------------------------------ログイン
 	UITextField *tf = [[UITextField alloc] initWithFrame:CGRectMake(83,120, 154,28)];
 	tf.tag = TAG_LOGINPASS;
@@ -88,12 +89,12 @@
 	lb.textAlignment = NSTextAlignmentLeft; //UITextAlignmentLeft;
 	lb.textColor = [UIColor whiteColor];
 	lb.backgroundColor = [UIColor clearColor]; //背景透明
-#ifdef AzPAD
-	lb.font = [UIFont systemFontOfSize:18];
-#else
-	lb.font = [UIFont systemFontOfSize:12];
-#endif
-	[self.view addSubview:lb]; 	
+    if (IS_PAD) {
+        lb.font = [UIFont systemFontOfSize:18];
+    }else{
+        lb.font = [UIFont systemFontOfSize:12];
+    }
+	[self.view addSubview:lb];
 	//------------------------------------------パスワードを忘れた場合
 	lb = [[UILabel alloc] initWithFrame:CGRectMake(34, 270, 266, 120)];
 	lb.tag = TAG_MSG2;
@@ -102,12 +103,12 @@
 	lb.textAlignment = NSTextAlignmentLeft;
 	lb.textColor = [UIColor whiteColor];
 	lb.backgroundColor = [UIColor clearColor]; //背景透明
-#ifdef AzPAD
-	lb.font = [UIFont systemFontOfSize:18];
-#else
-	lb.font = [UIFont systemFontOfSize:12];
-#endif
-	[self.view addSubview:lb]; 	
+    if (IS_PAD) {
+        lb.font = [UIFont systemFontOfSize:18];
+    }else{
+        lb.font = [UIFont systemFontOfSize:12];
+    }
+	[self.view addSubview:lb];
 
 }
 
@@ -144,29 +145,29 @@
 {
 	float fx, fy, fwid,fhi;
 
-#ifdef AzPAD
-	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-		fx = 768.0 / 2.0;
-	} else {
-		fx = 1024.0 / 2.0;
-	}
-	fy = 140;
-#else
-	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-		fx = 320 / 2.0;
-		fy = 40; // タテ	
-	} else {
-		fx = 480 / 2.0;
-		fy = 10;	// ヨコ	
-	}
-#endif
+    if (IS_PAD) {
+        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+            fx = 768.0 / 2.0;
+        } else {
+            fx = 1024.0 / 2.0;
+        }
+        fy = 140;
+    }else{
+        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+            fx = 320 / 2.0;
+            fy = 40; // タテ
+        } else {
+            fx = 480 / 2.0;
+            fy = 10;	// ヨコ	
+        }
+    }
 
 	id obj = [self.view viewWithTag:TAG_ICON];
-#ifdef AzPAD
-	fwid = 72;
-#else
-	fwid = 57;
-#endif
+    if (IS_PAD) {
+        fwid = 72;
+    }else{
+        fwid = 57;
+    }
 	[obj setFrame:CGRectMake(fx-fwid/2.0, fy, fwid,fwid)];
 
 	fy += (fwid + 20);
@@ -177,19 +178,19 @@
 
 	fy += 50;
 
-#ifdef AzPAD
-	fwid = 500;
-	fhi = 100;
-#else
-	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
-	{	// タテ
-		fwid = 266;
-		fhi = 60;
-	} else {		// ヨコ
-		fwid = 400;
-		fhi = 50;
-	}
-#endif
+    if (IS_PAD) {
+        fwid = 500;
+        fhi = 100;
+    }else{
+        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+        {	// タテ
+            fwid = 266;
+            fhi = 60;
+        } else {		// ヨコ
+            fwid = 400;
+            fhi = 50;
+        }
+    }
 	obj = [self.view viewWithTag:TAG_MSG1];
 	[obj setFrame:CGRectMake(fx-fwid/2.0, fy, fwid,fhi)];
 	fy += (fhi + 20);
@@ -199,11 +200,11 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {   // Return YES for supported orientations
-#ifdef AzPAD
-	return YES;
-#else
-	return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        return (interfaceOrientation == UIInterfaceOrientationPortrait); // 正面のみ許可
+    }
 }
 
 // ユーザインタフェースの回転の最後の半分が始まる前にこの処理が呼ばれる

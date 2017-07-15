@@ -13,9 +13,9 @@
 #import "E2invoiceTVC.h"
 #import "E6partTVC.h"
 
-#ifdef AzPAD
+//#ifdef AzPAD
 #import "TopMenuTVC.h"
-#endif
+//#endif
 
 #define	TAG_ALERT_NoCheck		109
 #define	TAG_ALERT_toPAY			118
@@ -194,15 +194,15 @@
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 選択状態を解除する
 	
-#ifdef AzPAD
-	// TopMenuTVCにある 「未払合計額」を再描画するための処理
-	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
-	TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-	if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-		[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-	}
-#endif
+    if (IS_PAD) {
+        // TopMenuTVCにある 「未払合計額」を再描画するための処理
+        //AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+        TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+        if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+            [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+        }
+    }
 	// アニメ開始
 	[UIView commitAnimations];
 
@@ -271,15 +271,15 @@
 	[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[self performSelector:@selector(deselectRow:) withObject:indexPath afterDelay:0.8]; // 0.5s後に選択状態を解除する
 	
-#ifdef AzPAD
-	// TopMenuTVCにある 「未払合計額」を再描画するための処理
-	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	UINavigationController* naviLeft = [appDelegate.mainController.viewControllers objectAtIndex:0];	//[0]Left
-	TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-	if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-		[tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-	}
-#endif
+    if (IS_PAD) {
+        // TopMenuTVCにある 「未払合計額」を再描画するための処理
+        //AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+        TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+        if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+            [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+        }
+    }
 	// アニメ開始
 	[UIView commitAnimations];
 
@@ -316,30 +316,30 @@
 {
     [super loadView];
 
-#ifdef AzPAD
-	// Set up NEXT Left Back [<<] buttons.
-	self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc]
-											  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil] autorelease];
-#else
-	// Set up NEXT Left Back [<<<] buttons.
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-											  initWithImage:[UIImage imageNamed:@"Icon16-Return3.png"]
-											  style:UIBarButtonItemStylePlain  target:nil  action:nil];
-#endif
+    if (IS_PAD) {
+        // Set up NEXT Left Back [<<] buttons.
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                  initWithImage:[UIImage imageNamed:@"Icon16-Return2.png"]
+                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
+    }else{
+        // Set up NEXT Left Back [<<<] buttons.
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                 initWithImage:[UIImage imageNamed:@"Icon16-Return3.png"]
+                                                 style:UIBarButtonItemStylePlain  target:nil  action:nil];
+    }
 	
-#ifdef AzPAD
-	// Tool Bar Button なし
-#else
-	// Tool Bar Button
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			 target:nil action:nil];
-	UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
-															  style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(barButtonTop)];
-	NSArray *buArray = @[buTop, buFlex];
-	[self setToolbarItems:buArray animated:YES];
-#endif
+    if (IS_PAD) {
+        // Tool Bar Button なし
+    }else{
+        // Tool Bar Button
+        UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                target:nil action:nil];
+        UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
+                                                                  style:UIBarButtonItemStylePlain  //Bordered
+                                                                 target:self action:@selector(barButtonTop)];
+        NSArray *buArray = @[buTop, buFlex];
+        [self setToolbarItems:buArray animated:YES];
+    }
 
 	//【Tips】UIButtonは、Autoreleaseである。ゆえに、addSubview後のrelease禁止！。かつ、メモリ不足時には自動的に解放後、改めてloadViewを通るので、初回同様に生成する。
 	// PAID  ボタン
@@ -553,22 +553,21 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated 
 {
-#ifdef AzPAD
-	// viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
-	// SplitViewタテのとき [Menu] button を表示する
-	//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (appDelegate.barMenu) {
-		UIBarButtonItem* buFlexible = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-		UIBarButtonItem* buTitle = [[[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
-		NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: appDelegate.barMenu, buFlexible, buTitle, buFlexible, nil];
-		UIToolbar* toolBar = [[[UIToolbar alloc] init] autorelease];
-		toolBar.barStyle = UIBarStyleDefault;
-		[toolBar setItems:items animated:NO];
-		[toolBar sizeToFit];
-		[items release];
-		self.navigationItem.titleView = toolBar;
-	}
-#endif
+    if (IS_PAD) {
+        // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
+        // SplitViewタテのとき [Menu] button を表示する
+        //AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (appDelegate.barMenu) {
+            UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: self.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+            NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: appDelegate.barMenu, buFlexible, buTitle, buFlexible, nil];
+            UIToolbar* toolBar = [[UIToolbar alloc] init];
+            toolBar.barStyle = UIBarStyleDefault;
+            [toolBar setItems:items animated:NO];
+            [toolBar sizeToFit];
+            self.navigationItem.titleView = toolBar;
+        }
+    }
 
 	[self viewDesign:animated];	// viewWillAppearだと一部が描画されない不具合発生のためここにした。
     [super viewDidAppear:animated];
@@ -586,12 +585,12 @@
 // 回転の許可　ここでは許可、禁止の判定だけする
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-#ifdef AzPAD
-	return YES;
-#else
-	// 回転禁止でも、正面は常に許可しておくこと。
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-#endif
+    if (IS_PAD) {
+        return YES;
+    }else{
+        // 回転禁止でも、正面は常に許可しておくこと。
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 /*
@@ -748,8 +747,11 @@
 				// "支払日の変更は、\nカード一覧から可能です。"
 				str = NSLocalizedString(@"E2unpaidFromE8",nil);
 			}
-#if defined (FREE_AD) && defined (AzPAD)
-			return [str stringByAppendingString:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n"];	// 大型AdMobスペースのための下部余白
+#if defined (FREE_AD)
+            if (IS_PAD) {
+                return [str stringByAppendingString:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n"];	// 大型AdMobスペースのための下部余白
+            }
+            return str;
 #else
 			return str;
 #endif
@@ -779,11 +781,11 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 		cell.showsReorderControl = NO; // Move禁止
 
-#ifdef AzPAD
-		cell.textLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cell.textLabel.font = [UIFont systemFontOfSize:16];
-#endif
+        if (IS_PAD) {
+            cell.textLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cell.textLabel.font = [UIFont systemFontOfSize:16];
+        }
 		cell.textLabel.textAlignment = NSTextAlignmentLeft;
 		cell.textLabel.textColor = [UIColor blackColor];
 
@@ -791,11 +793,11 @@
 		cellLabel.textAlignment = NSTextAlignmentRight;
 		//cellLabel.textColor = [UIColor blackColor];
 		cellLabel.backgroundColor = [UIColor clearColor];
-#ifdef AzPAD
-		cellLabel.font = [UIFont systemFontOfSize:20];
-#else
-		cellLabel.font = [UIFont systemFontOfSize:14];
-#endif
+        if (IS_PAD) {
+            cellLabel.font = [UIFont systemFontOfSize:20];
+        }else{
+            cellLabel.font = [UIFont systemFontOfSize:14];
+        }
 		cellLabel.tag = -1;
 		[cell addSubview:cellLabel]; 
 	}
@@ -803,11 +805,11 @@
 		cellLabel = (UILabel *)[cell viewWithTag:-1];
 	}
 	// 回転対応のため
-#ifdef AzPAD
-	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 125, 22);
-#else
-	cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 12, 75, 20);
-#endif
+    if (IS_PAD) {
+        cellLabel.frame = CGRectMake(self.tableView.frame.size.width-215, 12, 125, 22);
+    }else{
+        cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 12, 75, 20);
+    }
 
 /*	// 左ボタン --------------------＜＜cellLabelのようにはできない！.tagに個別記録するため＞＞
 	UIButton *cellButton = [UIButton buttonWithType:UIButtonTypeCustom]; // autorelease
