@@ -78,9 +78,8 @@
         InformationView* vc = [[InformationView alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[InformationView class]];
-        [naviRight popToRootViewControllerAnimated:NO];
-        [naviRight pushViewController:vc animated:bAnime];
+        if ([naviRight.visibleViewController isMemberOfClass:[InformationView class]]) return; //既に開いてる
+        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, vc] animated:YES]; //ごっそり入れ替える
     }else{
         if ([UIApplication sharedApplication].statusBarOrientation != UIInterfaceOrientationPortrait) return; // 正面でなければ禁止
         // モーダル UIViewController
@@ -97,16 +96,14 @@
 
 - (void)azSettingView
 {
+    SettingTVC *tvc = [[SettingTVC alloc] init];
     if (IS_PAD) {
-        SettingTVC *view = [[SettingTVC alloc] init];
         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[SettingTVC class]];
-        [naviRight popToRootViewControllerAnimated:NO];
-        [naviRight pushViewController:view animated:bAnime];
+        if ([naviRight.visibleViewController isMemberOfClass:[SettingTVC class]]) return; //既に開いてる
+        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
     }else{
-        SettingTVC *view = [[SettingTVC alloc] init];
-        [self.navigationController pushViewController:view animated:YES];
+        [self.navigationController pushViewController:tvc animated:YES];
     }
 }
 
@@ -172,9 +169,12 @@
     if (IS_PAD) {
         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]];
-        [naviRight popToRootViewControllerAnimated:NO];
-        [naviRight pushViewController:tvc animated:bAnime];
+//        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]];
+//        [naviRight popToRootViewControllerAnimated:NO];
+//        [naviRight pushViewController:tvc animated:bAnime];
+        if ([naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]]) return; //既に開いてる
+        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
+        
     }else{
         [self.navigationController pushViewController:tvc animated: YES];
     }
@@ -748,8 +748,9 @@
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
                         if ([naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]]) break; //既に開いてる
-                        [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:YES];
+                        //[naviRight popToRootViewControllerAnimated:NO];<<<<<<これがチラついて見える
+                        //[naviRight pushViewController:tvc animated:YES];
+                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -771,8 +772,9 @@
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
                         if ([naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]]) break; //既に開いてる
-                        [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:YES];
+                        //[naviRight popToRootViewControllerAnimated:NO];<<<<<<これがチラついて見える
+                        //[naviRight pushViewController:tvc animated:YES];
+                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -794,8 +796,7 @@
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
                         if ([naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]]) break; //既に開いてる
-                        [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:YES];
+                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -822,8 +823,7 @@
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
                         if ([naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]]) break; //既に開いてる
-                        [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:YES];
+                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -844,8 +844,7 @@
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
                         if ([naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]]) break; //既に開いてる
-                        [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:YES];
+                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
