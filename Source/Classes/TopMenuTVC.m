@@ -133,7 +133,6 @@
 	
     if (IS_PAD) {
         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-        [naviRight popToRootViewControllerAnimated:NO];
         
         UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
         Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
@@ -145,7 +144,8 @@
         [Mpopover presentPopoverFromRect:rc
                                   inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
         e3detail.selfPopover = Mpopover;  //[Mpopover release];
-        e3detail.delegate = nil;		// 不要
+        //e3detail.delegate = nil;		// 不要
+        e3detail.delegate = naviRight.viewControllers.lastObject; // 保存結果を再描画するため
     }else{
         [self.navigationController pushViewController:e3detail animated: YES];
     }
