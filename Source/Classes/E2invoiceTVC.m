@@ -145,7 +145,7 @@
 	assert(e2obj.bPaid==NO);
 	if (0 < e2obj.iNoCheck) 
 	{	// E2配下に未チェックあり禁止
-		[appDelegate audioPlayer:@"Tock.caf"];  // キークリック音
+		//[appDelegate audioPlayer:@"Tock.caf"];  // キークリック音
 		alertBox(NSLocalizedString(@"NoCheck",nil),
 				 NSLocalizedString(@"NoCheck msg",nil),
 				 NSLocalizedString(@"Roger",nil));
@@ -153,7 +153,7 @@
 		return;
 	}
 	
-	[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
+	//[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
 
 	// 移動元の Unpaid 最上行Cell
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
@@ -207,13 +207,13 @@
 	[UIView commitAnimations];
 
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate audioPlayer:@"mail-sent.caf"];  // Mail.appの送信音
+	//[appDelegate audioPlayer:@"mail-sent.caf"];  // Mail.appの送信音
 }
 
 - (void)toPAID_After_AnimeEnd
 {	// アニメ終了後、
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
+	//[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
 
@@ -231,7 +231,7 @@
 	assert(e2obj);
 	assert(e2obj.bPaid==YES);
 
-	[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
+	//[appDelegate audioPlayer:@"unlock.caf"];  // ロック解除音
 
 	// 移動元の PAID 最下行Cell
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:iRowBottom inSection:0];
@@ -284,13 +284,13 @@
 	[UIView commitAnimations];
 
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate audioPlayer:@"ReceivedMessage.caf"];  // Mail.appの受信音
+	//[appDelegate audioPlayer:@"ReceivedMessage.caf"];  // Mail.appの受信音
 }
 
 - (void)toUnpaid_After_AnimeEnd
 {	// アニメ終了後、
 	//AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate audioPlayer:@"lock.caf"];  // ロック音
+	//[appDelegate audioPlayer:@"lock.caf"];  // ロック音
 	MbAction = NO; // Action操作許可
 }
 

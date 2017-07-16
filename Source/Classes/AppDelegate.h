@@ -18,7 +18,7 @@
 @class TopMenuTVC;
 @class LoginPassVC;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate, AVAudioPlayerDelegate>
+@interface AppDelegate : NSObject <UIApplicationDelegate, UITextFieldDelegate>
 {
     NSManagedObjectModel *managedObjectModel;
     NSManagedObjectContext *managedObjectContext;	    
@@ -67,7 +67,7 @@
 @property (nonatomic, strong) UINavigationController	*mainNavi;
 //#endif
 
-- (void)audioPlayer:(NSString*)filename;
+//- (void)audioPlayer:(NSString*)filename;
 
 @end
 
