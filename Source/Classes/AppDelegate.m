@@ -135,7 +135,7 @@
         mainSplit = [[UISplitViewController alloc] init];
         mainSplit.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
         mainSplit.delegate = padRootVC;
-//        mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
+        mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
         window.rootViewController = mainSplit;	//iOS6以降、こうしなければ回転しない。
     } else {
         // topMenu を navigationController へ登録

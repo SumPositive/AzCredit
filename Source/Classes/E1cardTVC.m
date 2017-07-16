@@ -619,7 +619,9 @@ static UIImage* GimageFromString(NSString* str)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
+    if (IS_PHONE) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];	// 非選択状態に戻す
+    }
 	
 	// didSelect時のScrollView位置を記録する（viewWillAppearにて再現するため）
 	McontentOffsetDidSelect = tableView.contentOffset;
@@ -655,7 +657,20 @@ static UIImage* GimageFromString(NSString* str)
 #endif
 			tvc.Re1select = e1obj;
 			tvc.Re8select = nil;
-			[self.navigationController pushViewController:tvc animated:YES];
+            if (IS_PAD) {
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviLeft = [apd.mainSplit.viewControllers objectAtIndex:0];     //[0]Left
+                UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
+                // 右のE1cardを左へ
+                [naviLeft pushViewController:naviRight.visibleViewController animated:YES];
+                // 右 解放
+                [naviRight popToRootViewControllerAnimated:NO];
+                // 右 E2invoice
+                [naviRight pushViewController:tvc animated:YES];
+
+            }else{
+                [self.navigationController pushViewController:tvc animated:YES];
+            }
 		}
 	}
 	else if (indexPath.row == RaE1cards.count) {	// Add Plan
