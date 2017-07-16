@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="E0root" representedClassName="NSManagedObject" syncable="YES">
+        <relationship name="e7paids" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E7payment" inverseName="e0paid" inverseEntity="E7payment" indexed="YES" syncable="YES"/>
+        <relationship name="e7unpaids" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E7payment" inverseName="e0unpaid" inverseEntity="E7payment" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E1card" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="dateUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nBonus1" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="12" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nBonus2" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="12" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nClosingDay" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="29" defaultValueString="20" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nPayDay" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="99" defaultValueString="20" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nPayMonth" optional="YES" attributeType="Integer 16" minValueString="-1" maxValueString="2" defaultValueString="1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nRow" optional="YES" attributeType="Integer 32" minValueString="0" maxValueString="99999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sumNoCheck" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="9999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sumPaid" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="sumUnpaid" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="zName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zNote" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="e2paids" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E2invoice" inverseName="e1paid" inverseEntity="E2invoice" indexed="YES" syncable="YES"/>
+        <relationship name="e2unpaids" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E2invoice" inverseName="e1unpaid" inverseEntity="E2invoice" indexed="YES" syncable="YES"/>
+        <relationship name="e3records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E3record" inverseName="e1card" inverseEntity="E3record" indexed="YES" syncable="YES"/>
+        <relationship name="e8bank" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E8bank" inverseName="e1cards" inverseEntity="E8bank" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E2invoice" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="nYearMMDD" optional="YES" attributeType="Integer 32" minValueString="0" maxValueString="99991231" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sumAmount" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="sumNoCheck" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="9999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="e1paid" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E1card" inverseName="e2paids" inverseEntity="E1card" indexed="YES" syncable="YES"/>
+        <relationship name="e1unpaid" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E1card" inverseName="e2unpaids" inverseEntity="E1card" indexed="YES" syncable="YES"/>
+        <relationship name="e6parts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E6part" inverseName="e2invoice" inverseEntity="E6part" indexed="YES" syncable="YES"/>
+        <relationship name="e7payment" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E7payment" inverseName="e2invoices" inverseEntity="E7payment" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E3record" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="dateUse" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nAmount" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="nAnnual" optional="YES" attributeType="Float" minValueString="0" maxValueString="99.999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nPayType" optional="YES" attributeType="Integer 16" minValueString="1" maxValueString="9" defaultValueString="1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nRepeat" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="99" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sumNoCheck" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="9999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="zName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zNote" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="e1card" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E1card" inverseName="e3records" inverseEntity="E1card" indexed="YES" syncable="YES"/>
+        <relationship name="e4shop" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E4shop" inverseName="e3records" inverseEntity="E4shop" indexed="YES" syncable="YES"/>
+        <relationship name="e5category" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E5category" inverseName="e3records" inverseEntity="E5category" indexed="YES" syncable="YES"/>
+        <relationship name="e6parts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E6part" inverseName="e3record" inverseEntity="E6part" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E4shop" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="sortAmount" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="999999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="sortCount" optional="YES" attributeType="Integer 32" minValueString="0" maxValueString="99999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sortDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sortName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zNote" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="e3records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E3record" inverseName="e4shop" inverseEntity="E3record" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E5category" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="sortAmount" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="999999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="sortCount" optional="YES" attributeType="Integer 32" minValueString="0" maxValueString="99999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sortDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sortName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zNote" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="e3records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E3record" inverseName="e5category" inverseEntity="E3record" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E6part" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="nAmount" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="nInterest" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="nNoCheck" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="1" defaultValueString="1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nPartNo" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="9999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="e2invoice" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E2invoice" inverseName="e6parts" inverseEntity="E2invoice" indexed="YES" syncable="YES"/>
+        <relationship name="e3record" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E3record" inverseName="e6parts" inverseEntity="E3record" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E7payment" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="nYearMMDD" optional="YES" attributeType="Integer 32" minValueString="0" maxValueString="99991231" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sumAmount" optional="YES" attributeType="Decimal" minValueString="-99999999.99" maxValueString="99999999.99" defaultValueString="0" syncable="YES"/>
+        <attribute name="sumNoCheck" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="9999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="e0paid" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E0root" inverseName="e7paids" inverseEntity="E0root" indexed="YES" syncable="YES"/>
+        <relationship name="e0unpaid" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="E0root" inverseName="e7unpaids" inverseEntity="E0root" indexed="YES" syncable="YES"/>
+        <relationship name="e2invoices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E2invoice" inverseName="e7payment" inverseEntity="E2invoice" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="E8bank" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="nRow" optional="YES" attributeType="Integer 32" minValueString="0" maxValueString="99999" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="zName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zNote" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="e1cards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="E1card" inverseName="e8bank" inverseEntity="E1card" indexed="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="E6part" positionX="54" positionY="432" width="128" height="135"/>
+        <element name="E1card" positionX="538" positionY="216" width="128" height="285"/>
+        <element name="E2invoice" positionX="333" positionY="624" width="117" height="150"/>
+        <element name="E4shop" positionX="27" positionY="18" width="128" height="150"/>
+        <element name="E0root" positionX="304" positionY="297" width="119" height="75"/>
+        <element name="E8bank" positionX="495" positionY="27" width="99" height="105"/>
+        <element name="E5category" positionX="27" positionY="192" width="128" height="150"/>
+        <element name="E7payment" positionX="297" positionY="441" width="117" height="135"/>
+        <element name="E3record" positionX="306" positionY="18" width="117" height="225"/>
+    </elements>
+</model>

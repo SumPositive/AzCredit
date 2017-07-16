@@ -747,9 +747,9 @@
                     if (IS_PAD) {
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]];
+                        if ([naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]]) break; //既に開いてる
                         [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:bAnime];
+                        [naviRight pushViewController:tvc animated:YES];
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -770,9 +770,9 @@
                     if (IS_PAD) {
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]];
+                        if ([naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]]) break; //既に開いてる
                         [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:bAnime];
+                        [naviRight pushViewController:tvc animated:YES];
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -793,9 +793,9 @@
                     if (IS_PAD) {
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]];
+                        if ([naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]]) break; //既に開いてる
                         [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:bAnime];
+                        [naviRight pushViewController:tvc animated:YES];
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -821,9 +821,9 @@
                     if (IS_PAD) {
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]];
+                        if ([naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]]) break; //既に開いてる
                         [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:bAnime];
+                        [naviRight pushViewController:tvc animated:YES];
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
@@ -843,9 +843,9 @@
                     if (IS_PAD) {
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]];
+                        if ([naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]]) break; //既に開いてる
                         [naviRight popToRootViewControllerAnimated:NO];
-                        [naviRight pushViewController:tvc animated:bAnime];
+                        [naviRight pushViewController:tvc animated:YES];
                     }else{
                         [self.navigationController pushViewController:tvc animated:YES];
                     }
