@@ -197,6 +197,7 @@
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
 	sourceText = nil;
+    //[super dealloc];
 }
 
 

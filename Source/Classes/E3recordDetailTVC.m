@@ -759,40 +759,40 @@
 //- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)orientation 
 //													   duration:(NSTimeInterval)duration
 
-// ユーザインタフェースの回転を始める前にこの処理が呼ばれる。 ＜＜OS 3.0以降の推奨メソッド＞＞
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
-{
-	// この開始時に消す。　　この時点で self.view.frame は回転していない。
-	if (McalcView && [McalcView isShow]) {
-		[McalcView hide]; //　ここでは隠すだけ。 removeFromSuperviewするとアニメ無く即消えてしまう。
-		MbRotatShowCalc = YES;
-	} else {
-		MbRotatShowCalc = NO;
-	}
-}
+//// ユーザインタフェースの回転を始める前にこの処理が呼ばれる。 ＜＜OS 3.0以降の推奨メソッド＞＞
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation duration:(NSTimeInterval)duration
+//{
+//	// この開始時に消す。　　この時点で self.view.frame は回転していない。
+////	if (McalcView && [McalcView isShow]) {
+////		[McalcView hide]; //　ここでは隠すだけ。 removeFromSuperviewするとアニメ無く即消えてしまう。
+////		MbRotatShowCalc = YES;
+////	} else {
+////		MbRotatShowCalc = NO;
+////	}
+//}
 
-// ユーザインタフェースが回転した後この処理が呼ばれる。
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation // 直前の向き
-{
-	// この完了時に再表示する。　　この時点で self.view.frame は回転済み。
-	[self viewDesign];
-
-	if (MbRotatShowCalc) {
-		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0]; // 利用金額行
-		if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
-			// 横から縦になった
-			[self.tableView scrollToRowAtIndexPath:indexPath 
-								  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
-										  animated:YES];
-		} else {
-			// 縦から横になった
-			[self.tableView scrollToRowAtIndexPath:indexPath 
-								  atScrollPosition:UITableViewScrollPositionTop	// 上端へ
-										  animated:YES];
-		}
-		[self showCalcAmount]; // 再表示
-	}
-}
+//// ユーザインタフェースが回転した後この処理が呼ばれる。
+//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation // 直前の向き
+//{
+//	// この完了時に再表示する。　　この時点で self.view.frame は回転済み。
+////	[self viewDesign];
+//
+////	if (MbRotatShowCalc) {
+////		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0]; // 利用金額行
+////		if (UIInterfaceOrientationIsLandscape(fromInterfaceOrientation)) {
+////			// 横から縦になった
+////			[self.tableView scrollToRowAtIndexPath:indexPath 
+////								  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
+////										  animated:YES];
+////		} else {
+////			// 縦から横になった
+////			[self.tableView scrollToRowAtIndexPath:indexPath 
+////								  atScrollPosition:UITableViewScrollPositionTop	// 上端へ
+////										  animated:YES];
+////		}
+////		[self showCalcAmount]; // 再表示
+////	}
+//}
 
 #pragma mark  View - Unload - dealloc
 
@@ -1213,7 +1213,7 @@
 			
 			if (RaE6parts==nil OR RaE6parts.count<=0) {
 				cell.textLabel.textAlignment = NSTextAlignmentCenter;
-				cell.textLabel.text = @"(C)2000-2017 Azukid";
+				cell.textLabel.text = @"Azukid.com";
 				cellLabel.text = @"";
 				cell.accessoryType = UITableViewCellAccessoryNone;
 				cell.userInteractionEnabled = NO;
@@ -1346,6 +1346,7 @@
 						evc.PiMaxYearMMDD = PiFirstYearMMDD;
 						evc.delegate = self;
 						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
+                        evc.view.frame = self.view.bounds;
 						[self.navigationController pushViewController:evc animated:YES];
 						
 						// 変更ありを AppDelegateへ通知	// EditDateVC：内から通知している

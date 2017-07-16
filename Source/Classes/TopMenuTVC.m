@@ -230,6 +230,11 @@
 
 	self.title = NSLocalizedString(@"Product Title",nil);
 
+//    self.view.backgroundColor = [UIColor colorWithRed:240/255.0f
+//                                                green:240/255.0f
+//                                                 blue:240/255.0f
+//                                                alpha:1];
+
     if (IS_PAD) {
         self.navigationItem.hidesBackButton = YES;
     }else{
@@ -541,7 +546,7 @@
 //// セクションのヘッダの高さを返却
 //- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 //{
-//	return 1.0;
+//	return 5.0;
 //}
 
 //#if defined(FREE_AD) && defined(AzPAD)

@@ -109,7 +109,7 @@
 		} break;
 			
 		case 5: { // BS
-			int iLen = (MtextField.text).length;
+			unsigned long iLen = (MtextField.text).length;
 			if (1 <= iLen) {
 				//[RzCalc deleteCharactersInRange:NSMakeRange(iLen-1, 1)]; 
 				MtextField.text = [MtextField.text substringToIndex:iLen-1];
@@ -705,7 +705,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-	//self.userInteractionEnabled = YES; //タッチの可否  どこでもDone
+    NSLog(@"drawRect: rect=(%f,%f)-(%f,%f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
 - (void)viewDesign:(CGRect)rect
@@ -728,13 +728,13 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
         }
         MtextField.frame = CGRectMake(5,fy, rect.size.width-10,30);	// 1行
         fy += MtextField.frame.size.height;
-        MscrollView.frame = CGRectMake(5,fy, rect.size.width-10, 214);
         fW = (rect.size.width-10 - fxGap) / 6 - fxGap; //Pad//6列まで全部表示
+        fH = fW / GOLDENPER; // 黄金比
+        fyGap = 5;	// Yボタン間隔
+        MscrollView.frame = CGRectMake(5,fy, rect.size.width-10, fyGap+(fH+fyGap)*4);
         MscrollView.contentSize = MscrollView.frame.size; //同じ＝1ページのみ固定
         // 以下、MscrollView座標
-        fyGap = 5;	// Yボタン間隔
         fy = 0;
-        fH = fW / GOLDENPER; // 黄金比
         fyTop = fy + fyGap;
     }else{
         if (320.0 < rect.size.width) {  // iPhone6以降対応
@@ -745,7 +745,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
         {	// タテ
             //MlbCalc.frame = CGRectMake(fx,fy, 320-fx-fx,20);	// 3行
             fy = 95;
-            MtextField.frame = CGRectMake(5,fy, 320-10,30);	// 1行
+            MtextField.frame = CGRectMake(fx+5,fy, 320-10,30);	// 1行
             fy += MtextField.frame.size.height;
             MscrollView.frame = CGRectMake(fx, fy, 320,220);
             //fW = (320 - fxGap) / 4 - fxGap; // 1ページ4列まで表示、5列目は2ページ目へ
@@ -813,6 +813,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	RzLabelText = nil;
 	//[RzKey release];
 	//[Rentity release];
+    //[super dealloc];
 }
 
 

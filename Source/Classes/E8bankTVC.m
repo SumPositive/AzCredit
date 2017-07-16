@@ -377,6 +377,7 @@
     }else{
         MindexPathActionDelete = nil;
     }
+    //[super dealloc];
 }
 
 

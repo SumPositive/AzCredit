@@ -237,7 +237,8 @@
     [super loadView];
 
     if (IS_PAD) {
-        self.view.backgroundColor = [UIColor lightGrayColor];
+        //self.view.backgroundColor = [UIColor lightGrayColor];
+        self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     }else{
         self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [self.navigationController setToolbarHidden:YES animated:NO]; // ツールバー消す
@@ -303,9 +304,7 @@
 	CGRect rect = self.view.bounds;
 
     if (IS_PAD) {
-        CGRect popBounds = CGRectZero;
-        popBounds.size = self.preferredContentSize;
-        
+        CGRect popBounds = rect;
         rect.size.width = 320;
         rect.origin.x = (popBounds.size.width - rect.size.width) / 2;
         rect.size.height = GD_PickerHeight;
