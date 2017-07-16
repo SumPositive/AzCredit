@@ -77,9 +77,9 @@
 	self = [super init];
 	if (self) {
 		// 初期化成功
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }

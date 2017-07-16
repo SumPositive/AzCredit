@@ -18,7 +18,7 @@
 @interface E1editPayDayVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
 {
 @private
-	E1card		*Re1edit;
+//	E1card		*Re1edit;
 	UIPickerView	*Mpicker;
 	UILabel			*MlbClosing;
 	UILabel			*MlbPayMonth;

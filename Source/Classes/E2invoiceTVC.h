@@ -15,8 +15,8 @@
 {
 @private
 	//----------------------------------------------retain
-	E1card		*Re1select;		// どちらか必須
-	E8bank		*Re8select;		// どちらか必須
+//	E1card		*Re1select;		// どちらか必須
+//	E8bank		*Re8select;		// どちらか必須
 	//----------------------------------------------assign
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese

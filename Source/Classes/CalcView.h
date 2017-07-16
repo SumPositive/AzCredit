@@ -16,12 +16,12 @@
 {
 @private
 	//--------------------------retain
-	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
+//	UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
 	NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
 	E3record		*Re3edit;
 	//----------------------------------------------assign
-	id									__weak delegate;
-	UITableView	*__weak PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
+//	id									__weak delegate;
+//	UITableView	*__weak PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSDecimalNumberHandler	*MbehaviorDefault;	// 通貨既定の丸め処理

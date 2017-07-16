@@ -32,7 +32,7 @@
 @synthesize Pe3edit;
 //#ifdef AzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 //#endif
 
 
@@ -120,16 +120,20 @@
             MindexPathEdit = [indexPath copy];
             
             UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e5detail];
-            Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-            Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-            //[nc release];
-            CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-            rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-            rc.origin.y += 10;	rc.size.height -= 20;
-            [Mpopover presentPopoverFromRect:rc
-                                      inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-            e5detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+//            Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+//            Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+//            //[nc release];
+//            CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+//            rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//            rc.origin.y += 10;	rc.size.height -= 20;
+//            [Mpopover presentPopoverFromRect:rc
+//                                      inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+//            e5detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
             e5detail.delegate = self;		// refreshTable callback
+            nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:nc animated:YES completion:nil];
+
         }
     }else{
         // 呼び出し側(親)にてツールバーを常に非表示にする
@@ -185,9 +189,9 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }
@@ -395,11 +399,11 @@
 //#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {	// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
-	if ([Mpopover isPopoverVisible]) 
-	{	//[1.1.0]Popover(E5categoryDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
-		[MocFunctions rollBack];	// 修正取り消し
-		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
-	}
+//	if ([Mpopover isPopoverVisible]) 
+//	{	//[1.1.0]Popover(E5categoryDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+//		[MocFunctions rollBack];	// 修正取り消し
+//		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
+//	}
     [super viewWillDisappear:animated];
 }
 //#endif
@@ -429,21 +433,21 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	if ([Mpopover isPopoverVisible]) {
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
-		} 
-		else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
-		}
-	}
+//	if ([Mpopover isPopoverVisible]) {
+//		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+//		if (MindexPathEdit) { 
+//			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+//								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+//			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+//			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//			rc.origin.y += 10;	rc.size.height -= 20;
+//			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+//		} 
+//		else {
+//			// 回転後のアンカー位置が再現不可なので閉じる
+//			[Mpopover dismissPopoverAnimated:YES];
+//		}
+//	}
 }
 //#endif
 
@@ -753,17 +757,17 @@
 */
 
 //#ifdef AzPAD
-#pragma mark - <UIPopoverControllerDelegate>
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じる前に通知
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 追加または変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	} else {	// 追加や変更なし
-		return YES;	// Popover外部タッチで閉じるのを許可
-	}
-}
+//#pragma mark - <UIPopoverControllerDelegate>
+//- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+//{	// Popoverの外部をタップして閉じる前に通知
+//	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	if (apd.entityModified) {	// 追加または変更あり
+//		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+//		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+//	} else {	// 追加や変更なし
+//		return YES;	// Popover外部タッチで閉じるのを許可
+//	}
+//}
 //#endif
 
 

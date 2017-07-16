@@ -207,9 +207,9 @@
 		// 初期化成功
 		Re3edit = e3;	// どちらか必ずnil
 		Re6edit = e6;	// どちらか必ずnil
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }

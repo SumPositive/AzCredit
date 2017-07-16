@@ -358,14 +358,23 @@ NSString *passCode()
 #pragma mark - View
 
 //- (id)initWithFrame:(CGRect)rect 
-- (instancetype)init
+//- (instancetype)init
+//{
+//	// アニメションの開始位置
+//	//rect.origin.y = 20.0f - rect.size.height;
+//									// ↓
+//	//if (!(self = [super initWithFrame:rect])) return self;
+//	self = [super init];
+//	if (!self) return nil;
+//}
+
+- (void)loadView
 {
-	// アニメションの開始位置
-	//rect.origin.y = 20.0f - rect.size.height;
-									// ↓
-	//if (!(self = [super initWithFrame:rect])) return self;
-	self = [super init];
-	if (!self) return nil;
+    [super loadView];
+    if (IS_PAD) {
+        self.navigationItem.hidesBackButton = YES;
+    }
+    self.title = NSLocalizedString(@"Information", nil);
 
 	float fX = 0, fY = 0;
 	if (320.0 < self.view.frame.size.width) {  //iPhone6以降対応
@@ -374,7 +383,7 @@ NSString *passCode()
     if (IS_PAD) {
         //self.preferredContentSize = CGSizeMake(320, 510);
         self.navigationItem.hidesBackButton = YES;
-        fX = (768 - 320) / 2.0;
+        fX = 70;  //(768 - 320) / 2.0;
         fY = 100;
     }
 	
@@ -393,20 +402,22 @@ NSString *passCode()
     UIImageView *iv;
     if (IS_PAD) {
         iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+35, 72, 72)];
-#ifdef AzSTABLE
-        [iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
-#else
-        [iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
-#endif
+//#ifdef AzSTABLE
+//        [iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
+//#else
+//        [iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
+//#endif
     }else{
         iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+50, 57, 57)];
-#ifdef AzSTABLE
-        iv.image = [UIImage imageNamed:@"Icon57s1.png"];
-#else
-        [iv setImage:[UIImage imageNamed:@"Icon57.png"]];
-#endif
+//#ifdef AzSTABLE
+//        iv.image = [UIImage imageNamed:@"Icon57s1.png"];
+//#else
+//        [iv setImage:[UIImage imageNamed:@"Icon57.png"]];
+//#endif
     }
-	[self.view addSubview:iv];
+
+    iv.image = [UIImage imageNamed:@"Icon57s1"];
+    [self.view addSubview:iv];
 	
 	UILabel *label;
 	//------------------------------------------Lable:タイトル
@@ -461,11 +472,10 @@ NSString *passCode()
 	
 	//------------------------------------------Lable:著作権表示
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+130, 200, 60)];
-	label.text =	@"Born on March 26\n"
-						@"© 2000-2017  Azukid\n"
-						@"Creator Sum Positive\n"
-						@"All Rights Reserved.";
-	label.numberOfLines = 4;
+	label.text = @"Copyright 2000\n"
+                @"Masakazu.Matsuyama\n"
+				@"All Rights Reserved.";
+	label.numberOfLines = 3;
 	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor]; //背景透明
@@ -546,16 +556,6 @@ NSString *passCode()
         label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         [self.view addSubview:label]; 	
     }
-    return self;
-}
-
-- (void)loadView
-{
-    [super loadView];
-    if (IS_PAD) {
-        self.navigationItem.hidesBackButton = YES;
-    }
-	self.title = NSLocalizedString(@"Information", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated 

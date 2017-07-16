@@ -87,7 +87,7 @@
 	if (MbAction) return;	// 処理中につき拒否
 	MbAction = YES;	// 連続操作を拒否するため
 
-	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	//AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	
 	assert(1 < [RaE7list count]); // Section:1
 	assert(0 < [RaE7list[1] count]); // Section:1 Row:0
@@ -157,7 +157,7 @@
 	// アニメ開始
 	[UIView commitAnimations];
 
-	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	//AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 	//[appDelegate audioPlayer:@"mail-sent.caf"];  // Mail.appの送信音
 }
 

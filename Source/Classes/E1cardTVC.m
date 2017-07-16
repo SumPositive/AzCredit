@@ -93,14 +93,18 @@
         MindexPathEdit = [indexPath copy];
         
         UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e1detail];
-        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-        Mpopover.delegate = self;  //閉じたとき再描画するため
-        CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-        rc.origin.x = rc.size.width - 40;	rc.size.width = 1;
-        rc.origin.y += 10;	rc.size.height -= 20;
-        [Mpopover presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
-        e1detail.selfPopover = Mpopover; //[Mpopover release];
+//        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+//        Mpopover.delegate = self;  //閉じたとき再描画するため
+//        CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+//        rc.origin.x = rc.size.width - 40;	rc.size.width = 1;
+//        rc.origin.y += 10;	rc.size.height -= 20;
+//        [Mpopover presentPopoverFromRect:rc inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES];
+//        //e1detail.selfPopover = Mpopover; //[Mpopover release];
         e1detail.delegate = self;
+        nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+        nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:nc animated:YES completion:nil];
+
     }else{
         e1detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
         [self.navigationController pushViewController:e1detail animated:YES];
@@ -148,10 +152,10 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
-        if (IS_PAD) {
-            //iOS7//self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            //iOS7//self.contentSizeForViewInPopover = GD_POPOVER_SIZE;
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }
@@ -304,11 +308,11 @@
 //#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {
-	if ([Mpopover isPopoverVisible]) 
-	{	//[1.1.0]Popover(E1cardDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
-		[MocFunctions rollBack];	// 修正取り消し
-		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
-	}
+//	if ([Mpopover isPopoverVisible]) 
+//	{	//[1.1.0]Popover(E1cardDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+//		[MocFunctions rollBack];	// 修正取り消し
+//		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
+//	}
     [super viewWillDisappear:animated];
 }
 //#endif
@@ -331,41 +335,41 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	if ([Mpopover isPopoverVisible]) {
-	/*	// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
-		id nav = [Mpopover contentViewController];
-		//NSLog(@"nav=%@", nav);
-		if ([nav isMemberOfClass:[UINavigationController class]]) {
-			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
-				id vc = [nav visibleViewController];
-				//NSLog(@"vc=%@", vc);
-				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
-					[vc closePopover];
-				}
-			}
-		}*/
-		
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
-			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
-/*			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
-			CGSize currentSetSizeForPopover = E1DETAILVIEW_SIZE; // 最終的に設定したいサイズ
-			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
-			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
-			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰 */
-		}
-		else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
-		}
-	}
+//	if ([Mpopover isPopoverVisible]) {
+//	/*	// 配下の Popover が開いておれば強制的に閉じる。回転すると位置が合わなくなるため
+//		id nav = [Mpopover contentViewController];
+//		//NSLog(@"nav=%@", nav);
+//		if ([nav isMemberOfClass:[UINavigationController class]]) {
+//			if ([nav respondsToSelector:@selector(visibleViewController)]) { //念のためにメソッドの存在を確認
+//				id vc = [nav visibleViewController];
+//				//NSLog(@"vc=%@", vc);
+//				if ([vc respondsToSelector:@selector(closePopover)]) { //念のためにメソッドの存在を確認
+//					[vc closePopover];
+//				}
+//			}
+//		}*/
+//		
+//		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+//		if (MindexPathEdit) { 
+//			//NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+//			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+//								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+//			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+//			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//			rc.origin.y += 10;	rc.size.height -= 20;
+//			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+///*			//　キーボードが出てサイズが小さくなった状態から復元するためには下記のように二段階処理が必要
+//			CGSize currentSetSizeForPopover = E1DETAILVIEW_SIZE; // 最終的に設定したいサイズ
+//			CGSize fakeMomentarySize = CGSizeMake(currentSetSizeForPopover.width - 1.0f, currentSetSizeForPopover.height - 1.0f);
+//			Mpopover.popoverContentSize = fakeMomentarySize;			// 変動させるための偽サイズ
+//			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+//			Mpopover.popoverContentSize = currentSetSizeForPopover; // 目的とするサイズ復帰 */
+//		}
+//		else {
+//			// 回転後のアンカー位置が再現不可なので閉じる
+//			[Mpopover dismissPopoverAnimated:YES];
+//		}
+//	}
 }
 //#endif
 
@@ -793,32 +797,32 @@ static UIImage* GimageFromString(NSString* str)
 
 
 //#ifdef AzPAD
-#pragma mark - <UIPopoverControllerDelegate>
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じる前に通知
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 追加または変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	} else {	// 追加や変更なし
-		return YES;	// Popover外部タッチで閉じるのを許可
-	}
-
-/*
- // 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
-	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
-		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E1cardDetailTVC class]]) 
-		{	// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
-			E1cardDetailTVC* tvc = (E1cardDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-			if ([tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-				[tvc cancelClose:nil];	// 新しいObject破棄
-			}
-		}
-	}
-	return YES; // 閉じることを許可
-*/
-}
+//#pragma mark - <UIPopoverControllerDelegate>
+//- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+//{	// Popoverの外部をタップして閉じる前に通知
+//	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	if (apd.entityModified) {	// 追加または変更あり
+//		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+//		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+//	} else {	// 追加や変更なし
+//		return YES;	// Popover外部タッチで閉じるのを許可
+//	}
+//
+///*
+// // 内部(SAVE)から、dismissPopoverAnimated:で閉じた場合は呼び出されない。
+//	if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+//		UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+//		if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E1cardDetailTVC class]]) 
+//		{	// Popover外側をタッチしたとき E1cardDetailTVC -　cancel を通っていないので、ここで通す。
+//			E1cardDetailTVC* tvc = (E1cardDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+//			if ([tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+//				[tvc cancelClose:nil];	// 新しいObject破棄
+//			}
+//		}
+//	}
+//	return YES; // 閉じることを許可
+//*/
+//}
 //#endif
 
 

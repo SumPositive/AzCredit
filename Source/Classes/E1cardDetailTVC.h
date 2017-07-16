@@ -14,13 +14,13 @@
 {
 @private
 	//----------------------------------------------retain
-	E1card		*Re1edit;
+//	E1card		*Re1edit;
 //#ifdef AzPAD
 	//id									delegate;
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 //#endif
 	//----------------------------------------------assign
-	NSInteger	PiAddRow;	// (-1)Edit
+//	NSInteger	PiAddRow;	// (-1)Edit
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -34,7 +34,7 @@
 @property NSInteger						PiAddRow;
 //#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
 //#endif
 
 // 公開メソッド

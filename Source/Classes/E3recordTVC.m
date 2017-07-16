@@ -32,7 +32,7 @@
 @synthesize PbAddMode;
 //#ifdef AzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 //@synthesize PbFirstAdd;
 //#endif
 
@@ -66,22 +66,22 @@
 - (void)azSettingView
 {
     if (IS_PAD) {
-        if ([MpopSetting isPopoverVisible]==NO) {
-            if (!MpopSetting) { //無ければ1度だけ生成する
-                SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-                MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
-                //[vc release];
-            }
-            MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
-            CGRect rcArrow;
-            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-                rcArrow = CGRectMake(768-32, 1027-60, 32,32);
-            } else {
-                rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
-            }
-            [MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view
-                       permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
-        }
+//        if ([MpopSetting isPopoverVisible]==NO) {
+//            if (!MpopSetting) { //無ければ1度だけ生成する
+//                SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
+//                MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
+//                //[vc release];
+//            }
+//            MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
+//            CGRect rcArrow;
+//            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+//                rcArrow = CGRectMake(768-32, 1027-60, 32,32);
+//            } else {
+//                rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
+//            }
+//            [MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view
+//                       permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
+//        }
     }else{
         SettingTVC *view = [[SettingTVC alloc] init];
         //view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
@@ -154,31 +154,46 @@
 
     if (IS_PAD) {
         UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
-        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-        //[nc release];
-        
-        //MindexPathEdit = indexPath;
-        MindexPathEdit = [indexPath copy];
-        
-        CGRect rc;
-        if (indexPath) {
-            rc = [self.tableView rectForRowAtIndexPath:indexPath];
-            rc.size.width /= 2;
-            rc.origin.y += 10;	rc.size.height -= 20;
-            [Mpopover presentPopoverFromRect:rc inView:self.tableView
-                    permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-        } else {
-            // [+]Add mode
-            rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-            rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
-            rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
-            //NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
-            [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
-                    permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
-        }
-        e3detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+
+//        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+//        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+//        //[nc release];
+//        
+//        //MindexPathEdit = indexPath;
+//        MindexPathEdit = [indexPath copy];
+//        
+//        CGRect rc;
+//        if (indexPath) {
+//            // E3一覧行タップ時
+//            rc = [self.tableView rectForRowAtIndexPath:indexPath];
+////            rc.size.width /= 2;
+////            rc.origin.y += 10;	rc.size.height -= 20;
+////            [Mpopover presentPopoverFromRect:rc inView:self.tableView
+////                    permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
+//            rc.origin.x += rc.size.width - 160;
+//            rc.origin.y += 20;
+//            rc.size = CGSizeMake(3, 3);
+//            [Mpopover presentPopoverFromRect:rc inView:self.tableView
+//                    permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+//        } else {
+//            // [+]Addタップ時
+//            rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+//            rc.origin.x += (rc.size.width/2.0);
+//            rc.origin.y += rc.size.height - 40;
+//            rc.size = CGSizeMake(3, 3);
+//            //NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
+//            [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+//                    permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
+//        }
+//        e3detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+
         e3detail.delegate = self;		// refresh callback
+
+        nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+        nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:nc animated:YES completion:nil];
+        
+        
     }else{
         //[e3detail setHidesBottomBarWhenPushed:YES]; // 現在のToolBar状態をPushした上で、次画面では非表示にする
         [self.navigationController pushViewController:e3detail animated:YES];
@@ -626,11 +641,11 @@
 //#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {
-	if ([Mpopover isPopoverVisible]) 
-	{	//[1.1.0]Popover(E3recordDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
-		[MocFunctions rollBack];	// 修正取り消し
-		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
-	}
+//	if ([Mpopover isPopoverVisible]) 
+//	{	//[1.1.0]Popover(E3recordDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+//		[MocFunctions rollBack];	// 修正取り消し
+//		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
+//	}
     [super viewWillDisappear:animated];
 }
 //#endif
@@ -672,34 +687,36 @@
 {
 	[self.tableView reloadData];  // cellLable位置調整するため
 
-    if (IS_PAD) {
-        if ([MpopSetting isPopoverVisible]) {
-            [MpopSetting dismissPopoverAnimated:YES];
-        }
-        
-        if ([Mpopover isPopoverVisible]) {
-            // Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-            if (MindexPathEdit) {
-                //NSLog(@"MindexPathEdit=%@", MindexPathEdit);
-                [self.tableView scrollToRowAtIndexPath:MindexPathEdit
-                                      atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-                CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-                rc.size.width /= 2;
-                rc.origin.y += 10;	rc.size.height -= 20;
-                [Mpopover presentPopoverFromRect:rc  inView:self.tableView
-                        permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
-            } else {
-                // 回転後のアンカー位置が再現不可なので閉じる
-                //[Mpopover dismissPopoverAnimated:YES];
-                // アンカー位置 [+]
-                CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-                rc.origin.x += (rc.size.width/2 + 2);				rc.size.width = 1;
-                rc.origin.y += (rc.size.height + 10);		rc.size.height = 1;
-                [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
-                        permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
-            }
-        }
-    }
+//    if (IS_PAD) {
+//        if ([MpopSetting isPopoverVisible]) {
+//            [MpopSetting dismissPopoverAnimated:YES];
+//        }
+//        
+//        if ([Mpopover isPopoverVisible]) {
+//            // Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+//            if (MindexPathEdit) {
+//                //NSLog(@"MindexPathEdit=%@", MindexPathEdit);
+//                [self.tableView scrollToRowAtIndexPath:MindexPathEdit
+//                                      atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+//                CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+//                rc.origin.x += rc.size.width - 160;
+//                rc.origin.y += 20;
+//                rc.size = CGSizeMake(3, 3);
+//                [Mpopover presentPopoverFromRect:rc  inView:self.tableView
+//                        permittedArrowDirections:UIPopoverArrowDirectionLeft  animated:YES]; //表示開始
+//            } else {
+//                // 回転後のアンカー位置が再現不可なので閉じる
+//                //[Mpopover dismissPopoverAnimated:YES];
+//                // アンカー位置 [+]
+//                CGRect rc = self.view.bounds;  //  .navigationController.toolbar.frame;
+//                rc.origin.x += (rc.size.width/2.0);
+//                rc.origin.y += rc.size.height - 40;
+//                rc.size = CGSizeMake(3, 3);
+//                [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
+//                        permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
+//            }
+//        }
+//    }
 }
 
 
@@ -728,7 +745,7 @@
 	[self unloadRelease];
     if (IS_PAD) {
         delegate = nil;
-        selfPopover = nil;
+//        selfPopover = nil;
         MindexPathEdit = nil;
     }
 }
@@ -1056,30 +1073,30 @@
 
 
 //#ifdef AzPAD
-#pragma mark - <UIPopoverControllerDelegate>
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じる前に通知
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), 
-				 NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	}
-	else {	// 変更なし
-		// E3recordDetailTVC:cancelClose:【insertAutoEntity削除】を通ってないのでここで通す。
-		if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
-			UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-			if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
-			{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が TopMenuTVC.m にもある＞＞＞
-				E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-				if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-					[e3tvc cancelClose:nil];	// 【insertAutoEntity削除】
-				}
-			}
-		}
-		return YES;	// Popover外部タッチで閉じるのを許可
-	}
-}
+//#pragma mark - <UIPopoverControllerDelegate>
+//- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+//{	// Popoverの外部をタップして閉じる前に通知
+//	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	if (apd.entityModified) {	// 変更あり
+//		alertBox(NSLocalizedString(@"Cancel or Save",nil), 
+//				 NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+//		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+//	}
+//	else {	// 変更なし
+//		// E3recordDetailTVC:cancelClose:【insertAutoEntity削除】を通ってないのでここで通す。
+//		if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
+//			UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
+//			if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
+//			{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が TopMenuTVC.m にもある＞＞＞
+//				E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+//				if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
+//					[e3tvc cancelClose:nil];	// 【insertAutoEntity削除】
+//				}
+//			}
+//		}
+//		return YES;	// Popover外部タッチで閉じるのを許可
+//	}
+//}
 //#endif
 
 @end

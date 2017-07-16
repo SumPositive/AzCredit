@@ -17,9 +17,9 @@
 {
 @private
 	//--------------------------retain
-	E0root		*Re0root;
+//	E0root		*Re0root;
 	//--------------------------assign
-	E1card		*__weak Pe1card;		// =nil:マスタモード  !=nil:選択モード
+//	E1card		*__weak Pe1card;		// =nil:マスタモード  !=nil:選択モード
 	E8bank	*sourceE8bank;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE8banks;
@@ -31,15 +31,15 @@
 	UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
 //#ifdef AzPAD
-	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
+//	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
 //#endif
 	//----------------------------------------------------------------assign
 	//BOOL MbOptAntirotation;
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic, strong) E0root	*Re0root;
-@property (nonatomic, weak) E1card	*Pe1card;
+@property (nonatomic) E0root	*Re0root;
+@property (nonatomic) E1card      *Pe1card;
 
 //#ifdef AzPAD
 // delegate method

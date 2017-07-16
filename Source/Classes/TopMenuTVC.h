@@ -27,16 +27,16 @@
 {
 @private
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	E0root				*Re0root;
+//	E0root				*Re0root;
 //#ifdef AzPAD
-	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
+//	UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 //#endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	//----------------------------------------------assign
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 //#ifdef AzPAD
-	UIPopoverController*	Mpopover;
+//	UIPopoverController*	Mpopover;
 //#else
 	InformationView		*MinformationView;
 	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
@@ -56,10 +56,10 @@
 @property (nonatomic, strong) E0root				*Re0root;
 
 //#ifdef AzPAD
-- (void)setPopover:(UIPopoverController*)pc;
+//- (void)setPopover:(UIPopoverController*)pc;
 - (void)e3detailAdd;				//PadRootVCからdelegate呼び出しされる
 - (void)refreshTopMenuTVC;	// E3recordDetailTVC:から呼び出される
-- (void)popoverClose;				// AppDelegate:applicationDidEnterBackground: から呼び出される
+//- (void)popoverClose;				// AppDelegate:applicationDidEnterBackground: から呼び出される
 //#endif
 
 @end

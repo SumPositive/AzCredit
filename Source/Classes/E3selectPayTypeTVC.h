@@ -13,8 +13,8 @@
 {
 @private
 	//--------------------------retain
-	E3record			*Re3edit;
-	id						__weak delegate;
+//	E3record			*Re3edit;
+//	id						__weak delegate;
 	//--------------------------assign
 	NSInteger	sourcePayType;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese

@@ -16,15 +16,15 @@
 {
 @private
 	//--------------------------retain
-	E0root				*Re0root;
-	E3record			*Re3edit;		// =nil:マスタモード  !=nil:選択モード
+//	E0root				*Re0root;
+//	E3record			*Re3edit;		// =nil:マスタモード  !=nil:選択モード
 
 //#ifdef AzPAD
 	// E3recordDetailTVC から Popover で呼び出されるときにセットする
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 //#endif
 	//--------------------------assign
-	id						__weak delegate;	
+//	id						__weak delegate;	
 	E1card				*sourceE1card;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE1cards;
@@ -32,7 +32,7 @@
 	//UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 	UIBarButtonItem *MbuAdd;
 //#ifdef AzPAD
-	UIPopoverController*	Mpopover;
+	//UIPopoverController*	Mpopover;
 	NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
 //#endif
 	//----------------------------------------------------------------assign

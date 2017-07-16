@@ -30,9 +30,9 @@
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     if ((self = [super initWithStyle:UITableViewStyleGrouped])) {
 		// OK
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
     }
     return self;
 }

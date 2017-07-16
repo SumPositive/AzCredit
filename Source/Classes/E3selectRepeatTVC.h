@@ -13,7 +13,7 @@
 {
 @private
 	//--------------------------retain
-	E3record		*Re3edit;
+//	E3record		*Re3edit;
 	//--------------------------assign
 	NSInteger	sourceRepeat;
 	

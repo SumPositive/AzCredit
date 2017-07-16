@@ -23,8 +23,8 @@
 @end
 
 @implementation E8bankTVC
-@synthesize Re0root;
-@synthesize Pe1card;
+//@synthesize Re0root;
+//@synthesize Pe1card;
 
 #pragma mark - Delegate
 
@@ -54,7 +54,7 @@
 		E8bank *e8objDelete = RaE8banks[MindexPathActionDelete.row];
 		// E8bank 削除
 		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
-		[Re0root.managedObjectContext deleteObject:e8objDelete];
+		[self.Re0root.managedObjectContext deleteObject:e8objDelete];
 		// 削除行の次の行以下 E8.row 更新
 		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE8banks.count ; i++) 
 		{  // .nRow + 1 削除行の次から
@@ -78,7 +78,7 @@
 
 - (void)barButtonUntitled { // [未定]
 	// 未定(nil)にする
-	Pe1card.e8bank = nil; 
+	self.Pe1card.e8bank = nil;
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
@@ -88,12 +88,12 @@
 	
 	if (indexPath == nil) {
 		E8bank *e8obj = [NSEntityDescription insertNewObjectForEntityForName:@"E8bank"
-													  inManagedObjectContext:Re0root.managedObjectContext];
+													  inManagedObjectContext:self.Re0root.managedObjectContext];
 		// Add
 		e8detail.title = NSLocalizedString(@"Add Bank",nil);
 		e8detail.PiAddRow = RaE8banks.count; // 追加モード
 		e8detail.Re8edit = e8obj;
-		e8detail.Pe1edit = Pe1card; // 新規追加後、一気にE1まで戻るため
+		e8detail.Pe1edit = self.Pe1card; // 新規追加後、一気にE1まで戻るため
         if (IS_PAD) {
             indexPath = [NSIndexPath indexPathForRow:e8detail.PiAddRow inSection:0];
         }
@@ -107,7 +107,7 @@
 		e8detail.Re8edit = RaE8banks[indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
 	}
 	
-	if (Pe1card) {
+	if (self.Pe1card) {
 		e8detail.PbSave = NO;	// 呼び出し元：E1cardDetailTVC側のsave:により保存
 	} else {
 		e8detail.PbSave = YES;	// マスタモード：
@@ -118,20 +118,24 @@
         apd.entityModified = (e8detail.PiAddRow != (-1));
         
         UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e8detail];
-        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-        //[nc release];
-        
-        //MindexPathEdit = indexPath;
-        MindexPathEdit = [indexPath copy];
-        
-        CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-        rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-        rc.origin.y += 10;	rc.size.height -= 20;
-        [Mpopover presentPopoverFromRect:rc
-                                  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-        e8detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+//        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+//        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+//        //[nc release];
+//        
+//        //MindexPathEdit = indexPath;
+//        MindexPathEdit = [indexPath copy];
+//        
+//        CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+//        rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//        rc.origin.y += 10;	rc.size.height -= 20;
+//        [Mpopover presentPopoverFromRect:rc
+//                                  inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+//        e8detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
         e8detail.delegate = self;		// refreshTable callback
+        nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+        nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:nc animated:YES completion:nil];
+        
     }else{
         // 呼び出し側(親)にてツールバーを常に非表示にする
         e8detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
@@ -156,9 +160,9 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }
@@ -182,7 +186,7 @@
                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
     }
 
-	if (Pe1card == nil) {
+	if (self.Pe1card == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
 	}
@@ -192,7 +196,7 @@
 																			 target:nil action:nil];
 	MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 															target:self action:@selector(barButtonAdd)];
-	if (Pe1card) {  // !=nil:選択モード
+	if (self.Pe1card) {  // !=nil:選択モード
 		// 「未定」ボタン
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
@@ -231,7 +235,7 @@
 	
 	if (MbuTop) {
 		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = !(Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
+		MbuTop.enabled = !(self.Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
 		//MbuAdd.enabled = MbuTop.enabled;
 	}
 	
@@ -261,8 +265,8 @@
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 
-	if (Pe1card) {
-		sourceE8bank = Pe1card.e8bank;		//初期値
+	if (self.Pe1card) {
+		sourceE8bank = self.Pe1card.e8bank;		//初期値
 	} else {
 		sourceE8bank = nil;
 	}
@@ -274,7 +278,7 @@
     if (IS_PAD) {
         // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
         // SplitViewタテのとき [Menu] button を表示する
-        if (Pe1card==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+        if (self.Pe1card==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             if (app.barMenu) {
                 UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -306,15 +310,15 @@
 }
 
 //#ifdef AzPAD
-- (void)viewDidDisappear:(BOOL)animated
-{	// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
-	if ([Mpopover isPopoverVisible]) 
-	{	//[1.1.0]Popover(E8bankDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
-		[MocFunctions rollBack];	// 修正取り消し
-		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
-	}
-    [super viewWillDisappear:animated];
-}
+//- (void)viewDidDisappear:(BOOL)animated
+//{	// この画面が非表示になる直前（次の画面が表示される前）に呼ばれる
+//	if ([Mpopover isPopoverVisible]) 
+//	{	//[1.1.0]Popover(E8bankDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+//		[MocFunctions rollBack];	// 修正取り消し
+//		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
+//	}
+//    [super viewWillDisappear:animated];
+//}
 //#endif
 
 
@@ -332,25 +336,25 @@
 }
 
 //#ifdef AzPAD
-// 回転した後に呼び出される
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-	if ([Mpopover isPopoverVisible]) {
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
-		} 
-		else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
-		}
-	}
-}
+//// 回転した後に呼び出される
+//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+//{
+//	if ([Mpopover isPopoverVisible]) {
+//		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+//		if (MindexPathEdit) { 
+//			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+//								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+//			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+//			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//			rc.origin.y += 10;	rc.size.height -= 20;
+//			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+//		} 
+//		else {
+//			// 回転後のアンカー位置が再現不可なので閉じる
+//			[Mpopover dismissPopoverAnimated:YES];
+//		}
+//	}
+//}
 //#endif
 
 
@@ -385,7 +389,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if (Pe1card) {  // !=nil:選択モード
+	if (self.Pe1card) {  // !=nil:選択モード
 		return RaE8banks.count;	
 	}
 	return RaE8banks.count + 1; // (+1)Add
@@ -451,7 +455,7 @@
 		formatter.locale = [NSLocale currentLocale]; 
 		cell.detailTextLabel.text = [formatter stringFromNumber:sumAmount];
 		
-		if (Pe1card == nil) {
+		if (self.Pe1card == nil) {
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton; // ディスクロージャボタン
 			cell.showsReorderControl = YES;		// Move有効
 		}
@@ -490,9 +494,9 @@
 	McontentOffsetDidSelect = tableView.contentOffset;
 
 	if (indexPath.row < RaE8banks.count) {
-		if (Pe1card) { // 選択モード
-			Pe1card.e8bank = RaE8banks[indexPath.row]; 
-			if (sourceE8bank != Pe1card.e8bank) {
+		if (self.Pe1card) { // 選択モード
+			self.Pe1card.e8bank = RaE8banks[indexPath.row];
+			if (sourceE8bank != self.Pe1card.e8bank) {
 				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 			}
@@ -647,17 +651,17 @@
 
 
 //#ifdef AzPAD
-#pragma mark - <UIPopoverControllerDelegate>
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じる前に通知
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 追加または変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	} else {	// 追加や変更なし
-		return YES;	// Popover外部タッチで閉じるのを許可
-	}
-}
+//#pragma mark - <UIPopoverControllerDelegate>
+//- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+//{	// Popoverの外部をタップして閉じる前に通知
+//	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	if (apd.entityModified) {	// 追加または変更あり
+//		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+//		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+//	} else {	// 追加や変更なし
+//		return YES;	// Popover外部タッチで閉じるのを許可
+//	}
+//}
 //#endif
 
 

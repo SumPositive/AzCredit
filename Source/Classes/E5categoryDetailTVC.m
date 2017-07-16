@@ -28,7 +28,7 @@
 @synthesize Pe3edit;
 //#ifdef AzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 //#endif
 
 
@@ -46,11 +46,12 @@
 	}
 	
     if (IS_PAD) {
-        if (selfPopover) {
-            [selfPopover dismissPopoverAnimated:YES];
-        } else {
-            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-        }
+//        if (selfPopover) {
+//            [selfPopover dismissPopoverAnimated:YES];
+//        } else {
+//            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+//        }
+        [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
     }
@@ -112,14 +113,15 @@
 	}
 
     if (IS_PAD) {
-        if (selfPopover) {
+//        if (selfPopover) {
             if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
                 [delegate refreshTable];// 親の再描画を呼び出す
             }
-            [selfPopover dismissPopoverAnimated:YES];
-        } else {
-            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-        }
+//            [selfPopover dismissPopoverAnimated:YES];
+//        } else {
+//            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+//        }
+        [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
     }

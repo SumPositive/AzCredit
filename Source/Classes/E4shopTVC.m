@@ -24,11 +24,11 @@
 @end
 
 @implementation E4shopTVC
-@synthesize Re0root;
-@synthesize Pe3edit;
+//@synthesize Re0root;
+//@synthesize Pe3edit;
 //#ifdef AzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 //#endif
 
 
@@ -62,7 +62,7 @@
 		// E4-E3 リンクは、以下のE4削除すれば全てnilされる
 		// E4shop 削除
 		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
-		[Re0root.managedObjectContext deleteObject:e4objDelete];
+		[self.Re0root.managedObjectContext deleteObject:e4objDelete];
 		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
 		[MocFunctions commit];
 		[self.tableView reloadData];
@@ -80,17 +80,17 @@
 
 - (void)barButtonUntitled {
 	// 未定(nil)にする
-	Pe3edit.e4shop = nil; 
-#ifdef xxxAzPAD
-	if (selfPopover) {
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];// 再描画
-		}
-		[selfPopover dismissPopoverAnimated:YES];
-	}
-#else
+	self.Pe3edit.e4shop = nil;
+//#ifdef xxxAzPAD
+//	if (selfPopover) {
+//		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+//			[delegate viewWillAppear:YES];// 再描画
+//		}
+//		[selfPopover dismissPopoverAnimated:YES];
+//	}
+//#else
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-#endif
+//#endif
 }
 
 - (void)barSegmentSort:(id)sender {
@@ -109,9 +109,9 @@
 		e4detail.title = NSLocalizedString(@"Add Shop",nil);
 		// ContextにE4ノードを追加する　E4edit内でCANCELならば DELETE している
 		e4detail.Re4edit = [NSEntityDescription insertNewObjectForEntityForName:@"E4shop"
-														 inManagedObjectContext:Re0root.managedObjectContext];
+														 inManagedObjectContext:self.Re0root.managedObjectContext];
 		e4detail.PbAdd = YES;
-		e4detail.Pe3edit = Pe3edit; // 新規追加後、一気にE3まで戻るため
+		e4detail.Pe3edit = self.Pe3edit; // 新規追加後、一気にE3まで戻るため
 
 		if (RzSearchText) {	//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
 			e4detail.Re4edit.zName = RzSearchText;
@@ -132,14 +132,14 @@
 		//e4detail.Pe3edit = nil;
 	}
 	
-	if (Pe3edit) {
+	if (self.Pe3edit) {
 		e4detail.PbSave = NO;	// 呼び出し元：右上ボタン「完了」　E3recordDetailTVC側のsave:により保存
 	} else {
 		e4detail.PbSave = YES;	// マスタモード：右上ボタン「保存」
 	}
 	
     if (IS_PAD) {
-        if (Pe3edit) { // 選択モード
+        if (self.Pe3edit) { // 選択モード
             e4detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
             [self.navigationController pushViewController:e4detail animated:YES];
         } else {
@@ -150,16 +150,20 @@
             MindexPathEdit = [indexPath copy];
             
             UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e4detail];
-            Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-            Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-            //[nc release];
-            CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-            rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-            rc.origin.y += 10;	rc.size.height -= 20;
-            [Mpopover presentPopoverFromRect:rc
-                                      inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-            e4detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
+//            Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
+//            Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
+//            //[nc release];
+//            CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
+//            rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//            rc.origin.y += 10;	rc.size.height -= 20;
+//            [Mpopover presentPopoverFromRect:rc
+//                                      inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+//            e4detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
             e4detail.delegate = self;		// refreshTable callback
+            nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:nc animated:YES completion:nil];
+
         }
     }else{
         // 呼び出し側(親)にてツールバーを常に非表示にする
@@ -186,9 +190,9 @@
 	self = [super initWithStyle:UITableViewStylePlain]; // セクションなしテーブル
 	if (self) {
 		// 初期化成功
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }
@@ -213,7 +217,7 @@
                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
     }
 
-	if (Pe3edit == nil) {
+	if (self.Pe3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
 	}
@@ -246,7 +250,7 @@
 																			 target:nil action:nil];
 	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																			target:self action:@selector(barButtonAdd)];
-	if (Pe3edit) {
+	if (self.Pe3edit) {
 		MbuTop = nil;
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
@@ -330,7 +334,7 @@
 	
 	if (MbuTop) {
 		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = !(Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
+		MbuTop.enabled = !(self.Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
 	}
 	
 	// Requery
@@ -342,8 +346,8 @@
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 
-	if (Pe3edit) {
-		sourceE4shop = Pe3edit.e4shop;		//初期値
+	if (self.Pe3edit) {
+		sourceE4shop = self.Pe3edit.e4shop;		//初期値
 	} else {
 		sourceE4shop = nil;
 	}
@@ -355,7 +359,7 @@
     if (IS_PAD) {
         // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
         // SplitViewタテのとき [Menu] button を表示する
-        if (Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+        if (self.Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             if (app.barMenu) {
                 UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -378,7 +382,7 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
-	if (Pe3edit == nil) {
+	if (self.Pe3edit == nil) {
 		// Comback (-1)にして未選択状態にする
 		//		AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
@@ -389,11 +393,11 @@
 //#ifdef AzPAD
 - (void)viewDidDisappear:(BOOL)animated
 {
-	if ([Mpopover isPopoverVisible]) 
-	{	//[1.1.0]Popover(E4shopDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
-		[MocFunctions rollBack];	// 修正取り消し
-		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
-	}
+//	if ([Mpopover isPopoverVisible]) 
+//	{	//[1.1.0]Popover(E4shopDetailTVC) あれば閉じる(Cancel) 　＜＜閉じなければ、アプリ終了⇒起動⇒パスワード画面にPopoverが現れてしまう。
+//		[MocFunctions rollBack];	// 修正取り消し
+//		[Mpopover dismissPopoverAnimated:NO];	//YES=だと残像が残る
+//	}
     [super viewWillDisappear:animated];
 }
 //#endif
@@ -423,21 +427,21 @@
 // 回転した後に呼び出される
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	if ([Mpopover isPopoverVisible]) {
-		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
-		if (MindexPathEdit) { 
-			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
-								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
-			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
-			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-			rc.origin.y += 10;	rc.size.height -= 20;
-			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
-		} 
-		else {
-			// 回転後のアンカー位置が再現不可なので閉じる
-			[Mpopover dismissPopoverAnimated:YES];
-		}
-	}
+//	if ([Mpopover isPopoverVisible]) {
+//		// Popoverの位置を調整する　＜＜UIPopoverController の矢印が画面回転時にターゲットから外れてはならない＞＞
+//		if (MindexPathEdit) { 
+//			[self.tableView scrollToRowAtIndexPath:MindexPathEdit 
+//								  atScrollPosition:UITableViewScrollPositionMiddle animated:NO]; // YESだと次の座標取得までにアニメーションが終了せずに反映されない
+//			CGRect rc = [self.tableView rectForRowAtIndexPath:MindexPathEdit];
+//			rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
+//			rc.origin.y += 10;	rc.size.height -= 20;
+//			[Mpopover presentPopoverFromRect:rc  inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionRight  animated:YES]; //表示開始
+//		} 
+//		else {
+//			// 回転後のアンカー位置が再現不可なので閉じる
+//			[Mpopover dismissPopoverAnimated:YES];
+//		}
+//	}
 }
 //#endif
 
@@ -552,7 +556,7 @@
 			//cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 
-			if (Pe3edit == nil) {
+			if (self.Pe3edit == nil) {
 				cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton; // ディスクロージャボタン
 				cell.showsReorderControl = NO; // MOVE
 			}
@@ -603,9 +607,9 @@
 
 	// 末尾([Me4shops count])はAdd行
 	if (indexPath.row < RaE4shops.count) {
-		if (Pe3edit) { // 選択モード
-			Pe3edit.e4shop = RaE4shops[indexPath.row]; 
-			if (sourceE4shop != Pe3edit.e4shop) {
+		if (self.Pe3edit) { // 選択モード
+			self.Pe3edit.e4shop = RaE4shops[indexPath.row];
+			if (sourceE4shop != self.Pe3edit.e4shop) {
 				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 			}
@@ -622,7 +626,7 @@
 #else
 			tvc.title =  e4obj.zName;
 #endif
-			tvc.Re0root = Re0root;
+			tvc.Re0root = self.Re0root;
 			//tvc.Pe1card = nil;  
 			tvc.Pe4shop = e4obj;  // e4obj以下の全E3表示モード
 			tvc.Pe5category = nil;
@@ -739,17 +743,17 @@
 
 
 //#ifdef AzPAD
-#pragma mark - <UIPopoverControllerDelegate>
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-{	// Popoverの外部をタップして閉じる前に通知
-	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	if (apd.entityModified) {	// 追加または変更あり
-		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-	} else {	// 追加や変更なし
-		return YES;	// Popover外部タッチで閉じるのを許可
-	}
-}
+//#pragma mark - <UIPopoverControllerDelegate>
+//- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+//{	// Popoverの外部をタップして閉じる前に通知
+//	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	if (apd.entityModified) {	// 追加または変更あり
+//		alertBox(NSLocalizedString(@"Cancel or Save",nil), NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
+//		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
+//	} else {	// 追加や変更なし
+//		return YES;	// Popover外部タッチで閉じるのを許可
+//	}
+//}
 //#endif
 
 

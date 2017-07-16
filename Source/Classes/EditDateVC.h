@@ -19,8 +19,8 @@
 	E6part			*Re6edit;			// !=nil : E6part変更モード（日付、金額）
 	//--------------------------assign
 	//id						__weak delegate;			// editDateE6change を呼び出すため
-	NSInteger	PiMinYearMMDD;
-	NSInteger	PiMaxYearMMDD;
+//	NSInteger	PiMinYearMMDD;
+//	NSInteger	PiMaxYearMMDD;
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIDatePicker	*MdatePicker;

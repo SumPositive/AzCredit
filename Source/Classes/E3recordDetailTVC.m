@@ -49,7 +49,7 @@
 @synthesize PiFirstYearMMDD;
 //#ifdef AzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 //#endif
 
 
@@ -93,7 +93,7 @@
 		[MocFunctions commit];
 
         if (IS_PAD) {
-            if (selfPopover) {
+//            if (selfPopover) {
                 if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
                     [delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
                 }
@@ -106,8 +106,9 @@
                 if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
                     [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
                 }
-                [selfPopover dismissPopoverAnimated:YES];
-            }
+//                [selfPopover dismissPopoverAnimated:YES];
+//            }
+            [self dismissViewControllerAnimated:YES completion:nil];
         }else{
             [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
         }
@@ -179,7 +180,9 @@
 	appDelegate.Me3dateUse = nil; //1.0.0//
 
     if (IS_PAD) {
-        [selfPopover dismissPopoverAnimated:YES];
+        //[selfPopover dismissPopoverAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
+
     }else{
         if ([sender tag] == TAG_BAR_BUTTON_TOPVIEW) {
             [self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
@@ -240,7 +243,7 @@
 	appDelegate.Me3dateUse = [Re3edit.dateUse copy];
 	
     if (IS_PAD) {
-        if (selfPopover) {
+//        if (selfPopover) {
             if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
                 BOOL bSame = (MiSourceYearMMDD == GiYearMMDD( Re3edit.dateUse ));
                 [delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
@@ -257,8 +260,9 @@
                 [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
             }
             
-            [selfPopover dismissPopoverAnimated:YES];
-        }
+            //[selfPopover dismissPopoverAnimated:YES];
+//        }
+        [self dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
     }
@@ -453,7 +457,7 @@
 		MbModified = NO;
         if (IS_PAD) {
             MiSourceYearMMDD = 0;		// 初回のみ通すため
-            self.preferredContentSize = GD_POPOVER_SIZE_INIT;
+//            self.preferredContentSize = GD_POPOVER_SIZE_INIT;
             //この後、viewDidAppearにて GD_POPOVER_SIZE を設定することにより、ようやくPopoverサイズの変動が無くなった。
         }
 	}
@@ -512,7 +516,7 @@
 		buReturn.enabled = NO; // 最初、戻るは無効
 		
 		NSArray *buArray = @[buFlex, buPast, buFlex, buNew, buFlex, buReturn, buFlex];
-		[self setToolbarItems:buArray animated:YES];
+		[self setToolbarItems:buArray animated:NO];
 		//[buReturn release];
 		//[buPast release];
 		//[buNew release];
@@ -542,10 +546,10 @@
         if (IS_PAD) {
             // Top不要
             NSArray *buArray = [NSArray arrayWithObjects: buFlex, buCopyAdd, buFlex, MbuDelete, nil];
-            [self setToolbarItems:buArray animated:YES];
+            [self setToolbarItems:buArray animated:NO];
         }else{
             NSArray *buArray = @[MbuTop, buFlex, buCopyAdd, buFlex, MbuDelete];
-            [self setToolbarItems:buArray animated:YES];
+            [self setToolbarItems:buArray animated:NO];
         }
 	}
 
@@ -566,7 +570,7 @@
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
 	//MbOptAmountCalc = [defaults boolForKey:GD_OptAmountCalc];
 	//[0.4]以降、ヨコでもツールバーを表示するようにした。
-	[self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示
+	[self.navigationController setToolbarHidden:NO animated:NO]; // ツールバー表示
 
 	// データ更新＆再表示
 	if (MbSaved) return; // SAVE直後、E6が削除されている可能性があるためE6参照禁止するため
@@ -733,12 +737,12 @@
 // ビューが最後まで描画された後やアニメーションが終了した後にこの処理が呼ばれる
 - (void)viewDidAppear:(BOOL)animated
 {
-    if (IS_PAD) {
-        // init 時に GD_POPOVER_SIZE_INIT を設定してから、この処理により、ようやくPopoverサイズの変動が無くなった。
-        self.preferredContentSize = GD_POPOVER_SIZE;
-    }
+//    if (IS_PAD) {
+//        // init 時に GD_POPOVER_SIZE_INIT を設定してから、この処理により、ようやくPopoverサイズの変動が無くなった。
+//        self.preferredContentSize = GD_POPOVER_SIZE;
+//    }
     [super viewDidAppear:animated];
-	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
+	//[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 }
 
 
@@ -810,9 +814,9 @@
 
 - (void)dealloc    // 生成とは逆順に解放するのが好ましい
 {
-    if (IS_PAD) {
-        selfPopover = nil;
-    }
+//    if (IS_PAD) {
+//        selfPopover = nil;
+//    }
 	[self unloadRelease];
 	//--------------------------------@property (retain)
 	Re3edit = nil;

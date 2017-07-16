@@ -14,7 +14,7 @@
 {
 @private
 	//--------------------------retain
-	E1card		*Re1edit;
+//	E1card		*Re1edit;
 	//--------------------------assign
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese

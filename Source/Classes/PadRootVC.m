@@ -85,12 +85,8 @@
 	rect.origin.y = 160;
 	rect.size.width = rect.size.height = 72;
 	UIImageView *iv = [[UIImageView alloc] initWithFrame:rect];
-#ifdef AzSTABLE
 	[iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
-#else
-	[iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
-#endif
-	[self.view addSubview:iv]; 
+	[self.view addSubview:iv];
 	iv = nil;
 	
 	// Tool Bar Button
@@ -157,19 +153,19 @@
     }
 }
 
-//[Menu]Popoverが開いたときに呼び出される
-- (void)splitViewController:(UISplitViewController*)svc 
-		  popoverController:(UIPopoverController*)pc 
-  willPresentViewController:(UIViewController *)aViewController
-{
-	//NSLog(@"aViewController=%@", aViewController);
-	UINavigationController* nc = (UINavigationController*)aViewController;
-	TopMenuTVC* tv = (TopMenuTVC*)nc.visibleViewController;
-	if ([tv respondsToSelector:@selector(setPopover:)]) {
-		[tv setPopover:pc];	//内側から閉じるため
-	}
-	return;
-}
+////[Menu]Popoverが開いたときに呼び出される
+//- (void)splitViewController:(UISplitViewController*)svc 
+//		  popoverController:(UIPopoverController*)pc 
+//  willPresentViewController:(UIViewController *)aViewController
+//{
+//	//NSLog(@"aViewController=%@", aViewController);
+//	UINavigationController* nc = (UINavigationController*)aViewController;
+//	TopMenuTVC* tv = (TopMenuTVC*)nc.visibleViewController;
+//	if ([tv respondsToSelector:@selector(setPopover:)]) {
+//		[tv setPopover:pc];	//内側から閉じるため
+//	}
+//	return;
+//}
 
 // 横 => 縦 ： 左ペインが隠れる時に呼び出される
 - (void)splitViewController:(UISplitViewController*)svc 

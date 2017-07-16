@@ -13,15 +13,15 @@
 {
 @private
 	//----------------------------------------------retain
-	E8bank		*Re8edit;
+//	E8bank		*Re8edit;
 //#ifdef AzPAD
 	//id									delegate;
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 //#endif
 	//----------------------------------------------assign
-	NSInteger	PiAddRow;	// (-1)Edit
-	BOOL		PbSave;		//
-	E1card		*__weak Pe1edit;	// =nil:マスタモード  !=nil:選択モード
+//	NSInteger	PiAddRow;	// (-1)Edit
+//	BOOL		PbSave;		//
+//	E1card		*__weak Pe1edit;	// =nil:マスタモード  !=nil:選択モード
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
@@ -33,11 +33,11 @@
 
 @property (nonatomic, strong) E8bank	*Re8edit;
 @property NSInteger						PiAddRow;
-@property BOOL								PbSave;
-@property (nonatomic, weak) E1card	*Pe1edit;
+@property BOOL							PbSave;
+@property (nonatomic, weak) E1card      *Pe1edit;
 //#ifdef AzPAD
-@property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
+@property (nonatomic, assign) id		delegate;
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
 //#endif
 
 // 公開メソッド

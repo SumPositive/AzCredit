@@ -23,7 +23,7 @@
 @synthesize Re3edit;
 #ifdef xxxAzPAD
 @synthesize delegate;
-@synthesize selfPopover;
+//@synthesize selfPopover;
 #endif
 
 #pragma mark - Action
@@ -35,9 +35,9 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
 		// OK
-        if (IS_PAD) {
-            self.preferredContentSize = GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = GD_POPOVER_SIZE;
+//        }
     }
     return self;
 }

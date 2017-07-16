@@ -43,11 +43,11 @@
 @end
 
 @implementation CalcView
-@synthesize Rlabel;
+//@synthesize Rlabel;
 //@synthesize Rentity;
 //@synthesize RzKey;
-@synthesize PoParentTableView;
-@synthesize delegate;
+//@synthesize PoParentTableView;
+//@synthesize delegate;
 
 
 #pragma mark - Action
@@ -61,7 +61,7 @@
 	//NSLog(@"**********1 MdecAnswer=%@", MdecAnswer);
 	if (MdecAnswer) {
 		if (ANSWER_MAX < fabs(MdecAnswer.doubleValue)) {
-			Rlabel.text = @"Game Over";
+			self.Rlabel.text = @"Game Over";
 			MdecAnswer = [[NSDecimalNumber alloc] initWithString:@"0.0"];
 			// textField.text は、そのままなので計算続行可能。
 			return;
@@ -72,10 +72,10 @@
 		formatter.positiveFormat = @"#,##0.####";
 		formatter.negativeFormat = @"-#,##0.####";
 		// 表示のみ　Rentity更新はしない
-		Rlabel.text = [formatter stringFromNumber:MdecAnswer];
+		self.Rlabel.text = [formatter stringFromNumber:MdecAnswer];
 	}
 	else {
-		Rlabel.text = @"?";
+		self.Rlabel.text = @"?";
 	}
 }
 
@@ -104,7 +104,7 @@
 				MdecAnswer = nil;
 			}
 			MtextField.text = @"";
-			Rlabel.text = @"";
+			self.Rlabel.text = @"";
 			MtextField.hidden = YES;
 		} break;
 			
@@ -119,7 +119,7 @@
 					MdecAnswer = nil;
 				}
 				MtextField.text = @"";
-				Rlabel.text = @"";
+				self.Rlabel.text = @"";
 				MtextField.hidden = YES;
 			}
 		} break;
@@ -213,7 +213,7 @@
 
 - (void)cancel
 {
-	Rlabel.text = RzLabelText;  // ラベルを元に戻す
+	self.Rlabel.text = RzLabelText;  // ラベルを元に戻す
 }
 
 - (void)hide
@@ -242,8 +242,8 @@
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorDefault];
 	
-	if ((Rlabel.text).length<=0) {
-		Rlabel.text = RzLabelText; // 初期値復元
+	if ((self.Rlabel.text).length<=0) {
+		self.Rlabel.text = RzLabelText; // 初期値復元
 	}
 
 	// アニメ実行
@@ -256,7 +256,7 @@
 	if (MbShow) return;
 	MbShow = YES;
 	
-	RzLabelText = [Rlabel.text copy];	//表示文字列をそのまま戻すために記録  deallocにてrelease
+	RzLabelText = [self.Rlabel.text copy];	//表示文字列をそのまま戻すために記録  deallocにてrelease
 
 	//sourceDecimal = [NSDecimalNumber decimalNumberWithDecimal:[[Rentity valueForKey:RzKey] decimalValue]];	//初期値
 	//NSLog(@"sourceDecimal=%@", sourceDecimal);
@@ -278,7 +278,7 @@
 	
 	// Complete the animation
 	[UIView commitAnimations];
-	Rlabel.textColor = [UIColor brownColor];	// 電卓中は、ずっと茶色！ 文字色指定は、ここだけ。
+	self.Rlabel.textColor = [UIColor brownColor];	// 電卓中は、ずっと茶色！ 文字色指定は、ここだけ。
 
 	// 丸め設定
 	[NSDecimalNumber setDefaultBehavior:MbehaviorCalc];	// 計算途中の丸め
@@ -850,22 +850,22 @@ replacementString:(NSString *)text
 			MdecAnswer = [[NSDecimalNumber alloc] initWithString:textField.text];
 			if (12 < (textField.text).length) {
 				textField.text = [textField.text substringToIndex:12-1];
-				Rlabel.text = @"Game Over";
+				self.Rlabel.text = @"Game Over";
 			} else {
-				Rlabel.text = textField.text; // 小数以下[0]を入れたとき表示されるように、入力のままにした。
+				self.Rlabel.text = textField.text; // 小数以下[0]を入れたとき表示されるように、入力のままにした。
 			}
 		}
 		else {	// 計算式文字列 <<< 演算子が入った
 			if (100 < (textField.text).length) {
 				textField.text = [textField.text substringToIndex:100-1];
-				Rlabel.text = @"Game Over";
+				self.Rlabel.text = @"Game Over";
 			} else {
 				// 計算し、答えを MdecAnswer に保持しながら Rlabel.text に表示する
 				[self finalAnswer:textField.text];
 			}
 		}
 	} else {
-		Rlabel.text = @"";
+		self.Rlabel.text = @"";
 	}
 }
 
@@ -876,7 +876,7 @@ replacementString:(NSString *)text
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
 {
 	//Cancel//[self save];
-	Rlabel.text = RzLabelText; // 初期値復元
+	self.Rlabel.text = RzLabelText; // 初期値復元
 	[self hide];
 }
 

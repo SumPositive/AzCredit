@@ -19,11 +19,11 @@
 @private
 	//----------------------------------------------retain
 	//----------------------------------------------assign
-	E2invoice		*__weak Pe2select;		// E2配下のE6一覧　　どちらか一方だけセット、他方はnilにする  
-	E7payment		*__weak Pe7select;		// E7配下のE2配下のE6一覧　　どちらか一方だけセット、他方はnilにする
-	NSMutableSet	*__weak Pe2invoices;	// E2集合配下のE6一覧
+//	E2invoice		*__weak Pe2select;		// E2配下のE6一覧　　どちらか一方だけセット、他方はnilにする  
+//	E7payment		*__weak Pe7select;		// E7配下のE2配下のE6一覧　　どちらか一方だけセット、他方はnilにする
+//	NSMutableSet	*__weak Pe2invoices;	// E2集合配下のE6一覧
 	//--------------------------------
-	NSInteger		PiFirstSection;	// 初期画面中央に表示するE2セクション
+//	NSInteger		PiFirstSection;	// 初期画面中央に表示するE2セクション
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray	*RaE2invoices;
@@ -34,7 +34,7 @@
 #endif
 	//----------------------------------------------Owner移管につきdealloc時のrelese不要
 //#ifdef AzPAD
-	UIPopoverController*	Mpopover;
+//	UIPopoverController*	Mpopover;
 //#endif
 	//----------------------------------------------assign
 	E1card		*Me2e1card;

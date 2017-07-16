@@ -17,13 +17,13 @@
 {
 @private
 	//--------------------------retain
-	E0root		*Re0root;
+//	E0root		*Re0root;
 //#ifdef AzPAD
 	//id									delegate;
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 //#endif
 	//--------------------------assign
-	E3record		*__weak Pe3edit;	// =nil:マスタモード  !=nil:選択モード
+//	E3record		*__weak Pe3edit;	// =nil:マスタモード  !=nil:選択モード
 	E4shop		*sourceE4shop;
 	//----------------------------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE4shops;
@@ -35,7 +35,7 @@
 	//----------------------------------------------------------------Owner移管につきdealloc時のrelese不要
 	UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
 //#ifdef AzPAD
-	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
+//	UIPopoverController*	Mpopover;		// 回転時に位置調整するため
 //#endif
 	//----------------------------------------------------------------assign
 	//BOOL MbOptAntirotation;
@@ -47,7 +47,7 @@
 @property (nonatomic, weak) E3record	*Pe3edit;
 //#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
 // delegate method
 - (void)refreshTable;
 //#endif

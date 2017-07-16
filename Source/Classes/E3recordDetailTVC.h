@@ -17,15 +17,15 @@
 {
 @private
 	//--------------------------retain
-	E3record		*Re3edit;
+//	E3record		*Re3edit;
 //#ifdef AzPAD
 	//id									delegate;
 	//UIPopoverController*	selfPopover;  // 自身を包むPopover  閉じる為に必要
 //#endif
 	//--------------------------assign
-	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する  ＜iPad:変更無ければPopover外タッチでCancel＞
+//	NSInteger	PiAdd;				// (0)Edit (>=1)Add:Cancel時にRe3editを削除する  ＜iPad:変更無ければPopover外タッチでCancel＞
 												// (1)New (2)Card固定 (3)Shop固定 (4)Category固定  ＜iPad:Popover外タッチで閉じさせない＞
-	NSInteger	PiFirstYearMMDD;	// 「この支払日になるように利用明細を追加」のとき、支払日が渡される
+//	NSInteger	PiFirstYearMMDD;	// 「この支払日になるように利用明細を追加」のとき、支払日が渡される
 	
 	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
 	NSMutableArray		*RaE6parts;
@@ -63,7 +63,7 @@
 @property NSInteger							PiFirstYearMMDD;	
 //#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
-@property (nonatomic, retain) UIPopoverController*	selfPopover;
+//@property (nonatomic, retain) UIPopoverController*	selfPopover;
 //#endif
 
 // 公開メソッド

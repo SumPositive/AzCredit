@@ -135,7 +135,7 @@
         mainSplit = [[UISplitViewController alloc] init];
         mainSplit.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
         mainSplit.delegate = padRootVC;
-//        mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
+        mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
         window.rootViewController = mainSplit;	//iOS6以降、こうしなければ回転しない。
     } else {
         // topMenu を navigationController へ登録
@@ -220,15 +220,15 @@
 {	//iOS4: アプリケーションがバックグラウンドになったら呼ばれる
 	AzLOG(@"applicationDidEnterBackground");
 
-    if (IS_PAD) {
-        UINavigationController* naviLeft = [self.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
-        if ([[naviLeft.viewControllers objectAtIndex:0] isMemberOfClass:[TopMenuTVC class]]) {
-            TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-            if ([tvc respondsToSelector:@selector(popoverClose)]) {	// メソッドの存在を確認する
-                [tvc popoverClose];	// Popoverが開いておれば、rollbackして閉じる
-            }
-        }
-    }
+//    if (IS_PAD) {
+//        UINavigationController* naviLeft = [self.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+//        if ([[naviLeft.viewControllers objectAtIndex:0] isMemberOfClass:[TopMenuTVC class]]) {
+//            TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
+//            if ([tvc respondsToSelector:@selector(popoverClose)]) {	// メソッドの存在を確認する
+//                [tvc popoverClose];	// Popoverが開いておれば、rollbackして閉じる
+//            }
+//        }
+//    }
 	
 	[self applicationWillTerminate:application]; //iOS3以前の終了処理
 
