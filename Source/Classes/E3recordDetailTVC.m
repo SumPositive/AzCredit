@@ -863,6 +863,23 @@
 	return 0;
 }
 
+// セクションのヘッダの高さを返却
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return 1.0;
+            break;
+        case 1:
+            return 1.0;
+            break;
+        case 2:
+            return 18.0;
+            break;
+    }
+    return 0.0;
+}
+
 // TableView セクションタイトルを応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
 {

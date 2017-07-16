@@ -303,30 +303,33 @@
 	CGRect rect = self.view.bounds;
 
     if (IS_PAD) {
+        CGRect popBounds = CGRectZero;
+        popBounds.size = self.preferredContentSize;
+        
         rect.size.width = 320;
-        rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+        rect.origin.x = (popBounds.size.width - rect.size.width) / 2;
         rect.size.height = GD_PickerHeight;
-        rect.origin.y = (self.view.bounds.size.height - rect.size.height) / 2;
+        rect.origin.y = (popBounds.size.height - rect.size.height) / 2;
         MdatePicker.frame = rect;
         
         if (Re3edit) {
             rect.size.height = 30;
             rect.size.width = 150;
-            rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+            rect.origin.x = (popBounds.size.width - rect.size.width) / 2;
             rect.origin.y = 60;
             MbuToday.frame = rect;
             
-            rect.origin.y = self.view.bounds.size.height - 90;
+            rect.origin.y = popBounds.size.height - 90;
             MbuYearTime.frame = rect;
         } else {
             rect.origin.y = 40;  //self.view.bounds.size.height - 110;
             rect.size.height = 30;
             rect.size.width = 200;
-            rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+            rect.origin.x = (popBounds.size.width - rect.size.width) / 2;
             MbuYearTime.frame = rect;
             rect.origin.y += 32;
             rect.size.width -= 20;
-            rect.origin.x = (self.view.bounds.size.width - rect.size.width) / 2;
+            rect.origin.x = (popBounds.size.width - rect.size.width) / 2;
             MlbAmount.frame = rect;
         }
     }else{
