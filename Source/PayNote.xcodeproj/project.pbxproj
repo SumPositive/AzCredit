@@ -49,10 +49,12 @@
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
+		4473734E1F1C4E76000E3DAA /* History.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473734C1F1C4E76000E3DAA /* History.h */; };
+		4473734F1F1C4E76000E3DAA /* Readme.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473734D1F1C4E76000E3DAA /* Readme.h */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
-		4486956010F5ABCC00AD02D8 /* AzCredit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */; };
+		4486956010F5ABCC00AD02D8 /* PayNote_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */; };
 		448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
 		44931BED13B4E56E005CBE85 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
 		44931BEE13B4E56E005CBE85 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
@@ -208,7 +210,7 @@
 		44B011ED133EF773005AD0EA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		44B011EE133EF773005AD0EA /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		44B011EF133EF773005AD0EA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
-		44B011F2133EF773005AD0EA /* AzCredit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */; };
+		44B011F2133EF773005AD0EA /* PayNote_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */; };
 		44B011F4133EF773005AD0EA /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
 		44B011F5133EF773005AD0EA /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44B011F6133EF773005AD0EA /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
@@ -396,7 +398,7 @@
 		44C0E43213A0A2D1003D0465 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		44C0E43313A0A2D1003D0465 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		44C0E43413A0A2D1003D0465 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
-		44C0E43813A0A2D1003D0465 /* AzCredit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */; };
+		44C0E43813A0A2D1003D0465 /* PayNote_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */; };
 		44C0E43A13A0A2D1003D0465 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
 		44C0E43B13A0A2D1003D0465 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44C0E43C13A0A2D1003D0465 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
@@ -525,7 +527,7 @@
 		44C0E65413A0A475003D0465 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		44C0E65513A0A475003D0465 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
-		44C0E65913A0A475003D0465 /* AzCredit_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */; };
+		44C0E65913A0A475003D0465 /* PayNote_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */; };
 		44C0E65B13A0A475003D0465 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
 		44C0E65C13A0A475003D0465 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
 		44C0E65D13A0A475003D0465 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
@@ -660,12 +662,14 @@
 		447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		447071CD12FC4F8C00C053D2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		447071CF12FC4F8C00C053D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		4473734C1F1C4E76000E3DAA /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
+		4473734D1F1C4E76000E3DAA /* Readme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Readme.h; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549031115726F00D10CC8 /* SettingTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTVC.h; sourceTree = "<group>"; };
-		448694E610F5A84300AD02D8 /* AzCredit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCredit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AzCredit_Prefix.pch; sourceTree = "<group>"; };
+		448694E610F5A84300AD02D8 /* PayNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayNote_Prefix.pch; sourceTree = "<group>"; };
 		449312B410F0D5A700C6C8E5 /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
 		44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Clear.png"; path = "Design/Icon32-Clear.png"; sourceTree = "<group>"; };
 		44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Clear@2x.png"; path = "Design/Icon32-Clear@2x.png"; sourceTree = "<group>"; };
@@ -714,7 +718,7 @@
 		44AF152F1341D9000019F55C /* Icon57@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon57@2x.png"; sourceTree = "<group>"; };
 		44AFB12211D4DC4E007CBFC9 /* AzCredit 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AzCredit 3.xcdatamodel"; sourceTree = "<group>"; };
 		44AFB15411D5113A007CBFC9 /* Icon32-NearPC.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-NearPC.png"; path = "Design/Icon32-NearPC.png"; sourceTree = "<group>"; };
-		44B0137B133EF773005AD0EA /* AzCreditS1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditS1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44B0137B133EF773005AD0EA /* PayNoteS1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteS1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44B332CE1123B6AA007D3A15 /* TopMenuTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TopMenuTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopMenuTVC.h; sourceTree = "<group>"; };
 		44B332D21123B756007D3A15 /* E1cardTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1cardTVC.h; sourceTree = "<group>"; };
@@ -768,9 +772,9 @@
 		44BC6F5912FDABBB00703AEC /* Icon32-CopyAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-CopyAdd@2x.png"; path = "Design/Icon32-CopyAdd@2x.png"; sourceTree = "<group>"; };
 		44BC6F5F12FDAE7800703AEC /* Icon32-Check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Check.png"; path = "Design/Icon32-Check.png"; sourceTree = "<group>"; };
 		44BC6F6012FDAE7800703AEC /* Icon32-Check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Check@2x.png"; path = "Design/Icon32-Check@2x.png"; sourceTree = "<group>"; };
-		44C0E5B913A0A2D1003D0465 /* AzCreditPadFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditPadFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNotePadFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44C0E5D813A0A3CF003D0465 /* Info-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iPad.plist"; sourceTree = "<group>"; };
-		44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AzCreditS1Pad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteS1Pad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44C0E7D613A0A4D6003D0465 /* InfoS1-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "InfoS1-iPad.plist"; sourceTree = "<group>"; };
 		44C0E7EF13A110BA003D0465 /* PadRootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PadRootVC.m; sourceTree = "<group>"; };
 		44C0E7F013A110BA003D0465 /* PadRootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadRootVC.h; sourceTree = "<group>"; };
@@ -916,10 +920,10 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				448694E610F5A84300AD02D8 /* AzCredit.app */,
-				44B0137B133EF773005AD0EA /* AzCreditS1.app */,
-				44C0E5B913A0A2D1003D0465 /* AzCreditPadFree.app */,
-				44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */,
+				448694E610F5A84300AD02D8 /* PayNote.app */,
+				44B0137B133EF773005AD0EA /* PayNoteS1.app */,
+				44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */,
+				44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -927,6 +931,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				4473734D1F1C4E76000E3DAA /* Readme.h */,
+				4473734C1F1C4E76000E3DAA /* History.h */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				44F0737F1105D9D80024B707 /* Images */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -951,7 +957,7 @@
 				44AF152D1341D8E80019F55C /* Icon57.png */,
 				44AF152F1341D9000019F55C /* Icon57@2x.png */,
 				4434B831111F0A3900CCF7EE /* InfoPlist.strings */,
-				4486955F10F5ABCC00AD02D8 /* AzCredit_Prefix.pch */,
+				4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				44EC041113422E79005071AC /* InfoS1.plist */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
@@ -1221,7 +1227,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4486956010F5ABCC00AD02D8 /* AzCredit_Prefix.pch in Headers */,
+				4486956010F5ABCC00AD02D8 /* PayNote_Prefix.pch in Headers */,
 				448549051115726F00D10CC8 /* SettingTVC.h in Headers */,
 				44B332D11123B6AA007D3A15 /* TopMenuTVC.h in Headers */,
 				44B332D41123B756007D3A15 /* E1cardTVC.h in Headers */,
@@ -1254,7 +1260,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44B011F2133EF773005AD0EA /* AzCredit_Prefix.pch in Headers */,
+				44B011F2133EF773005AD0EA /* PayNote_Prefix.pch in Headers */,
 				44B011F4133EF773005AD0EA /* SettingTVC.h in Headers */,
 				44B011F5133EF773005AD0EA /* TopMenuTVC.h in Headers */,
 				44B011F6133EF773005AD0EA /* E1cardTVC.h in Headers */,
@@ -1263,8 +1269,10 @@
 				44B011FA133EF773005AD0EA /* EditTextVC.h in Headers */,
 				44B011FB133EF773005AD0EA /* E1editPayDayVC.h in Headers */,
 				44B011FC133EF773005AD0EA /* E2invoiceTVC.h in Headers */,
+				4473734E1F1C4E76000E3DAA /* History.h in Headers */,
 				44B011FD133EF773005AD0EA /* EditDateVC.h in Headers */,
 				44B011FE133EF773005AD0EA /* E3recordTVC.h in Headers */,
+				4473734F1F1C4E76000E3DAA /* Readme.h in Headers */,
 				44B011FF133EF773005AD0EA /* E4shopDetailTVC.h in Headers */,
 				44B01200133EF773005AD0EA /* E4shopTVC.h in Headers */,
 				44B01201133EF773005AD0EA /* E6partTVC.h in Headers */,
@@ -1288,7 +1296,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44C0E43813A0A2D1003D0465 /* AzCredit_Prefix.pch in Headers */,
+				44C0E43813A0A2D1003D0465 /* PayNote_Prefix.pch in Headers */,
 				44C0E43A13A0A2D1003D0465 /* SettingTVC.h in Headers */,
 				44C0E43B13A0A2D1003D0465 /* TopMenuTVC.h in Headers */,
 				44C0E43C13A0A2D1003D0465 /* E1cardTVC.h in Headers */,
@@ -1323,7 +1331,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44C0E65913A0A475003D0465 /* AzCredit_Prefix.pch in Headers */,
+				44C0E65913A0A475003D0465 /* PayNote_Prefix.pch in Headers */,
 				44C0E65B13A0A475003D0465 /* SettingTVC.h in Headers */,
 				44C0E65C13A0A475003D0465 /* TopMenuTVC.h in Headers */,
 				44C0E65D13A0A475003D0465 /* E1cardTVC.h in Headers */,
@@ -1357,9 +1365,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* AzCredit */ = {
+		1D6058900D05DD3D006BFB54 /* PayNoteFree */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "AzCredit" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "PayNoteFree" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -1370,14 +1378,14 @@
 			);
 			dependencies = (
 			);
-			name = AzCredit;
+			name = PayNoteFree;
 			productName = iPack;
-			productReference = 448694E610F5A84300AD02D8 /* AzCredit.app */;
+			productReference = 448694E610F5A84300AD02D8 /* PayNote.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44B01168133EF773005AD0EA /* AzCreditS1 */ = {
+		44B01168133EF773005AD0EA /* PayNote */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "AzCreditS1" */;
+			buildConfigurationList = 44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "PayNote" */;
 			buildPhases = (
 				4ABBDAFB4F127DA770EEA65E /* [CP] Check Pods Manifest.lock */,
 				44B01169133EF773005AD0EA /* Resources */,
@@ -1391,14 +1399,14 @@
 			);
 			dependencies = (
 			);
-			name = AzCreditS1;
+			name = PayNote;
 			productName = iPack;
-			productReference = 44B0137B133EF773005AD0EA /* AzCreditS1.app */;
+			productReference = 44B0137B133EF773005AD0EA /* PayNoteS1.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44C0E3B413A0A2D1003D0465 /* AzCreditPadFree */ = {
+		44C0E3B413A0A2D1003D0465 /* PayNotePadFree */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPadFree" */;
+			buildConfigurationList = 44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "PayNotePadFree" */;
 			buildPhases = (
 				44C0E3B513A0A2D1003D0465 /* Resources */,
 				44C0E3F913A0A2D1003D0465 /* Sources */,
@@ -1409,14 +1417,14 @@
 			);
 			dependencies = (
 			);
-			name = AzCreditPadFree;
+			name = PayNotePadFree;
 			productName = iPack;
-			productReference = 44C0E5B913A0A2D1003D0465 /* AzCreditPadFree.app */;
+			productReference = 44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44C0E5DA13A0A475003D0465 /* AzCreditS1Pad */ = {
+		44C0E5DA13A0A475003D0465 /* PayNoteS1Pad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */;
+			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "PayNoteS1Pad" */;
 			buildPhases = (
 				44C0E5DB13A0A475003D0465 /* Resources */,
 				44C0E61D13A0A475003D0465 /* Sources */,
@@ -1427,9 +1435,9 @@
 			);
 			dependencies = (
 			);
-			name = AzCreditS1Pad;
+			name = PayNoteS1Pad;
 			productName = iPack;
-			productReference = 44C0E7D413A0A475003D0465 /* AzCreditS1Pad.app */;
+			productReference = 44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1455,7 +1463,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "PayNote" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -1472,10 +1480,10 @@
 			projectDirPath = "";
 			projectRoot = AzukiSoft;
 			targets = (
-				1D6058900D05DD3D006BFB54 /* AzCredit */,
-				44B01168133EF773005AD0EA /* AzCreditS1 */,
-				44C0E3B413A0A2D1003D0465 /* AzCreditPadFree */,
-				44C0E5DA13A0A475003D0465 /* AzCreditS1Pad */,
+				44B01168133EF773005AD0EA /* PayNote */,
+				1D6058900D05DD3D006BFB54 /* PayNoteFree */,
+				44C0E3B413A0A2D1003D0465 /* PayNotePadFree */,
+				44C0E5DA13A0A475003D0465 /* PayNoteS1Pad */,
 			);
 		};
 /* End PBXProject section */
@@ -2121,7 +2129,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzFREE=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
@@ -2141,8 +2149,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCredit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
+				PRODUCT_NAME = PayNote;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -2162,7 +2170,7 @@
 				DEVELOPMENT_TEAM = 5C2UYK6F45;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzFREE=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
@@ -2180,8 +2188,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCredit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
+				PRODUCT_NAME = PayNote;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2205,7 +2213,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = InfoS1.plist;
@@ -2216,8 +2224,8 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditS1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
+				PRODUCT_NAME = PayNoteS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2239,7 +2247,7 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = InfoS1.plist;
@@ -2248,8 +2256,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditS1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
+				PRODUCT_NAME = PayNoteS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2271,7 +2279,7 @@
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = InfoS1.plist;
@@ -2280,8 +2288,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditS1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
+				PRODUCT_NAME = PayNoteS1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2324,8 +2332,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditPadFree;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditPadFree;
+				PRODUCT_NAME = PayNotePadFree;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -2364,8 +2372,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditPadFree;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditPadFree;
+				PRODUCT_NAME = PayNotePadFree;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2404,8 +2412,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditPadFree;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditPadFree;
+				PRODUCT_NAME = PayNotePadFree;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2446,8 +2454,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditS1Pad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1Pad;
+				PRODUCT_NAME = PayNoteS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -2485,8 +2493,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditS1Pad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1Pad;
+				PRODUCT_NAME = PayNoteS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2524,8 +2532,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCreditS1Pad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1Pad;
+				PRODUCT_NAME = PayNoteS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2589,7 +2597,7 @@
 				DEVELOPMENT_TEAM = 5C2UYK6F45;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzFREE=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
@@ -2607,8 +2615,8 @@
 					"-lxml2",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.azukid.AzukiSoft.${PRODUCT_NAME:identifier}";
-				PRODUCT_NAME = AzCredit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
+				PRODUCT_NAME = PayNote;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -2710,7 +2718,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "AzCredit" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "PayNoteFree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
@@ -2720,7 +2728,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "AzCreditS1" */ = {
+		44B01376133EF773005AD0EA /* Build configuration list for PBXNativeTarget "PayNote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44B01377133EF773005AD0EA /* Debug */,
@@ -2730,7 +2738,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "AzCreditPadFree" */ = {
+		44C0E5B513A0A2D1003D0465 /* Build configuration list for PBXNativeTarget "PayNotePadFree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44C0E5B613A0A2D1003D0465 /* Debug */,
@@ -2740,7 +2748,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "AzCreditS1Pad" */ = {
+		44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "PayNoteS1Pad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44C0E7D113A0A475003D0465 /* Debug */,
@@ -2750,7 +2758,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AzCredit" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "PayNote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

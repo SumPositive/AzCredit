@@ -12,7 +12,7 @@ def install_pods
 end
 
 
-target 'AzCreditS1' do
+target 'PayNote' do
 	install_pods
 end
 

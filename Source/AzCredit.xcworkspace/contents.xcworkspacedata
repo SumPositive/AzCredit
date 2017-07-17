@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AzCredit.xcodeproj">
+      location = "group:/Users/masa/Code2017/PayNote/Source/PayNote.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
