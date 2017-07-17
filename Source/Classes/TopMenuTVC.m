@@ -145,11 +145,11 @@
 //                                  inView:naviRight.view  permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
 //        e3detail.selfPopover = Mpopover;  //[Mpopover release];
 //        //e3detail.delegate = nil;		// 不要
-        e3detail.delegate = naviRight.viewControllers.lastObject; // 保存結果を再描画するため
+
+        e3detail.delegate = naviRight.viewControllers.lastObject; // 呼び出し元の表示をリフレッシュするため
         nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
         nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        //[self presentViewController:nc animated:YES completion:nil];<<<<<<何故か？開いて直ぐに閉じられてしまう。
-        [naviRight.visibleViewController presentViewController:nc animated:YES completion:nil];
+        [self presentViewController:nc animated:YES completion:nil];
         
     }else{
         [self.navigationController pushViewController:e3detail animated: YES];
@@ -939,9 +939,6 @@
 //    if (IS_PAD && selfPopover) {		//選択後、Popoverならば閉じる
 //        [selfPopover dismissPopoverAnimated:YES];
 //    }
-    if (IS_PAD) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 
