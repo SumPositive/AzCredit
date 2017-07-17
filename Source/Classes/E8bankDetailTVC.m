@@ -25,7 +25,7 @@
 @synthesize Re8edit;
 @synthesize PiAddRow;
 @synthesize PbSave;
-@synthesize Pe1edit;
+//@synthesize Pe1edit;
 //#ifdef AzPAD
 @synthesize delegate;
 //@synthesize selfPopover;
@@ -114,8 +114,8 @@
 		[MocFunctions commit];
 	}
 	
-	if (Pe1edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
-		Pe1edit.e8bank = Re8edit;
+	if (self.Pe1edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
+		self.Pe1edit.e8bank = Re8edit;
 		NSInteger iPos = (self.navigationController.viewControllers).count;
 		if (3 < iPos) {
 			// 2つ前のViewへ戻る
@@ -150,7 +150,7 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
 	if (self) {
 		// 初期化成功
-		Pe1edit = nil;
+		self.Pe1edit = nil;
         if (IS_PAD) {
             self.preferredContentSize = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
         }

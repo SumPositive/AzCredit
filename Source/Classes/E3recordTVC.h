@@ -49,10 +49,10 @@
 	UITableViewScrollPosition	MmoreScrollPosition;
 }
 
-@property (nonatomic) E0root			*Re0root;
-@property (nonatomic) E4shop			*Pe4shop;
-@property (nonatomic) E5category		*Pe5category;
-@property (nonatomic) E8bank			*Pe8bank;
+@property (nonatomic, assign) E0root			*Re0root;
+@property (nonatomic, assign) E4shop			*Pe4shop;
+@property (nonatomic, assign) E5category		*Pe5category;
+@property (nonatomic, assign) E8bank			*Pe8bank;
 @property (nonatomic, assign) BOOL		PbAddMode;
 //#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;

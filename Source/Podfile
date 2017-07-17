@@ -17,3 +17,8 @@ target 'PayNote' do
 end
 
 
+target 'PayNoteS1Pad' do
+    install_pods
+end
+
+

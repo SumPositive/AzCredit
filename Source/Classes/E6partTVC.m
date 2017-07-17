@@ -23,9 +23,9 @@
 @end
 
 @implementation E6partTVC
-@synthesize Pe2select;
-@synthesize Pe7select;
-@synthesize	Pe2invoices; // E8bank-->>E1-->>E2
+//@synthesize Pe2select;
+//@synthesize Pe7select;
+//@synthesize	Pe2invoices; // E8bank-->>E1-->>E2
 @synthesize PiFirstSection;
 
 
@@ -240,13 +240,13 @@
 	//禁止 [EntityRelation e7e2clean] ここではまだ削除してはダメ！上層に戻ってから。
 	// Pe2invoices には、上層でセットされたE2が削除後も含まれているため。
 
-	if (Pe7select) {
-		assert(Pe2select==nil); // 他方は必ずnil
+	if (self.Pe7select) {
+		assert(self.Pe2select==nil); // 他方は必ずnil
 		// E3修正にてカード変更などによりE7,E2,E6が削除されて戻ってきたときに対応するための処理
 		// この処理が無ければ、ここからドリルダウンしたE3修正にて、「カード変更」「利用日変更」などするとFreezeする
 		if (Me7e0root == nil) {
-			if (Pe7select.e0paid)	Me7e0root = Pe7select.e0paid;
-			else					Me7e0root = Pe7select.e0unpaid;
+			if (self.Pe7select.e0paid)	Me7e0root = self.Pe7select.e0paid;
+			else					Me7e0root = self.Pe7select.e0unpaid;
 			if (Me7e0root == nil) {
 				AzLOG(@"LOGIC ERR: Me7e0root == nil");
 				return;
@@ -254,14 +254,14 @@
 		}
 		BOOL bAlive = NO;
 		for (E7payment *e7 in Me7e0root.e7unpaids) {
-			if (Pe7select == e7) {
+			if (self.Pe7select == e7) {
 				bAlive = YES; // Pe7selectは、e7unpaids に存在する
 				break;
 			}
 		}
 		if (RaE2invoices.count <= 0) {
 			for (E7payment *e7 in Me7e0root.e7paids) {
-				if (Pe7select == e7) {
+				if (self.Pe7select == e7) {
 					bAlive = YES; // Pe7selectは、e7paids に存在する
 					break;
 				}
@@ -270,10 +270,10 @@
 		// ここでようやく Pe7select が有効ならば、配下のE2を抽出している
 		if (bAlive) { // Pe7select が存在（有効）であるとき
 			// E7配下のE2
-			[RaE2invoices setArray:(Pe7select.e2invoices).allObjects];
+			[RaE2invoices setArray:(self.Pe7select.e2invoices).allObjects];
 			// E2.e1card.nRow 昇順ソート
 			NSSortDescriptor *sort1;
-			if (Pe7select.e0paid) {
+			if (self.Pe7select.e0paid) {
 				sort1 = [[NSSortDescriptor alloc] initWithKey:@"e1paid.nRow" ascending:YES];
 			} else {
 				sort1 = [[NSSortDescriptor alloc] initWithKey:@"e1unpaid.nRow" ascending:YES];
@@ -282,13 +282,13 @@
 			[RaE2invoices sortUsingDescriptors:sortArray];
 		}
 	}
-	else if (Pe2select) {
-		assert(Pe7select==nil); // 他方は必ずnil
+	else if (self.Pe2select) {
+		assert(self.Pe7select==nil); // 他方は必ずnil
 		// E3修正にてカード変更などによりE2,E6が削除されて戻ってきたときに対応するための処理
 		// この処理が無ければ、ここからドリルダウンしたE3修正にて、「カード変更」「利用日変更」などするとFreezeする
 		if (Me2e1card == nil) {
-			if (Pe2select.e1paid)	Me2e1card = Pe2select.e1paid;
-			else					Me2e1card = Pe2select.e1unpaid;
+			if (self.Pe2select.e1paid)	Me2e1card = self.Pe2select.e1paid;
+			else					Me2e1card = self.Pe2select.e1unpaid;
 			if (Me2e1card == nil) {
 				AzLOG(@"LOGIC ERR: Me2e1card == nil");
 				return;
@@ -297,14 +297,14 @@
 		
 		BOOL bAlive = NO;
 		for (E2invoice *e2 in Me2e1card.e2unpaids) {
-			if (Pe2select == e2) {
+			if (self.Pe2select == e2) {
 				bAlive = YES; // Pe2selectは、e2unpaids に存在する
 				break;
 			}
 		}
 		if (bAlive==NO && RaE2invoices.count <= 0) {
 			for (E2invoice *e2 in Me2e1card.e2paids) {
-				if (Pe2select == e2) {
+				if (self.Pe2select == e2) {
 					bAlive = YES; // Pe2selectは、e2paids に存在する
 					break;
 				}
@@ -312,16 +312,16 @@
 		}
 		// ここでようやく Pe2select が有効ならば、E2を抽出している
 		if (bAlive) { // Pe2select が存在（有効）であるとき
-			if (Pe2select.e1paid) {
-				[RaE2invoices addObject:Pe2select];
+			if (self.Pe2select.e1paid) {
+				[RaE2invoices addObject:self.Pe2select];
 			}
-			else if (Pe2select.e1unpaid) {
+			else if (self.Pe2select.e1unpaid) {
 				{	// E6一覧の編集モードで移動により支払日を変更できるようにするため。
 					//[1.0.0]E3detailにて支払日を自由に変更できるようにしたため、「登録支払日」と異なる日付になる場合あるが、ここでは常に「登録支払日」だけを追加する
 					//　カード登録支払日
-					E1card* e1 = Pe2select.e1unpaid;
+					E1card* e1 = self.Pe2select.e1unpaid;
 					NSInteger iPayDay = (e1.nPayDay).integerValue;	// 29=末日
-					NSInteger iYearMMDD = (Pe2select.nYearMMDD).integerValue;
+					NSInteger iYearMMDD = (self.Pe2select.nYearMMDD).integerValue;
 					if (iPayDay != GiDay(iYearMMDD)) { // 「登録支払日」と違う
 						// 日を「登録支払日」にする
 						iYearMMDD = GiYearMMDD_ModifyDay( iYearMMDD, iPayDay );		// iDay>=29:月末
@@ -336,26 +336,26 @@
 					//iPad-NG//左ペインにTopMenuが表示されたタイミングで削除されてしまうことになり不具合発生した。
 				}
 				// E1配下のE2
-				[RaE2invoices setArray:(Pe2select.e1unpaid.e2unpaids).allObjects];
+				[RaE2invoices setArray:(self.Pe2select.e1unpaid.e2unpaids).allObjects];
 				// E2.nYearMMDD 昇順ソート
 				NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nYearMMDD" ascending:YES];
 				NSArray *sortArray = @[sort1];
 				[RaE2invoices sortUsingDescriptors:sortArray];
 				//NSLog(@"RaE2invoices=%@", RaE2invoices);
 			}
-			if (Pe2select.e1unpaid) {
+			if (self.Pe2select.e1unpaid) {
 				// Unpaidならば [編集]モードＯＮ
 				self.navigationItem.rightBarButtonItem = self.editButtonItem;
 				self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
 			}
 		}
 	}
-	else if (Pe2invoices) {  // E8bank追加により新設
+	else if (self.Pe2invoices) {  // E8bank追加により新設
 		// 注意！E6削除の結果、その親E2も削除されたとき、Pe2invoicesには「その親E2」(根無し）が残っている！
 		// [0.3]この解決のため、e3delete処理では、E2を削除しないようにした。
 		// [0.4.15]さらに e3makeE6 にて、E6再生成時にE2を削除しないようにした。
 		//NSLog(@"***Pe2invoices=%@", Pe2invoices);
-		[RaE2invoices setArray:Pe2invoices.allObjects];
+		[RaE2invoices setArray:self.Pe2invoices.allObjects];
 		if (2 <= RaE2invoices.count) {
 			E2invoice *e2 = RaE2invoices[0];
 			// E2.e1card.nRow 昇順ソート
@@ -400,11 +400,11 @@
     [self.tableView reloadData];
 	
 	// 指定位置までテーブルビューの行をスクロールさせる初期処理　＜＜レコードセット後でなければならないので、この位置になった＞＞
-	if (MbFirstOne && Pe2select && 1 < RaE2invoices.count) {
+	if (MbFirstOne && self.Pe2select && 1 < RaE2invoices.count) {
 		MbFirstOne = NO; // 最初に1度だけ通すため  (initWithStyle:にてYESに初期化している）
 		NSInteger iSec = 0;
 		for (E2invoice *e2 in RaE2invoices) {
-			if (e2 == Pe2select) break;
+			if (e2 == self.Pe2select) break;
 			iSec++;
 		}
 		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:iSec];
@@ -669,7 +669,7 @@
 	formatter.locale = [NSLocale currentLocale];
 	zSum = [formatter stringFromNumber:e2obj.sumAmount];
 	
-	if (Pe2select) {	// (0)E1<E2<E6:同カードの支払日違い　＜＜表示：支払日＋支払未済＋金額＞＞
+	if (self.Pe2select) {	// (0)E1<E2<E6:同カードの支払日違い　＜＜表示：支払日＋支払未済＋金額＞＞
 		// 支払日
 		NSString *zPreDue;
 		if (e2obj.e1paid) zPreDue = NSLocalizedString(@"Pre",nil);
@@ -944,7 +944,7 @@
 // TableView Editボタンスタイル
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	if (Pe2select) {
+	if (self.Pe2select) {
 		if (indexPath.row < [RaE6parts[indexPath.section] count]) {
 			return UITableViewCellEditingStyleNone;  //Delete;
 		}

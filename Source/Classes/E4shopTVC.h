@@ -44,7 +44,7 @@
 }
 
 @property (nonatomic, strong) E0root	*Re0root;
-@property (nonatomic, weak) E3record	*Pe3edit;
+@property (nonatomic) E3record	*Pe3edit;
 //#ifdef AzPAD
 @property (nonatomic, assign) id									delegate;
 //@property (nonatomic, retain) UIPopoverController*	selfPopover;

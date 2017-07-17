@@ -34,7 +34,7 @@
 @property (nonatomic, strong) E8bank	*Re8edit;
 @property NSInteger						PiAddRow;
 @property BOOL							PbSave;
-@property (nonatomic, weak) E1card      *Pe1edit;
+@property (nonatomic) E1card      *Pe1edit;
 //#ifdef AzPAD
 @property (nonatomic, assign) id		delegate;
 //@property (nonatomic, retain) UIPopoverController*	selfPopover;

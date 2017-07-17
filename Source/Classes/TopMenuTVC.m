@@ -155,6 +155,40 @@
         [self.navigationController pushViewController:e3detail animated: YES];
     }
 	 // self.navigationControllerがOwnerになる
+    
+    // iCloud Drive 実験
+    NSFileManager* fm = [NSFileManager defaultManager];
+    NSURL* url = [fm URLForUbiquityContainerIdentifier:nil];
+    NSURL* fileUrl = [url URLByAppendingPathComponent:@"PayNoteData"];
+    AzLOG(@"fileUrl: %@", fileUrl);
+    
+//    // WRITE
+//    NSString* testData = @"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbag4tgarghqar5hwah";
+//    @try {
+//        if ([testData writeToURL:fileUrl atomically:YES encoding:NSUTF8StringEncoding error:nil]) {
+//            AzLOG(@"writeToURL: OK");
+//        }else{
+//            AzLOG(@"writeToURL: NG");
+//        }
+//        
+//    } @catch (NSException *exception) {
+//        AzLOG(@"writeToURL: @catch: %@", exception);
+//    } @finally {
+//        AzLOG(@"writeToURL: @finally");
+//    }
+    
+    // READ
+    @try {
+        NSString* test = [NSString stringWithContentsOfURL:fileUrl encoding:NSUTF8StringEncoding error:nil];
+        AzLOG(@"stringWithContentsOfURL: test: %@", test);
+        
+    } @catch (NSException *exception) {
+        AzLOG(@"stringWithContentsOfURL: @catch: %@", exception);
+    } @finally {
+        AzLOG(@"stringWithContentsOfURL: @finally");
+    }
+    
+    
 }
 
 - (void)e3record

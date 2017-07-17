@@ -7,86 +7,119 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11D8EF3DDE8669D8CB8053EFA799CB44 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
-		1A616003DE458A0B3D9FBA96A43EEBDB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
-		1AA3CE7598F109E9913AA14139097ED9 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43121348548A06BC0F3F091EDEB7A563 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		2B87E79827DD4445622F17CEA1ABAB11 /* SFHFKeychainUtils-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA67F2DFC68C779297433BEEB9EC1A /* SFHFKeychainUtils-dummy.m */; };
-		35198D6959608BA91375B4F5D83ACE5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
-		47E896BAB5CF4E4BAD3AD3AF02092D5E /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DADCB295224CD56D63DCDA4308CD198 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		71206F0EAF2A424F0DE26B58DB6145FF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C085E02FF89804F50ADDA04F5A586E94 /* Security.framework */; };
-		8008A06D1E7CF857F5BC25E9D8AD907D /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 590D6C825457CD177BD5BE52460CF5DA /* SFHFKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8480D0E77C084A96A311709CBADB265B /* UIDevice-Hardware-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F61543297114BB8BD53B1CF013717B32 /* UIDevice-Hardware-dummy.m */; };
-		A573A517AF9E033E340E3822073E0E1A /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = EEE20F6087226B79DF69B1696E94FD5B /* UIDevice-Hardware.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D69FF19C7A8C31F508893D766701DAC4 /* Pods-AzCreditS1-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EF752711EA691D3756F7DD581AB4CAE4 /* Pods-AzCreditS1-dummy.m */; };
+		05EDD79D3E266AB44C6F01098A57FD20 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C085E02FF89804F50ADDA04F5A586E94 /* Security.framework */; };
+		18C0E4EE119E124CF80925DBE10EE534 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 590D6C825457CD177BD5BE52460CF5DA /* SFHFKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		337A5C6A72B398B846A990B9F39B878C /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = EEE20F6087226B79DF69B1696E94FD5B /* UIDevice-Hardware.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		366301BDAB0A4AC4B8CC968307D3B91B /* SFHFKeychainUtils-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA67F2DFC68C779297433BEEB9EC1A /* SFHFKeychainUtils-dummy.m */; };
+		3E36AE84B3EA745615953399D6981B4C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
+		4F68978348967CDF4A28BFF45C907DBD /* Pods-PayNoteS1Pad-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF1439014347D0FAA2CD20CE5F89B52 /* Pods-PayNoteS1Pad-dummy.m */; };
+		5726238C8DE5E69B7B567DD7E0BC36CF /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 43121348548A06BC0F3F091EDEB7A563 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5991F44CE226660414EB65BF04122CD3 /* Pods-PayNote-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8B8B0ED332E0EB86162310023D5A5C /* Pods-PayNote-dummy.m */; };
+		5EDE74C39CBA699DCF8F40A48E6E70EC /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DADCB295224CD56D63DCDA4308CD198 /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A8497C75312782B375E27083DE1F8D5F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
+		C1A7A61230E7E4CDF70B3D0899718BEF /* UIDevice-Hardware-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F61543297114BB8BD53B1CF013717B32 /* UIDevice-Hardware-dummy.m */; };
+		D7ABEB591C1AF8DEC620AB8570A8FB47 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
+		FC634EDF55A835EC380DDA76A93E82E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8CEA30485C4500AA9DBFE38053E7E45C /* PBXContainerItemProxy */ = {
+		005782BDBEF9795356306C44EA000678 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8A5A4357AFBE50E9EDF096533B56CE0A;
+			remoteGlobalIDString = B322604847ECEC01A585BD1ADA89AA20;
 			remoteInfo = SFHFKeychainUtils;
 		};
-		8EFFC1A76DAACDEC2B70C597354CBF5B /* PBXContainerItemProxy */ = {
+		B82268FD6409376B3E61C995EBE4A36A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 079F334D175009FEDF8B8F2C227E96E4;
+			remoteGlobalIDString = 1CEB733137B86310D73AC4C18889B960;
+			remoteInfo = "UIDevice-Hardware";
+		};
+		CEB23E9D8D270606C3CE5370E0948534 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B322604847ECEC01A585BD1ADA89AA20;
+			remoteInfo = SFHFKeychainUtils;
+		};
+		DE56B618142D4A88BAD86C73965CD9B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1CEB733137B86310D73AC4C18889B960;
 			remoteInfo = "UIDevice-Hardware";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		11B8C71790C7F74A71B605A063DC8B0D /* Pods-AzCreditS1-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditS1-resources.sh"; sourceTree = "<group>"; };
+		00D98E77245B2EF241666763104E4792 /* Pods-PayNote-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNote-resources.sh"; sourceTree = "<group>"; };
 		11C10A31CD5CFA3EFE266394471B152E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		145EA7421617763819A3074181183430 /* Pods-PayNoteS1Pad-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteS1Pad-frameworks.sh"; sourceTree = "<group>"; };
+		1777B175FCB4DBE9C4B8E2C2F7920222 /* Pods-PayNoteS1Pad.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteS1Pad.distribution.xcconfig"; sourceTree = "<group>"; };
 		1EFADB0B52DA63D577E1BADB376E2BC4 /* SFHFKeychainUtils-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SFHFKeychainUtils-prefix.pch"; sourceTree = "<group>"; };
+		21D66AB7472E91F6D1C2A3D5F2B818E2 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSFHFKeychainUtils.a; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		28C660CFFF14BD4966B89EA1A4695F9C /* Pods-PayNoteS1Pad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteS1Pad.release.xcconfig"; sourceTree = "<group>"; };
 		2DADCB295224CD56D63DCDA4308CD198 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
+		328ECAA70DDA743453D126FC65FAC4BD /* libPods-PayNoteS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteS1Pad.a"; path = "libPods-PayNoteS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		397D9272600F84D8800C9113AEAE6D8A /* Pods-PayNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNote.release.xcconfig"; sourceTree = "<group>"; };
 		43121348548A06BC0F3F091EDEB7A563 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = security/SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		4394ABA66CF74E769D6874D7035E0BB6 /* Pods-AzCreditS1.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1.distribution.xcconfig"; sourceTree = "<group>"; };
+		4C41A02B651F1F71323D3A0BCE874935 /* Pods-PayNoteS1Pad-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNoteS1Pad-acknowledgements.markdown"; sourceTree = "<group>"; };
 		590D6C825457CD177BD5BE52460CF5DA /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFHFKeychainUtils.h; path = security/SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		626E856E21EE22938C9DB85AE6D257C1 /* Pods-AzCreditS1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1.debug.xcconfig"; sourceTree = "<group>"; };
-		74CF4AD538B818D9E00D577A4D2BEDFC /* Pods-AzCreditS1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AzCreditS1.release.xcconfig"; sourceTree = "<group>"; };
+		665C15D7CF617A01861D6D6671E92A8A /* libPods-PayNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNote.a"; path = "libPods-PayNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E92FB3B5FFF5F50CC4473ED8120D8E5 /* Pods-PayNote.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNote.distribution.xcconfig"; sourceTree = "<group>"; };
+		6ED0E7B74F57F4AD0B9A4476651F0345 /* Pods-PayNoteS1Pad-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteS1Pad-resources.sh"; sourceTree = "<group>"; };
 		85DA67F2DFC68C779297433BEEB9EC1A /* SFHFKeychainUtils-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SFHFKeychainUtils-dummy.m"; sourceTree = "<group>"; };
-		87E1AF0A9C9CE1D810C5743A381AA7D4 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSFHFKeychainUtils.a; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		88EB02BDBBF265A9B529B5638708BEC0 /* SFHFKeychainUtils.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SFHFKeychainUtils.xcconfig; sourceTree = "<group>"; };
-		8A75E8A6E8270B20599561C8FC19CD31 /* libPods-AzCreditS1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-AzCreditS1.a"; path = "libPods-AzCreditS1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		91BCC40637EE13D8046453CE084C4834 /* libUIDevice-Hardware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libUIDevice-Hardware.a"; path = "libUIDevice-Hardware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DF1439014347D0FAA2CD20CE5F89B52 /* Pods-PayNoteS1Pad-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNoteS1Pad-dummy.m"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A1F953BA9DFBB536A72867F9E0FDB186 /* Pods-AzCreditS1-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AzCreditS1-acknowledgements.plist"; sourceTree = "<group>"; };
+		96F26BE5699BF868B9EEBE0057762FE2 /* Pods-PayNote-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNote-frameworks.sh"; sourceTree = "<group>"; };
+		A2D284DFE41F22C02891570B838446E4 /* Pods-PayNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNote.debug.xcconfig"; sourceTree = "<group>"; };
+		B28159D7514E266F0AA8B47C56AF9C27 /* Pods-PayNoteS1Pad-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNoteS1Pad-acknowledgements.plist"; sourceTree = "<group>"; };
+		BB2FD6A7555F4C92766EEB9BEE28531C /* libUIDevice-Hardware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libUIDevice-Hardware.a"; path = "libUIDevice-Hardware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C085E02FF89804F50ADDA04F5A586E94 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
-		CB64CB7CED4F7FCFD4869CEFFBEB1ECA /* Pods-AzCreditS1-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AzCreditS1-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "UIDevice-Hardware.xcconfig"; sourceTree = "<group>"; };
-		E71B0229CCD53B463031862FA6C4E84B /* Pods-AzCreditS1-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AzCreditS1-frameworks.sh"; sourceTree = "<group>"; };
+		E2C8C55E6E890B50844C003051E520CE /* Pods-PayNote-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNote-acknowledgements.markdown"; sourceTree = "<group>"; };
+		EB3B4B1EA2D66B964BE419E619B09C39 /* Pods-PayNote-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNote-acknowledgements.plist"; sourceTree = "<group>"; };
 		EEE20F6087226B79DF69B1696E94FD5B /* UIDevice-Hardware.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		EF752711EA691D3756F7DD581AB4CAE4 /* Pods-AzCreditS1-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AzCreditS1-dummy.m"; sourceTree = "<group>"; };
 		F61543297114BB8BD53B1CF013717B32 /* UIDevice-Hardware-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware-dummy.m"; sourceTree = "<group>"; };
 		F92BD1B5619E031E7FB628649DF7654F /* UIDevice-Hardware-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware-prefix.pch"; sourceTree = "<group>"; };
+		FA8E6B5510FBDC4405A167B88B8C7E4B /* Pods-PayNoteS1Pad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteS1Pad.debug.xcconfig"; sourceTree = "<group>"; };
+		FC8B8B0ED332E0EB86162310023D5A5C /* Pods-PayNote-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNote-dummy.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4B5306BEB37D9ACCCFA310C27D9B7232 /* Frameworks */ = {
+		17CF0D3FA78385EF191E1A19A9ECF408 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35198D6959608BA91375B4F5D83ACE5E /* Foundation.framework in Frameworks */,
+				D7ABEB591C1AF8DEC620AB8570A8FB47 /* Foundation.framework in Frameworks */,
+				05EDD79D3E266AB44C6F01098A57FD20 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		77BEEF3BA1639709C03D796EE534E8F6 /* Frameworks */ = {
+		5C1196440349E9E8214CEED8A489F919 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A616003DE458A0B3D9FBA96A43EEBDB /* Foundation.framework in Frameworks */,
-				71206F0EAF2A424F0DE26B58DB6145FF /* Security.framework in Frameworks */,
+				FC634EDF55A835EC380DDA76A93E82E4 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F5870D1E93476D8F7F6ED618D4BBE5A2 /* Frameworks */ = {
+		9F94B637F9AD2E0FDA7034873F18ECB7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11D8EF3DDE8669D8CB8053EFA799CB44 /* Foundation.framework in Frameworks */,
+				A8497C75312782B375E27083DE1F8D5F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A612E92B3DFF28B19ADFA84D53262CFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E36AE84B3EA745615953399D6981B4C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,22 +135,6 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/SFHFKeychainUtils";
-			sourceTree = "<group>";
-		};
-		2EDC31883EF515E8A7AAEC4EFBFB26C7 /* Pods-AzCreditS1 */ = {
-			isa = PBXGroup;
-			children = (
-				CB64CB7CED4F7FCFD4869CEFFBEB1ECA /* Pods-AzCreditS1-acknowledgements.markdown */,
-				A1F953BA9DFBB536A72867F9E0FDB186 /* Pods-AzCreditS1-acknowledgements.plist */,
-				EF752711EA691D3756F7DD581AB4CAE4 /* Pods-AzCreditS1-dummy.m */,
-				E71B0229CCD53B463031862FA6C4E84B /* Pods-AzCreditS1-frameworks.sh */,
-				11B8C71790C7F74A71B605A063DC8B0D /* Pods-AzCreditS1-resources.sh */,
-				626E856E21EE22938C9DB85AE6D257C1 /* Pods-AzCreditS1.debug.xcconfig */,
-				4394ABA66CF74E769D6874D7035E0BB6 /* Pods-AzCreditS1.distribution.xcconfig */,
-				74CF4AD538B818D9E00D577A4D2BEDFC /* Pods-AzCreditS1.release.xcconfig */,
-			);
-			name = "Pods-AzCreditS1";
-			path = "Target Support Files/Pods-AzCreditS1";
 			sourceTree = "<group>";
 		};
 		433CD3331B6C3787F473C941B61FC68F /* Frameworks */ = {
@@ -137,12 +154,20 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		6BDD2ADAA79C0D1BCF0DCDA4A0A249E2 /* Targets Support Files */ = {
+		5ACC1FDC34ABFDFEA40D7B82B008C5B6 /* Pods-PayNote */ = {
 			isa = PBXGroup;
 			children = (
-				2EDC31883EF515E8A7AAEC4EFBFB26C7 /* Pods-AzCreditS1 */,
+				E2C8C55E6E890B50844C003051E520CE /* Pods-PayNote-acknowledgements.markdown */,
+				EB3B4B1EA2D66B964BE419E619B09C39 /* Pods-PayNote-acknowledgements.plist */,
+				FC8B8B0ED332E0EB86162310023D5A5C /* Pods-PayNote-dummy.m */,
+				96F26BE5699BF868B9EEBE0057762FE2 /* Pods-PayNote-frameworks.sh */,
+				00D98E77245B2EF241666763104E4792 /* Pods-PayNote-resources.sh */,
+				A2D284DFE41F22C02891570B838446E4 /* Pods-PayNote.debug.xcconfig */,
+				6E92FB3B5FFF5F50CC4473ED8120D8E5 /* Pods-PayNote.distribution.xcconfig */,
+				397D9272600F84D8800C9113AEAE6D8A /* Pods-PayNote.release.xcconfig */,
 			);
-			name = "Targets Support Files";
+			name = "Pods-PayNote";
+			path = "Target Support Files/Pods-PayNote";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -151,19 +176,34 @@
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				433CD3331B6C3787F473C941B61FC68F /* Frameworks */,
 				D13B77D29BEE1EF9CB2DAC2953F14848 /* Pods */,
-				9A571F5FB7C2CC742F624DEDFAD656F4 /* Products */,
-				6BDD2ADAA79C0D1BCF0DCDA4A0A249E2 /* Targets Support Files */,
+				F4E3D8C22B38FAEC6237BF92F1DAE940 /* Products */,
+				9BC880417D4C6D9E57468FE4E39294DE /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		9A571F5FB7C2CC742F624DEDFAD656F4 /* Products */ = {
+		9659C0B019506276C12A95EEDE2C7FB8 /* Pods-PayNoteS1Pad */ = {
 			isa = PBXGroup;
 			children = (
-				8A75E8A6E8270B20599561C8FC19CD31 /* libPods-AzCreditS1.a */,
-				87E1AF0A9C9CE1D810C5743A381AA7D4 /* libSFHFKeychainUtils.a */,
-				91BCC40637EE13D8046453CE084C4834 /* libUIDevice-Hardware.a */,
+				4C41A02B651F1F71323D3A0BCE874935 /* Pods-PayNoteS1Pad-acknowledgements.markdown */,
+				B28159D7514E266F0AA8B47C56AF9C27 /* Pods-PayNoteS1Pad-acknowledgements.plist */,
+				8DF1439014347D0FAA2CD20CE5F89B52 /* Pods-PayNoteS1Pad-dummy.m */,
+				145EA7421617763819A3074181183430 /* Pods-PayNoteS1Pad-frameworks.sh */,
+				6ED0E7B74F57F4AD0B9A4476651F0345 /* Pods-PayNoteS1Pad-resources.sh */,
+				FA8E6B5510FBDC4405A167B88B8C7E4B /* Pods-PayNoteS1Pad.debug.xcconfig */,
+				1777B175FCB4DBE9C4B8E2C2F7920222 /* Pods-PayNoteS1Pad.distribution.xcconfig */,
+				28C660CFFF14BD4966B89EA1A4695F9C /* Pods-PayNoteS1Pad.release.xcconfig */,
 			);
-			name = Products;
+			name = "Pods-PayNoteS1Pad";
+			path = "Target Support Files/Pods-PayNoteS1Pad";
+			sourceTree = "<group>";
+		};
+		9BC880417D4C6D9E57468FE4E39294DE /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5ACC1FDC34ABFDFEA40D7B82B008C5B6 /* Pods-PayNote */,
+				9659C0B019506276C12A95EEDE2C7FB8 /* Pods-PayNoteS1Pad */,
+			);
+			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
 		B40651F241778D9FA3C6B963A7D51AB6 /* UIDevice-Hardware */ = {
@@ -197,6 +237,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F4E3D8C22B38FAEC6237BF92F1DAE940 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				665C15D7CF617A01861D6D6671E92A8A /* libPods-PayNote.a */,
+				328ECAA70DDA743453D126FC65FAC4BD /* libPods-PayNoteS1Pad.a */,
+				21D66AB7472E91F6D1C2A3D5F2B818E2 /* libSFHFKeychainUtils.a */,
+				BB2FD6A7555F4C92766EEB9BEE28531C /* libUIDevice-Hardware.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F70EEB249027FACE3511ACEAF4922DE4 /* SFHFKeychainUtils */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,32 +262,32 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		80B9EAE4D6B0FAFC83EA9178E4BFF0FF /* Headers */ = {
+		97D88BD283E82F6E73C20DA859E52774 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8008A06D1E7CF857F5BC25E9D8AD907D /* SFHFKeychainUtils.h in Headers */,
+				337A5C6A72B398B846A990B9F39B878C /* UIDevice-Hardware.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		845301B01077ACE1721C3BFD78A40D97 /* Headers */ = {
+		DBE5CFB80C154A51C5050ABF252256C4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A573A517AF9E033E340E3822073E0E1A /* UIDevice-Hardware.h in Headers */,
+				18C0E4EE119E124CF80925DBE10EE534 /* SFHFKeychainUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		079F334D175009FEDF8B8F2C227E96E4 /* UIDevice-Hardware */ = {
+		1CEB733137B86310D73AC4C18889B960 /* UIDevice-Hardware */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E9146A41258079C5BCD6E66DACEB379 /* Build configuration list for PBXNativeTarget "UIDevice-Hardware" */;
+			buildConfigurationList = 41A1C3498B1B700C2BBDF8E549EE7366 /* Build configuration list for PBXNativeTarget "UIDevice-Hardware" */;
 			buildPhases = (
-				913A7A9C78E3B687A06924FC2ADA469C /* Sources */,
-				F5870D1E93476D8F7F6ED618D4BBE5A2 /* Frameworks */,
-				845301B01077ACE1721C3BFD78A40D97 /* Headers */,
+				2CEDF79438FE248A780D46B890FC1262 /* Sources */,
+				9F94B637F9AD2E0FDA7034873F18ECB7 /* Frameworks */,
+				97D88BD283E82F6E73C20DA859E52774 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -244,34 +295,34 @@
 			);
 			name = "UIDevice-Hardware";
 			productName = "UIDevice-Hardware";
-			productReference = 91BCC40637EE13D8046453CE084C4834 /* libUIDevice-Hardware.a */;
+			productReference = BB2FD6A7555F4C92766EEB9BEE28531C /* libUIDevice-Hardware.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		5BB53ACDACBB69076C5863A73C633D76 /* Pods-AzCreditS1 */ = {
+		6F9119C3193BF989DF0BC8660AF4BBE4 /* Pods-PayNote */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4C8567E5F5F5B1581F98D039D49B50AF /* Build configuration list for PBXNativeTarget "Pods-AzCreditS1" */;
+			buildConfigurationList = 0A523A96020E5FF75BF0A84D3ADF63FD /* Build configuration list for PBXNativeTarget "Pods-PayNote" */;
 			buildPhases = (
-				1898B61AC956B042F9CE9287791BA60B /* Sources */,
-				4B5306BEB37D9ACCCFA310C27D9B7232 /* Frameworks */,
+				E800FCADB28D346E2E971F3053523808 /* Sources */,
+				5C1196440349E9E8214CEED8A489F919 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C6D5E1BD1E65A6B2705077229AA66DFB /* PBXTargetDependency */,
-				8196BB5962886813C4A351E10AF93652 /* PBXTargetDependency */,
+				ACF074A29D98707952E88ED62206C1FC /* PBXTargetDependency */,
+				8A675FB4D65BE65A295C11487CC71D86 /* PBXTargetDependency */,
 			);
-			name = "Pods-AzCreditS1";
-			productName = "Pods-AzCreditS1";
-			productReference = 8A75E8A6E8270B20599561C8FC19CD31 /* libPods-AzCreditS1.a */;
+			name = "Pods-PayNote";
+			productName = "Pods-PayNote";
+			productReference = 665C15D7CF617A01861D6D6671E92A8A /* libPods-PayNote.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		8A5A4357AFBE50E9EDF096533B56CE0A /* SFHFKeychainUtils */ = {
+		B322604847ECEC01A585BD1ADA89AA20 /* SFHFKeychainUtils */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3FA9041C1B8BBE3F095B65C45D164B60 /* Build configuration list for PBXNativeTarget "SFHFKeychainUtils" */;
+			buildConfigurationList = 5D0CAB26828497573373ADD1FFA85D41 /* Build configuration list for PBXNativeTarget "SFHFKeychainUtils" */;
 			buildPhases = (
-				35561137C269EEB2848838222ED76431 /* Sources */,
-				77BEEF3BA1639709C03D796EE534E8F6 /* Frameworks */,
-				80B9EAE4D6B0FAFC83EA9178E4BFF0FF /* Headers */,
+				2E7D95FFA8B9C12EBA4538F1495D971E /* Sources */,
+				17CF0D3FA78385EF191E1A19A9ECF408 /* Frameworks */,
+				DBE5CFB80C154A51C5050ABF252256C4 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -279,7 +330,25 @@
 			);
 			name = SFHFKeychainUtils;
 			productName = SFHFKeychainUtils;
-			productReference = 87E1AF0A9C9CE1D810C5743A381AA7D4 /* libSFHFKeychainUtils.a */;
+			productReference = 21D66AB7472E91F6D1C2A3D5F2B818E2 /* libSFHFKeychainUtils.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		DB25214D32F6C3DFE657D42679267508 /* Pods-PayNoteS1Pad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA4F4D7011D8D118122C5D00C9DE1A17 /* Build configuration list for PBXNativeTarget "Pods-PayNoteS1Pad" */;
+			buildPhases = (
+				2CBF09DB26A8D9C30DF0D56C0D3B0F0B /* Sources */,
+				A612E92B3DFF28B19ADFA84D53262CFC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				456A4DA20C1BE1AC798F19F05EB5DEEA /* PBXTargetDependency */,
+				148B1D39C45F1A9F43A91E6FB601A86C /* PBXTargetDependency */,
+			);
+			name = "Pods-PayNoteS1Pad";
+			productName = "Pods-PayNoteS1Pad";
+			productReference = 328ECAA70DDA743453D126FC65FAC4BD /* libPods-PayNoteS1Pad.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -299,63 +368,176 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 9A571F5FB7C2CC742F624DEDFAD656F4 /* Products */;
+			productRefGroup = F4E3D8C22B38FAEC6237BF92F1DAE940 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5BB53ACDACBB69076C5863A73C633D76 /* Pods-AzCreditS1 */,
-				8A5A4357AFBE50E9EDF096533B56CE0A /* SFHFKeychainUtils */,
-				079F334D175009FEDF8B8F2C227E96E4 /* UIDevice-Hardware */,
+				6F9119C3193BF989DF0BC8660AF4BBE4 /* Pods-PayNote */,
+				DB25214D32F6C3DFE657D42679267508 /* Pods-PayNoteS1Pad */,
+				B322604847ECEC01A585BD1ADA89AA20 /* SFHFKeychainUtils */,
+				1CEB733137B86310D73AC4C18889B960 /* UIDevice-Hardware */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1898B61AC956B042F9CE9287791BA60B /* Sources */ = {
+		2CBF09DB26A8D9C30DF0D56C0D3B0F0B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D69FF19C7A8C31F508893D766701DAC4 /* Pods-AzCreditS1-dummy.m in Sources */,
+				4F68978348967CDF4A28BFF45C907DBD /* Pods-PayNoteS1Pad-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		35561137C269EEB2848838222ED76431 /* Sources */ = {
+		2CEDF79438FE248A780D46B890FC1262 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B87E79827DD4445622F17CEA1ABAB11 /* SFHFKeychainUtils-dummy.m in Sources */,
-				1AA3CE7598F109E9913AA14139097ED9 /* SFHFKeychainUtils.m in Sources */,
+				C1A7A61230E7E4CDF70B3D0899718BEF /* UIDevice-Hardware-dummy.m in Sources */,
+				5EDE74C39CBA699DCF8F40A48E6E70EC /* UIDevice-Hardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		913A7A9C78E3B687A06924FC2ADA469C /* Sources */ = {
+		2E7D95FFA8B9C12EBA4538F1495D971E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8480D0E77C084A96A311709CBADB265B /* UIDevice-Hardware-dummy.m in Sources */,
-				47E896BAB5CF4E4BAD3AD3AF02092D5E /* UIDevice-Hardware.m in Sources */,
+				366301BDAB0A4AC4B8CC968307D3B91B /* SFHFKeychainUtils-dummy.m in Sources */,
+				5726238C8DE5E69B7B567DD7E0BC36CF /* SFHFKeychainUtils.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E800FCADB28D346E2E971F3053523808 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5991F44CE226660414EB65BF04122CD3 /* Pods-PayNote-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8196BB5962886813C4A351E10AF93652 /* PBXTargetDependency */ = {
+		148B1D39C45F1A9F43A91E6FB601A86C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "UIDevice-Hardware";
-			target = 079F334D175009FEDF8B8F2C227E96E4 /* UIDevice-Hardware */;
-			targetProxy = 8EFFC1A76DAACDEC2B70C597354CBF5B /* PBXContainerItemProxy */;
+			target = 1CEB733137B86310D73AC4C18889B960 /* UIDevice-Hardware */;
+			targetProxy = B82268FD6409376B3E61C995EBE4A36A /* PBXContainerItemProxy */;
 		};
-		C6D5E1BD1E65A6B2705077229AA66DFB /* PBXTargetDependency */ = {
+		456A4DA20C1BE1AC798F19F05EB5DEEA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SFHFKeychainUtils;
-			target = 8A5A4357AFBE50E9EDF096533B56CE0A /* SFHFKeychainUtils */;
-			targetProxy = 8CEA30485C4500AA9DBFE38053E7E45C /* PBXContainerItemProxy */;
+			target = B322604847ECEC01A585BD1ADA89AA20 /* SFHFKeychainUtils */;
+			targetProxy = CEB23E9D8D270606C3CE5370E0948534 /* PBXContainerItemProxy */;
+		};
+		8A675FB4D65BE65A295C11487CC71D86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "UIDevice-Hardware";
+			target = 1CEB733137B86310D73AC4C18889B960 /* UIDevice-Hardware */;
+			targetProxy = DE56B618142D4A88BAD86C73965CD9B8 /* PBXContainerItemProxy */;
+		};
+		ACF074A29D98707952E88ED62206C1FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SFHFKeychainUtils;
+			target = B322604847ECEC01A585BD1ADA89AA20 /* SFHFKeychainUtils */;
+			targetProxy = 005782BDBEF9795356306C44EA000678 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		3CC6EEC89BAD7BEF1122F1C76A835181 /* Distribution */ = {
+		0E8E09F4C4AA1E932C9B52A5301EA20E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88EB02BDBBF265A9B529B5638708BEC0 /* SFHFKeychainUtils.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SFHFKeychainUtils/SFHFKeychainUtils-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		233BD57FA555FCB9D3784775AA42880B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 397D9272600F84D8800C9113AEAE6D8A /* Pods-PayNote.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2E0C176CF6B4553E1AE2E9BE7501CB52 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E92FB3B5FFF5F50CC4473ED8120D8E5 /* Pods-PayNote.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		35A1907A924DFA3F51CB7B4E181D9A78 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1777B175FCB4DBE9C4B8E2C2F7920222 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		46AE052F00D2AADA9A484CAEC0FF8B45 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88EB02BDBBF265A9B529B5638708BEC0 /* SFHFKeychainUtils.xcconfig */;
 			buildSettings = {
@@ -377,6 +559,52 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Distribution;
+		};
+		48F57874390D7FA1D8CC9C103AA7D414 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		498CDFD3F8214A2AD2C128B3D0FEDA5A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
 		};
 		4E487F173E6C9664F4E9E26B9635D23C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -426,145 +654,7 @@
 			};
 			name = Debug;
 		};
-		537081626612541BA4F8786DEEDAFB8F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		55644DB23C03129F530326FF650D02B7 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4394ABA66CF74E769D6874D7035E0BB6 /* Pods-AzCreditS1.distribution.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
-		7C164900F3AE63511EDBAF9D3EB08166 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88EB02BDBBF265A9B529B5638708BEC0 /* SFHFKeychainUtils.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SFHFKeychainUtils/SFHFKeychainUtils-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		858284E22A52BB93DAE3A3AF51F30EDB /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
-		964C79B2B4D812B6776E67934D5C70EE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 626E856E21EE22938C9DB85AE6D257C1 /* Pods-AzCreditS1.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		9A31EF2E3C4B0B24313297EFF0B97B79 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		A09621C0FBA5C30BF09F6389009CA8FC /* Release */ = {
+		691041B4555E85F60793A4E2C14381F1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88EB02BDBBF265A9B529B5638708BEC0 /* SFHFKeychainUtils.xcconfig */;
 			buildSettings = {
@@ -587,9 +677,32 @@
 			};
 			name = Release;
 		};
-		BC9AF8AC79282ECC843F25AAE53623EB /* Release */ = {
+		706B6280969A3B082BE72E389F3DF816 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74CF4AD538B818D9E00D577A4D2BEDFC /* Pods-AzCreditS1.release.xcconfig */;
+			baseConfigurationReference = FA8E6B5510FBDC4405A167B88B8C7E4B /* Pods-PayNoteS1Pad.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		96C1D9B4D6898BF16D32E0BA246A8339 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28C660CFFF14BD4966B89EA1A4695F9C /* Pods-PayNoteS1Pad.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -605,6 +718,29 @@
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B7B77C786FC1B0E34744D5850CE5217F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2E9CDC3E0450C67E2F951C1C9797918 /* UIDevice-Hardware.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -697,9 +833,42 @@
 			};
 			name = Distribution;
 		};
+		E6AFDC71025EFCE43FBD4005C61EE652 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A2D284DFE41F22C02891570B838446E4 /* Pods-PayNote.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0A523A96020E5FF75BF0A84D3ADF63FD /* Build configuration list for PBXNativeTarget "Pods-PayNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6AFDC71025EFCE43FBD4005C61EE652 /* Debug */,
+				2E0C176CF6B4553E1AE2E9BE7501CB52 /* Distribution */,
+				233BD57FA555FCB9D3784775AA42880B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -710,32 +879,32 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2E9146A41258079C5BCD6E66DACEB379 /* Build configuration list for PBXNativeTarget "UIDevice-Hardware" */ = {
+		41A1C3498B1B700C2BBDF8E549EE7366 /* Build configuration list for PBXNativeTarget "UIDevice-Hardware" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				537081626612541BA4F8786DEEDAFB8F /* Debug */,
-				858284E22A52BB93DAE3A3AF51F30EDB /* Distribution */,
-				9A31EF2E3C4B0B24313297EFF0B97B79 /* Release */,
+				498CDFD3F8214A2AD2C128B3D0FEDA5A /* Debug */,
+				48F57874390D7FA1D8CC9C103AA7D414 /* Distribution */,
+				B7B77C786FC1B0E34744D5850CE5217F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3FA9041C1B8BBE3F095B65C45D164B60 /* Build configuration list for PBXNativeTarget "SFHFKeychainUtils" */ = {
+		5D0CAB26828497573373ADD1FFA85D41 /* Build configuration list for PBXNativeTarget "SFHFKeychainUtils" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7C164900F3AE63511EDBAF9D3EB08166 /* Debug */,
-				3CC6EEC89BAD7BEF1122F1C76A835181 /* Distribution */,
-				A09621C0FBA5C30BF09F6389009CA8FC /* Release */,
+				0E8E09F4C4AA1E932C9B52A5301EA20E /* Debug */,
+				46AE052F00D2AADA9A484CAEC0FF8B45 /* Distribution */,
+				691041B4555E85F60793A4E2C14381F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4C8567E5F5F5B1581F98D039D49B50AF /* Build configuration list for PBXNativeTarget "Pods-AzCreditS1" */ = {
+		BA4F4D7011D8D118122C5D00C9DE1A17 /* Build configuration list for PBXNativeTarget "Pods-PayNoteS1Pad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				964C79B2B4D812B6776E67934D5C70EE /* Debug */,
-				55644DB23C03129F530326FF650D02B7 /* Distribution */,
-				BC9AF8AC79282ECC843F25AAE53623EB /* Release */,
+				706B6280969A3B082BE72E389F3DF816 /* Debug */,
+				35A1907A924DFA3F51CB7B4E181D9A78 /* Distribution */,
+				96C1D9B4D6898BF16D32E0BA246A8339 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

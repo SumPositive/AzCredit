@@ -20,7 +20,7 @@
 @end
 @implementation E3selectPayTypeTVC
 @synthesize Re3edit;
-@synthesize delegate;
+//@synthesize delegate;
 
 
 #pragma mark - Action
@@ -195,12 +195,12 @@
 		apd.entityModified = YES;	//変更あり
 
 		// E6更新
-		if ([delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
-			[delegate remakeE6change:4];		// (4) nPayType	支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
+		if ([self.delegate respondsToSelector:@selector(remakeE6change:)]) {	// メソッドの存在を確認する
+			[self.delegate remakeE6change:4];		// (4) nPayType	支払方法（=1 or 2)	＜＜1回と2回払いだけに限定＞＞
 		}
 		// 再描画
-		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
-			[delegate viewWillAppear:YES];	
+		if ([self.delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
+			[self.delegate viewWillAppear:YES];
 		}
 	}
 

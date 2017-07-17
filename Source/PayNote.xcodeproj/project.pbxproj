@@ -614,7 +614,8 @@
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		44FDB09B13BA0BD700783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 		44FDB09C13BA0BEB00783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
-		FEF5F11A5B38A4D9B20428B0 /* libPods-AzCreditS1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731E810163CA96606A9F44C /* libPods-AzCreditS1.a */; };
+		898F7BD659594C954102B745 /* libPods-PayNoteS1Pad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */; };
+		C37D49428BDB73714E1BF42B /* libPods-PayNote.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E54384CCB818C7F02203BE /* libPods-PayNote.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -664,6 +665,10 @@
 		447071CF12FC4F8C00C053D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4473734C1F1C4E76000E3DAA /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
 		4473734D1F1C4E76000E3DAA /* Readme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Readme.h; sourceTree = "<group>"; };
+		447373501F1C7A51000E3DAA /* PayNoteS1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteS1.entitlements; sourceTree = "<group>"; };
+		447373511F1C8146000E3DAA /* PayNote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNote.entitlements; sourceTree = "<group>"; };
+		447373521F1C81B2000E3DAA /* PayNotePadFree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNotePadFree.entitlements; sourceTree = "<group>"; };
+		447373531F1C81C9000E3DAA /* PayNoteS1Pad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteS1Pad.entitlements; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -807,11 +812,19 @@
 		44F0875A15177D5B00B84A44 /* Icon72Free@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon72Free@2x.png"; sourceTree = "<group>"; };
 		44FB5C5911512063008DEC3E /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
 		7731E810163CA96606A9F44C /* libPods-AzCreditS1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.release.xcconfig"; sourceTree = "<group>"; };
 		85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.release.xcconfig"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.distribution.xcconfig"; sourceTree = "<group>"; };
 		9E0EFDAC5D7DCD4F30B9C2C2 /* libPods-AzCreditPadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditPadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5E54384CCB818C7F02203BE /* libPods-PayNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.debug.xcconfig"; sourceTree = "<group>"; };
+		B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNoteS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.debug.xcconfig"; sourceTree = "<group>"; };
 		C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteS1Pad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad.debug.xcconfig"; sourceTree = "<group>"; };
+		E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteS1Pad.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad.release.xcconfig"; sourceTree = "<group>"; };
+		E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteS1Pad.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad.distribution.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -853,7 +866,7 @@
 				44B011EF133EF773005AD0EA /* QuartzCore.framework in Frameworks */,
 				4425D23D1425AB02004D3747 /* AVFoundation.framework in Frameworks */,
 				4403475F155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				FEF5F11A5B38A4D9B20428B0 /* libPods-AzCreditS1.a in Frameworks */,
+				C37D49428BDB73714E1BF42B /* libPods-PayNote.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,6 +908,7 @@
 				44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */,
 				44034762155F6BD600D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
+				898F7BD659594C954102B745 /* libPods-PayNoteS1Pad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,6 +947,7 @@
 			children = (
 				4473734D1F1C4E76000E3DAA /* Readme.h */,
 				4473734C1F1C4E76000E3DAA /* History.h */,
+				447373541F1C9058000E3DAA /* iCloud */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				44F0737F1105D9D80024B707 /* Images */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -988,8 +1003,21 @@
 				9E0EFDAC5D7DCD4F30B9C2C2 /* libPods-AzCreditPadFree.a */,
 				7731E810163CA96606A9F44C /* libPods-AzCreditS1.a */,
 				C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */,
+				A5E54384CCB818C7F02203BE /* libPods-PayNote.a */,
+				B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		447373541F1C9058000E3DAA /* iCloud */ = {
+			isa = PBXGroup;
+			children = (
+				447373531F1C81C9000E3DAA /* PayNoteS1Pad.entitlements */,
+				447373521F1C81B2000E3DAA /* PayNotePadFree.entitlements */,
+				447373511F1C8146000E3DAA /* PayNote.entitlements */,
+				447373501F1C7A51000E3DAA /* PayNoteS1.entitlements */,
+			);
+			name = iCloud;
 			sourceTree = "<group>";
 		};
 		44A4160E11DB83F7007DEB5B /* E8bank */ = {
@@ -1216,6 +1244,12 @@
 				BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */,
 				85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */,
 				0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */,
+				AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */,
+				81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */,
+				8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */,
+				C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */,
+				E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */,
+				E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1426,10 +1460,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44C0E7D013A0A475003D0465 /* Build configuration list for PBXNativeTarget "PayNoteS1Pad" */;
 			buildPhases = (
+				E58726A2C2A46A6A46AFAAA8 /* [CP] Check Pods Manifest.lock */,
 				44C0E5DB13A0A475003D0465 /* Resources */,
 				44C0E61D13A0A475003D0465 /* Sources */,
 				44C0E64C13A0A475003D0465 /* Frameworks */,
 				44C0E65813A0A475003D0465 /* Headers */,
+				FC3E755ADBFEA896AB5A2F06 /* [CP] Embed Pods Frameworks */,
+				60078EC929CF863B0631C560 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1451,15 +1488,35 @@
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 5C2UYK6F45;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					44B01168133EF773005AD0EA = {
 						DevelopmentTeam = 5C2UYK6F45;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					44C0E3B413A0A2D1003D0465 = {
 						DevelopmentTeam = 5C2UYK6F45;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					44C0E5DA13A0A475003D0465 = {
 						DevelopmentTeam = 5C2UYK6F45;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1481,9 +1538,9 @@
 			projectRoot = AzukiSoft;
 			targets = (
 				44B01168133EF773005AD0EA /* PayNote */,
+				44C0E5DA13A0A475003D0465 /* PayNoteS1Pad */,
 				1D6058900D05DD3D006BFB54 /* PayNoteFree */,
 				44C0E3B413A0A2D1003D0465 /* PayNotePadFree */,
-				44C0E5DA13A0A475003D0465 /* PayNoteS1Pad */,
 			);
 		};
 /* End PBXProject section */
@@ -1846,6 +1903,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		60078EC929CF863B0631C560 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		65037237564CCD8AD976282A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1858,7 +1930,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNote/Pods-PayNote-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		70D30C8900BD8E149E210EC7 /* [CP] Copy Pods Resources */ = {
@@ -1873,7 +1945,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNote/Pods-PayNote-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E58726A2C2A46A6A46AFAAA8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		FC3E755ADBFEA896AB5A2F06 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2121,6 +2223,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2155,7 +2258,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -2164,6 +2267,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2194,18 +2298,19 @@
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
 		44B01377133EF773005AD0EA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */;
+			baseConfigurationReference = AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNoteS1.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2236,12 +2341,13 @@
 		};
 		44B01378133EF773005AD0EA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */;
+			baseConfigurationReference = 81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNoteS1.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2268,12 +2374,13 @@
 		};
 		44B0137A133EF773005AD0EA /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */;
+			baseConfigurationReference = 8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNoteS1.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -2302,6 +2409,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2309,7 +2417,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
 					"AzFREE=1",
 					"AzPAD=1",
@@ -2338,7 +2446,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -2346,12 +2454,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
 					"AzFREE=1",
 					"AzPAD=1",
@@ -2378,7 +2487,7 @@
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 2;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
@@ -2386,12 +2495,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
 					"AzFREE=1",
 					"AzPAD=1",
@@ -2418,14 +2528,18 @@
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 2;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Distribution;
 		};
 		44C0E7D113A0A475003D0465 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2433,112 +2547,96 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
 					"AzSTABLE=1",
 					"AzPAD=1",
 				);
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "InfoS1-iPad.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/../../OpenCode/GoogleAnalytics/GoogleAnalytics.release\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-all_load",
-				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1Pad;
 				PRODUCT_NAME = PayNoteS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
 		44C0E7D213A0A475003D0465 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
 					"AzSTABLE=1",
 					"AzPAD=1",
 				);
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "InfoS1-iPad.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/../../OpenCode/GoogleAnalytics/GoogleAnalytics.release\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-all_load",
-				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1Pad;
 				PRODUCT_NAME = PayNoteS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 2;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};
 		44C0E7D313A0A475003D0465 /* Distribution */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = AzCredit_Prefix.pch;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = (
 					"AzSTABLE=1",
 					"AzPAD=1",
 				);
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "InfoS1-iPad.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\"$(SRCROOT)/../../OpenCode/GoogleAnalytics/GoogleAnalytics.release\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lxml2",
-					"-all_load",
-				);
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1Pad;
 				PRODUCT_NAME = PayNoteS1Pad;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 2;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Distribution;
 		};
@@ -2591,6 +2689,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2621,7 +2720,7 @@
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = armv7;
+				VALID_ARCHS = arm64;
 			};
 			name = Distribution;
 		};

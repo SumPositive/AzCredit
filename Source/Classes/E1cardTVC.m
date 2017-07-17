@@ -27,7 +27,7 @@
 @implementation E1cardTVC
 @synthesize Re0root;
 @synthesize Re3edit;
-@synthesize delegate;
+//@synthesize delegate;
 
 
 #pragma mark - Delegate

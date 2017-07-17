@@ -25,7 +25,7 @@
 @implementation EditDateVC
 //@synthesize Rentity;
 //@synthesize RzKey;
-@synthesize delegate;
+//@synthesize delegate;
 @synthesize PiMinYearMMDD;
 @synthesize PiMaxYearMMDD;
 

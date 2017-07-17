@@ -25,7 +25,7 @@
 @synthesize Re5edit;
 @synthesize PbAdd;
 @synthesize PbSave;
-@synthesize Pe3edit;
+//@synthesize Pe3edit;
 //#ifdef AzPAD
 @synthesize delegate;
 //@synthesize selfPopover;
@@ -96,8 +96,8 @@
 		[MocFunctions commit];
 	}
 	
-	if (Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
-		Pe3edit.e5category = Re5edit;
+	if (self.Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
+		self.Pe3edit.e5category = Re5edit;
         if (IS_PAD) {
             [self.navigationController  popToRootViewControllerAnimated:YES];  // < RootViewへ戻る
             return;
@@ -137,7 +137,7 @@
 	if (self) {
 		// 初期値
 		PbAdd = NO;
-		Pe3edit = nil;
+		self.Pe3edit = nil;
         if (IS_PAD) {
             self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
         }

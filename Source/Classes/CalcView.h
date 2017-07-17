@@ -43,8 +43,8 @@
 @property (nonatomic, strong) UILabel				*Rlabel;
 //@property (nonatomic, retain) id						Rentity;
 //@property (nonatomic, retain) NSString			*RzKey;	
-@property (nonatomic, weak) UITableView	*PoParentTableView;
-@property (nonatomic, weak) id						delegate;
+@property (nonatomic) UITableView	*PoParentTableView;
+@property (nonatomic) id						delegate;
 
 // 公開メソッド
 //- (id)initWithFrame:(CGRect)rect;

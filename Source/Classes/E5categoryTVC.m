@@ -29,7 +29,7 @@
 
 @implementation E5categoryTVC
 @synthesize Re0root;
-@synthesize Pe3edit;
+//@synthesize Pe3edit;
 //#ifdef AzPAD
 @synthesize delegate;
 //@synthesize selfPopover;
@@ -81,7 +81,7 @@
 		e5detail.Re5edit = [NSEntityDescription insertNewObjectForEntityForName:@"E5category"
 														 inManagedObjectContext:Re0root.managedObjectContext];
 		e5detail.PbAdd = YES;
-		e5detail.Pe3edit = Pe3edit;
+		e5detail.Pe3edit = self.Pe3edit;
 
 		if (RzSearchText) {	//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
 			e5detail.Re5edit.zName = RzSearchText;
@@ -102,14 +102,14 @@
 		e5detail.Pe3edit = nil;
 	}
 	
-	if (Pe3edit) {
+	if (self.Pe3edit) {
 		e5detail.PbSave = NO;	// 呼び出し元：E3recordDetailTVC側のsave:により保存
 	} else {
 		e5detail.PbSave = YES;	// マスタモード：
 	}
 	
     if (IS_PAD) {
-        if (Pe3edit) { // 選択モード
+        if (self.Pe3edit) { // 選択モード
             e5detail.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
             [self.navigationController pushViewController:e5detail animated:YES];
         } else {
@@ -154,7 +154,7 @@
 
 - (void)barButtonUntitled {
 	// 未定(nil)にする
-	Pe3edit.e5category = nil; 
+	self.Pe3edit.e5category = nil;
 //#ifdef xxxAzPAD
 //	if (selfPopover) {
 //		if ([delegate respondsToSelector:@selector(viewWillAppear:)]) {	// メソッドの存在を確認する
@@ -215,7 +215,7 @@
                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
     }
 
-	if (Pe3edit == nil) {
+	if (self.Pe3edit == nil) {
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
 	}
@@ -248,7 +248,7 @@
 																			 target:nil action:nil];
 	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																			target:self action:@selector(barButtonAdd)];
-	if (Pe3edit) {
+	if (self.Pe3edit) {
 		MbuTop = nil;
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
@@ -344,8 +344,8 @@
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 
-	if (Pe3edit) {
-		sourceE5category = Pe3edit.e5category;		//初期値
+	if (self.Pe3edit) {
+		sourceE5category = self.Pe3edit.e5category;		//初期値
 	} else {
 		sourceE5category = nil;
 	}
@@ -357,7 +357,7 @@
     if (IS_PAD) {
         // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
         // SplitViewタテのとき [Menu] button を表示する
-        if (Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+        if (self.Pe3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             if (app.barMenu) {
                 UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -572,7 +572,7 @@
 			//cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
 			cell.detailTextLabel.textColor = [UIColor blackColor];
 
-			if (Pe3edit == nil) {
+			if (self.Pe3edit == nil) {
 				cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton; // ディスクロージャボタン
 				cell.showsReorderControl = NO; // MOVE
 			}
@@ -616,9 +616,9 @@
 
 	// 末尾([Me4shops count])はAdd行
 	if (indexPath.row < RaE5categorys.count) {
-		if (Pe3edit) { // 選択モード
-			Pe3edit.e5category = RaE5categorys[indexPath.row]; 
-			if (sourceE5category != Pe3edit.e5category) {
+		if (self.Pe3edit) { // 選択モード
+			self.Pe3edit.e5category = RaE5categorys[indexPath.row];
+			if (sourceE5category != self.Pe3edit.e5category) {
 				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 			}

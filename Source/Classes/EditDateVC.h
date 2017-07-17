@@ -37,7 +37,7 @@
 
 //@property (nonatomic, retain) id					Rentity;
 //@property (nonatomic, retain) NSString		*RzKey;	
-@property (nonatomic, weak)	  id		delegate;
+@property (nonatomic)	  id		delegate;
 @property (nonatomic, assign) NSInteger	PiMinYearMMDD;
 @property (nonatomic, assign) NSInteger	PiMaxYearMMDD;
 
