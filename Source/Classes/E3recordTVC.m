@@ -98,14 +98,14 @@
 	[self e3detailView:nil]; // :(nil)Add mode
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	switch (alertView.tag) {
-		case ALERT_TAG_NoMore:
-			[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
-			break;
-	}
-}
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	switch (alertView.tag) {
+//		case ALERT_TAG_NoMore:
+//			[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
+//			break;
+//	}
+//}
 
 - (void)e3detailView:(NSIndexPath *)indexPath 
 {
@@ -328,7 +328,7 @@
 	NSDateFormatter *df_index = [[NSDateFormatter alloc] init];
 	df_index.dateFormat = @"M";
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]; //「明細」セクションでも使っているため、df_sectionと同じ所でreleseしている。
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian]; //「明細」セクションでも使っているため、df_sectionと同じ所でreleseしている。
 	df_section.calendar = calendar;
 	df_index.calendar = calendar;
 
@@ -353,7 +353,7 @@
 	
 	// [RaE3list addObject:e3days] は、下記ループの最初に実行される。
 	
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit; // タイムゾーン変換させるため「時」が必須
+	unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour; // タイムゾーン変換させるため「時」が必須
 	// 「明細」セクション
 	for (E3record *e3 in mE3array) 
 	{
@@ -526,7 +526,7 @@
 	assert(RcellDateFormatter==nil);
 	RcellDateFormatter = [[NSDateFormatter alloc] init];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	RcellDateFormatter.calendar = calendar;
 	//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
 	[RcellDateFormatter setDateFormat:NSLocalizedString(@"E3listDate",nil)];
@@ -620,13 +620,22 @@
 	
 	if (self.PbAddMode==NO && RaE3list.count < 3) { // 少なくとも、Top + Monthly + End の3セクションあるから
 		// 明細なし ＞ 前画面に戻す
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E3list NoData",nil)
-														message:NSLocalizedString(@"E3list NoData msg",nil)
-													   delegate:self 
-											  cancelButtonTitle:nil
-											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
-		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
-		[alert show];
+//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"E3list NoData",nil)
+//														message:NSLocalizedString(@"E3list NoData msg",nil)
+//													   delegate:self 
+//											  cancelButtonTitle:nil
+//											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
+//		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
+//		[alert show];
+        
+        [self aleartTitle:NSLocalizedString(@"E3list NoData",nil)
+                  message:NSLocalizedString(@"E3list NoData msg",nil)
+                  b1title:NSLocalizedString(@"Roger",nil)
+                  b1style:UIAlertActionStyleDefault
+                 b1action:^(UIAlertAction * _Nullable action) {
+                     // < 前のViewへ戻る
+                     [self.navigationController popViewControllerAnimated:YES];
+                 }];
 		return;
 	}
 	
@@ -748,7 +757,7 @@
 //        selfPopover = nil;
         MindexPathEdit = nil;
     }
-    //[super dealloc];
+ //   [super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。

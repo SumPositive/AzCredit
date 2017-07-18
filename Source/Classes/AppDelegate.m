@@ -18,6 +18,8 @@
 //#ifdef AzPAD
 #import "PadRootVC.h"
 //#endif
+#import "UpdateVC.h"
+
 
 
 //iOS6以降、回転対応のためサブクラス化が必要になった。
@@ -70,7 +72,7 @@
 //	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
 //	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
 //	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
-
+  //  [super dealloc];
 }
 
 
@@ -252,6 +254,22 @@
 	 Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	 */
 	AzLOG(@"applicationDidBecomeActive");
+    
+    
+    // Update
+    NSString* bundleID = [NSBundle mainBundle].bundleIdentifier;
+    AzLOG(@"bundleID: %@",bundleID);
+    if ([bundleID isEqualToString:@"com.azukid.azcredits1"]) {
+        // iCloud 読み込み
+        
+    } else {
+        // iCloud 保存
+        UpdateVC* vc = [[UpdateVC alloc] init];
+        vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
+        vc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+        vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [window.rootViewController presentViewController:vc animated:YES completion:nil];
+    }
 }
 
 

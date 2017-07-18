@@ -289,8 +289,8 @@ static NSManagedObjectContext *scMoc = nil;
 	
 	//NSCalendar *cal = [NSCalendar currentCalendar];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
 	NSDateComponents *compUse = [calendar components:unitFlags fromDate:PtUse]; // 利用日
 	
 	if (iClosingDay<=0) { // Debit 当日締
@@ -511,8 +511,8 @@ static NSManagedObjectContext *scMoc = nil;
 {
 	assert(e2paid.e7payment.e0paid);  //[1.1.7]処理対象を支払済み(PAID)に限定した ＜＜同日追加を
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute;
 	
 	// [0.4]nRepeat対応　＜＜E2,E7をPAID移行完了してからRepeat処理すること。さもなくば落ちる＞＞
 	//BugFix[1.1.7]この中で.e6partsリンクが変化し「Collection was mutated while being enumerated.」例外が発生した。
@@ -1181,12 +1181,19 @@ static NSManagedObjectContext *scMoc = nil;
 	if (e6obj.e2invoice.e1paid) {
 		// 支払済につきチェック変更できません
 		if (bAlert) { // E3から一括処理されたときアラート表示しないため
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NotNoCheck",nil) 
-															 message:NSLocalizedString(@"NotNoCheck msg",nil) 
-															delegate:nil 
-												   cancelButtonTitle:nil 
-												   otherButtonTitles:@"OK", nil];
-			[alert show];
+//			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NotNoCheck",nil) 
+//															 message:NSLocalizedString(@"NotNoCheck msg",nil) 
+//															delegate:nil 
+//												   cancelButtonTitle:nil 
+//												   otherButtonTitles:@"OK", nil];
+//			[alert show];
+
+            [getTopViewController() aleartTitle:NSLocalizedString(@"NotNoCheck",nil)
+                                        message:NSLocalizedString(@"NotNoCheck msg",nil)
+                                        b1title:@"OK"
+                                        b1style:UIAlertActionStyleDefault
+                                       b1action:nil];
+
 		}
 		return;
 	}

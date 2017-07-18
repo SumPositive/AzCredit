@@ -24,6 +24,6 @@
 }
 
 @property (nonatomic, strong) E3record		*Re3edit;
-@property (nonatomic) id					delegate;
+@property (nonatomic, assign) id					delegate;
 
 @end

@@ -86,8 +86,8 @@ NSInteger GiYearMMDD( NSDate *dt )
 {
 	//NSCalendar *cal = [NSCalendar currentCalendar];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
 	NSDateComponents *comp = [calendar components:unitFlags fromDate:dt];
 	NSInteger iYearMMDD = comp.year * 10000 + comp.month * 100 + comp.day;
 	//[comp release]; autorelease
@@ -113,8 +113,8 @@ NSInteger GiAddYearMMDD(NSInteger iYearMMDD,
 {
 	//NSCalendar *cal = [NSCalendar currentCalendar];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
 	NSDateComponents *comp = [[NSDateComponents alloc] init];
 	comp.year = iYearMMDD / 10000;
 	comp.month = (iYearMMDD - comp.year * 10000) / 100;
@@ -146,8 +146,8 @@ NSInteger GiYearMMDD_ModifyDay( NSInteger iYearMMDD, NSInteger iDay )		// iDay>=
 {
 	//NSCalendar *cal = [NSCalendar currentCalendar];
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
 	NSDateComponents *comp = [[NSDateComponents alloc] init];
 	comp.year = iYearMMDD / 10000;
 	comp.month = (iYearMMDD - comp.year * 10000) / 100;
@@ -223,14 +223,14 @@ NSDate *GdateYearMMDD( NSInteger PiYearMMDD, NSInteger PiHour, NSInteger PiMinut
 	iDD -= (iMM * 100);
 	
 	//NSString *dateStr = [NSString stringWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", 
-	NSString *dateStr = [[NSString alloc] initWithFormat:@"%04d-%02d-%02d %02d:%02d:%02d", 
-							(int)iYear,(int)iMM,(int)iDD, PiHour,PiMinute,PiSecond];
+    NSString *dateStr = [[NSString alloc] initWithFormat:@"%04d-%02d-%02d %02ld:%02ld:%02ld", 
+                         (int)iYear,(int)iMM,(int)iDD, (long)PiHour,(long)PiMinute,(long)PiSecond];
 	// strをNSDate型に変換
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];  
 	dateFormatter.timeStyle = NSDateFormatterFullStyle;  
 	dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";  
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	dateFormatter.calendar = calendar;
 	NSDate *datetime = [dateFormatter dateFromString:dateStr];  //autorelease
 	return datetime; // NSDateは、常にUTC(+0000)協定世界時間である。
@@ -238,10 +238,26 @@ NSDate *GdateYearMMDD( NSInteger PiYearMMDD, NSInteger PiHour, NSInteger PiMinut
 
 void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton )
 {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:zTitle
-													message:zMsg
-												   delegate:nil
-										  cancelButtonTitle:nil
-										  otherButtonTitles:zButton, nil];
-	[alert show];
+//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:zTitle
+//													message:zMsg
+//												   delegate:nil
+//										  cancelButtonTitle:nil
+//										  otherButtonTitles:zButton, nil];
+//	[alert show];
+
+    [getTopViewController() aleartTitle:zTitle
+                                message:zMsg
+                                b1title:zButton
+                                b1style:UIAlertActionStyleDefault
+                               b1action:nil];
 }
+
+UIViewController* getTopViewController() {
+    UIViewController* vc = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    while (vc.presentedViewController) {
+        vc = vc.presentedViewController;
+    }
+    return vc;
+}
+
+

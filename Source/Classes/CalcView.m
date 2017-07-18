@@ -813,7 +813,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 	RzLabelText = nil;
 	//[RzKey release];
 	//[Rentity release];
-    //[super dealloc];
+  //  [super dealloc];
 }
 
 

@@ -32,7 +32,7 @@
 @property (nonatomic, strong) E4shop	*Re4edit;
 @property BOOL							PbAdd;
 @property BOOL							PbSave;
-@property (nonatomic) E3record	*Pe3edit;
+@property (nonatomic, assign) E3record	*Pe3edit;
 //#ifdef AzPAD
 @property (nonatomic, assign) id		delegate;
 //@property (nonatomic, retain) UIPopoverController*	selfPopover;

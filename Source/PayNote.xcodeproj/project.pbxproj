@@ -51,6 +51,24 @@
 		447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
 		4473734E1F1C4E76000E3DAA /* History.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473734C1F1C4E76000E3DAA /* History.h */; };
 		4473734F1F1C4E76000E3DAA /* Readme.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473734D1F1C4E76000E3DAA /* Readme.h */; };
+		447373581F1C93EC000E3DAA /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
+		447373591F1C93EC000E3DAA /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
+		4473735A1F1C93EC000E3DAA /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
+		4473735B1F1C93EC000E3DAA /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
+		4473735C1F1C93EC000E3DAA /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
+		4473735D1F1C93EC000E3DAA /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
+		4473735E1F1C93EC000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
+		4473735F1F1C93EC000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
+		447373601F1C93EC000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
+		447373631F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373611F1E37A8000E3DAA /* UIViewController+Alert.h */; };
+		447373641F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373611F1E37A8000E3DAA /* UIViewController+Alert.h */; };
+		447373651F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373611F1E37A8000E3DAA /* UIViewController+Alert.h */; };
+		447373661F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373621F1E37A8000E3DAA /* UIViewController+Alert.m */; };
+		447373671F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373621F1E37A8000E3DAA /* UIViewController+Alert.m */; };
+		447373681F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373621F1E37A8000E3DAA /* UIViewController+Alert.m */; };
+		447373691F1E4EBD000E3DAA /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
+		4473736A1F1E4EC2000E3DAA /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
+		4473736B1F1E4EC9000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
@@ -669,6 +687,11 @@
 		447373511F1C8146000E3DAA /* PayNote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNote.entitlements; sourceTree = "<group>"; };
 		447373521F1C81B2000E3DAA /* PayNotePadFree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNotePadFree.entitlements; sourceTree = "<group>"; };
 		447373531F1C81C9000E3DAA /* PayNoteS1Pad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteS1Pad.entitlements; sourceTree = "<group>"; };
+		447373551F1C93EC000E3DAA /* UpdateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateVC.h; sourceTree = "<group>"; };
+		447373561F1C93EC000E3DAA /* UpdateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateVC.m; sourceTree = "<group>"; };
+		447373571F1C93EC000E3DAA /* UpdateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpdateVC.xib; sourceTree = "<group>"; };
+		447373611F1E37A8000E3DAA /* UIViewController+Alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alert.h"; sourceTree = "<group>"; };
+		447373621F1E37A8000E3DAA /* UIViewController+Alert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Alert.m"; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1016,6 +1039,9 @@
 				447373521F1C81B2000E3DAA /* PayNotePadFree.entitlements */,
 				447373511F1C8146000E3DAA /* PayNote.entitlements */,
 				447373501F1C7A51000E3DAA /* PayNoteS1.entitlements */,
+				447373551F1C93EC000E3DAA /* UpdateVC.h */,
+				447373561F1C93EC000E3DAA /* UpdateVC.m */,
+				447373571F1C93EC000E3DAA /* UpdateVC.xib */,
 			);
 			name = iCloud;
 			sourceTree = "<group>";
@@ -1035,6 +1061,8 @@
 		44B87D86112A1DDA00ABF916 /* Func */ = {
 			isa = PBXGroup;
 			children = (
+				447373611F1E37A8000E3DAA /* UIViewController+Alert.h */,
+				447373621F1E37A8000E3DAA /* UIViewController+Alert.m */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				449312B410F0D5A700C6C8E5 /* Global.h */,
 				44FB5C5911512063008DEC3E /* Global.m */,
@@ -1271,6 +1299,7 @@
 				44B605F61126FADD00E82C54 /* E1editPayDayVC.h in Headers */,
 				44D7351611279ACB00997A37 /* E2invoiceTVC.h in Headers */,
 				440AC51611299DBE00B89317 /* EditDateVC.h in Headers */,
+				447373641F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */,
 				44D00C3F112CCC25001BC4C8 /* E3recordTVC.h in Headers */,
 				44ABA3A6112FB92D0009E62E /* E4shopDetailTVC.h in Headers */,
 				44ABA3A8112FB92D0009E62E /* E4shopTVC.h in Headers */,
@@ -1284,6 +1313,7 @@
 				44A68B6311685110004A89ED /* CalcView.h in Headers */,
 				44A4162311DB8447007DEB5B /* E8bankDetailTVC.h in Headers */,
 				44A4162411DB8447007DEB5B /* E8bankTVC.h in Headers */,
+				447373591F1C93EC000E3DAA /* UpdateVC.h in Headers */,
 				44A5AB3D11DF7CCD00C9A093 /* E1editBonusVC.h in Headers */,
 				44E9101212E3018400D4B6A6 /* E3selectRepeatTVC.h in Headers */,
 				44CEC514142636C4005D7850 /* Global.h in Headers */,
@@ -1306,6 +1336,7 @@
 				4473734E1F1C4E76000E3DAA /* History.h in Headers */,
 				44B011FD133EF773005AD0EA /* EditDateVC.h in Headers */,
 				44B011FE133EF773005AD0EA /* E3recordTVC.h in Headers */,
+				447373691F1E4EBD000E3DAA /* UpdateVC.h in Headers */,
 				4473734F1F1C4E76000E3DAA /* Readme.h in Headers */,
 				44B011FF133EF773005AD0EA /* E4shopDetailTVC.h in Headers */,
 				44B01200133EF773005AD0EA /* E4shopTVC.h in Headers */,
@@ -1338,6 +1369,7 @@
 				44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E44013A0A2D1003D0465 /* EditTextVC.h in Headers */,
 				44C0E44113A0A2D1003D0465 /* E1editPayDayVC.h in Headers */,
+				447373651F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */,
 				44C0E44213A0A2D1003D0465 /* E2invoiceTVC.h in Headers */,
 				44C0E44313A0A2D1003D0465 /* EditDateVC.h in Headers */,
 				44C0E44413A0A2D1003D0465 /* E3recordTVC.h in Headers */,
@@ -1346,6 +1378,7 @@
 				44C0E44713A0A2D1003D0465 /* E6partTVC.h in Headers */,
 				44C0E44813A0A2D1003D0465 /* E7paymentTVC.h in Headers */,
 				44C0E44913A0A2D1003D0465 /* FileCsv.h in Headers */,
+				4473735A1F1C93EC000E3DAA /* UpdateVC.h in Headers */,
 				44C0E44B13A0A2D1003D0465 /* E3selectPayTypeTVC.h in Headers */,
 				44C0E44C13A0A2D1003D0465 /* E5categoryTVC.h in Headers */,
 				44C0E44D13A0A2D1003D0465 /* E5categoryDetailTVC.h in Headers */,
@@ -1373,6 +1406,7 @@
 				44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E66113A0A475003D0465 /* EditTextVC.h in Headers */,
 				44C0E66213A0A475003D0465 /* E1editPayDayVC.h in Headers */,
+				447373631F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */,
 				44C0E66313A0A475003D0465 /* E2invoiceTVC.h in Headers */,
 				44C0E66413A0A475003D0465 /* EditDateVC.h in Headers */,
 				44C0E66513A0A475003D0465 /* E3recordTVC.h in Headers */,
@@ -1381,6 +1415,7 @@
 				44C0E66813A0A475003D0465 /* E6partTVC.h in Headers */,
 				44C0E66913A0A475003D0465 /* E7paymentTVC.h in Headers */,
 				44C0E66A13A0A475003D0465 /* FileCsv.h in Headers */,
+				447373581F1C93EC000E3DAA /* UpdateVC.h in Headers */,
 				44C0E66C13A0A475003D0465 /* E3selectPayTypeTVC.h in Headers */,
 				44C0E66D13A0A475003D0465 /* E5categoryTVC.h in Headers */,
 				44C0E66E13A0A475003D0465 /* E5categoryDetailTVC.h in Headers */,
@@ -1620,6 +1655,7 @@
 				44A10FC8131A16E0000AE46F /* Icon32-Recipient@2x.png in Resources */,
 				44CB03DA13C5B63100859E45 /* Icon90x70-toUnpaid.png in Resources */,
 				44CB03DE13C5B63100859E45 /* Icon90x70-toUnpaid@2x.png in Resources */,
+				4473735F1F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44CB03E213C5B63100859E45 /* Icon90x70-toPAID@2x.png in Resources */,
 				44CB03E613C5B63100859E45 /* Icon90x70-toPAID.png in Resources */,
 				44C4B7B813D1F29D00EB9B2B /* Icon32-Setting@2x.png in Resources */,
@@ -1687,6 +1723,7 @@
 				44B01198133EF773005AD0EA /* Icon16-Setting@2x.png in Resources */,
 				44B01199133EF773005AD0EA /* Icon16-Setting.png in Resources */,
 				4450BE141E7ED613001305D1 /* Images.xcassets in Resources */,
+				4473736B1F1E4EC9000E3DAA /* UpdateVC.xib in Resources */,
 				44B0119A133EF773005AD0EA /* Icon-DrumPush.png in Resources */,
 				44B0119B133EF773005AD0EA /* Icon-DrumPush@2x.png in Resources */,
 				44B0119C133EF773005AD0EA /* Icon-Drum@2x.png in Resources */,
@@ -1767,6 +1804,7 @@
 				44C0E3DF13A0A2D1003D0465 /* Icon16-Return2.png in Resources */,
 				44C0E3E013A0A2D1003D0465 /* Icon16-Return1.png in Resources */,
 				44C0E3E113A0A2D1003D0465 /* Icon16-Information.png in Resources */,
+				447373601F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E3E213A0A2D1003D0465 /* Icon16-Information@2x.png in Resources */,
 				44C0E3E313A0A2D1003D0465 /* Icon16-Setting@2x.png in Resources */,
 				44C0E3E413A0A2D1003D0465 /* Icon16-Setting.png in Resources */,
@@ -1853,6 +1891,7 @@
 				44C0E60913A0A475003D0465 /* Icon16-Return2.png in Resources */,
 				44C0E60A13A0A475003D0465 /* Icon16-Return1.png in Resources */,
 				44C0E60B13A0A475003D0465 /* Icon16-Information.png in Resources */,
+				4473735E1F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E60C13A0A475003D0465 /* Icon16-Information@2x.png in Resources */,
 				44C0E60D13A0A475003D0465 /* Icon16-Setting@2x.png in Resources */,
 				44C0E60E13A0A475003D0465 /* Icon16-Setting.png in Resources */,
@@ -2004,6 +2043,7 @@
 				44D00C40112CCC25001BC4C8 /* E3recordTVC.m in Sources */,
 				44ABA3A7112FB92D0009E62E /* E4shopDetailTVC.m in Sources */,
 				44ABA3A9112FB92D0009E62E /* E4shopTVC.m in Sources */,
+				447373671F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */,
 				44AD488B1132B6B900FB19FB /* E6partTVC.m in Sources */,
 				44A19FE011367A3B00DE0113 /* E7paymentTVC.m in Sources */,
 				44A3DE01113BE60B00DE9242 /* FileCsv.m in Sources */,
@@ -2012,6 +2052,7 @@
 				4454C98C114941930063621D /* E5categoryTVC.m in Sources */,
 				44ACA0C3114E698B000E9FD8 /* MocFunctions.m in Sources */,
 				44FB5C5A11512063008DEC3E /* Global.m in Sources */,
+				4473735C1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
 				44A68B6511685121004A89ED /* CalcView.m in Sources */,
 				44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */,
 				44A4162211DB8447007DEB5B /* E8bankDetailTVC.m in Sources */,
@@ -2055,6 +2096,7 @@
 				44B011C9133EF773005AD0EA /* CalcView.m in Sources */,
 				44B011CB133EF773005AD0EA /* E8bankTVC.m in Sources */,
 				44B011CC133EF773005AD0EA /* E8bankDetailTVC.m in Sources */,
+				4473736A1F1E4EC2000E3DAA /* UpdateVC.m in Sources */,
 				44B011CD133EF773005AD0EA /* E1editBonusVC.m in Sources */,
 				44B011CE133EF773005AD0EA /* E3selectRepeatTVC.m in Sources */,
 			);
@@ -2064,6 +2106,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4473735D1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
 				44C0E3FA13A0A2D1003D0465 /* main.m in Sources */,
 				44C0E3FB13A0A2D1003D0465 /* AppDelegate.m in Sources */,
 				44C0E3FC13A0A2D1003D0465 /* Entity.m in Sources */,
@@ -2076,6 +2119,7 @@
 				44C0E40413A0A2D1003D0465 /* E3recordDetailTVC.m in Sources */,
 				44C0E40613A0A2D1003D0465 /* E1cardDetailTVC.m in Sources */,
 				44C0E40713A0A2D1003D0465 /* EditTextVC.m in Sources */,
+				447373681F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */,
 				44C0E40813A0A2D1003D0465 /* E1editPayDayVC.m in Sources */,
 				44C0E40913A0A2D1003D0465 /* E2invoiceTVC.m in Sources */,
 				44C0E40A13A0A2D1003D0465 /* EditDateVC.m in Sources */,
@@ -2104,6 +2148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4473735B1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
 				44C0E61E13A0A475003D0465 /* main.m in Sources */,
 				44C0E61F13A0A475003D0465 /* AppDelegate.m in Sources */,
 				44C0E62013A0A475003D0465 /* Entity.m in Sources */,
@@ -2116,6 +2161,7 @@
 				44C0E62813A0A475003D0465 /* E3recordDetailTVC.m in Sources */,
 				44C0E62A13A0A475003D0465 /* E1cardDetailTVC.m in Sources */,
 				44C0E62B13A0A475003D0465 /* EditTextVC.m in Sources */,
+				447373661F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */,
 				44C0E62C13A0A475003D0465 /* E1editPayDayVC.m in Sources */,
 				44C0E62D13A0A475003D0465 /* E2invoiceTVC.m in Sources */,
 				44C0E62E13A0A475003D0465 /* EditDateVC.m in Sources */,

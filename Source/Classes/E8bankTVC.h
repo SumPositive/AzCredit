@@ -38,8 +38,8 @@
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic) E0root	*Re0root;
-@property (nonatomic) E1card      *Pe1card;
+@property (nonatomic, assign) E0root	*Re0root;
+@property (nonatomic, assign) E1card      *Pe1card;
 
 //#ifdef AzPAD
 // delegate method

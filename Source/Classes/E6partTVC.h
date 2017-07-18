@@ -45,9 +45,9 @@
 	CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
 }
 
-@property (nonatomic) E2invoice		*Pe2select;
-@property (nonatomic) E7payment		*Pe7select;
-@property (nonatomic) NSMutableSet	*Pe2invoices;
+@property (nonatomic, assign) E2invoice		*Pe2select;
+@property (nonatomic, assign) E7payment		*Pe7select;
+@property (nonatomic, assign) NSMutableSet	*Pe2invoices;
 @property (nonatomic, assign) NSInteger		PiFirstSection;
 
 //#ifdef AzPAD

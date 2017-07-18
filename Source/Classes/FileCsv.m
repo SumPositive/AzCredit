@@ -388,7 +388,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	dateFormatter.timeStyle = NSDateFormatterFullStyle;
 	dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss ZZZZ";
 	//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	dateFormatter.calendar = calendar;
 	NSDateComponents* dateComp;
 	
@@ -437,8 +437,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e4node.zName = zName; // csvToStr()後にトリム済み
 					e4node.zNote = csvToStr(MaCsv[2]);
 					e4node.sortDate = [dateFormatter dateFromString:MaCsv[3]];
-					dateComp = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit	| NSDayCalendarUnit
-								| NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate: e4node.sortDate];
+					dateComp = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth	| NSCalendarUnitDay
+								| NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate: e4node.sortDate];
 					if (dateComp.year < 100) {	//[1.1.8]和暦で保存されたものを西暦に修正する
 						dateComp.year += 1988;	// 0024 + 1988 ⇒ 2012
 						e4node.sortDate = [calendar dateFromComponents:dateComp];
@@ -458,8 +458,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 					e5node.zName = zName;
 					e5node.zNote = csvToStr(MaCsv[2]);
 					e5node.sortDate = [dateFormatter dateFromString:MaCsv[3]];
-					dateComp = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit	| NSDayCalendarUnit
-								| NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate: e5node.sortDate];
+					dateComp = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth	| NSCalendarUnitDay
+								| NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate: e5node.sortDate];
 					if (dateComp.year < 100) {	//[1.1.8]和暦で保存されたものを西暦に修正する
 						dateComp.year += 1988;	// 0024 + 1988 ⇒ 2012
 						e5node.sortDate = [calendar dateFromComponents:dateComp];
@@ -530,8 +530,8 @@ static NSString *csvToStr( NSString *inCsv ) {
 				ActE3record = nil;
 				NSDate *dateUse = [dateFormatter dateFromString:MaCsv[1]];
 				assert(dateUse);
-				dateComp = [calendar components: NSYearCalendarUnit | NSMonthCalendarUnit	| NSDayCalendarUnit
-							| NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate: dateUse];
+				dateComp = [calendar components: NSCalendarUnitYear | NSCalendarUnitMonth	| NSCalendarUnitDay
+							| NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate: dateUse];
 				if (dateComp.year < 100) {	//[1.1.8]和暦で保存されたものを西暦に修正する
 					dateComp.year += 1988;	// 0024 + 1988 ⇒ 2012
 					dateUse = [calendar dateFromComponents:dateComp];

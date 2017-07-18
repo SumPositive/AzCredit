@@ -395,9 +395,14 @@
 	if (sender==MtfPass1) {
 		if (20 < (sender.text).length) {
 			sender.text = @"";
-			alertBox(NSLocalizedString(@"OptLoginPass Over",nil), 
-					 NSLocalizedString(@"OptLoginPass Over msg",nil), 
-					 NSLocalizedString(@"Roger",nil));
+//			alertBox(NSLocalizedString(@"OptLoginPass Over",nil), 
+//					 NSLocalizedString(@"OptLoginPass Over msg",nil), 
+//					 NSLocalizedString(@"Roger",nil));
+            [self aleartTitle:NSLocalizedString(@"OptLoginPass Over",nil)
+                      message:NSLocalizedString(@"OptLoginPass Over msg",nil)
+                      b1title:NSLocalizedString(@"Roger",nil)
+                      b1style:UIAlertActionStyleDefault
+                     b1action:nil];
 			return NO;
 		}
 		MtfPass2.text = @"";

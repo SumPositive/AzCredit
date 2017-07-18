@@ -465,13 +465,20 @@
 	}
 	if (bPreview) {
 		// E2配下のE6なし、前画面に戻る。
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Payment changed",nil)
-														message:NSLocalizedString(@"Payment changed msg",nil)
-													   delegate:self 
-											  cancelButtonTitle:nil
-											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
-		[alert show];
-		//[self.navigationController popViewControllerAnimated:YES]; 	alertデリゲートにて、前のViewへ戻る
+//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Payment changed",nil)
+//														message:NSLocalizedString(@"Payment changed msg",nil)
+//													   delegate:self 
+//											  cancelButtonTitle:nil
+//											  otherButtonTitles:NSLocalizedString(@"Roger",nil), nil];
+//		[alert show];
+//		//[self.navigationController popViewControllerAnimated:YES]; 	alertデリゲートにて、前のViewへ戻る
+        
+        [self aleartTitle:NSLocalizedString(@"Payment changed",nil)
+                  message:NSLocalizedString(@"Payment changed msg",nil)
+                  b1title:NSLocalizedString(@"Roger",nil)
+                  b1style:UIAlertActionStyleDefault
+                 b1action:nil];
+
 	}
 }
 
@@ -817,7 +824,7 @@
 		// zDate 利用日
 		NSDateFormatter *df = [[NSDateFormatter alloc] init];
 		//[1.1.2]システム設定で「和暦」にされたとき年表示がおかしくなるため、西暦（グレゴリア）に固定
-		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 		df.calendar = calendar;
 		//[df setLocale:[NSLocale systemLocale]];これがあると曜日が表示されない。
 		[df setDateFormat:NSLocalizedString(@"E3listDate",nil)];

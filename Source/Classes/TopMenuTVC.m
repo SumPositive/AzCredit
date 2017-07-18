@@ -194,9 +194,14 @@
 - (void)e3record
 {
 	if (MiE1cardCount <= 0) {
-		alertBox(NSLocalizedString(@"No Card",nil),
-				 NSLocalizedString(@"No Card msg",nil),
-				 NSLocalizedString(@"Roger",nil));
+//		alertBox(NSLocalizedString(@"No Card",nil),
+//				 NSLocalizedString(@"No Card msg",nil),
+//				 NSLocalizedString(@"Roger",nil));
+        [self aleartTitle:NSLocalizedString(@"No Card",nil)
+                  message:NSLocalizedString(@"No Card msg",nil)
+                  b1title:NSLocalizedString(@"Roger",nil)
+                  b1style:UIAlertActionStyleDefault
+                 b1action:nil];
 		return;
 	}
 
@@ -521,6 +526,7 @@
 	[self unloadRelease];
 	// @property (retain)
 	Re0root = nil;
+  //  [super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。

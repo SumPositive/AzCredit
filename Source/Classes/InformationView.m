@@ -197,31 +197,56 @@ NSString *passCode()
 //	alert.tag = ALERT_TAG_GoAppStore;
 //	[alert show];
 	
-	UIAlertController *alert = nil;
-	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GoAppStore Paid",nil)
-												message:NSLocalizedString(@"GoAppStore Paid msg",nil)
-										 preferredStyle:UIAlertControllerStyleAlert];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
-											  style:UIAlertActionStyleCancel
-											handler:nil]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
-											  style:UIAlertActionStyleDefault
-											handler:^(UIAlertAction *action){
-                                                NSURL *url;
-                                                if (IS_PAD) {
-                                                    //iPad//								クレメモ	 for iPad	457542400
-                                                    url = [NSURL URLWithString:
-                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
-                                                }else{
-                                                    //iPhone//									クレメモ	432458298
-                                                    url = [NSURL URLWithString:
-                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-                                                }
-												[[UIApplication sharedApplication] openURL:url
-																				   options:@{}
-																		 completionHandler:nil];
-											}]];
-	[self presentViewController:alert animated:YES completion:nil];
+//	UIAlertController *alert = nil;
+//	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GoAppStore Paid",nil)
+//												message:NSLocalizedString(@"GoAppStore Paid msg",nil)
+//										 preferredStyle:UIAlertControllerStyleAlert];
+//	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+//											  style:UIAlertActionStyleCancel
+//											handler:nil]];
+//	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
+//											  style:UIAlertActionStyleDefault
+//											handler:^(UIAlertAction *action){
+//                                                NSURL *url;
+//                                                if (IS_PAD) {
+//                                                    //iPad//								クレメモ	 for iPad	457542400
+//                                                    url = [NSURL URLWithString:
+//                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
+//                                                }else{
+//                                                    //iPhone//									クレメモ	432458298
+//                                                    url = [NSURL URLWithString:
+//                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+//                                                }
+//												[[UIApplication sharedApplication] openURL:url
+//																				   options:@{}
+//																		 completionHandler:nil];
+//											}]];
+//	[self presentViewController:alert animated:YES completion:nil];
+    
+    [self aleartTitle:NSLocalizedString(@"GoAppStore Paid",nil)
+              message:NSLocalizedString(@"GoAppStore Paid msg",nil)
+              b1title:@"OK"
+              b1style:UIAlertActionStyleDefault
+             b1action:^(UIAlertAction * _Nullable action) {
+                 NSURL *url;
+                 if (IS_PAD) {
+                     //iPad//								クレメモ	 for iPad	457542400
+                     url = [NSURL URLWithString:
+                            @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
+                 }else{
+                     //iPhone//									クレメモ	432458298
+                     url = [NSURL URLWithString:
+                            @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+                 }
+                 [[UIApplication sharedApplication] openURL:url
+                                                    options:@{}
+                                          completionHandler:nil];
+             }
+              b2title:@"Cancel"
+              b2style:UIAlertActionStyleCancel
+             b2action:nil
+     ];
+
 }
 
 
@@ -235,23 +260,39 @@ NSString *passCode()
 //	alert.tag = ALERT_TAG_GoSupportSite;
 //	[alert show];
 
-	UIAlertController *alert = nil;
-	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GoSupportSite",nil)
-												message:NSLocalizedString(@"GoSupportSite msg",nil)
-										 preferredStyle:UIAlertControllerStyleAlert];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
-											  style:UIAlertActionStyleDefault
-											handler:nil]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
-											  style:UIAlertActionStyleDefault
-											handler:^(UIAlertAction *action){
-												// サポートサイトへ
-												NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
-												[[UIApplication sharedApplication] openURL:url
-																				   options:@{}
-																		 completionHandler:nil];
-											}]];
-	[self presentViewController:alert animated:YES completion:nil];
+//	UIAlertController *alert = nil;
+//	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GoSupportSite",nil)
+//												message:NSLocalizedString(@"GoSupportSite msg",nil)
+//										 preferredStyle:UIAlertControllerStyleAlert];
+//	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+//											  style:UIAlertActionStyleDefault
+//											handler:nil]];
+//	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
+//											  style:UIAlertActionStyleDefault
+//											handler:^(UIAlertAction *action){
+//												// サポートサイトへ
+//												NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
+//												[[UIApplication sharedApplication] openURL:url
+//																				   options:@{}
+//																		 completionHandler:nil];
+//											}]];
+//	[self presentViewController:alert animated:YES completion:nil];
+
+    [self aleartTitle:NSLocalizedString(@"GoSupportSite",nil)
+              message:NSLocalizedString(@"GoSupportSite msg",nil)
+              b1title:@"OK"
+              b1style:UIAlertActionStyleDefault
+             b1action:^(UIAlertAction * _Nullable action) {
+                 // サポートサイトへ
+                 NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
+                 [[UIApplication sharedApplication] openURL:url
+                                                    options:@{}
+                                          completionHandler:nil];
+             }
+              b2title:@"Cancel"
+              b2style:UIAlertActionStyleCancel
+             b2action:nil
+     ];
 }
 
 -(void)buPostComment:(UIButton*)sender
@@ -273,78 +314,75 @@ NSString *passCode()
 //	alert.tag = ALERT_TAG_PostComment;
 //	[alert show];
 
-	UIAlertController *alert = nil;
-	
-	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Contact mail",nil)
-												message:NSLocalizedString(@"Contact mail msg",nil)
-										 preferredStyle:UIAlertControllerStyleAlert];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
-											  style:UIAlertActionStyleDefault
-											handler:nil]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
-											  style:UIAlertActionStyleDefault
-											handler:^(UIAlertAction *action){
-												// Post commens
-												MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-												picker.mailComposeDelegate = self;
-												// To: 宛先
-												NSArray *toRecipients = @[@"post@azukid.com"];
-												[picker setToRecipients:toRecipients];
-												
-												// Subject: 件名
-												NSString* zSubj = NSLocalizedString(@"Product Title",nil);
+    [self aleartTitle:NSLocalizedString(@"GoSupportSite",nil)
+              message:NSLocalizedString(@"GoSupportSite msg",nil)
+              b1title:@"OK"
+              b1style:UIAlertActionStyleDefault
+             b1action:^(UIAlertAction * _Nullable action) {
+                 // Post commens
+                 MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+                 picker.mailComposeDelegate = self;
+                 // To: 宛先
+                 NSArray *toRecipients = @[@"post@azukid.com"];
+                 [picker setToRecipients:toRecipients];
+                 
+                 // Subject: 件名
+                 NSString* zSubj = NSLocalizedString(@"Product Title",nil);
 #ifdef AzSTABLE
-												//zSubj = [zSubj stringByAppendingString:@" Stable"];
+                 //zSubj = [zSubj stringByAppendingString:@" Stable"];
 #else
-												zSubj = [zSubj stringByAppendingString:@" Free"];
+                 zSubj = [zSubj stringByAppendingString:@" Free"];
 #endif
-                                                if (IS_PAD) {
-                                                    zSubj = [zSubj stringByAppendingString:@" for iPad"];
-                                                }else{
-                                                    zSubj = [zSubj stringByAppendingString:@" for iPhone"];
-                                                }
-												[picker setSubject:zSubj];
-												
-												// Body: 本文
-												NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
-												NSString *zBuild = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]; //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
-												NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
+                 if (IS_PAD) {
+                     zSubj = [zSubj stringByAppendingString:@" for iPad"];
+                 }else{
+                     zSubj = [zSubj stringByAppendingString:@" for iPhone"];
+                 }
+                 [picker setSubject:zSubj];
+                 
+                 // Body: 本文
+                 NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+                 NSString *zBuild = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]; //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
+                 NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
 #ifdef AzSTABLE
-												zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@) Stable\n",  zVersion, zBuild];
+                 zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@) Stable\n",  zVersion, zBuild];
 #else
-												zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@)\n",  zVersion, zBuild];
+                 zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@)\n",  zVersion, zBuild];
 #endif
-												UIDevice *device = [UIDevice currentDevice];
-												NSString* deviceID = [device platformString];
-												zBody = [zBody stringByAppendingFormat:@"Device: %@   iOS: %@\n",
-														 deviceID,
-														 [UIDevice currentDevice].systemVersion]; // OSの現在のバージョン
-												
-												NSArray *languages = [NSLocale preferredLanguages];
-												zBody = [zBody stringByAppendingFormat:@"Locale: %@ (%@)\n\n",
-														 [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier],
-														 languages[0]];
-												
-												zBody = [zBody stringByAppendingString:NSLocalizedString(@"Contact message",nil)];
-												[picker setMessageBody:zBody isHTML:NO];
-												
-												//Bug//[self hide]; 上のアニメと競合してメール画面が表示されない。これより先にhideするように改めた。
-												AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-												//[app.mainController presentModalViewController:picker animated:YES];
-                                                if (IS_PAD) {
-                                                    [app.mainSplit presentViewController:picker animated:YES completion:nil];
-                                                }else{
-                                                    [app.mainNavi presentViewController:picker animated:YES completion:nil];
-                                                }
-											}]];
-	[self presentViewController:alert animated:YES completion:nil];
+                 UIDevice *device = [UIDevice currentDevice];
+                 NSString* deviceID = [device platformString];
+                 zBody = [zBody stringByAppendingFormat:@"Device: %@   iOS: %@\n",
+                          deviceID,
+                          [UIDevice currentDevice].systemVersion]; // OSの現在のバージョン
+                 
+                 NSArray *languages = [NSLocale preferredLanguages];
+                 zBody = [zBody stringByAppendingFormat:@"Locale: %@ (%@)\n\n",
+                          [[NSLocale currentLocale] objectForKey:NSLocaleIdentifier],
+                          languages[0]];
+                 
+                 zBody = [zBody stringByAppendingString:NSLocalizedString(@"Contact message",nil)];
+                 [picker setMessageBody:zBody isHTML:NO];
+                 
+                 //Bug//[self hide]; 上のアニメと競合してメール画面が表示されない。これより先にhideするように改めた。
+                 AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                 //[app.mainController presentModalViewController:picker animated:YES];
+                 if (IS_PAD) {
+                     [app.mainSplit presentViewController:picker animated:YES completion:nil];
+                 }else{
+                     [app.mainNavi presentViewController:picker animated:YES completion:nil];
+                 }
+             }
+              b2title:@"Cancel"
+              b2style:UIAlertActionStyleCancel
+             b2action:nil
+     ];
 }
 
 
 #pragma mark - Touch
 
 // タッチイベント
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 #ifdef AzSTABLE
 	UITouch *tc = [touches anyObject];
