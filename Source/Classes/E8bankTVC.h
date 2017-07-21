@@ -42,5 +42,6 @@
 - (void)refreshTable;
 //#endif
 
+- (instancetype)initWithStyle:(UITableViewStyle)style;
 //- (void)viewComeback:(NSArray *)selectionArray;  // Comeback 再現復帰処理用
 @end

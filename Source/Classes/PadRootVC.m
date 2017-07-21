@@ -167,61 +167,61 @@
 //	return;
 //}
 
-// 横 => 縦 ： 左ペインが隠れる時に呼び出される
-- (void)splitViewController:(UISplitViewController*)svc 
-	 willHideViewController:(UIViewController *)aViewController 
-		  withBarButtonItem:(UIBarButtonItem*)barButtonItem 
-	   forPopoverController:(UIPopoverController*)pc
-{	//左ペインが消えたので、右ペインに[Menu]ボタンを表示する
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	app.barMenu = barButtonItem;	//下層のVCへも設置するため保持する
-	//
-	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
-	UIViewController *rightVC = nc.visibleViewController;
-	NSLog(@"rightVC.title=%@", rightVC.title);
-	barButtonItem.title = @"    M e n u    ";		// @"    T o p    ";
-	barButtonItem.enabled = YES;
-#ifdef AzMAKE_SPLASHFACE
-	barButtonItem.enabled = NO;
-#endif
-	UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: barButtonItem, buFlexible, buTitle, buFlexible, nil];
-	UIToolbar* toolBar = [[UIToolbar alloc] init];
-	toolBar.barStyle = UIBarStyleDefault;
-	[toolBar setItems:items animated:NO];
-	[toolBar sizeToFit];
-	rightVC.navigationItem.titleView = toolBar;
-	//[items release];
-	//
-	//self.menuPopoverController = pc; //保持する
-}
-
-// 縦 => 横 ： 左ペインが現れる時に呼び出される
-- (void)splitViewController:(UISplitViewController*)svc
-	 willShowViewController:(UIViewController *)aViewController 
-  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
-{	//左ペインが現れたので、右ペインの[Menu]ボタンを消す
-	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-	app.barMenu = nil;
-	//
-	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
-	UIViewController *rightVC = nc.visibleViewController;
-	NSLog(@"rightVC.title=%@", rightVC.title);
-	barButtonItem.title = nil;
-	barButtonItem.enabled = NO;
-	UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil];
-	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFlexible, buTitle, buFlexible, nil];
-	UIToolbar* toolBar = [[UIToolbar alloc] init];
-	toolBar.barStyle = UIBarStyleDefault;
-	[toolBar setItems:items animated:NO];
-	[toolBar sizeToFit];
-	rightVC.navigationItem.titleView = toolBar;
-	//[items release];
-	//
-	//self.menuPopoverController = nil; //解放する
-}
+//// 横 => 縦 ： 左ペインが隠れる時に呼び出される
+//- (void)splitViewController:(UISplitViewController*)svc 
+//	 willHideViewController:(UIViewController *)aViewController 
+//		  withBarButtonItem:(UIBarButtonItem*)barButtonItem 
+//	   forPopoverController:(UIPopoverController*)pc
+//{	//左ペインが消えたので、右ペインに[Menu]ボタンを表示する
+//	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	app.barMenu = barButtonItem;	//下層のVCへも設置するため保持する
+//	//
+//	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
+//	UIViewController *rightVC = nc.visibleViewController;
+//	NSLog(@"rightVC.title=%@", rightVC.title);
+//	barButtonItem.title = @"    M e n u    ";		// @"    T o p    ";
+//	barButtonItem.enabled = YES;
+//#ifdef AzMAKE_SPLASHFACE
+//	barButtonItem.enabled = NO;
+//#endif
+//	UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//	UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+//	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: barButtonItem, buFlexible, buTitle, buFlexible, nil];
+//	UIToolbar* toolBar = [[UIToolbar alloc] init];
+//	toolBar.barStyle = UIBarStyleDefault;
+//	[toolBar setItems:items animated:NO];
+//	[toolBar sizeToFit];
+//	rightVC.navigationItem.titleView = toolBar;
+//	//[items release];
+//	//
+//	//self.menuPopoverController = pc; //保持する
+//}
+//
+//// 縦 => 横 ： 左ペインが現れる時に呼び出される
+//- (void)splitViewController:(UISplitViewController*)svc
+//	 willShowViewController:(UIViewController *)aViewController 
+//  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem 
+//{	//左ペインが現れたので、右ペインの[Menu]ボタンを消す
+//	AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//	app.barMenu = nil;
+//	//
+//	UINavigationController *nc = [svc.viewControllers objectAtIndex:1];
+//	UIViewController *rightVC = nc.visibleViewController;
+//	NSLog(@"rightVC.title=%@", rightVC.title);
+//	barButtonItem.title = nil;
+//	barButtonItem.enabled = NO;
+//	UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//	UIBarButtonItem* buTitle = [[UIBarButtonItem alloc] initWithTitle: rightVC.title  style:UIBarButtonItemStylePlain target:nil action:nil];
+//	NSMutableArray* items = [[NSMutableArray alloc] initWithObjects: buFlexible, buTitle, buFlexible, nil];
+//	UIToolbar* toolBar = [[UIToolbar alloc] init];
+//	toolBar.barStyle = UIBarStyleDefault;
+//	[toolBar setItems:items animated:NO];
+//	[toolBar sizeToFit];
+//	rightVC.navigationItem.titleView = toolBar;
+//	//[items release];
+//	//
+//	//self.menuPopoverController = nil; //解放する
+//}
 
 
 @end

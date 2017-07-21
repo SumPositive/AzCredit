@@ -48,7 +48,7 @@
 
 // 公開メソッド
 //- (id)initWithFrame:(CGRect)rect;
-- (instancetype)initWithFrame:(CGRect)rect withE3:(E3record*)e3 NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFrame:(CGRect)rect withE3:(E3record*)e3; // NS_DESIGNATED_INITIALIZER;
 - (void)show;
 - (void)save;
 - (void)cancel;

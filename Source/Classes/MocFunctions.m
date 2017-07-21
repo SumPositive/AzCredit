@@ -430,7 +430,7 @@ static NSManagedObjectContext *scMoc = nil;
 	
 	 // E7 Unpaid 検索
 	E0root *e0root = [self e0root];
-	if (e0root == nil) return NO;
+	if (e0root == nil) return nil;
 	for (E7payment *e7 in (e0root.e7unpaids).allObjects) {
 		if ((e7.nYearMMDD).integerValue == iYearMMDD) {
 			e2new.e7payment = e7;

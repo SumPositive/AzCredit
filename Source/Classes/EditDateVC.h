@@ -43,6 +43,6 @@
 
 //- (id)init;	//E3.dateUser
 //- (id)initWithE6row:(NSUInteger)iRow;	//[1.0.0]E6date変更モード
-- (instancetype)initWithE3:(E3record*)e3 orE6:(E6part*)e6 NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithE3:(E3record*)e3 orE6:(E6part*)e6; // NS_DESIGNATED_INITIALIZER;
 
 @end

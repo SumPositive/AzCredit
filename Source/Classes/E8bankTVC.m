@@ -200,7 +200,7 @@
 		// 「未定」ボタン
 		UIBarButtonItem *buUntitled = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Untitled",nil)
-									   style:UIBarButtonItemStyleBordered
+									   style:UIBarButtonItemStylePlain
 										target:self action:@selector(barButtonUntitled)];
 		//NSArray *buArray = [NSArray arrayWithObjects: buUntitled, buFlex, MbuAdd, nil];
 		NSArray *buArray = @[buUntitled, buFlex];	//[1.0.2]Addなしにした。
