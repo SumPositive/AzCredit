@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface E4shopTVC : UITableViewController <UIActionSheetDelegate, UISearchBarDelegate
+@interface E4shopTVC : UITableViewController <UISearchBarDelegate
 //#ifdef AzPAD
 	,UIPopoverControllerDelegate
 //#endif

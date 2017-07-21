@@ -54,22 +54,22 @@
 
 #pragma mark - Action
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
-		//========== 削除実行 ==========
-		E5category *e5objDelete = RaE5categorys[MindexPathActionDelete.row];
-		
-		// 削除
-		[RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
-		[Re0root.managedObjectContext deleteObject:e5objDelete];
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
-		[MocFunctions commit];
-		[self.tableView reloadData];
-	}
-}
+//// UIActionSheetDelegate 処理部
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+//	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
+//		//========== E5 削除実行 ==========
+//		E5category *e5objDelete = RaE5categorys[MindexPathActionDelete.row];
+//		
+//		// 削除
+//		[RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
+//		[Re0root.managedObjectContext deleteObject:e5objDelete];
+//		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
+//		[MocFunctions commit];
+//		[self.tableView reloadData];
+//	}
+//}
 
 - (void)e5categoryDatail:(NSIndexPath *)indexPath	//(NSInteger)iE5index
 {
@@ -671,23 +671,44 @@
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
 		//MindexPathActionDelete = indexPath;
 		MindexPathActionDelete = [indexPath copy];
-		// 削除コマンド警告
-		UIActionSheet *action = [[UIActionSheet alloc] 
-						 initWithTitle:NSLocalizedString(@"DELETE Category", nil)
-						 delegate:self 
-						 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-						 destructiveButtonTitle:NSLocalizedString(@"DELETE Category button", nil)
-						 otherButtonTitles:nil];
-		action.tag = ACTIONSEET_TAG_DELETE_SHOP;
-		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-		if (orientation == UIInterfaceOrientationPortrait
-			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
-			// タテ：ToolBar表示
-			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
-		} else {
-			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
-			[action showInView:self.view]; //windowから出すと回転対応しない
-		}
+//		// 削除コマンド警告
+//		UIActionSheet *action = [[UIActionSheet alloc] 
+//						 initWithTitle:NSLocalizedString(@"DELETE Category", nil)
+//						 delegate:self 
+//						 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+//						 destructiveButtonTitle:NSLocalizedString(@"DELETE Category button", nil)
+//						 otherButtonTitles:nil];
+//		action.tag = ACTIONSEET_TAG_DELETE_SHOP;
+//		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//		if (orientation == UIInterfaceOrientationPortrait
+//			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
+//			// タテ：ToolBar表示
+//			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
+//		} else {
+//			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
+//			[action showInView:self.view]; //windowから出すと回転対応しない
+//		}
+        
+        [AZAlert target:self
+             actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                  title:NSLocalizedString(@"DELETE Category", nil)
+                message:nil
+                b1title:NSLocalizedString(@"DELETE Category button", nil)
+                b1style:UIAlertActionStyleDestructive
+               b1action:^(UIAlertAction * _Nullable action) {
+                   //========== E5 削除実行 ==========
+                   E5category *e5objDelete = RaE5categorys[MindexPathActionDelete.row];
+                   // 削除
+                   [RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
+                   [Re0root.managedObjectContext deleteObject:e5objDelete];
+                   // SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
+                   [MocFunctions commit];
+                   [self.tableView reloadData];
+               }
+                b2title:NSLocalizedString(@"Cancel", nil)
+                b2style:UIAlertActionStyleCancel
+               b2action:nil];
+
 	}
 }
 

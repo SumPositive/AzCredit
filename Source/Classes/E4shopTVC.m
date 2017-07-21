@@ -50,24 +50,24 @@
 
 #pragma mark - Action
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
-		//========== E4 削除実行 ==========
-		E4shop *e4objDelete = RaE4shops[MindexPathActionDelete.row];
-		
-		// E3は、削除せずに E4-E3 リンクを断つだけ
-		// E4-E3 リンクは、以下のE4削除すれば全てnilされる
-		// E4shop 削除
-		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
-		[self.Re0root.managedObjectContext deleteObject:e4objDelete];
-		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
-		[MocFunctions commit];
-		[self.tableView reloadData];
-	}
-}
+//// UIActionSheetDelegate 処理部
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+//	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_SHOP && buttonIndex == 0) {
+//		//========== E4 削除実行 ==========
+//		E4shop *e4objDelete = RaE4shops[MindexPathActionDelete.row];
+//		
+//		// E3は、削除せずに E4-E3 リンクを断つだけ
+//		// E4-E3 リンクは、以下のE4削除すれば全てnilされる
+//		// E4shop 削除
+//		[RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
+//		[self.Re0root.managedObjectContext deleteObject:e4objDelete];
+//		// SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
+//		[MocFunctions commit];
+//		[self.tableView reloadData];
+//	}
+//}
 
 - (void)barButtonTop {
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
@@ -663,23 +663,47 @@
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
 		//MindexPathActionDelete = indexPath;
 		MindexPathActionDelete = [indexPath copy];
-		// 削除コマンド警告
-		UIActionSheet *action = [[UIActionSheet alloc] 
-						 initWithTitle:NSLocalizedString(@"DELETE Shop", nil)
-						 delegate:self 
-						 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-						 destructiveButtonTitle:NSLocalizedString(@"DELETE Shop button", nil)
-						 otherButtonTitles:nil];
-		action.tag = ACTIONSEET_TAG_DELETE_SHOP;
-		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-		if (orientation == UIInterfaceOrientationPortrait
-			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
-			// タテ：ToolBar表示
-			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
-		} else {
-			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
-			[action showInView:self.view]; //windowから出すと回転対応しない
-		}
+//		// 削除コマンド警告
+//		UIActionSheet *action = [[UIActionSheet alloc] 
+//						 initWithTitle:NSLocalizedString(@"DELETE Shop", nil)
+//						 delegate:self 
+//						 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+//						 destructiveButtonTitle:NSLocalizedString(@"DELETE Shop button", nil)
+//						 otherButtonTitles:nil];
+//		action.tag = ACTIONSEET_TAG_DELETE_SHOP;
+//		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//		if (orientation == UIInterfaceOrientationPortrait
+//			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
+//			// タテ：ToolBar表示
+//			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
+//		} else {
+//			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
+//			[action showInView:self.view]; //windowから出すと回転対応しない
+//		}
+        
+        [AZAlert target:self
+             actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                  title:NSLocalizedString(@"DELETE Shop", nil)
+                message:nil
+                b1title:NSLocalizedString(@"DELETE Shop button", nil)
+                b1style:UIAlertActionStyleDestructive
+               b1action:^(UIAlertAction * _Nullable action) {
+                   //========== E4 削除実行 ==========
+                   E4shop *e4objDelete = RaE4shops[MindexPathActionDelete.row];
+                   
+                   // E3は、削除せずに E4-E3 リンクを断つだけ
+                   // E4-E3 リンクは、以下のE4削除すれば全てnilされる
+                   // E4shop 削除
+                   [RaE4shops removeObjectAtIndex:MindexPathActionDelete.row];
+                   [self.Re0root.managedObjectContext deleteObject:e4objDelete];
+                   // SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
+                   [MocFunctions commit];
+                   [self.tableView reloadData];
+               }
+                b2title:NSLocalizedString(@"Cancel", nil)
+                b2style:UIAlertActionStyleCancel
+               b2action:nil];
+
 	}
 }
 

@@ -1188,11 +1188,12 @@ static NSManagedObjectContext *scMoc = nil;
 //												   otherButtonTitles:@"OK", nil];
 //			[alert show];
 
-            [getTopViewController() aleartTitle:NSLocalizedString(@"NotNoCheck",nil)
-                                        message:NSLocalizedString(@"NotNoCheck msg",nil)
-                                        b1title:@"OK"
-                                        b1style:UIAlertActionStyleDefault
-                                       b1action:nil];
+            [AZAlert target:nil
+                      title:NSLocalizedString(@"NotNoCheck",nil)
+                    message:NSLocalizedString(@"NotNoCheck msg",nil)
+                    b1title:@"OK"
+                    b1style:UIAlertActionStyleDefault
+                   b1action:nil];
 
 		}
 		return;

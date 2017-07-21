@@ -18,7 +18,7 @@
 #import "E3recordDetailTVC.h"		// delegate
 
 
-#define ACTIONSEET_TAG_DELETE_CARD	199
+//#define ACTIONSEET_TAG_DELETE_CARD	199
 
 @interface E1cardTVC (PrivateMethods)
 - (void)e1cardDatail:(NSIndexPath *)indexPath;
@@ -112,29 +112,29 @@
 	 // self.navigationControllerがOwnerになる
 }
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_CARD && buttonIndex == 0) {
-		//========== E1 削除実行 ==========
-		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E1card *e1objDelete = RaE1cards[MindexPathActionDelete.row];
-		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
-		[MocFunctions e1delete:e1objDelete];
-		// 削除行の次の行以下 E1.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE1cards.count ; i++) 
-		{  // .nRow + 1 削除行の次から
-			E1card *e1obj = RaE1cards[i];
-			e1obj.nRow = @(i-1);     // .nRow--; とする
-		}
-		// Commit
-		[MocFunctions commit];
-		// 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
-		[RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
-		[self.tableView reloadData];
-	}
-}
+//// UIActionSheetDelegate 処理部
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+//	if (actionSheet.tag == ACTIONSEET_TAG_DELETE_CARD && buttonIndex == 0) {
+//		//========== E1 削除実行 ==========
+//		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
+//		E1card *e1objDelete = RaE1cards[MindexPathActionDelete.row];
+//		// E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
+//		[MocFunctions e1delete:e1objDelete];
+//		// 削除行の次の行以下 E1.row 更新
+//		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE1cards.count ; i++) 
+//		{  // .nRow + 1 削除行の次から
+//			E1card *e1obj = RaE1cards[i];
+//			e1obj.nRow = @(i-1);     // .nRow--; とする
+//		}
+//		// Commit
+//		[MocFunctions commit];
+//		// 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
+//		[RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
+//		[self.tableView reloadData];
+//	}
+//}
 
 //#ifdef AzPAD
 - (void)cancelClose:(id)sender
@@ -704,22 +704,52 @@ static UIImage* GimageFromString(NSString* str)
 		//MindexPathActionDelete = indexPath; 落ちる
 		MindexPathActionDelete = [indexPath copy];
 		// 削除コマンド警告
-		UIActionSheet *action = [[UIActionSheet alloc] 
-						 initWithTitle:NSLocalizedString(@"DELETE Card", nil)
-						 delegate:self 
-						 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-						 destructiveButtonTitle:NSLocalizedString(@"DELETE Card button", nil)
-						 otherButtonTitles:nil];
-		action.tag = ACTIONSEET_TAG_DELETE_CARD;
-		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-		if (orientation == UIInterfaceOrientationPortrait
-			OR orientation == UIInterfaceOrientationPortraitUpsideDown) {
-			// タテ：ToolBar表示
-			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
-		} else {
-			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
-			[action showInView:self.view]; //windowから出すと回転対応しない
-		}
+//		UIActionSheet *action = [[UIActionSheet alloc] 
+//						 initWithTitle:NSLocalizedString(@"DELETE Card", nil)
+//						 delegate:self 
+//						 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+//						 destructiveButtonTitle:NSLocalizedString(@"DELETE Card button", nil)
+//						 otherButtonTitles:nil];
+//		action.tag = ACTIONSEET_TAG_DELETE_CARD;
+//
+//        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//        if (orientation == UIInterfaceOrientationPortrait
+//            OR orientation == UIInterfaceOrientationPortraitUpsideDown) {
+//            // タテ：ToolBar表示
+//            [action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
+//        } else {
+//            // ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
+//            [action showInView:self.view]; //windowから出すと回転対応しない
+//        }
+        
+        [AZAlert target:self
+             actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                  title:NSLocalizedString(@"DELETE Card", nil)
+                message:nil
+                b1title:NSLocalizedString(@"DELETE Card button", nil)
+                b1style:UIAlertActionStyleDestructive
+               b1action:^(UIAlertAction * _Nullable action) {
+                   //========== E1 削除実行 ==========
+                   // ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
+                   E1card *e1objDelete = RaE1cards[MindexPathActionDelete.row];
+                   // E1,E2,E3,E6,E7 の関係を保ちながら E1削除 する
+                   [MocFunctions e1delete:e1objDelete];
+                   // 削除行の次の行以下 E1.row 更新
+                   for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE1cards.count ; i++)
+                   {  // .nRow + 1 削除行の次から
+                       E1card *e1obj = RaE1cards[i];
+                       e1obj.nRow = @(i-1);     // .nRow--; とする
+                   }
+                   // Commit
+                   [MocFunctions commit];
+                   // 以上でcontextから削除されたが、TableView表示には残っている状態。最後に、TableView表示から削除する。
+                   [RaE1cards removeObjectAtIndex:MindexPathActionDelete.row];
+                   [self.tableView reloadData];
+               }
+                b2title:NSLocalizedString(@"Cancel", nil)
+                b2style:UIAlertActionStyleCancel
+               b2action:nil];
+        
 	}
 }
 

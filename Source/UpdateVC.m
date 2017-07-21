@@ -64,12 +64,14 @@
 //                              delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
 //        [alert show];
         
-        [self aleartTitle:NSLocalizedString(@"Upload Fail",nil)
-                  message:zErr
-                  b1title:@"OK"
-                  b1style:UIAlertActionStyleDefault
-                 b1action:nil];
-        
+        [AZAlert target:self
+             actionRect:button.frame
+                  title:NSLocalizedString(@"Upload Fail",nil)
+                message:zErr
+                b1title:@"OK"
+                b1style:UIAlertActionStyleDefault
+               b1action:nil];
+
         return;
     }
     

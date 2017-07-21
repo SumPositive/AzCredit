@@ -197,11 +197,12 @@
 //		alertBox(NSLocalizedString(@"No Card",nil),
 //				 NSLocalizedString(@"No Card msg",nil),
 //				 NSLocalizedString(@"Roger",nil));
-        [self aleartTitle:NSLocalizedString(@"No Card",nil)
-                  message:NSLocalizedString(@"No Card msg",nil)
-                  b1title:NSLocalizedString(@"Roger",nil)
-                  b1style:UIAlertActionStyleDefault
-                 b1action:nil];
+        [AZAlert target:self
+                  title:NSLocalizedString(@"No Card",nil)
+                message:NSLocalizedString(@"No Card msg",nil)
+                b1title:NSLocalizedString(@"Roger",nil)
+                b1style:UIAlertActionStyleDefault
+               b1action:nil];
 		return;
 	}
 

@@ -223,28 +223,30 @@ NSString *passCode()
 //											}]];
 //	[self presentViewController:alert animated:YES completion:nil];
     
-    [self aleartTitle:NSLocalizedString(@"GoAppStore Paid",nil)
-              message:NSLocalizedString(@"GoAppStore Paid msg",nil)
-              b1title:@"OK"
-              b1style:UIAlertActionStyleDefault
-             b1action:^(UIAlertAction * _Nullable action) {
-                 NSURL *url;
-                 if (IS_PAD) {
-                     //iPad//								クレメモ	 for iPad	457542400
-                     url = [NSURL URLWithString:
-                            @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
-                 }else{
-                     //iPhone//									クレメモ	432458298
-                     url = [NSURL URLWithString:
-                            @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-                 }
-                 [[UIApplication sharedApplication] openURL:url
-                                                    options:@{}
-                                          completionHandler:nil];
-             }
-              b2title:@"Cancel"
-              b2style:UIAlertActionStyleCancel
-             b2action:nil
+    [AZAlert target:self
+         actionRect:button.frame
+              title:NSLocalizedString(@"GoAppStore Paid",nil)
+            message:NSLocalizedString(@"GoAppStore Paid msg",nil)
+            b1title:@"OK"
+            b1style:UIAlertActionStyleDefault
+           b1action:^(UIAlertAction * _Nullable action) {
+               NSURL *url;
+               if (IS_PAD) {
+                   //iPad//								クレメモ	 for iPad	457542400
+                   url = [NSURL URLWithString:
+                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
+               }else{
+                   //iPhone//									クレメモ	432458298
+                   url = [NSURL URLWithString:
+                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+               }
+               [[UIApplication sharedApplication] openURL:url
+                                                  options:@{}
+                                        completionHandler:nil];
+           }
+            b2title:@"Cancel"
+            b2style:UIAlertActionStyleCancel
+           b2action:nil
      ];
 
 }
@@ -263,10 +265,7 @@ NSString *passCode()
 //	UIAlertController *alert = nil;
 //	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GoSupportSite",nil)
 //												message:NSLocalizedString(@"GoSupportSite msg",nil)
-//										 preferredStyle:UIAlertControllerStyleAlert];
-//	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
-//											  style:UIAlertActionStyleDefault
-//											handler:nil]];
+//										 preferredStyle:UIAlertControllerStyleActionSheet];
 //	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
 //											  style:UIAlertActionStyleDefault
 //											handler:^(UIAlertAction *action){
@@ -276,23 +275,65 @@ NSString *passCode()
 //																				   options:@{}
 //																		 completionHandler:nil];
 //											}]];
+//    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+//                                              style:UIAlertActionStyleCancel
+//                                            handler:nil]];
 //	[self presentViewController:alert animated:YES completion:nil];
 
-    [self aleartTitle:NSLocalizedString(@"GoSupportSite",nil)
-              message:NSLocalizedString(@"GoSupportSite msg",nil)
-              b1title:@"OK"
-              b1style:UIAlertActionStyleDefault
-             b1action:^(UIAlertAction * _Nullable action) {
-                 // サポートサイトへ
-                 NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
-                 [[UIApplication sharedApplication] openURL:url
-                                                    options:@{}
-                                          completionHandler:nil];
-             }
-              b2title:@"Cancel"
-              b2style:UIAlertActionStyleCancel
-             b2action:nil
-     ];
+//    [UICommon alertTitle: NSLocalizedString(@"GoSupportSite",nil)
+//              message: NSLocalizedString(@"GoSupportSite msg",nil)
+//              b1title: @"OK"
+//              b1style: UIAlertActionStyleDefault
+//             b1action: ^(UIAlertAction * action){
+//                 // サポートサイトへ
+//                 NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
+//                 [[UIApplication sharedApplication] openURL:url
+//                                                    options:@{}
+//                                          completionHandler:nil];
+//             }
+//              b2title: @"Cancel"
+//              b2style: UIAlertActionStyleCancel
+//             b2action: ^(UIAlertAction * action){
+//             }
+//     ];
+    
+//    [UICommon alertTitle:NSLocalizedString(@"GoSupportSite",nil)
+//                 message:NSLocalizedString(@"GoSupportSite msg",nil)
+//                 b1title:@"OK"
+//                 b1style:UIAlertActionStyleDefault
+//                b1action:^(UIAlertAction * _Nullable action) {
+//                    // サポートサイトへ
+//                    NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
+//                    [[UIApplication sharedApplication] openURL:url
+//                                                       options:@{}
+//                                             completionHandler:nil];
+//                }
+//                 b2title:@"Cancel"
+//                 b2style:UIAlertActionStyleCancel
+//                b2action:^(UIAlertAction * _Nullable action) {
+//                    
+//                }];
+    
+    [AZAlert target:self
+         actionRect:button.frame
+              title:NSLocalizedString(@"GoSupportSite",nil)
+            message:NSLocalizedString(@"GoSupportSite msg",nil)
+            b1title:@"OK"
+            b1style:UIAlertActionStyleDefault
+           b1action:^(UIAlertAction * _Nullable action) {
+               // サポートサイトへ
+               NSURL *url = [NSURL URLWithString:@"http://paynote.azukid.com/"];
+               [[UIApplication sharedApplication] openURL:url
+                                                  options:@{}
+                                        completionHandler:nil];
+           }
+            b2title:@"Cancel"
+            b2style:UIAlertActionStyleCancel
+           b2action:^(UIAlertAction * _Nullable action) {
+               
+           }];
+    
+
 }
 
 -(void)buPostComment:(UIButton*)sender
@@ -314,11 +355,13 @@ NSString *passCode()
 //	alert.tag = ALERT_TAG_PostComment;
 //	[alert show];
 
-    [self aleartTitle:NSLocalizedString(@"GoSupportSite",nil)
-              message:NSLocalizedString(@"GoSupportSite msg",nil)
-              b1title:@"OK"
-              b1style:UIAlertActionStyleDefault
-             b1action:^(UIAlertAction * _Nullable action) {
+    [AZAlert target:self
+         actionRect:sender.frame
+              title:NSLocalizedString(@"GoSupportSite",nil)
+            message:NSLocalizedString(@"GoSupportSite msg",nil)
+            b1title:@"OK"
+            b1style:UIAlertActionStyleDefault
+           b1action:^(UIAlertAction * _Nullable action) {
                  // Post commens
                  MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
                  picker.mailComposeDelegate = self;

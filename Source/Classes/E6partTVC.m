@@ -51,11 +51,11 @@
 
 #pragma mark - Action
 
-// アラートボタンが押されたときに呼び出される
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
-}
+//// アラートボタンが押されたときに呼び出される
+//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
+//}
 
 - (void)barButtonTop {
 	[self.navigationController popToRootViewControllerAnimated:YES];	// 最上層(RootView)へ戻る
@@ -473,11 +473,14 @@
 //		[alert show];
 //		//[self.navigationController popViewControllerAnimated:YES]; 	alertデリゲートにて、前のViewへ戻る
         
-        [self aleartTitle:NSLocalizedString(@"Payment changed",nil)
-                  message:NSLocalizedString(@"Payment changed msg",nil)
-                  b1title:NSLocalizedString(@"Roger",nil)
-                  b1style:UIAlertActionStyleDefault
-                 b1action:nil];
+        [AZAlert target:self
+                  title:NSLocalizedString(@"Payment changed",nil)
+                message:NSLocalizedString(@"Payment changed msg",nil)
+                b1title:NSLocalizedString(@"Roger",nil)
+                b1style:UIAlertActionStyleDefault
+               b1action:^(UIAlertAction * _Nullable action) {
+                   [self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
+               }];
 
 	}
 }

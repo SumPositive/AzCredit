@@ -76,44 +76,45 @@
 }
 
 
-#pragma mark - Action
-
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex != actionSheet.destructiveButtonIndex) return;
-	
-	if (Re3edit && actionSheet.tag == ACTIONSEET_TAG_DELETE) { // Re3edit 削除
-		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
-		//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
-		//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-		appDelegate.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
-		[MocFunctions e3delete:Re3edit];
-		[MocFunctions commit];
-
-        if (IS_PAD) {
-//            if (selfPopover) {
-                if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
-                    [delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
-                }
-                else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
-                    [delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
-                }
-                // TopMenuTVCにある 「未払合計額」を再描画するための処理
-                UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
-                TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-                if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-                    [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-                }
-//                [selfPopover dismissPopoverAnimated:YES];
-//            }
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }else{
-            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-        }
-	}
-}
+//#pragma mark - Action
+//
+//// UIActionSheetDelegate 処理部
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	if (buttonIndex != actionSheet.destructiveButtonIndex) return;
+//	
+//	if (Re3edit && actionSheet.tag == ACTIONSEET_TAG_DELETE) {
+//        // Re3edit 削除
+//		//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
+//		//AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//		// 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
+//		//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+//		appDelegate.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
+//		[MocFunctions e3delete:Re3edit];
+//		[MocFunctions commit];
+//
+//        if (IS_PAD) {
+////            if (selfPopover) {
+//                if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+//                    [delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
+//                }
+//                else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+//                    [delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
+//                }
+//                // TopMenuTVCにある 「未払合計額」を再描画するための処理
+//                UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+//                TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+//                if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+//                    [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+//                }
+////                [selfPopover dismissPopoverAnimated:YES];
+////            }
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        }else{
+//            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+//        }
+//	}
+//}
 
 - (void)showCalcAmount
 {
@@ -320,24 +321,71 @@
 	[McalcView hide]; // Calcが出てれば隠す
 	
 	// 削除コマンド警告　==>> (void)actionSheet にて処理  ＜＜PAIDでも削除する＞＞
-	UIActionSheet *action = [[UIActionSheet alloc] 
-							 initWithTitle:NSLocalizedString(@"DELETE Record", nil)
-							 delegate:self 
-							 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-							 destructiveButtonTitle:NSLocalizedString(@"DELETE Record button", nil)
-							 otherButtonTitles:nil];
-	action.tag = ACTIONSEET_TAG_DELETE;
-	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-	if (orientation == UIInterfaceOrientationPortrait
-		OR orientation == UIInterfaceOrientationPortraitUpsideDown)
-	{
-		// タテ：ToolBar表示
-		[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
-	} else {
-		// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
-		[action showInView:self.view]; //windowから出すと回転対応しない
-	}
+//	UIActionSheet *action = [[UIActionSheet alloc] 
+//							 initWithTitle:NSLocalizedString(@"DELETE Record", nil)
+//							 delegate:self 
+//							 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+//							 destructiveButtonTitle:NSLocalizedString(@"DELETE Record button", nil)
+//							 otherButtonTitles:nil];
+//	action.tag = ACTIONSEET_TAG_DELETE;
+//	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//	if (orientation == UIInterfaceOrientationPortrait
+//		OR orientation == UIInterfaceOrientationPortraitUpsideDown)
+//	{
+//		// タテ：ToolBar表示
+//		[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
+//	} else {
+//		// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
+//		[action showInView:self.view]; //windowから出すと回転対応しない
+//	}
 //	[action release];
+
+    CGRect rc = self.view.frame;
+    rc.origin.x += rc.size.width/2 - 1.5;
+    rc.origin.y = -5.0;
+    rc.size.width = 3.0;
+    rc.size.height = 3.0;
+    [AZAlert target:self
+         actionRect:rc
+              title:NSLocalizedString(@"DELETE Record", nil)
+            message:nil
+            b1title:NSLocalizedString(@"DELETE Record button", nil)
+            b1style:UIAlertActionStyleDestructive
+           b1action:^(UIAlertAction * _Nullable action) {
+               // Re3edit 削除
+               //[0.4] E3recordTVCに戻ったとき更新＆再描画するため
+               //AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+               // 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
+               //autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
+               appDelegate.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
+               [MocFunctions e3delete:Re3edit];
+               [MocFunctions commit];
+               
+               if (IS_PAD) {
+                   //            if (selfPopover) {
+                   if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+                       [delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
+                   }
+                   else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+                       [delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
+                   }
+                   // TopMenuTVCにある 「未払合計額」を再描画するための処理
+                   UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+                   TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+                   if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+                       [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+                   }
+                   //                [selfPopover dismissPopoverAnimated:YES];
+                   //            }
+                   [self dismissViewControllerAnimated:YES completion:nil];
+               }else{
+                   [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
+               }
+           }
+            b2title:NSLocalizedString(@"Cancel", nil)
+            b2style:UIAlertActionStyleCancel
+           b2action:nil];
+
 }
 
 

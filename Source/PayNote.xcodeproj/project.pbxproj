@@ -60,15 +60,17 @@
 		4473735E1F1C93EC000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
 		4473735F1F1C93EC000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
 		447373601F1C93EC000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
-		447373631F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373611F1E37A8000E3DAA /* UIViewController+Alert.h */; };
-		447373641F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373611F1E37A8000E3DAA /* UIViewController+Alert.h */; };
-		447373651F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373611F1E37A8000E3DAA /* UIViewController+Alert.h */; };
-		447373661F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373621F1E37A8000E3DAA /* UIViewController+Alert.m */; };
-		447373671F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373621F1E37A8000E3DAA /* UIViewController+Alert.m */; };
-		447373681F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373621F1E37A8000E3DAA /* UIViewController+Alert.m */; };
 		447373691F1E4EBD000E3DAA /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
 		4473736A1F1E4EC2000E3DAA /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
 		4473736B1F1E4EC9000E3DAA /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 447373571F1C93EC000E3DAA /* UpdateVC.xib */; };
+		4473736E1F1FA890000E3DAA /* AZAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473736C1F1FA890000E3DAA /* AZAlert.h */; };
+		4473736F1F1FA890000E3DAA /* AZAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473736C1F1FA890000E3DAA /* AZAlert.h */; };
+		447373701F1FA890000E3DAA /* AZAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473736C1F1FA890000E3DAA /* AZAlert.h */; };
+		447373711F1FA890000E3DAA /* AZAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473736C1F1FA890000E3DAA /* AZAlert.h */; };
+		447373721F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
+		447373731F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
+		447373741F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
+		447373751F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
@@ -690,8 +692,8 @@
 		447373551F1C93EC000E3DAA /* UpdateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateVC.h; sourceTree = "<group>"; };
 		447373561F1C93EC000E3DAA /* UpdateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateVC.m; sourceTree = "<group>"; };
 		447373571F1C93EC000E3DAA /* UpdateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpdateVC.xib; sourceTree = "<group>"; };
-		447373611F1E37A8000E3DAA /* UIViewController+Alert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Alert.h"; sourceTree = "<group>"; };
-		447373621F1E37A8000E3DAA /* UIViewController+Alert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Alert.m"; sourceTree = "<group>"; };
+		4473736C1F1FA890000E3DAA /* AZAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AZAlert.h; sourceTree = "<group>"; };
+		4473736D1F1FA890000E3DAA /* AZAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AZAlert.m; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1061,8 +1063,8 @@
 		44B87D86112A1DDA00ABF916 /* Func */ = {
 			isa = PBXGroup;
 			children = (
-				447373611F1E37A8000E3DAA /* UIViewController+Alert.h */,
-				447373621F1E37A8000E3DAA /* UIViewController+Alert.m */,
+				4473736C1F1FA890000E3DAA /* AZAlert.h */,
+				4473736D1F1FA890000E3DAA /* AZAlert.m */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				449312B410F0D5A700C6C8E5 /* Global.h */,
 				44FB5C5911512063008DEC3E /* Global.m */,
@@ -1290,6 +1292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4486956010F5ABCC00AD02D8 /* PayNote_Prefix.pch in Headers */,
+				447373701F1FA890000E3DAA /* AZAlert.h in Headers */,
 				448549051115726F00D10CC8 /* SettingTVC.h in Headers */,
 				44B332D11123B6AA007D3A15 /* TopMenuTVC.h in Headers */,
 				44B332D41123B756007D3A15 /* E1cardTVC.h in Headers */,
@@ -1299,7 +1302,6 @@
 				44B605F61126FADD00E82C54 /* E1editPayDayVC.h in Headers */,
 				44D7351611279ACB00997A37 /* E2invoiceTVC.h in Headers */,
 				440AC51611299DBE00B89317 /* EditDateVC.h in Headers */,
-				447373641F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */,
 				44D00C3F112CCC25001BC4C8 /* E3recordTVC.h in Headers */,
 				44ABA3A6112FB92D0009E62E /* E4shopDetailTVC.h in Headers */,
 				44ABA3A8112FB92D0009E62E /* E4shopTVC.h in Headers */,
@@ -1331,6 +1333,7 @@
 				44B011F7133EF773005AD0EA /* E3recordDetailTVC.h in Headers */,
 				44B011F9133EF773005AD0EA /* E1cardDetailTVC.h in Headers */,
 				44B011FA133EF773005AD0EA /* EditTextVC.h in Headers */,
+				4473736E1F1FA890000E3DAA /* AZAlert.h in Headers */,
 				44B011FB133EF773005AD0EA /* E1editPayDayVC.h in Headers */,
 				44B011FC133EF773005AD0EA /* E2invoiceTVC.h in Headers */,
 				4473734E1F1C4E76000E3DAA /* History.h in Headers */,
@@ -1368,8 +1371,8 @@
 				44C0E43D13A0A2D1003D0465 /* E3recordDetailTVC.h in Headers */,
 				44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E44013A0A2D1003D0465 /* EditTextVC.h in Headers */,
+				447373711F1FA890000E3DAA /* AZAlert.h in Headers */,
 				44C0E44113A0A2D1003D0465 /* E1editPayDayVC.h in Headers */,
-				447373651F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */,
 				44C0E44213A0A2D1003D0465 /* E2invoiceTVC.h in Headers */,
 				44C0E44313A0A2D1003D0465 /* EditDateVC.h in Headers */,
 				44C0E44413A0A2D1003D0465 /* E3recordTVC.h in Headers */,
@@ -1405,8 +1408,8 @@
 				44C0E65E13A0A475003D0465 /* E3recordDetailTVC.h in Headers */,
 				44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E66113A0A475003D0465 /* EditTextVC.h in Headers */,
+				4473736F1F1FA890000E3DAA /* AZAlert.h in Headers */,
 				44C0E66213A0A475003D0465 /* E1editPayDayVC.h in Headers */,
-				447373631F1E37A8000E3DAA /* UIViewController+Alert.h in Headers */,
 				44C0E66313A0A475003D0465 /* E2invoiceTVC.h in Headers */,
 				44C0E66413A0A475003D0465 /* EditDateVC.h in Headers */,
 				44C0E66513A0A475003D0465 /* E3recordTVC.h in Headers */,
@@ -1518,7 +1521,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 5C2UYK6F45;
@@ -2043,7 +2046,6 @@
 				44D00C40112CCC25001BC4C8 /* E3recordTVC.m in Sources */,
 				44ABA3A7112FB92D0009E62E /* E4shopDetailTVC.m in Sources */,
 				44ABA3A9112FB92D0009E62E /* E4shopTVC.m in Sources */,
-				447373671F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */,
 				44AD488B1132B6B900FB19FB /* E6partTVC.m in Sources */,
 				44A19FE011367A3B00DE0113 /* E7paymentTVC.m in Sources */,
 				44A3DE01113BE60B00DE9242 /* FileCsv.m in Sources */,
@@ -2052,6 +2054,7 @@
 				4454C98C114941930063621D /* E5categoryTVC.m in Sources */,
 				44ACA0C3114E698B000E9FD8 /* MocFunctions.m in Sources */,
 				44FB5C5A11512063008DEC3E /* Global.m in Sources */,
+				447373741F1FA890000E3DAA /* AZAlert.m in Sources */,
 				4473735C1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
 				44A68B6511685121004A89ED /* CalcView.m in Sources */,
 				44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */,
@@ -2093,6 +2096,7 @@
 				44B011C6133EF773005AD0EA /* E5categoryTVC.m in Sources */,
 				44B011C7133EF773005AD0EA /* MocFunctions.m in Sources */,
 				44B011C8133EF773005AD0EA /* Global.m in Sources */,
+				447373721F1FA890000E3DAA /* AZAlert.m in Sources */,
 				44B011C9133EF773005AD0EA /* CalcView.m in Sources */,
 				44B011CB133EF773005AD0EA /* E8bankTVC.m in Sources */,
 				44B011CC133EF773005AD0EA /* E8bankDetailTVC.m in Sources */,
@@ -2106,6 +2110,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				447373751F1FA890000E3DAA /* AZAlert.m in Sources */,
 				4473735D1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
 				44C0E3FA13A0A2D1003D0465 /* main.m in Sources */,
 				44C0E3FB13A0A2D1003D0465 /* AppDelegate.m in Sources */,
@@ -2119,7 +2124,6 @@
 				44C0E40413A0A2D1003D0465 /* E3recordDetailTVC.m in Sources */,
 				44C0E40613A0A2D1003D0465 /* E1cardDetailTVC.m in Sources */,
 				44C0E40713A0A2D1003D0465 /* EditTextVC.m in Sources */,
-				447373681F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */,
 				44C0E40813A0A2D1003D0465 /* E1editPayDayVC.m in Sources */,
 				44C0E40913A0A2D1003D0465 /* E2invoiceTVC.m in Sources */,
 				44C0E40A13A0A2D1003D0465 /* EditDateVC.m in Sources */,
@@ -2148,6 +2152,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				447373731F1FA890000E3DAA /* AZAlert.m in Sources */,
 				4473735B1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
 				44C0E61E13A0A475003D0465 /* main.m in Sources */,
 				44C0E61F13A0A475003D0465 /* AppDelegate.m in Sources */,
@@ -2161,7 +2166,6 @@
 				44C0E62813A0A475003D0465 /* E3recordDetailTVC.m in Sources */,
 				44C0E62A13A0A475003D0465 /* E1cardDetailTVC.m in Sources */,
 				44C0E62B13A0A475003D0465 /* EditTextVC.m in Sources */,
-				447373661F1E37A8000E3DAA /* UIViewController+Alert.m in Sources */,
 				44C0E62C13A0A475003D0465 /* E1editPayDayVC.m in Sources */,
 				44C0E62D13A0A475003D0465 /* E2invoiceTVC.m in Sources */,
 				44C0E62E13A0A475003D0465 /* EditDateVC.m in Sources */,
@@ -2366,7 +2370,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = InfoS1.plist;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2401,7 +2405,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = InfoS1.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2434,7 +2438,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AzSTABLE=1";
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = InfoS1.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2802,7 +2806,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",

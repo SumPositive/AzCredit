@@ -12,7 +12,7 @@
 //@class PadPopoverInNaviCon;
 //#endif
 
-@interface E5categoryTVC : UITableViewController <UIActionSheetDelegate, UISearchBarDelegate
+@interface E5categoryTVC : UITableViewController <UISearchBarDelegate
 //#ifdef AzPAD
 	,UIPopoverControllerDelegate
 //#endif

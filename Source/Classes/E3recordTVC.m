@@ -628,14 +628,16 @@
 //		alert.tag = ALERT_TAG_NoMore; // 前画面に戻る
 //		[alert show];
         
-        [self aleartTitle:NSLocalizedString(@"E3list NoData",nil)
-                  message:NSLocalizedString(@"E3list NoData msg",nil)
-                  b1title:NSLocalizedString(@"Roger",nil)
-                  b1style:UIAlertActionStyleDefault
-                 b1action:^(UIAlertAction * _Nullable action) {
-                     // < 前のViewへ戻る
-                     [self.navigationController popViewControllerAnimated:YES];
-                 }];
+        [AZAlert target:self
+                  title:NSLocalizedString(@"E3list NoData",nil)
+                message:NSLocalizedString(@"E3list NoData msg",nil)
+                b1title:NSLocalizedString(@"Roger",nil)
+                b1style:UIAlertActionStyleDefault
+               b1action:^(UIAlertAction * _Nullable action) {
+                   // < 前のViewへ戻る
+                   [self.navigationController popViewControllerAnimated:YES];
+               }];
+
 		return;
 	}
 	

@@ -13,7 +13,7 @@
 @class E3recordTVC;
 @class CalcView;
 
-@interface E3recordDetailTVC : UITableViewController  <UIActionSheetDelegate>
+@interface E3recordDetailTVC : UITableViewController 
 {
 @private
 	//--------------------------retain

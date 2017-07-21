@@ -245,11 +245,19 @@ void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton )
 //										  otherButtonTitles:zButton, nil];
 //	[alert show];
 
-    [getTopViewController() aleartTitle:zTitle
-                                message:zMsg
-                                b1title:zButton
-                                b1style:UIAlertActionStyleDefault
-                               b1action:nil];
+//    [getTopViewController() aleartTitle:zTitle
+//                                message:zMsg
+//                                b1title:zButton
+//                                b1style:UIAlertActionStyleDefault
+//                               b1action:nil];
+
+    [AZAlert target:nil
+              title:zTitle
+            message:zMsg
+            b1title:zButton
+            b1style:UIAlertActionStyleDefault
+           b1action:nil];
+
 }
 
 UIViewController* getTopViewController() {

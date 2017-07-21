@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface E8bankTVC : UITableViewController <UIActionSheetDelegate
-//#ifdef AzPAD
-	,UIPopoverControllerDelegate
-//#endif
->
+@interface E8bankTVC : UITableViewController <UIPopoverControllerDelegate>
 {
 @private
 	//--------------------------retain

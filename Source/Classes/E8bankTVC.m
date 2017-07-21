@@ -44,28 +44,28 @@
 
 #pragma mark - Action
 
-// UIActionSheetDelegate 処理部
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
-	if (actionSheet.tag == ACTIONSEET_TAG_DELETE && buttonIndex == 0) {
-		//========== E1 削除実行 ==========
-		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
-		E8bank *e8objDelete = RaE8banks[MindexPathActionDelete.row];
-		// E8bank 削除
-		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
-		[self.Re0root.managedObjectContext deleteObject:e8objDelete];
-		// 削除行の次の行以下 E8.row 更新
-		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE8banks.count ; i++) 
-		{  // .nRow + 1 削除行の次から
-			E8bank *e8obj = RaE8banks[i];
-			e8obj.nRow = @(i-1);     // .nRow--; とする
-		}
-		// Commit
-		[MocFunctions commit];
-		[self.tableView reloadData];
-	}
-}
+//// UIActionSheetDelegate 処理部
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//	// buttonIndexは、actionSheetの上から順に(0〜)付与されるようだ。
+//	if (actionSheet.tag == ACTIONSEET_TAG_DELETE && buttonIndex == 0) {
+//		//========== E8 削除実行 ==========
+//		// ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
+//		E8bank *e8objDelete = RaE8banks[MindexPathActionDelete.row];
+//		// E8bank 削除
+//		[RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
+//		[self.Re0root.managedObjectContext deleteObject:e8objDelete];
+//		// 削除行の次の行以下 E8.row 更新
+//		for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE8banks.count ; i++) 
+//		{  // .nRow + 1 削除行の次から
+//			E8bank *e8obj = RaE8banks[i];
+//			e8obj.nRow = @(i-1);     // .nRow--; とする
+//		}
+//		// Commit
+//		[MocFunctions commit];
+//		[self.tableView reloadData];
+//	}
+//}
 
 - (void)barButtonAdd {
 	// Add Card
@@ -549,23 +549,51 @@
 		// 削除コマンド警告　==>> (void)actionSheet にて処理
 		//MindexPathActionDelete = indexPath;
 		MindexPathActionDelete = [indexPath copy];
-		// 削除コマンド警告
-		UIActionSheet *action = [[UIActionSheet alloc] 
-								 initWithTitle:NSLocalizedString(@"DELETE Bank", nil)
-								 delegate:self 
-								 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-								 destructiveButtonTitle:NSLocalizedString(@"DELETE Bank button", nil)
-								 otherButtonTitles:nil];
-		action.tag = ACTIONSEET_TAG_DELETE;
-		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-		if (orientation == UIInterfaceOrientationPortrait
-			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
-			// タテ：ToolBar表示
-			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
-		} else {
-			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
-			[action showInView:self.view]; //windowから出すと回転対応しない
-		}
+//		// 削除コマンド警告
+//		UIActionSheet *action = [[UIActionSheet alloc] 
+//								 initWithTitle:NSLocalizedString(@"DELETE Bank", nil)
+//								 delegate:self 
+//								 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+//								 destructiveButtonTitle:NSLocalizedString(@"DELETE Bank button", nil)
+//								 otherButtonTitles:nil];
+//		action.tag = ACTIONSEET_TAG_DELETE;
+//		UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+//		if (orientation == UIInterfaceOrientationPortrait
+//			OR orientation == UIInterfaceOrientationPortraitUpsideDown){
+//			// タテ：ToolBar表示
+//			[action showFromToolbar:self.navigationController.toolbar]; // ToolBarがある場合
+//		} else {
+//			// ヨコ：ToolBar非表示（TabBarも無い）　＜＜ToolBar無しでshowFromToolbarするとFreeze＞＞
+//			[action showInView:self.view]; //windowから出すと回転対応しない
+//		}
+        
+        [AZAlert target:self
+             actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                  title:NSLocalizedString(@"DELETE Bank", nil)
+                message:nil
+                b1title:NSLocalizedString(@"DELETE Bank button", nil)
+                b1style:UIAlertActionStyleDestructive
+               b1action:^(UIAlertAction * _Nullable action) {
+                   //========== E8 削除実行 ==========
+                   // ＜注意＞ CoreDataモデルは、エンティティ間の削除ルールは双方「無効にする」を指定。（他にするとフリーズ）
+                   E8bank *e8objDelete = RaE8banks[MindexPathActionDelete.row];
+                   // E8bank 削除
+                   [RaE8banks removeObjectAtIndex:MindexPathActionDelete.row];
+                   [self.Re0root.managedObjectContext deleteObject:e8objDelete];
+                   // 削除行の次の行以下 E8.row 更新
+                   for (NSInteger i= MindexPathActionDelete.row + 1 ; i < RaE8banks.count ; i++)
+                   {  // .nRow + 1 削除行の次から
+                       E8bank *e8obj = RaE8banks[i];
+                       e8obj.nRow = @(i-1);     // .nRow--; とする
+                   }
+                   // Commit
+                   [MocFunctions commit];
+                   [self.tableView reloadData];
+               }
+                b2title:NSLocalizedString(@"Cancel", nil)
+                b2style:UIAlertActionStyleCancel
+               b2action:nil];
+
 	}
 }
 
