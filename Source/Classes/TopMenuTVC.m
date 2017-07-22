@@ -233,6 +233,7 @@
 
 
 
+
 #pragma mark - View lifecycle
 
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
@@ -254,9 +255,6 @@
 		} else {
 			MbInformationOpen = NO;
 		}
-#ifdef FREE_AD 
-		MbAdCanVisible = NO;		// 現在状況、(0)表示禁止  (1)表示可能
-#endif
 	}
 	return self;
 }
@@ -322,31 +320,6 @@
 	NSLog(@"--- viewDidLoad ---");
 	MiE1cardCount = 0;			// viewWillAppearにてセット
     [super viewDidLoad];
-	
-#ifdef FREE_AD
-    if (IS_PAD) {
-//        if (selfPopover) {
-//            MbAdCanVisible = NO; //Popover Menuとして表示されるときはAd非表示
-//        } else {
-            AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-            if ([naviRight.visibleViewController isMemberOfClass:[PadRootVC class]]) {
-                MbAdCanVisible = YES; // タテ⇒ヨコになったとき、右ペインVCが PadRootVC ならば iAd許可
-            } else {
-                MbAdCanVisible = NO;
-            }
-//        }
-    }else{
-        //[iOS6+4inch]対策
-        //mAdPositionY = 568 - 44 - 50;
-        mAdPositionY = self.view.frame.size.height + 22 - 44 - 50;
-        
-        // iAdは、bannerViewDidLoadAd を受信したとき開始となるためＮＯ
-        // AdMobは、常時開始とするためYES
-        MbAdCanVisible = YES;
-    }
-    [self AdRefresh];
-#endif
 }
 
 - (void)viewWillAppear:(BOOL)animated 	// ＜＜見せない処理＞＞
@@ -401,14 +374,6 @@
 {	// ＜＜魅せる処理＞＞			
     [super viewDidAppear:animated];
 	//Menuは不要でしょう [self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
-	
-#if defined (FREE_AD) //Not iPad//
-    if (IS_PHONE) {
-        //iPhone// Ad表示する
-        MbAdCanVisible = YES;  // Ad表示
-        [self AdRefresh];
-    }
-#endif
 
 	// E7E2クリーンアップ：配下のE6が無くなったE2を削除し、さらに配下のE2が無くなったE7も削除する。
 	//iPad-NG// [MocFunctions e7e2clean];  // [0.4.18]レス向上のためここで処理。バックグランド時だとE2やE7表示に戻ったとき落ちる可能性あるので没にした。
@@ -426,14 +391,6 @@
 {
 	//iPad// [Mpopover dismissPopoverAnimated:NO] ＜＜ TopMenuだけ、AppDelegate:applicationDidEnterBackground:から (void)popoverClose を呼び出して処理している。
 	
-#if defined (FREE_AD)  //Not iPad//
-	//Not iPad// Ad非表示にする
-    if (IS_PHONE) {
-        MbAdCanVisible = NO;  // 以後、Ad表示禁止
-        [self AdRefresh];
-    }
-#endif
-
 	[super viewWillDisappear:animated];
 }
 
@@ -501,20 +458,6 @@
 	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
 	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
 	NSLog(@"--- unloadRelease --- TopMenuTVC");
-#ifdef FREE_AD
-	MbAdCanVisible = NO;  // 以後、Ad表示禁止
-
-	if (MbannerView) {
-		[MbannerView cancelBannerViewAction];	//[1.0.1] 停止
-		MbannerView.delegate = nil;							// 解放メソッドを呼び出さないようにする
-		MbannerView = nil;	// alloc解放
-	}
-	
-//	if (RoAdMobView) {
-//		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-//		[RoAdMobView release], RoAdMobView = nil;	// 破棄
-//	}
-#endif
 	
     if (IS_PHONE) {
         [MinformationView hide];
@@ -571,13 +514,7 @@
 			return 2;
 			break;
 		case 3:			// 機能
-//#ifdef AzPAD
-//			return 4;
-//#else
-//			if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) return 4;
-//			return 3;
-//#endif
-			return 2;
+			return 3;
 			break;
 	}
 	return 0;
@@ -716,19 +653,15 @@
 			case 3: //-------------------------------------------------------------Function
 			{
 				switch (indexPath.row) {
-//					case 0:
-//						cell.imageView.image = [UIImage imageNamed:@"Icon32-Google.png"];
-//						cell.textLabel.text = NSLocalizedString(@"Communicate with Google", nil);
-//						break;
-//					case 1:
-//						cell.imageView.image = [UIImage imageNamed:@"Icon32-NearPC.png"];
-//						cell.textLabel.text = NSLocalizedString(@"Communicate with your PC", nil);
-//						break;
 					case 0:
+						cell.imageView.image = [UIImage imageNamed:@"iCloud-Up"];
+						cell.textLabel.text = NSLocalizedString(@"iCloud Upload", nil);
+						break;
+					case 1:
 						cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
 						cell.textLabel.text = NSLocalizedString(@"Setting", nil);
 						break;
-					case 1:
+					case 2:
 						cell.imageView.image = [UIImage imageNamed:@"Icon32-Information.png"];
 						cell.textLabel.text = NSLocalizedString(@"Information", nil);
 						break;
@@ -747,14 +680,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-#if defined(FREE_AD)
-    if (IS_PAD) {
-        if (indexPath.section!=0 || indexPath.row!=0) {
-            MbAdCanVisible = NO;	// E3Addでなければ、ｉＡｄ非表示
-            [self AdRefresh];
-        }
-    }
-#endif
 
 	UITableViewCell *cell = nil;
 	@try {	//[1.1.8]
@@ -907,68 +832,30 @@
 		case 3: // Function
 		{
 			switch (indexPath.row) {
-//				case 0:
-//				{ // Google Document
-//					GooDocsTVC *goodocs = [[GooDocsTVC alloc] init];
-//					// 以下は、GooDocsViewの viewDidLoad 後！、viewWillAppear の前に処理されることに注意！
-//					goodocs.title = cell.textLabel.text;
-//					goodocs.Re0root = Re0root;
-//#ifdef AzPAD
-//	#ifdef FREE_AD
-//					MbAdCanVisible = YES; // iAd許可
-//					[self AdRefresh];
-//	#endif
-//					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-//					BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[GooDocsTVC class]];
-//					[naviRight popToRootViewControllerAnimated:NO];
-//					[naviRight pushViewController:goodocs animated:bAnime];
-//#else
-//					goodocs.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
-//					[self.navigationController pushViewController:goodocs animated:YES];
-//#endif
-//					[goodocs release];
-//				}
-//					break;
-//				case 1:
-//				{  // Backup/Restore for YourPC
-//					//NG//[self.navigationController setToolbarHidden:YES animated:YES]; // ツールバー消す
-//					//NG//ツールバーを消したいが、戻ったとき表示する方法が未定。
-//					HttpServerView *vi = [[HttpServerView alloc] initWithFrame:[self.view bounds]];
-//					vi.Pe0root = Re0root;
-//					vi.tag = TAG_VIEW_HttpServer; // 表示中は回転禁止にするために参照している
-//#ifdef AzPAD
-//					AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//					UINavigationController* naviRight = [apd.mainController.viewControllers objectAtIndex:1];	//[1]Right
-//					//[naviRight popToRootViewControllerAnimated:NO];
-//					vi.frame = naviRight.view.bounds;
-//					[naviRight.view addSubview:vi];
-//#else
-//					[self.view addSubview:vi];
-//#endif
-//					[vi show];
-//					[vi release];
-//				}
-//					break;
-				case 0:
+                case 0:
+                {  // Upload to iCloud
+                    [AZAlert target:self
+                         actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                              title:NSLocalizedString(@"iCloud Upload", nil)
+                            message:NSLocalizedString(@"iCloud Upload Detail", nil)
+                            b1title:NSLocalizedString(@"iCloud Upload OK", nil)
+                            b1style:UIAlertActionStyleDestructive
+                           b1action:^(UIAlertAction * _Nullable action) {
+                               // Upload to iCloud
+                               [DataManager.singleton iCloudUpload];
+                           }
+                            b2title:NSLocalizedString(@"Cancel", nil)
+                            b2style:UIAlertActionStyleCancel
+                           b2action:nil];
+                }
+                    break;
+				case 1:
 				{  // Setting
-#if defined(FREE_AD)
-                    if (IS_PAD) {
-                        MbAdCanVisible = YES; // iAd許可
-                        [self AdRefresh];
-                    }
-#endif
 					[self azSettingView];
 				}
 					break;
-				case 1:
+				case 2:
 				{  // Information
-#if defined(FREE_AD)
-                    if (IS_PAD) {
-                        MbAdCanVisible = YES; // iAd許可
-                        [self AdRefresh];
-                    }
-#endif
 					[self azInformationView];
 				}
 					break;
@@ -976,10 +863,6 @@
 		}
 			break;
 	}
-
-//    if (IS_PAD && selfPopover) {		//選択後、Popoverならば閉じる
-//        [selfPopover dismissPopoverAnimated:YES];
-//    }
 }
 
 
@@ -1010,259 +893,6 @@
 //}
 //#endif
 
-
-
-#pragma mark - Ad
-
-#ifdef FREE_AD
-- (void)AdRefresh
-{
-	//----------------------------------------------------- AdMob  ＜＜loadView:に入れると起動時に生成失敗すると、以後非表示が続いてしまう。
-//	if (RoAdMobView==nil) {
-//		RoAdMobView = [[GADBannerView alloc] init];	//unloadRelease:にて破棄
-//		// 初期化
-//		RoAdMobView.alpha = 0;	// 現在状況、(0)非表示  (1)表示中
-//		RoAdMobView.tag = 0;		// 広告受信状況  (0)なし (1)あり
-//		RoAdMobView.delegate = self;
-//#ifdef AzPAD
-//		RoAdMobView.frame = CGRectMake(0, 1024+10, GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);	// 下部に隠す
-//		RoAdMobView.adUnitID = AdMobID_iPad;
-//		RoAdMobView.rootViewController = self.splitViewController;
-//		[self.splitViewController.view addSubview:RoAdMobView];
-//		[self AdMobWillRotate:self.splitViewController.interfaceOrientation];
-//#else
-//		RoAdMobView.frame = CGRectMake(0, mAdPositionY,
-//										GAD_SIZE_320x50.width, GAD_SIZE_320x50.height); 	// 下部に隠す
-//		RoAdMobView.adUnitID = AdMobID_iPhone;
-//		RoAdMobView.rootViewController = self.navigationController;
-//		[self.navigationController.view addSubview:RoAdMobView];
-//		[self AdMobWillRotate:self.navigationController.interfaceOrientation];
-//#endif
-//		// リクエスト
-//		GADRequest *request = [GADRequest request];
-//		[RoAdMobView loadRequest:request];	
-//	}
-	
-	//----------------------------------------------------- iAd: AdMobの上層になるように後からaddSubviewする
-	if (MbannerView==nil && [[[UIDevice currentDevice] systemVersion] compare:@"4.0"]!=NSOrderedAscending) { // !<  (>=) "4.0"
-		assert(NSClassFromString(@"ADBannerView"));
-		MbannerView = [[ADBannerView alloc] init];    //unloadRelease:にて破棄
-		// 初期化
-		MbannerView.alpha = 0;		// 現在状況、(0)非表示  (1)表示中
-		MbannerView.tag = 0;		// 広告受信状況  (0)なし (1)あり
-		MbannerView.delegate = self;
-        
-        if (IS_PAD) {
-            [self.splitViewController.view addSubview:MbannerView];
-            [self AdAppWillRotate:self.splitViewController.interfaceOrientation];
-        }else{
-            [self.navigationController.view addSubview:MbannerView];
-            [self AdAppWillRotate:self.navigationController.interfaceOrientation];
-        }
-	}
-//	
-//	NSLog(@"=== AdRefresh ===Can[%d] AdMob[%d⇒%d] iAd[%d⇒%d]", MbAdCanVisible, (int)RoAdMobView.alpha, (int)RoAdMobView.tag, (int)MbannerView.alpha, (int)MbannerView.tag);
-//	
-//	if (MbAdCanVisible && MbannerView.alpha==MbannerView.tag && RoAdMobView.alpha==RoAdMobView.tag) {
-//		NSLog(@"   = 変化なし =");
-//		return; // 変化なし
-//	}
-	
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseOut]; // slow at end
-	[UIView setAnimationDuration:1.2];
-	
-    if (IS_PAD) {
-        if (MbannerView) {
-            CGRect rc = MbannerView.frame;
-            if (MbAdCanVisible && MbannerView.tag==1) {
-                if (MbannerView.alpha==0) {
-                    rc.origin.y += FREE_AD_OFFSET_Y;
-                    MbannerView.frame = rc;
-                    MbannerView.alpha = 1;
-                }
-            } else {
-                if (MbannerView.alpha==1) {
-                    rc.origin.y -= FREE_AD_OFFSET_Y;	//(-)上へ隠す
-                    MbannerView.frame = rc;
-                    MbannerView.alpha = 0;
-                }
-            }
-        }
-        
-//        if (RoAdMobView) {
-//            if (RoAdMobView.tag==1) { //Pad//AdMob常時表示なので、MbAdCanVisible判定不要
-//                RoAdMobView.alpha = 1;
-//            } else {
-//                RoAdMobView.alpha = 0;
-//            }
-//        }
-    }else{
-        if (MbannerView) {
-            CGRect rc = MbannerView.frame;
-            if (MbAdCanVisible && MbannerView.tag==1) {
-                if (MbannerView.alpha==0) {
-                    rc.origin.y -= FREE_AD_OFFSET_Y;
-                    MbannerView.frame = rc;
-                    MbannerView.alpha = 1;
-                }
-            } else {
-                if (MbannerView.alpha==1) {
-                    rc.origin.y += FREE_AD_OFFSET_Y;	//(+)下へ隠す
-                    MbannerView.frame = rc;
-                    MbannerView.alpha = 0;
-                }
-            }
-        }
-        
-        //	if (RoAdMobView) {
-        //		CGRect rc = RoAdMobView.frame;
-        //		if (MbAdCanVisible && RoAdMobView.tag==1 && MbannerView.alpha==0) { //iAdが非表示のときだけAdMob表示
-        //			if (RoAdMobView.alpha==0) {
-        //				//rc.origin.y = 480 - 44 - 50;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
-        //				rc.origin.y = mAdPositionY;		//AdMobはヨコ向き常に非表示（タテ向きのY座標ならば、ヨコ向きでは非表示）
-        //				RoAdMobView.frame = rc;
-        //				RoAdMobView.alpha = 1;
-        //			}
-        //		} else {
-        //			if (RoAdMobView.alpha==1) {
-        //				//rc.origin.y = 480 + 10;		//(+)下部へ隠す
-        //				rc.origin.y = mAdPositionY + FREE_AD_OFFSET_Y;		//(+)下部へ隠す
-        //				RoAdMobView.frame = rc;
-        //				RoAdMobView.alpha = 0;	//[1.0.1]3GS-4.3.3においてAdで電卓キーが押せない不具合報告あり。未確認だがこれにて対応
-        //			}
-        //		}
-        //	}
-    }
-	
-	[UIView commitAnimations];
-}
-
-- (void)AdMobWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
-{
-//	if (RoAdMobView==nil) return;
-	
-    if (IS_PAD) {
-        //iPad// AdMobは常に表示位置であり、移動はしない
-//        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {	// タテ
-//            RoAdMobView.frame = CGRectMake(
-//                                           768-150-GAD_SIZE_300x250.width,
-//                                           1024-64-GAD_SIZE_300x250.height,
-//                                           GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
-//        } else {	// ヨコ
-//            RoAdMobView.frame = CGRectMake(
-//                                           10,
-//                                           768-24-GAD_SIZE_300x250.height,
-//                                           GAD_SIZE_300x250.width, GAD_SIZE_300x250.height);
-//        }
-    }else{
-        //iPhone// 常に下部定位置（タテ:表示、ヨコ:範囲外になり非表示）
-    }
-}
-
-- (void)AdAppWillRotate:(UIInterfaceOrientation)toInterfaceOrientation
-{	// 非表示中でも回転対応すること。表示するときの出発位置のため
-	if (MbannerView==nil) return;
-	
-/*	if ([[[UIDevice currentDevice] systemVersion] compare:@"4.2"]==NSOrderedAscending) { // ＜ "4.2"
-		// iOS4.2より前
-		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
-		} else {
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
-		}
-	} else {　*/	//1.1.12//iOS4.3以上になった。
-		// iOS4.2以降の仕様であるが、以前のOSでは落ちる！！！
-		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
-		} else {
-			MbannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-		}
-	//}
-	
-    if (IS_PAD) {
-        if (MbAdCanVisible && MbannerView.alpha==1) {
-            MbannerView.frame = CGRectMake(0, 40,  0,0);	// 表示
-        } else {
-            MbannerView.frame = CGRectMake(0, 40 - FREE_AD_OFFSET_Y,  0,0);  // 非表示
-        }
-    }else{
-        float fYofs = 0;
-        if (MbAdCanVisible && MbannerView.alpha==1) {
-            // 表示
-        } else {
-            fYofs = FREE_AD_OFFSET_Y;  // 非表示：下へ隠す ＜＜ヨコからタテになっても見えないように大きめにすること
-        }
-        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-            MbannerView.frame = CGRectMake(0, 320 - 32 - 32 + fYofs,  0,0);  // ヨコもToolbarあり
-        } else {
-            MbannerView.frame = CGRectMake(0, mAdPositionY + fYofs,  0,0);
-        }
-    }
-}
-
-//// AdMob delegate
-//- (void)adViewDidReceiveAd:(GADBannerView *)bannerView
-//{	// AdMob 広告あり
-//	NSLog(@"AdMob - adViewDidReceiveAd");
-////	bannerView.tag = 1;
-//	[self AdRefresh];
-//}
-//
-//// AdMob delegate
-//- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error 
-//{	// AdMob 広告なし
-//	NSLog(@"AdMob - adView:didFailToReceiveAdWithError:%@", [error localizedDescription]);
-//	bannerView.tag = 0;
-//	[self AdRefresh];
-//}
-
-// iAd delegate  取得できたときに呼ばれる　⇒　表示する
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner
-{	// iAd 広告あり
-	AzLOG(@"=== iAd : bannerViewDidLoadAd ===");
-	banner.tag = 1;
-	[self AdRefresh];
-}
-
-// iAd delegate  取得できなかったときに呼ばれる　⇒　非表示にする
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
-{	// iAd 広告なし
-	AzLOG(@"=== iAd : didFailToReceiveAdWithError ===");
-	banner.tag = 0;
-
-//	// AdMob 破棄　＜＜ ネット切断から復帰したとき、AdMobを再起動するための措置
-//	if (RoAdMobView) {
-//		//[1.1.0]ネット切断から復帰したとき、このように破棄⇒生成が必要。
-//		RoAdMobView.alpha = 0; //これが無いと残骸が表示されたままになる。
-//		RoAdMobView.delegate = nil;								//受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-//		[RoAdMobView release], RoAdMobView = nil;	// 破棄
-//		//[1.1.0]この後、AdRefresh:にて生成再開される。
-//	}
-	[self AdRefresh];
-}
-
-// iAd delegate
-- (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
-{	// 広告表示前にする処理があれば記述
-	return YES;
-}
-
-/*
- // iAdバナーをタップしたときに呼ばれる
- - (BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
- {	// 広告表示前にする処理があれば記述
- return YES;
- }
- 
- // iAd 広告表示を閉じて元に戻る前に呼ばれる
- - (void)bannerViewActionDidFinish:(ADBannerView *)banner
- {
- AzLOG(@"===== bannerViewActionDidFinish =====");
- //[self iAdOff];  一度見れば消えるようにする
- }
- */
-#endif
 
 
 @end

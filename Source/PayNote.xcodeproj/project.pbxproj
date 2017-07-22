@@ -344,6 +344,16 @@
 		44325AFA1F2334B900175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFB1F2334BA00175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFC1F2334BC00175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
+		44325AFF1F23709200175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
+		44325B001F23709200175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
+		44325B011F23709200175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
+		44325B021F23709300175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
+		44325B031F23709300175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
+		44325B041F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
+		44325B051F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
+		44325B061F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
+		44325B071F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
+		44325B081F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		443D439F160CCAB900866232 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 443D439C160CCAB900866232 /* Default-568h@2x.png */; };
 		4450BE2E1E7F9065001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
 		4450BE301E7F9065001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
@@ -777,10 +787,13 @@
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		44FDB09B13BA0BD700783B8E /* LoginPassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */; };
 		898F7BD659594C954102B745 /* libPods-PayNoteS1Pad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */; };
+		AB578F8D2895434CF114F76C /* libPods-PayNoteDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA41B71242B75ADD9E927F4E /* libPods-PayNoteDev.a */; };
+		F283EF8FA090E976216CE672 /* libPods-PayNote.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E54384CCB818C7F02203BE /* libPods-PayNote.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0E3DE7EA4D03983A91BBDAE2 /* Pods-AzCreditS1.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.distribution.xcconfig"; sourceTree = "<group>"; };
+		1BC0135619B8CAC6550FCCE1 /* Pods-PayNoteDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteDev/Pods-PayNoteDev.release.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -807,6 +820,8 @@
 		44325AE41F231DCD00175312 /* PayNoteDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNoteDev-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNoteDev-Info.plist"; sourceTree = "<absolute>"; };
 		44325AEC1F23239D00175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44325AEF1F2323A900175312 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		44325AFD1F23709200175312 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		44325AFE1F23709200175312 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		4450BE131E7ED613001305D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AzCreditS1/Images.xcassets; sourceTree = "<group>"; };
 		4450BE201E7F8F3D001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4450BE231E7F8F3E001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -971,10 +986,13 @@
 		7731E810163CA96606A9F44C /* libPods-AzCreditS1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.release.xcconfig"; sourceTree = "<group>"; };
 		85F02B72D6DCFB9CBE74A4F9 /* Pods-AzCreditS1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.release.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.release.xcconfig"; sourceTree = "<group>"; };
+		87C7B4522BDF03EC6E69315A /* Pods-PayNoteDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteDev/Pods-PayNoteDev.debug.xcconfig"; sourceTree = "<group>"; };
 		8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.distribution.xcconfig"; sourceTree = "<group>"; };
 		9E0EFDAC5D7DCD4F30B9C2C2 /* libPods-AzCreditPadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditPadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E54384CCB818C7F02203BE /* libPods-PayNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA41B71242B75ADD9E927F4E /* libPods-PayNoteDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNoteDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.debug.xcconfig"; sourceTree = "<group>"; };
+		AF35AB928F170D9AC208C97C /* Pods-PayNoteDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteDev/Pods-PayNoteDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNoteS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBFA958F1C66908FD5CAFB38 /* Pods-AzCreditS1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AzCreditS1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AzCreditS1/Pods-AzCreditS1.debug.xcconfig"; sourceTree = "<group>"; };
 		C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AzCreditS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1023,6 +1041,7 @@
 				44325A0E1F231CA400175312 /* AVFoundation.framework in Frameworks */,
 				44325A0F1F231CA400175312 /* libsqlite3.0.dylib in Frameworks */,
 				44325A101F231CA400175312 /* libPods-PayNoteS1Pad.a in Frameworks */,
+				F283EF8FA090E976216CE672 /* libPods-PayNote.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,6 +1063,7 @@
 				44325ABB1F231DCC00175312 /* AVFoundation.framework in Frameworks */,
 				44325ABC1F231DCC00175312 /* libsqlite3.0.dylib in Frameworks */,
 				44325ABD1F231DCC00175312 /* libPods-PayNoteS1Pad.a in Frameworks */,
+				AB578F8D2895434CF114F76C /* libPods-PayNoteDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1141,6 +1161,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				44325AEB1F23239D00175312 /* InfoPlist.strings */,
 				44325AE41F231DCD00175312 /* PayNoteDev-Info.plist */,
 				44325A371F231CA500175312 /* PayNote-Info.plist */,
@@ -1148,7 +1169,6 @@
 				443258DA1F2313F600175312 /* InfoDev.plist */,
 				443258DE1F23141500175312 /* InfoS.plist */,
 				4450BE131E7ED613001305D1 /* Images.xcassets */,
-				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				443D439C160CCAB900866232 /* Default-568h@2x.png */,
 				4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
@@ -1181,6 +1201,7 @@
 				C2AE53031062AC77334B5425 /* libPods-AzCreditS1Pad.a */,
 				A5E54384CCB818C7F02203BE /* libPods-PayNote.a */,
 				B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */,
+				AA41B71242B75ADD9E927F4E /* libPods-PayNoteDev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1193,6 +1214,8 @@
 				447373551F1C93EC000E3DAA /* UpdateVC.h */,
 				447373561F1C93EC000E3DAA /* UpdateVC.m */,
 				447373571F1C93EC000E3DAA /* UpdateVC.xib */,
+				44325AFD1F23709200175312 /* DataManager.h */,
+				44325AFE1F23709200175312 /* DataManager.m */,
 			);
 			name = New;
 			sourceTree = "<group>";
@@ -1432,6 +1455,9 @@
 				C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */,
 				E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */,
 				E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */,
+				87C7B4522BDF03EC6E69315A /* Pods-PayNoteDev.debug.xcconfig */,
+				1BC0135619B8CAC6550FCCE1 /* Pods-PayNoteDev.release.xcconfig */,
+				AF35AB928F170D9AC208C97C /* Pods-PayNoteDev.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1451,6 +1477,7 @@
 				44325A171F231CA400175312 /* E1cardDetailTVC.h in Headers */,
 				44325A181F231CA400175312 /* EditTextVC.h in Headers */,
 				44325A191F231CA400175312 /* AZAlert.h in Headers */,
+				44325B001F23709200175312 /* DataManager.h in Headers */,
 				44325A1A1F231CA400175312 /* E1editPayDayVC.h in Headers */,
 				44325A1B1F231CA400175312 /* E2invoiceTVC.h in Headers */,
 				44325A1C1F231CA400175312 /* EditDateVC.h in Headers */,
@@ -1488,6 +1515,7 @@
 				44325AC41F231DCC00175312 /* E1cardDetailTVC.h in Headers */,
 				44325AC51F231DCC00175312 /* EditTextVC.h in Headers */,
 				44325AC61F231DCC00175312 /* AZAlert.h in Headers */,
+				44325AFF1F23709200175312 /* DataManager.h in Headers */,
 				44325AC71F231DCC00175312 /* E1editPayDayVC.h in Headers */,
 				44325AC81F231DCC00175312 /* E2invoiceTVC.h in Headers */,
 				44325AC91F231DCC00175312 /* EditDateVC.h in Headers */,
@@ -1538,6 +1566,7 @@
 				4454C98D114941930063621D /* E5categoryTVC.h in Headers */,
 				4454C98E114941930063621D /* E5categoryDetailTVC.h in Headers */,
 				44ACA0C2114E698B000E9FD8 /* MocFunctions.h in Headers */,
+				44325B011F23709200175312 /* DataManager.h in Headers */,
 				44A68B6311685110004A89ED /* CalcView.h in Headers */,
 				44A4162311DB8447007DEB5B /* E8bankDetailTVC.h in Headers */,
 				44A4162411DB8447007DEB5B /* E8bankTVC.h in Headers */,
@@ -1560,6 +1589,7 @@
 				44C0E43F13A0A2D1003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E44013A0A2D1003D0465 /* EditTextVC.h in Headers */,
 				447373711F1FA890000E3DAA /* AZAlert.h in Headers */,
+				44325B031F23709300175312 /* DataManager.h in Headers */,
 				44C0E44113A0A2D1003D0465 /* E1editPayDayVC.h in Headers */,
 				44C0E44213A0A2D1003D0465 /* E2invoiceTVC.h in Headers */,
 				44C0E44313A0A2D1003D0465 /* EditDateVC.h in Headers */,
@@ -1597,6 +1627,7 @@
 				44C0E66013A0A475003D0465 /* E1cardDetailTVC.h in Headers */,
 				44C0E66113A0A475003D0465 /* EditTextVC.h in Headers */,
 				4473736F1F1FA890000E3DAA /* AZAlert.h in Headers */,
+				44325B021F23709300175312 /* DataManager.h in Headers */,
 				44C0E66213A0A475003D0465 /* E1editPayDayVC.h in Headers */,
 				44C0E66313A0A475003D0465 /* E2invoiceTVC.h in Headers */,
 				44C0E66413A0A475003D0465 /* EditDateVC.h in Headers */,
@@ -2227,7 +2258,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNote/Pods-PayNote-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		44325A311F231CA400175312 /* [CP] Copy Pods Resources */ = {
@@ -2242,7 +2273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNote/Pods-PayNote-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		44325A391F231DCC00175312 /* [CP] Check Pods Manifest.lock */ = {
@@ -2272,7 +2303,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteDev/Pods-PayNoteDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		44325ADE1F231DCC00175312 /* [CP] Copy Pods Resources */ = {
@@ -2287,7 +2318,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteDev/Pods-PayNoteDev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		60078EC929CF863B0631C560 /* [CP] Copy Pods Resources */ = {
@@ -2358,6 +2389,7 @@
 				44B605F71126FADD00E82C54 /* E1editPayDayVC.m in Sources */,
 				44D7351711279ACB00997A37 /* E2invoiceTVC.m in Sources */,
 				440AC51711299DBE00B89317 /* EditDateVC.m in Sources */,
+				44325B061F23709300175312 /* DataManager.m in Sources */,
 				44D00C40112CCC25001BC4C8 /* E3recordTVC.m in Sources */,
 				44ABA3A7112FB92D0009E62E /* E4shopDetailTVC.m in Sources */,
 				44ABA3A9112FB92D0009E62E /* E4shopTVC.m in Sources */,
@@ -2408,6 +2440,7 @@
 				443259F51F231CA400175312 /* FileCsv.m in Sources */,
 				443259F61F231CA400175312 /* E3selectPayTypeTVC.m in Sources */,
 				443259F71F231CA400175312 /* E5categoryDetailTVC.m in Sources */,
+				44325B051F23709300175312 /* DataManager.m in Sources */,
 				443259F81F231CA400175312 /* E5categoryTVC.m in Sources */,
 				443259F91F231CA400175312 /* MocFunctions.m in Sources */,
 				443259FA1F231CA400175312 /* Global.m in Sources */,
@@ -2450,6 +2483,7 @@
 				44325AA21F231DCC00175312 /* FileCsv.m in Sources */,
 				44325AA31F231DCC00175312 /* E3selectPayTypeTVC.m in Sources */,
 				44325AA41F231DCC00175312 /* E5categoryDetailTVC.m in Sources */,
+				44325B041F23709300175312 /* DataManager.m in Sources */,
 				44325AA51F231DCC00175312 /* E5categoryTVC.m in Sources */,
 				44325AA61F231DCC00175312 /* MocFunctions.m in Sources */,
 				44325AA71F231DCC00175312 /* Global.m in Sources */,
@@ -2492,6 +2526,7 @@
 				44C0E41013A0A2D1003D0465 /* FileCsv.m in Sources */,
 				44C0E41213A0A2D1003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E41313A0A2D1003D0465 /* E5categoryDetailTVC.m in Sources */,
+				44325B081F23709300175312 /* DataManager.m in Sources */,
 				44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */,
 				44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */,
 				44C0E41613A0A2D1003D0465 /* Global.m in Sources */,
@@ -2534,6 +2569,7 @@
 				44C0E63413A0A475003D0465 /* FileCsv.m in Sources */,
 				44C0E63613A0A475003D0465 /* E3selectPayTypeTVC.m in Sources */,
 				44C0E63713A0A475003D0465 /* E5categoryDetailTVC.m in Sources */,
+				44325B071F23709300175312 /* DataManager.m in Sources */,
 				44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */,
 				44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */,
 				44C0E63A13A0A475003D0465 /* Global.m in Sources */,
@@ -2707,7 +2743,7 @@
 		};
 		44325A331F231CA400175312 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */;
+			baseConfigurationReference = AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2743,7 +2779,7 @@
 		};
 		44325A341F231CA400175312 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */;
+			baseConfigurationReference = 81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2776,7 +2812,7 @@
 		};
 		44325A351F231CA400175312 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
+			baseConfigurationReference = 8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2809,7 +2845,7 @@
 		};
 		44325AE01F231DCC00175312 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */;
+			baseConfigurationReference = 87C7B4522BDF03EC6E69315A /* Pods-PayNoteDev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
@@ -2848,7 +2884,7 @@
 		};
 		44325AE11F231DCC00175312 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */;
+			baseConfigurationReference = 1BC0135619B8CAC6550FCCE1 /* Pods-PayNoteDev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
@@ -2884,7 +2920,7 @@
 		};
 		44325AE21F231DCC00175312 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
+			baseConfigurationReference = AF35AB928F170D9AC208C97C /* Pods-PayNoteDev.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;

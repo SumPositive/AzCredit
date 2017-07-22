@@ -9,6 +9,7 @@ platform :ios, ’9.0'
 def install_pods
 	pod 'SFHFKeychainUtils'
 	pod 'UIDevice-Hardware'
+    pod 'SVProgressHUD'
 end
 
 

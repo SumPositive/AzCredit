@@ -15,9 +15,7 @@
 #import "MocFunctions.h"
 #import "TopMenuTVC.h"
 #import "LoginPassVC.h"
-//#ifdef AzPAD
 #import "PadRootVC.h"
-//#endif
 #import "UpdateVC.h"
 
 
@@ -48,32 +46,7 @@
 @synthesize mainSplit, mainNavi;
 @synthesize	Me3dateUse;
 @synthesize entityModified;
-//#ifdef AzPAD
 @synthesize barMenu;
-//#endif
-
-
-//- (void)dealloc 
-//{
-//	//AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
-//	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
-//
-////	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
-//    if (IS_PAD) {
-//        mainSplit.delegate = nil;
-//        mainSplit = nil;
-//    } else {
-//        mainNavi.delegate = nil;
-//        mainNavi = nil;
-//    }
-//
-////	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
-//
-////	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
-////	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
-////	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
-//  //  [super dealloc];
-//}
 
 
 #ifdef AzDEBUG
@@ -145,131 +118,54 @@
         window.rootViewController = mainNavi;	//iOS6以降、こうしなければ回転しない。
     }
 	
-	// mainController を window へ登録
-	//[window addSubview:mainController.view];
-//	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 2)
-
-	
-	
-#ifdef AzMAKE_SPLASHFACE
-	//self.RaComebackIndex = nil;
-#else
-	// [Comeback] 前回の画面表示に復帰させる
-	// load the stored preference of the user's last location from a previous launch
-	//NSMutableArray *tempMutableCopy = [[userDefaults objectForKey:kComebackIndexKey] mutableCopy];
-	//self.RaComebackIndex = tempMutableCopy;
-	//AzRETAIN_CHECK(@"AppDelegate tempMutableCopy", tempMutableCopy, 2)
-	//[tempMutableCopy release];
-#endif
-	
-/*	//if (self.RaComebackIndex == nil)
-	{
-		// 新規起動時
-		// user has not launched this app nor navigated to a particular level yet, start at level 1, with no selection
-		self.RaComebackIndex = [[NSMutableArray arrayWithObjects:	// (long型／intではOverflow)
-							   [NSNumber numberWithLong:-1],	//L0: TopMenu
-							   [NSNumber numberWithLong:-1],	//L1: E1card, E3record, E4shop, E5category, E7payment
-							   [NSNumber numberWithLong:-1],	//L2: E2invoice, E3record, E6part
-							   [NSNumber numberWithLong:-1],	//L3: E6part
-							   [NSNumber numberWithLong:-1],	//L4: 
-							   nil] retain];
-	}
-	else	//[0.4]viewComeback廃止：とりあえずここだけリマークしたが、問題無ければ[0.5]では関連全削除する予定。
-	{
-		// 復帰
-		NSInteger idx = [[self.RaComebackIndex objectAtIndex:0] integerValue]; // read the saved selection at level 1
-		if (idx != -1)
-		{
-			[topMenuTvc viewWillAppear:NO]; // Fech データセットさせるため
-			[topMenuTvc viewComeback:self.RaComebackIndex];
-		}
-		else
-		{
-			// no saved selection, so user was at level 1 the last time
-		}
-	}*/
-
 	[window makeKeyAndVisible];	// 表示開始
-	//[0.4]-----------------------------------------------ログイン画面処理
-	[self appLoginPassView];
-	
-	// register our preference selection data to be archived
-//	NSDictionary *indexComebackDict = [NSDictionary dictionaryWithObject:self.RaComebackIndex 
-//																  forKey:kComebackIndexKey];
-//	[userDefaults registerDefaults:indexComebackDict];
-//	[userDefaults synchronize]; // plistへ書き出す
 
-/*
-#ifdef ADMOB_INTERSTITIAL_ENABLED
-	// Request an interstitial at "Application Open" time.
-	// optionally retain the returned AdMobInterstitialAd.
-	interstitialAd = [[AdMobInterstitialAd requestInterstitialAt:AdMobInterstitialEventAppOpen 
-														delegate:self 
-											interstitialDelegate:self] retain];
-#endif
-*/
-	return YES;  //iOS4
+    //[0.4]-----------------------------------------------ログイン画面処理
+	//[self appLoginPassView];
+	
+	return YES;
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application 
 {	//iOS4: アプリケーションがアクティブでなくなる直前に呼ばれる
-	AzLOG(@"applicationWillResignActive");
+	//AzLOG(@"applicationWillResignActive");
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application 
 {	//iOS4: アプリケーションがバックグラウンドになったら呼ばれる
-	AzLOG(@"applicationDidEnterBackground");
-
-//    if (IS_PAD) {
-//        UINavigationController* naviLeft = [self.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
-//        if ([[naviLeft.viewControllers objectAtIndex:0] isMemberOfClass:[TopMenuTVC class]]) {
-//            TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-//            if ([tvc respondsToSelector:@selector(popoverClose)]) {	// メソッドの存在を確認する
-//                [tvc popoverClose];	// Popoverが開いておれば、rollbackして閉じる
-//            }
-//        }
-//    }
-	
 	[self applicationWillTerminate:application]; //iOS3以前の終了処理
 
 	//[0.4]-----------------------------------------------ログイン画面処理
-	[self appLoginPassView];	// このタイミングが重要。復帰するときには既に隠れている状態になる。
+	//[self appLoginPassView];	// このタイミングが重要。復帰するときには既に隠れている状態になる。
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application 
 {	//iOS4: アプリケーションがバックグラウンドから復帰する直前に呼ばれる
-	/*
-	 Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
-	 */
-	AzLOG(@"applicationWillEnterForeground");
+	//AzLOG(@"applicationWillEnterForeground");
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application 
 {	//iOS4: アプリケーションがアクティブになったら呼ばれる
-	/*
-	 Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-	 */
-	AzLOG(@"applicationDidBecomeActive");
-    
-    
-    // Update
-    NSString* bundleID = [NSBundle mainBundle].bundleIdentifier;
-    AzLOG(@"bundleID: %@",bundleID);
-    if ([bundleID isEqualToString:@"com.azukid.azcredits1"]) {
-        // iCloud 読み込み
-        
-    } else {
-        // iCloud 保存
-        UpdateVC* vc = [[UpdateVC alloc] init];
-        vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
-        vc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
-        vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [window.rootViewController presentViewController:vc animated:YES completion:nil];
-    }
+	//AzLOG(@"applicationDidBecomeActive");
+
+//    // Update
+//    NSString* bundleID = [NSBundle mainBundle].bundleIdentifier;
+//    AzLOG(@"bundleID: %@",bundleID);
+//    if ([bundleID isEqualToString:@"com.azukid.azcredits1"]) {
+//        // iCloud 読み込み
+//        
+//    } else {
+//        // iCloud 保存
+//        UpdateVC* vc = [[UpdateVC alloc] init];
+//        vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
+//        vc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+//        vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//        [window.rootViewController presentViewController:vc animated:YES completion:nil];
+//    }
 }
 
 
@@ -279,27 +175,6 @@
 {	// バックグラウンド実行中にアプリが終了された場合に呼ばれる。
 	// ただしアプリがサスペンド状態の場合アプリを終了してもこのメソッドは呼ばれない。
 
-	// iOS3互換のためにはここが必要。　iOS4以降、applicationDidEnterBackground から呼び出される。
-
-	/***[0.4.20]Bug:E3detail,E4shopなどで保存前に終了＞バックグランド＞復帰したとき、画面は復帰するがEntityデータは失われている
-				原因＞ 終了処理でMOC:rollbackしているため。
-				対応＞「applicationWillTerminate > hasChanges > rollback」を廃止。
-						・終了＞バックグランド＞復帰した場合、MOCは維持されているため。
-						・了＞破棄された場合、MOCはcommit以降は破棄されるのでrollbackと同じ。
-	 **************************************************************************
-	if (managedObjectContext != nil) {
-        // 新規登録途中に閉じた場合など、保存しないため。 RollBackする
-        if ([managedObjectContext hasChanges]) {
-			NSLog(@"applicationWillTerminate > hasChanges > rollback");
-			[managedObjectContext rollback];
-        } 
-    }
-	*/
-
-	// save the drill-down hierarchy of selections to preferences
-//	[[NSUserDefaults standardUserDefaults] setObject:self.RaComebackIndex forKey:kComebackIndexKey];
-	// この時点ではメモリ上で更新されただけ。
-//	[[NSUserDefaults standardUserDefaults] synchronize]; // plistへ書き出す
 }
 
 
@@ -420,70 +295,37 @@
 }
 
 
-#pragma mark - Login password
-
-// ログイン画面処理
-- (void)appLoginPassView 
-{
-	// KeyChainから保存しているパスワードを取得する
-	NSError *error; // nilを渡すと異常終了するので注意
-	NSString *pass = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
-												andServiceName:GD_PRODUCTNAME error:&error];
-	if (error) {
-		NSLog(@"SFHFKeychainUtils: getPasswordForUsername %@", [error localizedDescription]);
-//		GA_TRACK_EVENT_ERROR([error localizedDescription],0)
-		return;
-	}
-	if (pass.length<=0) {
-		return; // パスなし、自動ログイン
-	}
-
-	//回転対応
-	LoginPassVC *vc = [[LoginPassVC alloc] init];
-	vc.modalPresentationStyle = UIModalPresentationFullScreen;
-	vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-	//[self.window  presentModalViewController:vc animated:YES];
-	//[mainController.navigationController presentModalViewController:vc animated:NO]; 
-	//[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
-    if (IS_PAD) {
-        [mainSplit presentViewController:vc animated:NO completion:nil];
-    }else{
-        [mainNavi presentViewController:vc animated:NO completion:nil];
-    }
-}
-
-
-//音出すと音楽再生が止まるので廃止
-//#pragma mark - AVAudioPlayer
-//- (void)audioPlayer:(NSString*)filename
+//#pragma mark - Login password
+//
+//// ログイン画面処理
+//- (void)appLoginPassView 
 //{
-//	//if (MfAudioVolume <= 0.0 || 1.0 < MfAudioVolume) return;
-//#if (TARGET_IPHONE_SIMULATOR)
-//	// シミュレータで動作している場合のコード
-//	NSLog(@"AVAudioPlayer -　SIMULATOR");
-//#else
-//	// 実機で動作している場合のコード
-// 	NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/System/Library/Audio/UISounds/%@", filename]];
-//	AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-//	player.volume = 1.0;  //MfAudioVolume;  // 0.0〜1.0
-//	player.delegate = self;		// audioPlayerDidFinishPlaying:にて release するため。
-//	[player play];
-//#endif
-//}
+//	// KeyChainから保存しているパスワードを取得する
+//	NSError *error; // nilを渡すと異常終了するので注意
+//	NSString *pass = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
+//												andServiceName:GD_PRODUCTNAME error:&error];
+//	if (error) {
+//		NSLog(@"SFHFKeychainUtils: getPasswordForUsername %@", [error localizedDescription]);
+////		GA_TRACK_EVENT_ERROR([error localizedDescription],0)
+//		return;
+//	}
+//	if (pass.length<=0) {
+//		return; // パスなし、自動ログイン
+//	}
 //
-//#pragma mark  <AVAudioPlayerDelegate>
-//- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-//{	// 再生が終了したとき、破棄する	＜＜ シミュレータでは呼び出されない
-//	NSLog(@"- audioPlayerDidFinishPlaying -");
-//	player.delegate = nil;
+//	//回転対応
+//	LoginPassVC *vc = [[LoginPassVC alloc] init];
+//	vc.modalPresentationStyle = UIModalPresentationFullScreen;
+//	vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//	//[self.window  presentModalViewController:vc animated:YES];
+//	//[mainController.navigationController presentModalViewController:vc animated:NO]; 
+//	//[mainController presentModalViewController:vc animated:NO]; // 即隠すためNO
+//    if (IS_PAD) {
+//        [mainSplit presentViewController:vc animated:NO completion:nil];
+//    }else{
+//        [mainNavi presentViewController:vc animated:NO completion:nil];
+//    }
 //}
-//
-//- (void)audioPlayerDecodeErrorDidOccur: (AVAudioPlayer*)player error:(NSError*)error
-//{	// エラー発生
-//	NSLog(@"- audioPlayerDecodeErrorDidOccur -");
-//	player.delegate = nil;
-//}
-
 
 @end
 
