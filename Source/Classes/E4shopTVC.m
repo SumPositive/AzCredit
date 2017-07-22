@@ -446,38 +446,38 @@
 //#endif
 
 
-#pragma mark  View - Unload - dealloc
-
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
-	NSLog(@"--- unloadRelease --- E4shopTVC");
-	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
-	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
-	RaE4shops = nil;
-}
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-    if (IS_PAD) {
-        MindexPathEdit = nil;
-    }else{
-        RzSearchText = nil;
-        MindexPathActionDelete = nil;
-    }
-  //  [super dealloc];
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
+//#pragma mark  View - Unload - dealloc
+//
+//- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+//{
+//	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
+//	NSLog(@"--- unloadRelease --- E4shopTVC");
+//	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+//	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
+//	RaE4shops = nil;
+//}
+//
+//- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+//{
+//	[self unloadRelease];
+//    if (IS_PAD) {
+//        MindexPathEdit = nil;
+//    }else{
+//        RzSearchText = nil;
+//        MindexPathActionDelete = nil;
+//    }
+//  //  [super dealloc];
+//}
+//
+//// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+//- (void)viewDidUnload 
+//{
+//	//NSLog(@"--- viewDidUnload ---"); 
+//	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+//	[self unloadRelease];
+//	[super viewDidUnload];
+//	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+//}
 
 
 #pragma mark - UISearchBar

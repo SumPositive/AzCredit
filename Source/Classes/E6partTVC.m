@@ -596,39 +596,39 @@
 }
 */
 
-#pragma mark  View - Unload - dealloc
-
-- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
-	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
-	NSLog(@"--- unloadRelease --- E6partTVC");
-#ifdef FREE_AD
-//	if (RoAdMobView) {
-//		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
-//		[RoAdMobView release], RoAdMobView = nil;	//cellへのaddSubなので、自己管理している。
-//	}
-#endif
-	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
-	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
-	RaE2invoices = nil;
-	RaE6parts = nil;
-}
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-	MindexPathEdit = nil;
-	//--------------------------------@property (retain)
-}
-
-// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
-- (void)viewDidUnload 
-{
-	//NSLog(@"--- viewDidUnload ---"); 
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[self unloadRelease];
-	[super viewDidUnload];
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
+//#pragma mark  View - Unload - dealloc
+//
+//- (void)unloadRelease {	// dealloc, viewDidUnload から呼び出される
+//	//【Tips】loadViewでautorelease＆addSubviewしたオブジェクトは全てself.viewと同時に解放されるので、ここでは解放前の停止処理だけする。
+//	NSLog(@"--- unloadRelease --- E6partTVC");
+//#ifdef FREE_AD
+////	if (RoAdMobView) {
+////		RoAdMobView.delegate = nil;  //[0.4.20]受信STOP  ＜＜これが無いと破棄後に呼び出されて落ちる
+////		[RoAdMobView release], RoAdMobView = nil;	//cellへのaddSubなので、自己管理している。
+////	}
+//#endif
+//	//【Tips】デリゲートなどで参照される可能性のあるデータなどは破棄してはいけない。
+//	// 他オブジェクトからの参照無く、viewWillAppearにて生成されるので破棄可能
+//	RaE2invoices = nil;
+//	RaE6parts = nil;
+//}
+//
+//- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+//{
+//	[self unloadRelease];
+//	MindexPathEdit = nil;
+//	//--------------------------------@property (retain)
+//}
+//
+//// メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。
+//- (void)viewDidUnload 
+//{
+//	//NSLog(@"--- viewDidUnload ---"); 
+//	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+//	[self unloadRelease];
+//	[super viewDidUnload];
+//	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+//}
 
 
 #pragma mark - TableView lifecicle

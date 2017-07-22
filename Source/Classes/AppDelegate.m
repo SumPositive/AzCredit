@@ -53,27 +53,27 @@
 //#endif
 
 
-- (void)dealloc 
-{
-	//AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
-	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
-
-//	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
-    if (IS_PAD) {
-        mainSplit.delegate = nil;
-        mainSplit = nil;
-    } else {
-        mainNavi.delegate = nil;
-        mainNavi = nil;
-    }
-
-//	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
-
-//	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
-//	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
-//	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
-  //  [super dealloc];
-}
+//- (void)dealloc 
+//{
+//	//AzRETAIN_CHECK(@"AppDelegate Me3dateUse", Me3dateUse, 1)
+//	//[Me3dateUse release],// autoreleseにしたので解放不要（すれば落ちる）
+//
+////	AzRETAIN_CHECK(@"AppDelegate mainController", mainController, 1)
+//    if (IS_PAD) {
+//        mainSplit.delegate = nil;
+//        mainSplit = nil;
+//    } else {
+//        mainNavi.delegate = nil;
+//        mainNavi = nil;
+//    }
+//
+////	AzRETAIN_CHECK(@"AppDelegate window", window, 1)
+//
+////	AzRETAIN_CHECK(@"AppDelegate persistentStoreCoordinator", persistentStoreCoordinator, 1)
+////	AzRETAIN_CHECK(@"AppDelegate managedObjectContext", managedObjectContext, 1)
+////	AzRETAIN_CHECK(@"AppDelegate managedObjectModel", managedObjectModel, 1)
+//  //  [super dealloc];
+//}
 
 
 #ifdef AzDEBUG

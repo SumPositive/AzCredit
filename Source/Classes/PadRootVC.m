@@ -21,25 +21,25 @@
 //@synthesize menuPopoverController;
 
 
-- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
-{
-	NSLog(@"--- unloadRelease --- PadRootVC");
-}
-
-- (void)dealloc
-{
-	[self unloadRelease];
-    //[super dealloc];
-}
-
-- (void)viewDidUnload 
-{	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
-	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
-	[super viewDidUnload];  // TableCell破棄される
-	[self unloadRelease];		// その後、AdMob破棄する
-	//self.splitViewController = nil;
-	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
-}
+//- (void)unloadRelease	// dealloc, viewDidUnload から呼び出される
+//{
+//	NSLog(@"--- unloadRelease --- PadRootVC");
+//}
+//
+//- (void)dealloc
+//{
+//	[self unloadRelease];
+//    //[super dealloc];
+//}
+//
+//- (void)viewDidUnload 
+//{	// メモリ不足時、裏側にある場合に呼び出されるので、viewDidLoadで生成したObjを解放する。
+//	// メモリ不足時、裏側にある場合に呼び出される。addSubviewされたOBJは、self.viewと同時に解放される
+//	[super viewDidUnload];  // TableCell破棄される
+//	[self unloadRelease];		// その後、AdMob破棄する
+//	//self.splitViewController = nil;
+//	// この後に loadView ⇒ viewDidLoad ⇒ viewWillAppear がコールされる
+//}
 
 
 #pragma mark - Action

@@ -369,16 +369,16 @@
 	RaE8banks = nil;
 }
 
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	[self unloadRelease];
-    if (IS_PAD) {
-        MindexPathEdit = nil;
-    }else{
-        MindexPathActionDelete = nil;
-    }
-    //[super dealloc];
-}
+//- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+//{
+//	[self unloadRelease];
+//    if (IS_PAD) {
+//        MindexPathEdit = nil;
+//    }else{
+//        MindexPathActionDelete = nil;
+//    }
+//    //[super dealloc];
+//}
 
 
 #pragma mark - TableView lifecicle

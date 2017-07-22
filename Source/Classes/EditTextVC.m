@@ -192,13 +192,13 @@
 }
 
 
-#pragma mark  View - Unload - dealloc
-
-- (void)dealloc    // 生成とは逆順に解放するのが好ましい
-{
-	sourceText = nil;
-    //[super dealloc];
-}
+//#pragma mark  View - Unload - dealloc
+//
+//- (void)dealloc    // 生成とは逆順に解放するのが好ましい
+//{
+//	sourceText = nil;
+//    //[super dealloc];
+//}
 
 
 #pragma mark - <UITextViewDelegate>

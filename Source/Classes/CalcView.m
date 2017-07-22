@@ -802,19 +802,19 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
  */
 
 
-#pragma mark  View - Unload - dealloc
-- (void)dealloc 
-{
-//	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
-	if (MdecAnswer) {
-		MdecAnswer = nil;
-	}
-	
-	RzLabelText = nil;
-	//[RzKey release];
-	//[Rentity release];
-  //  [super dealloc];
-}
+//#pragma mark  View - Unload - dealloc
+//- (void)dealloc 
+//{
+////	AzRETAIN_CHECK(@"dealloc: MdecAnswer", MdecAnswer, 0);
+//	if (MdecAnswer) {
+//		MdecAnswer = nil;
+//	}
+//	
+//	RzLabelText = nil;
+//	//[RzKey release];
+//	//[Rentity release];
+//  //  [super dealloc];
+//}
 
 
 
