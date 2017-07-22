@@ -12,6 +12,12 @@ def install_pods
 end
 
 
+# PayNoteDev 開発版(com.azukid.b3c6bd451bb03c) 常に先行公開
+target 'PayNoteDev' do
+    install_pods
+end
+
+# PayNote 安定版(com.azukid.AzCreditS1)
 target 'PayNote' do
 	install_pods
 end

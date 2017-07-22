@@ -483,21 +483,15 @@ NSString *passCode()
     UIImageView *iv;
     if (IS_PAD) {
         iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+35, 72, 72)];
-//#ifdef AzSTABLE
-//        [iv setImage:[UIImage imageNamed:@"Icon72S1.png"]];
-//#else
-//        [iv setImage:[UIImage imageNamed:@"Icon72Free.png"]];
-//#endif
     }else{
         iv = [[UIImageView alloc] initWithFrame:CGRectMake(fX+20, fY+50, 57, 57)];
-//#ifdef AzSTABLE
-//        iv.image = [UIImage imageNamed:@"Icon57s1.png"];
-//#else
-//        [iv setImage:[UIImage imageNamed:@"Icon57.png"]];
-//#endif
     }
-
-    iv.image = [UIImage imageNamed:@"Icon57s1"];
+    //iv.image = [UIImage imageNamed:@"Icon57s1"];
+    
+    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
+    iv.image = [UIImage imageNamed:icon];
+    
     [self.view addSubview:iv];
 	
 	UILabel *label;
@@ -516,19 +510,17 @@ NSString *passCode()
 	
 	//------------------------------------------Lable:Version
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 45)];
-#ifdef AzSTABLE
+    
+    NSString *zDetail;
+#if DevBETA
+	NSString *zFree = @"PayNoteβ";
+    zDetail = NSLocalizedString(@"Development version",nil);
+#else
 	NSString *zFree = @"PayNote";
-#else	
-	NSString *zFree = @"PayNote Free";
+    zDetail = NSLocalizedString(@"Stable version",nil);
 #endif
-    NSString *zDevice;
-    if (IS_PAD) {
-        zDevice = @"for iPad";
-    }else{
-        zDevice = @"for iPhone";
-    }
 	NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
-	label.text = [NSString stringWithFormat:@"%@\n%@\nVersion %@", zFree, zDevice, zVersion];  // Build表示しない
+	label.text = [NSString stringWithFormat:@"%@\nVersion %@\n%@", zFree, zVersion, zDetail];  // Build表示しない
 	label.numberOfLines = 3;
 	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
@@ -553,7 +545,7 @@ NSString *passCode()
 	
 	//------------------------------------------Lable:著作権表示
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+130, 200, 60)];
-	label.text = @"Copyright 2000\n"
+	label.text = @"Copyright 2010\n"
                 @"Masakazu.Matsuyama\n"
 				@"All Rights Reserved.";
 	label.numberOfLines = 3;

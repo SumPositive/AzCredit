@@ -1,7 +1,8 @@
 //
 //  AZAlert.m
-//  PayNote
+//  UIAlertController+Wrapper アラート&アクションシート
 //
+//  Copyright 2017 Azukid
 //  Created by 松山正和 on 2017/07/19.
 //
 //
@@ -177,29 +178,6 @@
             b4title:nil      b4style:0        b4action:nil
             b5title:nil      b5style:0        b5action:nil
      ];
-}
-
-/*
- 0ボタン・トースト
- */
-+ (void)target:(UIViewController*_Nullable)target
-         title:(NSString*_Nullable)title
-       message:(NSString*_Nullable)message
-      interval:(NSTimeInterval)interval
-{
-    UIAlertController *alertController
-    = [UIAlertController alertControllerWithTitle: title
-                                          message: message
-                                   preferredStyle: UIAlertControllerStyleAlert];
-    
-    if (target == nil) {
-        target = [AZAlert getTopViewController];
-    }
-    [target presentViewController:alertController animated:YES completion:^{
-        // interval秒後に閉じる
-        
-        
-    }];
 }
 
 /*

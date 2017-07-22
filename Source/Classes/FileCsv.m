@@ -80,7 +80,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		NSString *str;
 
 		//----------------------------------------------------------------------------Header
-		str = GD_PRODUCTNAME  @",CSV,UTF-8,Copyright,(C)2000-2010,Azukid,,,\n";
+		str = GD_PRODUCTNAME  @",CSV,UTF-8,Copyright,(C)2010,Azukid,,,\n";
 		[output writeData:[str dataUsingEncoding:enc allowLossyConversion:YES]];
 
 		//----------------------------------------------------------------------------Structure
@@ -414,7 +414,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 		// ここではSAVEしない。CSV読み込み成功時にSAVEする
 
 		while (1) {
-			// "AzCredit,CSV,UTF-8,Copyright,(C)2000-2010,Azukid,,,\n";
+			// "AzCredit,CSV,UTF-8,Copyright,(C)2010,Azukid,,,\n";
 			if (![self getMaCsv:csvHandle]) { // EOF
 				@throw NSLocalizedString(@"Err CsvHeaderNG",nil);
 			}
