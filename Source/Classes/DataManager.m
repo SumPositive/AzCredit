@@ -10,7 +10,8 @@
 #import "FileCsv.h"
 
 
-#define UPLOAD_FILENAME         @"PayNote_1.data"
+#define ICLOUD_CONTAINER        @"iCloud.com.azukid.PayNote"
+#define ICLOUD_FILENAME         @"PayNote_1.data"
 #define NEW_APP_ID              @"432458298"            // 新しい「クレメモ」1.2.x
 
 
@@ -34,56 +35,67 @@ static DataManager* _singleton = nil;
 
 #pragma mark - Public methods
 
-// iCloud
+// iCloud Drive
+
+- (NSURL*)iCloudFileUrl
+{
+    // iCloud Drive 実験
+    NSFileManager* fm = [NSFileManager defaultManager];
+    NSURL* url = [fm URLForUbiquityContainerIdentifier:ICLOUD_CONTAINER];
+    NSURL* fileUrl = [url URLByAppendingPathComponent:ICLOUD_FILENAME];
+    AzLOG(@"fileUrl: %@", fileUrl);
+    return fileUrl;
+}
+
 - (void)iCloudUpload
 {
-    [SVProgressHUD show];
+    [SVProgressHUD showWithStatus:@"保存中"];
 
     E0root *e0node = [MocFunctions e0root];
-    // CSV make ---> Document file
-    NSString* zErr = [FileCsv zSave:e0node toLocalFileName:UPLOAD_FILENAME];
+    // E0配下をファイルへ書き出す
+    NSString* zErr = [FileCsv zSave:e0node toLocalFileName:ICLOUD_FILENAME];
     if (zErr) {
         [SVProgressHUD dismiss];
         [AZAlert target:nil
-                  title:NSLocalizedString(@"Upload Fail NoData",nil)
-                message:zErr
+                  title:NSLocalizedString(@"iCloud Upload Fail",nil)
+                message:NSLocalizedString(@"iCloud Upload NoData",nil)
                 b1title:@"OK"
                 b1style:UIAlertActionStyleDefault
                b1action:nil];
         return;
     }
     
-    NSFileManager* fm = [NSFileManager defaultManager];
-    
-    // Document file ---> NSString
     // /Documentのパスの取得
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     // ファイル名の作成
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:UPLOAD_FILENAME];
+    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:ICLOUD_FILENAME];
     NSError *error = nil;
+    // ファイルを読み出して文字列化する
     NSString *csvString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
     if (error) {
         [SVProgressHUD dismiss];
+        AzLOG(@"stringWithContentsOfFile: NG : %@", error.localizedDescription);
         [AZAlert target:nil
-                  title:NSLocalizedString(@"Upload Fail",nil)
-                message:zErr
+                  title:NSLocalizedString(@"iCloud Upload Fail",nil)
+                message:NSLocalizedString(@"iCloud Upload NoData",nil)
                 b1title:@"OK"
                 b1style:UIAlertActionStyleDefault
                b1action:nil];
         return;
     }
     
-    // iCloud Drive
-    NSURL* url = [fm URLForUbiquityContainerIdentifier:nil];
-    NSURL* fileUrl = [url URLByAppendingPathComponent:@"AzCreditData"];
-    NSLog(@"fileUrl: %@", fileUrl);
     // WRITE
     @try {
         NSError *error = nil;
-        if ([csvString writeToURL:fileUrl atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
+        // 文字列化したものをiCloudへ書き込む
+        if ([csvString writeToURL:[self iCloudFileUrl]
+                       atomically:YES
+                         encoding:NSUTF8StringEncoding
+                            error:&error]) {
+            
             AzLOG(@"writeToURL: OK");
             [AZAlert target:nil
-                      title:NSLocalizedString(@"Upload OK",nil)
+                      title:NSLocalizedString(@"iCloud Upload Success",nil)
                     message:nil
                     b1title:@"OK"
                     b1style:UIAlertActionStyleDefault
@@ -91,8 +103,8 @@ static DataManager* _singleton = nil;
         }else{
             AzLOG(@"writeToURL: NG : %@", error.localizedDescription);
             [AZAlert target:nil
-                      title:NSLocalizedString(@"Upload Fail",nil)
-                    message:error.localizedDescription
+                      title:NSLocalizedString(@"iCloud Upload Fail",nil)
+                    message:NSLocalizedString(@"iCloud Upload NoData",nil)
                     b1title:@"OK"
                     b1style:UIAlertActionStyleDefault
                    b1action:nil];
@@ -103,7 +115,7 @@ static DataManager* _singleton = nil;
     } @catch (NSException *exception) {
         AzLOG(@"writeToURL: @catch: %@", exception);
         [AZAlert target:nil
-                  title:NSLocalizedString(@"Upload Fail",nil)
+                  title:NSLocalizedString(@"iCloud Upload Fail",nil)
                 message:nil
                 b1title:@"OK"
                 b1style:UIAlertActionStyleDefault
@@ -115,6 +127,98 @@ static DataManager* _singleton = nil;
     }
 }
 
+- (void)iCloudDownload
+{
+    [AZAlert target:nil
+              title:NSLocalizedString(@"iCloud Download WARN", nil)
+            message:nil
+            b1title:NSLocalizedString(@"iCloud Download", nil)
+            b1style:UIAlertActionStyleDestructive
+           b1action:^(UIAlertAction * _Nullable action) {
+               // Download to iCloud
+               [SVProgressHUD showWithStatus:@"取り込み中"];
+               [self iCloudDownloadTask];
+           }
+            b2title:NSLocalizedString(@"Cancel", nil)
+            b2style:UIAlertActionStyleCancel
+           b2action:nil];
+}
+
+- (void)iCloudDownloadTask
+{
+    // READ
+    @try {
+        NSString* csvString = [NSString stringWithContentsOfURL:[self iCloudFileUrl]
+                                                       encoding:NSUTF8StringEncoding
+                                                          error:nil];
+        AzLOG(@"iCloudDownloadTask: csvString: %@", csvString);
+        if (csvString.length < 10) {
+            [SVProgressHUD dismiss];
+            [AZAlert target:nil
+                      title:NSLocalizedString(@"iCloud Download Fail",nil)
+                    message:NSLocalizedString(@"iCloud Download NoData",nil)
+                    b1title:@"OK"
+                    b1style:UIAlertActionStyleDefault
+                   b1action:nil];
+            return;
+        }
+        // ファイルへ書き込む
+        // /Documentのパスの取得
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        // ファイル名の作成
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:ICLOUD_FILENAME];
+        NSError *error = nil;
+        [csvString writeToFile:filePath
+                    atomically:YES
+                      encoding:NSUTF8StringEncoding
+                         error:&error];
+        if (error) {
+            [SVProgressHUD dismiss];
+            [AZAlert target:nil
+                      title:NSLocalizedString(@"iCloud Download Fail",nil)
+                    message:NSLocalizedString(@"iCloud Download NoData",nil)
+                    b1title:@"OK"
+                    b1style:UIAlertActionStyleDefault
+                   b1action:nil];
+            return;
+        }
+        
+        E0root *e0node = [MocFunctions e0root];
+        // CSVファイルを読み込んでクレメモ情報を更新する
+        NSString* zErr = [FileCsv zLoad:e0node fromLocalFileName:ICLOUD_FILENAME];
+        [SVProgressHUD dismiss];
+        if (zErr) {
+            AzLOG(@"FileCsv zLoad: %@", zErr);
+            [AZAlert target:nil
+                      title:NSLocalizedString(@"iCloud Download Fail",nil)
+                    message:NSLocalizedString(@"iCloud Download NoData",nil)
+                    b1title:@"OK"
+                    b1style:UIAlertActionStyleDefault
+                   b1action:nil];
+            return;
+        }
+        [AZAlert target:nil
+                  title:NSLocalizedString(@"iCloud Download Success",nil)
+                message:nil
+                b1title:@"OK"
+                b1style:UIAlertActionStyleDefault
+               b1action:nil];
+        
+    } @catch (NSException *exception) {
+        AzLOG(@"iCloudDownloadTask: @catch: %@", exception);
+        [SVProgressHUD dismiss];
+        [AZAlert target:nil
+                  title:NSLocalizedString(@"iCloud Download Fail",nil)
+                message:NSLocalizedString(@"iCloud Download NoData",nil)
+                b1title:@"OK"
+                b1style:UIAlertActionStyleDefault
+               b1action:nil];
+
+    } @finally {
+        AzLOG(@"iCloudDownloadTask: @finally");
+        [SVProgressHUD dismiss];
+    }
+}
 
 
 @end

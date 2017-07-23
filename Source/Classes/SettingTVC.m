@@ -11,12 +11,9 @@
 #import "AppDelegate.h"
 #import "SettingTVC.h"
 
-//#define TAG_GD_OptBootTopView			992  // GD_OptAntirotation
-//#define TAG_GD_OptAntirotation			983
 #define TAG_GD_OptEnableSchedule		974
 #define TAG_GD_OptEnableCategory		965
 #define TAG_GD_OptEnableInstallment		956
-//#define TAG_GD_OptAmountCalc			947
 #define TAG_GD_OptLoginPass1			938	//[4.0]
 #define TAG_GD_OptLoginPass2			929	//[4.0]
 #define TAG_GD_OptRoundBankers			910 //[4.0]
@@ -175,14 +172,18 @@
 #pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return 3;
+    switch (section) {
+        case 0: return 3;
+        case 1: return 1;
+    }
+	return 0;
 }
 
 #if defined (FREE_AD) //&& defined (AzPAD)
@@ -197,13 +198,6 @@
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-	switch (indexPath.row) {
-		//case 0: //1.1.11//回転無しにした
-			
-		case 3:	// OptLoginPass
-			return 70;
-			break;
-	}
 	return 55; // デフォルト：44ピクセル
 }
 
@@ -213,7 +207,7 @@
     NSString *zCellIndex = [NSString stringWithFormat:@"Setting%d:%d", (int)indexPath.section, (int)indexPath.row];
 	UITableViewCell *cell = nil;
 
-	if (indexPath.section != 0) return nil;  // section=0 のみ
+	if (1 < indexPath.section) return nil;  // section=0,1 のみ
 
 	cell = [tableView dequeueReusableCellWithIdentifier:zCellIndex];
 	if (cell == nil) {
@@ -227,9 +221,19 @@
 		
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 		cell.detailTextLabel.textColor = [UIColor grayColor];
-
-		cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
-	}
+    }
+    
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            // Download from iCloud
+            cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+            cell.textLabel.text = NSLocalizedString(@"iCloud Download",nil);
+            cell.detailTextLabel.text = NSLocalizedString(@"iCloud Download Detail",nil);
+        }
+        return cell;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleGray; // 選択時ハイライト
+    
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -384,6 +388,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];	// 選択状態を解除する
+
+    if (indexPath.section == 1) {
+        if (indexPath.row == 0) {
+            // Download from iCloud
+            [AZAlert target:self
+                 actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                      title:NSLocalizedString(@"iCloud Download", nil)
+                    message:NSLocalizedString(@"iCloud Download Detail", nil)
+                    b1title:NSLocalizedString(@"iCloud Download OK", nil)
+                    b1style:UIAlertActionStyleDestructive
+                   b1action:^(UIAlertAction * _Nullable action) {
+                       // Download to iCloud
+                       [DataManager.singleton iCloudDownload];
+                   }
+                    b2title:NSLocalizedString(@"Cancel", nil)
+                    b2style:UIAlertActionStyleCancel
+                   b2action:nil];
+        }
+        return;
+    }
 }
 
 

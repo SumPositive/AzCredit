@@ -22,7 +22,7 @@
 
 // iCloud
 - (void)iCloudUpload;
-
+- (void)iCloudDownload;
 
 
 @end

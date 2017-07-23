@@ -122,6 +122,11 @@
 
     //[0.4]-----------------------------------------------ログイン画面処理
 	//[self appLoginPassView];
+    
+    // 初期設定
+    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient]; // 背景UI操作禁止
+
 	
 	return YES;
 }

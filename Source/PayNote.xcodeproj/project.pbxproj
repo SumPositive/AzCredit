@@ -20,6 +20,11 @@
 		440AC51711299DBE00B89317 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
 		440D5B3315FA2998006D7592 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374641361DDF200F36E36 /* SystemConfiguration.framework */; };
 		441377FE155BD5C7008047FC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
+		4415056B1F24731800631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
+		4415056C1F2473F100631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
+		4415056D1F2473F200631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
+		4415056E1F2473F300631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
+		4415056F1F2473F300631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
 		4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
@@ -62,7 +67,6 @@
 		443259B01F231CA400175312 /* Icon32-PAID@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7C12FD49E900703AEC /* Icon32-PAID@2x.png */; };
 		443259B11F231CA400175312 /* Icon32-CircleChkUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7D12FD49E900703AEC /* Icon32-CircleChkUnpaid@2x.png */; };
 		443259B21F231CA400175312 /* Icon32-CircleUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7E12FD49E900703AEC /* Icon32-CircleUnpaid@2x.png */; };
-		443259B31F231CA400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
 		443259B41F231CA400175312 /* Icon32-CircleCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EAC12FD4C8600703AEC /* Icon32-CircleCheck@2x.png */; };
 		443259B51F231CA400175312 /* Icon32-Safari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC312FDA27F00703AEC /* Icon32-Safari@2x.png */; };
 		443259B61F231CA400175312 /* Icon32-Safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC412FDA27F00703AEC /* Icon32-Safari.png */; };
@@ -214,7 +218,6 @@
 		44325A5D1F231DCC00175312 /* Icon32-PAID@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7C12FD49E900703AEC /* Icon32-PAID@2x.png */; };
 		44325A5E1F231DCC00175312 /* Icon32-CircleChkUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7D12FD49E900703AEC /* Icon32-CircleChkUnpaid@2x.png */; };
 		44325A5F1F231DCC00175312 /* Icon32-CircleUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7E12FD49E900703AEC /* Icon32-CircleUnpaid@2x.png */; };
-		44325A601F231DCC00175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
 		44325A611F231DCC00175312 /* Icon32-CircleCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EAC12FD4C8600703AEC /* Icon32-CircleCheck@2x.png */; };
 		44325A621F231DCC00175312 /* Icon32-Safari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC312FDA27F00703AEC /* Icon32-Safari@2x.png */; };
 		44325A631F231DCC00175312 /* Icon32-Safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC412FDA27F00703AEC /* Icon32-Safari.png */; };
@@ -354,10 +357,13 @@
 		44325B061F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		44325B071F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		44325B081F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
+		44325B0B1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
+		44325B0C1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
+		44325B0D1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
+		44325B0E1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
+		44325B0F1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
+		44325B101F246DEC00175312 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		443D439F160CCAB900866232 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 443D439C160CCAB900866232 /* Default-568h@2x.png */; };
-		4450BE2E1E7F9065001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
-		4450BE301E7F9065001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
-		4450BE311E7F9065001305D1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE331E7F9065001305D1 /* Launch Screen.storyboard */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
@@ -806,6 +812,7 @@
 		440AC51411299DBE00B89317 /* EditDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDateVC.h; sourceTree = "<group>"; };
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EditDateVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		441377FD155BD5C6008047FC /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		4415056A1F24731800631B5F /* AppIcon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon512.png; sourceTree = "<group>"; };
 		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		442FF39D13B7809D00F8C2C4 /* LoginPassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginPassVC.h; sourceTree = "<group>"; };
 		442FF39E13B7809D00F8C2C4 /* LoginPassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginPassVC.m; sourceTree = "<group>"; };
@@ -816,19 +823,19 @@
 		443258DF1F23141700175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/InfoS.plist; sourceTree = "<group>"; };
 		44325A361F231CA400175312 /* PayNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44325A371F231CA500175312 /* PayNote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNote-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNote-Info.plist"; sourceTree = "<absolute>"; };
-		44325AE31F231DCC00175312 /* PayNoteDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		44325AE31F231DCC00175312 /* PayNoteBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44325AE41F231DCD00175312 /* PayNoteDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNoteDev-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNoteDev-Info.plist"; sourceTree = "<absolute>"; };
 		44325AEC1F23239D00175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44325AEF1F2323A900175312 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44325AFD1F23709200175312 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		44325AFE1F23709200175312 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
+		44325B091F23B05D00175312 /* PayNoteDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteDev.entitlements; sourceTree = "<group>"; };
+		44325B0A1F246CC400175312 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		4450BE131E7ED613001305D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AzCreditS1/Images.xcassets; sourceTree = "<group>"; };
 		4450BE201E7F8F3D001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4450BE231E7F8F3E001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
 		4450BE271E7F8FD2001305D1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4450BE2A1E7F8FD3001305D1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ja; path = "ja.lproj/Default-568h@2x.png"; sourceTree = "<group>"; };
-		4450BE321E7F9065001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = "en.lproj/Launch Screen.storyboard"; sourceTree = "<group>"; };
-		4450BE341E7F9067001305D1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = "ja.lproj/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		4454C987114941930063621D /* E5categoryDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = E5categoryDetailTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4454C988114941930063621D /* E5categoryTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = E5categoryTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4454C989114941930063621D /* E5categoryTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E5categoryTVC.h; sourceTree = "<group>"; };
@@ -1136,7 +1143,7 @@
 				44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */,
 				44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */,
 				44325A361F231CA400175312 /* PayNote.app */,
-				44325AE31F231DCC00175312 /* PayNoteDev.app */,
+				44325AE31F231DCC00175312 /* PayNoteBeta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1144,6 +1151,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				44325B091F23B05D00175312 /* PayNoteDev.entitlements */,
 				4473734D1F1C4E76000E3DAA /* Readme.h */,
 				4473734C1F1C4E76000E3DAA /* History.h */,
 				447373541F1C9058000E3DAA /* iCloud */,
@@ -1173,7 +1181,8 @@
 				4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
 				44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */,
-				4450BE331E7F9065001305D1 /* Launch Screen.storyboard */,
+				4415056A1F24731800631B5F /* AppIcon512.png */,
+				44325B0A1F246CC400175312 /* Launch Screen.storyboard */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1695,9 +1704,9 @@
 			productReference = 44325A361F231CA400175312 /* PayNote.app */;
 			productType = "com.apple.product-type.application";
 		};
-		44325A381F231DCC00175312 /* PayNoteDev */ = {
+		44325A381F231DCC00175312 /* PayNoteBeta */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 44325ADF1F231DCC00175312 /* Build configuration list for PBXNativeTarget "PayNoteDev" */;
+			buildConfigurationList = 44325ADF1F231DCC00175312 /* Build configuration list for PBXNativeTarget "PayNoteBeta" */;
 			buildPhases = (
 				44325A391F231DCC00175312 /* [CP] Check Pods Manifest.lock */,
 				44325A3A1F231DCC00175312 /* Resources */,
@@ -1711,9 +1720,9 @@
 			);
 			dependencies = (
 			);
-			name = PayNoteDev;
+			name = PayNoteBeta;
 			productName = iPack;
-			productReference = 44325AE31F231DCC00175312 /* PayNoteDev.app */;
+			productReference = 44325AE31F231DCC00175312 /* PayNoteBeta.app */;
 			productType = "com.apple.product-type.application";
 		};
 		44C0E3B413A0A2D1003D0465 /* PayNotePadFree */ = {
@@ -1771,6 +1780,20 @@
 							};
 						};
 					};
+					4432598B1F231CA400175312 = {
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					44325A381F231DCC00175312 = {
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
 					44C0E3B413A0A2D1003D0465 = {
 						DevelopmentTeam = 5C2UYK6F45;
 						SystemCapabilities = {
@@ -1805,7 +1828,7 @@
 			projectDirPath = "";
 			projectRoot = AzukiSoft;
 			targets = (
-				44325A381F231DCC00175312 /* PayNoteDev */,
+				44325A381F231DCC00175312 /* PayNoteBeta */,
 				4432598B1F231CA400175312 /* PayNote */,
 				1D6058900D05DD3D006BFB54 /* PayNoteFree */,
 				44C0E5DA13A0A475003D0465 /* PayNoteS1Pad */,
@@ -1820,7 +1843,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				448A5633110DF1DB003ACF5F /* Localizable.strings in Resources */,
-				4450BE2E1E7F9065001305D1 /* Launch Screen.storyboard in Resources */,
 				44BC4C2C13599FE4009B995C /* Icon24-Free.png in Resources */,
 				44BC4C2D13599FE4009B995C /* Icon24-Free@2x.png in Resources */,
 				44A8274A113A048B00F62E0E /* Icon32-Shop.png in Resources */,
@@ -1832,6 +1854,7 @@
 				44A82751113A048B00F62E0E /* Icon32-Circle.png in Resources */,
 				44A82752113A048B00F62E0E /* Icon32-PAID.png in Resources */,
 				44A828A3113A6B6C00F62E0E /* Icon32-CircleChkUnpaid.png in Resources */,
+				4415056D1F2473F200631B5F /* AppIcon512.png in Resources */,
 				44A3D0D31174A3C600460EC2 /* Icon32-CopyRight.png in Resources */,
 				44A3D0D41174A3C600460EC2 /* Icon32-CopyLeft.png in Resources */,
 				44A3D0D51174A3C600460EC2 /* Icon32-CopyStop.png in Resources */,
@@ -1866,6 +1889,7 @@
 				44BC6ED812FDA27F00703AEC /* Icon16-Return3.png in Resources */,
 				44BC6ED912FDA27F00703AEC /* Icon16-Return2.png in Resources */,
 				44BC6EDA12FDA27F00703AEC /* Icon16-Return1.png in Resources */,
+				44325B0D1F246CC400175312 /* Launch Screen.storyboard in Resources */,
 				44BC6EDB12FDA27F00703AEC /* Icon16-Information.png in Resources */,
 				44BC6EDC12FDA27F00703AEC /* Icon16-Information@2x.png in Resources */,
 				44BC6EDD12FDA27F00703AEC /* Icon16-Setting@2x.png in Resources */,
@@ -1917,6 +1941,7 @@
 				4432599E1F231CA400175312 /* Icon32-CopyLeft.png in Resources */,
 				4432599F1F231CA400175312 /* Icon32-CopyStop.png in Resources */,
 				443259A01F231CA400175312 /* Icon32-Top.png in Resources */,
+				4415056C1F2473F100631B5F /* AppIcon512.png in Resources */,
 				443259A11F231CA400175312 /* Icon32-CopyAdd.png in Resources */,
 				443259A21F231CA400175312 /* Icon32-NearPC.png in Resources */,
 				443259A31F231CA400175312 /* akihiro-320.jpg in Resources */,
@@ -1935,7 +1960,6 @@
 				443259B01F231CA400175312 /* Icon32-PAID@2x.png in Resources */,
 				443259B11F231CA400175312 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
 				443259B21F231CA400175312 /* Icon32-CircleUnpaid@2x.png in Resources */,
-				443259B31F231CA400175312 /* Launch Screen.storyboard in Resources */,
 				443259B41F231CA400175312 /* Icon32-CircleCheck@2x.png in Resources */,
 				443259B51F231CA400175312 /* Icon32-Safari@2x.png in Resources */,
 				443259B61F231CA400175312 /* Icon32-Safari.png in Resources */,
@@ -1966,6 +1990,7 @@
 				443259CE1F231CA400175312 /* Icon32-GreenPlus@2x.png in Resources */,
 				443259CF1F231CA400175312 /* Icon32-GreenPlus.png in Resources */,
 				443259D01F231CA400175312 /* Icon32-Recipient.png in Resources */,
+				44325B0C1F246CC400175312 /* Launch Screen.storyboard in Resources */,
 				443259D11F231CA400175312 /* Icon32-Recipient@2x.png in Resources */,
 				443259D21F231CA400175312 /* Icon32-Clear.png in Resources */,
 				443259D31F231CA400175312 /* Icon32-Clear@2x.png in Resources */,
@@ -1999,6 +2024,7 @@
 				44325A4B1F231DCC00175312 /* Icon32-CopyLeft.png in Resources */,
 				44325A4C1F231DCC00175312 /* Icon32-CopyStop.png in Resources */,
 				44325A4D1F231DCC00175312 /* Icon32-Top.png in Resources */,
+				4415056B1F24731800631B5F /* AppIcon512.png in Resources */,
 				44325A4E1F231DCC00175312 /* Icon32-CopyAdd.png in Resources */,
 				44325A4F1F231DCC00175312 /* Icon32-NearPC.png in Resources */,
 				44325A501F231DCC00175312 /* akihiro-320.jpg in Resources */,
@@ -2017,7 +2043,6 @@
 				44325A5D1F231DCC00175312 /* Icon32-PAID@2x.png in Resources */,
 				44325A5E1F231DCC00175312 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
 				44325A5F1F231DCC00175312 /* Icon32-CircleUnpaid@2x.png in Resources */,
-				44325A601F231DCC00175312 /* Launch Screen.storyboard in Resources */,
 				44325A611F231DCC00175312 /* Icon32-CircleCheck@2x.png in Resources */,
 				44325A621F231DCC00175312 /* Icon32-Safari@2x.png in Resources */,
 				44325A631F231DCC00175312 /* Icon32-Safari.png in Resources */,
@@ -2048,6 +2073,7 @@
 				44325A7B1F231DCC00175312 /* Icon32-GreenPlus@2x.png in Resources */,
 				44325A7C1F231DCC00175312 /* Icon32-GreenPlus.png in Resources */,
 				44325A7D1F231DCC00175312 /* Icon32-Recipient.png in Resources */,
+				44325B0B1F246CC400175312 /* Launch Screen.storyboard in Resources */,
 				44325A7E1F231DCC00175312 /* Icon32-Recipient@2x.png in Resources */,
 				44325A7F1F231DCC00175312 /* Icon32-Clear.png in Resources */,
 				44325A801F231DCC00175312 /* Icon32-Clear@2x.png in Resources */,
@@ -2072,6 +2098,7 @@
 				44C0E3B813A0A2D1003D0465 /* Icon32-Shop.png in Resources */,
 				44C0E3B913A0A2D1003D0465 /* Icon32-Category.png in Resources */,
 				44C0E3BA13A0A2D1003D0465 /* Icon32-Schedule.png in Resources */,
+				44325B0F1F246CC400175312 /* Launch Screen.storyboard in Resources */,
 				44C0E3BB13A0A2D1003D0465 /* Icon32-Statements.png in Resources */,
 				443258D41F2313C600175312 /* InfoEnd.plist in Resources */,
 				44C0E3BC13A0A2D1003D0465 /* Icon32-CircleCheck.png in Resources */,
@@ -2101,7 +2128,6 @@
 				44C0E3D313A0A2D1003D0465 /* Icon32-PAID@2x.png in Resources */,
 				44C0E3D413A0A2D1003D0465 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
 				44C0E3D513A0A2D1003D0465 /* Icon32-CircleUnpaid@2x.png in Resources */,
-				4450BE301E7F9065001305D1 /* Launch Screen.storyboard in Resources */,
 				44C0E3D613A0A2D1003D0465 /* Icon32-CircleCheck@2x.png in Resources */,
 				44325AFC1F2334BC00175312 /* Images.xcassets in Resources */,
 				44C0E3D713A0A2D1003D0465 /* Icon32-Safari@2x.png in Resources */,
@@ -2115,6 +2141,7 @@
 				44C0E3DF13A0A2D1003D0465 /* Icon16-Return2.png in Resources */,
 				44C0E3E013A0A2D1003D0465 /* Icon16-Return1.png in Resources */,
 				44C0E3E113A0A2D1003D0465 /* Icon16-Information.png in Resources */,
+				4415056F1F2473F300631B5F /* AppIcon512.png in Resources */,
 				447373601F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E3E213A0A2D1003D0465 /* Icon16-Information@2x.png in Resources */,
 				44C0E3E313A0A2D1003D0465 /* Icon16-Setting@2x.png in Resources */,
@@ -2165,6 +2192,7 @@
 				44C0E5EB13A0A475003D0465 /* Icon32-CopyLeft.png in Resources */,
 				44C0E5EC13A0A475003D0465 /* Icon32-CopyStop.png in Resources */,
 				44C0E5ED13A0A475003D0465 /* Icon32-Top.png in Resources */,
+				4415056E1F2473F300631B5F /* AppIcon512.png in Resources */,
 				44C0E5EE13A0A475003D0465 /* Icon32-CopyAdd.png in Resources */,
 				44C0E5EF13A0A475003D0465 /* Icon32-NearPC.png in Resources */,
 				44C0E5F013A0A475003D0465 /* akihiro-320.jpg in Resources */,
@@ -2183,7 +2211,6 @@
 				44C0E5FD13A0A475003D0465 /* Icon32-PAID@2x.png in Resources */,
 				44C0E5FE13A0A475003D0465 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
 				44C0E5FF13A0A475003D0465 /* Icon32-CircleUnpaid@2x.png in Resources */,
-				4450BE311E7F9065001305D1 /* Launch Screen.storyboard in Resources */,
 				44C0E60013A0A475003D0465 /* Icon32-CircleCheck@2x.png in Resources */,
 				44C0E60113A0A475003D0465 /* Icon32-Safari@2x.png in Resources */,
 				44C0E60213A0A475003D0465 /* Icon32-Safari.png in Resources */,
@@ -2214,6 +2241,7 @@
 				44C0E61913A0A475003D0465 /* Icon32-GreenPlus@2x.png in Resources */,
 				44C0E61A13A0A475003D0465 /* Icon32-GreenPlus.png in Resources */,
 				44C0E61B13A0A475003D0465 /* Icon32-Recipient.png in Resources */,
+				44325B0E1F246CC400175312 /* Launch Screen.storyboard in Resources */,
 				44C0E61C13A0A475003D0465 /* Icon32-Recipient@2x.png in Resources */,
 				44931BEE13B4E56E005CBE85 /* Icon32-Clear.png in Resources */,
 				44931BF013B4E56E005CBE85 /* Icon32-Clear@2x.png in Resources */,
@@ -2377,6 +2405,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				4457518410C7A65900419205 /* Entity.m in Sources */,
+				44325B101F246DEC00175312 /* PadRootVC.m in Sources */,
 				4483449D10F2235B0078FEF6 /* InformationView.m in Sources */,
 				448549041115726F00D10CC8 /* SettingTVC.m in Sources */,
 				44B332D01123B6AA007D3A15 /* TopMenuTVC.m in Sources */,
@@ -2630,15 +2659,6 @@
 			name = "Default-568h@2x.png";
 			sourceTree = "<group>";
 		};
-		4450BE331E7F9065001305D1 /* Launch Screen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4450BE321E7F9065001305D1 /* en */,
-				4450BE341E7F9067001305D1 /* ja */,
-			);
-			name = "Launch Screen.storyboard";
-			sourceTree = "<group>";
-		};
 		448A5631110DF1DB003ACF5F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2655,7 +2675,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2702,7 +2722,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2848,8 +2868,8 @@
 			baseConfigurationReference = 87C7B4522BDF03EC6E69315A /* Pods-PayNoteDev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
-				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				CODE_SIGN_ENTITLEMENTS = PayNoteDev.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2887,8 +2907,8 @@
 			baseConfigurationReference = 1BC0135619B8CAC6550FCCE1 /* Pods-PayNoteDev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
-				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				CODE_SIGN_ENTITLEMENTS = PayNoteDev.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2923,8 +2943,8 @@
 			baseConfigurationReference = AF35AB928F170D9AC208C97C /* Pods-PayNoteDev.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
-				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				CODE_SIGN_ENTITLEMENTS = PayNoteDev.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -2958,7 +2978,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3001,7 +3021,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3040,7 +3060,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -3080,7 +3100,7 @@
 			baseConfigurationReference = C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3116,7 +3136,7 @@
 			baseConfigurationReference = E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3149,7 +3169,7 @@
 			baseConfigurationReference = E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -3225,7 +3245,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -3377,7 +3397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		44325ADF1F231DCC00175312 /* Build configuration list for PBXNativeTarget "PayNoteDev" */ = {
+		44325ADF1F231DCC00175312 /* Build configuration list for PBXNativeTarget "PayNoteBeta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44325AE01F231DCC00175312 /* Debug */,

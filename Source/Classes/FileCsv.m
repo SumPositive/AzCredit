@@ -42,6 +42,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 }
 
 
+// クレメモ情報をCSVファイルへ書き出す
 + (NSString *)zSave: (E0root *)Pe0root toLocalFileName:(NSString *)PzFname
 {
 //	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
@@ -367,6 +368,7 @@ static NSString *csvToStr( NSString *inCsv ) {
 	return YES;
 }
 
+// CSVファイルを読み込んでクレメモ情報を更新する
 + (NSString *)zLoad: (E0root *)Pe0root fromLocalFileName:(NSString *)PzFname
 {
 //	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
