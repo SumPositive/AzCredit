@@ -36,9 +36,9 @@
 @interface TopMenuTVC (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
 #ifdef FREE_AD
 #define FREE_AD_OFFSET_Y			200.0
-- (void)AdRefresh;
-- (void)AdMobWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
-- (void)AdAppWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
+//- (void)AdRefresh;
+//- (void)AdMobWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
+//- (void)AdAppWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
 #endif
 @end
 
@@ -417,8 +417,8 @@
 								duration:(NSTimeInterval)duration
 {
 #ifdef FREE_AD
-	[self AdMobWillRotate:toInterfaceOrientation];
-	[self AdAppWillRotate:toInterfaceOrientation];
+//	[self AdMobWillRotate:toInterfaceOrientation];
+//	[self AdAppWillRotate:toInterfaceOrientation];
 #endif
 }
 

@@ -17,6 +17,7 @@
 #import "LoginPassVC.h"
 #import "PadRootVC.h"
 #import "UpdateVC.h"
+#import "InformationView.h"
 
 
 
@@ -102,14 +103,19 @@
     if (IS_PAD) {
         // topMenu を [0] naviLeft へ登録
         AzNavigationController* naviLeft = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
-        // padRootVC を [1] naviRight へ登録
-        PadRootVC *padRootVC = [[PadRootVC alloc] init];
-        padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
-        AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:padRootVC];
+
+//        // padRootVC を [1] naviRight へ登録
+//        PadRootVC *padRootVC = [[PadRootVC alloc] init];
+//        padRootVC.delegate = topMenuTvc;	//PadRootVC から e3recordAdd を呼び出すため
+//        AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:padRootVC];
+        // InformationView を [1] naviRight へ登録
+        InformationView* infoVC = [[InformationView alloc] init];
+        AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:infoVC];
+        
         // mainController へ登録
         mainSplit = [[UISplitViewController alloc] init];
         mainSplit.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
-        mainSplit.delegate = padRootVC;
+        //mainSplit.delegate = padRootVC;
         mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
         window.rootViewController = mainSplit;	//iOS6以降、こうしなければ回転しない。
     } else {

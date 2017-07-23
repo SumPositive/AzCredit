@@ -13,8 +13,8 @@ def install_pods
 end
 
 
-# PayNoteDev 開発版(com.azukid.b3c6bd451bb03c) 常に先行公開
-target 'PayNoteDev' do
+# PayNoteBeta 開発版(com.azukid.b3c6bd451bb03c) 常に先行公開
+target 'PayNoteBeta' do
     install_pods
 end
 
@@ -24,7 +24,14 @@ target 'PayNote' do
 end
 
 
+#OLD
+target 'PayNoteFree' do
+    install_pods
+end
 target 'PayNoteS1Pad' do
+    install_pods
+end
+target 'PayNotePadFree' do
     install_pods
 end
 
