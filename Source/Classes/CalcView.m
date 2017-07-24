@@ -39,44 +39,25 @@
 @interface CalcView ()
 {
 @private
-    //--------------------------retain
-//    UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
     NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
     E3record		*Re3edit;
-    //----------------------------------------------assign
-//    id									 delegate;
-//    UITableView	* PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
-    
-    //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
+
     NSDecimalNumberHandler	*MbehaviorDefault;	// 通貨既定の丸め処理
     NSDecimalNumberHandler	*MbehaviorCalc;		// 計算途中の丸め処理
     NSArray					*RaKeyButtons;
-    
     NSDecimalNumber         *MdecAnswer;
     
-    //----------------------------------------------Owner移管につきdealloc時のrelese不要
     UIScrollView            *MscrollView;
     UITextField             *MtextField;
     
-    //----------------------------------------------assign
     NSInteger               MiRoundingScale;
     BOOL                    MbShow;
     int                     MiFunc;		// (0)Non (-4)+ (-5)- (-6)* (-7)/
     CGRect                  MrectInit;
 }
-
-//- (void)MtextFieldDidChange:(UITextField *)textField;
-//- (NSDecimalNumber *)decimalAnswerFomula:(NSString *)strFomula;	// autorelease
-//- (void)textFieldDidChange:(UITextField *)textField;
 @end
 
 @implementation CalcView
-
-//@synthesize Rlabel;
-////@synthesize Rentity;
-////@synthesize RzKey;
-//@synthesize PoParentTableView;
-//@synthesize delegate;
 
 
 #pragma mark - Action
@@ -533,10 +514,10 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		if (maStack.count == 1) {
 			//計算途中精度を通貨小数＋2桁にする
 			decAns = [NSDecimalNumber decimalNumberWithString:[maStack pop]];
-			NSLog(@"**********1 decAns=%@", decAns);
+			//NSLog(@"**********1 decAns=%@", decAns);
 			decAns = [decAns decimalNumberByRoundingAccordingToBehavior:MbehaviorCalc]; // 計算結果の丸め処理
-			NSLog(@"**********2 decAns=%@", decAns);
-			 // localPool release されないように retain しておく。
+			//NSLog(@"**********2 decAns=%@", decAns);
+            // localPool release されないように retain しておく。
 		}
 		else {
 			@throw @"zRpnCalc:ERROR: [maStack count] != 1";
@@ -582,9 +563,6 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 	MbShow = NO;
 	MdecAnswer = nil;
-    //MdecAnswer = [NSDecimalNumber decimalNumberWithString:@"0"];
-    //MdecAnswer = [[NSDecimalNumber alloc] initWithString:@"0.0"];
-
 	
 	//------------------------------------------
 	MtextField = [[UITextField alloc] init];

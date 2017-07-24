@@ -30,11 +30,7 @@
 @synthesize Pe5category;
 @synthesize Pe8bank;
 @synthesize PbAddMode;
-//#ifdef AzPAD
 @synthesize delegate;
-//@synthesize selfPopover;
-//@synthesize PbFirstAdd;
-//#endif
 
 
 #pragma mark - Delegate
@@ -66,22 +62,7 @@
 - (void)azSettingView
 {
     if (IS_PAD) {
-//        if ([MpopSetting isPopoverVisible]==NO) {
-//            if (!MpopSetting) { //無ければ1度だけ生成する
-//                SettingTVC* vc = [[SettingTVC alloc] init];  //[1.0.2]Pad対応に伴いControllerにした。
-//                MpopSetting = [[UIPopoverController alloc] initWithContentViewController:vc];
-//                //[vc release];
-//            }
-//            MpopSetting.delegate = nil;	// popoverControllerDidDismissPopover:を呼び出すと！落ちる！
-//            CGRect rcArrow;
-//            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-//                rcArrow = CGRectMake(768-32, 1027-60, 32,32);
-//            } else {
-//                rcArrow = CGRectMake(1024-320-32, 768-60, 32,32);
-//            }
-//            [MpopSetting presentPopoverFromRect:rcArrow  inView:self.navigationController.view
-//                       permittedArrowDirections:UIPopoverArrowDirectionDown  animated:YES];
-//        }
+        
     }else{
         SettingTVC *view = [[SettingTVC alloc] init];
         //view.hidesBottomBarWhenPushed = YES; // 現在のToolBar状態をPushした上で、次画面では非表示にする
@@ -98,16 +79,7 @@
 	[self e3detailView:nil]; // :(nil)Add mode
 }
 
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//	switch (alertView.tag) {
-//		case ALERT_TAG_NoMore:
-//			[self.navigationController popViewControllerAnimated:YES]; 	// < 前のViewへ戻る
-//			break;
-//	}
-//}
-
-- (void)e3detailView:(NSIndexPath *)indexPath 
+- (void)e3detailView:(NSIndexPath *)indexPath
 {
 	// ドリルダウン
 	E3recordDetailTVC *e3detail = [[E3recordDetailTVC alloc] init];
@@ -154,38 +126,6 @@
 
     if (IS_PAD) {
         UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e3detail];
-
-//        Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-//        Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-//        //[nc release];
-//        
-//        //MindexPathEdit = indexPath;
-//        MindexPathEdit = [indexPath copy];
-//        
-//        CGRect rc;
-//        if (indexPath) {
-//            // E3一覧行タップ時
-//            rc = [self.tableView rectForRowAtIndexPath:indexPath];
-////            rc.size.width /= 2;
-////            rc.origin.y += 10;	rc.size.height -= 20;
-////            [Mpopover presentPopoverFromRect:rc inView:self.tableView
-////                    permittedArrowDirections:UIPopoverArrowDirectionLeft animated:YES];
-//            rc.origin.x += rc.size.width - 160;
-//            rc.origin.y += 20;
-//            rc.size = CGSizeMake(3, 3);
-//            [Mpopover presentPopoverFromRect:rc inView:self.tableView
-//                    permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-//        } else {
-//            // [+]Addタップ時
-//            rc = self.view.bounds;  //  .navigationController.toolbar.frame;
-//            rc.origin.x += (rc.size.width/2.0);
-//            rc.origin.y += rc.size.height - 40;
-//            rc.size = CGSizeMake(3, 3);
-//            //NSLog(@"*** rc.origin.(x, y)=(%f, %f)", rc.origin.x, rc.origin.y);
-//            [Mpopover presentPopoverFromRect:rc  inView:self.view	//<<<<<.view !!!
-//                    permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES]; //表示開始
-//        }
-//        e3detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
 
         e3detail.delegate = self;		// refresh callback
 

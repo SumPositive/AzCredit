@@ -17,9 +17,6 @@
 @property (nonatomic, strong) UILabel				*Rlabel;
 @property (nonatomic, strong) UITableView             *PoParentTableView;
 @property (nonatomic, strong) id						delegate;
-//@property (nonatomic, getter=isShow, readonly) BOOL show;
-
-//@property (nonatomic, strong) NSDecimalNumber		*MdecAnswer;
 
 // 公開メソッド
 - (instancetype)initWithFrame:(CGRect)rect withE3:(E3record*)e3; // NS_DESIGNATED_INITIALIZER;
