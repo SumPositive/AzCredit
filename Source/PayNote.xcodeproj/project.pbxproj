@@ -136,7 +136,6 @@
 		443259F81F231CA400175312 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		443259F91F231CA400175312 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		443259FA1F231CA400175312 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
-		443259FB1F231CA400175312 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
 		443259FC1F231CA400175312 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		443259FD1F231CA400175312 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		443259FE1F231CA400175312 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
@@ -286,7 +285,6 @@
 		44325AA51F231DCC00175312 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		44325AA61F231DCC00175312 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		44325AA71F231DCC00175312 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
-		44325AA81F231DCC00175312 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
 		44325AA91F231DCC00175312 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44325AAA1F231DCC00175312 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44325AAB1F231DCC00175312 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
@@ -362,6 +360,7 @@
 		44325B0E1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B0F1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B101F246DEC00175312 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
+		443E7BC31F24FBFF00484342 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
@@ -415,7 +414,6 @@
 		44A5AB3D11DF7CCD00C9A093 /* E1editBonusVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */; };
 		44A5AB3E11DF7CCD00C9A093 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
 		44A68B6311685110004A89ED /* CalcView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A68B6211685110004A89ED /* CalcView.h */; };
-		44A68B6511685121004A89ED /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
 		44A8274A113A048B00F62E0E /* Icon32-Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82740113A048B00F62E0E /* Icon32-Shop.png */; };
 		44A8274B113A048B00F62E0E /* Icon32-Category.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82741113A048B00F62E0E /* Icon32-Category.png */; };
 		44A8274C113A048B00F62E0E /* Icon32-Schedule.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82742113A048B00F62E0E /* Icon32-Schedule.png */; };
@@ -576,7 +574,6 @@
 		44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		44C0E41613A0A2D1003D0465 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
-		44C0E41713A0A2D1003D0465 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
 		44C0E41913A0A2D1003D0465 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44C0E41A13A0A2D1003D0465 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44C0E41B13A0A2D1003D0465 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
@@ -704,7 +701,6 @@
 		44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
 		44C0E63A13A0A475003D0465 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
-		44C0E63B13A0A475003D0465 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A68B6411685121004A89ED /* CalcView.m */; };
 		44C0E63D13A0A475003D0465 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
 		44C0E63E13A0A475003D0465 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
 		44C0E63F13A0A475003D0465 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
@@ -829,6 +825,7 @@
 		44325AFE1F23709200175312 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		44325B091F23B05D00175312 /* PayNoteDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteDev.entitlements; sourceTree = "<group>"; };
 		44325B0A1F246CC400175312 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		443E7BC21F24FBFF00484342 /* CalcView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalcView.m; sourceTree = "<group>"; };
 		4450BE131E7ED613001305D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AzCreditS1/Images.xcassets; sourceTree = "<group>"; };
 		4450BE201E7F8F3D001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4450BE271E7F8FD2001305D1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -883,7 +880,6 @@
 		44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = E1editBonusVC.h; sourceTree = "<group>"; };
 		44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = E1editBonusVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		44A68B6211685110004A89ED /* CalcView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalcView.h; sourceTree = "<group>"; };
-		44A68B6411685121004A89ED /* CalcView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalcView.m; sourceTree = "<group>"; };
 		44A82740113A048B00F62E0E /* Icon32-Shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Shop.png"; path = "Design/Icon32-Shop.png"; sourceTree = "<group>"; };
 		44A82741113A048B00F62E0E /* Icon32-Category.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Category.png"; path = "Design/Icon32-Category.png"; sourceTree = "<group>"; };
 		44A82742113A048B00F62E0E /* Icon32-Schedule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Schedule.png"; path = "Design/Icon32-Schedule.png"; sourceTree = "<group>"; };
@@ -1328,7 +1324,7 @@
 				44D7168E1123F309005423CB /* E3recordDetailTVC.h */,
 				44D7168F1123F309005423CB /* E3recordDetailTVC.m */,
 				44A68B6211685110004A89ED /* CalcView.h */,
-				44A68B6411685121004A89ED /* CalcView.m */,
+				443E7BC21F24FBFF00484342 /* CalcView.m */,
 				440AC51411299DBE00B89317 /* EditDateVC.h */,
 				440AC51511299DBE00B89317 /* EditDateVC.m */,
 				44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */,
@@ -2535,7 +2531,6 @@
 				44FB5C5A11512063008DEC3E /* Global.m in Sources */,
 				447373741F1FA890000E3DAA /* AZAlert.m in Sources */,
 				4473735C1F1C93EC000E3DAA /* UpdateVC.m in Sources */,
-				44A68B6511685121004A89ED /* CalcView.m in Sources */,
 				44A4162111DB8446007DEB5B /* E8bankTVC.m in Sources */,
 				44A4162211DB8447007DEB5B /* E8bankDetailTVC.m in Sources */,
 				44A5AB3E11DF7CCD00C9A093 /* E1editBonusVC.m in Sources */,
@@ -2576,7 +2571,6 @@
 				443259F81F231CA400175312 /* E5categoryTVC.m in Sources */,
 				443259F91F231CA400175312 /* MocFunctions.m in Sources */,
 				443259FA1F231CA400175312 /* Global.m in Sources */,
-				443259FB1F231CA400175312 /* CalcView.m in Sources */,
 				443259FC1F231CA400175312 /* E8bankTVC.m in Sources */,
 				443259FD1F231CA400175312 /* E8bankDetailTVC.m in Sources */,
 				443259FE1F231CA400175312 /* E1editBonusVC.m in Sources */,
@@ -2605,6 +2599,7 @@
 				44325A981F231DCC00175312 /* E1cardDetailTVC.m in Sources */,
 				44325A991F231DCC00175312 /* EditTextVC.m in Sources */,
 				44325A9A1F231DCC00175312 /* E1editPayDayVC.m in Sources */,
+				443E7BC31F24FBFF00484342 /* CalcView.m in Sources */,
 				44325A9B1F231DCC00175312 /* E2invoiceTVC.m in Sources */,
 				44325A9C1F231DCC00175312 /* EditDateVC.m in Sources */,
 				44325A9D1F231DCC00175312 /* E3recordTVC.m in Sources */,
@@ -2619,7 +2614,6 @@
 				44325AA51F231DCC00175312 /* E5categoryTVC.m in Sources */,
 				44325AA61F231DCC00175312 /* MocFunctions.m in Sources */,
 				44325AA71F231DCC00175312 /* Global.m in Sources */,
-				44325AA81F231DCC00175312 /* CalcView.m in Sources */,
 				44325AA91F231DCC00175312 /* E8bankTVC.m in Sources */,
 				44325AAA1F231DCC00175312 /* E8bankDetailTVC.m in Sources */,
 				44325AAB1F231DCC00175312 /* E1editBonusVC.m in Sources */,
@@ -2662,7 +2656,6 @@
 				44C0E41413A0A2D1003D0465 /* E5categoryTVC.m in Sources */,
 				44C0E41513A0A2D1003D0465 /* MocFunctions.m in Sources */,
 				44C0E41613A0A2D1003D0465 /* Global.m in Sources */,
-				44C0E41713A0A2D1003D0465 /* CalcView.m in Sources */,
 				44C0E41913A0A2D1003D0465 /* E8bankTVC.m in Sources */,
 				44C0E41A13A0A2D1003D0465 /* E8bankDetailTVC.m in Sources */,
 				44C0E41B13A0A2D1003D0465 /* E1editBonusVC.m in Sources */,
@@ -2705,7 +2698,6 @@
 				44C0E63813A0A475003D0465 /* E5categoryTVC.m in Sources */,
 				44C0E63913A0A475003D0465 /* MocFunctions.m in Sources */,
 				44C0E63A13A0A475003D0465 /* Global.m in Sources */,
-				44C0E63B13A0A475003D0465 /* CalcView.m in Sources */,
 				44C0E63D13A0A475003D0465 /* E8bankTVC.m in Sources */,
 				44C0E63E13A0A475003D0465 /* E8bankDetailTVC.m in Sources */,
 				44C0E63F13A0A475003D0465 /* E1editBonusVC.m in Sources */,

@@ -37,15 +37,44 @@
 
 
 @interface CalcView ()
+{
+@private
+    //--------------------------retain
+//    UILabel		*Rlabel;		// Rlabel.tag にはCalc入力された数値(long)を記録する
+    NSString		*RzLabelText;	// 初期時の Rlabel.text を保持 ⇒ 中止時に戻す
+    E3record		*Re3edit;
+    //----------------------------------------------assign
+//    id									 delegate;
+//    UITableView	* PoParentTableView;	//[0.3] スクロールして電卓が画面外に出ると再描画されずに欠けてしまうことを防ぐためスクロール禁止にするため
+    
+    //----------------------------------------------viewDidLoadでnil, dealloc時にrelese
+    NSDecimalNumberHandler	*MbehaviorDefault;	// 通貨既定の丸め処理
+    NSDecimalNumberHandler	*MbehaviorCalc;		// 計算途中の丸め処理
+    NSArray					*RaKeyButtons;
+    
+    NSDecimalNumber         *MdecAnswer;
+    
+    //----------------------------------------------Owner移管につきdealloc時のrelese不要
+    UIScrollView            *MscrollView;
+    UITextField             *MtextField;
+    
+    //----------------------------------------------assign
+    NSInteger               MiRoundingScale;
+    BOOL                    MbShow;
+    int                     MiFunc;		// (0)Non (-4)+ (-5)- (-6)* (-7)/
+    CGRect                  MrectInit;
+}
+
 //- (void)MtextFieldDidChange:(UITextField *)textField;
-- (NSDecimalNumber *)decimalAnswerFomula:(NSString *)strFomula;	// autorelease
-- (void)textFieldDidChange:(UITextField *)textField;
+//- (NSDecimalNumber *)decimalAnswerFomula:(NSString *)strFomula;	// autorelease
+//- (void)textFieldDidChange:(UITextField *)textField;
 @end
 
 @implementation CalcView
+
 //@synthesize Rlabel;
-//@synthesize Rentity;
-//@synthesize RzKey;
+////@synthesize Rentity;
+////@synthesize RzKey;
 //@synthesize PoParentTableView;
 //@synthesize delegate;
 
@@ -56,9 +85,9 @@
 - (void)finalAnswer:(NSString *)zFomula
 {
 //	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer1", MdecAnswer, 9);
-	MdecAnswer = [self decimalAnswerFomula:zFomula]; // retain
-//	AzRETAIN_CHECK(@"finalAnswer: MdecAnswer2", MdecAnswer, 9);
-	//NSLog(@"**********1 MdecAnswer=%@", MdecAnswer);
+	MdecAnswer = [self decimalAnswerFomula:zFomula].copy;  //iOS10//.copyしないとゾンビになった。
+	//AzRETAIN_CHECK(@"finalAnswer: MdecAnswer2", MdecAnswer, 9);
+	NSLog(@"**********1 MdecAnswer=%@", MdecAnswer);
 	if (MdecAnswer) {
 		if (ANSWER_MAX < fabs(MdecAnswer.doubleValue)) {
 			self.Rlabel.text = @"Game Over";
@@ -161,7 +190,7 @@
 			
 		case 9: // [Done]
 //			AzRETAIN_CHECK(@"[Done]: MdecAnswer", MdecAnswer, 0);
-			NSLog(@"[Done] MdecAnswer=%@", MdecAnswer);
+            NSLog(@"[Done] MdecAnswer=%@", MdecAnswer);
 			if (MdecAnswer) [self save]; // MdecAnswer を Rentity へ保存する
 			[self hide];
 			break;
@@ -185,7 +214,7 @@
 
 		if (Re3edit) {
 			NSDecimalNumber *decSource = Re3edit.nAmount;
-			NSLog(@"Calc: MdecAnswer=%@ != %@", MdecAnswer, decSource);
+			//NSLog(@"Calc: MdecAnswer=%@ != %@", MdecAnswer, decSource);
 			if ([MdecAnswer compare:decSource] != NSOrderedSame) 
 			{	// 変化あり
 				// デフォルト丸め処理
@@ -411,7 +440,7 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		
 		// 数値と演算子の数チェック
 		if (iCntNumber < iCntOperator + 1) {
-			@throw NSLocalizedString(@"Too many operators", nil); // 演算子が多すぎる
+			//@throw NSLocalizedString(@"Too many operators", nil); // 演算子が多すぎる
 		}
 		else if (iCntNumber > iCntOperator + 1) {
 			@throw NSLocalizedString(@"Insufficient operator", nil); // 演算子が足らない
@@ -504,9 +533,9 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 		if (maStack.count == 1) {
 			//計算途中精度を通貨小数＋2桁にする
 			decAns = [NSDecimalNumber decimalNumberWithString:[maStack pop]];
-			//NSLog(@"**********1 decAns=%@", decAns);
+			NSLog(@"**********1 decAns=%@", decAns);
 			decAns = [decAns decimalNumberByRoundingAccordingToBehavior:MbehaviorCalc]; // 計算結果の丸め処理
-			//NSLog(@"**********2 decAns=%@", decAns);
+			NSLog(@"**********2 decAns=%@", decAns);
 			 // localPool release されないように retain しておく。
 		}
 		else {
@@ -553,6 +582,9 @@ int levelOperator( NSString *zOpe )  // 演算子の優先順位
 
 	MbShow = NO;
 	MdecAnswer = nil;
+    //MdecAnswer = [NSDecimalNumber decimalNumberWithString:@"0"];
+    //MdecAnswer = [[NSDecimalNumber alloc] initWithString:@"0.0"];
+
 	
 	//------------------------------------------
 	MtextField = [[UITextField alloc] init];
