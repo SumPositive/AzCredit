@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "SFHFKeychainUtils.h"
+//#import "SFHFKeychainUtils.h"
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
@@ -226,13 +226,13 @@ static NSManagedObjectContext *scMoc = nil;
 	{
 		// 無いので新規追加する
 		e0root = [NSEntityDescription insertNewObjectForEntityForName:@"E0root" inManagedObjectContext:scMoc];
-		//[0.4] ログインパスをクリアする
-		AzLOG(@"New Login pass Clear");
-		// 新規や再インストールされた場合、保存したパスワードを削除して自動ログインさせる
-		NSError *error; // nilを渡すと異常終了するので注意
-		[SFHFKeychainUtils deleteItemForUsername:GD_KEY_LOGINPASS
-								  andServiceName:GD_PRODUCTNAME 
-										   error:&error]; 
+//		//[0.4] ログインパスをクリアする
+//		AzLOG(@"New Login pass Clear");
+//		// 新規や再インストールされた場合、保存したパスワードを削除して自動ログインさせる
+//		NSError *error; // nilを渡すと異常終了するので注意
+//		[SFHFKeychainUtils deleteItemForUsername:GD_KEY_LOGINPASS
+//								  andServiceName:GD_PRODUCTNAME 
+//										   error:&error]; 
 		
 		//[1.0.0]初期E1cardを追加する
 		//(0)デビット支払

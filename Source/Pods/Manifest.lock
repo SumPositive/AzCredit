@@ -1,18 +1,15 @@
 PODS:
-  - SFHFKeychainUtils (0.0.1)
+  - MBProgressHUD (1.0.0)
   - SVProgressHUD (2.1.2)
-  - UIDevice-Hardware (0.1.10)
 
 DEPENDENCIES:
-  - SFHFKeychainUtils
+  - MBProgressHUD
   - SVProgressHUD
-  - UIDevice-Hardware
 
 SPEC CHECKSUMS:
-  SFHFKeychainUtils: 9576b411a79a058f4d5381ace6f3242b9a62e664
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  UIDevice-Hardware: 4bb15b9bd9878762ab879ac86185baad17b6c3ff
 
-PODFILE CHECKSUM: cd179121601b5feebd413f4f5828375a4579c718
+PODFILE CHECKSUM: da0224f52cdb1aba7f2ffdfa6281c2a158402b93
 
 COCOAPODS: 1.2.1

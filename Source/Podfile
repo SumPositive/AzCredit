@@ -7,9 +7,10 @@ platform :ios, ’9.0'
 
 # インストールするpodをまとめた定数
 def install_pods
-	pod 'SFHFKeychainUtils'
-	pod 'UIDevice-Hardware'
+    ##pod 'SFHFKeychainUtils'
+    ##pod 'UIDevice-Hardware'
     pod 'SVProgressHUD'
+    pod 'MBProgressHUD'
 end
 
 

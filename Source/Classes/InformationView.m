@@ -9,7 +9,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "InformationView.h"
-#import "UIDevice-Hardware.h"
+//#import "UIDevice-Hardware.h"
 
 
 #ifdef AzDEBUG
@@ -223,15 +223,28 @@ NSString *passCode()
 //											}]];
 //	[self presentViewController:alert animated:YES completion:nil];
     
+    NSString* zTitle;
+    if (button.tag==2) {
+        zTitle = NSLocalizedString(@"GoAppStore Stable",nil);
+    } else {
+        zTitle = NSLocalizedString(@"GoAppStore Beta",nil);
+    }
+
     [AZAlert target:self
          actionRect:button.frame
-              title:NSLocalizedString(@"GoAppStore Stable",nil)
-            message:NSLocalizedString(@"GoAppStore Stable msg",nil)
+              title:zTitle
+            message:NSLocalizedString(@"GoAppStore msg",nil)
             b1title:@"OK"
             b1style:UIAlertActionStyleDefault
            b1action:^(UIAlertAction * _Nullable action) {
-               NSURL *url = [NSURL URLWithString:               // クレメモ	432458298
-                             @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+               NSURL *url;
+               if (button.tag==2) {
+                   url = [NSURL URLWithString:               // クレメモβ  1262724086
+                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1262724086&mt=8"];
+               } else {
+                   url = [NSURL URLWithString:               // クレメモ  432458298
+                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+               }
 
                [[UIApplication sharedApplication] openURL:url
                                                   options:@{}
@@ -373,14 +386,15 @@ NSString *passCode()
 #ifdef AZ_STABLE
                zSubj = [zSubj stringByAppendingString:@" Stable"];
 #endif
-                 if (IS_PAD) {
-                     zSubj = [zSubj stringByAppendingString:@" (Pad)"];
-                 }else{
-                     zSubj = [zSubj stringByAppendingString:@" (Tel)"];
-                 }
-                 [picker setSubject:zSubj];
-                 
-                // Body: 本文
+               [picker setSubject:zSubj];
+
+               
+               // Body: 本文
+               if (IS_PAD) {
+                   zSubj = [zSubj stringByAppendingString:@" (Pad)"];
+               }else{
+                   zSubj = [zSubj stringByAppendingString:@" (Tel)"];
+               }
                NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
 
                //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
@@ -389,13 +403,10 @@ NSString *passCode()
                NSString *zBuild = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
                zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@)\n",  zVersion, zBuild];
 
-               //zBody = [zBody stringByAppendingFormat:@"Bundle ID: %@\n", [NSBundle mainBundle].bundleIdentifier];
-
                UIDevice *device = [UIDevice currentDevice];
-                 NSString* deviceID = [device platformString];
-                 zBody = [zBody stringByAppendingFormat:@"Device: %@   iOS: %@\n",
-                          deviceID,
-                          [UIDevice currentDevice].systemVersion]; // OSの現在のバージョン
+                 zBody = [zBody stringByAppendingFormat:@"Device: %@  (iOS %@)\n",
+                          [self getDeviceType],
+                          device.systemVersion]; // OSの現在のバージョン
                  
                  NSArray *languages = [NSLocale preferredLanguages];
                  zBody = [zBody stringByAppendingFormat:@"Locale: %@ (%@)\n\n",
@@ -418,6 +429,18 @@ NSString *passCode()
               b2style:UIAlertActionStyleCancel
              b2action:nil
      ];
+}
+
+- (NSString *)getDeviceType
+{
+    char* type = "hw.machine";
+    size_t size;
+    sysctlbyname(type, NULL, &size, NULL, 0);
+    char *answer = malloc(size);
+    sysctlbyname(type, answer, &size, NULL, 0);
+    NSString *results = [NSString stringWithCString:answer encoding: NSUTF8StringEncoding];
+    free(answer);
+    return results;
 }
 
 
@@ -511,15 +534,23 @@ NSString *passCode()
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 45)];
     
     NSString *zDetail;
+#ifdef AZ_LEGACY
+    NSString *zTitle = @"PayNoteLegacy";
+    zDetail = NSLocalizedString(@"Legacy version",nil);
+#endif
 #ifdef AZ_BETA
-	NSString *zFree = @"PayNoteβ";
+    NSString *zTitle = @"PayNoteβ";
     zDetail = NSLocalizedString(@"Beta version",nil);
-#else
-	NSString *zFree = @"PayNote";
+#endif
+#ifdef AZ_STABLE
+    NSString *zTitle = @"PayNote";
     zDetail = NSLocalizedString(@"Stable version",nil);
 #endif
-	NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
-	label.text = [NSString stringWithFormat:@"%@\nVersion %@\n%@", zFree, zVersion, zDetail];  // Build表示しない
+
+    //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+    NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+
+    label.text = [NSString stringWithFormat:@"%@\nVersion %@\n%@", zTitle, zVersion, zDetail];  // Build表示しない
 	label.numberOfLines = 3;
 	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
@@ -554,38 +585,50 @@ NSString *passCode()
 	label.font = [UIFont systemFontOfSize:12];
 	[self.view addSubview:label]; 	
 	
-	//------------------------------------------Post Comment
-	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    UIButton *bu;
+    //------------------------------------------Go to Support blog.
+    bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     bu.tintColor = [UIColor lightGrayColor];
-	bu.frame = CGRectMake(fX+100, fY+200, 200,25);
-	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
-	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:bu];  //autorelease
-	
-	//------------------------------------------Go to Support blog.
+    bu.frame = CGRectMake(fX+100, fY+200, 200,25);
+    [bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
+    [bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bu];  //autorelease
+    
+	//------------------------------------------Post Comment
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     bu.tintColor = [UIColor lightGrayColor];
 	bu.frame = CGRectMake(fX+100, fY+230, 200,25);
-	[bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
-	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
+	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
+	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
 	
-	//------------------------------------------Go to App Store
+	//------------------------------------------Go to App Store: Beta
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     bu.tintColor = [UIColor lightGrayColor];
-	bu.frame = CGRectMake(fX+100, fY+260, 200,25);
-	[bu setTitle:NSLocalizedString(@"GoAppStore Stable",nil) forState:UIControlStateNormal];
+	bu.frame = CGRectMake(fX+50, fY+260, 250,25);
+	[bu setTitle:NSLocalizedString(@"GoAppStore Beta",nil) forState:UIControlStateNormal];
+    bu.tag = 1;
 	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
+
+    //------------------------------------------Go to App Store: Stable
+    bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    bu.tintColor = [UIColor lightGrayColor];
+    bu.frame = CGRectMake(fX+50, fY+290, 250,25);
+    [bu setTitle:NSLocalizedString(@"GoAppStore Stable",nil) forState:UIControlStateNormal];
+    bu.tag = 2;
+    [bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bu];  //autorelease
 	
     //------------------------------------------CLOSE
     if (IS_PAD) {
         //label.text = NSLocalizedString(@"Information Open Pad",nil);
     }else{
-        label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+290, 280, 25)];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+320, 280, 25)];
         label.text = NSLocalizedString(@"Information Open",nil);
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
@@ -612,7 +655,7 @@ NSString *passCode()
 	//------------------------------------------
     CGRect rc = self.view.bounds;
     rc.origin.x = fX + 20;
-    rc.origin.y = fY + 340;
+    rc.origin.y = fY + 360;
     rc.size.width = 320 - (20 * 2);
     rc.size.height -= (rc.origin.y + 20);
     UITextView* tv = [[UITextView alloc] initWithFrame:rc];

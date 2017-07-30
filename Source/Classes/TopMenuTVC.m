@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "SFHFKeychainUtils.h"
+//#import "SFHFKeychainUtils.h"
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"

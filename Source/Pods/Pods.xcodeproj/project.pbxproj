@@ -7,332 +7,248 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0E854DD6344618EDC7992B41AB35A25B /* SVProgressAnimatedView.h in Headers */ = {isa = PBXBuildFile; fileRef = E68C883C0C726122F1165D9817F49C51 /* SVProgressAnimatedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		283F96FE8C8F42726D494661BA3F792D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		3737D4902642EB4F540AF36F02A11A90 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		398CF2ACCD5CB1173476851AA523E554 /* SVRadialGradientLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = E4455E36961EB6DE915405DD502DCD49 /* SVRadialGradientLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		41154DC17DFB00CBBDEBAAF7161DC8CA /* Pods-PayNoteFree-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AE6DF2BD8C0634A1180854B94469B6 /* Pods-PayNoteFree-dummy.m */; };
-		43B0524E6D9411856011388AD9E96EDE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9F20100941FEDA6D1EF9FB280B41B8C /* Security.framework */; };
-		47F79C7BBD7B6CF9001F95F146CE2198 /* Pods-PayNoteS1Pad-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C96C8552D202463364CED0A08CE0A0EB /* Pods-PayNoteS1Pad-dummy.m */; };
-		48FF0FC74264613FCDDE6A1F70C120C3 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DF57A3E401A9B6A31E7344E451CC314D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		4C484E8171F589B276A004EF6CE67D74 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		50317BF9C8D3D780BAF8F761F5F3D9C6 /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = 27AF3A5478F115D7F6FBA300D2CB0742 /* UIDevice-Hardware.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		505967DE01AEBDC1D9F012E7CC2E462B /* SFHFKeychainUtils-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 76531E238C20B948DB19A8A8B1E9F650 /* SFHFKeychainUtils-dummy.m */; };
-		61D056B5182B3DEC033FD770146EDB17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		65B3AD270413201FD316BF27C94E7226 /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 2093FE3247E71CB016EC7E3A3D1FB51C /* UIDevice-Hardware.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		6D39F54D76EB8647B6AB2793C1E9A04C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		752BACB80814937D1E662B89BB5E4898 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		80666F053628CD9EC91F2FD11C862C65 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B316D5555B4DFF7DC20D0ED2C67D8C /* SVProgressAnimatedView.m */; };
-		9780BFEB120EF25DAAA62F22C5BB8C31 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C37D5663AF8D53F78DCC1733FA6659D /* SVRadialGradientLayer.m */; };
-		98B24D6D05F4214F77DE1ED990210413 /* Pods-PayNote-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C58FB72588A6142B9434339076EE2AC /* Pods-PayNote-dummy.m */; };
-		9DC7F9F0252C7F6639B7732F3AE69433 /* UIDevice-Hardware-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C0C72C2A6B4A38FDC7B7C31AA1A929 /* UIDevice-Hardware-dummy.m */; };
-		AE958732A1929915448C931370B9B129 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = D8E5FF87CB4E07839B515919A58E90E6 /* SFHFKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B031D9E3133CBF08A4D84D4E68257F94 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
-		B0E738359DAFF127DA1DB719B78E79D5 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 07BA496D8B7EC4882A572377F794F36E /* SVIndefiniteAnimatedView.m */; };
-		BAE65AD41E72B0C8A9A3F9863D7365E2 /* SVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 33BCE77C5F379A8E4933014AB3B939E7 /* SVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BFF68EE5AD3A8C750526DC340C7DF579 /* SVIndefiniteAnimatedView.h in Headers */ = {isa = PBXBuildFile; fileRef = EC0A9A9A0294B7490198096618BC493F /* SVIndefiniteAnimatedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0A126B39AEDAF860BF0F7EE6C38A8AC /* Pods-PayNoteBeta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E4351BBB77178FAC4AAA87D26F58EAF /* Pods-PayNoteBeta-dummy.m */; };
-		DBBDE241327E5324F6B91546453A65D8 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8FC94473189A3DB2D3E5FFB8A8015F /* SVProgressHUD.m */; };
-		E72D7D4A757B806DD233E654FF3E31E5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94509B870C78D6C47B5C9E11AC69A400 /* QuartzCore.framework */; };
-		F995E31E7C796E7B7296753D997BD6F2 /* SVProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BAA855738D8A2EE5F2418F44A626BC77 /* SVProgressHUD-dummy.m */; };
-		FA3431CF026F668E562343F60B6D1534 /* Pods-PayNotePadFree-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E17A5BEC6B0DD5B608855432EE80D /* Pods-PayNotePadFree-dummy.m */; };
-		FFA59F09788FB0AE07C81DAE4DDF23D8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */; };
+		18726E922BE3140D63DA41116BECAB3B /* SVRadialGradientLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD681AF7CE14648C91EF912E40C842F /* SVRadialGradientLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		19004D88C930DAC38F11E2055AC686BA /* SVIndefiniteAnimatedView.h in Headers */ = {isa = PBXBuildFile; fileRef = 78219B63C8A56385EC4C8022BE6B13B8 /* SVIndefiniteAnimatedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1F114B4E1FDBE428505A39DB0DD7BC1E /* MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C0704204CF2749C87BF92D1286331FD /* MBProgressHUD-dummy.m */; };
+		267F37ED034B1BCDC60C3B74655198B7 /* Pods-PayNoteFree-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 59AE6DF2BD8C0634A1180854B94469B6 /* Pods-PayNoteFree-dummy.m */; };
+		2F5C584B1DF4F7137C5CDA693E71765F /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0908D28EE62BF3FBFE0CEE65B1709FBC /* SVProgressAnimatedView.m */; };
+		3E40759E8B7F25CF8129015D072C9CD3 /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 87FFEDC8B0529E3A79499898B37FE1BB /* MBProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		494E6D38D4D776B18B2BD7EDE47C90CF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
+		4ADA2AA00D1CDC96EDB79241461162C3 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B289BB53C56BAE09CA1E4174442B3AD7 /* SVRadialGradientLayer.m */; };
+		4E8A5688FC6471D13F4B93E4802B157B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7BDB2580B244756CFA046131516EF2 /* QuartzCore.framework */; };
+		5A5C96BDEB6C6FFBAC131AEF99BF5412 /* Pods-PayNote-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C58FB72588A6142B9434339076EE2AC /* Pods-PayNote-dummy.m */; };
+		5E4010C66D4B4073E60501B5A855F20E /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D4D6F9DABE0C2E6B577DC467E666 /* SVIndefiniteAnimatedView.m */; };
+		6ECB1FCEE6A6E515852A2DF03DA517A8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E9B9B995B8618C79DDE55509A32EED8 /* MBProgressHUD.m */; };
+		76737B3B89624EEE39D749482B03F205 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
+		7DCE036D6CCB8213B84D715DDBD26721 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
+		81F52CD4E24650C58D630DE30635D907 /* Pods-PayNoteS1Pad-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C96C8552D202463364CED0A08CE0A0EB /* Pods-PayNoteS1Pad-dummy.m */; };
+		8B66F8657439FCC2D5F9687AF42B94B2 /* SVProgressAnimatedView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F0A99FC21894AFCD2DC9DB6BA905F81 /* SVProgressAnimatedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		90D9D991EFA8007684BC11CA9413D64B /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA76DB59D1C6708DEDB91192C83D835 /* SVProgressHUD.m */; };
+		92565DAFB930A0A30B506F52AD7656E9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 409899CE1143F81E8130E2069D59605B /* CoreGraphics.framework */; };
+		949EB10E667A032DF6216A15792B2740 /* Pods-PayNotePadFree-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E17A5BEC6B0DD5B608855432EE80D /* Pods-PayNotePadFree-dummy.m */; };
+		A6E136830A7294F8BF1DBDD2E8C2DAAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
+		B65B7FACDB18F117DA16C2DE498D4691 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
+		BBD70C040E749DCA5E33262ED039CF4E /* SVProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = E823664D3281015D837ECFE14C13C94B /* SVProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C162A9BF7C5FC1D7B80C4657660E20D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7BDB2580B244756CFA046131516EF2 /* QuartzCore.framework */; };
+		E371DF3D9CA03A15A807976C27D50939 /* Pods-PayNoteBeta-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E4351BBB77178FAC4AAA87D26F58EAF /* Pods-PayNoteBeta-dummy.m */; };
+		E44C8FA25CE2A54F2FB49612100CFD00 /* SVProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86068C0E0E01AC6C7E3B3E2A6DB0C1 /* SVProgressHUD-dummy.m */; };
+		E7527831E0B594719837ACF62FB05AB2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
+		F16366575DF6B3B36895DA2B1B91AA4F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		04C79DE4AFAEE531DF2B46B5B1E540AA /* PBXContainerItemProxy */ = {
+		0E4A8D4BA505C40E84ED4CFDFF8E628A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F7273EA5E10158ED8BB4FB9168D39E50;
-			remoteInfo = "UIDevice-Hardware";
-		};
-		26FA5D0FD760589E2C76D4E351028939 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 916546E1D865D49C76C22D6B7CBE2B43;
+			remoteGlobalIDString = 1F4538ED400ECAD567B8A1EBE7E5BA9B;
 			remoteInfo = SVProgressHUD;
 		};
-		33A7ACCFB3E313CDC15B0196528F4380 /* PBXContainerItemProxy */ = {
+		1B012C747EC54B7DDD4EB0B0B3A9021A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F7273EA5E10158ED8BB4FB9168D39E50;
-			remoteInfo = "UIDevice-Hardware";
+			remoteGlobalIDString = 1C7F33D43BF2B5C17F2A50849228B8D5;
+			remoteInfo = MBProgressHUD;
 		};
-		6A1DEB9059D608B52F5ADCAC634DFC4B /* PBXContainerItemProxy */ = {
+		3FC15C0FE79FABB4238FA955BA7A2C6F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3501D81CEBC6EC2BCDC4FDD6B6DAB794;
-			remoteInfo = SFHFKeychainUtils;
-		};
-		7FD3CFDE942EF2F680EED60C38E01C0B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 916546E1D865D49C76C22D6B7CBE2B43;
+			remoteGlobalIDString = 1F4538ED400ECAD567B8A1EBE7E5BA9B;
 			remoteInfo = SVProgressHUD;
 		};
-		8160DDF55A662097A546347427D26BFF /* PBXContainerItemProxy */ = {
+		679720E64293FC7B45565395EF369606 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F7273EA5E10158ED8BB4FB9168D39E50;
-			remoteInfo = "UIDevice-Hardware";
-		};
-		8A2A6EF22F8B700AC979761FD3B6572A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3501D81CEBC6EC2BCDC4FDD6B6DAB794;
-			remoteInfo = SFHFKeychainUtils;
-		};
-		8E3C7109525A00C4164C82CA82F87FB6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 916546E1D865D49C76C22D6B7CBE2B43;
+			remoteGlobalIDString = 1F4538ED400ECAD567B8A1EBE7E5BA9B;
 			remoteInfo = SVProgressHUD;
 		};
-		9DB7EFF3FB820315E2AC77B2C07FA7FC /* PBXContainerItemProxy */ = {
+		68A6E09F1896C9F410AD79AA89DCCE00 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3501D81CEBC6EC2BCDC4FDD6B6DAB794;
-			remoteInfo = SFHFKeychainUtils;
+			remoteGlobalIDString = 1C7F33D43BF2B5C17F2A50849228B8D5;
+			remoteInfo = MBProgressHUD;
 		};
-		A0E21B9123220C737354AC2D6BDA376C /* PBXContainerItemProxy */ = {
+		81416E67C967B7FF20B2D69632AC4249 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3501D81CEBC6EC2BCDC4FDD6B6DAB794;
-			remoteInfo = SFHFKeychainUtils;
-		};
-		A13785E4226E5C4DB40BA00279533F9D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F7273EA5E10158ED8BB4FB9168D39E50;
-			remoteInfo = "UIDevice-Hardware";
-		};
-		A671984D85993DCF81DAC262545D71A6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3501D81CEBC6EC2BCDC4FDD6B6DAB794;
-			remoteInfo = SFHFKeychainUtils;
-		};
-		AF8BBFD50D2BE7BE49818277AC809645 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 916546E1D865D49C76C22D6B7CBE2B43;
+			remoteGlobalIDString = 1F4538ED400ECAD567B8A1EBE7E5BA9B;
 			remoteInfo = SVProgressHUD;
 		};
-		BD1AB1AD119B1DFE68B89B8BB4F7ABB7 /* PBXContainerItemProxy */ = {
+		88DD546DDA45610B6E0D9904000E2A8B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F7273EA5E10158ED8BB4FB9168D39E50;
-			remoteInfo = "UIDevice-Hardware";
+			remoteGlobalIDString = 1C7F33D43BF2B5C17F2A50849228B8D5;
+			remoteInfo = MBProgressHUD;
 		};
-		CCAD5FDD81719DE9FF03942AA7BB53DC /* PBXContainerItemProxy */ = {
+		92265809FE47FDC9C9E81D71DD11A845 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 916546E1D865D49C76C22D6B7CBE2B43;
+			remoteGlobalIDString = 1C7F33D43BF2B5C17F2A50849228B8D5;
+			remoteInfo = MBProgressHUD;
+		};
+		9E3D5196F78BC11665DDE53C8DFFECD3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1F4538ED400ECAD567B8A1EBE7E5BA9B;
 			remoteInfo = SVProgressHUD;
+		};
+		F490402AAA7E9E54154E2B8606A0314A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1C7F33D43BF2B5C17F2A50849228B8D5;
+			remoteInfo = MBProgressHUD;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		07BA496D8B7EC4882A572377F794F36E /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVIndefiniteAnimatedView.m; path = SVProgressHUD/SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
-		0C37D5663AF8D53F78DCC1733FA6659D /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVRadialGradientLayer.m; path = SVProgressHUD/SVRadialGradientLayer.m; sourceTree = "<group>"; };
-		10FBF0D2F877947B6778A7D04EE7E29A /* SVProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-prefix.pch"; sourceTree = "<group>"; };
+		0908D28EE62BF3FBFE0CEE65B1709FBC /* SVProgressAnimatedView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVProgressAnimatedView.m; path = SVProgressHUD/SVProgressAnimatedView.m; sourceTree = "<group>"; };
+		0FC1C6CF22D73E254D07943D9D93226D /* libPods-PayNoteS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteS1Pad.a"; path = "libPods-PayNoteS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		1481A388B4CCF2EBA2A9E45E5E4DCEB2 /* Pods-PayNoteBeta-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteBeta-frameworks.sh"; sourceTree = "<group>"; };
 		165BCE7ABEA629ECA1290A0C4AECB808 /* Pods-PayNoteFree-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteFree-frameworks.sh"; sourceTree = "<group>"; };
-		1875396356EA2E1BE5A93CAEC7EF2C38 /* SVProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SVProgressHUD.xcconfig; sourceTree = "<group>"; };
-		1E030A8E5E02D7671892D57BB0496818 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = SVProgressHUD.bundle; path = SVProgressHUD/SVProgressHUD.bundle; sourceTree = "<group>"; };
-		1F359B65C7FF19F45D851637D694BD93 /* libUIDevice-Hardware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libUIDevice-Hardware.a"; path = "libUIDevice-Hardware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F8FC94473189A3DB2D3E5FFB8A8015F /* SVProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVProgressHUD.m; path = SVProgressHUD/SVProgressHUD.m; sourceTree = "<group>"; };
-		2093FE3247E71CB016EC7E3A3D1FB51C /* UIDevice-Hardware.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
+		1FA98E633B7F3AE48C4E427A07F6CBFE /* SVProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SVProgressHUD.xcconfig; sourceTree = "<group>"; };
 		25A26C8010D726E64EF40D3BD7E17FEC /* Pods-PayNoteFree.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteFree.distribution.xcconfig"; sourceTree = "<group>"; };
-		27AF3A5478F115D7F6FBA300D2CB0742 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
-		27C0C72C2A6B4A38FDC7B7C31AA1A929 /* UIDevice-Hardware-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware-dummy.m"; sourceTree = "<group>"; };
-		27FE74FCEF65ABCEB40BBE15138CE806 /* SFHFKeychainUtils-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SFHFKeychainUtils-prefix.pch"; sourceTree = "<group>"; };
 		2BB211D8A3CC85FBB231ACD64F72782D /* Pods-PayNote-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNote-resources.sh"; sourceTree = "<group>"; };
 		2C58FB72588A6142B9434339076EE2AC /* Pods-PayNote-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNote-dummy.m"; sourceTree = "<group>"; };
+		2E9B9B995B8618C79DDE55509A32EED8 /* MBProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		2FC299B4AA89E3007BAA68632AD9996D /* libPods-PayNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNote.a"; path = "libPods-PayNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		302A35B224EEBE622C2BB5F5547223FD /* Pods-PayNotePadFree-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNotePadFree-frameworks.sh"; sourceTree = "<group>"; };
-		3061E71B5F7FCAD24D4BE22F42AABDF2 /* libPods-PayNoteFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteFree.a"; path = "libPods-PayNoteFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		332F9AF3056E4BFA9A89BB5CE3BA7769 /* UIDevice-Hardware-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware-prefix.pch"; sourceTree = "<group>"; };
-		33BCE77C5F379A8E4933014AB3B939E7 /* SVProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVProgressHUD.h; path = SVProgressHUD/SVProgressHUD.h; sourceTree = "<group>"; };
 		348D85661F0375FB61CACE9C48E2025C /* Pods-PayNoteS1Pad-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteS1Pad-resources.sh"; sourceTree = "<group>"; };
-		3722EFCBFFBBB86499B8D9E3D4CE8814 /* libPods-PayNoteS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteS1Pad.a"; path = "libPods-PayNoteS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C9E17A5BEC6B0DD5B608855432EE80D /* Pods-PayNotePadFree-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNotePadFree-dummy.m"; sourceTree = "<group>"; };
-		4513AB90FBC4EE7A3EAA404320B18EF0 /* SFHFKeychainUtils.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SFHFKeychainUtils.xcconfig; sourceTree = "<group>"; };
-		4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		409899CE1143F81E8130E2069D59605B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		45C417EAFF190A75B999944FA9FD276D /* Pods-PayNotePadFree.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNotePadFree.distribution.xcconfig"; sourceTree = "<group>"; };
 		4674E1543B7398D1AF660358A22F1245 /* Pods-PayNoteBeta.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteBeta.distribution.xcconfig"; sourceTree = "<group>"; };
 		47DFD24B78763255E7C66A6BA069B56E /* Pods-PayNote-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNote-frameworks.sh"; sourceTree = "<group>"; };
-		4A8BD0ED9C1B4B579308234C1B0CE2AC /* libPods-PayNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNote.a"; path = "libPods-PayNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AAD8748759C7E75179808177D9B82B9 /* libPods-PayNoteBeta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteBeta.a"; path = "libPods-PayNoteBeta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BE689182913A70EAD4679D155A61035 /* Pods-PayNote-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNote-acknowledgements.markdown"; sourceTree = "<group>"; };
+		4C0704204CF2749C87BF92D1286331FD /* MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
 		50861F49BE548C0BC1E150F30C150E5A /* Pods-PayNoteFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteFree.release.xcconfig"; sourceTree = "<group>"; };
+		56F599CAFE1AB90F852E9F88DE52CAEB /* libPods-PayNoteFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteFree.a"; path = "libPods-PayNoteFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		571375CBC2BD4AF410AE79C3405122C5 /* Pods-PayNotePadFree-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNotePadFree-acknowledgements.markdown"; sourceTree = "<group>"; };
 		59AE6DF2BD8C0634A1180854B94469B6 /* Pods-PayNoteFree-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNoteFree-dummy.m"; sourceTree = "<group>"; };
+		59D8EAA453373829D90F6B0971EC0980 /* SVProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-prefix.pch"; sourceTree = "<group>"; };
 		5C635B4C806410A2D2D1E02F625B8EA1 /* Pods-PayNoteBeta-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNoteBeta-acknowledgements.markdown"; sourceTree = "<group>"; };
+		5F7BDB2580B244756CFA046131516EF2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		64F0CE2F3EA3812A433FD0ADEAFBD902 /* Pods-PayNote-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNote-acknowledgements.plist"; sourceTree = "<group>"; };
+		685E28CB65A416E29EC964DD1EC547CD /* MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MBProgressHUD.xcconfig; sourceTree = "<group>"; };
 		68F8427BBE550DDD44A599B2E509F3A4 /* Pods-PayNoteS1Pad.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteS1Pad.distribution.xcconfig"; sourceTree = "<group>"; };
-		6979978840E043E336C24D9BFCBD6041 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSFHFKeychainUtils.a; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D5BD935D21A66A66C6AAAD7B7CE881A /* Pods-PayNotePadFree-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNotePadFree-acknowledgements.plist"; sourceTree = "<group>"; };
-		6E9322DA21D01E92E6AC65E9C2531653 /* libSVProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSVProgressHUD.a; path = libSVProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		76531E238C20B948DB19A8A8B1E9F650 /* SFHFKeychainUtils-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SFHFKeychainUtils-dummy.m"; sourceTree = "<group>"; };
+		6DB130418431F14F2D14F18ECF25CDCF /* SVProgressHUD.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = SVProgressHUD.bundle; path = SVProgressHUD/SVProgressHUD.bundle; sourceTree = "<group>"; };
+		6E7CC6D4C3BDEAB0127815F81989687D /* libMBProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libMBProgressHUD.a; path = libMBProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		78219B63C8A56385EC4C8022BE6B13B8 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVIndefiniteAnimatedView.h; path = SVProgressHUD/SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
+		7DA76DB59D1C6708DEDB91192C83D835 /* SVProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVProgressHUD.m; path = SVProgressHUD/SVProgressHUD.m; sourceTree = "<group>"; };
 		7F3E3F81A1DA59F6D4BA37E0818B061E /* Pods-PayNoteBeta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteBeta.debug.xcconfig"; sourceTree = "<group>"; };
+		83F9D4D6F9DABE0C2E6B577DC467E666 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVIndefiniteAnimatedView.m; path = SVProgressHUD/SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
+		87FFEDC8B0529E3A79499898B37FE1BB /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		89B51469B6A0CFF9928331F4C953B65A /* Pods-PayNoteBeta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteBeta.release.xcconfig"; sourceTree = "<group>"; };
+		8F0A99FC21894AFCD2DC9DB6BA905F81 /* SVProgressAnimatedView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVProgressAnimatedView.h; path = SVProgressHUD/SVProgressAnimatedView.h; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		94509B870C78D6C47B5C9E11AC69A400 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		9957F77A3D5D4C01D181A0040CC39FA8 /* Pods-PayNoteFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteFree.debug.xcconfig"; sourceTree = "<group>"; };
 		9B8E8A28394F75D05FA57B1613AB99F4 /* Pods-PayNoteS1Pad-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNoteS1Pad-acknowledgements.plist"; sourceTree = "<group>"; };
 		9DD5DD5090373D4BFAF69567286696A8 /* Pods-PayNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNote.debug.xcconfig"; sourceTree = "<group>"; };
 		9E4351BBB77178FAC4AAA87D26F58EAF /* Pods-PayNoteBeta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNoteBeta-dummy.m"; sourceTree = "<group>"; };
-		A2946C16CA42B1AF214EBBED8AE7AB9A /* libPods-PayNotePadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNotePadFree.a"; path = "libPods-PayNotePadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2D2D4226889CA75778FCF73180AD7EB /* Pods-PayNoteFree-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNoteFree-acknowledgements.plist"; sourceTree = "<group>"; };
 		A37CBF856E5DFDF1B17134C0B000AD67 /* Pods-PayNotePadFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNotePadFree.debug.xcconfig"; sourceTree = "<group>"; };
 		A39468B8A6119B0BD6B576439B242CA1 /* Pods-PayNoteS1Pad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteS1Pad.release.xcconfig"; sourceTree = "<group>"; };
-		A3B316D5555B4DFF7DC20D0ED2C67D8C /* SVProgressAnimatedView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVProgressAnimatedView.m; path = SVProgressHUD/SVProgressAnimatedView.m; sourceTree = "<group>"; };
 		A52B9E76A522BA4CD1121B00299D9783 /* Pods-PayNotePadFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNotePadFree.release.xcconfig"; sourceTree = "<group>"; };
 		A56786B786CBF6CA7617F3A45F594F3F /* Pods-PayNoteBeta-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteBeta-resources.sh"; sourceTree = "<group>"; };
 		A9AD184370A958D08EF90BE4145AE7EF /* Pods-PayNotePadFree-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNotePadFree-resources.sh"; sourceTree = "<group>"; };
 		B0D4E2FE8EF685594EE516993F721A57 /* Pods-PayNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNote.release.xcconfig"; sourceTree = "<group>"; };
+		B289BB53C56BAE09CA1E4174442B3AD7 /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SVRadialGradientLayer.m; path = SVProgressHUD/SVRadialGradientLayer.m; sourceTree = "<group>"; };
 		B7237D6C4F24566AA6EC415CA79EE077 /* Pods-PayNoteFree-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteFree-resources.sh"; sourceTree = "<group>"; };
-		BAA855738D8A2EE5F2418F44A626BC77 /* SVProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SVProgressHUD-dummy.m"; sourceTree = "<group>"; };
+		B8DE74BAD5DD7E4D619D55201B0702EA /* MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
+		BAD681AF7CE14648C91EF912E40C842F /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVRadialGradientLayer.h; path = SVProgressHUD/SVRadialGradientLayer.h; sourceTree = "<group>"; };
 		C3CF186892CB0FEC8C7AF1DEDCFED011 /* Pods-PayNote.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNote.distribution.xcconfig"; sourceTree = "<group>"; };
+		C7F8F235108ACD31EE843140475A8F3F /* libSVProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSVProgressHUD.a; path = libSVProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C96C8552D202463364CED0A08CE0A0EB /* Pods-PayNoteS1Pad-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PayNoteS1Pad-dummy.m"; sourceTree = "<group>"; };
+		D2B2C4B51A3C5C2008DED1C123EE163F /* libPods-PayNotePadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNotePadFree.a"; path = "libPods-PayNotePadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43AF482E01C6800D7C7154A297B9850 /* Pods-PayNoteS1Pad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PayNoteS1Pad.debug.xcconfig"; sourceTree = "<group>"; };
 		D588FA48750B6882A6ACA278F9B63322 /* Pods-PayNoteS1Pad-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNoteS1Pad-acknowledgements.markdown"; sourceTree = "<group>"; };
 		D6BEC51C2BE1C5139C9ECE0D9DE1F439 /* Pods-PayNoteBeta-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-PayNoteBeta-acknowledgements.plist"; sourceTree = "<group>"; };
-		D8E5FF87CB4E07839B515919A58E90E6 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SFHFKeychainUtils.h; path = security/SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		DF57A3E401A9B6A31E7344E451CC314D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = security/SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		E4455E36961EB6DE915405DD502DCD49 /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVRadialGradientLayer.h; path = SVProgressHUD/SVRadialGradientLayer.h; sourceTree = "<group>"; };
-		E68C883C0C726122F1165D9817F49C51 /* SVProgressAnimatedView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVProgressAnimatedView.h; path = SVProgressHUD/SVProgressAnimatedView.h; sourceTree = "<group>"; };
-		EC0A9A9A0294B7490198096618BC493F /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVIndefiniteAnimatedView.h; path = SVProgressHUD/SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
-		EF28223AD375DA749F6F609CD50F433D /* libPods-PayNoteBeta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-PayNoteBeta.a"; path = "libPods-PayNoteBeta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EF2A56C293AB573DDED013FCE3067CB6 /* UIDevice-Hardware.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "UIDevice-Hardware.xcconfig"; sourceTree = "<group>"; };
+		DD86068C0E0E01AC6C7E3B3E2A6DB0C1 /* SVProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SVProgressHUD-dummy.m"; sourceTree = "<group>"; };
+		E823664D3281015D837ECFE14C13C94B /* SVProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SVProgressHUD.h; path = SVProgressHUD/SVProgressHUD.h; sourceTree = "<group>"; };
 		F4A10CF045D7A86CEB1D47A29D607E58 /* Pods-PayNoteS1Pad-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-PayNoteS1Pad-frameworks.sh"; sourceTree = "<group>"; };
-		F9F20100941FEDA6D1EF9FB280B41B8C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		FA1F14E567AB9D8FF05E5FBE687E2A49 /* Pods-PayNoteFree-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-PayNoteFree-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5D2230AFF31B627CB583B5B3097F93E3 /* Frameworks */ = {
+		0FD29B873A373E93EB5EEF57D61B1692 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				752BACB80814937D1E662B89BB5E4898 /* Foundation.framework in Frameworks */,
+				F16366575DF6B3B36895DA2B1B91AA4F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65FDF5B22E558E87BD2885191CFEE624 /* Frameworks */ = {
+		3E4185AD6E14B8DF6CD57D8BD169802C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFA59F09788FB0AE07C81DAE4DDF23D8 /* Foundation.framework in Frameworks */,
+				B65B7FACDB18F117DA16C2DE498D4691 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		67EE87EBA78C57CE619147AC0A8A5075 /* Frameworks */ = {
+		53C1D8EE0ED5100D957F3B70C67405E2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				283F96FE8C8F42726D494661BA3F792D /* Foundation.framework in Frameworks */,
+				494E6D38D4D776B18B2BD7EDE47C90CF /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		841A572C190D566EC6F4EC6C64F78ED5 /* Frameworks */ = {
+		9757979FC59E05C0FF8D60935B8C774C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D39F54D76EB8647B6AB2793C1E9A04C /* Foundation.framework in Frameworks */,
+				92565DAFB930A0A30B506F52AD7656E9 /* CoreGraphics.framework in Frameworks */,
+				76737B3B89624EEE39D749482B03F205 /* Foundation.framework in Frameworks */,
+				4E8A5688FC6471D13F4B93E4802B157B /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		99EE4913ED7637E07A120692EF45171D /* Frameworks */ = {
+		9A4972C8CC82D29144C624834106EA43 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C484E8171F589B276A004EF6CE67D74 /* Foundation.framework in Frameworks */,
-				43B0524E6D9411856011388AD9E96EDE /* Security.framework in Frameworks */,
+				7DCE036D6CCB8213B84D715DDBD26721 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9D0BFE24C06DB745FE0C3F0A66BAB650 /* Frameworks */ = {
+		E8BF1E0EB7096B00A261E2D985AD7F0D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B031D9E3133CBF08A4D84D4E68257F94 /* Foundation.framework in Frameworks */,
+				A6E136830A7294F8BF1DBDD2E8C2DAAE /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CB2FEDEC270A0A8FD578D56A13230ABC /* Frameworks */ = {
+		FC58CC213D8521D4027D20B342E28194 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3737D4902642EB4F540AF36F02A11A90 /* Foundation.framework in Frameworks */,
-				E72D7D4A757B806DD233E654FF3E31E5 /* QuartzCore.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD7916634E83F4841F59724158EE1478 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				61D056B5182B3DEC033FD770146EDB17 /* Foundation.framework in Frameworks */,
+				E7527831E0B594719837ACF62FB05AB2 /* Foundation.framework in Frameworks */,
+				C162A9BF7C5FC1D7B80C4657660E20D2 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		021D66281A868524865F8477A4425130 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4A8BD0ED9C1B4B579308234C1B0CE2AC /* libPods-PayNote.a */,
-				EF28223AD375DA749F6F609CD50F433D /* libPods-PayNoteBeta.a */,
-				3061E71B5F7FCAD24D4BE22F42AABDF2 /* libPods-PayNoteFree.a */,
-				A2946C16CA42B1AF214EBBED8AE7AB9A /* libPods-PayNotePadFree.a */,
-				3722EFCBFFBBB86499B8D9E3D4CE8814 /* libPods-PayNoteS1Pad.a */,
-				6979978840E043E336C24D9BFCBD6041 /* libSFHFKeychainUtils.a */,
-				6E9322DA21D01E92E6AC65E9C2531653 /* libSVProgressHUD.a */,
-				1F359B65C7FF19F45D851637D694BD93 /* libUIDevice-Hardware.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		122DA2E5084A4393C29BE363C764795C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9508E473F9A56DD0336B9B29B5CC97BE /* iOS */,
+				5A4DBD434EA75DD3EDD3494C46AE6968 /* iOS */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		1F2758873A77D1FBF4DF0E323A26135A /* SVProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				EC0A9A9A0294B7490198096618BC493F /* SVIndefiniteAnimatedView.h */,
-				07BA496D8B7EC4882A572377F794F36E /* SVIndefiniteAnimatedView.m */,
-				E68C883C0C726122F1165D9817F49C51 /* SVProgressAnimatedView.h */,
-				A3B316D5555B4DFF7DC20D0ED2C67D8C /* SVProgressAnimatedView.m */,
-				33BCE77C5F379A8E4933014AB3B939E7 /* SVProgressHUD.h */,
-				1F8FC94473189A3DB2D3E5FFB8A8015F /* SVProgressHUD.m */,
-				E4455E36961EB6DE915405DD502DCD49 /* SVRadialGradientLayer.h */,
-				0C37D5663AF8D53F78DCC1733FA6659D /* SVRadialGradientLayer.m */,
-				50C8AADB2A03C4FF849A713CB36822E6 /* Resources */,
-				AAFEBD2487A6A09C3896B31756DE4E72 /* Support Files */,
-			);
-			name = SVProgressHUD;
-			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
 		209938CA9BC6ED31C154C52FADBD695F /* Pods-PayNote */ = {
@@ -351,45 +267,56 @@
 			path = "Target Support Files/Pods-PayNote";
 			sourceTree = "<group>";
 		};
-		34FABFDEF62EC9716B18974912096765 /* Support Files */ = {
+		53C5407A9EB0687C5A4E4B4BBF7E345E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4513AB90FBC4EE7A3EAA404320B18EF0 /* SFHFKeychainUtils.xcconfig */,
-				76531E238C20B948DB19A8A8B1E9F650 /* SFHFKeychainUtils-dummy.m */,
-				27FE74FCEF65ABCEB40BBE15138CE806 /* SFHFKeychainUtils-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/SFHFKeychainUtils";
-			sourceTree = "<group>";
-		};
-		50C8AADB2A03C4FF849A713CB36822E6 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				1E030A8E5E02D7671892D57BB0496818 /* SVProgressHUD.bundle */,
+				6DB130418431F14F2D14F18ECF25CDCF /* SVProgressHUD.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		6819A0C40503AC25B5C22735DA7B3FBE /* Support Files */ = {
+		5A4DBD434EA75DD3EDD3494C46AE6968 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				EF2A56C293AB573DDED013FCE3067CB6 /* UIDevice-Hardware.xcconfig */,
-				27C0C72C2A6B4A38FDC7B7C31AA1A929 /* UIDevice-Hardware-dummy.m */,
-				332F9AF3056E4BFA9A89BB5CE3BA7769 /* UIDevice-Hardware-prefix.pch */,
+				409899CE1143F81E8130E2069D59605B /* CoreGraphics.framework */,
+				12992E853CAE14F2102525E0D84ADAB5 /* Foundation.framework */,
+				5F7BDB2580B244756CFA046131516EF2 /* QuartzCore.framework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/UIDevice-Hardware";
+			name = iOS;
 			sourceTree = "<group>";
 		};
-		756E26DFB0D8178233E2637328E31475 /* UIDevice-Hardware */ = {
+		62185AFCC71B2FDEA976CD25753752DC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				27AF3A5478F115D7F6FBA300D2CB0742 /* UIDevice-Hardware.h */,
-				2093FE3247E71CB016EC7E3A3D1FB51C /* UIDevice-Hardware.m */,
-				6819A0C40503AC25B5C22735DA7B3FBE /* Support Files */,
+				9FA8A929D0F6CE35E99374567AC3C404 /* MBProgressHUD */,
+				A72ACB3DA8446F138A23F4D3495FFC4D /* SVProgressHUD */,
 			);
-			name = "UIDevice-Hardware";
-			path = "UIDevice-Hardware";
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		6B8C09140387846371F575E7B8217049 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6E7CC6D4C3BDEAB0127815F81989687D /* libMBProgressHUD.a */,
+				2FC299B4AA89E3007BAA68632AD9996D /* libPods-PayNote.a */,
+				4AAD8748759C7E75179808177D9B82B9 /* libPods-PayNoteBeta.a */,
+				56F599CAFE1AB90F852E9F88DE52CAEB /* libPods-PayNoteFree.a */,
+				D2B2C4B51A3C5C2008DED1C123EE163F /* libPods-PayNotePadFree.a */,
+				0FC1C6CF22D73E254D07943D9D93226D /* libPods-PayNoteS1Pad.a */,
+				C7F8F235108ACD31EE843140475A8F3F /* libSVProgressHUD.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		73A00FF4855E7936E8B910905B4C9D7E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1FA98E633B7F3AE48C4E427A07F6CBFE /* SVProgressHUD.xcconfig */,
+				DD86068C0E0E01AC6C7E3B3E2A6DB0C1 /* SVProgressHUD-dummy.m */,
+				59D8EAA453373829D90F6B0971EC0980 /* SVProgressHUD-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/SVProgressHUD";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -397,10 +324,21 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				122DA2E5084A4393C29BE363C764795C /* Frameworks */,
-				F42F1D3A64A6B9359BE7AA04AF847A13 /* Pods */,
-				021D66281A868524865F8477A4425130 /* Products */,
+				62185AFCC71B2FDEA976CD25753752DC /* Pods */,
+				6B8C09140387846371F575E7B8217049 /* Products */,
 				A2DCE1B1894471B959DDDC3F9C2AA074 /* Targets Support Files */,
 			);
+			sourceTree = "<group>";
+		};
+		83358017D66E5B87968BB12DF2E46FCC /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				685E28CB65A416E29EC964DD1EC547CD /* MBProgressHUD.xcconfig */,
+				4C0704204CF2749C87BF92D1286331FD /* MBProgressHUD-dummy.m */,
+				B8DE74BAD5DD7E4D619D55201B0702EA /* MBProgressHUD-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/MBProgressHUD";
 			sourceTree = "<group>";
 		};
 		906DB844CC5C0057F1AD7AA69558F49B /* Pods-PayNoteS1Pad */ = {
@@ -419,14 +357,15 @@
 			path = "Target Support Files/Pods-PayNoteS1Pad";
 			sourceTree = "<group>";
 		};
-		9508E473F9A56DD0336B9B29B5CC97BE /* iOS */ = {
+		9FA8A929D0F6CE35E99374567AC3C404 /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
-				4556C49F628223FA8503F56FB9A32B8F /* Foundation.framework */,
-				94509B870C78D6C47B5C9E11AC69A400 /* QuartzCore.framework */,
-				F9F20100941FEDA6D1EF9FB280B41B8C /* Security.framework */,
+				87FFEDC8B0529E3A79499898B37FE1BB /* MBProgressHUD.h */,
+				2E9B9B995B8618C79DDE55509A32EED8 /* MBProgressHUD.m */,
+				83358017D66E5B87968BB12DF2E46FCC /* Support Files */,
 			);
-			name = iOS;
+			name = MBProgressHUD;
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		A2DCE1B1894471B959DDDC3F9C2AA074 /* Targets Support Files */ = {
@@ -441,15 +380,22 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		AAFEBD2487A6A09C3896B31756DE4E72 /* Support Files */ = {
+		A72ACB3DA8446F138A23F4D3495FFC4D /* SVProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
-				1875396356EA2E1BE5A93CAEC7EF2C38 /* SVProgressHUD.xcconfig */,
-				BAA855738D8A2EE5F2418F44A626BC77 /* SVProgressHUD-dummy.m */,
-				10FBF0D2F877947B6778A7D04EE7E29A /* SVProgressHUD-prefix.pch */,
+				78219B63C8A56385EC4C8022BE6B13B8 /* SVIndefiniteAnimatedView.h */,
+				83F9D4D6F9DABE0C2E6B577DC467E666 /* SVIndefiniteAnimatedView.m */,
+				8F0A99FC21894AFCD2DC9DB6BA905F81 /* SVProgressAnimatedView.h */,
+				0908D28EE62BF3FBFE0CEE65B1709FBC /* SVProgressAnimatedView.m */,
+				E823664D3281015D837ECFE14C13C94B /* SVProgressHUD.h */,
+				7DA76DB59D1C6708DEDB91192C83D835 /* SVProgressHUD.m */,
+				BAD681AF7CE14648C91EF912E40C842F /* SVRadialGradientLayer.h */,
+				B289BB53C56BAE09CA1E4174442B3AD7 /* SVRadialGradientLayer.m */,
+				53C5407A9EB0687C5A4E4B4BBF7E345E /* Resources */,
+				73A00FF4855E7936E8B910905B4C9D7E /* Support Files */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/SVProgressHUD";
+			name = SVProgressHUD;
+			path = SVProgressHUD;
 			sourceTree = "<group>";
 		};
 		B5A4FCF6DF38D1DB559BD3EF7797AEBE /* Pods-PayNotePadFree */ = {
@@ -466,17 +412,6 @@
 			);
 			name = "Pods-PayNotePadFree";
 			path = "Target Support Files/Pods-PayNotePadFree";
-			sourceTree = "<group>";
-		};
-		BBA1F29051F048035073AB625774BD8A /* SFHFKeychainUtils */ = {
-			isa = PBXGroup;
-			children = (
-				D8E5FF87CB4E07839B515919A58E90E6 /* SFHFKeychainUtils.h */,
-				DF57A3E401A9B6A31E7344E451CC314D /* SFHFKeychainUtils.m */,
-				34FABFDEF62EC9716B18974912096765 /* Support Files */,
-			);
-			name = SFHFKeychainUtils;
-			path = SFHFKeychainUtils;
 			sourceTree = "<group>";
 		};
 		D768F01C37480E080F08ACF88C0C3F77 /* Pods-PayNoteFree */ = {
@@ -511,130 +446,73 @@
 			path = "Target Support Files/Pods-PayNoteBeta";
 			sourceTree = "<group>";
 		};
-		F42F1D3A64A6B9359BE7AA04AF847A13 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				BBA1F29051F048035073AB625774BD8A /* SFHFKeychainUtils */,
-				1F2758873A77D1FBF4DF0E323A26135A /* SVProgressHUD */,
-				756E26DFB0D8178233E2637328E31475 /* UIDevice-Hardware */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		05397A6108F507543334246195AEB3AB /* Headers */ = {
+		F2CB24F34892C70E0D8F2B62030D2F87 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50317BF9C8D3D780BAF8F761F5F3D9C6 /* UIDevice-Hardware.h in Headers */,
+				3E40759E8B7F25CF8129015D072C9CD3 /* MBProgressHUD.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		30CFCBB4AF11E608ACED77964484D8CB /* Headers */ = {
+		F5A3C734CF7ECA3444545CBC64CF37EE /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFF68EE5AD3A8C750526DC340C7DF579 /* SVIndefiniteAnimatedView.h in Headers */,
-				0E854DD6344618EDC7992B41AB35A25B /* SVProgressAnimatedView.h in Headers */,
-				BAE65AD41E72B0C8A9A3F9863D7365E2 /* SVProgressHUD.h in Headers */,
-				398CF2ACCD5CB1173476851AA523E554 /* SVRadialGradientLayer.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AB4DC728C98DF28F97218D4AA2496B07 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AE958732A1929915448C931370B9B129 /* SFHFKeychainUtils.h in Headers */,
+				19004D88C930DAC38F11E2055AC686BA /* SVIndefiniteAnimatedView.h in Headers */,
+				8B66F8657439FCC2D5F9687AF42B94B2 /* SVProgressAnimatedView.h in Headers */,
+				BBD70C040E749DCA5E33262ED039CF4E /* SVProgressHUD.h in Headers */,
+				18726E922BE3140D63DA41116BECAB3B /* SVRadialGradientLayer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		17D9535AB64B6B1D32352A7A26CCAE0A /* Pods-PayNote */ = {
+		0BBA699537AE5195C81B3D30E03E1E0B /* Pods-PayNotePadFree */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CD549C4D4008E97ECA50FDC429A4FB9B /* Build configuration list for PBXNativeTarget "Pods-PayNote" */;
+			buildConfigurationList = 5F1EFAA7798F1135861AB0F79CCF0EF6 /* Build configuration list for PBXNativeTarget "Pods-PayNotePadFree" */;
 			buildPhases = (
-				741AA631BF6CFE179B95279243C0275B /* Sources */,
-				841A572C190D566EC6F4EC6C64F78ED5 /* Frameworks */,
+				E0B0C42668291D16B1CDF9ED720D6232 /* Sources */,
+				0FD29B873A373E93EB5EEF57D61B1692 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C0B514AFD542E7F87566E968711D5ABC /* PBXTargetDependency */,
-				A5EDA527E2B5A38F14D75C0DC08FF1A1 /* PBXTargetDependency */,
-				C47F41041B827C8C382F239785909C3E /* PBXTargetDependency */,
-			);
-			name = "Pods-PayNote";
-			productName = "Pods-PayNote";
-			productReference = 4A8BD0ED9C1B4B579308234C1B0CE2AC /* libPods-PayNote.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9093AF22942B12A701F13D7BA683D230 /* Build configuration list for PBXNativeTarget "SFHFKeychainUtils" */;
-			buildPhases = (
-				77482707483D04F3A8275BB9848E3B0D /* Sources */,
-				99EE4913ED7637E07A120692EF45171D /* Frameworks */,
-				AB4DC728C98DF28F97218D4AA2496B07 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SFHFKeychainUtils;
-			productName = SFHFKeychainUtils;
-			productReference = 6979978840E043E336C24D9BFCBD6041 /* libSFHFKeychainUtils.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		7EFCD4EB439D31BE83F8ADABAC8E7388 /* Pods-PayNotePadFree */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = F1A6D7E7F916D3A7BAEE3307E23EC4F4 /* Build configuration list for PBXNativeTarget "Pods-PayNotePadFree" */;
-			buildPhases = (
-				22FD2E54023D3D43C51E5B26EBDE3A84 /* Sources */,
-				9D0BFE24C06DB745FE0C3F0A66BAB650 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				770CFD133AD569E6F05B6BD2674DCDAF /* PBXTargetDependency */,
-				303BB690664DF519DD40281A4E181113 /* PBXTargetDependency */,
-				3CCB1B3A39C2EFDE794DED650815DBAB /* PBXTargetDependency */,
+				378A80E631E23A36E3ACADF86BD9FCD2 /* PBXTargetDependency */,
+				BC124B07ECAF735777801C13BFEFA253 /* PBXTargetDependency */,
 			);
 			name = "Pods-PayNotePadFree";
 			productName = "Pods-PayNotePadFree";
-			productReference = A2946C16CA42B1AF214EBBED8AE7AB9A /* libPods-PayNotePadFree.a */;
+			productReference = D2B2C4B51A3C5C2008DED1C123EE163F /* libPods-PayNotePadFree.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		8A45672FC68BBC8ABDB3D6C3AC65F308 /* Pods-PayNoteFree */ = {
+		1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 498753FAD94940794C7A9BFC29D85368 /* Build configuration list for PBXNativeTarget "Pods-PayNoteFree" */;
+			buildConfigurationList = 7FC84FB315C3DC77D257C1E89548974E /* Build configuration list for PBXNativeTarget "MBProgressHUD" */;
 			buildPhases = (
-				AE570560B207DCD0008AAA1E896A23FD /* Sources */,
-				5D2230AFF31B627CB583B5B3097F93E3 /* Frameworks */,
+				6EA0BDFDC146ECFA3364F87E91107F1F /* Sources */,
+				9757979FC59E05C0FF8D60935B8C774C /* Frameworks */,
+				F2CB24F34892C70E0D8F2B62030D2F87 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0E44C4582B28DA07D9232357BF7AD38A /* PBXTargetDependency */,
-				8ACDB71DDFE17554504F0AED0A8BFF8C /* PBXTargetDependency */,
-				F30D692B06621D7469066881A124AF68 /* PBXTargetDependency */,
 			);
-			name = "Pods-PayNoteFree";
-			productName = "Pods-PayNoteFree";
-			productReference = 3061E71B5F7FCAD24D4BE22F42AABDF2 /* libPods-PayNoteFree.a */;
+			name = MBProgressHUD;
+			productName = MBProgressHUD;
+			productReference = 6E7CC6D4C3BDEAB0127815F81989687D /* libMBProgressHUD.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */ = {
+		1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E099556CBE95CBD1D8FE9FACFB014B0B /* Build configuration list for PBXNativeTarget "SVProgressHUD" */;
+			buildConfigurationList = 781D438C4A65E7B01F5FAD7F34793C1B /* Build configuration list for PBXNativeTarget "SVProgressHUD" */;
 			buildPhases = (
-				A81EB5A78A0739D8391BC4723CB73946 /* Sources */,
-				CB2FEDEC270A0A8FD578D56A13230ABC /* Frameworks */,
-				30CFCBB4AF11E608ACED77964484D8CB /* Headers */,
+				1C0F72D4C14ABCE0C661A2145638A959 /* Sources */,
+				FC58CC213D8521D4027D20B342E28194 /* Frameworks */,
+				F5A3C734CF7ECA3444545CBC64CF37EE /* Headers */,
 			);
 			buildRules = (
 			);
@@ -642,62 +520,79 @@
 			);
 			name = SVProgressHUD;
 			productName = SVProgressHUD;
-			productReference = 6E9322DA21D01E92E6AC65E9C2531653 /* libSVProgressHUD.a */;
+			productReference = C7F8F235108ACD31EE843140475A8F3F /* libSVProgressHUD.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		CF7ECDE10624717D5E16D6EF4F49743D /* Pods-PayNoteBeta */ = {
+		7B368D900180A7E53AB89680E82290A7 /* Pods-PayNoteS1Pad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7FFA8BF09A8970EBD941C228086742FF /* Build configuration list for PBXNativeTarget "Pods-PayNoteBeta" */;
+			buildConfigurationList = 7A3303B205E9773D943C2726B1ECC57D /* Build configuration list for PBXNativeTarget "Pods-PayNoteS1Pad" */;
 			buildPhases = (
-				4FED594C1FC2E8FA72331C8BFB1EE1EA /* Sources */,
-				65FDF5B22E558E87BD2885191CFEE624 /* Frameworks */,
+				498DEB450CA9FE4B170BC855ECECD92C /* Sources */,
+				9A4972C8CC82D29144C624834106EA43 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				AEFDA663876B34EDAE25359D5824E09D /* PBXTargetDependency */,
-				CDC320A52559756C5F81F864E64D4AB2 /* PBXTargetDependency */,
-				F06F2A29F36ABB2BF03A450A00F2C207 /* PBXTargetDependency */,
-			);
-			name = "Pods-PayNoteBeta";
-			productName = "Pods-PayNoteBeta";
-			productReference = EF28223AD375DA749F6F609CD50F433D /* libPods-PayNoteBeta.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		DF160003372BDA140EB05EBCF429A4EC /* Pods-PayNoteS1Pad */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 79B358DAF99DCDE7096514D2DFC568A5 /* Build configuration list for PBXNativeTarget "Pods-PayNoteS1Pad" */;
-			buildPhases = (
-				96CBCF44A542410066CECD49846F3290 /* Sources */,
-				CD7916634E83F4841F59724158EE1478 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1C56E5D5E937EA6309D4FC5412DB4D7A /* PBXTargetDependency */,
-				819C3BA01C32CBA6A3FF0BF97F29142F /* PBXTargetDependency */,
-				FD04EACC75D2DCEECCFE126C4F7B164C /* PBXTargetDependency */,
+				16286BFC2F13B74F6513962914489EEC /* PBXTargetDependency */,
+				22CF38A729656A158672356F0820D567 /* PBXTargetDependency */,
 			);
 			name = "Pods-PayNoteS1Pad";
 			productName = "Pods-PayNoteS1Pad";
-			productReference = 3722EFCBFFBBB86499B8D9E3D4CE8814 /* libPods-PayNoteS1Pad.a */;
+			productReference = 0FC1C6CF22D73E254D07943D9D93226D /* libPods-PayNoteS1Pad.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */ = {
+		875C200DE0AA9DE44E2E5419873C4879 /* Pods-PayNoteFree */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B16FE24D3E0592FA37853CE22304D9B /* Build configuration list for PBXNativeTarget "UIDevice-Hardware" */;
+			buildConfigurationList = 12C6457132BB7CE6EE69C132A97C34AF /* Build configuration list for PBXNativeTarget "Pods-PayNoteFree" */;
 			buildPhases = (
-				03A3CD7928BF049EE2E4D68EE94756E2 /* Sources */,
-				67EE87EBA78C57CE619147AC0A8A5075 /* Frameworks */,
-				05397A6108F507543334246195AEB3AB /* Headers */,
+				07073941384B7028FABD22801ACC3EBB /* Sources */,
+				E8BF1E0EB7096B00A261E2D985AD7F0D /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EACC8A35B6A6383363724896EB1B6B1B /* PBXTargetDependency */,
+				FDC09FD156D470911CE5C06FB4A758DD /* PBXTargetDependency */,
 			);
-			name = "UIDevice-Hardware";
-			productName = "UIDevice-Hardware";
-			productReference = 1F359B65C7FF19F45D851637D694BD93 /* libUIDevice-Hardware.a */;
+			name = "Pods-PayNoteFree";
+			productName = "Pods-PayNoteFree";
+			productReference = 56F599CAFE1AB90F852E9F88DE52CAEB /* libPods-PayNoteFree.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BEC8FF3BD5F3ED3F0074551EC88A2116 /* Pods-PayNoteBeta */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BD102F79E54EF1AF02D4C9D261317EA /* Build configuration list for PBXNativeTarget "Pods-PayNoteBeta" */;
+			buildPhases = (
+				0DAC6DC92DC8855D803FB1E03A929C66 /* Sources */,
+				53C1D8EE0ED5100D957F3B70C67405E2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9402ABC347026D0D12D010E40067DAEA /* PBXTargetDependency */,
+				7C04EE2559EAC187E0582A9576DFF3B9 /* PBXTargetDependency */,
+			);
+			name = "Pods-PayNoteBeta";
+			productName = "Pods-PayNoteBeta";
+			productReference = 4AAD8748759C7E75179808177D9B82B9 /* libPods-PayNoteBeta.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		EB8E479B967162305C6A62507971E724 /* Pods-PayNote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CADF3FF4BDF1F61959042C3EE7D5AA99 /* Build configuration list for PBXNativeTarget "Pods-PayNote" */;
+			buildPhases = (
+				BA77BD8F6B264ADE7FEE12AEFC81FCE7 /* Sources */,
+				3E4185AD6E14B8DF6CD57D8BD169802C /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CF6C14169FB2180193EB6A9B6AE33800 /* PBXTargetDependency */,
+				789C5D11AF1AEDB726AED6FAFA601927 /* PBXTargetDependency */,
+			);
+			name = "Pods-PayNote";
+			productName = "Pods-PayNote";
+			productReference = 2FC299B4AA89E3007BAA68632AD9996D /* libPods-PayNote.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -717,192 +612,175 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 021D66281A868524865F8477A4425130 /* Products */;
+			productRefGroup = 6B8C09140387846371F575E7B8217049 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				17D9535AB64B6B1D32352A7A26CCAE0A /* Pods-PayNote */,
-				CF7ECDE10624717D5E16D6EF4F49743D /* Pods-PayNoteBeta */,
-				8A45672FC68BBC8ABDB3D6C3AC65F308 /* Pods-PayNoteFree */,
-				7EFCD4EB439D31BE83F8ADABAC8E7388 /* Pods-PayNotePadFree */,
-				DF160003372BDA140EB05EBCF429A4EC /* Pods-PayNoteS1Pad */,
-				3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */,
-				916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */,
-				F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */,
+				1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */,
+				EB8E479B967162305C6A62507971E724 /* Pods-PayNote */,
+				BEC8FF3BD5F3ED3F0074551EC88A2116 /* Pods-PayNoteBeta */,
+				875C200DE0AA9DE44E2E5419873C4879 /* Pods-PayNoteFree */,
+				0BBA699537AE5195C81B3D30E03E1E0B /* Pods-PayNotePadFree */,
+				7B368D900180A7E53AB89680E82290A7 /* Pods-PayNoteS1Pad */,
+				1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		03A3CD7928BF049EE2E4D68EE94756E2 /* Sources */ = {
+		07073941384B7028FABD22801ACC3EBB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DC7F9F0252C7F6639B7732F3AE69433 /* UIDevice-Hardware-dummy.m in Sources */,
-				65B3AD270413201FD316BF27C94E7226 /* UIDevice-Hardware.m in Sources */,
+				267F37ED034B1BCDC60C3B74655198B7 /* Pods-PayNoteFree-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		22FD2E54023D3D43C51E5B26EBDE3A84 /* Sources */ = {
+		0DAC6DC92DC8855D803FB1E03A929C66 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA3431CF026F668E562343F60B6D1534 /* Pods-PayNotePadFree-dummy.m in Sources */,
+				E371DF3D9CA03A15A807976C27D50939 /* Pods-PayNoteBeta-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4FED594C1FC2E8FA72331C8BFB1EE1EA /* Sources */ = {
+		1C0F72D4C14ABCE0C661A2145638A959 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0A126B39AEDAF860BF0F7EE6C38A8AC /* Pods-PayNoteBeta-dummy.m in Sources */,
+				5E4010C66D4B4073E60501B5A855F20E /* SVIndefiniteAnimatedView.m in Sources */,
+				2F5C584B1DF4F7137C5CDA693E71765F /* SVProgressAnimatedView.m in Sources */,
+				E44C8FA25CE2A54F2FB49612100CFD00 /* SVProgressHUD-dummy.m in Sources */,
+				90D9D991EFA8007684BC11CA9413D64B /* SVProgressHUD.m in Sources */,
+				4ADA2AA00D1CDC96EDB79241461162C3 /* SVRadialGradientLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		741AA631BF6CFE179B95279243C0275B /* Sources */ = {
+		498DEB450CA9FE4B170BC855ECECD92C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98B24D6D05F4214F77DE1ED990210413 /* Pods-PayNote-dummy.m in Sources */,
+				81F52CD4E24650C58D630DE30635D907 /* Pods-PayNoteS1Pad-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		77482707483D04F3A8275BB9848E3B0D /* Sources */ = {
+		6EA0BDFDC146ECFA3364F87E91107F1F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				505967DE01AEBDC1D9F012E7CC2E462B /* SFHFKeychainUtils-dummy.m in Sources */,
-				48FF0FC74264613FCDDE6A1F70C120C3 /* SFHFKeychainUtils.m in Sources */,
+				1F114B4E1FDBE428505A39DB0DD7BC1E /* MBProgressHUD-dummy.m in Sources */,
+				6ECB1FCEE6A6E515852A2DF03DA517A8 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		96CBCF44A542410066CECD49846F3290 /* Sources */ = {
+		BA77BD8F6B264ADE7FEE12AEFC81FCE7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47F79C7BBD7B6CF9001F95F146CE2198 /* Pods-PayNoteS1Pad-dummy.m in Sources */,
+				5A5C96BDEB6C6FFBAC131AEF99BF5412 /* Pods-PayNote-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A81EB5A78A0739D8391BC4723CB73946 /* Sources */ = {
+		E0B0C42668291D16B1CDF9ED720D6232 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0E738359DAFF127DA1DB719B78E79D5 /* SVIndefiniteAnimatedView.m in Sources */,
-				80666F053628CD9EC91F2FD11C862C65 /* SVProgressAnimatedView.m in Sources */,
-				F995E31E7C796E7B7296753D997BD6F2 /* SVProgressHUD-dummy.m in Sources */,
-				DBBDE241327E5324F6B91546453A65D8 /* SVProgressHUD.m in Sources */,
-				9780BFEB120EF25DAAA62F22C5BB8C31 /* SVRadialGradientLayer.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AE570560B207DCD0008AAA1E896A23FD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				41154DC17DFB00CBBDEBAAF7161DC8CA /* Pods-PayNoteFree-dummy.m in Sources */,
+				949EB10E667A032DF6216A15792B2740 /* Pods-PayNotePadFree-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0E44C4582B28DA07D9232357BF7AD38A /* PBXTargetDependency */ = {
+		16286BFC2F13B74F6513962914489EEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = SFHFKeychainUtils;
-			target = 3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */;
-			targetProxy = A671984D85993DCF81DAC262545D71A6 /* PBXContainerItemProxy */;
+			name = MBProgressHUD;
+			target = 1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */;
+			targetProxy = F490402AAA7E9E54154E2B8606A0314A /* PBXContainerItemProxy */;
 		};
-		1C56E5D5E937EA6309D4FC5412DB4D7A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SFHFKeychainUtils;
-			target = 3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */;
-			targetProxy = A0E21B9123220C737354AC2D6BDA376C /* PBXContainerItemProxy */;
-		};
-		303BB690664DF519DD40281A4E181113 /* PBXTargetDependency */ = {
+		22CF38A729656A158672356F0820D567 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SVProgressHUD;
-			target = 916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */;
-			targetProxy = 8E3C7109525A00C4164C82CA82F87FB6 /* PBXContainerItemProxy */;
+			target = 1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */;
+			targetProxy = 81416E67C967B7FF20B2D69632AC4249 /* PBXContainerItemProxy */;
 		};
-		3CCB1B3A39C2EFDE794DED650815DBAB /* PBXTargetDependency */ = {
+		378A80E631E23A36E3ACADF86BD9FCD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "UIDevice-Hardware";
-			target = F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */;
-			targetProxy = 04C79DE4AFAEE531DF2B46B5B1E540AA /* PBXContainerItemProxy */;
+			name = MBProgressHUD;
+			target = 1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */;
+			targetProxy = 88DD546DDA45610B6E0D9904000E2A8B /* PBXContainerItemProxy */;
 		};
-		770CFD133AD569E6F05B6BD2674DCDAF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SFHFKeychainUtils;
-			target = 3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */;
-			targetProxy = 8A2A6EF22F8B700AC979761FD3B6572A /* PBXContainerItemProxy */;
-		};
-		819C3BA01C32CBA6A3FF0BF97F29142F /* PBXTargetDependency */ = {
+		789C5D11AF1AEDB726AED6FAFA601927 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SVProgressHUD;
-			target = 916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */;
-			targetProxy = CCAD5FDD81719DE9FF03942AA7BB53DC /* PBXContainerItemProxy */;
+			target = 1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */;
+			targetProxy = 3FC15C0FE79FABB4238FA955BA7A2C6F /* PBXContainerItemProxy */;
 		};
-		8ACDB71DDFE17554504F0AED0A8BFF8C /* PBXTargetDependency */ = {
+		7C04EE2559EAC187E0582A9576DFF3B9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SVProgressHUD;
-			target = 916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */;
-			targetProxy = AF8BBFD50D2BE7BE49818277AC809645 /* PBXContainerItemProxy */;
+			target = 1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */;
+			targetProxy = 0E4A8D4BA505C40E84ED4CFDFF8E628A /* PBXContainerItemProxy */;
 		};
-		A5EDA527E2B5A38F14D75C0DC08FF1A1 /* PBXTargetDependency */ = {
+		9402ABC347026D0D12D010E40067DAEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MBProgressHUD;
+			target = 1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */;
+			targetProxy = 92265809FE47FDC9C9E81D71DD11A845 /* PBXContainerItemProxy */;
+		};
+		BC124B07ECAF735777801C13BFEFA253 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SVProgressHUD;
-			target = 916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */;
-			targetProxy = 7FD3CFDE942EF2F680EED60C38E01C0B /* PBXContainerItemProxy */;
+			target = 1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */;
+			targetProxy = 9E3D5196F78BC11665DDE53C8DFFECD3 /* PBXContainerItemProxy */;
 		};
-		AEFDA663876B34EDAE25359D5824E09D /* PBXTargetDependency */ = {
+		CF6C14169FB2180193EB6A9B6AE33800 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = SFHFKeychainUtils;
-			target = 3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */;
-			targetProxy = 9DB7EFF3FB820315E2AC77B2C07FA7FC /* PBXContainerItemProxy */;
+			name = MBProgressHUD;
+			target = 1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */;
+			targetProxy = 1B012C747EC54B7DDD4EB0B0B3A9021A /* PBXContainerItemProxy */;
 		};
-		C0B514AFD542E7F87566E968711D5ABC /* PBXTargetDependency */ = {
+		EACC8A35B6A6383363724896EB1B6B1B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = SFHFKeychainUtils;
-			target = 3501D81CEBC6EC2BCDC4FDD6B6DAB794 /* SFHFKeychainUtils */;
-			targetProxy = 6A1DEB9059D608B52F5ADCAC634DFC4B /* PBXContainerItemProxy */;
+			name = MBProgressHUD;
+			target = 1C7F33D43BF2B5C17F2A50849228B8D5 /* MBProgressHUD */;
+			targetProxy = 68A6E09F1896C9F410AD79AA89DCCE00 /* PBXContainerItemProxy */;
 		};
-		C47F41041B827C8C382F239785909C3E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "UIDevice-Hardware";
-			target = F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */;
-			targetProxy = BD1AB1AD119B1DFE68B89B8BB4F7ABB7 /* PBXContainerItemProxy */;
-		};
-		CDC320A52559756C5F81F864E64D4AB2 /* PBXTargetDependency */ = {
+		FDC09FD156D470911CE5C06FB4A758DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SVProgressHUD;
-			target = 916546E1D865D49C76C22D6B7CBE2B43 /* SVProgressHUD */;
-			targetProxy = 26FA5D0FD760589E2C76D4E351028939 /* PBXContainerItemProxy */;
-		};
-		F06F2A29F36ABB2BF03A450A00F2C207 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "UIDevice-Hardware";
-			target = F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */;
-			targetProxy = 33A7ACCFB3E313CDC15B0196528F4380 /* PBXContainerItemProxy */;
-		};
-		F30D692B06621D7469066881A124AF68 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "UIDevice-Hardware";
-			target = F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */;
-			targetProxy = A13785E4226E5C4DB40BA00279533F9D /* PBXContainerItemProxy */;
-		};
-		FD04EACC75D2DCEECCFE126C4F7B164C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "UIDevice-Hardware";
-			target = F7273EA5E10158ED8BB4FB9168D39E50 /* UIDevice-Hardware */;
-			targetProxy = 8160DDF55A662097A546347427D26BFF /* PBXContainerItemProxy */;
+			target = 1F4538ED400ECAD567B8A1EBE7E5BA9B /* SVProgressHUD */;
+			targetProxy = 679720E64293FC7B45565395EF369606 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		05DBE6A7336D880F3697256785953669 /* Debug */ = {
+		05120DFC8E1418EB728349744DB098C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9DD5DD5090373D4BFAF69567286696A8 /* Pods-PayNote.debug.xcconfig */;
+			baseConfigurationReference = 1FA98E633B7F3AE48C4E427A07F6CBFE /* SVProgressHUD.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SVProgressHUD/SVProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		1FBE813C325ACFD79292764195B0A94D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7F3E3F81A1DA59F6D4BA37E0818B061E /* Pods-PayNoteBeta.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -923,32 +801,9 @@
 			};
 			name = Debug;
 		};
-		19A6BB98FAD42E4771DBD5537F49B6B6 /* Distribution */ = {
+		391D82CEA623F63310836F22260F7730 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF2A56C293AB573DDED013FCE3067CB6 /* UIDevice-Hardware.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
-		1A595D213C12A065732A005667BBFA8B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF2A56C293AB573DDED013FCE3067CB6 /* UIDevice-Hardware.xcconfig */;
+			baseConfigurationReference = D43AF482E01C6800D7C7154A297B9850 /* Pods-PayNoteS1Pad.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -956,20 +811,20 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		2741DC660C7D14AED0B31EC1B8140C94 /* Release */ = {
+		3CB66047633BAFE98EA78AF5657C64E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 50861F49BE548C0BC1E150F30C150E5A /* Pods-PayNoteFree.release.xcconfig */;
 			buildSettings = {
@@ -992,53 +847,7 @@
 			};
 			name = Release;
 		};
-		274623E995CB2812375C5BC16353ADE2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0D4E2FE8EF685594EE516993F721A57 /* Pods-PayNote.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		3AA1C536ACBAF1BA7E266537D707706A /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 45C417EAFF190A75B999944FA9FD276D /* Pods-PayNotePadFree.distribution.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
-		3D25E4A45B108A5F1741C8ABFB68B280 /* Release */ = {
+		466ABB7CBE66A4BB97E16EFD814949D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89B51469B6A0CFF9928331F4C953B65A /* Pods-PayNoteBeta.release.xcconfig */;
 			buildSettings = {
@@ -1061,9 +870,32 @@
 			};
 			name = Release;
 		};
-		3D5068D0CA6C043EAACADBFE690FDBF6 /* Debug */ = {
+		46A09563422FC0F5631123DFB82C6A0F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4513AB90FBC4EE7A3EAA404320B18EF0 /* SFHFKeychainUtils.xcconfig */;
+			baseConfigurationReference = A52B9E76A522BA4CD1121B00299D9783 /* Pods-PayNotePadFree.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4C6C0995C3B2353F672BB7A286E6C702 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 685E28CB65A416E29EC964DD1EC547CD /* MBProgressHUD.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1071,37 +903,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SFHFKeychainUtils/SFHFKeychainUtils-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		48BB068AF4C036719AFD0486A52CA484 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9957F77A3D5D4C01D181A0040CC39FA8 /* Pods-PayNoteFree.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
@@ -1155,9 +964,9 @@
 			};
 			name = Debug;
 		};
-		516AD1D3156D9F9269D80689B667B2CD /* Distribution */ = {
+		50A87530C9AC8B06E0D565827B8028F8 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1875396356EA2E1BE5A93CAEC7EF2C38 /* SVProgressHUD.xcconfig */;
+			baseConfigurationReference = 685E28CB65A416E29EC964DD1EC547CD /* MBProgressHUD.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1165,8 +974,8 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SVProgressHUD/SVProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1178,168 +987,7 @@
 			};
 			name = Distribution;
 		};
-		5AD6AD05FEAF617E460EC8299F04F2F5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A52B9E76A522BA4CD1121B00299D9783 /* Pods-PayNotePadFree.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		6F2AF2FE73BEF7BBB317E88D5B07C740 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1875396356EA2E1BE5A93CAEC7EF2C38 /* SVProgressHUD.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SVProgressHUD/SVProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		72A5786E0FD33085CB641D2FDE79BC0B /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C3CF186892CB0FEC8C7AF1DEDCFED011 /* Pods-PayNote.distribution.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
-		7FBE2AD556E0BADE1EDA895C5B490F9E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A39468B8A6119B0BD6B576439B242CA1 /* Pods-PayNoteS1Pad.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		802D032C1E80E2C9869C3BB0B021E882 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D43AF482E01C6800D7C7154A297B9850 /* Pods-PayNoteS1Pad.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		84276635FB57B8E98D1C042AD0B52EA6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF2A56C293AB573DDED013FCE3067CB6 /* UIDevice-Hardware.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/UIDevice-Hardware/UIDevice-Hardware-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		8ED6F4182684313B29FF1FAFF1198B1E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1875396356EA2E1BE5A93CAEC7EF2C38 /* SVProgressHUD.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SVProgressHUD/SVProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		94E369A8A7332639591FDC82AB11952A /* Distribution */ = {
+		6F6F514FEC80D1796334CA091360D186 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4674E1543B7398D1AF660358A22F1245 /* Pods-PayNoteBeta.distribution.xcconfig */;
 			buildSettings = {
@@ -1362,9 +1010,9 @@
 			};
 			name = Distribution;
 		};
-		9AA5415AB2E2C313EA23AD1F4DDA023E /* Distribution */ = {
+		77FCFD348496B8E0B60E221248985F2A /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4513AB90FBC4EE7A3EAA404320B18EF0 /* SFHFKeychainUtils.xcconfig */;
+			baseConfigurationReference = 1FA98E633B7F3AE48C4E427A07F6CBFE /* SVProgressHUD.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1372,8 +1020,8 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SFHFKeychainUtils/SFHFKeychainUtils-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				GCC_PREFIX_HEADER = "Target Support Files/SVProgressHUD/SVProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1385,9 +1033,55 @@
 			};
 			name = Distribution;
 		};
-		9AD472433D0C32C83D4BC044573665AE /* Debug */ = {
+		78010515923ECF8416A06F58133542A6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A37CBF856E5DFDF1B17134C0B000AD67 /* Pods-PayNotePadFree.debug.xcconfig */;
+			baseConfigurationReference = 685E28CB65A416E29EC964DD1EC547CD /* MBProgressHUD.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		8969543440D0E61C34E67670095FD6EF /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25A26C8010D726E64EF40D3BD7E17FEC /* Pods-PayNoteFree.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		916965CC236F878F41960102173C0E8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9957F77A3D5D4C01D181A0040CC39FA8 /* Pods-PayNoteFree.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1408,19 +1102,42 @@
 			};
 			name = Debug;
 		};
-		AD5A897562C681852B57716CE6D626B4 /* Debug */ = {
+		939B8BFD3633CC2A4BFCD03EC6787589 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7F3E3F81A1DA59F6D4BA37E0818B061E /* Pods-PayNoteBeta.debug.xcconfig */;
+			baseConfigurationReference = 1FA98E633B7F3AE48C4E427A07F6CBFE /* SVProgressHUD.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SVProgressHUD/SVProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		97D9F41CDC1C658CA6231442BB6E4443 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3CF186892CB0FEC8C7AF1DEDCFED011 /* Pods-PayNote.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1429,7 +1146,30 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Debug;
+			name = Distribution;
+		};
+		A1626B44FD81CCEB79356616D39B1CFA /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68F8427BBE550DDD44A599B2E509F3A4 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
 		};
 		BDD0139D6EB93FA375F887ABD62DAB2E /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1475,9 +1215,32 @@
 			};
 			name = Release;
 		};
-		C6B826AF975C483655238AD81CA0F243 /* Distribution */ = {
+		C2A70B844D451E7E1C15D1D8A7D2992A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 25A26C8010D726E64EF40D3BD7E17FEC /* Pods-PayNoteFree.distribution.xcconfig */;
+			baseConfigurationReference = A39468B8A6119B0BD6B576439B242CA1 /* Pods-PayNoteS1Pad.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		C471E50488C1CBD6398B160B54E23201 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 45C417EAFF190A75B999944FA9FD276D /* Pods-PayNotePadFree.distribution.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1497,6 +1260,29 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Distribution;
+		};
+		D049E9E4B0175AFF46260E006BCA410D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DD5DD5090373D4BFAF69567286696A8 /* Pods-PayNote.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
 		};
 		D3647D5A5C16EE3E0378AA04E1643B0B /* Distribution */ = {
 			isa = XCBuildConfiguration;
@@ -1541,9 +1327,9 @@
 			};
 			name = Distribution;
 		};
-		D874434F2961E7B1B8123B00ACF7CFFD /* Distribution */ = {
+		D88E84BFB1FBC76F0184BF39598CBE32 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68F8427BBE550DDD44A599B2E509F3A4 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
+			baseConfigurationReference = B0D4E2FE8EF685594EE516993F721A57 /* Pods-PayNote.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1562,40 +1348,40 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Distribution;
+			name = Release;
 		};
-		DE38CF086C335F8959A277D0EF3A0210 /* Release */ = {
+		FC62E5F82A72E9FD719BA50BA76B7271 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4513AB90FBC4EE7A3EAA404320B18EF0 /* SFHFKeychainUtils.xcconfig */;
+			baseConfigurationReference = A37CBF856E5DFDF1B17134C0B000AD67 /* Pods-PayNotePadFree.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SFHFKeychainUtils/SFHFKeychainUtils-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2B16FE24D3E0592FA37853CE22304D9B /* Build configuration list for PBXNativeTarget "UIDevice-Hardware" */ = {
+		12C6457132BB7CE6EE69C132A97C34AF /* Build configuration list for PBXNativeTarget "Pods-PayNoteFree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1A595D213C12A065732A005667BBFA8B /* Debug */,
-				19A6BB98FAD42E4771DBD5537F49B6B6 /* Distribution */,
-				84276635FB57B8E98D1C042AD0B52EA6 /* Release */,
+				916965CC236F878F41960102173C0E8F /* Debug */,
+				8969543440D0E61C34E67670095FD6EF /* Distribution */,
+				3CB66047633BAFE98EA78AF5657C64E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1610,72 +1396,62 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		498753FAD94940794C7A9BFC29D85368 /* Build configuration list for PBXNativeTarget "Pods-PayNoteFree" */ = {
+		5F1EFAA7798F1135861AB0F79CCF0EF6 /* Build configuration list for PBXNativeTarget "Pods-PayNotePadFree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				48BB068AF4C036719AFD0486A52CA484 /* Debug */,
-				C6B826AF975C483655238AD81CA0F243 /* Distribution */,
-				2741DC660C7D14AED0B31EC1B8140C94 /* Release */,
+				FC62E5F82A72E9FD719BA50BA76B7271 /* Debug */,
+				C471E50488C1CBD6398B160B54E23201 /* Distribution */,
+				46A09563422FC0F5631123DFB82C6A0F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		79B358DAF99DCDE7096514D2DFC568A5 /* Build configuration list for PBXNativeTarget "Pods-PayNoteS1Pad" */ = {
+		781D438C4A65E7B01F5FAD7F34793C1B /* Build configuration list for PBXNativeTarget "SVProgressHUD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				802D032C1E80E2C9869C3BB0B021E882 /* Debug */,
-				D874434F2961E7B1B8123B00ACF7CFFD /* Distribution */,
-				7FBE2AD556E0BADE1EDA895C5B490F9E /* Release */,
+				05120DFC8E1418EB728349744DB098C9 /* Debug */,
+				77FCFD348496B8E0B60E221248985F2A /* Distribution */,
+				939B8BFD3633CC2A4BFCD03EC6787589 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7FFA8BF09A8970EBD941C228086742FF /* Build configuration list for PBXNativeTarget "Pods-PayNoteBeta" */ = {
+		7A3303B205E9773D943C2726B1ECC57D /* Build configuration list for PBXNativeTarget "Pods-PayNoteS1Pad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AD5A897562C681852B57716CE6D626B4 /* Debug */,
-				94E369A8A7332639591FDC82AB11952A /* Distribution */,
-				3D25E4A45B108A5F1741C8ABFB68B280 /* Release */,
+				391D82CEA623F63310836F22260F7730 /* Debug */,
+				A1626B44FD81CCEB79356616D39B1CFA /* Distribution */,
+				C2A70B844D451E7E1C15D1D8A7D2992A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9093AF22942B12A701F13D7BA683D230 /* Build configuration list for PBXNativeTarget "SFHFKeychainUtils" */ = {
+		7FC84FB315C3DC77D257C1E89548974E /* Build configuration list for PBXNativeTarget "MBProgressHUD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3D5068D0CA6C043EAACADBFE690FDBF6 /* Debug */,
-				9AA5415AB2E2C313EA23AD1F4DDA023E /* Distribution */,
-				DE38CF086C335F8959A277D0EF3A0210 /* Release */,
+				4C6C0995C3B2353F672BB7A286E6C702 /* Debug */,
+				50A87530C9AC8B06E0D565827B8028F8 /* Distribution */,
+				78010515923ECF8416A06F58133542A6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CD549C4D4008E97ECA50FDC429A4FB9B /* Build configuration list for PBXNativeTarget "Pods-PayNote" */ = {
+		9BD102F79E54EF1AF02D4C9D261317EA /* Build configuration list for PBXNativeTarget "Pods-PayNoteBeta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				05DBE6A7336D880F3697256785953669 /* Debug */,
-				72A5786E0FD33085CB641D2FDE79BC0B /* Distribution */,
-				274623E995CB2812375C5BC16353ADE2 /* Release */,
+				1FBE813C325ACFD79292764195B0A94D /* Debug */,
+				6F6F514FEC80D1796334CA091360D186 /* Distribution */,
+				466ABB7CBE66A4BB97E16EFD814949D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E099556CBE95CBD1D8FE9FACFB014B0B /* Build configuration list for PBXNativeTarget "SVProgressHUD" */ = {
+		CADF3FF4BDF1F61959042C3EE7D5AA99 /* Build configuration list for PBXNativeTarget "Pods-PayNote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6F2AF2FE73BEF7BBB317E88D5B07C740 /* Debug */,
-				516AD1D3156D9F9269D80689B667B2CD /* Distribution */,
-				8ED6F4182684313B29FF1FAFF1198B1E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F1A6D7E7F916D3A7BAEE3307E23EC4F4 /* Build configuration list for PBXNativeTarget "Pods-PayNotePadFree" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9AD472433D0C32C83D4BC044573665AE /* Debug */,
-				3AA1C536ACBAF1BA7E266537D707706A /* Distribution */,
-				5AD6AD05FEAF617E460EC8299F04F2F5 /* Release */,
+				D049E9E4B0175AFF46260E006BCA410D /* Debug */,
+				97D9F41CDC1C658CA6231442BB6E4443 /* Distribution */,
+				D88E84BFB1FBC76F0184BF39598CBE32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

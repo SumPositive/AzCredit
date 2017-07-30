@@ -6,7 +6,7 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "SFHFKeychainUtils.h"
+//#import "SFHFKeychainUtils.h"
 #import "Global.h"
 #import "AppDelegate.h"
 #import "SettingTVC.h"
@@ -439,22 +439,22 @@
 		[MtfPass2 resignFirstResponder];
 		if ([MtfPass1.text isEqualToString:MtfPass2.text]) {
 			// 一致、パス変更
-			// PasswordをKeyChainに保存する
-			NSError *error; // nilを渡すと異常終了するので注意
-			[SFHFKeychainUtils storeUsername:GD_KEY_LOGINPASS
-								 andPassword:MtfPass1.text 
-							  forServiceName:GD_PRODUCTNAME 
-							  updateExisting:YES error:&error];
-			if (error) {
-//				GA_TRACK_EVENT_ERROR([error localizedDescription],0);
-				alertBox(NSLocalizedString(@"OptLoginPass Error",nil),
-						 error.localizedDescription,
-						 NSLocalizedString(@"Roger",nil));
-			} else {
-				alertBox(NSLocalizedString(@"OptLoginPass Changed",nil), 
-						 NSLocalizedString(@"OptLoginPass Changed msg",nil), 
-						 @"OK");
-			}
+//			// PasswordをKeyChainに保存する
+//			NSError *error; // nilを渡すと異常終了するので注意
+//			[SFHFKeychainUtils storeUsername:GD_KEY_LOGINPASS
+//								 andPassword:MtfPass1.text 
+//							  forServiceName:GD_PRODUCTNAME 
+//							  updateExisting:YES error:&error];
+//			if (error) {
+////				GA_TRACK_EVENT_ERROR([error localizedDescription],0);
+//				alertBox(NSLocalizedString(@"OptLoginPass Error",nil),
+//						 error.localizedDescription,
+//						 NSLocalizedString(@"Roger",nil));
+//			} else {
+//				alertBox(NSLocalizedString(@"OptLoginPass Changed",nil), 
+//						 NSLocalizedString(@"OptLoginPass Changed msg",nil), 
+//						 @"OK");
+//			}
 		}
 		else {
 			// 不一致　　Does not match.

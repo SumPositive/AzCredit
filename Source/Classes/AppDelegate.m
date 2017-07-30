@@ -8,7 +8,7 @@
 // MainWindow.xlb を使用しない
 
 #import <TargetConditionals.h>  // TARGET_IPHONE_SIMULATOR のため
-#import "SFHFKeychainUtils.h"
+//#import "SFHFKeychainUtils.h"
 #import "Global.h"
 #import "AppDelegate.h"
 #import "Entity.h"
