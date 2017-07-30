@@ -3,7 +3,7 @@
 //  PayNote(AzCredit) クレメモ
 //
 //  Created by 松山正和 on 2017/05/05.
-//
+//  Copyright 2009 Masakazu Matsuyama / Engineer LLC. All rights reserved.
 //
 
 /* 履歴事項を記録する（リソースに組み込まれないようにヘッダコメントにしている）

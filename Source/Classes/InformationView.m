@@ -157,33 +157,33 @@ NSString *passCode()
 
 #pragma mark - Button functions
 
-#ifdef AzSTABLE	//2.0移行のため、招待パスコードをコピーする機能を実装
-- (BOOL)canBecomeFirstResponder 
-{	// 編集メニュー[Copy]を表示するため、ファーストレスポンダになる
-	return YES;
-}
-
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{	// [Copy]利用可能にする
-	if (@selector(copy:)==action) return YES;
-	return [super canPerformAction:action withSender:sender];
-}
-
-- (void)buPassCodeCopy
-{	// [Copy]メニュー表示
-	if ([self becomeFirstResponder]) {
-		UIMenuController *menu = [UIMenuController sharedMenuController];
-		//label = [[UILabel alloc] initWithFrame:CGRectMake(150, 240, 150, 40)];
-		[menu setTargetRect:CGRectMake(225, 265, 1, 1) inView:self.view];
-		[menu setMenuVisible:YES animated:YES];
-	}
-}
-
-- (void)copy:(id)sender
-{	// [Copy]タッチしたときに呼ばれる
-	[UIPasteboard generalPasteboard].string = zPassCode_;
-}
-#endif
+//#ifdef AzSTABLE	//2.0移行のため、招待パスコードをコピーする機能を実装
+//- (BOOL)canBecomeFirstResponder 
+//{	// 編集メニュー[Copy]を表示するため、ファーストレスポンダになる
+//	return YES;
+//}
+//
+//- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+//{	// [Copy]利用可能にする
+//	if (@selector(copy:)==action) return YES;
+//	return [super canPerformAction:action withSender:sender];
+//}
+//
+//- (void)buPassCodeCopy
+//{	// [Copy]メニュー表示
+//	if ([self becomeFirstResponder]) {
+//		UIMenuController *menu = [UIMenuController sharedMenuController];
+//		//label = [[UILabel alloc] initWithFrame:CGRectMake(150, 240, 150, 40)];
+//		[menu setTargetRect:CGRectMake(225, 265, 1, 1) inView:self.view];
+//		[menu setMenuVisible:YES animated:YES];
+//	}
+//}
+//
+//- (void)copy:(id)sender
+//{	// [Copy]タッチしたときに呼ばれる
+//	[UIPasteboard generalPasteboard].string = zPassCode_;
+//}
+//#endif
 
 
 - (void)buGoAppStore:(UIButton *)button
@@ -225,21 +225,14 @@ NSString *passCode()
     
     [AZAlert target:self
          actionRect:button.frame
-              title:NSLocalizedString(@"GoAppStore Paid",nil)
-            message:NSLocalizedString(@"GoAppStore Paid msg",nil)
+              title:NSLocalizedString(@"GoAppStore Stable",nil)
+            message:NSLocalizedString(@"GoAppStore Stable msg",nil)
             b1title:@"OK"
             b1style:UIAlertActionStyleDefault
            b1action:^(UIAlertAction * _Nullable action) {
-               NSURL *url;
-               if (IS_PAD) {
-                   //iPad//								クレメモ	 for iPad	457542400
-                   url = [NSURL URLWithString:
-                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
-               }else{
-                   //iPhone//									クレメモ	432458298
-                   url = [NSURL URLWithString:
-                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-               }
+               NSURL *url = [NSURL URLWithString:               // クレメモ	432458298
+                             @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+
                [[UIApplication sharedApplication] openURL:url
                                                   options:@{}
                                         completionHandler:nil];
@@ -357,8 +350,8 @@ NSString *passCode()
 
     [AZAlert target:self
          actionRect:sender.frame
-              title:NSLocalizedString(@"GoSupportSite",nil)
-            message:NSLocalizedString(@"GoSupportSite msg",nil)
+              title:NSLocalizedString(@"Contact mail",nil)
+            message:NSLocalizedString(@"Contact mail msg",nil)
             b1title:@"OK"
             b1style:UIAlertActionStyleDefault
            b1action:^(UIAlertAction * _Nullable action) {
@@ -371,28 +364,34 @@ NSString *passCode()
                  
                  // Subject: 件名
                  NSString* zSubj = NSLocalizedString(@"Product Title",nil);
-#ifdef AzSTABLE
-                 //zSubj = [zSubj stringByAppendingString:@" Stable"];
-#else
-                 zSubj = [zSubj stringByAppendingString:@" Free"];
+#ifdef AZ_LEGACY
+               zSubj = [zSubj stringByAppendingString:@" Legacy"];
+#endif
+#ifdef AZ_BETA
+               zSubj = [zSubj stringByAppendingString:@" Beta"];
+#endif
+#ifdef AZ_STABLE
+               zSubj = [zSubj stringByAppendingString:@" Stable"];
 #endif
                  if (IS_PAD) {
-                     zSubj = [zSubj stringByAppendingString:@" for iPad"];
+                     zSubj = [zSubj stringByAppendingString:@" (Pad)"];
                  }else{
-                     zSubj = [zSubj stringByAppendingString:@" for iPhone"];
+                     zSubj = [zSubj stringByAppendingString:@" (Tel)"];
                  }
                  [picker setSubject:zSubj];
                  
-                 // Body: 本文
-                 NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]; //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
-                 NSString *zBuild = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]; //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
-                 NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
-#ifdef AzSTABLE
-                 zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@) Stable\n",  zVersion, zBuild];
-#else
-                 zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@)\n",  zVersion, zBuild];
-#endif
-                 UIDevice *device = [UIDevice currentDevice];
+                // Body: 本文
+               NSString* zBody = [NSString stringWithFormat:@"Product: %@\n",  zSubj];
+
+               //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
+               NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
+               //(ビルド回数 バージョン）は、ユーザーに非公開のレベルも含めたバージョン表記
+               NSString *zBuild = [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"];
+               zBody = [zBody stringByAppendingFormat:@"Version: %@ (%@)\n",  zVersion, zBuild];
+
+               //zBody = [zBody stringByAppendingFormat:@"Bundle ID: %@\n", [NSBundle mainBundle].bundleIdentifier];
+
+               UIDevice *device = [UIDevice currentDevice];
                  NSString* deviceID = [device platformString];
                  zBody = [zBody stringByAppendingFormat:@"Device: %@   iOS: %@\n",
                           deviceID,
@@ -427,11 +426,11 @@ NSString *passCode()
 // タッチイベント
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-#ifdef AzSTABLE
-	UITouch *tc = [touches anyObject];
-	CGPoint tp = [tc locationInView:self.view];
-	if (200<tp.y && tp.y<300) return;	// 招待コード [Copy] の範囲を除くため
-#endif
+//#ifdef AzSTABLE
+//	UITouch *tc = [touches anyObject];
+//	CGPoint tp = [tc locationInView:self.view];
+//	if (200<tp.y && tp.y<300) return;	// 招待コード [Copy] の範囲を除くため
+//#endif
 	[self hide];
 }
 
@@ -512,9 +511,9 @@ NSString *passCode()
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 45)];
     
     NSString *zDetail;
-#if DevBETA
+#ifdef AZ_BETA
 	NSString *zFree = @"PayNoteβ";
-    zDetail = NSLocalizedString(@"Development version",nil);
+    zDetail = NSLocalizedString(@"Beta version",nil);
 #else
 	NSString *zFree = @"PayNote";
     zDetail = NSLocalizedString(@"Stable version",nil);
@@ -557,8 +556,9 @@ NSString *passCode()
 	
 	//------------------------------------------Post Comment
 	UIButton *bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-	bu.frame = CGRectMake(fX+20, fY+200, 280,30);
+	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    bu.tintColor = [UIColor lightGrayColor];
+	bu.frame = CGRectMake(fX+100, fY+200, 200,25);
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
@@ -566,69 +566,80 @@ NSString *passCode()
 	//------------------------------------------Go to Support blog.
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-	bu.frame = CGRectMake(fX+20, fY+245, 120,26);
+    bu.tintColor = [UIColor lightGrayColor];
+	bu.frame = CGRectMake(fX+100, fY+230, 200,25);
 	[bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
 	
-#if defined(AzFREE)
 	//------------------------------------------Go to App Store
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:10];
-	bu.frame = CGRectMake(fX+150, fY+245, 150,26);
-	[bu setTitle:NSLocalizedString(@"GoAppStore Paid",nil) forState:UIControlStateNormal];
+	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    bu.tintColor = [UIColor lightGrayColor];
+	bu.frame = CGRectMake(fX+100, fY+260, 200,25);
+	[bu setTitle:NSLocalizedString(@"GoAppStore Stable",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
-#endif
 	
-#ifdef AzSTABLExxxxxxxxxxxxxx
-	zPassCode_ = [passCode() retain];  // dealloc:にてrelease
-	label = [[UILabel alloc] initWithFrame:CGRectMake(150, 236, 150, 60)];
-	label.text = [NSString stringWithFormat:@"%@\n%@\n%@", NSLocalizedString(@"Invitation pass",nil), 
-				  zPassCode_, @"< Tap Copy >"];
-	label.numberOfLines = 3;
-	label.textAlignment = NSTextAlignmentCenter;
-	label.textColor = [UIColor blackColor];
-	label.backgroundColor = [UIColor redColor]; //背景
-	label.font = [UIFont boldSystemFontOfSize:14];
-	label.userInteractionEnabled = YES;
-	[label addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buPassCodeCopy)]];
-	[self.view addSubview:label]; [label release];
-#endif
-
-	//------------------------------------------免責
-	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+300, 300, 50)];
-	label.text = NSLocalizedString(@"Disclaimer",nil);
-	label.textAlignment = NSTextAlignmentLeft;
-	label.numberOfLines = 4;
-	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor clearColor]; //背景透明
-	label.font = [UIFont fontWithName:@"Courier" size:10];
-	[self.view addSubview:label]; 	
-	
-	//------------------------------------------注意
-	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+360, 300, 65)];
-	label.text = NSLocalizedString(@"Security Alert",nil);
-	label.textAlignment = NSTextAlignmentLeft;
-	label.numberOfLines = 5;
-	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor clearColor]; //背景透明
-	label.font = [UIFont fontWithName:@"Courier" size:10];
-	[self.view addSubview:label]; 	
-
-	
-	//------------------------------------------CLOSE
+    //------------------------------------------CLOSE
     if (IS_PAD) {
         //label.text = NSLocalizedString(@"Information Open Pad",nil);
     }else{
-        label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+440, 280, 25)];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(fX+20, fY+290, 280, 25)];
         label.text = NSLocalizedString(@"Information Open",nil);
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor]; //背景透明
         label.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-        [self.view addSubview:label]; 	
+        [self.view addSubview:label];
     }
+
+//#ifdef AzSTABLExxxxxxxxxxxxxx
+//	zPassCode_ = [passCode() retain];  // dealloc:にてrelease
+//	label = [[UILabel alloc] initWithFrame:CGRectMake(150, 236, 150, 60)];
+//	label.text = [NSString stringWithFormat:@"%@\n%@\n%@", NSLocalizedString(@"Invitation pass",nil), 
+//				  zPassCode_, @"< Tap Copy >"];
+//	label.numberOfLines = 3;
+//	label.textAlignment = NSTextAlignmentCenter;
+//	label.textColor = [UIColor blackColor];
+//	label.backgroundColor = [UIColor redColor]; //背景
+//	label.font = [UIFont boldSystemFontOfSize:14];
+//	label.userInteractionEnabled = YES;
+//	[label addGestureRecognizer: [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buPassCodeCopy)]];
+//	[self.view addSubview:label]; [label release];
+//#endif
+
+	//------------------------------------------
+    CGRect rc = self.view.bounds;
+    rc.origin.x = fX + 20;
+    rc.origin.y = fY + 340;
+    rc.size.width = 320 - (20 * 2);
+    rc.size.height -= (rc.origin.y + 20);
+    UITextView* tv = [[UITextView alloc] initWithFrame:rc];
+    tv.font = [UIFont fontWithName:@"Courier" size:12];
+    tv.backgroundColor = [UIColor clearColor];
+    tv.textColor = [UIColor whiteColor];
+    tv.selectable = NO;
+    [self.view addSubview:tv];
+    
+//	label = [[UILabel alloc] initWithFrame:rc];
+//    label.textAlignment = NSTextAlignmentLeft;
+//    label.numberOfLines = 0;
+//    label.textColor = [UIColor whiteColor];
+//    label.backgroundColor = [UIColor clearColor]; //背景透明
+//    label.font = [UIFont fontWithName:@"Courier" size:12];
+//    [self.view addSubview:label];
+    //------------------------------------------免責
+	tv.text = NSLocalizedString(@"Disclaimer",nil);
+#ifdef AZ_BETA
+    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"\n\n",nil)];
+    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"DisclaimerBeta",nil)];
+#endif
+	//------------------------------------------注意
+    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"\n\n",nil)];
+    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"Security Alert",nil)];
+
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated 

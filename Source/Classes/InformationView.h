@@ -12,9 +12,10 @@
 
 @interface InformationView : UIViewController  <MFMailComposeViewControllerDelegate> {
 @private
-#ifdef AzSTABLE	//2.0移行のため、招待パスコードをコピーする機能を実装
-	NSString		*zPassCode_;
-#endif
+
+//#ifdef AzSTABLE	//2.0移行のため、招待パスコードをコピーする機能を実装
+//	NSString		*zPassCode_;
+//#endif
 }
 
 // 公開メソッド

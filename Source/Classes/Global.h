@@ -3,32 +3,24 @@
 //  AzCredit
 //
 //  Created by 松山 和正 on 09/12/03.
-//  Copyright __MyCompanyName__ 2009. All rights reserved.
+//  Copyright 2009 Masakazu Matsuyama / Engineer LLC. All rights reserved.
 //
 //#define AzDEBUG  プロジェクト設定にて"GCC_PREPROCESSOR_DEFINITIONS"定義した
 
 //#define AzMAKE_SPLASHFACE  // 起動画面 Default.png を作るための作業オプション
 
-/*
- #ifdef AzSTABLE
- // 広告なし
- #else
- #define GD_Ad_ENABLED
- #define MY_BANNER_UNIT_ID	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free"　
- #endif
- */
 
-#if defined(AzSTABLE) || defined(AzMAKE_SPLASHFACE)
-	// 広告なし
-#else // AzFREE
-	#define FREE_AD
-	//#ifdef AzPAD
-		//FREE_ADに統一// #define FREE_AD_PAD
-		#define AdMobID_iPad		@"a14df22df88250c";		//AdMobパブリッシャー ID  "クレメモ Free for iPad"
-	//#else
-		#define AdMobID_iPhone	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free for iPhone"　
-	//#endif
-#endif
+//#if defined(AzSTABLE) || defined(AzMAKE_SPLASHFACE)
+//	// 広告なし
+//#else // AzFREE
+//	#define FREE_AD
+//	//#ifdef AzPAD
+//		//FREE_ADに統一// #define FREE_AD_PAD
+//		#define AdMobID_iPad		@"a14df22df88250c";		//AdMobパブリッシャー ID  "クレメモ Free for iPad"
+//	//#else
+//		#define AdMobID_iPhone	@"a14d4c11a95320e";		//AdMobパブリッシャー ID  "クレメモ Free for iPhone"　
+//	//#endif
+//#endif
 
 #define OR  ||
 
@@ -49,6 +41,16 @@
 #define GD_PRODUCTNAME	@"AzCredit"  // IMPORTANT PRODUCT NAME  和名「クレメモ」
 													//↑↑変更禁止！！Keychainの'ServiceName'に使っているので読み出せなくなる。
 #define GD_KEY_LOGINPASS  @"AzCreditLoginPass"  //←変更禁止！！Keychainの'Username'に使っているので読み出せなくなる。
+
+// バンドルID
+#define BID_STAB            @"com.azukid.AzCreditS1"
+#define BID_BETA            @"com.azukid.b3c6bd451bb03c"
+#define BID_OLD_TelFree     @"com.azukid.AzukiSoft.AzCredit"    //Prefix:JE9S39F69E
+#define BID_OLD_Pad         @"com.azukid.AzCreditS1Pad"
+#define BID_OLD_PadFree     @"com.azukid.AzCreditPadFree"
+
+
+
 
 /*----- GD_PRODUCTNAME を変更するときに必要となる作業の覚書 -------------------------------
  ＊ソース変更
