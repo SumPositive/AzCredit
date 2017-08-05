@@ -163,20 +163,14 @@
 {	//iOS4: アプリケーションがアクティブになったら呼ばれる
 	//AzLOG(@"applicationDidBecomeActive");
 
-//    // Update
-//    NSString* bundleID = [NSBundle mainBundle].bundleIdentifier;
-//    AzLOG(@"bundleID: %@",bundleID);
-//    if ([bundleID isEqualToString:@"com.azukid.azcredits1"]) {
-//        // iCloud 読み込み
-//        
-//    } else {
-//        // iCloud 保存
-//        UpdateVC* vc = [[UpdateVC alloc] init];
-//        vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
-//        vc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
-//        vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//        [window.rootViewController presentViewController:vc animated:YES completion:nil];
-//    }
+#if AZ_LEGACY
+    // Update 新しいクレメモへの移行通知
+    UpdateVC* vc = [[UpdateVC alloc] init];
+    vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
+    vc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
+    vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [window.rootViewController presentViewController:vc animated:YES completion:nil];
+#endif
 }
 
 

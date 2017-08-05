@@ -603,22 +603,23 @@ NSString *passCode()
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
-	
-	//------------------------------------------Go to App Store: Beta
-	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    bu.tintColor = [UIColor lightGrayColor];
-	bu.frame = CGRectMake(fX+50, fY+260, 250,25);
-	[bu setTitle:NSLocalizedString(@"GoAppStore Beta",nil) forState:UIControlStateNormal];
-    bu.tag = 1;
-	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:bu];  //autorelease
+
+//Betaの案内は、ここでは混乱すると思うので、別に丁寧に案内する。
+//	//------------------------------------------Go to App Store: Beta
+//	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    bu.tintColor = [UIColor lightGrayColor];
+//	bu.frame = CGRectMake(fX+50, fY+260, 250,25);
+//	[bu setTitle:NSLocalizedString(@"GoAppStore Beta",nil) forState:UIControlStateNormal];
+//    bu.tag = 1;
+//	[bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
+//	[self.view addSubview:bu];  //autorelease
 
     //------------------------------------------Go to App Store: Stable
     bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     bu.tintColor = [UIColor lightGrayColor];
-    bu.frame = CGRectMake(fX+50, fY+290, 250,25);
+    bu.frame = CGRectMake(fX+50, fY+260, 250,25);
     [bu setTitle:NSLocalizedString(@"GoAppStore Stable",nil) forState:UIControlStateNormal];
     bu.tag = 2;
     [bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
@@ -665,24 +666,18 @@ NSString *passCode()
     tv.selectable = NO;
     [self.view addSubview:tv];
     
-//	label = [[UILabel alloc] initWithFrame:rc];
-//    label.textAlignment = NSTextAlignmentLeft;
-//    label.numberOfLines = 0;
-//    label.textColor = [UIColor whiteColor];
-//    label.backgroundColor = [UIColor clearColor]; //背景透明
-//    label.font = [UIFont fontWithName:@"Courier" size:12];
-//    [self.view addSubview:label];
-    //------------------------------------------免責
-	tv.text = NSLocalizedString(@"Disclaimer",nil);
+    NSString* text = @"";
 #ifdef AZ_BETA
-    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"\n\n",nil)];
-    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"DisclaimerBeta",nil)];
+    text = NSLocalizedString(@"DisclaimerBeta",nil);
 #endif
+#ifdef AZ_LEGACY
+    text = [text stringByAppendingString:NSLocalizedString(@"DisclaimerLegacy",nil)];
+#endif
+    //------------------------------------------免責
+    text = [text stringByAppendingString:NSLocalizedString(@"Disclaimer",nil)];
 	//------------------------------------------注意
-    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"\n\n",nil)];
-    tv.text = [tv.text stringByAppendingString:NSLocalizedString(@"Security Alert",nil)];
-
-	
+    text = [text stringByAppendingString:NSLocalizedString(@"Security Alert",nil)];
+    tv.text = text;
 }
 
 - (void)viewWillAppear:(BOOL)animated 

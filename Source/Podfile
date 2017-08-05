@@ -10,7 +10,7 @@ def install_pods
     ##pod 'SFHFKeychainUtils'
     ##pod 'UIDevice-Hardware'
     pod 'SVProgressHUD'
-    pod 'MBProgressHUD'
+    ##pod 'MBProgressHUD'
 end
 
 

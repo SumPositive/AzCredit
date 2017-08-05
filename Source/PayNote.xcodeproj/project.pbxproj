@@ -21,11 +21,6 @@
 		440AC51711299DBE00B89317 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
 		440D5B3315FA2998006D7592 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374641361DDF200F36E36 /* SystemConfiguration.framework */; };
 		441377FE155BD5C7008047FC /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
-		4415056B1F24731800631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
-		4415056C1F2473F100631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
-		4415056D1F2473F200631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
-		4415056E1F2473F300631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
-		4415056F1F2473F300631B5F /* AppIcon512.png in Resources */ = {isa = PBXBuildFile; fileRef = 4415056A1F24731800631B5F /* AppIcon512.png */; };
 		4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
@@ -335,8 +330,6 @@
 		44325AF11F2327CB00175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
 		44325AF21F2327CC00175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
 		44325AF31F2327CD00175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
-		44325AF41F232AE000175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
-		44325AF91F2334B400175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFA1F2334B900175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFB1F2334BA00175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFC1F2334BC00175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
@@ -381,6 +374,13 @@
 		447373731F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
 		447373741F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
 		447373751F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
+		447624A51F34B8BC002F0202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
+		447624A61F34B8BD002F0202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
+		447624A81F34BE98002F0202 /* Credit-320.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320.png */; };
+		447624A91F34BE98002F0202 /* Credit-320.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320.png */; };
+		447624AA1F34BE98002F0202 /* Credit-320.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320.png */; };
+		447624AB1F34BE98002F0202 /* Credit-320.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320.png */; };
+		447624AC1F34BE98002F0202 /* Credit-320.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320.png */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
@@ -800,7 +800,6 @@
 		440AC51411299DBE00B89317 /* EditDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = EditDateVC.h; sourceTree = "<group>"; };
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EditDateVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		441377FD155BD5C6008047FC /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
-		4415056A1F24731800631B5F /* AppIcon512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppIcon512.png; sourceTree = "<group>"; };
 		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		443258D71F2313CF00175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/InfoEnd.plist; sourceTree = "<group>"; };
 		443258D91F2313F600175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/InfoDev.plist; sourceTree = "<group>"; };
@@ -843,6 +842,7 @@
 		447373571F1C93EC000E3DAA /* UpdateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UpdateVC.xib; path = ../UpdateVC.xib; sourceTree = "<group>"; };
 		4473736C1F1FA890000E3DAA /* AZAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AZAlert.h; sourceTree = "<group>"; };
 		4473736D1F1FA890000E3DAA /* AZAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AZAlert.m; sourceTree = "<group>"; };
+		447624A71F34BE98002F0202 /* Credit-320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Credit-320.png"; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1166,8 +1166,8 @@
 				4450BE131E7ED613001305D1 /* Images.xcassets */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
 				44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */,
-				4415056A1F24731800631B5F /* AppIcon512.png */,
 				44325B0A1F246CC400175312 /* Launch Screen.storyboard */,
+				447624A71F34BE98002F0202 /* Credit-320.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1841,7 +1841,6 @@
 				44A82751113A048B00F62E0E /* Icon32-Circle.png in Resources */,
 				44A82752113A048B00F62E0E /* Icon32-PAID.png in Resources */,
 				44A828A3113A6B6C00F62E0E /* Icon32-CircleChkUnpaid.png in Resources */,
-				4415056D1F2473F200631B5F /* AppIcon512.png in Resources */,
 				44A3D0D31174A3C600460EC2 /* Icon32-CopyRight.png in Resources */,
 				44A3D0D41174A3C600460EC2 /* Icon32-CopyLeft.png in Resources */,
 				44A3D0D51174A3C600460EC2 /* Icon32-CopyStop.png in Resources */,
@@ -1868,6 +1867,7 @@
 				44BC6ED112FDA27F00703AEC /* Icon32-Safari@2x.png in Resources */,
 				44BC6ED212FDA27F00703AEC /* Icon32-Safari.png in Resources */,
 				44BC6ED312FDA27F00703AEC /* Icon32-Google@2x.png in Resources */,
+				447624AA1F34BE98002F0202 /* Credit-320.png in Resources */,
 				44BC6ED412FDA27F00703AEC /* Icon32-Google.png in Resources */,
 				44BC6ED512FDA27F00703AEC /* Icon16-Return3@2x.png in Resources */,
 				443258D31F2313C600175312 /* InfoEnd.plist in Resources */,
@@ -1927,7 +1927,6 @@
 				4432599E1F231CA400175312 /* Icon32-CopyLeft.png in Resources */,
 				4432599F1F231CA400175312 /* Icon32-CopyStop.png in Resources */,
 				443259A01F231CA400175312 /* Icon32-Top.png in Resources */,
-				4415056C1F2473F100631B5F /* AppIcon512.png in Resources */,
 				443259A11F231CA400175312 /* Icon32-CopyAdd.png in Resources */,
 				443259A21F231CA400175312 /* Icon32-NearPC.png in Resources */,
 				443259A31F231CA400175312 /* akihiro-320.jpg in Resources */,
@@ -1951,6 +1950,7 @@
 				443259B61F231CA400175312 /* Icon32-Safari.png in Resources */,
 				443259B71F231CA400175312 /* Icon32-Google@2x.png in Resources */,
 				443259B81F231CA400175312 /* Icon32-Google.png in Resources */,
+				447624A91F34BE98002F0202 /* Credit-320.png in Resources */,
 				443259B91F231CA400175312 /* Icon16-Return3@2x.png in Resources */,
 				443259BA1F231CA400175312 /* Icon16-Return2@2x.png in Resources */,
 				443259BB1F231CA400175312 /* Icon16-Return1@2x.png in Resources */,
@@ -1963,9 +1963,9 @@
 				443259C21F231CA400175312 /* Icon16-Setting@2x.png in Resources */,
 				443259C31F231CA400175312 /* Icon16-Setting.png in Resources */,
 				443259C41F231CA400175312 /* Icon-DrumPush.png in Resources */,
-				44325AF91F2334B400175312 /* Images.xcassets in Resources */,
 				443259C51F231CA400175312 /* Icon-DrumPush@2x.png in Resources */,
 				443259C61F231CA400175312 /* Icon-Drum@2x.png in Resources */,
+				447624A61F34B8BD002F0202 /* Images.xcassets in Resources */,
 				443259C71F231CA400175312 /* Icon-Drum.png in Resources */,
 				443259C81F231CA400175312 /* Icon32-CopyRight@2x.png in Resources */,
 				443259C91F231CA400175312 /* Icon32-CopyLeft@2x.png in Resources */,
@@ -2010,7 +2010,6 @@
 				44325A4B1F231DCC00175312 /* Icon32-CopyLeft.png in Resources */,
 				44325A4C1F231DCC00175312 /* Icon32-CopyStop.png in Resources */,
 				44325A4D1F231DCC00175312 /* Icon32-Top.png in Resources */,
-				4415056B1F24731800631B5F /* AppIcon512.png in Resources */,
 				44325A4E1F231DCC00175312 /* Icon32-CopyAdd.png in Resources */,
 				44325A4F1F231DCC00175312 /* Icon32-NearPC.png in Resources */,
 				44325A501F231DCC00175312 /* akihiro-320.jpg in Resources */,
@@ -2034,6 +2033,7 @@
 				44325A631F231DCC00175312 /* Icon32-Safari.png in Resources */,
 				44325A641F231DCC00175312 /* Icon32-Google@2x.png in Resources */,
 				44325A651F231DCC00175312 /* Icon32-Google.png in Resources */,
+				447624A81F34BE98002F0202 /* Credit-320.png in Resources */,
 				44325A661F231DCC00175312 /* Icon16-Return3@2x.png in Resources */,
 				44325A671F231DCC00175312 /* Icon16-Return2@2x.png in Resources */,
 				44325A681F231DCC00175312 /* Icon16-Return1@2x.png in Resources */,
@@ -2046,9 +2046,9 @@
 				44325A6F1F231DCC00175312 /* Icon16-Setting@2x.png in Resources */,
 				44325A701F231DCC00175312 /* Icon16-Setting.png in Resources */,
 				44325A711F231DCC00175312 /* Icon-DrumPush.png in Resources */,
-				44325AF41F232AE000175312 /* Images.xcassets in Resources */,
 				44325A721F231DCC00175312 /* Icon-DrumPush@2x.png in Resources */,
 				44325A731F231DCC00175312 /* Icon-Drum@2x.png in Resources */,
+				447624A51F34B8BC002F0202 /* Images.xcassets in Resources */,
 				44325A741F231DCC00175312 /* Icon-Drum.png in Resources */,
 				44325A751F231DCC00175312 /* Icon32-CopyRight@2x.png in Resources */,
 				44325A761F231DCC00175312 /* Icon32-CopyLeft@2x.png in Resources */,
@@ -2127,10 +2127,10 @@
 				44C0E3DF13A0A2D1003D0465 /* Icon16-Return2.png in Resources */,
 				44C0E3E013A0A2D1003D0465 /* Icon16-Return1.png in Resources */,
 				44C0E3E113A0A2D1003D0465 /* Icon16-Information.png in Resources */,
-				4415056F1F2473F300631B5F /* AppIcon512.png in Resources */,
 				447373601F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E3E213A0A2D1003D0465 /* Icon16-Information@2x.png in Resources */,
 				44C0E3E313A0A2D1003D0465 /* Icon16-Setting@2x.png in Resources */,
+				447624AC1F34BE98002F0202 /* Credit-320.png in Resources */,
 				44C0E3E413A0A2D1003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E3E513A0A2D1003D0465 /* Icon-DrumPush.png in Resources */,
 				44C0E3E613A0A2D1003D0465 /* Icon-DrumPush@2x.png in Resources */,
@@ -2178,7 +2178,6 @@
 				44C0E5EB13A0A475003D0465 /* Icon32-CopyLeft.png in Resources */,
 				44C0E5EC13A0A475003D0465 /* Icon32-CopyStop.png in Resources */,
 				44C0E5ED13A0A475003D0465 /* Icon32-Top.png in Resources */,
-				4415056E1F2473F300631B5F /* AppIcon512.png in Resources */,
 				44C0E5EE13A0A475003D0465 /* Icon32-CopyAdd.png in Resources */,
 				44C0E5EF13A0A475003D0465 /* Icon32-NearPC.png in Resources */,
 				44C0E5F013A0A475003D0465 /* akihiro-320.jpg in Resources */,
@@ -2202,6 +2201,7 @@
 				44C0E60213A0A475003D0465 /* Icon32-Safari.png in Resources */,
 				44C0E60313A0A475003D0465 /* Icon32-Google@2x.png in Resources */,
 				44C0E60413A0A475003D0465 /* Icon32-Google.png in Resources */,
+				447624AB1F34BE98002F0202 /* Credit-320.png in Resources */,
 				44C0E60513A0A475003D0465 /* Icon16-Return3@2x.png in Resources */,
 				44C0E60613A0A475003D0465 /* Icon16-Return2@2x.png in Resources */,
 				44C0E60713A0A475003D0465 /* Icon16-Return1@2x.png in Resources */,
@@ -2758,7 +2758,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
 				PRODUCT_NAME = PayNote;
@@ -2794,6 +2794,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
 				PRODUCT_NAME = PayNote;
@@ -3034,7 +3035,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditPadFree;
 				PRODUCT_NAME = PayNotePadFree;
@@ -3066,6 +3067,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditPadFree;
 				PRODUCT_NAME = PayNotePadFree;
@@ -3097,6 +3099,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditPadFree;
 				PRODUCT_NAME = PayNotePadFree;
@@ -3276,6 +3279,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
 				PRODUCT_NAME = PayNote;

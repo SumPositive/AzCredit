@@ -53,63 +53,8 @@
 - (IBAction)cloudSaveButtonTap:(UIButton *)button
 {
     button.enabled = NO;
-    
-    
-    // CSV make ---> Document file
-    NSString* zErr = [FileCsv zSave:self.Re0root toLocalFileName:UPLOAD_FILENAME];
-    if (zErr) {
-//        UIAlertView *alert = [[UIAlertView alloc]
-//                              initWithTitle:NSLocalizedString(@"Upload Fail",nil)
-//                              message:zErr
-//                              delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-//        [alert show];
-        
-        [AZAlert target:self
-             actionRect:button.frame
-                  title:NSLocalizedString(@"Upload Fail",nil)
-                message:zErr
-                b1title:@"OK"
-                b1style:UIAlertActionStyleDefault
-               b1action:nil];
-
-        return;
-    }
-    
-    NSFileManager* fm = [NSFileManager defaultManager];
-
-    // Document file ---> NSString
-    // /Documentのパスの取得
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    // ファイル名の作成
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:UPLOAD_FILENAME];
-    NSError *error = nil;
-    NSString *csvString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-    if (error) {
-        
-        return;
-    }
-
-    // iCloud Drive
-    NSURL* url = [fm URLForUbiquityContainerIdentifier:nil];
-    NSURL* fileUrl = [url URLByAppendingPathComponent:@"AzCreditData"];
-    NSLog(@"fileUrl: %@", fileUrl);
-    // WRITE
-    @try {
-        if ([csvString writeToURL:fileUrl atomically:YES encoding:NSUTF8StringEncoding error:nil]) {
-            AzLOG(@"writeToURL: OK");
-        }else{
-            AzLOG(@"writeToURL: NG");
-        }
-        // OK
-        
-        
-    } @catch (NSException *exception) {
-        AzLOG(@"writeToURL: @catch: %@", exception);
-        
-    } @finally {
-        AzLOG(@"writeToURL: @finally");
-        button.enabled = YES;
-    }
+    // Upload to iCloud
+    [DataManager.singleton iCloudUpload];
 }
 
 - (IBAction)appStoreButtonTap:(UIButton *)button
