@@ -400,7 +400,7 @@
                     b1style:UIAlertActionStyleDestructive
                    b1action:^(UIAlertAction * _Nullable action) {
                        // Download to iCloud
-                       [DataManager.singleton iCloudDownload];
+                       [DataManager.singleton iCloudDownloadAlert];
                    }
                     b2title:NSLocalizedString(@"Cancel", nil)
                     b2style:UIAlertActionStyleCancel

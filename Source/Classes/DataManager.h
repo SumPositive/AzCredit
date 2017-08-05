@@ -23,6 +23,7 @@
 
 // iCloud
 - (void)iCloudUpload;
+- (void)iCloudDownloadAlert;
 - (void)iCloudDownload;
 
 

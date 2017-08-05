@@ -131,7 +131,7 @@ static DataManager* _singleton = nil;
 
 UIAlertController* alertController = nil;
 // 読み込む
-- (void)iCloudDownload
+- (void)iCloudDownloadAlert
 {
     [AZAlert target:nil
               title:NSLocalizedString(@"iCloud Download WARN", nil)
@@ -140,21 +140,24 @@ UIAlertController* alertController = nil;
             b1style:UIAlertActionStyleDestructive
            b1action:^(UIAlertAction * _Nullable action) {
                // Download to iCloud
-
-               //[SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
-               // CoreDataがメインスレッドで動くのでプログラス処理が止まる。
-               // なので、応急措置としてアラートトースト表示して待たせる。
-               alertController = [AZAlert target:nil
-                                           title:NSLocalizedString(@"Loading", nil)
-                                         message:NSLocalizedString(@"Weiting", nil)
-                                      completion:^{
-                                          // メインスレッド
-                                          [self iCloudDownloadTask];
-                                      }];
+               [self iCloudDownload];
            }
             b2title:NSLocalizedString(@"Cancel", nil)
             b2style:UIAlertActionStyleCancel
            b2action:nil];
+}
+- (void)iCloudDownload
+{
+    //[SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
+    // CoreDataがメインスレッドで動くのでプログラス処理が止まる。
+    // なので、応急措置としてアラートトースト表示して待たせる。
+    alertController = [AZAlert target:nil
+                                title:NSLocalizedString(@"Loading", nil)
+                              message:NSLocalizedString(@"Weiting", nil)
+                           completion:^{
+                               // メインスレッド
+                               [self iCloudDownloadTask];
+                           }];
 }
 
 - (void)iCloudDownloadTask

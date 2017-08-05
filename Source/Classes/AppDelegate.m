@@ -133,12 +133,22 @@
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient]; // 背景UI操作禁止
 
+#ifdef AZ_LEGACY
+#else
+    // 初起動からE3明細が0件ならば
+    NSArray* arFetch = [MocFunctions select:@"E3record"  limit:1  offset:0  where:nil  sort:nil];
+    if (arFetch==nil || arFetch.count<1) {
+        // iCloudから読み込む
+        [DataManager.singleton iCloudDownload];
+    }
+#endif
+    
 	
 	return YES;
 }
 
 
-- (void)applicationWillResignActive:(UIApplication *)application 
+- (void)applicationWillResignActive:(UIApplication *)application
 {	//iOS4: アプリケーションがアクティブでなくなる直前に呼ばれる
 	//AzLOG(@"applicationWillResignActive");
 }
@@ -163,7 +173,7 @@
 {	//iOS4: アプリケーションがアクティブになったら呼ばれる
 	//AzLOG(@"applicationDidBecomeActive");
 
-#if AZ_LEGACY
+#ifdef AZ_LEGACY
     // Update 新しいクレメモへの移行通知
     UpdateVC* vc = [[UpdateVC alloc] init];
     vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
