@@ -47,10 +47,12 @@ static DataManager* _singleton = nil;
     return fileUrl;
 }
 
+// 保存
 - (void)iCloudUpload
 {
-    [SVProgressHUD showWithStatus:@"保存中"];
-
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
+    
+    
     E0root *e0node = [MocFunctions e0root];
     // E0配下をファイルへ書き出す
     NSString* zErr = [FileCsv zSave:e0node toLocalFileName:ICLOUD_FILENAME];
@@ -127,6 +129,8 @@ static DataManager* _singleton = nil;
     }
 }
 
+UIAlertController* alertController = nil;
+// 読み込む
 - (void)iCloudDownload
 {
     [AZAlert target:nil
@@ -136,8 +140,17 @@ static DataManager* _singleton = nil;
             b1style:UIAlertActionStyleDestructive
            b1action:^(UIAlertAction * _Nullable action) {
                // Download to iCloud
-               [SVProgressHUD showWithStatus:@"取り込み中"];
-               [self iCloudDownloadTask];
+
+               //[SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
+               // CoreDataがメインスレッドで動くのでプログラス処理が止まる。
+               // なので、応急措置としてアラートトースト表示して待たせる。
+               alertController = [AZAlert target:nil
+                                           title:NSLocalizedString(@"Loading", nil)
+                                         message:NSLocalizedString(@"Weiting", nil)
+                                      completion:^{
+                                          // メインスレッド
+                                          [self iCloudDownloadTask];
+                                      }];
            }
             b2title:NSLocalizedString(@"Cancel", nil)
             b2style:UIAlertActionStyleCancel
@@ -153,7 +166,8 @@ static DataManager* _singleton = nil;
                                                           error:nil];
         AzLOG(@"iCloudDownloadTask: csvString: %@", csvString);
         if (csvString.length < 10) {
-            [SVProgressHUD dismiss];
+            //[SVProgressHUD dismiss];
+            [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
             [AZAlert target:nil
                       title:NSLocalizedString(@"iCloud Download Fail",nil)
                     message:NSLocalizedString(@"iCloud Download NoData",nil)
@@ -173,7 +187,8 @@ static DataManager* _singleton = nil;
                       encoding:NSUTF8StringEncoding
                          error:&error];
         if (error) {
-            [SVProgressHUD dismiss];
+            //[SVProgressHUD dismiss];
+            [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
             [AZAlert target:nil
                       title:NSLocalizedString(@"iCloud Download Fail",nil)
                     message:NSLocalizedString(@"iCloud Download NoData",nil)
@@ -186,7 +201,8 @@ static DataManager* _singleton = nil;
         E0root *e0node = [MocFunctions e0root];
         // CSVファイルを読み込んでクレメモ情報を更新する
         NSString* zErr = [FileCsv zLoad:e0node fromLocalFileName:ICLOUD_FILENAME];
-        [SVProgressHUD dismiss];
+        //[SVProgressHUD dismiss];
+        [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
         if (zErr) {
             AzLOG(@"FileCsv zLoad: %@", zErr);
             [AZAlert target:nil
@@ -206,7 +222,8 @@ static DataManager* _singleton = nil;
         
     } @catch (NSException *exception) {
         AzLOG(@"iCloudDownloadTask: @catch: %@", exception);
-        [SVProgressHUD dismiss];
+        //[SVProgressHUD dismiss];
+        [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
         [AZAlert target:nil
                   title:NSLocalizedString(@"iCloud Download Fail",nil)
                 message:NSLocalizedString(@"iCloud Download NoData",nil)
@@ -216,9 +233,9 @@ static DataManager* _singleton = nil;
 
     } @finally {
         AzLOG(@"iCloudDownloadTask: @finally");
-        [SVProgressHUD dismiss];
+        //[SVProgressHUD dismiss];
+        [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
     }
 }
-
 
 @end

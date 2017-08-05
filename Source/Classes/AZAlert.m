@@ -25,6 +25,22 @@
     return vc;
 }
 
++ (UIAlertController*)target:(UIViewController*_Nullable)target
+                       title:(NSString*_Nullable)title
+                     message:(NSString*_Nullable)message
+                  completion:(void (^ _Nullable)())completion
+{
+    UIAlertController *alertController
+    = [UIAlertController alertControllerWithTitle: title
+                                          message: message
+                                   preferredStyle: UIAlertControllerStyleAlert];
+    if (target == nil) {
+        target = [AZAlert getTopViewController];
+    }
+    [target presentViewController:alertController animated:YES completion:completion];
+    return alertController;
+}
+
 /*
  5ボタン
  */
