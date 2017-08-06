@@ -8,6 +8,7 @@
 
 #import "DataManager.h"
 #import "FileCsv.h"
+#import "TopMenuTVC.h"
 
 
 #define ICLOUD_CONTAINER        @"iCloud.com.azukid.PayNote"
@@ -102,7 +103,17 @@ static DataManager* _singleton = nil;
                     b1title:@"OK"
                     b1style:UIAlertActionStyleDefault
                    b1action:nil];
-        }else{
+            // タイムスタンプ
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            df.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+            df.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+            NSString* zTimestamp = [df stringFromDate:[NSDate date]];
+            // iCloud KVS へ保存
+            NSUbiquitousKeyValueStore *ukvs = [NSUbiquitousKeyValueStore defaultStore];
+            [ukvs setString:zTimestamp forKey:UKVS_UPLOAD_DATE];
+            [ukvs synchronize];
+        }
+        else{
             AzLOG(@"writeToURL: NG : %@", error.localizedDescription);
             [AZAlert target:nil
                       title:NSLocalizedString(@"iCloud Upload Fail",nil)
@@ -157,6 +168,16 @@ UIAlertController* alertController = nil;
                            completion:^{
                                // メインスレッド
                                [self iCloudDownloadTask];
+                               //
+                               if (IS_PAD) {
+                                   // TopMenuTVCにある 「未払合計額」を再描画するための処理
+                                   AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                                   UINavigationController* naviLeft = [apd.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
+                                   TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+                                   if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
+                                       [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+                                   }
+                               }
                            }];
 }
 

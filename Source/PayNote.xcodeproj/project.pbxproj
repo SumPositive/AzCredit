@@ -28,15 +28,11 @@
 		442CD36A1F2CD36A00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		442CD36B1F2CD36B00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		442CD36C1F2CD36B00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
-		443258D21F2313C600175312 /* InfoEnd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 443258D61F2313C600175312 /* InfoEnd.plist */; };
-		443258D31F2313C600175312 /* InfoEnd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 443258D61F2313C600175312 /* InfoEnd.plist */; };
-		443258D41F2313C600175312 /* InfoEnd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 443258D61F2313C600175312 /* InfoEnd.plist */; };
 		443259911F231CA400175312 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
 		443259941F231CA400175312 /* Icon32-Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82740113A048B00F62E0E /* Icon32-Shop.png */; };
 		443259951F231CA400175312 /* Icon32-Category.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82741113A048B00F62E0E /* Icon32-Category.png */; };
 		443259961F231CA400175312 /* Icon32-Schedule.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82742113A048B00F62E0E /* Icon32-Schedule.png */; };
 		443259971F231CA400175312 /* Icon32-Statements.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82743113A048B00F62E0E /* Icon32-Statements.png */; };
-		443259981F231CA400175312 /* InfoEnd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 443258D61F2313C600175312 /* InfoEnd.plist */; };
 		443259991F231CA400175312 /* Icon32-CircleCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82746113A048B00F62E0E /* Icon32-CircleCheck.png */; };
 		4432599A1F231CA400175312 /* Icon32-Circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82747113A048B00F62E0E /* Icon32-Circle.png */; };
 		4432599B1F231CA400175312 /* Icon32-PAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82748113A048B00F62E0E /* Icon32-PAID.png */; };
@@ -183,7 +179,6 @@
 		44325A421F231DCC00175312 /* Icon32-Category.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82741113A048B00F62E0E /* Icon32-Category.png */; };
 		44325A431F231DCC00175312 /* Icon32-Schedule.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82742113A048B00F62E0E /* Icon32-Schedule.png */; };
 		44325A441F231DCC00175312 /* Icon32-Statements.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82743113A048B00F62E0E /* Icon32-Statements.png */; };
-		44325A451F231DCC00175312 /* InfoEnd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 443258D61F2313C600175312 /* InfoEnd.plist */; };
 		44325A461F231DCC00175312 /* Icon32-CircleCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82746113A048B00F62E0E /* Icon32-CircleCheck.png */; };
 		44325A471F231DCC00175312 /* Icon32-Circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82747113A048B00F62E0E /* Icon32-Circle.png */; };
 		44325A481F231DCC00175312 /* Icon32-PAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82748113A048B00F62E0E /* Icon32-PAID.png */; };
@@ -355,6 +350,11 @@
 		444A293B1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293C1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293D1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
+		444A293F1F36DF77000EEE4C /* PayNoteFree-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 444A293E1F36DF77000EEE4C /* PayNoteFree-Info.plist */; };
+		444A29401F36DFCC000EEE4C /* PayNoteBeta-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44325AE41F231DCD00175312 /* PayNoteBeta-Info.plist */; };
+		444A29411F36DFD0000EEE4C /* PayNote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44325A371F231CA500175312 /* PayNote-Info.plist */; };
+		444A29421F36DFDD000EEE4C /* PayNoteS1Pad-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44C0E7D613A0A4D6003D0465 /* PayNoteS1Pad-Info.plist */; };
+		444A29431F36DFE1000EEE4C /* PayNotePadFree-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44C0E5D813A0A3CF003D0465 /* PayNotePadFree-Info.plist */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
@@ -806,23 +806,19 @@
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EditDateVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		441377FD155BD5C6008047FC /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		443258D71F2313CF00175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/InfoEnd.plist; sourceTree = "<group>"; };
-		443258D91F2313F600175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/InfoDev.plist; sourceTree = "<group>"; };
-		443258DB1F2313F900175312 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/InfoDev.plist; sourceTree = "<group>"; };
-		443258DD1F23141500175312 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/InfoS.plist; sourceTree = "<group>"; };
-		443258DF1F23141700175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ja; path = ja.lproj/InfoS.plist; sourceTree = "<group>"; };
 		44325A361F231CA400175312 /* PayNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44325A371F231CA500175312 /* PayNote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNote-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNote-Info.plist"; sourceTree = "<absolute>"; };
 		44325AE31F231DCC00175312 /* PayNoteBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		44325AE41F231DCD00175312 /* PayNoteDev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNoteDev-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNoteDev-Info.plist"; sourceTree = "<absolute>"; };
+		44325AE41F231DCD00175312 /* PayNoteBeta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNoteBeta-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNoteBeta-Info.plist"; sourceTree = "<absolute>"; };
 		44325AEC1F23239D00175312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44325AEF1F2323A900175312 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44325AFD1F23709200175312 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		44325AFE1F23709200175312 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
-		44325B091F23B05D00175312 /* PayNoteDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteDev.entitlements; sourceTree = "<group>"; };
 		44325B0A1F246CC400175312 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		443E7BC21F24FBFF00484342 /* CalcView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalcView.m; sourceTree = "<group>"; };
 		444A29381F36DABA000EEE4C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		444A293E1F36DF77000EEE4C /* PayNoteFree-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PayNoteFree-Info.plist"; sourceTree = "<group>"; };
+		444A29441F36FB0E000EEE4C /* PayNoteBeta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteBeta.entitlements; sourceTree = "<group>"; };
 		4450BE131E7ED613001305D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AzCreditS1/Images.xcassets; sourceTree = "<group>"; };
 		4450BE201E7F8F3D001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4450BE271E7F8FD2001305D1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -839,7 +835,7 @@
 		447071CF12FC4F8C00C053D2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4473734C1F1C4E76000E3DAA /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
 		4473734D1F1C4E76000E3DAA /* Readme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Readme.h; sourceTree = "<group>"; };
-		447373501F1C7A51000E3DAA /* PayNoteS1.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteS1.entitlements; sourceTree = "<group>"; };
+		447373501F1C7A51000E3DAA /* PayNoteFree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteFree.entitlements; sourceTree = "<group>"; };
 		447373511F1C8146000E3DAA /* PayNote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNote.entitlements; sourceTree = "<group>"; };
 		447373521F1C81B2000E3DAA /* PayNotePadFree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNotePadFree.entitlements; sourceTree = "<group>"; };
 		447373531F1C81C9000E3DAA /* PayNoteS1Pad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteS1Pad.entitlements; sourceTree = "<group>"; };
@@ -853,7 +849,7 @@
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549031115726F00D10CC8 /* SettingTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTVC.h; sourceTree = "<group>"; };
-		448694E610F5A84300AD02D8 /* PayNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		448694E610F5A84300AD02D8 /* PayNoteFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayNote_Prefix.pch; sourceTree = "<group>"; };
 		449312B410F0D5A700C6C8E5 /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
 		44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Clear.png"; path = "Design/Icon32-Clear.png"; sourceTree = "<group>"; };
@@ -952,9 +948,9 @@
 		44BC6F5F12FDAE7800703AEC /* Icon32-Check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Check.png"; path = "Design/Icon32-Check.png"; sourceTree = "<group>"; };
 		44BC6F6012FDAE7800703AEC /* Icon32-Check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon32-Check@2x.png"; path = "Design/Icon32-Check@2x.png"; sourceTree = "<group>"; };
 		44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNotePadFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		44C0E5D813A0A3CF003D0465 /* Info-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-iPad.plist"; sourceTree = "<group>"; };
+		44C0E5D813A0A3CF003D0465 /* PayNotePadFree-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PayNotePadFree-Info.plist"; sourceTree = "<group>"; };
 		44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteS1Pad.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		44C0E7D613A0A4D6003D0465 /* InfoS1-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "InfoS1-iPad.plist"; sourceTree = "<group>"; };
+		44C0E7D613A0A4D6003D0465 /* PayNoteS1Pad-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PayNoteS1Pad-Info.plist"; sourceTree = "<group>"; };
 		44C0E7EF13A110BA003D0465 /* PadRootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PadRootVC.m; sourceTree = "<group>"; };
 		44C0E7F013A110BA003D0465 /* PadRootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PadRootVC.h; sourceTree = "<group>"; };
 		44C2A7D41108AD3C006445DC /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1132,7 +1128,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				448694E610F5A84300AD02D8 /* PayNote.app */,
+				448694E610F5A84300AD02D8 /* PayNoteFree.app */,
 				44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */,
 				44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */,
 				44325A361F231CA400175312 /* PayNote.app */,
@@ -1150,7 +1146,6 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				44F0737F1105D9D80024B707 /* Images */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				44C0E5BB13A0A2D2003D0465 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				8C43B28CA07FFBC217F3E466 /* Pods */,
@@ -1161,16 +1156,16 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4450BE131E7ED613001305D1 /* Images.xcassets */,
 				444A29381F36DABA000EEE4C /* Settings.bundle */,
 				4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */,
 				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				44325AEB1F23239D00175312 /* InfoPlist.strings */,
-				44325AE41F231DCD00175312 /* PayNoteDev-Info.plist */,
+				44325AE41F231DCD00175312 /* PayNoteBeta-Info.plist */,
 				44325A371F231CA500175312 /* PayNote-Info.plist */,
-				443258D61F2313C600175312 /* InfoEnd.plist */,
-				443258DA1F2313F600175312 /* InfoDev.plist */,
-				443258DE1F23141500175312 /* InfoS.plist */,
-				4450BE131E7ED613001305D1 /* Images.xcassets */,
+				444A293E1F36DF77000EEE4C /* PayNoteFree-Info.plist */,
+				44C0E7D613A0A4D6003D0465 /* PayNoteS1Pad-Info.plist */,
+				44C0E5D813A0A3CF003D0465 /* PayNotePadFree-Info.plist */,
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
 				44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */,
 				44325B0A1F246CC400175312 /* Launch Screen.storyboard */,
@@ -1222,11 +1217,11 @@
 		447373541F1C9058000E3DAA /* iCloud */ = {
 			isa = PBXGroup;
 			children = (
-				44325B091F23B05D00175312 /* PayNoteDev.entitlements */,
+				444A29441F36FB0E000EEE4C /* PayNoteBeta.entitlements */,
 				447373511F1C8146000E3DAA /* PayNote.entitlements */,
+				447373501F1C7A51000E3DAA /* PayNoteFree.entitlements */,
 				447373531F1C81C9000E3DAA /* PayNoteS1Pad.entitlements */,
 				447373521F1C81B2000E3DAA /* PayNotePadFree.entitlements */,
-				447373501F1C7A51000E3DAA /* PayNoteS1.entitlements */,
 			);
 			name = iCloud;
 			sourceTree = "<group>";
@@ -1343,15 +1338,6 @@
 				4454C987114941930063621D /* E5categoryDetailTVC.m */,
 			);
 			name = E5category;
-			sourceTree = "<group>";
-		};
-		44C0E5BB13A0A2D2003D0465 /* Resources-iPad */ = {
-			isa = PBXGroup;
-			children = (
-				44C0E5D813A0A3CF003D0465 /* Info-iPad.plist */,
-				44C0E7D613A0A4D6003D0465 /* InfoS1-iPad.plist */,
-			);
-			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
 		44C0E7EE13A1108E003D0465 /* iPad */ = {
@@ -1671,7 +1657,7 @@
 			);
 			name = PayNoteFree;
 			productName = iPack;
-			productReference = 448694E610F5A84300AD02D8 /* PayNote.app */;
+			productReference = 448694E610F5A84300AD02D8 /* PayNoteFree.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4432598B1F231CA400175312 /* PayNote */ = {
@@ -1853,6 +1839,7 @@
 				44A3D0D51174A3C600460EC2 /* Icon32-CopyStop.png in Resources */,
 				44A3D0E91174AEFA00460EC2 /* Icon32-Top.png in Resources */,
 				44A3D0EA1174AEFA00460EC2 /* Icon32-CopyAdd.png in Resources */,
+				444A293F1F36DF77000EEE4C /* PayNoteFree-Info.plist in Resources */,
 				44AFB15511D5113A007CBFC9 /* Icon32-NearPC.png in Resources */,
 				44BA33F511D78FAA00856A35 /* akihiro-320.jpg in Resources */,
 				44BA346F11D79C0D00856A35 /* azuki-480.jpg in Resources */,
@@ -1878,7 +1865,6 @@
 				447624AA1F34BE98002F0202 /* Credit-320.png in Resources */,
 				44BC6ED412FDA27F00703AEC /* Icon32-Google.png in Resources */,
 				44BC6ED512FDA27F00703AEC /* Icon16-Return3@2x.png in Resources */,
-				443258D31F2313C600175312 /* InfoEnd.plist in Resources */,
 				44BC6ED612FDA27F00703AEC /* Icon16-Return2@2x.png in Resources */,
 				44BC6ED712FDA27F00703AEC /* Icon16-Return1@2x.png in Resources */,
 				44BC6ED812FDA27F00703AEC /* Icon16-Return3.png in Resources */,
@@ -1925,7 +1911,6 @@
 				443259951F231CA400175312 /* Icon32-Category.png in Resources */,
 				443259961F231CA400175312 /* Icon32-Schedule.png in Resources */,
 				443259971F231CA400175312 /* Icon32-Statements.png in Resources */,
-				443259981F231CA400175312 /* InfoEnd.plist in Resources */,
 				443259991F231CA400175312 /* Icon32-CircleCheck.png in Resources */,
 				4432599A1F231CA400175312 /* Icon32-Circle.png in Resources */,
 				44325AEE1F2323A500175312 /* InfoPlist.strings in Resources */,
@@ -1976,6 +1961,7 @@
 				443259C61F231CA400175312 /* Icon-Drum@2x.png in Resources */,
 				447624A61F34B8BD002F0202 /* Images.xcassets in Resources */,
 				443259C71F231CA400175312 /* Icon-Drum.png in Resources */,
+				444A29411F36DFD0000EEE4C /* PayNote-Info.plist in Resources */,
 				443259C81F231CA400175312 /* Icon32-CopyRight@2x.png in Resources */,
 				443259C91F231CA400175312 /* Icon32-CopyLeft@2x.png in Resources */,
 				443259CA1F231CA400175312 /* Icon32-CopyStop@2x.png in Resources */,
@@ -2009,7 +1995,6 @@
 				44325A421F231DCC00175312 /* Icon32-Category.png in Resources */,
 				44325A431F231DCC00175312 /* Icon32-Schedule.png in Resources */,
 				44325A441F231DCC00175312 /* Icon32-Statements.png in Resources */,
-				44325A451F231DCC00175312 /* InfoEnd.plist in Resources */,
 				44325A461F231DCC00175312 /* Icon32-CircleCheck.png in Resources */,
 				44325A471F231DCC00175312 /* Icon32-Circle.png in Resources */,
 				44325A481F231DCC00175312 /* Icon32-PAID.png in Resources */,
@@ -2058,6 +2043,7 @@
 				44325A711F231DCC00175312 /* Icon-DrumPush.png in Resources */,
 				44325A721F231DCC00175312 /* Icon-DrumPush@2x.png in Resources */,
 				44325A731F231DCC00175312 /* Icon-Drum@2x.png in Resources */,
+				444A29401F36DFCC000EEE4C /* PayNoteBeta-Info.plist in Resources */,
 				447624A51F34B8BC002F0202 /* Images.xcassets in Resources */,
 				44325A741F231DCC00175312 /* Icon-Drum.png in Resources */,
 				44325A751F231DCC00175312 /* Icon32-CopyRight@2x.png in Resources */,
@@ -2096,7 +2082,6 @@
 				44C0E3BA13A0A2D1003D0465 /* Icon32-Schedule.png in Resources */,
 				44325B0F1F246CC400175312 /* Launch Screen.storyboard in Resources */,
 				44C0E3BB13A0A2D1003D0465 /* Icon32-Statements.png in Resources */,
-				443258D41F2313C600175312 /* InfoEnd.plist in Resources */,
 				44C0E3BC13A0A2D1003D0465 /* Icon32-CircleCheck.png in Resources */,
 				44C0E3BD13A0A2D1003D0465 /* Icon32-Circle.png in Resources */,
 				44C0E3BE13A0A2D1003D0465 /* Icon32-PAID.png in Resources */,
@@ -2145,6 +2130,7 @@
 				44C0E3E413A0A2D1003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E3E513A0A2D1003D0465 /* Icon-DrumPush.png in Resources */,
 				44C0E3E613A0A2D1003D0465 /* Icon-DrumPush@2x.png in Resources */,
+				444A29431F36DFE1000EEE4C /* PayNotePadFree-Info.plist in Resources */,
 				44C0E3E713A0A2D1003D0465 /* Icon-Drum@2x.png in Resources */,
 				44C0E3E813A0A2D1003D0465 /* Icon-Drum.png in Resources */,
 				44C0E3E913A0A2D1003D0465 /* Icon32-CopyRight@2x.png in Resources */,
@@ -2179,7 +2165,6 @@
 				44C0E5E313A0A475003D0465 /* Icon32-Category.png in Resources */,
 				44C0E5E413A0A475003D0465 /* Icon32-Schedule.png in Resources */,
 				44C0E5E513A0A475003D0465 /* Icon32-Statements.png in Resources */,
-				443258D21F2313C600175312 /* InfoEnd.plist in Resources */,
 				44C0E5E613A0A475003D0465 /* Icon32-CircleCheck.png in Resources */,
 				44C0E5E713A0A475003D0465 /* Icon32-Circle.png in Resources */,
 				44C0E5E813A0A475003D0465 /* Icon32-PAID.png in Resources */,
@@ -2223,6 +2208,7 @@
 				44C0E60B13A0A475003D0465 /* Icon16-Information.png in Resources */,
 				4473735E1F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E60C13A0A475003D0465 /* Icon16-Information@2x.png in Resources */,
+				444A29421F36DFDD000EEE4C /* PayNoteS1Pad-Info.plist in Resources */,
 				44C0E60D13A0A475003D0465 /* Icon16-Setting@2x.png in Resources */,
 				44C0E60E13A0A475003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E60F13A0A475003D0465 /* Icon-DrumPush.png in Resources */,
@@ -2698,32 +2684,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		443258D61F2313C600175312 /* InfoEnd.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				443258D71F2313CF00175312 /* ja */,
-			);
-			name = InfoEnd.plist;
-			sourceTree = "<group>";
-		};
-		443258DA1F2313F600175312 /* InfoDev.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				443258D91F2313F600175312 /* ja */,
-				443258DB1F2313F900175312 /* en */,
-			);
-			name = InfoDev.plist;
-			sourceTree = "<group>";
-		};
-		443258DE1F23141500175312 /* InfoS.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				443258DD1F23141500175312 /* en */,
-				443258DF1F23141700175312 /* ja */,
-			);
-			name = InfoS.plist;
-			sourceTree = "<group>";
-		};
 		44325AEB1F23239D00175312 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2752,7 +2712,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNoteFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2765,7 +2725,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/Info-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteFree-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2773,7 +2733,7 @@
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
-				PRODUCT_NAME = PayNote;
+				PRODUCT_NAME = PayNoteFree;
 				PROVISIONING_PROFILE = "501b5a93-beb2-44f8-8b94-210920c6c3e7";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2791,7 +2751,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNoteFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2802,14 +2762,14 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/Info-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteFree-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
-				PRODUCT_NAME = PayNote;
+				PRODUCT_NAME = PayNoteFree;
 				PROVISIONING_PROFILE = "501b5a93-beb2-44f8-8b94-210920c6c3e7";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2826,7 +2786,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2862,7 +2822,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2895,7 +2855,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -2928,7 +2888,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
-				CODE_SIGN_ENTITLEMENTS = PayNoteDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNoteBeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -2940,7 +2900,7 @@
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_BETA=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/PayNoteDev-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteBeta-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2964,7 +2924,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
-				CODE_SIGN_ENTITLEMENTS = PayNoteDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNoteBeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -2974,7 +2934,7 @@
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_BETA=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/PayNoteDev-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteBeta-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -2997,7 +2957,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
-				CODE_SIGN_ENTITLEMENTS = PayNoteDev.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNoteBeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
@@ -3007,7 +2967,7 @@
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_BETA=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/PayNoteDev-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteBeta-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -3042,7 +3002,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Info-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNotePadFree-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -3075,7 +3035,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Info-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNotePadFree-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -3107,7 +3067,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Info-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNotePadFree-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -3141,7 +3101,7 @@
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "InfoS1-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteS1Pad-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -3175,7 +3135,7 @@
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "InfoS1-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteS1Pad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -3208,7 +3168,7 @@
 				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "InfoS1-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteS1Pad-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -3276,7 +3236,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PayNoteFree.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -3287,14 +3247,14 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_LEGACY=1";
 				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/Info-iPad.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/PayNoteFree-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
-				PRODUCT_NAME = PayNote;
+				PRODUCT_NAME = PayNoteFree;
 				PROVISIONING_PROFILE = "501b5a93-beb2-44f8-8b94-210920c6c3e7";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -16,6 +16,8 @@
 #import "AZAlert.h"
 
 
+#define UKVS_UPLOAD_DATE        @"UKVS_UPLOAD_DATE"
+
 
 @interface DataManager : NSObject
 

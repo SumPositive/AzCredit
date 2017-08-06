@@ -229,6 +229,16 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
             cell.textLabel.text = NSLocalizedString(@"iCloud Download",nil);
             cell.detailTextLabel.text = NSLocalizedString(@"iCloud Download Detail",nil);
+            // iCloud KVS
+            NSUbiquitousKeyValueStore *ukvs = [NSUbiquitousKeyValueStore defaultStore];
+            NSString* zTimestamp = [ukvs stringForKey:UKVS_UPLOAD_DATE];
+            if (zTimestamp.length < 1) {
+                cell.detailTextLabel.text = [cell.detailTextLabel.text
+                                             stringByAppendingString:NSLocalizedString(@"iCloud Download Detail NON",nil)];
+            }else{
+                cell.detailTextLabel.text = [cell.detailTextLabel.text
+                                             stringByAppendingString:zTimestamp];
+            }
         }
         return cell;
     }

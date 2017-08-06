@@ -133,8 +133,7 @@
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient]; // 背景UI操作禁止
 
-#ifdef AZ_LEGACY
-#else
+#ifdef AZ_STABLE
     // 初起動からE3明細が0件ならば
     NSArray* arFetch = [MocFunctions select:@"E3record"  limit:1  offset:0  where:nil  sort:nil];
     if (arFetch==nil || arFetch.count<1) {
