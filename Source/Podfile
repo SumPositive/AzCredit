@@ -37,3 +37,10 @@ target 'PayNotePadFree' do
 end
 
 
+# 謝辞生成
+post_install do | installer |
+    require 'fileutils'
+    #Pods-acknowledgements.plist下記の場所に移動（2015/10/15）
+    FileUtils.cp_r('Pods/Target Support Files/Pods-PayNote/Pods-PayNote-Acknowledgements.plist', 'Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+end
+

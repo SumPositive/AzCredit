@@ -350,6 +350,11 @@
 		44325B0F1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B101F246DEC00175312 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		443E7BC31F24FBFF00484342 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
+		444A29391F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
+		444A293A1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
+		444A293B1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
+		444A293C1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
+		444A293D1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
@@ -817,6 +822,7 @@
 		44325B091F23B05D00175312 /* PayNoteDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PayNoteDev.entitlements; sourceTree = "<group>"; };
 		44325B0A1F246CC400175312 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		443E7BC21F24FBFF00484342 /* CalcView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalcView.m; sourceTree = "<group>"; };
+		444A29381F36DABA000EEE4C /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4450BE131E7ED613001305D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AzCreditS1/Images.xcassets; sourceTree = "<group>"; };
 		4450BE201E7F8F3D001305D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4450BE271E7F8FD2001305D1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1155,6 +1161,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				444A29381F36DABA000EEE4C /* Settings.bundle */,
 				4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */,
 				448A5631110DF1DB003ACF5F /* Localizable.strings */,
 				44325AEB1F23239D00175312 /* InfoPlist.strings */,
@@ -1849,6 +1856,7 @@
 				44AFB15511D5113A007CBFC9 /* Icon32-NearPC.png in Resources */,
 				44BA33F511D78FAA00856A35 /* akihiro-320.jpg in Resources */,
 				44BA346F11D79C0D00856A35 /* azuki-480.jpg in Resources */,
+				444A293B1F36DABA000EEE4C /* Settings.bundle in Resources */,
 				440328D311D81CAA002F321B /* azuki-320.jpg in Resources */,
 				44A8A26E11DC75E200665A58 /* Icon32-Bank.png in Resources */,
 				44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */,
@@ -1932,6 +1940,7 @@
 				443259A31F231CA400175312 /* akihiro-320.jpg in Resources */,
 				443259A41F231CA400175312 /* azuki-480.jpg in Resources */,
 				443259A51F231CA400175312 /* azuki-320.jpg in Resources */,
+				444A293A1F36DABA000EEE4C /* Settings.bundle in Resources */,
 				443259A61F231CA400175312 /* Icon32-Bank.png in Resources */,
 				443259A71F231CA400175312 /* Icon32-CircleUnpaid.png in Resources */,
 				443259A81F231CA400175312 /* Icon32-Top@2x.png in Resources */,
@@ -2015,6 +2024,7 @@
 				44325A501F231DCC00175312 /* akihiro-320.jpg in Resources */,
 				44325A511F231DCC00175312 /* azuki-480.jpg in Resources */,
 				44325A521F231DCC00175312 /* azuki-320.jpg in Resources */,
+				444A29391F36DABA000EEE4C /* Settings.bundle in Resources */,
 				44325A531F231DCC00175312 /* Icon32-Bank.png in Resources */,
 				44325A541F231DCC00175312 /* Icon32-CircleUnpaid.png in Resources */,
 				44325A551F231DCC00175312 /* Icon32-Top@2x.png in Resources */,
@@ -2131,6 +2141,7 @@
 				44C0E3E213A0A2D1003D0465 /* Icon16-Information@2x.png in Resources */,
 				44C0E3E313A0A2D1003D0465 /* Icon16-Setting@2x.png in Resources */,
 				447624AC1F34BE98002F0202 /* Credit-320.png in Resources */,
+				444A293D1F36DABA000EEE4C /* Settings.bundle in Resources */,
 				44C0E3E413A0A2D1003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E3E513A0A2D1003D0465 /* Icon-DrumPush.png in Resources */,
 				44C0E3E613A0A2D1003D0465 /* Icon-DrumPush@2x.png in Resources */,
@@ -2183,6 +2194,7 @@
 				44C0E5F013A0A475003D0465 /* akihiro-320.jpg in Resources */,
 				44C0E5F113A0A475003D0465 /* azuki-480.jpg in Resources */,
 				44C0E5F213A0A475003D0465 /* azuki-320.jpg in Resources */,
+				444A293C1F36DABA000EEE4C /* Settings.bundle in Resources */,
 				44C0E5F313A0A475003D0465 /* Icon32-Bank.png in Resources */,
 				44C0E5F413A0A475003D0465 /* Icon32-CircleUnpaid.png in Resources */,
 				44C0E5F513A0A475003D0465 /* Icon32-Top@2x.png in Resources */,
