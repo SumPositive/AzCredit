@@ -227,6 +227,7 @@
         if (indexPath.row == 0) {
             // Download from iCloud
             cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
+            cell.imageView.image = [UIImage imageNamed:@"iCloud-Down"];
             cell.textLabel.text = NSLocalizedString(@"iCloud Download",nil);
             cell.detailTextLabel.text = NSLocalizedString(@"iCloud Download Detail",nil);
             // iCloud KVS

@@ -2734,7 +2734,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
 				PRODUCT_NAME = PayNoteFree;
-				PROVISIONING_PROFILE = "501b5a93-beb2-44f8-8b94-210920c6c3e7";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -2770,7 +2770,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
 				PRODUCT_NAME = PayNoteFree;
-				PROVISIONING_PROFILE = "501b5a93-beb2-44f8-8b94-210920c6c3e7";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -3255,7 +3255,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzukiSoft.AzCredit;
 				PRODUCT_NAME = PayNoteFree;
-				PROVISIONING_PROFILE = "501b5a93-beb2-44f8-8b94-210920c6c3e7";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;

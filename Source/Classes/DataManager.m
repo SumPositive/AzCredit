@@ -40,9 +40,9 @@ static DataManager* _singleton = nil;
 
 - (NSURL*)iCloudFileUrl
 {
-    // iCloud Drive 実験
+    // iCloud Drive
     NSFileManager* fm = [NSFileManager defaultManager];
-    NSURL* url = [fm URLForUbiquityContainerIdentifier:ICLOUD_CONTAINER];
+    NSURL* url = [fm URLForUbiquityContainerIdentifier:ICLOUD_CONTAINER]; //ICLOUD_CONTAINER
     NSURL* fileUrl = [url URLByAppendingPathComponent:ICLOUD_FILENAME];
     AzLOG(@"fileUrl: %@", fileUrl);
     return fileUrl;
