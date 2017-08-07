@@ -376,11 +376,11 @@
 		447373751F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
 		447624A51F34B8BC002F0202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		447624A61F34B8BD002F0202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
-		447624A81F34BE98002F0202 /* Credit-320-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-1.png */; };
-		447624A91F34BE98002F0202 /* Credit-320-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-1.png */; };
-		447624AA1F34BE98002F0202 /* Credit-320-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-1.png */; };
-		447624AB1F34BE98002F0202 /* Credit-320-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-1.png */; };
-		447624AC1F34BE98002F0202 /* Credit-320-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-1.png */; };
+		447624A81F34BE98002F0202 /* Credit-320-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-2.png */; };
+		447624A91F34BE98002F0202 /* Credit-320-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-2.png */; };
+		447624AA1F34BE98002F0202 /* Credit-320-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-2.png */; };
+		447624AB1F34BE98002F0202 /* Credit-320-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-2.png */; };
+		447624AC1F34BE98002F0202 /* Credit-320-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-2.png */; };
 		4483449D10F2235B0078FEF6 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
 		448549041115726F00D10CC8 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
 		448549051115726F00D10CC8 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
@@ -839,7 +839,7 @@
 		447373571F1C93EC000E3DAA /* UpdateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UpdateVC.xib; path = ../UpdateVC.xib; sourceTree = "<group>"; };
 		4473736C1F1FA890000E3DAA /* AZAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AZAlert.h; sourceTree = "<group>"; };
 		4473736D1F1FA890000E3DAA /* AZAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AZAlert.m; sourceTree = "<group>"; };
-		447624A71F34BE98002F0202 /* Credit-320-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Credit-320-1.png"; sourceTree = "<group>"; };
+		447624A71F34BE98002F0202 /* Credit-320-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Credit-320-2.png"; sourceTree = "<group>"; };
 		4483449B10F2235B0078FEF6 /* InformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InformationView.h; sourceTree = "<group>"; };
 		4483449C10F2235B0078FEF6 /* InformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InformationView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		448549021115726F00D10CC8 /* SettingTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SettingTVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1164,7 +1164,7 @@
 				44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */,
 				44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */,
 				44325B0A1F246CC400175312 /* Launch Screen.storyboard */,
-				447624A71F34BE98002F0202 /* Credit-320-1.png */,
+				447624A71F34BE98002F0202 /* Credit-320-2.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1856,7 +1856,7 @@
 				44BC6ED112FDA27F00703AEC /* Icon32-Safari@2x.png in Resources */,
 				44BC6ED212FDA27F00703AEC /* Icon32-Safari.png in Resources */,
 				44BC6ED312FDA27F00703AEC /* Icon32-Google@2x.png in Resources */,
-				447624AA1F34BE98002F0202 /* Credit-320-1.png in Resources */,
+				447624AA1F34BE98002F0202 /* Credit-320-2.png in Resources */,
 				44BC6ED412FDA27F00703AEC /* Icon32-Google.png in Resources */,
 				44BC6ED512FDA27F00703AEC /* Icon16-Return3@2x.png in Resources */,
 				44BC6ED612FDA27F00703AEC /* Icon16-Return2@2x.png in Resources */,
@@ -1938,7 +1938,7 @@
 				443259B61F231CA400175312 /* Icon32-Safari.png in Resources */,
 				443259B71F231CA400175312 /* Icon32-Google@2x.png in Resources */,
 				443259B81F231CA400175312 /* Icon32-Google.png in Resources */,
-				447624A91F34BE98002F0202 /* Credit-320-1.png in Resources */,
+				447624A91F34BE98002F0202 /* Credit-320-2.png in Resources */,
 				443259B91F231CA400175312 /* Icon16-Return3@2x.png in Resources */,
 				443259BA1F231CA400175312 /* Icon16-Return2@2x.png in Resources */,
 				443259BB1F231CA400175312 /* Icon16-Return1@2x.png in Resources */,
@@ -2021,7 +2021,7 @@
 				44325A631F231DCC00175312 /* Icon32-Safari.png in Resources */,
 				44325A641F231DCC00175312 /* Icon32-Google@2x.png in Resources */,
 				44325A651F231DCC00175312 /* Icon32-Google.png in Resources */,
-				447624A81F34BE98002F0202 /* Credit-320-1.png in Resources */,
+				447624A81F34BE98002F0202 /* Credit-320-2.png in Resources */,
 				44325A661F231DCC00175312 /* Icon16-Return3@2x.png in Resources */,
 				44325A671F231DCC00175312 /* Icon16-Return2@2x.png in Resources */,
 				44325A681F231DCC00175312 /* Icon16-Return1@2x.png in Resources */,
@@ -2117,7 +2117,7 @@
 				447373601F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E3E213A0A2D1003D0465 /* Icon16-Information@2x.png in Resources */,
 				44C0E3E313A0A2D1003D0465 /* Icon16-Setting@2x.png in Resources */,
-				447624AC1F34BE98002F0202 /* Credit-320-1.png in Resources */,
+				447624AC1F34BE98002F0202 /* Credit-320-2.png in Resources */,
 				444A293D1F36DABA000EEE4C /* Settings.bundle in Resources */,
 				44C0E3E413A0A2D1003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E3E513A0A2D1003D0465 /* Icon-DrumPush.png in Resources */,
@@ -2189,7 +2189,7 @@
 				44C0E60213A0A475003D0465 /* Icon32-Safari.png in Resources */,
 				44C0E60313A0A475003D0465 /* Icon32-Google@2x.png in Resources */,
 				44C0E60413A0A475003D0465 /* Icon32-Google.png in Resources */,
-				447624AB1F34BE98002F0202 /* Credit-320-1.png in Resources */,
+				447624AB1F34BE98002F0202 /* Credit-320-2.png in Resources */,
 				44C0E60513A0A475003D0465 /* Icon16-Return3@2x.png in Resources */,
 				44C0E60613A0A475003D0465 /* Icon16-Return2@2x.png in Resources */,
 				44C0E60713A0A475003D0465 /* Icon16-Return1@2x.png in Resources */,
