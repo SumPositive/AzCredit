@@ -291,25 +291,23 @@
     }
 #endif
 
-//#ifndef AzMAKE_SPLASHFACE
-//	// Tool Bar Button
-//#ifdef AzPAD
-//	// Cell配置により、ボタンなし
-//#else
-//	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-//																			 target:nil action:nil];
-//	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
-//													   style:UIBarButtonItemStylePlain  //Bordered
-//													  target:self action:@selector(azInformationView)];
-//	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-//															   style:UIBarButtonItemStylePlain  //Bordered
-//															  target:self action:@selector(azSettingView)];
-//	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-//																			target:self action:@selector(barButtonAdd)];
-//	NSArray *buArray = @[MbuToolBarInfo, buFlex, buAdd, buFlex, buSet];
-//	[self setToolbarItems:buArray animated:YES];
-//#endif
-//#endif	
+	// Tool Bar Button
+#ifdef AzPAD
+	// Cell配置により、ボタンなし
+#else
+	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																			 target:nil action:nil];
+	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
+													   style:UIBarButtonItemStylePlain  //Bordered
+													  target:self action:@selector(azInformationView)];
+	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+															   style:UIBarButtonItemStylePlain  //Bordered
+															  target:self action:@selector(azSettingView)];
+	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			target:self action:@selector(barButtonAdd)];
+	NSArray *buArray = @[MbuToolBarInfo, buFlex, buAdd, buFlex, buSet];
+	[self setToolbarItems:buArray animated:YES];
+#endif
 	
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
 }
