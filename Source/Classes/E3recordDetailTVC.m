@@ -135,12 +135,12 @@
 
 - (void)showCalcAmount
 {
-//    if (IS_PAD) {
-//        // ToolBar常時表示
-//    }else{
-//        // ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
-//        //[self.navigationController setToolbarHidden:YES];
-//    }
+    if (IS_PAD) {
+        // ToolBar常時表示
+    }else{
+        // ToolBar非表示  ＜＜ツールバーがあるとキー下段が押せない＞＞
+        [self.navigationController setToolbarHidden:YES];
+    }
 	
 	if (McalcView) {
 		[McalcView hide];
