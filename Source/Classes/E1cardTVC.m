@@ -20,14 +20,20 @@
 
 //#define ACTIONSEET_TAG_DELETE_CARD	199
 
-@interface E1cardTVC (PrivateMethods)
+@interface E1cardTVC ()
+{
+    E1card				*sourceE1card;
+    NSMutableArray		*RaE1cards;
+    UIBarButtonItem *MbuAdd;
+    NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath  	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)e1cardDatail:(NSIndexPath *)indexPath;
 @end
 
+
 @implementation E1cardTVC
-@synthesize Re0root;
-@synthesize Re3edit;
-//@synthesize delegate;
 
 
 #pragma mark - Delegate
@@ -57,13 +63,13 @@
 }
 
 - (void)barButtonUntitled {
-	if (Re3edit.e1card && 0 < (Re3edit.e6parts).count) {
+	if (_Re3edit.e1card && 0 < (_Re3edit.e6parts).count) {
 		AzLOG(@"LOGIC ERR:`Card未定禁止");	// このケースでは「未定」ボタンが無効で、ここを通らないハズ
 		[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 		return;
 	}
 	// E3配下なし（新規追加中である） 未定(nil)にする
-	Re3edit.e1card = nil; 
+	_Re3edit.e1card = nil;
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
 
@@ -73,7 +79,7 @@
 	
 	if (indexPath == nil OR RaE1cards.count <= indexPath.row) {	// Add mode
 		E1card *e1obj = [NSEntityDescription insertNewObjectForEntityForName:@"E1card"
-													  inManagedObjectContext:Re0root.managedObjectContext];
+													  inManagedObjectContext:_Re0root.managedObjectContext];
 		// Add
 		e1detail.title = NSLocalizedString(@"Add Card",nil);
 		e1detail.PiAddRow = RaE1cards.count; // 追加モード
@@ -179,7 +185,7 @@
                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
     }
 	
-	if (Re3edit == nil) {	//編集モード
+	if (_Re3edit == nil) {	//編集モード
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		self.tableView.allowsSelectionDuringEditing = YES; // 編集モードに入ってる間にユーザがセルを選択できる
 	}
@@ -188,7 +194,7 @@
 	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			 target:nil action:nil];
 	
-	if (Re3edit == nil) {	//編集モード　／ 選択モードならば、MbuAdd = MbuTop = nill;
+	if (_Re3edit == nil) {	//編集モード　／ 選択モードならば、MbuAdd = MbuTop = nill;
 		MbuAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																target:self action:@selector(barButtonAdd)];
         if (IS_PAD) {
@@ -234,7 +240,7 @@
 	}
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E1card" 
-											  inManagedObjectContext:Re0root.managedObjectContext];
+											  inManagedObjectContext:_Re0root.managedObjectContext];
 	fetchRequest.entity = entity;
 	// Sorting
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"nRow" ascending:YES];
@@ -242,7 +248,7 @@
 	fetchRequest.sortDescriptors = sortArray;
 	// Fitch
 	NSError *error = nil;
-	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	NSArray *arFetch = [_Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
 //		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
@@ -260,11 +266,11 @@
 		self.tableView.contentOffset = McontentOffsetDidSelect;
 	}
 
-	if (Re3edit) {
-		if (Re3edit.e1card && 0 < (Re3edit.e6parts).count) {
+	if (_Re3edit) {
+		if (_Re3edit.e1card && 0 < (_Re3edit.e6parts).count) {
 			[self setToolbarItems:nil animated:NO]; //[未定]ボタンを消す ＜＜＜E6があればE1未定禁止
 		}
-		sourceE1card = Re3edit.e1card;	//初期値
+		sourceE1card = _Re3edit.e1card;	//初期値
 	}
 }
 
@@ -275,7 +281,7 @@
     if (IS_PAD) {
         // viewWillAppear:に入れると再描画時に通ってBarが乱れるため、ここにした。 loadViewに入れると配下から戻ったときダメ
         // SplitViewタテのとき [Menu] button を表示する
-        if (Re3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
+        if (_Re3edit==nil) { // マスタモードのとき、だけ[Menu]ボタン表示
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             if (app.barMenu) {
                 UIBarButtonItem* buFlexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -298,7 +304,7 @@
     [super viewDidAppear:animated];
 	[self.tableView flashScrollIndicators]; // Apple基準：スクロールバーを点滅させる
 	
-	if (Re3edit == nil) {
+	if (_Re3edit == nil) {
 		//	AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 		// (0)TopMenu >> (1)This clear
 		//	[appDelegate.RaComebackIndex replaceObjectAtIndex:1 withObject:[NSNumber numberWithLong:-1]];
@@ -444,7 +450,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if (Re3edit) { //選択モード
+	if (_Re3edit) { //選択モード
 		return RaE1cards.count; 
 	}
 	return RaE1cards.count + 2; // (+1)Add  (+2)Help
@@ -577,7 +583,7 @@ static UIImage* GimageFromString(NSString* str)
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", zPayDay,
 									 [formatter stringFromNumber:sumAmount]];
 		
-		if (Re3edit == nil) {
+		if (_Re3edit == nil) {
 			cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton; // ディスクロージャボタン
 			cell.showsReorderControl = YES;		// Move有効
 		}
@@ -630,9 +636,9 @@ static UIImage* GimageFromString(NSString* str)
 	McontentOffsetDidSelect = tableView.contentOffset;
 	
 	if (indexPath.row < RaE1cards.count) {
-		if (Re3edit) {			// 選択モード
-			Re3edit.e1card = RaE1cards[indexPath.row]; 
-			if (sourceE1card != Re3edit.e1card) {
+		if (_Re3edit) {			// 選択モード
+			_Re3edit.e1card = RaE1cards[indexPath.row];
+			if (sourceE1card != _Re3edit.e1card) {
 				AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 				apd.entityModified = YES;	//変更あり
 				// E6更新

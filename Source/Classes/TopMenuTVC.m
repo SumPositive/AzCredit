@@ -25,26 +25,30 @@
 #import "E8bankTVC.h"
 #import "WebSiteVC.h"
 //#import "HttpServerView.h"
-
-//#ifdef AzPAD
 #import "PadRootVC.h"
-//#endif
+
 
 #define TAG_VIEW_HttpServer			118
-
-
-@interface TopMenuTVC (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
-#ifdef FREE_AD
 #define FREE_AD_OFFSET_Y			200.0
+
+
+@interface TopMenuTVC () // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
+{
+    InformationView		*MinformationView;
+    UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
+    NSInteger	MiE1cardCount;
+    BOOL			MbInformationOpen;	//[1.0.2]InformationViewを初回自動表示するため
+    CGFloat		mAdPositionY;
+}
+#ifdef FREE_AD
 //- (void)AdRefresh;
 //- (void)AdMobWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
 //- (void)AdAppWillRotate:(UIInterfaceOrientation)toInterfaceOrientation;
 #endif
 @end
 
-@implementation TopMenuTVC
-@synthesize Re0root;
 
+@implementation TopMenuTVC
 
 #pragma mark - Delegate
 
@@ -194,9 +198,6 @@
 - (void)e3record
 {
 	if (MiE1cardCount <= 0) {
-//		alertBox(NSLocalizedString(@"No Card",nil),
-//				 NSLocalizedString(@"No Card msg",nil),
-//				 NSLocalizedString(@"Roger",nil));
         [AZAlert target:self
                   title:NSLocalizedString(@"No Card",nil)
                 message:NSLocalizedString(@"No Card msg",nil)
@@ -208,7 +209,7 @@
 
 	E3recordTVC *tvc = [[E3recordTVC alloc] init];
 	tvc.title = NSLocalizedString(@"Record list", nil);
-	tvc.Re0root = Re0root;
+	tvc.Re0root = _Re0root;
 	tvc.PbAddMode = NO; //Default
 
     if (IS_PAD) {
@@ -342,11 +343,11 @@
 	// E1card 件数を求める
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"E1card" 
-											  inManagedObjectContext:Re0root.managedObjectContext];
+											  inManagedObjectContext:_Re0root.managedObjectContext];
 	fetchRequest.entity = entity;
 	// Fitch
 	NSError *error = nil;
-	NSArray *arFetch = [Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	NSArray *arFetch = [_Re0root.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
 //		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
@@ -467,7 +468,7 @@
 {
 	[self unloadRelease];
 	// @property (retain)
-	Re0root = nil;
+	_Re0root = nil;
   //  [super dealloc];
 }
 
@@ -557,13 +558,14 @@
 //	return nil;
 //}
 
-/*
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
+    if (IS_PAD) {
+        return 55;
+    }
 	return 44; // デフォルト：44ピクセル
 }
-*/
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
@@ -608,12 +610,12 @@
 						//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
 						// E7 未払い総額
 						cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
-						if ((Re0root.e7unpaids).count <= 0) {
+						if ((_Re0root.e7unpaids).count <= 0) {
 							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
 												   NSLocalizedString(@"Payment list",nil), 
 												   NSLocalizedString(@"No unpaid",nil)];
 						} else {
-							NSDecimalNumber *decUnpaid = [Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
+							NSDecimalNumber *decUnpaid = [_Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
 							// Amount
 							NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
 							formatter.numberStyle = NSNumberFormatterCurrencyStyle; // 通貨スタイル（先頭に通貨記号が付く）
@@ -716,7 +718,7 @@
 #else
 					tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
 #endif
-					tvc.Re0root = Re0root;
+					tvc.Re0root = _Re0root;
                     
                     if (IS_PAD) {
                         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -739,7 +741,7 @@
 #else
 					tvc.title = cell.textLabel.text;
 #endif
-					tvc.Re0root = Re0root;
+					tvc.Re0root = _Re0root;
 					tvc.Re3edit = nil;
                     
                     if (IS_PAD) {
@@ -763,7 +765,7 @@
 #else
 					tvc.title = cell.textLabel.text;
 #endif
-					tvc.Re0root = Re0root;
+					tvc.Re0root = _Re0root;
 					tvc.Pe1card = nil;
                     
                     if (IS_PAD) {
@@ -790,7 +792,7 @@
 #else
 					tvc.title = cell.textLabel.text;
 #endif
-					tvc.Re0root = Re0root;
+					tvc.Re0root = _Re0root;
 					tvc.Pe3edit = nil;
 
                     if (IS_PAD) {
@@ -811,7 +813,7 @@
 #else
 					tvc.title = cell.textLabel.text;
 #endif
-					tvc.Re0root = Re0root;
+					tvc.Re0root = _Re0root;
 					tvc.Pe3edit = nil;
                     
                     if (IS_PAD) {

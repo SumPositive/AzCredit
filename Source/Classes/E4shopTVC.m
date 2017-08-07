@@ -16,7 +16,17 @@
 
 #define ACTIONSEET_TAG_DELETE_SHOP	199
 
-@interface E4shopTVC (PrivateMethods)
+@interface E4shopTVC ()
+{
+    E4shop              *sourceE4shop;
+    NSMutableArray		*RaE4shops;
+    NSString            *RzSearchText;		//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
+    NSIndexPath         *MindexPathActionDelete; // 削除するIndexPath  	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    NSIndexPath*        MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
+    NSInteger           MiOptE4SortMode;
+    CGPoint             McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)e4shopDatail:(NSIndexPath *)indexPath;
 - (void)barButtonAdd;
 - (void)requeryMe4shops:(NSString *)zSearch;
@@ -24,17 +34,10 @@
 @end
 
 @implementation E4shopTVC
-//@synthesize Re0root;
-//@synthesize Pe3edit;
-//#ifdef AzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-//#endif
 
 
 #pragma mark - Delegate
 
-//#ifdef AzPAD
 - (void)refreshTable
 {
 	if (MindexPathEdit && MindexPathEdit.row < [RaE4shops count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
@@ -45,7 +48,6 @@
 		[self viewWillAppear:YES];
 	}
 }
-//#endif
 
 
 #pragma mark - Action

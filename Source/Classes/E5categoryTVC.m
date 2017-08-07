@@ -14,31 +14,31 @@
 #import "E5categoryDetailTVC.h"
 #import "E3recordTVC.h"
 
-//#ifdef AzPAD
-//#import "PadPopoverInNaviCon.h"
-//#endif
 
 #define ACTIONSEET_TAG_DELETE_SHOP	199
 
-@interface E5categoryTVC (PrivateMethods)
+@interface E5categoryTVC ()
+{
+    E5category		*sourceE5category;
+    NSMutableArray			*RaE5categorys;
+    NSString					*RzSearchText;		//[1.1.2]検索文字列を記録しておき、該当が無くて新しく追加する場合の初期値にする
+    NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath		//[1.1.2]ポインタ代入注意！copyするように改善した。
+    NSIndexPath*				MindexPathEdit;		//[1.1.2]ポインタ代入注意！copyするように改善した。
+    UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
+    NSInteger MiOptE5SortMode;
+    CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)e5categoryDatail:(NSIndexPath *)indexPath;
 - (void)barButtonAdd;
 - (void)requeryMe5categorys:(NSString *)zSearch;
 - (void)viewDesign;
 @end
 
-@implementation E5categoryTVC
-@synthesize Re0root;
-//@synthesize Pe3edit;
-//#ifdef AzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-//#endif
 
+@implementation E5categoryTVC
 
 #pragma mark - Delegate
 
-//#ifdef AzPAD
 - (void)refreshTable
 {
 	if (MindexPathEdit && MindexPathEdit.row < [RaE5categorys count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
@@ -49,7 +49,6 @@
 		[self viewWillAppear:YES];
 	}
 }
-//#endif
 
 
 #pragma mark - Action
@@ -79,7 +78,7 @@
 		e5detail.title = NSLocalizedString(@"Add Category",nil);
 		// ContextにE1ノードを追加する　E4edit内でCANCELならば DELETE している
 		e5detail.Re5edit = [NSEntityDescription insertNewObjectForEntityForName:@"E5category"
-														 inManagedObjectContext:Re0root.managedObjectContext];
+														 inManagedObjectContext:_Re0root.managedObjectContext];
 		e5detail.PbAdd = YES;
 		e5detail.Pe3edit = self.Pe3edit;
 
@@ -332,7 +331,7 @@
 	
 	if (MbuTop) {
 		// hasChanges時にTop戻りボタンを無効にする
-		MbuTop.enabled = !(Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
+		MbuTop.enabled = !(_Re0root.managedObjectContext).hasChanges; // YES:contextに変更あり
 	}
 	
 	// Requery
@@ -635,7 +634,7 @@
 #else
 			tvc.title =  e5obj.zName;
 #endif
-			tvc.Re0root = Re0root;
+			tvc.Re0root = _Re0root;
 			//tvc.Pe1card = nil;  
 			tvc.Pe4shop = nil;  // e4obj以下の全E3表示モード
 			tvc.Pe5category = e5obj;
@@ -700,7 +699,7 @@
                    E5category *e5objDelete = RaE5categorys[MindexPathActionDelete.row];
                    // 削除
                    [RaE5categorys removeObjectAtIndex:MindexPathActionDelete.row];
-                   [Re0root.managedObjectContext deleteObject:e5objDelete];
+                   [_Re0root.managedObjectContext deleteObject:e5objDelete];
                    // SAVE　＜＜万一システム障害で落ちてもデータが残るようにコマメに保存する
                    [MocFunctions commit];
                    [self.tableView reloadData];

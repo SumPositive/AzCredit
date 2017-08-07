@@ -17,20 +17,25 @@
 #define ALERT_TAG_NoMore		109
 
 
-@interface E3recordTVC (PrivateMethods)
+@interface E3recordTVC ()
+{
+    NSDateFormatter		*RcellDateFormatter;			//[1.1.2]TableCell高速化のため
+    NSNumberFormatter	*RcellNumberFormatter;	//[1.1.2]TableCell高速化のため
+    NSMutableArray		*RaE3list;
+    NSMutableArray		*RaSection;
+    NSMutableArray		*RaIndex;
+    NSIndexPath				*MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    CGPoint			McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+    UITableViewScrollPosition	MmoreScrollPosition;
+}
 - (void)setMe3list:(NSDate *)dateMiddle;
 - (void)azSettingView;
 - (void)e3detailView:(NSIndexPath *)indexPath;
-- (void)cellButton: (UIButton *)button;
+//- (void)cellButton: (UIButton *)button;
 @end
 
+
 @implementation E3recordTVC
-@synthesize Re0root;
-@synthesize Pe4shop;
-@synthesize Pe5category;
-@synthesize Pe8bank;
-@synthesize PbAddMode;
-@synthesize delegate;
 
 
 #pragma mark - Delegate
@@ -106,15 +111,15 @@
 		e3obj.dateUse = [NSDate date]; // 迷子にならないように念のため
 		//e3obj.nReservType = [NSNumber numberWithInt:0]; // (0)利用
 		e3obj.e1card = nil;
-		e3obj.e4shop = Pe4shop;
-		e3obj.e5category = Pe5category;
+		e3obj.e4shop = self.Pe4shop;
+		e3obj.e5category = self.Pe5category;
 		e3obj.e6parts = nil;
 		// Args
 		e3detail.title = NSLocalizedString(@"Add Record", nil);
 		e3detail.Re3edit = e3obj;
-		if (Pe4shop) {
+		if (self.Pe4shop) {
 			e3detail.PiAdd = 3; // (3)Shop固定
-		} else if (Pe5category) {
+		} else if (self.Pe5category) {
 			e3detail.PiAdd = 4; // (4)Category固定
 		} else {
 			e3detail.PiAdd = 1; // (1)New Add
@@ -162,12 +167,12 @@
 	BOOL  bPrev = NO;
 	BOOL  bNext = NO;
 	
-	if (Pe4shop) {
+	if (self.Pe4shop) {
 		// Pe4shop以下、最近の全E3
 		arFetch = [MocFunctions select:@"E3record" 
 								 limit:GD_E3_SELECT_LIMIT
 								offset:0
-								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse <= %@", Pe4shop, dateMiddle]
+								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse <= %@", self.Pe4shop, dateMiddle]
 								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
@@ -175,17 +180,17 @@
 		arFetch = [MocFunctions select:@"E3record" 
 								 limit:GD_E3_SELECT_LIMIT
 								offset:0
-								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse > %@", Pe4shop, dateMiddle]
+								 where:[NSPredicate predicateWithFormat:@"e4shop == %@ AND dateUse > %@", self.Pe4shop, dateMiddle]
 								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
-	else if (Pe5category) {
+	else if (self.Pe5category) {
 		// Pe5category以下、最近の全E3
 		arFetch = [MocFunctions select:@"E3record" 
 								 limit:GD_E3_SELECT_LIMIT
 								offset:0
-								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse <= %@", Pe5category, dateMiddle]
+								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse <= %@", self.Pe5category, dateMiddle]
 								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
@@ -193,18 +198,18 @@
 		arFetch = [MocFunctions select:@"E3record" 
 								 limit:GD_E3_SELECT_LIMIT
 								offset:0
-								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse > %@", Pe5category, dateMiddle]
+								 where:[NSPredicate predicateWithFormat:@"e5category == %@ AND dateUse > %@", self.Pe5category, dateMiddle]
 								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
 	}
-	else if (Pe8bank) { 
+	else if (self.Pe8bank) {
 		/*******************現在の仕様では、ここは通らない*****************/
 		// Pe8bank以下、最近のE3
 		arFetch = [MocFunctions select:@"E3record" 
 								 limit:GD_E3_SELECT_LIMIT
 								offset:0
-								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse <= %@", Pe8bank, dateMiddle]
+								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse <= %@", self.Pe8bank, dateMiddle]
 								  sort:sortDesc];
 		bPrev = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array setArray:arFetch];
@@ -212,7 +217,7 @@
 		arFetch = [MocFunctions select:@"E3record" 
 								 limit:GD_E3_SELECT_LIMIT
 								offset:0
-								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse > %@", Pe8bank, dateMiddle]
+								 where:[NSPredicate predicateWithFormat:@"e1card.e8bank == %@ AND dateUse > %@", self.Pe8bank, dateMiddle]
 								  sort:sortAsc];
 		bNext = (GD_E3_SELECT_LIMIT <= arFetch.count);
 		[mE3array addObjectsFromArray:arFetch]; // 昇順に昇順を追加
@@ -504,7 +509,7 @@
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	
     if (IS_PAD) {
-        if (Pe4shop || Pe5category || Pe8bank) {
+        if (self.Pe4shop || self.Pe5category || self.Pe8bank) {
             self.navigationItem.hidesBackButton = NO;
         } else {
             self.navigationItem.hidesBackButton = YES;
@@ -735,6 +740,11 @@
 	return ar;
 }
 
+// セクションの高さ
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 50.0;
+}
 
 // TableView セクション名を応答
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
@@ -751,10 +761,10 @@
 		NSString *zHeader = [NSString stringWithFormat:@"%@   %@ %@",
 							 RaSection[section], 
 							 NSLocalizedString(@"Monthly total",nil), zSum];
-		return zHeader; // autoreleseされる
-	}
-	// 年-月
-	return RaSection[section];
+		return zHeader;
+    }
+    // 年-月
+    return RaSection[section];
 }
 
 
@@ -851,7 +861,6 @@
 
 			cellLabel = [[UILabel alloc] init];
 			cellLabel.textAlignment = NSTextAlignmentRight;
-			//cellLabel.textColor = [UIColor blackColor];
 			cellLabel.backgroundColor = [UIColor whiteColor];
             if (IS_PAD) {
                 cellLabel.font = [UIFont systemFontOfSize:20];
@@ -860,15 +869,15 @@
             }
 			cellLabel.tag = -1;
 			[cell addSubview:cellLabel]; 
-		 }
+        }
 		else {
 			cellLabel = (UILabel *)[cell viewWithTag:-1];
 		}
 		// 回転対応のため
         if (IS_PAD) {
-            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-178, 12, 125, 22);
+            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-128, 2, 85, 24);
         }else{
-            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-108, 2, 75, 20);
+            cellLabel.frame = CGRectMake(self.tableView.frame.size.width-100, 2, 75, 24);
         }
 		
 		E3record *e3obj = RaE3list[indexPath.section][indexPath.row];

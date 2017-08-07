@@ -350,11 +350,6 @@
 		444A293B1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293C1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293D1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
-		444A293F1F36DF77000EEE4C /* PayNoteFree-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 444A293E1F36DF77000EEE4C /* PayNoteFree-Info.plist */; };
-		444A29401F36DFCC000EEE4C /* PayNoteBeta-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44325AE41F231DCD00175312 /* PayNoteBeta-Info.plist */; };
-		444A29411F36DFD0000EEE4C /* PayNote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44325A371F231CA500175312 /* PayNote-Info.plist */; };
-		444A29421F36DFDD000EEE4C /* PayNoteS1Pad-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44C0E7D613A0A4D6003D0465 /* PayNoteS1Pad-Info.plist */; };
-		444A29431F36DFE1000EEE4C /* PayNotePadFree-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 44C0E5D813A0A3CF003D0465 /* PayNotePadFree-Info.plist */; };
 		4454C98B114941930063621D /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
 		4454C98C114941930063621D /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
 		4454C98D114941930063621D /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
@@ -1839,7 +1834,6 @@
 				44A3D0D51174A3C600460EC2 /* Icon32-CopyStop.png in Resources */,
 				44A3D0E91174AEFA00460EC2 /* Icon32-Top.png in Resources */,
 				44A3D0EA1174AEFA00460EC2 /* Icon32-CopyAdd.png in Resources */,
-				444A293F1F36DF77000EEE4C /* PayNoteFree-Info.plist in Resources */,
 				44AFB15511D5113A007CBFC9 /* Icon32-NearPC.png in Resources */,
 				44BA33F511D78FAA00856A35 /* akihiro-320.jpg in Resources */,
 				44BA346F11D79C0D00856A35 /* azuki-480.jpg in Resources */,
@@ -1961,7 +1955,6 @@
 				443259C61F231CA400175312 /* Icon-Drum@2x.png in Resources */,
 				447624A61F34B8BD002F0202 /* Images.xcassets in Resources */,
 				443259C71F231CA400175312 /* Icon-Drum.png in Resources */,
-				444A29411F36DFD0000EEE4C /* PayNote-Info.plist in Resources */,
 				443259C81F231CA400175312 /* Icon32-CopyRight@2x.png in Resources */,
 				443259C91F231CA400175312 /* Icon32-CopyLeft@2x.png in Resources */,
 				443259CA1F231CA400175312 /* Icon32-CopyStop@2x.png in Resources */,
@@ -2043,7 +2036,6 @@
 				44325A711F231DCC00175312 /* Icon-DrumPush.png in Resources */,
 				44325A721F231DCC00175312 /* Icon-DrumPush@2x.png in Resources */,
 				44325A731F231DCC00175312 /* Icon-Drum@2x.png in Resources */,
-				444A29401F36DFCC000EEE4C /* PayNoteBeta-Info.plist in Resources */,
 				447624A51F34B8BC002F0202 /* Images.xcassets in Resources */,
 				44325A741F231DCC00175312 /* Icon-Drum.png in Resources */,
 				44325A751F231DCC00175312 /* Icon32-CopyRight@2x.png in Resources */,
@@ -2130,7 +2122,6 @@
 				44C0E3E413A0A2D1003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E3E513A0A2D1003D0465 /* Icon-DrumPush.png in Resources */,
 				44C0E3E613A0A2D1003D0465 /* Icon-DrumPush@2x.png in Resources */,
-				444A29431F36DFE1000EEE4C /* PayNotePadFree-Info.plist in Resources */,
 				44C0E3E713A0A2D1003D0465 /* Icon-Drum@2x.png in Resources */,
 				44C0E3E813A0A2D1003D0465 /* Icon-Drum.png in Resources */,
 				44C0E3E913A0A2D1003D0465 /* Icon32-CopyRight@2x.png in Resources */,
@@ -2208,7 +2199,6 @@
 				44C0E60B13A0A475003D0465 /* Icon16-Information.png in Resources */,
 				4473735E1F1C93EC000E3DAA /* UpdateVC.xib in Resources */,
 				44C0E60C13A0A475003D0465 /* Icon16-Information@2x.png in Resources */,
-				444A29421F36DFDD000EEE4C /* PayNoteS1Pad-Info.plist in Resources */,
 				44C0E60D13A0A475003D0465 /* Icon16-Setting@2x.png in Resources */,
 				44C0E60E13A0A475003D0465 /* Icon16-Setting.png in Resources */,
 				44C0E60F13A0A475003D0465 /* Icon-DrumPush.png in Resources */,

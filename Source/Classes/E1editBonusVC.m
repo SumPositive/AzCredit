@@ -10,13 +10,17 @@
 #import "Entity.h"
 #import "E1editBonusVC.h"
 
-@interface E1editBonusVC (PrivateMethods)
+@interface E1editBonusVC ()
+{
+    UIPickerView	*Mpicker;
+    UILabel *MlbBonus1;
+    UILabel *MlbBonus2;
+}
 - (void)viewDesign;
 - (void)done:(id)sender;
 @end
 
 @implementation E1editBonusVC
-@synthesize Re1edit;
 
 
 #pragma mark - Action
@@ -27,8 +31,8 @@
 - (void)done:(id)sender
 {
 	// 結果更新
-	Re1edit.nBonus1 = @([Mpicker selectedRowInComponent:0]);
-	Re1edit.nBonus2 = @([Mpicker selectedRowInComponent:1]);
+	_Re1edit.nBonus1 = @([Mpicker selectedRowInComponent:0]);
+	_Re1edit.nBonus2 = @([Mpicker selectedRowInComponent:1]);
 	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
 }
@@ -126,11 +130,11 @@
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	// PICKER 指定されたコンポーネンツの行を選択する。
-	NSInteger iMon = (Re1edit.nBonus1).integerValue;
+	NSInteger iMon = (_Re1edit.nBonus1).integerValue;
 	if (iMon < 0 OR 12 < iMon) iMon = 1;
 	[Mpicker selectRow:iMon inComponent:0 animated:NO];
 
-	iMon = (Re1edit.nBonus2).integerValue;
+	iMon = (_Re1edit.nBonus2).integerValue;
 	if (iMon < 0 OR 12 < iMon) iMon = 8;
 	[Mpicker selectRow:iMon inComponent:1 animated:NO];
 

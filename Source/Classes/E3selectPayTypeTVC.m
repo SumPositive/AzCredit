@@ -12,15 +12,14 @@
 #import "E3selectPayTypeTVC.h"
 #import "E3recordDetailTVC.h"		// delegate
 
-@interface E3selectPayTypeTVC (PrivateMethods)
-//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-//----------------------------------------------Owner移管につきdealloc時のrelese不要
-//----------------------------------------------assign
-//BOOL MbOptAntirotation;
+
+@interface E3selectPayTypeTVC ()
+{
+    NSInteger	sourcePayType;
+}
 @end
+
 @implementation E3selectPayTypeTVC
-@synthesize Re3edit;
-//@synthesize delegate;
 
 
 #pragma mark - Action
@@ -66,7 +65,7 @@
 
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
-	sourcePayType = (Re3edit.nPayType).integerValue; //初期値
+	sourcePayType = (_Re3edit.nPayType).integerValue; //初期値
 }
 
 
@@ -142,22 +141,22 @@
 	switch (indexPath.row) {
 		case 0:
 			cell.textLabel.text = NSLocalizedString(@"PayType 001", nil);
-			if ((Re3edit.nPayType).integerValue == 1)
+			if ((_Re3edit.nPayType).integerValue == 1)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 1:
 			cell.textLabel.text = NSLocalizedString(@"PayType 002", nil);
-			if ((Re3edit.nPayType).integerValue == 2)
+			if ((_Re3edit.nPayType).integerValue == 2)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 2:
 			cell.textLabel.text = NSLocalizedString(@"PayType 101", nil);
-			if ((Re3edit.nPayType).integerValue == 101)
+			if ((_Re3edit.nPayType).integerValue == 101)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 3:
 			cell.textLabel.text = NSLocalizedString(@"PayType 201", nil);
-			if ((Re3edit.nPayType).integerValue == 201)
+			if ((_Re3edit.nPayType).integerValue == 201)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		default:
@@ -174,23 +173,23 @@
 	// DONE
 	switch (indexPath.row) {
 		case 0:
-			Re3edit.nPayType = @1;
+			_Re3edit.nPayType = @1;
 			break;
 		case 1:
-			Re3edit.nPayType = @2;
+			_Re3edit.nPayType = @2;
 			break;
 		case 2:
-			Re3edit.nPayType = @101;
+			_Re3edit.nPayType = @101;
 			break;
 		case 3:
-			Re3edit.nPayType = @201;
+			_Re3edit.nPayType = @201;
 			break;
 		default:
-			Re3edit.nPayType = @1;
+			_Re3edit.nPayType = @1;
 			break;
 	}
 
-	if (sourcePayType != (Re3edit.nPayType).integerValue) {
+	if (sourcePayType != (_Re3edit.nPayType).integerValue) {
 		AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		apd.entityModified = YES;	//変更あり
 

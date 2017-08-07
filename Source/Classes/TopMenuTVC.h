@@ -12,17 +12,7 @@
 @class InformationView;
 @class E0root;
 
-@interface TopMenuTVC : UITableViewController  <UITextFieldDelegate
-	,UIPopoverControllerDelegate
->
-{
-@private
-	InformationView		*MinformationView;
-	UIBarButtonItem		*MbuToolBarInfo;	// 正面ON,以外OFFにするため
-	NSInteger	MiE1cardCount;
-	BOOL			MbInformationOpen;	//[1.0.2]InformationViewを初回自動表示するため
-	CGFloat		mAdPositionY;
-}
+@interface TopMenuTVC : UITableViewController  <UITextFieldDelegate,UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) E0root				*Re0root;
 

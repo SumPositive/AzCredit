@@ -16,22 +16,27 @@
 
 #define ACTIONSEET_TAG_DELETE	199
 
-@interface E6partTVC (PrivateMethods)
+@interface E6partTVC ()
+{
+    NSMutableArray	*RaE2invoices;
+    NSMutableArray	*RaE6parts;		// (Pe2invoices,E6parts) 二次元
+    NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    E1card		*Me2e1card;
+    E0root		*Me7e0root;
+    BOOL		MbFirstOne;
+    NSInteger	MiForTheFirstSection;		// viewDidAppear内で最初に1回だけ画面スクロール位置調整するため
+    CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)MtableSource;
 - (void)e3detailView:(NSIndexPath *)indexPath;
 - (void)cellButton: (UIButton *)button;
 @end
 
 @implementation E6partTVC
-//@synthesize Pe2select;
-//@synthesize Pe7select;
-//@synthesize	Pe2invoices; // E8bank-->>E1-->>E2
-@synthesize PiFirstSection;
 
 
 #pragma mark - Delegate
 
-//#ifdef AzPAD
 - (void)refreshE6partTVC:(BOOL)bSame	//=YES:支払先と支払日が変更なし、ならば行だけ再表示
 {
 	//　reloadData　や　reloadRowsAtIndexPaths でも落ちる！　まだ原因不明 ⇒ [1.1.2]原因判明！ [indexPath copy] して解決。
@@ -46,7 +51,6 @@
 		[self viewWillAppear:YES];
 	}
 }
-//#endif
 
 
 #pragma mark - Action
@@ -447,9 +451,9 @@
 		//		[appDelegate.RaComebackIndex replaceObjectAtIndex:2 withObject:[NSNumber numberWithLong:-1]];
 	}*/
 	
-	if (0 <= MiForTheFirstSection && 0 <= PiFirstSection && PiFirstSection < RaE6parts.count) {
+	if (0 <= MiForTheFirstSection && 0 <= _PiFirstSection && _PiFirstSection < RaE6parts.count) {
 		// 選択行を画面中央付近に表示する
-		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:PiFirstSection];
+		NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:_PiFirstSection];
 		[self.tableView scrollToRowAtIndexPath:indexPath 
 							  atScrollPosition:UITableViewScrollPositionMiddle animated:NO];  // 実機検証結果:NO
 		MiForTheFirstSection = (-2);  // 最初一度だけ通り、二度と通らないようにするため

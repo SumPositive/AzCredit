@@ -34,8 +34,32 @@
 #define TAG_BAR_BUTTON_PAST			912		// ＜ 過去へ
 #define TAG_BAR_BUTTON_RETURN		913		// ＞ 戻す
 
-@interface E3recordDetailTVC (PrivateMethods)
-//- (void)cancel:(id)sender;  iPad対応のため公開メソッド(cancelClose:)になった。
+@interface E3recordDetailTVC ()
+{
+    NSMutableArray		*RaE6parts;
+    NSMutableArray		*RaE3lasts;		// 前回引用するための直近3件
+    E0root						*Me0root;		// Arrayではない！単独　release不要（するとFreeze）
+    UIBarButtonItem		*MbuDelete;		// BarButton ＜PAID時に無効にするため＞ [0.3]
+    UILabel					*MlbAmount;
+    CalcView					*McalcView;
+    UIView						*McalcMaskView;
+    NSInteger				MiSourceYearMMDD;	// 修正前の利用日、[Save]時に比較して同じならば修正行だけ再表示し、変化あれば全再表示する
+    UIBarButtonItem		*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
+    AppDelegate *appDelegate;
+    BOOL			MbE1cardChange;
+    
+    //BOOL			MbOptAntirotation;
+    BOOL			MbOptEnableInstallment;
+    BOOL			MbOptUseDateTime;
+    NSInteger		MiE1cardRow;
+    BOOL			MbE6checked;		// YES:全回Check済、主要条件の変更禁止！
+    BOOL			MbE6paid;				// YES:1回でもPAIDあり、主要条件の変更禁止！
+    BOOL			MbCopyAdd;			// YES:既存明細をコピーして新規追加している状態
+    BOOL			MbRotatShowCalc;	// YES:回転前に表示されていたので、回転後再表示する。
+    NSInteger	MiIndexE3lasts;
+    BOOL			MbModified;			// AppDelegate.entityModified方式へ統一変更したが、一部参照している。
+    BOOL			MbSaved;			// YES:保存ボタンが押されて、前のViewへ戻る途中。E6が削除されている可能性があるので再描画禁止にする。
+}
 - (void)saveClose:(id)sender;
 - (void)viewDesign;
 - (void)cellButtonE6check: (UIButton *)button;
@@ -44,13 +68,6 @@
 @end
 
 @implementation E3recordDetailTVC
-@synthesize Re3edit;
-@synthesize PiAdd;
-@synthesize PiFirstYearMMDD;
-//#ifdef AzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-//#endif
 
 
 #pragma mark - Delegate method
@@ -59,7 +76,7 @@
 // return(BOOL) YES=OK, NO=E6変更禁止につき、保存禁止すること
 - (void)remakeE6change:(int)iChange
 {
-	assert(Re3edit);
+	assert(_Re3edit);
 	// 【iChange】 変化した項目番号：この項目を基（主）に関連項目を調整する
 	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
 	// (2) nAmount変更 ⇒ 
@@ -69,7 +86,7 @@
 	// (5) E6part1変更 ⇒ E6part1を固定してE6part2またはE3を調整更新する。E6part2がCheckedならば解除する。
 	// (6) E6part2変更 ⇒ E6part2を固定してE6part1またはE3を調整更新する。E6part1がCheckedまたはPAIDならば禁止。
 	// 【withFirstYMD】 1回目の支払日を指定。　=0:指定なし
-	if ([MocFunctions e3record:Re3edit makeE6change:iChange withFirstYMD:PiFirstYearMMDD]) {
+	if ([MocFunctions e3record:_Re3edit makeE6change:iChange withFirstYMD:_PiFirstYearMMDD]) {
 		// 再描画
 		[self viewWillAppear:YES];
 	}
@@ -153,7 +170,7 @@
 	}
 	
 	// CalcView
-	McalcView = [[CalcView alloc] initWithFrame:rect withE3:Re3edit];
+	McalcView = [[CalcView alloc] initWithFrame:rect withE3:_Re3edit];
 	McalcView.Rlabel = MlbAmount;  // MlbAmount.tag にはCalc入力された数値(long)が記録される
 	McalcView.PoParentTableView = self.tableView; // これによりスクロール禁止している
 	McalcView.delegate = self;	// viewWillAppear:を呼び出すため
@@ -165,10 +182,10 @@
 {
 	[McalcView hide]; // Calcが出てれば隠す
 	
-	if (0 < PiAdd) {
+	if (0 < _PiAdd) {
 		// Add mode: 呼び出し元で挿入したオブジェクトはrollbackされないので削除する
 		// E3配下のE6は、随時生成更新されているので、ここで同時に削除する
-		[MocFunctions e3delete:Re3edit]; //remakeE6change：処理により配下E6もあれば削除する
+		[MocFunctions e3delete:_Re3edit]; //remakeE6change：処理により配下E6もあれば削除する
 		//[MocFunctions commit]; delete後のcommit不要
 	}
 	
@@ -201,22 +218,22 @@
 		[McalcView hide]; // Calcが出てれば隠す
 	}
 	
-	if (ANSWER_MAX < fabs((Re3edit.nAmount).doubleValue)) {
+	if (ANSWER_MAX < fabs((_Re3edit.nAmount).doubleValue)) {
 		alertBox(NSLocalizedString(@"AmountOver",nil),
 				 NSLocalizedString(@"AmountOver msg",nil),
 				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
-	else if ((Re3edit.nAmount).doubleValue==0.0) {
+	else if ((_Re3edit.nAmount).doubleValue==0.0) {
 		alertBox(NSLocalizedString(@"AmountZero",nil),
 				 NSLocalizedString(@"AmountZero msg",nil),
 				 NSLocalizedString(@"Roger",nil));
 		return;
 	}
 	
-	if( AzMAX_NAME_LENGTH < (Re3edit.zName).length ){
+	if( AzMAX_NAME_LENGTH < (_Re3edit.zName).length ){
 		// 長さがAzMAX_NAME_LENGTH超ならば、0文字目から50文字を切り出して保存　＜以下で切り出すとフリーズする＞
-		Re3edit.zName = [Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
+		_Re3edit.zName = [_Re3edit.zName substringToIndex:AzMAX_NAME_LENGTH-1];
 	}
 
 	//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
@@ -224,14 +241,14 @@
 	if (appDelegate.entityModified==NO) {
 		NSLog(@"BugFix [1.1.3] コピー新規追加で変更が無いとき");
 		//[self remakeE6change:1];	// (1) dateUse変更 ⇒ 支払先条件通りにE6更新
-		if ([MocFunctions e3record:Re3edit makeE6change:1 withFirstYMD:0]) { // E6partsを再生成する
+		if ([MocFunctions e3record:_Re3edit makeE6change:1 withFirstYMD:0]) { // E6partsを再生成する
 			//↓//[MocFunctions e3saved:Re3edit];	// e3node.sumNoCheck の更新が必要
 		}
 	}
 	
 	// E3配下のE6は、随時更新されている。
 	// E3配下の E4,E5あれば更新
-	[MocFunctions e3saved:Re3edit]; 
+	[MocFunctions e3saved:_Re3edit];
 	// 保存
 	[MocFunctions commit];
 	//[0.4.17]この直後、前のViewへ戻るまでの間に、cellForRowAtIndexPath「支払明細(E6)のセル再描画」を通ると落ちる。
@@ -241,17 +258,17 @@
 	
 	//[0.4] E3recordTVCに戻ったとき更新＆再描画するため
 	//autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-	appDelegate.Me3dateUse = [Re3edit.dateUse copy];
+	appDelegate.Me3dateUse = [_Re3edit.dateUse copy];
 	
     if (IS_PAD) {
 //        if (selfPopover) {
-            if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
-                BOOL bSame = (MiSourceYearMMDD == GiYearMMDD( Re3edit.dateUse ));
-                [delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
+            if ([_delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+                BOOL bSame = (MiSourceYearMMDD == GiYearMMDD( _Re3edit.dateUse ));
+                [_delegate refreshE3recordTVC:bSame];// 親の再描画を呼び出す
             }
-            else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+            else if ([_delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
                 BOOL bSame = !MbE1cardChange;
-                [delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
+                [_delegate refreshE6partTVC:bSame];// 親の再描画を呼び出す
             }
             
             // TopMenuTVCにある 「未払合計額」を再描画するための処理
@@ -277,7 +294,7 @@
 	[McalcView hide]; // Calcが出てれば隠す
 	
 	// もし修正していた場合、それが保存されてしまわないように、まずrollBackする　＜＜Re3edit生成直後までrollBackされる＞＞
-	[Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
+	[_Re3edit.managedObjectContext rollback]; // 前回のSAVE以降を取り消す
 	// entityModified リセット　　＜＜変化あれば C＋ ボタンが無効になり、ここを通らないハズだが、念のためにリセットしておく。
 	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.entityModified = NO;
@@ -291,16 +308,16 @@
 	MbE6checked = NO;
 
 	// Re3edit のコピーを生成して、Re3edit と置き換える。
-	E3record *e3new = [MocFunctions replicateE3record:Re3edit]; //retain されているので relese が必要
+	E3record *e3new = [MocFunctions replicateE3record:_Re3edit]; //retain されているので relese が必要
 	// Replace
 //	[e3new retain];		// Re3editが解放される前に確保する必要あり
 //	[Re3edit release];	// 解放
-	Re3edit = e3new;	// 置換　e3new から Re3edit へオーナー移管。　Re3edit は dealloc で release される。
+	_Re3edit = e3new;	// 置換　e3new から Re3edit へオーナー移管。　Re3edit は dealloc で release される。
 
 	// Args
 	//self.title = NSLocalizedString(@"Add Record", nil);
 	self.title = NSLocalizedString(@"CopyAdd Record", nil);
-	PiAdd = (1); // (1)New Add
+	_PiAdd = (1); // (1)New Add
 	MbCopyAdd = YES; // YES:既存明細をコピーして新規追加している状態
 	
 	// Tool Bar ボタンを無効にする
@@ -311,7 +328,7 @@
 	}
 	// [Save]ボタン表示   [1.1.1]複写したとき即Saveできるようにした（同金額で日付だけ当日にするケース）
 	//Bug//apd.entityModified = NO で保存できるようになったが、そのとき E6が生成されない。⇒Fix[1.1.3]saveClose:にてremakeE6change:呼び出す。
-	self.navigationItem.rightBarButtonItem.enabled = ((Re3edit.nAmount).doubleValue != 0.0); //[1.01.001] 金額0で無ければYES
+	self.navigationItem.rightBarButtonItem.enabled = ((_Re3edit.nAmount).doubleValue != 0.0); //[1.01.001] 金額0で無ければYES
 	// テーブルビューを更新
 	[self.tableView reloadData];
 }
@@ -357,17 +374,17 @@
                //AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                // 自身は削除されてしまうのでcopyする。この日時以降の行が中央に表示されることになる。
                //autoreleaseにより不要//[app.Me3dateUse release], app.Me3dateUse = nil; //1.0.0//
-               appDelegate.Me3dateUse = [Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
-               [MocFunctions e3delete:Re3edit];
+               appDelegate.Me3dateUse = [_Re3edit.dateUse copy];  // Me3dateUseはretainプロパティ
+               [MocFunctions e3delete:_Re3edit];
                [MocFunctions commit];
                
                if (IS_PAD) {
                    //            if (selfPopover) {
-                   if ([delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
-                       [delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
+                   if ([_delegate respondsToSelector:@selector(refreshE3recordTVC:)]) {	// メソッドの存在を確認する
+                       [_delegate refreshE3recordTVC:NO];// 親の再描画を呼び出す
                    }
-                   else if ([delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
-                       [delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
+                   else if ([_delegate respondsToSelector:@selector(refreshE6partTVC:)]) {	// メソッドの存在を確認する
+                       [_delegate refreshE6partTVC:NO];// 親の再描画を呼び出す
                    }
                    // TopMenuTVCにある 「未払合計額」を再描画するための処理
                    UINavigationController* naviLeft = [appDelegate.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
@@ -461,26 +478,26 @@
 	
 	if (e3obj) { // Copy
 		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば過去コピーする
-			Re3edit.nAmount = e3obj.nAmount;
+			_Re3edit.nAmount = e3obj.nAmount;
 		}
-		Re3edit.nPayType	= e3obj.nPayType;
-		Re3edit.zName		= e3obj.zName;
-		Re3edit.e1card		= e3obj.e1card;
-		Re3edit.e4shop		= e3obj.e4shop;
-		Re3edit.e5category  = e3obj.e5category;
+		_Re3edit.nPayType	= e3obj.nPayType;
+		_Re3edit.zName		= e3obj.zName;
+		_Re3edit.e1card		= e3obj.e1card;
+		_Re3edit.e4shop		= e3obj.e4shop;
+		_Re3edit.e5category  = e3obj.e5category;
 		// [Save]ボタン表示   [1.01.001]複写したとき即Saveできるようにした（同金額で日付だけ当日にするケース）
-		self.navigationItem.rightBarButtonItem.enabled = ((Re3edit.nAmount).doubleValue != 0.0); // 金額0で無ければYES
+		self.navigationItem.rightBarButtonItem.enabled = ((_Re3edit.nAmount).doubleValue != 0.0); // 金額0で無ければYES
 	}
 	else { // New
 		// 初期化（未定）にする
 		if (MlbAmount.tag == 0) { // Calc入力が0(未定)ならば初期化する
-			Re3edit.nAmount		= [NSDecimalNumber zero];
+			_Re3edit.nAmount		= [NSDecimalNumber zero];
 		}
-		Re3edit.nPayType	= @1;
-		Re3edit.zName		= @"";
-		if (PiAdd != 2) Re3edit.e1card = nil; // (2)Card固定時、消さない
-		if (PiAdd != 3) Re3edit.e4shop = nil;
-		if (PiAdd != 4) Re3edit.e5category = nil;
+		_Re3edit.nPayType	= @1;
+		_Re3edit.zName		= @"";
+		if (_PiAdd != 2) _Re3edit.e1card = nil; // (2)Card固定時、消さない
+		if (_PiAdd != 3) _Re3edit.e4shop = nil;
+		if (_PiAdd != 4) _Re3edit.e5category = nil;
 		// [Save]ボタン表示
 		self.navigationItem.rightBarButtonItem.enabled = NO;	//[1.01.001][Save]無効
 	}
@@ -499,7 +516,7 @@
 	if (self) {
 		// 初期化
 		appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-		PiFirstYearMMDD = 0;
+		_PiFirstYearMMDD = 0;
 		MbSaved = NO;
 		MbE1cardChange = NO;
 		MbModified = NO;
@@ -543,7 +560,7 @@
 	self.navigationItem.rightBarButtonItem.enabled = NO; // 変更あればYESにする
 	
 	// Tool Bar Button
-	if (0 < PiAdd) {
+	if (0 < _PiAdd) {
 		UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																				 target:nil action:nil];
 		
@@ -627,11 +644,11 @@
 	if (Me0root==nil) {
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"E0root" 
-												  inManagedObjectContext:Re3edit.managedObjectContext];
+												  inManagedObjectContext:_Re3edit.managedObjectContext];
 		fetchRequest.entity = entity;
 		// Fitch
 		NSError *error = nil;
-		NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		NSArray *arFetch = [_Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if (error) {
 			AzLOG(@"Error %@, %@", error, [error userInfo]);
 //			GA_TRACK_EVENT_ERROR([error localizedDescription],0);
@@ -658,7 +675,7 @@
 	NSArray *sortArray = @[sort1];
 	
 	// 
-	RaE6parts = [[NSMutableArray alloc] initWithArray:(Re3edit.e6parts).allObjects];
+	RaE6parts = [[NSMutableArray alloc] initWithArray:(_Re3edit.e6parts).allObjects];
 	[RaE6parts sortUsingDescriptors:sortArray];
 	
 	
@@ -693,23 +710,23 @@
 	
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entityE3 = [NSEntityDescription entityForName:@"E3record" 
-												inManagedObjectContext:Re3edit.managedObjectContext];
+												inManagedObjectContext:_Re3edit.managedObjectContext];
 	fetchRequest.entity = entityE3;
 	fetchRequest.fetchLimit = 21;
 	//[fetchRequest setFetchOffset:page * limit ];
 	
-	if (Re3edit.e4shop) {
+	if (_Re3edit.e4shop) {
 		// e4shop以下、最近の全E3
 		//RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e4shop.e3records allObjects]];
 		NSPredicate* pred = [NSPredicate predicateWithFormat:@"(e4shop == %@) AND (dateUse <= %@)",
-							 Re3edit.e4shop, [NSDate date]]; // 現在以前、Limitまで
+							 _Re3edit.e4shop, [NSDate date]]; // 現在以前、Limitまで
 		fetchRequest.predicate = pred;
 	}
-	else if (Re3edit.e5category) {
+	else if (_Re3edit.e5category) {
 		// e5category以下、最近の全E3
 		//RaE3lasts = [[NSMutableArray alloc] initWithArray:[Re3edit.e5category.e3records allObjects]];
 		NSPredicate* pred = [NSPredicate predicateWithFormat:@"(e5category == %@) AND (dateUse <= %@)",
-							 Re3edit.e5category, [NSDate date]]; // 現在以前、Limitまで
+							 _Re3edit.e5category, [NSDate date]]; // 現在以前、Limitまで
 		fetchRequest.predicate = pred;
 	}
 	else {
@@ -724,7 +741,7 @@
 	fetchRequest.sortDescriptors = sortArray;
 	// Fitch
 	NSError *error = nil;
-	NSArray *arFetch = [Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	NSArray *arFetch = [_Re3edit.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 	if (error) {
 		AzLOG(@"Error %@, %@", error, [error userInfo]);
 //		GA_TRACK_EVENT_ERROR([error localizedDescription],0);
@@ -734,24 +751,24 @@
 	RaE3lasts = [[NSMutableArray alloc] initWithArray:arFetch];
 	
 	// 重要！Me3lastsには、新規追加されたRe3editが含まれているので、ここで除外する。
-	[RaE3lasts removeObject:Re3edit];
+	[RaE3lasts removeObject:_Re3edit];
 	
 	// 初期値
-	if (Re3edit.dateUse == nil) {
-		Re3edit.dateUse = [NSDate date]; // Now
+	if (_Re3edit.dateUse == nil) {
+		_Re3edit.dateUse = [NSDate date]; // Now
 	}
     if (IS_PAD) {
-        if (PiAdd==0 && MiSourceYearMMDD==0) {	// 初回のみ通す
-            MiSourceYearMMDD = GiYearMMDD( Re3edit.dateUse ); // saveClose:にて日付の変化を判定するため
+        if (_PiAdd==0 && MiSourceYearMMDD==0) {	// 初回のみ通す
+            MiSourceYearMMDD = GiYearMMDD( _Re3edit.dateUse ); // saveClose:にて日付の変化を判定するため
         }
     }
 	
-	if (Re3edit.e1card == nil) {
+	if (_Re3edit.e1card == nil) {
 		// Re3edit.e1card = 最上行のカードにする
 	}
 	
-	if (PiAdd==0 OR PiFirstYearMMDD < AzMIN_YearMMDD) {
-		PiFirstYearMMDD = 0;
+	if (_PiAdd==0 OR _PiFirstYearMMDD < AzMIN_YearMMDD) {
+		_PiFirstYearMMDD = 0;
 	}
 	
 	
@@ -764,7 +781,7 @@
 	//if (MbModified) {
 	//AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if (appDelegate.entityModified) {	// 変更あり
-		self.navigationItem.rightBarButtonItem.enabled = ((Re3edit.nAmount).doubleValue != 0.0); // 金額0で無ければYES
+		self.navigationItem.rightBarButtonItem.enabled = ((_Re3edit.nAmount).doubleValue != 0.0); // 金額0で無ければYES
 		MbModified = YES; // titleForFooterInSection:にて参照
 		for (id obj in self.toolbarItems) {
 			if (TAG_BAR_BUTTON_TOPVIEW <= [[obj valueForKey:@"tag"] intValue]) {
@@ -867,7 +884,7 @@
 //    }
 	[self unloadRelease];
 	//--------------------------------@property (retain)
-	Re3edit = nil;
+	_Re3edit = nil;
 	//[super dealloc];
 }
 
@@ -895,7 +912,7 @@
 {
 	switch (section) {
 		case 0:
-			if (!MbOptEnableInstallment || (Re3edit.e1card.nPayDay && (Re3edit.e1card.nPayDay).integerValue==0)) 
+			if (!MbOptEnableInstallment || (_Re3edit.e1card.nPayDay && (_Re3edit.e1card.nPayDay).integerValue==0))
 			{												// [Debit]E3.dateUse を支払日とするモード
 				return 4; // 支払方法の選択不要
 			}
@@ -905,8 +922,8 @@
 			return 3;
 			break;
 		case 2:
-			if (0 < (Re3edit.e6parts).count) {
-				return (Re3edit.e6parts).count; // 支払明細
+			if (0 < (_Re3edit.e6parts).count) {
+				return (_Re3edit.e6parts).count; // 支払明細
 			} else {
 				return 1; // 新規追加時の電卓描画範囲を確保するためダミーセル表示する
 			}
@@ -944,7 +961,7 @@
 			break;
 		case 2:
 			//if (PiAdd <= 0) {
-			if (0 < (Re3edit.e6parts).count) {
+			if (0 < (_Re3edit.e6parts).count) {
 				return NSLocalizedString(@"Payment Details",nil);
 			}
 			break;
@@ -966,7 +983,7 @@
 						(long)(1 + MiIndexE3lasts),
 						NSLocalizedString(@"PastCopySuf",nil)];
 			}
-			else if (0 < PiAdd && !MbCopyAdd && (-1) <= MiIndexE3lasts && !MbModified) {
+			else if (0 < _PiAdd && !MbCopyAdd && (-1) <= MiIndexE3lasts && !MbModified) {
 				return NSLocalizedString(@"E3AddBar Help",nil); // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
 			}
 			break;
@@ -975,7 +992,7 @@
 			if (MbE6paid) {
 				return NSLocalizedString(@"E6PAID Help",nil);
 			}
-			else if ((Re3edit.e6parts).count <= 0) {
+			else if ((_Re3edit.e6parts).count <= 0) {
 				return	@"\n\n\n\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
 			}
 			break;
@@ -1036,7 +1053,7 @@
 
 			switch (indexPath.row) {
 				case 0: { // Use date	// NSDateは、GTM(+0000)協定時刻で記録 ⇒ 表示でタイムゾーン変換する
-					if (Re3edit.e1card && (Re3edit.e1card.nPayDay).integerValue==0) {	//[0.4]E3.dateUse を支払日とするモード
+					if (_Re3edit.e1card && (_Re3edit.e1card.nPayDay).integerValue==0) {	//[0.4]E3.dateUse を支払日とするモード
 						cell.textLabel.text = NSLocalizedString(@"Due date",nil);
 					} else {
 						cell.textLabel.text = NSLocalizedString(@"Use date",nil);
@@ -1055,7 +1072,7 @@
                     if (IS_PAD) {
                         cell.detailTextLabel.font = [UIFont systemFontOfSize:24]; // 特に大きく
                     }
-					cell.detailTextLabel.text = [df stringFromDate:Re3edit.dateUse];
+					cell.detailTextLabel.text = [df stringFromDate:_Re3edit.dateUse];
 					
 				} break;
 					
@@ -1075,12 +1092,12 @@
 					cell.textLabel.text = NSLocalizedString(@"Use Amount",nil);
 					cell.accessoryType = UITableViewCellAccessoryNone; // なし
 
-					if (ANSWER_MAX < fabs((Re3edit.nAmount).doubleValue)) {
+					if (ANSWER_MAX < fabs((_Re3edit.nAmount).doubleValue)) {
 						MlbAmount.text = @"Game Over";
 						MlbAmount.textColor = [UIColor redColor];
 						break;
 					}
-					else if ((Re3edit.nAmount).doubleValue < 0.0) {
+					else if ((_Re3edit.nAmount).doubleValue < 0.0) {
 						MlbAmount.textColor = [UIColor blueColor];	// 負債のマイナスだから債権、よって青にした
 					} else {
 						MlbAmount.textColor = [UIColor blackColor];
@@ -1091,18 +1108,18 @@
 					formatter.locale = [NSLocale currentLocale]; 
 					//NSLog(@"***** negativeFormat=%@", [formatter negativeFormat]);
 					formatter.negativeFormat = @"¤-#,##0.####";
-					MlbAmount.text = [formatter stringFromNumber:Re3edit.nAmount];
+					MlbAmount.text = [formatter stringFromNumber:_Re3edit.nAmount];
 					
 				}break;
 					
 				case 2:{ // Card
 					cell.textLabel.text = NSLocalizedString(@"Use Card",nil);
-					if (Re3edit.e1card) {
-						cell.detailTextLabel.text = Re3edit.e1card.zName;
+					if (_Re3edit.e1card) {
+						cell.detailTextLabel.text = _Re3edit.e1card.zName;
 					} else {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
 					}
-					if (PiAdd == 2) { // Card固定
+					if (_PiAdd == 2) { // Card固定
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.accessoryType = UITableViewCellAccessoryNone; // なし
 					}
@@ -1116,7 +1133,7 @@
                     }else{
                         cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
                     }
-					switch ((Re3edit.nRepeat).integerValue) {
+					switch ((_Re3edit.nRepeat).integerValue) {
 						case  0: cell.detailTextLabel.text = NSLocalizedString(@"Repeat00", nil); break;
 						case  1: cell.detailTextLabel.text = NSLocalizedString(@"Repeat01", nil); break;
 						case  2: cell.detailTextLabel.text = NSLocalizedString(@"Repeat02", nil); break;
@@ -1138,7 +1155,7 @@
                     }else{
                         cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
                     }
-					switch ((Re3edit.nPayType).integerValue) {
+					switch ((_Re3edit.nPayType).integerValue) {
 						case 1:
 							cell.detailTextLabel.text = NSLocalizedString(@"PayType 001",nil);
 							break;
@@ -1182,12 +1199,12 @@
 				case 0: // Shop
 				{
 					cell.textLabel.text = NSLocalizedString(@"Use Shop",nil);
-					if (Re3edit.e4shop)
-						cell.detailTextLabel.text = Re3edit.e4shop.zName;
+					if (_Re3edit.e4shop)
+						cell.detailTextLabel.text = _Re3edit.e4shop.zName;
 					else
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
 
-					if (PiAdd == 3) { // Shop固定Add時
+					if (_PiAdd == 3) { // Shop固定Add時
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.accessoryType = UITableViewCellAccessoryNone; // なし
 					}
@@ -1196,12 +1213,12 @@
 				case 1: // Category
 				{
 					cell.textLabel.text = NSLocalizedString(@"Use Category",nil);
-					if (Re3edit.e5category)
-						cell.detailTextLabel.text = Re3edit.e5category.zName;
+					if (_Re3edit.e5category)
+						cell.detailTextLabel.text = _Re3edit.e5category.zName;
 					else
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
 					
-					if (PiAdd == 4) { // Category固定Add時
+					if (_PiAdd == 4) { // Category固定Add時
 						cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
 						cell.accessoryType = UITableViewCellAccessoryNone; // なし
 					}
@@ -1210,8 +1227,8 @@
 				case 2: // Memo
 				{
 					cell.textLabel.text = NSLocalizedString(@"Use Name",nil);
-					if (0 < (Re3edit.zName).length)
-						cell.detailTextLabel.text = Re3edit.zName;
+					if (0 < (_Re3edit.zName).length)
+						cell.detailTextLabel.text = _Re3edit.zName;
 					else
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
 				} break;
@@ -1361,7 +1378,7 @@
 	//[self viewWillAppear:YES]; これえを呼ぶと、E6partsが非表示にされてしまう。
 	[self.tableView reloadData];
 	//[Save]ボタン表示だけ必要
-	self.navigationItem.rightBarButtonItem.enabled = ((Re3edit.nAmount).doubleValue != 0.0); // 金額0で無ければYES
+	self.navigationItem.rightBarButtonItem.enabled = ((_Re3edit.nAmount).doubleValue != 0.0); // 金額0で無ければYES
 }
 
 
@@ -1388,10 +1405,10 @@
 				case 0: // Use date
 					if (!MbE6paid) {
 						// 変更あれば[DONE]にて配下E6全削除すること
-						EditDateVC *evc = [[EditDateVC alloc] initWithE3:Re3edit orE6:nil];
+						EditDateVC *evc = [[EditDateVC alloc] initWithE3:_Re3edit orE6:nil];
 						evc.title = NSLocalizedString(@"Use date", nil);
 						evc.PiMinYearMMDD = AzMIN_YearMMDD;
-						evc.PiMaxYearMMDD = PiFirstYearMMDD;
+						evc.PiMaxYearMMDD = _PiFirstYearMMDD;
 						evc.delegate = self;
 						//evc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
                         evc.view.frame = self.view.bounds;
@@ -1407,14 +1424,14 @@
 					break;
 					
 				case 2: // Card
-					if (PiAdd == 2) return; // (2)Card固定
+					if (_PiAdd == 2) return; // (2)Card固定
 					if (!MbE6paid) 
 					{
 						// 変更あれば[DONE]にて配下E6全削除すること
 						E1cardTVC *tvc = [[E1cardTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Card choice",nil);
 						tvc.Re0root = Me0root;
-						tvc.Re3edit = Re3edit;
+						tvc.Re3edit = _Re3edit;
 						tvc.delegate = self;
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
@@ -1427,7 +1444,7 @@
 					if (!MbE6paid) {
 						E3selectRepeatTVC *tvc = [[E3selectRepeatTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Repeat",nil);
-						tvc.Re3edit = Re3edit;
+						tvc.Re3edit = _Re3edit;
 						//tvc.hidesBottomBarWhenPushed = YES; // 次画面のToolBarを消す
 						[self.navigationController pushViewController:tvc animated:YES];
 						
@@ -1439,7 +1456,7 @@
 						// E3selectPaymentTVC へ
 						E3selectPayTypeTVC *tvc = [[E3selectPayTypeTVC alloc] init];
 						tvc.title = NSLocalizedString(@"Use Payment",nil);
-						tvc.Re3edit = Re3edit;
+						tvc.Re3edit = _Re3edit;
 						tvc.delegate = self;
 						[self.navigationController pushViewController:tvc animated:YES];
 						
@@ -1450,14 +1467,14 @@
 		case 1:
 			switch (indexPath.row) {
 				case 0: // Shop
-						if (PiAdd == 3) return; // (3)Shop固定
+						if (_PiAdd == 3) return; // (3)Shop固定
 						else 
 						{
 							// E4shop へ
 							E4shopTVC *tvc = [[E4shopTVC alloc] init];
 							tvc.title = NSLocalizedString(@"Shop choice",nil);
 							tvc.Re0root = Me0root;
-							tvc.Pe3edit = Re3edit;
+							tvc.Pe3edit = _Re3edit;
                             if (IS_PAD) {
                                 tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
                             }
@@ -1467,12 +1484,12 @@
 						break;
 					
 				case 1: // Category
-					if (PiAdd == 4) return; // (4)Category固定
+					if (_PiAdd == 4) return; // (4)Category固定
 				{
 					E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
 					tvc.title = NSLocalizedString(@"Category choice",nil);
 					tvc.Re0root = Me0root;
-					tvc.Pe3edit = Re3edit;
+					tvc.Pe3edit = _Re3edit;
                     if (IS_PAD) {
                         tvc.delegate = self;	//選択決定時、viewWillAppear を呼び出すため
                     }
@@ -1484,7 +1501,7 @@
 				{
 					EditTextVC *evc = [[EditTextVC alloc] init];
 					evc.title = NSLocalizedString(@"Use Name", nil);
-					evc.Rentity = Re3edit;
+					evc.Rentity = _Re3edit;
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
@@ -1519,7 +1536,7 @@
 						E6part *e6 = RaE6parts[indexPath.row-1]; //(-1)前回
 						evc.PiMinYearMMDD = (e6.e2invoice.nYearMMDD).integerValue;	//前回の支払日以降
 					} else {
-						evc.PiMinYearMMDD = GiYearMMDD( Re3edit.dateUse );	//利用日以降
+						evc.PiMinYearMMDD = GiYearMMDD( _Re3edit.dateUse );	//利用日以降
 					}
 					if (indexPath.row+1 < RaE6parts.count) { // 次回あり
 						E6part *e6 = RaE6parts[indexPath.row+1]; //(+1)次回

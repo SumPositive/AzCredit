@@ -25,14 +25,6 @@
 #pragma mark - E2temp
 //-------------------------------------------E2invoiceTVCローカル使用一時作業クラス定義
 @interface E2temp : NSObject
-{
-	NSInteger		iYearMMDD;
-	BOOL			bPaid;
-	//NSInteger		iSum;
-	NSDecimalNumber	*decSum;
-	NSInteger		iNoCheck;
-	NSMutableSet	*e2invoices;
-}
 @property (nonatomic, assign) NSInteger			iYearMMDD;
 @property (nonatomic, assign) BOOL				bPaid;
 @property (nonatomic, strong) NSDecimalNumber	*decSum;
@@ -41,21 +33,19 @@
 // init禁止
 - (id)init __attribute__((unavailable("init is not available")));
 - (instancetype)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP NS_DESIGNATED_INITIALIZER;
-//- (void)dealloc;
 @end
 //-------------------------------------------E2invoiceTVCローカル使用一時作業クラス実装
 @implementation E2temp
-@synthesize iYearMMDD, bPaid, decSum, iNoCheck, e2invoices;
 
 - (instancetype)initWithYearMMDD:(NSInteger)iY inPaid:(BOOL)bP {
 	self = [super init];
 	if (self != nil) {
-		iYearMMDD = iY;
-		bPaid = bP;
+		self.iYearMMDD = iY;
+		self.bPaid = bP;
 		//iSum = 0;
-		decSum = [NSDecimalNumber zero]; // dealloc で release されるため。
-		iNoCheck = 0;
-		e2invoices = [NSMutableSet new];
+		self.decSum = [NSDecimalNumber zero]; // dealloc で release されるため。
+		self.iNoCheck = 0;
+		self.e2invoices = [NSMutableSet new];
 	}
 	return self;
 }
@@ -63,15 +53,21 @@
 
 
 #pragma mark - E2invoiceTVC
-//-----------------------------------------------------------------------------------------------
-@interface E2invoiceTVC (PrivateMethods)
+
+@interface E2invoiceTVC ()
+{
+    NSMutableArray		*RaE2list;
+    UIButton		*MbuPaid;
+    UIButton		*MbuUnpaid;
+    AppDelegate *appDelegate;
+    BOOL		MbFirstAppear;
+    BOOL		MbAction;		// 連続タッチされると落ちるので、その対策
+    CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)viewDesign:(BOOL)animated;
-//- (void)cellLeftButton: (UIButton *)button;
 @end
 
 @implementation E2invoiceTVC
-@synthesize Re1select;
-@synthesize Re8select;
 
 #pragma mark - Action
 
@@ -400,7 +396,7 @@
 	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
-	if (Re1select && Re8select) {
+	if (_Re1select && _Re8select) {
 		AzLOG(@"Exit ERROR: Pe1select,Re8select != nil");
 //		GA_TRACK_EVENT_ERROR(@"Exit ERROR: Pe1select,Re8select != nil",0);
 		exit(-1);  // Fail
@@ -421,14 +417,14 @@
 	NSArray *sortDesc = @[sort1]; // 支払日降順：Limit抽出に使用
 	
 	NSArray *arFetch = nil;
-	if (Re1select) {	//------------------------------E1card
-		assert(Re8select==nil);
+	if (_Re1select) {	//------------------------------E1card
+		assert(_Re8select==nil);
 		NSMutableArray *muE2tmp = nil;
 		// E2paid 支払済（直近の20件）
 		arFetch = [MocFunctions select:@"E2invoice" 
 								   limit:GD_PAIDLIST_MAX
 								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e1paid == %@", Re1select]
+								   where:[NSPredicate predicateWithFormat:@"e1paid == %@", _Re1select]
 									sort:sortDesc]; // 日付降順の先頭から20件抽出
 		muE2tmp = [NSMutableArray new];
 		for (E2invoice *e2 in [arFetch reverseObjectEnumerator]) { // arFetchは降順なのでreverseしている
@@ -443,7 +439,7 @@
 		arFetch = [MocFunctions select:@"E2invoice" 
 								   limit:0 // 全件
 								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e1unpaid == %@", Re1select]
+								   where:[NSPredicate predicateWithFormat:@"e1unpaid == %@", _Re1select]
 									sort:sortAsc]; // 日付昇順で全件抽出
 		muE2tmp = [NSMutableArray new];
 		for (E2invoice *e2 in arFetch) { // arFetchは昇順
@@ -455,22 +451,22 @@
 		}
 		[RaE2list addObject:muE2tmp]; // 一次元追加
 	}
-	else if (Re8select) { //---------------------------E8bank
-		assert(Re1select==nil);
+	else if (_Re8select) { //---------------------------E8bank
+		assert(_Re1select==nil);
 		NSMutableArray *muE2paid = [NSMutableArray new];
 		NSMutableArray *muE2unpaid = [NSMutableArray new];
 		// E2paid 支払済（直近の20件）
 		arFetch = [MocFunctions select:@"E2invoice" 
 								   limit:GD_PAIDLIST_MAX
 								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e1paid.e8bank == %@", Re8select]
+								   where:[NSPredicate predicateWithFormat:@"e1paid.e8bank == %@", _Re8select]
 									sort:sortDesc]; // 日付降順の先頭から20件抽出
 		[muE2paid addObjectsFromArray:arFetch];
 		// E2unpaid 未払い（全件）
 		arFetch = [MocFunctions select:@"E2invoice" 
 								   limit:0 // 全件
 								  offset:0
-								   where:[NSPredicate predicateWithFormat:@"e1unpaid.e8bank == %@", Re8select]
+								   where:[NSPredicate predicateWithFormat:@"e1unpaid.e8bank == %@", _Re8select]
 									sort:sortAsc]; // 日付昇順で全件抽出
 		[muE2unpaid addObjectsFromArray:arFetch];
 		// PAID .nYearMMDD 昇順ソート
@@ -741,7 +737,7 @@
 			break;
 		case 1: {
 			NSString* str; 
-			if (Re1select) {
+			if (_Re1select) {
 				str = NSLocalizedString(@"E2unpaidFooter",nil);
 			} else {
 				// "支払日の変更は、\nカード一覧から可能です。"
@@ -995,9 +991,9 @@
 	if ((e2t.e2invoices).count <= 0) return;
 	// E6parts へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
-	if (Re1select) {
+	if (_Re1select) {
 #ifdef AzDEBUG
-		tvc.title = [NSString stringWithFormat:@"E6 %@", Re1select.zName];
+		tvc.title = [NSString stringWithFormat:@"E6 %@", _Re1select.zName];
 #else
 		tvc.title =  Re1select.zName;
 #endif
@@ -1010,10 +1006,10 @@
 		iDD -= (iMM * 100);
 		if (e2t.bPaid) {
 			tvc.title = [NSString stringWithFormat:@"(%d-%d%@) %@",
-						 (int)iMM, (int)iDD, NSLocalizedString(@"Pre",nil), Re8select.zName];
+						 (int)iMM, (int)iDD, NSLocalizedString(@"Pre",nil), _Re8select.zName];
 		} else {
 			tvc.title = [NSString stringWithFormat:@"(%d-%d%@) %@", 
-						 (int)iMM, (int)iDD, NSLocalizedString(@"Due",nil), Re8select.zName];
+						 (int)iMM, (int)iDD, NSLocalizedString(@"Due",nil), _Re8select.zName];
 		}
 #ifdef AzDEBUG
 		tvc.title = [NSString stringWithFormat:@"E6 %@", tvc.title];

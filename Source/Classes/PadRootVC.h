@@ -10,12 +10,7 @@
 
 
 @interface PadRootVC : UIViewController <UISplitViewControllerDelegate>
-{
-@private
-	//id										delegate;
-}
 
-@property (nonatomic, assign) id									delegate;
-//@property (nonatomic, strong) UIPopoverController* menuPopoverController;
+@property (nonatomic, assign) id	delegate;
 
 @end

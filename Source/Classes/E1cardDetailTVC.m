@@ -19,18 +19,14 @@
 
 #define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（10行）
 
-@interface E1cardDetailTVC (PrivateMethods)
+@interface E1cardDetailTVC ()
+{
+    UILabel		*MlbNote;
+}
 - (void)viewDesign;
 @end
 
 @implementation E1cardDetailTVC
-@synthesize Re1edit;
-@synthesize PiAddRow;
-//#ifdef AzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-//#endif
-
 
 
 #pragma mark - Action
@@ -39,9 +35,9 @@
 {
 	[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
 	
-	if (0 <= PiAddRow) { // Add
+	if (0 <= _PiAddRow) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[MocFunctions deleteEntity:Re1edit];
+		[MocFunctions deleteEntity:_Re1edit];
 	}
 	
     if (IS_PAD) {
@@ -59,18 +55,18 @@
 // 編集フィールドの値を self.e3target にセットする
 - (void)saveClose:(id)sender 
 {
-	if (0 <= PiAddRow) { // Add
-		Re1edit.nRow = @(PiAddRow);
+	if (0 <= _PiAddRow) { // Add
+		_Re1edit.nRow = @(_PiAddRow);
 	}
 	
 	// E1,E2,E3,E6,E7 の関係を保ちながら更新する
-	[MocFunctions e1update:Re1edit];
+	[MocFunctions e1update:_Re1edit];
 	[MocFunctions commit];
 	
     if (IS_PAD) {
 //        if (selfPopover) {
-            if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
-                [delegate refreshTable];// 親の再描画を呼び出す
+            if ([_delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+                [_delegate refreshTable];// 親の再描画を呼び出す
             }
             //[selfPopover dismissPopoverAnimated:YES];
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -280,33 +276,33 @@
 				case 0: // Card name
 				{
 					cell.textLabel.text = NSLocalizedString(@"CardName",nil);
-					cell.detailTextLabel.text = Re1edit.zName;
+					cell.detailTextLabel.text = _Re1edit.zName;
 				}
 					break;
 				case 1: // PayDay
 				{
 					cell.textLabel.text = NSLocalizedString(@"PayDay",nil);
 
-					if ((Re1edit.nClosingDay).integerValue <= 0) {	//Debit
-						if ((Re1edit.nPayDay).integerValue <= 0) {
+					if ((_Re1edit.nClosingDay).integerValue <= 0) {	//Debit
+						if ((_Re1edit.nPayDay).integerValue <= 0) {
 							//当日締⇒Debit⇒ 当日払
 							cell.detailTextLabel.text = NSLocalizedString(@"Closing-Debit",nil);
 						} else {
 							//当日締⇒Debit⇒ ○日後払
 							cell.detailTextLabel.text = [NSString stringWithFormat:
 														 NSLocalizedString(@"Closing-DebitAfter",nil),
-														 GstringDay((Re1edit.nPayDay).integerValue)];
+														 GstringDay((_Re1edit.nPayDay).integerValue)];
 						}
 					} 
 					else {
 						NSString *zClosingDay = nil;
-						if ((Re1edit.nClosingDay).integerValue==29) {
+						if ((_Re1edit.nClosingDay).integerValue==29) {
 							zClosingDay = NSLocalizedString(@"EndDay",nil); // 末日
 						} else {
-							zClosingDay = GstringDay((Re1edit.nClosingDay).integerValue);
+							zClosingDay = GstringDay((_Re1edit.nClosingDay).integerValue);
 						}
 						NSString *zPayMonth = nil;
-						switch ((Re1edit.nPayMonth).integerValue) {
+						switch ((_Re1edit.nPayMonth).integerValue) {
 							case 0:
 								zPayMonth = NSLocalizedString(@"This month",nil);
 								break;
@@ -321,10 +317,10 @@
 								break;
 						}
 						NSString *zPayDay = nil;
-						if ((Re1edit.nPayDay).integerValue==29) {
+						if ((_Re1edit.nPayDay).integerValue==29) {
 							zPayDay = NSLocalizedString(@"EndDay",nil); // 末日
 						} else {
-							zPayDay = GstringDay((Re1edit.nPayDay).integerValue);
+							zPayDay = GstringDay((_Re1edit.nPayDay).integerValue);
 						}
 						cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Closing-Payment",nil),
 																							zClosingDay, zPayMonth, zPayDay];
@@ -354,8 +350,8 @@
 				case 2: // Bank
 				{
 					cell.textLabel.text = NSLocalizedString(@"CardBank",nil);
-					if (Re1edit.e8bank)
-						cell.detailTextLabel.text = Re1edit.e8bank.zName;
+					if (_Re1edit.e8bank)
+						cell.detailTextLabel.text = _Re1edit.e8bank.zName;
 					else
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)", nil);
 				}
@@ -385,35 +381,35 @@
                     }else{
                         MlbNote.frame = CGRectMake(20,10, self.tableView.frame.size.width-60,180);
                     }
-					if (Re1edit.zNote == nil) {
+					if (_Re1edit.zNote == nil) {
 						MlbNote.text = @"";  // TextViewは、(nil) と表示されるので、それを消すため。
 					} else {
 						MlbNote.text = [NSString stringWithFormat:@"%@%@", 
-										Re1edit.zNote, LABEL_NOTE_SUFFIX]; //上寄せするため
+										_Re1edit.zNote, LABEL_NOTE_SUFFIX]; //上寄せするため
 					}
 				}
 					break;
 				case 1: // 
 				{
 					cell.textLabel.text = NSLocalizedString(@"Bonus1",nil);
-					if ((Re1edit.nBonus1).integerValue <= 0) {
+					if ((_Re1edit.nBonus1).integerValue <= 0) {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
 					} else {
 						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2ld月 %@", 
-													 (long)(Re1edit.nBonus1).integerValue,
-													 GstringMonth((Re1edit.nBonus1).integerValue)];
+													 (long)(_Re1edit.nBonus1).integerValue,
+													 GstringMonth((_Re1edit.nBonus1).integerValue)];
 					}
 				}
 					break;
 				case 2: // 
 				{
 					cell.textLabel.text = NSLocalizedString(@"Bonus2",nil);
-					if ((Re1edit.nBonus2).integerValue <= 0) {
+					if ((_Re1edit.nBonus2).integerValue <= 0) {
 						cell.detailTextLabel.text = NSLocalizedString(@"(Untitled)",nil);
 					} else {
 						cell.detailTextLabel.text = [NSString stringWithFormat:@"%2ld月 %@", 
-													 (long)(Re1edit.nBonus2).integerValue,
-													 GstringMonth((Re1edit.nBonus2).integerValue)];
+													 (long)(_Re1edit.nBonus2).integerValue,
+													 GstringMonth((_Re1edit.nBonus2).integerValue)];
 					}
 				}
 					break;
@@ -434,7 +430,7 @@
 				{
 					EditTextVC *evc = [[EditTextVC alloc] init];
 					evc.title = NSLocalizedString(@"CardName", nil);
-					evc.Rentity = Re1edit;
+					evc.Rentity = _Re1edit;
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
@@ -447,7 +443,7 @@
 				{
 					E1editPayDayVC *evc = [[E1editPayDayVC alloc] init];
 					evc.title = NSLocalizedString(@"PayDay", nil);
-					evc.Re1edit = Re1edit;
+					evc.Re1edit = _Re1edit;
 					self.navigationController.hidesBottomBarWhenPushed = YES; // この画面では非表示であるから
 					[self.navigationController pushViewController:evc animated:YES];
 					// 変更ありを AppDelegateへ通知	// E1editPayDayVC：内から通知している
@@ -459,7 +455,7 @@
 					E8bankTVC *tvc = [[E8bankTVC alloc] init];
 					tvc.title = NSLocalizedString(@"Bank choice",nil);
 					tvc.Re0root = [MocFunctions e0root];
-					tvc.Pe1card = Re1edit;
+					tvc.Pe1card = _Re1edit;
 					[self.navigationController pushViewController:tvc animated:YES];
 					// 変更ありを AppDelegateへ通知	// E8bankTVC：内から通知している
 				}
@@ -472,7 +468,7 @@
 				{
 					EditTextVC *evc = [[EditTextVC alloc] init];
 					evc.title = NSLocalizedString(@"CardNote", nil);
-					evc.Rentity = Re1edit;
+					evc.Rentity = _Re1edit;
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;

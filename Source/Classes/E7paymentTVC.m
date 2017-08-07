@@ -22,14 +22,19 @@
 #define	TAG_ALERT_toPAID		226
 
 
-@interface E7paymentTVC (PrivateMethods)
+@interface E7paymentTVC ()
+{
+    NSMutableArray		*RaE7list;
+    UIButton		*MbuPaid;
+    UIButton		*MbuUnpaid;
+    BOOL		MbFirstAppear;
+    BOOL		MbAction;		// 連続タッチされると落ちるので、その対策
+    CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)viewDesign:(BOOL)animated;
-//- (void)cellLeftButton: (UIButton *)button;
 @end
 
 @implementation E7paymentTVC
-@synthesize Re0root;
-
 
 #pragma mark - Action
 
@@ -324,8 +329,8 @@
 	}
 	MbuUnpaid.frame = CGRectMake(rc.size.width/2+40, rc.origin.y-15, 90,70);
 	
-	MbuUnpaid.hidden = ((Re0root.e7paids).count <= 0);
-	MbuPaid.hidden = ((Re0root.e7unpaids).count <= 0);
+	MbuUnpaid.hidden = ((_Re0root.e7paids).count <= 0);
+	MbuPaid.hidden = ((_Re0root.e7unpaids).count <= 0);
 
 	[self.tableView bringSubviewToFront:MbuPaid];	//改めてtitleForFooterInSection:でも呼び出している
 	[self.tableView bringSubviewToFront:MbuUnpaid];
@@ -377,7 +382,7 @@
 	NSArray *arFetch = [MocFunctions select:@"E7payment" 
 										limit:GD_PAIDLIST_MAX
 									   offset:0
-										where:[NSPredicate predicateWithFormat:@"e0paid == %@", Re0root]
+										where:[NSPredicate predicateWithFormat:@"e0paid == %@", _Re0root]
 										 sort:sortDesc];
 	
 	NSMutableArray *muE7tmp = [[NSMutableArray alloc] initWithArray:arFetch];
@@ -385,7 +390,7 @@
 	RaE7list = [[NSMutableArray alloc] initWithObjects:muE7tmp,nil]; // [0][muE7tmp]  RaE7list は、Read Only.
 	
 	// E7未払い　（全て）
-	muE7tmp = [[NSMutableArray alloc] initWithArray:(Re0root.e7unpaids).allObjects];
+	muE7tmp = [[NSMutableArray alloc] initWithArray:(_Re0root.e7unpaids).allObjects];
 	[muE7tmp sortUsingDescriptors:sortAsc];
 	[RaE7list addObject:muE7tmp];	// [1][muE7tmp]
 	
@@ -548,7 +553,7 @@
 			
 		case 1:
 			// E7 未払い総額
-			if ((Re0root.e7unpaids).count <= 0) {
+			if ((_Re0root.e7unpaids).count <= 0) {
 				return NSLocalizedString(@"Following unpaid nothing",nil);
 			}
 			return NSLocalizedString(@"Unpaid",nil);

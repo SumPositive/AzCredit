@@ -17,46 +17,30 @@
 
 #define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（10行）
 
-@interface E8bankDetailTVC (PrivateMethods)
+@interface E8bankDetailTVC ()
+{
+    UILabel		*MlbNote;
+}
 - (void)viewDesign;
 @end
 
 @implementation E8bankDetailTVC
-@synthesize Re8edit;
-@synthesize PiAddRow;
-@synthesize PbSave;
-//@synthesize Pe1edit;
-//#ifdef AzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-//#endif
 
 
 #pragma mark - Delegate method
-
-
-//#ifdef xxxAzPAD
-//- (void)closePopover	// 回転したとき表示中のPopoverがあれば矢印位置が不定になるので強制的に閉じる。親から呼び出される
-//{
-//	if (MpopoverView) {	//dismissPopoverCancel
-//		[MpopoverView dismissPopoverAnimated:YES];
-//	}
-//}
-//#endif
-
 
 
 #pragma mark - Action
 
 - (void)cancelClose:(id)sender
 {
-	if (PbSave) {
+	if (_PbSave) {
 		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
 	}
 	
-	if (0 <= PiAddRow) { // Add
+	if (0 <= _PiAddRow) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[MocFunctions deleteEntity:Re8edit];
+		[MocFunctions deleteEntity:_Re8edit];
 	}
 	
     if (IS_PAD) {
@@ -75,15 +59,15 @@
 // 編集フィールドの値を self.e3target にセットする
 - (void)saveClose:(id)sender 
 {
-	if (0 <= PiAddRow) { // Add
-		Re8edit.nRow = @(PiAddRow);
+	if (0 <= _PiAddRow) { // Add
+		_Re8edit.nRow = @(_PiAddRow);
 	}
 	
 	NSError *err = nil;
-	NSManagedObjectContext *contx = Re8edit.managedObjectContext;
+	NSManagedObjectContext *contx = _Re8edit.managedObjectContext;
 	
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
-	NSString *zName = [Re8edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSString *zName = [_Re8edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if (zName.length <= 0) {
 		alertBox(NSLocalizedString(@"E8zNameLess",nil),
 				 NSLocalizedString(@"E8zNameLessMsg",nil),
@@ -100,7 +84,7 @@
 	// コンテキストにリクエストを送る
 	NSArray* aRes = [contx executeFetchRequest:request error:&err];
 	NSInteger iCnt = 2;
-	if (0 <= PiAddRow) iCnt = 1;
+	if (0 <= _PiAddRow) iCnt = 1;
 	if (iCnt < aRes.count) {
 		alertBox(NSLocalizedString(@"E8zNameDups",nil),
 				 NSLocalizedString(@"E8zNameDupsMsg",nil),
@@ -109,13 +93,13 @@
 	}
 	// OK トリム済み＆重複なし
 	
-	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsaveClose:により保存。
+	if (_PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsaveClose:により保存。
 		// SAVE
 		[MocFunctions commit];
 	}
 	
 	if (self.Pe1edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
-		self.Pe1edit.e8bank = Re8edit;
+		self.Pe1edit.e8bank = _Re8edit;
 		NSInteger iPos = (self.navigationController.viewControllers).count;
 		if (3 < iPos) {
 			// 2つ前のViewへ戻る
@@ -127,8 +111,8 @@
 	
     if (IS_PAD) {
 //        if (selfPopover) {
-            if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
-                [delegate refreshTable];// 親の再描画を呼び出す
+            if ([_delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+                [_delegate refreshTable];// 親の再描画を呼び出す
             }
 //            [selfPopover dismissPopoverAnimated:YES];
 //        } else {
@@ -173,7 +157,7 @@
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 											  target:self action:@selector(cancelClose:)];
-	if (PbSave) {
+	if (_PbSave) {
 		// SAVEボタンを右側に追加する
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -325,7 +309,7 @@
 				case 0: // Card name
 				{
 					cell.textLabel.text = NSLocalizedString(@"BankName",nil);
-					cell.detailTextLabel.text = Re8edit.zName;
+					cell.detailTextLabel.text = _Re8edit.zName;
 				}
 					break;
 			}
@@ -348,11 +332,11 @@
 						MlbNote.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbNote]; 
 					}
-					if (Re8edit.zNote == nil) {
+					if (_Re8edit.zNote == nil) {
 						MlbNote.text = @"";  // TextViewは、(nil) と表示されるので、それを消すため。
 					} else {
 						MlbNote.text = [NSString stringWithFormat:@"%@%@", 
-										Re8edit.zNote, LABEL_NOTE_SUFFIX]; //上寄せするため
+										_Re8edit.zNote, LABEL_NOTE_SUFFIX]; //上寄せするため
 					}
 				}
 					break;
@@ -379,7 +363,7 @@
                         evc = [[EditTextVC alloc] init];
                     }
 					evc.title = NSLocalizedString(@"BankName", nil);
-					evc.Rentity = Re8edit;
+					evc.Rentity = _Re8edit;
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
@@ -400,7 +384,7 @@
                         evc = [[EditTextVC alloc] init];
                     }
 					evc.title = NSLocalizedString(@"BankNote", nil);
-					evc.Rentity = Re8edit;
+					evc.Rentity = _Re8edit;
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NOTE_LENGTH;
 					evc.PiSuffixLength = 0;

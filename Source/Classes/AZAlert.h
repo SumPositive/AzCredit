@@ -12,10 +12,10 @@
 
 @interface AZAlert : NSObject
 
-+ (UIAlertController*)target:(UIViewController*_Nullable)target
-                       title:(NSString*_Nullable)title
-                     message:(NSString*_Nullable)message
-                  completion:(void (^ _Nullable)())completion;
++ (UIAlertController* _Nullable)target:(UIViewController* _Nullable)target
+                                 title:(NSString* _Nullable)title
+                               message:(NSString* _Nullable)message
+                            completion:(void (^ _Nullable)())completion;
 
 /**
  3ボタン・アラート

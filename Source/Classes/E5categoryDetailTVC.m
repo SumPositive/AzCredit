@@ -17,32 +17,23 @@
 
 #define LABEL_NOTE_SUFFIX   @"\n\n\n\n\n"  // UILabel *MlbNoteを上寄せするための改行（5行）
 
-@interface E5categoryDetailTVC (PrivateMethods)
-//- (void)viewDesign;
+@interface E5categoryDetailTVC ()
 @end
 
 @implementation E5categoryDetailTVC
-@synthesize Re5edit;
-@synthesize PbAdd;
-@synthesize PbSave;
-//@synthesize Pe3edit;
-//#ifdef AzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-//#endif
 
 
 #pragma mark - Action
 
 - (void)cancelClose:(id)sender
 {
-	if (PbSave) {
+	if (_PbSave) {
 		[MocFunctions rollBack]; // 前回のSAVE以降を取り消す
 	}
 	
-	if (PbAdd) { // Add
+	if (_PbAdd) { // Add
 		// Add mode: 新オブジェクトのキャンセルなので、呼び出し元で挿入したオブジェクトを削除する
-		[MocFunctions deleteEntity:Re5edit];
+		[MocFunctions deleteEntity:_Re5edit];
 	}
 	
     if (IS_PAD) {
@@ -63,9 +54,9 @@
 	
 	// zName : トリムや重複チェックは、E4editTextVC.done にて処理済みである。ここでは追加直後のSAVE時の抜け穴を防ぐ。
 	NSError *err = nil;
-	NSManagedObjectContext *contx = Re5edit.managedObjectContext;
+	NSManagedObjectContext *contx = _Re5edit.managedObjectContext;
 	// トリム（両端のスペース除去）　＜＜Load時に zNameで検索するから厳密にする＞＞
-	NSString *zName = [Re5edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSString *zName = [_Re5edit.zName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	if (zName.length <= 0) {
 		alertBox(NSLocalizedString(@"E5zNameLess",nil),
 				 NSLocalizedString(@"E5zNameLessMsg",nil),
@@ -81,7 +72,7 @@
 	// コンテキストにリクエストを送る
 	NSArray* aRes = [contx executeFetchRequest:request error:&err];
 	NSInteger iCnt = 2;
-	if (PbAdd) iCnt = 1;
+	if (_PbAdd) iCnt = 1;
 	if (iCnt < aRes.count) {
 		alertBox(NSLocalizedString(@"E5zNameDups",nil),
 				 NSLocalizedString(@"E5zNameDupsMsg",nil),
@@ -89,15 +80,15 @@
 		return;
 	}
 	// OK トリム済み＆重複なし
-	Re5edit.sortDate = [NSDate date]; // Now
+	_Re5edit.sortDate = [NSDate date]; // Now
 	
-	if (PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
+	if (_PbSave) { // マスタモードのみ保存する。 以外は、E3recordDetailTVC側のsave:により保存。
 		// SAVE
 		[MocFunctions commit];
 	}
 	
 	if (self.Pe3edit) {	// E3から選択モードで呼ばれて、新規登録したとき、E3まで2段階戻る処理
-		self.Pe3edit.e5category = Re5edit;
+		self.Pe3edit.e5category = _Re5edit;
         if (IS_PAD) {
             [self.navigationController  popToRootViewControllerAnimated:YES];  // < RootViewへ戻る
             return;
@@ -114,8 +105,8 @@
 
     if (IS_PAD) {
 //        if (selfPopover) {
-            if ([delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
-                [delegate refreshTable];// 親の再描画を呼び出す
+            if ([_delegate respondsToSelector:@selector(refreshTable)]) {	// メソッドの存在を確認する
+                [_delegate refreshTable];// 親の再描画を呼び出す
             }
 //            [selfPopover dismissPopoverAnimated:YES];
 //        } else {
@@ -136,7 +127,7 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];  // セクションありテーブル
 	if (self) {
 		// 初期値
-		PbAdd = NO;
+		_PbAdd = NO;
 		self.Pe3edit = nil;
         if (IS_PAD) {
             self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
@@ -162,7 +153,7 @@
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
 											  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 											  target:self action:@selector(cancelClose:)];
-	if (PbSave) {
+	if (_PbSave) {
 		// SAVEボタンを右側に追加する
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
 												   initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -293,7 +284,7 @@
 				case 0: // Name
 				{
 					cell.textLabel.text = NSLocalizedString(@"Category name",nil);
-					cell.detailTextLabel.text = Re5edit.zName;
+					cell.detailTextLabel.text = _Re5edit.zName;
 				}
 					break;
 			}
@@ -303,13 +294,13 @@
 				case 0: // sortName
 				{
 					cell.textLabel.text = NSLocalizedString(@"Category index",nil);
-					cell.detailTextLabel.text = Re5edit.sortName;
+					cell.detailTextLabel.text = _Re5edit.sortName;
 				}
 					break;
 				case 1: // Note
 				{
 					cell.textLabel.text = NSLocalizedString(@"Category note",nil);
-					cell.detailTextLabel.text = Re5edit.zNote;
+					cell.detailTextLabel.text = _Re5edit.zNote;
 				}
 					break;
 			}
@@ -335,7 +326,7 @@
                         evc = [[EditTextVC alloc] init];
                     }
 					evc.title = NSLocalizedString(@"Category name", nil);
-					evc.Rentity = Re5edit;
+					evc.Rentity = _Re5edit;
 					evc.RzKey = @"zName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
@@ -356,7 +347,7 @@
                         evc = [[EditTextVC alloc] init];
                     }
 					evc.title = NSLocalizedString(@"Category index", nil);
-					evc.Rentity = Re5edit;
+					evc.Rentity = _Re5edit;
 					evc.RzKey = @"sortName";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;
@@ -373,7 +364,7 @@
                         evc = [[EditTextVC alloc] init];
                     }
 					evc.title = NSLocalizedString(@"Category note", nil);
-					evc.Rentity = Re5edit;
+					evc.Rentity = _Re5edit;
 					evc.RzKey = @"zNote";
 					evc.PiMaxLength = AzMAX_NAME_LENGTH;
 					evc.PiSuffixLength = 0;

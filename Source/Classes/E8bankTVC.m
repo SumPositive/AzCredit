@@ -18,17 +18,23 @@
 
 #define ACTIONSEET_TAG_DELETE	199
 
-@interface E8bankTVC (PrivateMethods)
+@interface E8bankTVC ()
+{
+    E8bank	*sourceE8bank;
+    NSMutableArray		*RaE8banks;
+    NSIndexPath	  *MindexPathActionDelete; // 削除するIndexPath	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    NSIndexPath*				MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
+    UIBarButtonItem	*MbuTop;		// BarButton ＜hasChanges時に無効にするため＞
+    UIBarButtonItem *MbuAdd;
+    CGPoint		McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
+}
 - (void)E8bankDatail:(NSIndexPath *)indexPath;
 @end
 
 @implementation E8bankTVC
-//@synthesize Re0root;
-//@synthesize Pe1card;
 
 #pragma mark - Delegate
 
-//#ifdef AzPAD
 - (void)refreshTable
 {
 	if (MindexPathEdit && MindexPathEdit.row < [RaE8banks count]) {	// 日付に変更なく、行位置が有効ならば、修正行だけを再表示する
@@ -39,7 +45,6 @@
 		[self viewWillAppear:YES];
 	}
 }
-//#endif
 
 
 #pragma mark - Action

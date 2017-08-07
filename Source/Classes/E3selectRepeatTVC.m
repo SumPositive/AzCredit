@@ -12,19 +12,13 @@
 #import "E3selectRepeatTVC.h"
 
 
-@interface E3selectRepeatTVC (PrivateMethods)
-//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-//----------------------------------------------Owner移管につきdealloc時のrelese不要
-//----------------------------------------------assign
-//BOOL MbOptAntirotation;
+@interface E3selectRepeatTVC ()
+{
+    NSInteger	sourceRepeat;
+}
 @end
 
 @implementation E3selectRepeatTVC
-@synthesize Re3edit;
-#ifdef xxxAzPAD
-@synthesize delegate;
-//@synthesize selfPopover;
-#endif
 
 #pragma mark - Action
 
@@ -71,7 +65,7 @@
 
 	// テーブルビューを更新します。
 	[self.tableView reloadData];
-	sourceRepeat = (Re3edit.nRepeat).integerValue; //初期値
+	sourceRepeat = (_Re3edit.nRepeat).integerValue; //初期値
 }
 
 
@@ -147,22 +141,22 @@
 	switch (indexPath.row) {
 		case 0:
 			cell.textLabel.text = NSLocalizedString(@"Repeat00", nil);
-			if ((Re3edit.nRepeat).integerValue == 0)
+			if ((_Re3edit.nRepeat).integerValue == 0)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 1:
 			cell.textLabel.text = NSLocalizedString(@"Repeat01", nil);
-			if ((Re3edit.nRepeat).integerValue == 1)
+			if ((_Re3edit.nRepeat).integerValue == 1)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 2:
 			cell.textLabel.text = NSLocalizedString(@"Repeat02", nil);
-			if ((Re3edit.nRepeat).integerValue == 2)
+			if ((_Re3edit.nRepeat).integerValue == 2)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 		case 3:
 			cell.textLabel.text = NSLocalizedString(@"Repeat12", nil);
-			if ((Re3edit.nRepeat).integerValue == 12)
+			if ((_Re3edit.nRepeat).integerValue == 12)
 				cell.accessoryType = UITableViewCellAccessoryCheckmark; // チェックマーク
 			break;
 	}
@@ -176,13 +170,13 @@
 	
 	// DONE
 	switch (indexPath.row) {
-		case  1: Re3edit.nRepeat = @1; break;
-		case  2: Re3edit.nRepeat = @2; break;
-		case  3: Re3edit.nRepeat = @12; break;
-		default: Re3edit.nRepeat = @0; break;
+		case  1: _Re3edit.nRepeat = @1; break;
+		case  2: _Re3edit.nRepeat = @2; break;
+		case  3: _Re3edit.nRepeat = @12; break;
+		default: _Re3edit.nRepeat = @0; break;
 	}
 
-	if (sourceRepeat != (Re3edit.nRepeat).integerValue) {
+	if (sourceRepeat != (_Re3edit.nRepeat).integerValue) {
 		AppDelegate *apd = (AppDelegate *)[UIApplication sharedApplication].delegate;
 		apd.entityModified = YES;	//変更あり
 		

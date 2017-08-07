@@ -15,7 +15,18 @@
 #import "CalcView.h"
 
 
-@interface EditDateVC (PrivateMethods)
+@interface EditDateVC ()
+{
+    E3record		*Re3edit;			// !=nil : E3record変更モード（日付）
+    E6part			*Re6edit;			// !=nil : E6part変更モード（日付、金額）
+    UIDatePicker	*MdatePicker;
+    UIButton		*MbuToday;			// E3:Todayにリセットする
+    UIButton		*MbuYearTime;		// E3:時刻部有無　　　E6：金額
+    UILabel		*MlbAmount;
+    CalcView					*McalcView;
+    BOOL MbOptUseDateTime;
+    NSTimeInterval	MintervalPrev;
+}
 - (void)viewDesign;
 - (void)buttonToday;
 - (void)buttonYearTime;
@@ -23,11 +34,6 @@
 @end
 
 @implementation EditDateVC
-//@synthesize Rentity;
-//@synthesize RzKey;
-//@synthesize delegate;
-@synthesize PiMinYearMMDD;
-@synthesize PiMaxYearMMDD;
 
 
 #pragma mark - Action
@@ -400,13 +406,13 @@
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 	MbOptUseDateTime = [defaults boolForKey:GD_OptUseDateTime];
 
-	if (AzMIN_YearMMDD < PiMinYearMMDD) {
-		MdatePicker.minimumDate = GdateYearMMDD(PiMinYearMMDD,  0, 0, 0);
+	if (AzMIN_YearMMDD < _PiMinYearMMDD) {
+		MdatePicker.minimumDate = GdateYearMMDD(_PiMinYearMMDD,  0, 0, 0);
 	} else {
 		MdatePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-365*24*60*60];	// 約1年前から
 	}
-	if (PiMaxYearMMDD < AzMAX_YearMMDD) {
-		MdatePicker.maximumDate = GdateYearMMDD(PiMaxYearMMDD, 23,59,59); 
+	if (_PiMaxYearMMDD < AzMAX_YearMMDD) {
+		MdatePicker.maximumDate = GdateYearMMDD(_PiMaxYearMMDD, 23,59,59);
 	} else {
 		MdatePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:+31*6*24*60*60];	// 約6ヶ月先まで
 	}

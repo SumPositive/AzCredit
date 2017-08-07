@@ -12,16 +12,16 @@
 #import "EditTextVC.h"
 
 
-@interface EditTextVC (PrivateMethods)
+@interface EditTextVC ()
+{
+    NSString		*sourceText;	//変更前の文字列を記録し、[Done]にて比較して変更の有無を判定している
+    UITextView	*MtextView; // self.viewがOwner
+}
 - (void)viewDesign;
 - (void)done:(id)sender;
 @end
 
 @implementation EditTextVC
-@synthesize Rentity;
-@synthesize RzKey;
-@synthesize PiMaxLength;
-@synthesize PiSuffixLength;
 
 
 #pragma mark - Action
@@ -37,17 +37,17 @@
 	}
 	
 	//	[PPmuString setString:MtextView.text]; // 戻り値
-	if (0 < PiSuffixLength) {	// 複数行ラベルで上寄表示させるため末尾に改行を追加する
+	if (0 < _PiSuffixLength) {	// 複数行ラベルで上寄表示させるため末尾に改行を追加する
 		NSMutableString *mstr = [[NSMutableString alloc] initWithString:MtextView.text];
 		// 末尾改行文字("\n")を PiSuffixLength 個追加する
-		for (NSInteger i=0; i<PiSuffixLength; i++) {
+		for (NSInteger i=0; i<_PiSuffixLength; i++) {
 			[mstr appendString:@"\n"];
 		}
-		[Rentity setValue:mstr forKey:RzKey];
+		[_Rentity setValue:mstr forKey:_RzKey];
 	}
 	else {
 		//AzLOG(@"---[%@:%@]---",MtextView.text, PzKey);
-		[Rentity setValue:MtextView.text forKey:RzKey];
+		[_Rentity setValue:MtextView.text forKey:_RzKey];
 	}
 	
 	[self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -149,13 +149,13 @@
 
 	[self viewDesign];
 	
-	MtextView.text = [Rentity valueForKey:RzKey];
-	if (0 < PiSuffixLength) {
+	MtextView.text = [_Rentity valueForKey:_RzKey];
+	if (0 < _PiSuffixLength) {
 		// 末尾改行文字("\n")を PiSuffixLength 個除く -->> doneにて追加する
-		if ((MtextView.text).length <= PiSuffixLength) {
+		if ((MtextView.text).length <= _PiSuffixLength) {
 			MtextView.text = @"";  //この処理が無いと新規のときフリーズする
 		} else {
-			MtextView.text = [MtextView.text substringToIndex:((MtextView.text).length - PiSuffixLength)];
+			MtextView.text = [MtextView.text substringToIndex:((MtextView.text).length - _PiSuffixLength)];
 		}
 	}
     if (IS_PAD) {
@@ -207,13 +207,13 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range 
 													replacementText:(NSString *)zReplace
 {
-	if (PiMaxLength <= 0) return YES; // 無制限
+	if (_PiMaxLength <= 0) return YES; // 無制限
 	
 	// senderは、MtextView だけ
     NSMutableString *zText = [textView.text mutableCopy];
     [zText replaceCharactersInRange:range withString:zReplace];
 	// 置き換えた後の長さをチェックする
-	return (zText.length <= PiMaxLength); // PiMaxLength以下YES
+	return (zText.length <= _PiMaxLength); // PiMaxLength以下YES
 }
 
 

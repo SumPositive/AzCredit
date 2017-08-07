@@ -12,14 +12,25 @@
 #import "E1editPayDayVC.h"
 
 
-@interface E1editPayDayVC (PrivateMethods)
+@interface E1editPayDayVC ()
+{
+    UIPickerView	*Mpicker;
+    UILabel			*MlbClosing;
+    UILabel			*MlbPayMonth;
+    UILabel			*MlbPayDay;
+    UIButton			*MbuDebit;
+    UILabel			*MlbDebit;
+    //BOOL MbOptAntirotation;
+    NSInteger	sourceClosingDay;
+    NSInteger	sourcePayMonth;
+    NSInteger	sourcePayDay;
+}
 - (void)viewDesign;
 - (void)buttonDebit;
 - (void)done:(id)sender;
 @end
 
 @implementation E1editPayDayVC
-@synthesize Re1edit;
 
 
 #pragma mark - Action
@@ -39,23 +50,23 @@
 {
 	// 結果更新
 	if ([Mpicker selectedRowInComponent:0] <= 0) {		//Debit(自動引落し)
-		Re1edit.nClosingDay = @0;
-		Re1edit.nPayMonth = @0;
-		Re1edit.nPayDay = @([Mpicker selectedRowInComponent:2]); // 日後払い
+		_Re1edit.nClosingDay = @0;
+		_Re1edit.nPayMonth = @0;
+		_Re1edit.nPayDay = @([Mpicker selectedRowInComponent:2]); // 日後払い
 	} else {
 		// 締め支払
-		Re1edit.nClosingDay = @([Mpicker selectedRowInComponent:0]);
-		Re1edit.nPayMonth = @([Mpicker selectedRowInComponent:1]);
-		Re1edit.nPayDay = @([Mpicker selectedRowInComponent:2]);
+		_Re1edit.nClosingDay = @([Mpicker selectedRowInComponent:0]);
+		_Re1edit.nPayMonth = @([Mpicker selectedRowInComponent:1]);
+		_Re1edit.nPayDay = @([Mpicker selectedRowInComponent:2]);
 	}
 	
-	if (0<(Re1edit.nClosingDay).integerValue && (Re1edit.nPayDay).integerValue<=0) {
-		Re1edit.nPayDay = @1;
+	if (0<(_Re1edit.nClosingDay).integerValue && (_Re1edit.nPayDay).integerValue<=0) {
+		_Re1edit.nPayDay = @1;
 	}
 
-	if (sourceClosingDay != (Re1edit.nClosingDay).integerValue
-		|| sourcePayMonth != (Re1edit.nPayMonth).integerValue
-		|| sourcePayDay != (Re1edit.nPayDay).integerValue	)
+	if (sourceClosingDay != (_Re1edit.nClosingDay).integerValue
+		|| sourcePayMonth != (_Re1edit.nPayMonth).integerValue
+		|| sourcePayDay != (_Re1edit.nPayDay).integerValue	)
 	{
 		/*NSLog(@"*** (source:done) (%ld:%ld) (%ld:%ld) (%ld:%ld) ***",
 			  sourceClosingDay, [Re1edit.nClosingDay integerValue], 
@@ -229,18 +240,18 @@
 	//MbOptAntirotation = [defaults boolForKey:GD_OptAntirotation];
 
 	// PICKER 指定されたコンポーネンツの行を選択する。
-	NSInteger iDay = (Re1edit.nClosingDay).integerValue; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
+	NSInteger iDay = (_Re1edit.nClosingDay).integerValue; // (*PPiClosingDay); //[Pe1.nClosingDay integerValue];
 	sourceClosingDay = iDay;
 	if (iDay < 0 OR 29 < iDay) iDay = 0;
 	[Mpicker selectRow:iDay inComponent:0 animated:NO]; // 締日	1〜28,29=末日, Debit(0)当日
 	[Mpicker reloadAllComponents];  //Component:0の状態により:1:2の表示が変化するため、ここで再描画する
 
-	iDay = (Re1edit.nPayMonth).integerValue;
+	iDay = (_Re1edit.nPayMonth).integerValue;
 	sourcePayMonth = iDay;
 	if (iDay < 0 OR 2 < iDay) iDay = 0;
 	[Mpicker selectRow:iDay inComponent:1 animated:NO]; // 支払月 (0)当月　(1)翌月　(2)翌々月, Debit(0)当月
 	
-	iDay = (Re1edit.nPayDay).integerValue;
+	iDay = (_Re1edit.nPayDay).integerValue;
 	sourcePayDay = iDay;
 	if (sourceClosingDay==0) {
 		if (iDay < 0 OR 99 < iDay) iDay = 0;

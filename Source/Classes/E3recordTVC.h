@@ -10,17 +10,6 @@
 
 
 @interface E3recordTVC : UITableViewController <UIActionSheetDelegate,UIPopoverControllerDelegate>
-{
-@private
-	NSDateFormatter		*RcellDateFormatter;			//[1.1.2]TableCell高速化のため
-	NSNumberFormatter	*RcellNumberFormatter;	//[1.1.2]TableCell高速化のため
-	NSMutableArray		*RaE3list;
-	NSMutableArray		*RaSection;
-	NSMutableArray		*RaIndex;
-	NSIndexPath				*MindexPathEdit;	//[1.1.2]ポインタ代入注意！copyするように改善した。
-	CGPoint			McontentOffsetDidSelect; // didSelect時のScrollView位置を記録
-	UITableViewScrollPosition	MmoreScrollPosition;
-}
 
 @property (nonatomic, assign) E0root			*Re0root;
 @property (nonatomic, assign) E4shop			*Pe4shop;

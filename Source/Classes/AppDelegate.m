@@ -36,18 +36,16 @@
 
 
 
-@interface AppDelegate (PrivateMethods) // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
-- (void)appLoginPassView;
+@interface AppDelegate ()
 @end
 
 
 @implementation AppDelegate
 
-@synthesize window;
-@synthesize mainSplit, mainNavi;
-@synthesize	Me3dateUse;
-@synthesize entityModified;
-@synthesize barMenu;
+// readonlyプロパティなのでプライベート変数として参照するため@synthesizeが必要
+@synthesize managedObjectModel;
+@synthesize managedObjectContext;
+@synthesize persistentStoreCoordinator;
 
 
 #ifdef AzDEBUG
@@ -69,7 +67,7 @@
 //	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
 
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
-	window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+	self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -113,18 +111,18 @@
         AzNavigationController* naviRight = [[AzNavigationController alloc] initWithRootViewController:infoVC];
         
         // mainController へ登録
-        mainSplit = [[UISplitViewController alloc] init];
-        mainSplit.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
+        self.mainSplit = [[UISplitViewController alloc] init];
+        self.mainSplit.viewControllers = [NSArray arrayWithObjects:naviLeft, naviRight, nil];
         //mainSplit.delegate = padRootVC;
-        mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
-        window.rootViewController = mainSplit;	//iOS6以降、こうしなければ回転しない。
+        self.mainSplit.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible; //iOS9// 常時タテ2分割が可能になった
+        self.window.rootViewController = self.mainSplit;	//iOS6以降、こうしなければ回転しない。
     } else {
         // topMenu を navigationController へ登録
-        mainNavi = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
-        window.rootViewController = mainNavi;	//iOS6以降、こうしなければ回転しない。
+        self.mainNavi = [[AzNavigationController alloc] initWithRootViewController:topMenuTvc];
+        self.window.rootViewController = self.mainNavi;	//iOS6以降、こうしなければ回転しない。
     }
 	
-	[window makeKeyAndVisible];	// 表示開始
+	[self.window makeKeyAndVisible];	// 表示開始
 
     //[0.4]-----------------------------------------------ログイン画面処理
 	//[self appLoginPassView];
@@ -178,7 +176,7 @@
     vc.Re0root = [MocFunctions e0root];	// CoreDataのRoot E0（固有ノード）を渡す
     vc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
     vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [window.rootViewController presentViewController:vc animated:YES completion:nil];
+    [self.window.rootViewController presentViewController:vc animated:YES completion:nil];
 #endif
 }
 
@@ -284,7 +282,7 @@
 				NSInferMappingModelAutomaticallyOption: @YES};	// 自動マッピング推論して処理
 	// NSInferMappingModelAutomaticallyOption が無ければ「マッピングモデル」を使って移行処理される。
 	
-	if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
+	if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
 												  configuration:nil
 															URL:storeUrl 
 														options:options 

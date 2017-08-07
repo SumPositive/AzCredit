@@ -10,18 +10,6 @@
 
 
 @interface E3selectRepeatTVC : UITableViewController 
-{
-@private
-	//--------------------------retain
-//	E3record		*Re3edit;
-	//--------------------------assign
-	NSInteger	sourceRepeat;
-	
-	//----------------------------------------------viewDidLoadでnil, dealloc時にrelese
-	//----------------------------------------------Owner移管につきdealloc時のrelese不要
-	//----------------------------------------------assign
-	//BOOL MbOptAntirotation;
-}
 
 @property (nonatomic, strong) E3record		*Re3edit;
 

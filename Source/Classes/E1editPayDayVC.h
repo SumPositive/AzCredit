@@ -16,20 +16,6 @@
 
 @class E1card;
 @interface E1editPayDayVC : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource>
-{
-@private
-//	E1card		*Re1edit;
-	UIPickerView	*Mpicker;
-	UILabel			*MlbClosing;
-	UILabel			*MlbPayMonth;
-	UILabel			*MlbPayDay;
-	UIButton			*MbuDebit;
-	UILabel			*MlbDebit;
-	//BOOL MbOptAntirotation;
-	NSInteger	sourceClosingDay;
-	NSInteger	sourcePayMonth;
-	NSInteger	sourcePayDay;
-}
 
 @property (nonatomic, strong) E1card		*Re1edit;
 
