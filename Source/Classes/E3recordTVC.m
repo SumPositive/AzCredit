@@ -743,7 +743,10 @@
 // セクションの高さ
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50.0;
+    if (IS_PAD) {
+        return 50.0;
+    }
+    return 38.0;
 }
 
 // TableView セクション名を応答

@@ -995,7 +995,7 @@
 #ifdef AzDEBUG
 		tvc.title = [NSString stringWithFormat:@"E6 %@", _Re1select.zName];
 #else
-		tvc.title =  Re1select.zName;
+		tvc.title =  _Re1select.zName;
 #endif
 		// 編集移動により支払日の変更が可能
 		tvc.Pe2select = (e2t.e2invoices).allObjects[0];  //[[Me2list objectAtIndex:lSec] objectAtIndex:lRow];

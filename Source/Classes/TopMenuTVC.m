@@ -215,12 +215,15 @@
     if (IS_PAD) {
         AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-//        BOOL bAnime = ![naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]];
-//        [naviRight popToRootViewControllerAnimated:NO];
-//        [naviRight pushViewController:tvc animated:bAnime];
-        if ([naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]]) return; //既に開いてる
+        if ([naviRight.visibleViewController isMemberOfClass:[E3recordTVC class]]){
+            E3recordTVC* vc = (E3recordTVC*)naviRight.visibleViewController;
+            if (vc.Pe4shop == nil && vc.Pe5category == nil && vc.Pe8bank == nil ){
+                AzLOG(@"naviRight.viewControllers: %@", naviRight.viewControllers);
+                return; //既に開いてる
+            }
+        }
         [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
-        
+        AzLOG(@"naviRight.viewControllers: %@", naviRight.viewControllers);
     }else{
         [self.navigationController pushViewController:tvc animated: YES];
     }
