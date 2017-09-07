@@ -132,14 +132,17 @@
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeGradient]; // 背景UI操作禁止
 
 #ifdef AZ_STABLE
-    // 初起動からE3明細が0件ならば
-    NSArray* arFetch = [MocFunctions select:@"E3record"  limit:1  offset:0  where:nil  sort:nil];
-    if (arFetch==nil || arFetch.count<1) {
-        // iCloudから読み込む
-        [DataManager.singleton iCloudDownload];
+    NSUbiquitousKeyValueStore *ukvs = [NSUbiquitousKeyValueStore defaultStore];
+    NSString* zTimestamp = [ukvs stringForKey:UKVS_UPLOAD_DATE];
+    if (1 < zTimestamp.length) {
+        // 初起動からE3明細が0件ならば
+        NSArray* arFetch = [MocFunctions select:@"E3record"  limit:1  offset:0  where:nil  sort:nil];
+        if (arFetch==nil || arFetch.count<1) {
+            // iCloudから読み込む
+            [DataManager.singleton iCloudDownload];
+        }
     }
 #endif
-    
 	
 	return YES;
 }

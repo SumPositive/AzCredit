@@ -659,6 +659,7 @@
 					case 0:
 						cell.imageView.image = [UIImage imageNamed:@"iCloud-Up"];
 						cell.textLabel.text = NSLocalizedString(@"iCloud Upload", nil);
+                        cell.accessoryType = UITableViewCellAccessoryNone;
 						break;
 					case 1:
 						cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
