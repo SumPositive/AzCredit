@@ -24,11 +24,11 @@
  
  [1.1.x]---------------------------------------
  ・プロダクツライン
- 　Apple ID  名前            バンドルID
- 　432458298 「クレメモ」     com.azukid.AzCreditS1
- 　363741814 「クレメモ Free」　com.azukid.AzukiSoft.AzCredit
- 　457542400 「クレメモ for iPad」　com.azukid.AzCreditS1Pad
- 　446376779 「クレメモ Free for iPad」　com.azukid.AzCreditPadFree
+ 　Apple ID  名前                      バンドルID
+ 　432458298 「クレメモ」               5C2UYK6F45.com.azukid.AzCreditS1
+ 　363741814 「クレメモ Free」　        JE9S39F69E.com.azukid.AzukiSoft.AzCredit
+ 　457542400 「クレメモ for iPad」 　   5C2UYK6F45.com.azukid.AzCreditS1Pad
+ 　446376779 「クレメモ Free for iPad」 5C2UYK6F45.com.azukid.AzCreditPadFree
  
  
  これより Git バージョン管理開始
