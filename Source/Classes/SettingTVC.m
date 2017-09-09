@@ -172,7 +172,11 @@
 #pragma mark - TableView lifecicle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#ifdef AZ_LEGACY
+    return 1;  // iCloud Downloadなし
+#else
     return 2;
+#endif
 }
 
 

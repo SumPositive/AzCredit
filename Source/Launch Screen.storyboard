@@ -20,8 +20,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Credit-320-2.png" translatesAutoresizingMaskIntoConstraints="NO" id="fCU-mC-jje">
-                                <rect key="frame" x="127" y="288" width="160" height="160"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Credit-320-3.png" translatesAutoresizingMaskIntoConstraints="NO" id="fCU-mC-jje">
+                                <rect key="frame" x="127.33333333333331" y="288.33333333333331" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="AQr-wX-hpo"/>
                                     <constraint firstAttribute="height" constant="160" id="dNB-m9-Bf8"/>
@@ -37,10 +37,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-341" y="390"/>
+            <point key="canvasLocation" x="-355" y="301"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Credit-320-2.png" width="320" height="320"/>
+        <image name="Credit-320-3.png" width="320" height="320"/>
     </resources>
 </document>

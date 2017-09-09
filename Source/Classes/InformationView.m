@@ -188,47 +188,8 @@ NSString *passCode()
 
 - (void)buGoAppStore:(UIButton *)button
 {
-	//alertBox( NSLocalizedString(@"Contact mail",nil), NSLocalizedString(@"Contact mail msg",nil), @"OK" );
-//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GoAppStore Paid",nil)
-//													message:NSLocalizedString(@"GoAppStore Paid msg",nil)
-//												   delegate:self		// clickedButtonAtIndexが呼び出される
-//										  cancelButtonTitle:@"Cancel"
-//										  otherButtonTitles:@"OK", nil];
-//	alert.tag = ALERT_TAG_GoAppStore;
-//	[alert show];
-	
-//	UIAlertController *alert = nil;
-//	alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GoAppStore Paid",nil)
-//												message:NSLocalizedString(@"GoAppStore Paid msg",nil)
-//										 preferredStyle:UIAlertControllerStyleAlert];
-//	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
-//											  style:UIAlertActionStyleCancel
-//											handler:nil]];
-//	[alert addAction:[UIAlertAction actionWithTitle:@"OK"
-//											  style:UIAlertActionStyleDefault
-//											handler:^(UIAlertAction *action){
-//                                                NSURL *url;
-//                                                if (IS_PAD) {
-//                                                    //iPad//								クレメモ	 for iPad	457542400
-//                                                    url = [NSURL URLWithString:
-//                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=457542400&mt=8"];
-//                                                }else{
-//                                                    //iPhone//									クレメモ	432458298
-//                                                    url = [NSURL URLWithString:
-//                                                                  @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-//                                                }
-//												[[UIApplication sharedApplication] openURL:url
-//																				   options:@{}
-//																		 completionHandler:nil];
-//											}]];
-//	[self presentViewController:alert animated:YES completion:nil];
-    
     NSString* zTitle;
-    if (button.tag==2) {
-        zTitle = NSLocalizedString(@"GoAppStore Stable",nil);
-    } else {
-        zTitle = NSLocalizedString(@"GoAppStore Beta",nil);
-    }
+    zTitle = NSLocalizedString(@"GoAppStore Stable",nil);
 
     [AZAlert target:self
          actionRect:button.frame
@@ -238,13 +199,11 @@ NSString *passCode()
             b1style:UIAlertActionStyleDefault
            b1action:^(UIAlertAction * _Nullable action) {
                NSURL *url;
-               if (button.tag==2) {
-                   url = [NSURL URLWithString:               // クレメモβ  1262724086
-                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1262724086&mt=8"];
-               } else {
-                   url = [NSURL URLWithString:               // クレメモ  432458298
-                          @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-               }
+               url = [NSURL URLWithString:               // クレメモ  432458298
+                      @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
+
+               //url = [NSURL URLWithString:               // クレメモβ  1262724086
+               //       @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1262724086&mt=8"];
 
                [[UIApplication sharedApplication] openURL:url
                                                   options:@{}
@@ -535,22 +494,23 @@ NSString *passCode()
     
     NSString *zDetail;
 #ifdef AZ_LEGACY
-    NSString *zTitle = @"PayNoteLegacy";
+    //NSString *zTitle = @"PayNote Legacy";
     zDetail = NSLocalizedString(@"Legacy version",nil);
 #endif
 #ifdef AZ_BETA
-    NSString *zTitle = @"PayNoteβ";
+    //NSString *zTitle = @"Credit memo β";
     zDetail = NSLocalizedString(@"Beta version",nil);
 #endif
 #ifdef AZ_STABLE
-    NSString *zTitle = @"PayNote";
+    //NSString *zTitle = @"Credit memo";
     zDetail = NSLocalizedString(@"Stable version",nil);
 #endif
 
     //（リリース バージョン）は、ユーザーに公開した時のレベルを表現したバージョン表記
     NSString *zVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
 
-    label.text = [NSString stringWithFormat:@"%@\nVersion %@\n%@", zTitle, zVersion, zDetail];  // Build表示しない
+    //label.text = [NSString stringWithFormat:@"%@\nVersion %@\n%@", zTitle, zVersion, zDetail];  // Build表示しない
+    label.text = [NSString stringWithFormat:@"Version %@\n%@", zVersion, zDetail];  // Build表示しない
 	label.numberOfLines = 3;
 	label.textAlignment = NSTextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
