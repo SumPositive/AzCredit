@@ -356,6 +356,13 @@
 		445CA8681F640B1700E1B930 /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 445CA86C1F640B1700E1B930 /* UpdateVC.xib */; };
 		445CA8691F640B1700E1B930 /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 445CA86C1F640B1700E1B930 /* UpdateVC.xib */; };
 		445CA86A1F640B1700E1B930 /* UpdateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 445CA86C1F640B1700E1B930 /* UpdateVC.xib */; };
+		446707241F6BC63E00707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
+		446707251F6BC97200707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
+		446707261F6BC97C00707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
+		446707271F6BC98600707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
+		446707281F6BC99200707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
+		446707291F6BD31D00707A78 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4467071F1F6ACF6400707A78 /* TopViewController.swift */; };
+		4467072A1F6BD32800707A78 /* TopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 446707201F6ACF6400707A78 /* TopViewController.xib */; };
 		447071CA12FC4F8C00C053D2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071C912FC4F8C00C053D2 /* AudioToolbox.framework */; };
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -824,6 +831,10 @@
 		445C662711678D2C00DE811D /* AzCredit 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AzCredit 2.xcdatamodel"; sourceTree = "<group>"; };
 		445CA86B1F640B1700E1B930 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/UpdateVC.xib; sourceTree = "<group>"; };
 		445CA86D1F640B2200E1B930 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/UpdateVC.xib; sourceTree = "<group>"; };
+		4467071C1F6ACF2600707A78 /* PayNoteBeta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PayNoteBeta-Bridging-Header.h"; sourceTree = "<group>"; };
+		4467071F1F6ACF6400707A78 /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
+		446707201F6ACF6400707A78 /* TopViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopViewController.xib; sourceTree = "<group>"; };
+		446707231F6BC63E00707A78 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		447071C912FC4F8C00C053D2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		447071CD12FC4F8C00C053D2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -996,6 +1007,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446707241F6BC63E00707A78 /* StoreKit.framework in Frameworks */,
 				441377FE155BD5C7008047FC /* libsqlite3.0.dylib in Frameworks */,
 				4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */,
 				44D374651361DDF200F36E36 /* SystemConfiguration.framework in Frameworks */,
@@ -1018,6 +1030,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446707281F6BC99200707A78 /* StoreKit.framework in Frameworks */,
 				44325A031F231CA400175312 /* SystemConfiguration.framework in Frameworks */,
 				44325A041F231CA400175312 /* Foundation.framework in Frameworks */,
 				44325A051F231CA400175312 /* UIKit.framework in Frameworks */,
@@ -1039,6 +1052,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446707271F6BC98600707A78 /* StoreKit.framework in Frameworks */,
 				44325AB01F231DCC00175312 /* SystemConfiguration.framework in Frameworks */,
 				44325AB11F231DCC00175312 /* Foundation.framework in Frameworks */,
 				44325AB21F231DCC00175312 /* UIKit.framework in Frameworks */,
@@ -1060,6 +1074,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446707261F6BC97C00707A78 /* StoreKit.framework in Frameworks */,
 				44C0E42913A0A2D1003D0465 /* SystemConfiguration.framework in Frameworks */,
 				44C0E42A13A0A2D1003D0465 /* Foundation.framework in Frameworks */,
 				44C0E42B13A0A2D1003D0465 /* UIKit.framework in Frameworks */,
@@ -1082,6 +1097,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				446707251F6BC97200707A78 /* StoreKit.framework in Frameworks */,
 				440D5B3315FA2998006D7592 /* SystemConfiguration.framework in Frameworks */,
 				44C0E64D13A0A475003D0465 /* Foundation.framework in Frameworks */,
 				44C0E64E13A0A475003D0465 /* UIKit.framework in Frameworks */,
@@ -1134,6 +1150,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				4467071B1F6ACEE100707A78 /* Swift */,
 				4473734D1F1C4E76000E3DAA /* Readme.h */,
 				4473734C1F1C4E76000E3DAA /* History.h */,
 				447373541F1C9058000E3DAA /* iCloud */,
@@ -1171,6 +1188,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				446707231F6BC63E00707A78 /* StoreKit.framework */,
 				441377FD155BD5C6008047FC /* libsqlite3.0.dylib */,
 				4425D23A1425AAF4004D3747 /* AVFoundation.framework */,
 				44D374641361DDF200F36E36 /* SystemConfiguration.framework */,
@@ -1206,6 +1224,16 @@
 				44325AFE1F23709200175312 /* DataManager.m */,
 			);
 			name = New;
+			sourceTree = "<group>";
+		};
+		4467071B1F6ACEE100707A78 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				4467071C1F6ACF2600707A78 /* PayNoteBeta-Bridging-Header.h */,
+				4467071F1F6ACF6400707A78 /* TopViewController.swift */,
+				446707201F6ACF6400707A78 /* TopViewController.xib */,
+			);
+			path = Swift;
 			sourceTree = "<group>";
 		};
 		447373541F1C9058000E3DAA /* iCloud */ = {
@@ -1744,7 +1772,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						ProvisioningStyle = Automatic;
@@ -1762,6 +1790,7 @@
 						};
 					};
 					44325A381F231DCC00175312 = {
+						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.iCloud = {
 								enabled = 1;
@@ -2017,6 +2046,7 @@
 				44325A611F231DCC00175312 /* Icon32-CircleCheck@2x.png in Resources */,
 				44325A621F231DCC00175312 /* Icon32-Safari@2x.png in Resources */,
 				44325A631F231DCC00175312 /* Icon32-Safari.png in Resources */,
+				4467072A1F6BD32800707A78 /* TopViewController.xib in Resources */,
 				44325A641F231DCC00175312 /* Icon32-Google@2x.png in Resources */,
 				44325A651F231DCC00175312 /* Icon32-Google.png in Resources */,
 				447624A81F34BE98002F0202 /* Credit-320-3.png in Resources */,
@@ -2570,6 +2600,7 @@
 				44325AA01F231DCC00175312 /* E6partTVC.m in Sources */,
 				44325AA11F231DCC00175312 /* E7paymentTVC.m in Sources */,
 				44325AA21F231DCC00175312 /* FileCsv.m in Sources */,
+				446707291F6BD31D00707A78 /* TopViewController.swift in Sources */,
 				44325AA31F231DCC00175312 /* E3selectPayTypeTVC.m in Sources */,
 				44325AA41F231DCC00175312 /* E5categoryDetailTVC.m in Sources */,
 				44325B041F23709300175312 /* DataManager.m in Sources */,
@@ -2885,6 +2916,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PayNoteBeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2900,6 +2932,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/PayNoteBeta-Info.plist";
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
@@ -2909,6 +2942,9 @@
 				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNoteBeta-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = arm64;
@@ -2921,6 +2957,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PayNoteBeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2933,6 +2970,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/PayNoteBeta-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
@@ -2943,6 +2981,8 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNoteBeta-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 			};
@@ -2954,6 +2994,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = PayNoteBeta.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -2966,6 +3007,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/PayNoteBeta-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "$(inherited)";
@@ -2976,6 +3018,8 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNoteBeta-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
 			};
@@ -3186,12 +3230,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -3266,12 +3316,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -3314,12 +3370,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
