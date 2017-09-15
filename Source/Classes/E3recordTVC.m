@@ -454,16 +454,16 @@
 	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																			target:self action:@selector(barButtonAdd)];
     if (IS_PAD) {
-        NSArray *buArray = [NSArray arrayWithObjects: buFlex, buAdd, buFlex, nil];
+        NSArray *buArray = @[buFlex, buAdd];
         [self setToolbarItems:buArray animated:YES];
     }else{
         UIBarButtonItem *buTop = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon32-Top.png"]
                                                                   style:UIBarButtonItemStylePlain  //Bordered
                                                                  target:self action:@selector(barButtonTop)];
-        UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-                                                                  style:UIBarButtonItemStylePlain  //Bordered
-                                                                 target:self action:@selector(azSettingView)];
-        NSArray *buArray = @[buTop, buFlex, buAdd, buFlex, buSet];
+//        UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+//                                                                  style:UIBarButtonItemStylePlain  //Bordered
+//                                                                 target:self action:@selector(azSettingView)];
+        NSArray *buArray = @[buTop, buFlex, buAdd];
         [self setToolbarItems:buArray animated:YES];
     }
 

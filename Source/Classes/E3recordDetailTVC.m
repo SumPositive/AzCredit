@@ -618,7 +618,10 @@
         }
 	}
 
-	// 初回処理のため
+    self.tableView.bounces = NO;
+    self.tableView.showsVerticalScrollIndicator = NO;
+
+    // 初回処理のため
 	MiE1cardRow = (-1);
 }
 
@@ -937,10 +940,10 @@
 {
     switch (section) {
         case 0:
-            return 1.0;
+            return 5.0;
             break;
         case 1:
-            return 1.0;
+            return 12.0;
             break;
         case 2:
             return 18.0;
@@ -954,13 +957,12 @@
 {
 	switch (section) {
 		case 0:
-			//return NSLocalizedString(@"Indispensable",nil);
+            return @" ";  //NSLocalizedString(@"Indispensable",nil);
 			break;
 		case 1:
-			//if (PbAdd) return NSLocalizedString(@"Option",nil);
+			return NSLocalizedString(@"Option",nil);
 			break;
 		case 2:
-			//if (PiAdd <= 0) {
 			if (0 < (_Re3edit.e6parts).count) {
 				return NSLocalizedString(@"Payment Details",nil);
 			}

@@ -231,7 +231,7 @@
         if (indexPath.row == 0) {
             // Download from iCloud
             cell.selectionStyle = UITableViewCellSelectionStyleNone; // 選択時ハイライトなし
-            cell.imageView.image = [UIImage imageNamed:@"iCloud-Down"];
+            cell.imageView.image = [UIImage imageNamed:@"R32_iCloud-Down"];
             cell.textLabel.text = NSLocalizedString(@"iCloud Download",nil);
             cell.detailTextLabel.text = NSLocalizedString(@"iCloud Download Detail",nil);
             // iCloud KVS
@@ -263,25 +263,6 @@
     }
 	
 	switch (indexPath.row) {
-/*		case 0:
-		{ // OptAntirotation
-			UISwitch *sw = (UISwitch*)[cell.contentView viewWithTag:TAG_GD_OptAntirotation];
-			if (sw==nil) {
-				// add UISwitch
-				sw = [[UISwitch alloc] init];
-				BOOL bOpt = [userDefaults boolForKey:GD_OptAntirotation];
-				[sw setOn:bOpt animated:NO]; // 初期値セット
-				[sw addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-				sw.tag = TAG_GD_OptAntirotation;
-				sw.backgroundColor = [UIColor clearColor]; //背景透明
-				[cell.contentView  addSubview:sw]; 
-				[sw release];
-				cell.textLabel.text = NSLocalizedString(@"OptAntirotation",nil);
-				cell.detailTextLabel.text = NSLocalizedString(@"OptAntirotation msg",nil);
-			}
-			sw.frame = CGRectMake(fX, 8, 120, 25); // 回転対応
-		} break;*/
-			
 		case 0:
 		{ // OptEnableInstallment
 			UISwitch *sw = (UISwitch*)[cell.contentView viewWithTag:TAG_GD_OptEnableInstallment];
@@ -358,43 +339,6 @@
 			}
 			buRight.frame = CGRectMake(fX+55, 8, 35, 25); // 回転対応
 		} break;
-			
-//		case 3:
-//		{ // OptLoginPass
-//			cell.textLabel.text = NSLocalizedString(@"OptLoginPass",nil);
-//			cell.detailTextLabel.text = NSLocalizedString(@"OptLoginPass msg",nil);
-//			// add UITextField1
-//			if (MtfPass1==nil) {
-//				MtfPass1 = [[UITextField alloc] init];
-//				MtfPass1.borderStyle = UITextBorderStyleRoundedRect;
-//				MtfPass1.placeholder = NSLocalizedString(@"OptLoginPass1 place",nil);
-//				MtfPass1.keyboardType = UIKeyboardTypeASCIICapable;
-//				MtfPass1.secureTextEntry = YES;
-//				MtfPass1.returnKeyType = UIReturnKeyNext;
-//				MtfPass1.tag = TAG_GD_OptLoginPass1;
-//				MtfPass1.delegate = self;
-//				// KeyChainから保存しているパスワードを取得する
-//				NSError *error; // nilを渡すと異常終了するので注意
-//				MtfPass1.text = [SFHFKeychainUtils getPasswordForUsername:GD_KEY_LOGINPASS
-//														   andServiceName:GD_PRODUCTNAME error:&error];
-//				[cell.contentView  addSubview:MtfPass1];
-//			}
-//			MtfPass1.frame = CGRectMake(fX-35, 8, 130, 25); // 回転対応
-//			// add UITextField2
-//			if (MtfPass2==nil) {
-//				MtfPass2 = [[UITextField alloc] init];
-//				MtfPass2.borderStyle = UITextBorderStyleRoundedRect;
-//				MtfPass2.placeholder = NSLocalizedString(@"OptLoginPass2 place",nil);
-//				MtfPass2.keyboardType = UIKeyboardTypeASCIICapable;
-//				MtfPass2.secureTextEntry = YES;
-//				MtfPass2.returnKeyType = UIReturnKeyDone;
-//				MtfPass2.tag = TAG_GD_OptLoginPass2;
-//				MtfPass2.delegate = self;
-//				MtfPass2.text = MtfPass1.text;
-//				[cell.contentView  addSubview:MtfPass2];
-//			}
-//			MtfPass2.frame = CGRectMake(fX-35,38, 130, 25); // 回転対応
-//		} break;
 	}
     return cell;
 }

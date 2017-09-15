@@ -2,16 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Icon32-GreenPlus.png",
+      "filename" : "R32_AddStatement.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Icon32-GreenPlus@2x.png",
+      "filename" : "R32x2_AddStatement.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "R32x3_AddStatement.png",
       "scale" : "3x"
     }
   ],

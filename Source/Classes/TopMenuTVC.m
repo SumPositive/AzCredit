@@ -30,6 +30,7 @@
 
 #define TAG_VIEW_HttpServer			118
 #define FREE_AD_OFFSET_Y			200.0
+#define MENU_ROWS                   10
 
 
 @interface TopMenuTVC () // メソッドのみ記述：ここに変数を書くとグローバルになる。他に同じ名称があると不具合発生する
@@ -243,7 +244,7 @@
 // UITableViewインスタンス生成時のイニシャライザ　viewDidLoadより先に1度だけ通る
 - (instancetype)initWithStyle:(UITableViewStyle)style 
 {
-	self = [super initWithStyle:UITableViewStyleGrouped]; // セクションありテーブル
+	self = [super initWithStyle:UITableViewStylePlain];
 	if (self) {
 		// 初期化成功
         if (IS_PAD) {
@@ -296,24 +297,32 @@
 #endif
 
 	// Tool Bar Button
-#ifdef AzPAD
-	// Cell配置により、ボタンなし
-#else
-	UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+//#ifdef AzPAD
+//    // Cell配置により、ボタンなし
+//#else
+    
+    UIBarButtonItem *buFlex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																			 target:nil action:nil];
-	MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
-													   style:UIBarButtonItemStylePlain  //Bordered
-													  target:self action:@selector(azInformationView)];
-	UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
-															   style:UIBarButtonItemStylePlain  //Bordered
-															  target:self action:@selector(azSettingView)];
-	UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																			target:self action:@selector(barButtonAdd)];
-	NSArray *buArray = @[MbuToolBarInfo, buFlex, buAdd, buFlex, buSet];
-	[self setToolbarItems:buArray animated:YES];
-#endif
 	
+//    MbuToolBarInfo = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Information.png"]
+//                                                       style:UIBarButtonItemStylePlain  //Bordered
+//                                                      target:self action:@selector(azInformationView)];
+//    UIBarButtonItem *buSet = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon16-Setting.png"]
+//                                                               style:UIBarButtonItemStylePlain  //Bordered
+//                                                              target:self action:@selector(azSettingView)];
+//    UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+//                                                                            target:self action:@selector(barButtonAdd)];
+    UIBarButtonItem *buAdd = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"R32_AddStatement"]
+                                                              style:UIBarButtonItemStylePlain  //Bordered
+                                                             target:self action:@selector(barButtonAdd)];
+    NSArray *buArray = @[buFlex, buAdd, buFlex];
+	[self setToolbarItems:buArray animated:YES];
+//#endif
 	// ToolBar表示は、viewWillAppearにて回転方向により制御している。
+
+    //
+    self.tableView.bounces = NO;
+    self.tableView.showsVerticalScrollIndicator = NO;
 }
 
 // loadView の次に呼び出される
@@ -328,11 +337,11 @@
 {
     [super viewWillAppear:animated];
 
-    if (IS_PAD) {
-        [self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
-    }else{
+//    if (IS_PAD) {
+//        [self.navigationController setToolbarHidden:YES animated:animated]; // ツールバー消す
+//    }else{
         [self.navigationController setToolbarHidden:NO animated:animated]; // ツールバー表示する
-    }
+//    }
 	
 	// 画面表示に関係する Option Setting を取得する
 	//NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -496,31 +505,26 @@
 #pragma mark - TableView lifecycle
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 1;
 }
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // セクションは1つだけ section==0
-#ifdef AzMAKE_SPLASHFACE
-	return 0;
-#else
-	switch (section) {
-		case 0:			// 利用明細
-			return 2;
-			break;
-		case 1:			// 集計
-			return 3;
-			break;
-		case 2:			// 分類
-			return 2;
-			break;
-		case 3:			// 機能
-			return 3;
-			break;
-	}
-	return 0;
-#endif
+//    switch (section) {
+//        case 0:            // 利用明細
+//            return 2;
+//            break;
+//        case 1:            // 集計
+//            return 3;
+//            break;
+//        case 2:            // 分類
+//            return 2;
+//            break;
+//        case 3:            // 機能
+//            return 3;
+//            break;
+//    }
+	return MENU_ROWS;
 }
 
 //// セクションのヘッダの高さを返却
@@ -564,10 +568,12 @@
 // セルの高さを指示する
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
-    if (IS_PAD) {
-        return 55;
-    }
-	return 44; // デフォルト：44ピクセル
+//    if (IS_PAD) {
+//        return 55;
+//    }
+//    return 44; // デフォルト：44ピクセル
+    
+    return (self.tableView.bounds.size.height - 64.0 - 44.0) / MENU_ROWS;
 }
 
 // Customize the appearance of table view cells.
@@ -590,88 +596,77 @@
 		}
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator; //[>]
 		
-		switch (indexPath.section) {
-			case 0: //-------------------------------------------------------------Statement
-			{
-				switch (indexPath.row) {
-					case 0:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-GreenPlus.png"];
-						cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
-						break;
-					case 1:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Statements.png"];
-						cell.textLabel.text = NSLocalizedString(@"Record list", nil);
-						break;
-				}
-			} break;
-				
-			case 1: //-------------------------------------------------------------Paid/Unpaid
-			{
-				switch (indexPath.row) {
-					case 0:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Schedule.png"];
-						//cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
-						// E7 未払い総額
-						cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
-						if ((_Re0root.e7unpaids).count <= 0) {
-							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
-												   NSLocalizedString(@"Payment list",nil), 
-												   NSLocalizedString(@"No unpaid",nil)];
-						} else {
-							NSDecimalNumber *decUnpaid = [_Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
-							// Amount
-							NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-							formatter.numberStyle = NSNumberFormatterCurrencyStyle; // 通貨スタイル（先頭に通貨記号が付く）
-							formatter.locale = [NSLocale currentLocale]; 
-							cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", 
-												   NSLocalizedString(@"Payment list",nil), 
-												   [formatter stringFromNumber:decUnpaid]];
-						}
-						break;
-					case 1:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Recipient.png"];
-						cell.textLabel.text = NSLocalizedString(@"Recipient list", nil);
-						break;
-					case 2:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Bank.png"];
-						cell.textLabel.text = NSLocalizedString(@"Bank list", nil);
-						break;
-				}
-			} break;
-				
-			case 2: //-------------------------------------------------------------Groups
-			{
-				switch (indexPath.row) {
-					case 0:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Shop.png"];
-						cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
-						break;
-					case 1:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Category.png"];
-						cell.textLabel.text = NSLocalizedString(@"Category list", nil);
-						break;
-				}
-			} break;
-				
-			case 3: //-------------------------------------------------------------Function
-			{
-				switch (indexPath.row) {
-					case 0:
-						cell.imageView.image = [UIImage imageNamed:@"iCloud-Up"];
-						cell.textLabel.text = NSLocalizedString(@"iCloud Upload", nil);
-                        cell.accessoryType = UITableViewCellAccessoryNone;
-						break;
-					case 1:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Setting.png"];
-						cell.textLabel.text = NSLocalizedString(@"Setting", nil);
-						break;
-					case 2:
-						cell.imageView.image = [UIImage imageNamed:@"Icon32-Information.png"];
-						cell.textLabel.text = NSLocalizedString(@"Information", nil);
-						break;
-				}
-			} break;
-				
+		switch (indexPath.row) {
+            case 0:
+                cell.backgroundColor = [UIColor whiteColor];
+                cell.imageView.image = [UIImage imageNamed:@"R32_AddStatement"];
+                cell.textLabel.text = NSLocalizedString(@"Add Record", nil);
+                break;
+            case 1:
+                cell.backgroundColor = [UIColor whiteColor];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Statements"];
+                cell.textLabel.text = NSLocalizedString(@"Record list", nil);
+                break;
+
+            case 2:
+                cell.backgroundColor = [UIColor colorWithWhite:0.90 alpha:1];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Schedule"];
+                //cell.textLabel.text = NSLocalizedString(@"Payment list", nil);
+                // E7 未払い総額
+                cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
+                if ((_Re0root.e7unpaids).count <= 0) {
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
+                                           NSLocalizedString(@"Payment list",nil),
+                                           NSLocalizedString(@"No unpaid",nil)];
+                } else {
+                    NSDecimalNumber *decUnpaid = [_Re0root valueForKeyPath:@"e7unpaids.@sum.sumAmount"];
+                    // Amount
+                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                    formatter.numberStyle = NSNumberFormatterCurrencyStyle; // 通貨スタイル（先頭に通貨記号が付く）
+                    formatter.locale = [NSLocale currentLocale];
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@   %@",
+                                           NSLocalizedString(@"Payment list",nil),
+                                           [formatter stringFromNumber:decUnpaid]];
+                }
+                break;
+            case 3:
+                cell.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
+                cell.imageView.image = [UIImage imageNamed:@"Icon32-Recipient.png"];
+                cell.textLabel.text = NSLocalizedString(@"Recipient list", nil);
+                break;
+            case 4:
+                cell.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Bank"];
+                cell.textLabel.text = NSLocalizedString(@"Bank list", nil);
+                break;
+
+            case 5:
+                cell.backgroundColor = [UIColor whiteColor];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Shop"];
+                cell.textLabel.text = NSLocalizedString(@"Shop list", nil);
+                break;
+            case 6:
+                cell.backgroundColor = [UIColor whiteColor];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Category"];
+                cell.textLabel.text = NSLocalizedString(@"Category list", nil);
+                break;
+
+            case 7:
+                cell.backgroundColor = [UIColor colorWithWhite:0.90 alpha:1];
+                cell.imageView.image = [UIImage imageNamed:@"R32_iCloud-Up"];
+                cell.textLabel.text = NSLocalizedString(@"iCloud Upload", nil);
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                break;
+            case 8:
+                cell.backgroundColor = [UIColor colorWithWhite:0.93 alpha:1];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Setting"];
+                cell.textLabel.text = NSLocalizedString(@"Setting", nil);
+                break;
+            case 9:
+                cell.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
+                cell.imageView.image = [UIImage imageNamed:@"R32_Information"];
+                cell.textLabel.text = NSLocalizedString(@"Information", nil);
+                break;
 		}
 		return cell;
 	}
@@ -696,207 +691,157 @@
 		return;
 	}
 
-	switch (indexPath.section) {
-		case 0:
-		{
-			switch (indexPath.row) {
-				case 0: // Add Record  //[1.0.2]E3一覧後、Addする。＜＜一覧に戻って確認することが多いため
-					[self e3detailAdd];
-					break;
-					
-				case 1: // 最近の明細
-					[self e3record];
-					break;
-			}
-		}
-			break;
-		case 1:
-		{
-			switch (indexPath.row) {
-				case 0: // 支払予定　E7 < E2 < E6 < E3detail
-				{
-					// E7paymentTVC へ
-					E7paymentTVC *tvc = [[E7paymentTVC alloc] init];
-#ifdef AzDEBUG
-					tvc.title = [NSString stringWithFormat:@"E7 %@", NSLocalizedString(@"Payment list",nil)];
-#else
-					tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
-#endif
-					tvc.Re0root = _Re0root;
-                    
-                    if (IS_PAD) {
-                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        if ([naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]]) break; //既に開いてる
-                        //[naviRight popToRootViewControllerAnimated:NO];<<<<<<これがチラついて見える
-                        //[naviRight pushViewController:tvc animated:YES];
-                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
-                    }else{
-                        [self.navigationController pushViewController:tvc animated:YES];
-                    }
-				}
-					break;
-				case 1: // カード一覧  E1 < E2 < E6 < E3detail
-				{
-					// E1card へ
-					E1cardTVC *tvc = [[E1cardTVC alloc] init];
-#ifdef AzDEBUG
-					tvc.title = [NSString stringWithFormat:@"E1 %@", cell.textLabel.text];
-#else
-					tvc.title = cell.textLabel.text;
-#endif
-					tvc.Re0root = _Re0root;
-					tvc.Re3edit = nil;
-                    
-                    if (IS_PAD) {
-                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        if ([naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]]) break; //既に開いてる
-                        //[naviRight popToRootViewControllerAnimated:NO];<<<<<<これがチラついて見える
-                        //[naviRight pushViewController:tvc animated:YES];
-                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
-                    }else{
-                        [self.navigationController pushViewController:tvc animated:YES];
-                    }
-				}
-					break;
-				case 2: // 銀行等口座一覧  E8 
-				{
-					// E8bank へ
-					E8bankTVC *tvc = [[E8bankTVC alloc] init];
-#ifdef AzDEBUG
-					tvc.title = [NSString stringWithFormat:@"E8 %@", cell.textLabel.text];
-#else
-					tvc.title = cell.textLabel.text;
-#endif
-					tvc.Re0root = _Re0root;
-					tvc.Pe1card = nil;
-                    
-                    if (IS_PAD) {
-                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        if ([naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]]) break; //既に開いてる
-                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
-                    }else{
-                        [self.navigationController pushViewController:tvc animated:YES];
-                    }
-				}
-					break;
-			}
-		}
-			break;
-		case 2:
-		{
-			switch (indexPath.row) {
-				case 0: // 利用店一覧  E4 < E3 < E3detail
-				{
-					E4shopTVC *tvc = [[E4shopTVC alloc] init];
-#ifdef AzDEBUG
-					tvc.title = [NSString stringWithFormat:@"E4 %@", cell.textLabel.text];
-#else
-					tvc.title = cell.textLabel.text;
-#endif
-					tvc.Re0root = _Re0root;
-					tvc.Pe3edit = nil;
+	switch (indexPath.row) {
+        case 0: // Add Record  //[1.0.2]E3一覧後、Addする。＜＜一覧に戻って確認することが多いため
+            [self e3detailAdd];
+            break;
+            
+        case 1: // 最近の明細
+            [self e3record];
+            break;
 
-                    if (IS_PAD) {
-                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        if ([naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]]) break; //既に開いてる
-                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
-                    }else{
-                        [self.navigationController pushViewController:tvc animated:YES];
-                    }
-				}
-					break;
-				case 1: // 分類一覧  E5 < E3 < E3detail
-				{
-					E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
+        case 2: // 支払予定　E7 < E2 < E6 < E3detail
+        {
+            // E7paymentTVC へ
+            E7paymentTVC *tvc = [[E7paymentTVC alloc] init];
 #ifdef AzDEBUG
-					tvc.title = [NSString stringWithFormat:@"E5 %@", cell.textLabel.text];
+            tvc.title = [NSString stringWithFormat:@"E7 %@", NSLocalizedString(@"Payment list",nil)];
 #else
-					tvc.title = cell.textLabel.text;
+            tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
 #endif
-					tvc.Re0root = _Re0root;
-					tvc.Pe3edit = nil;
-                    
-                    if (IS_PAD) {
-                        AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                        UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];	//[1]Right
-                        if ([naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]]) break; //既に開いてる
-                        [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
-                    }else{
-                        [self.navigationController pushViewController:tvc animated:YES];
-                    }
-				}
-					break;
-			}
-		}
-			break;
-		case 3: // Function
-		{
-			switch (indexPath.row) {
-                case 0:
-                {  // Upload to iCloud
-                    [AZAlert target:self
-                         actionRect:[tableView rectForRowAtIndexPath:indexPath]
-                              title:NSLocalizedString(@"iCloud Upload", nil)
-                            message:NSLocalizedString(@"iCloud Upload Detail", nil)
-                            b1title:NSLocalizedString(@"iCloud Upload OK", nil)
-                            b1style:UIAlertActionStyleDestructive
-                           b1action:^(UIAlertAction * _Nullable action) {
-                               // Upload to iCloud
-                               [DataManager.singleton iCloudUpload];
-                           }
-                            b2title:NSLocalizedString(@"Cancel", nil)
-                            b2style:UIAlertActionStyleCancel
-                           b2action:nil];
-                }
-                    break;
-				case 1:
-				{  // Setting
-					[self azSettingView];
-				}
-					break;
-				case 2:
-				{  // Information
-					[self azInformationView];
-				}
-					break;
-			}
-		}
-			break;
+            tvc.Re0root = _Re0root;
+            
+            if (IS_PAD) {
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];    //[1]Right
+                if ([naviRight.visibleViewController isMemberOfClass:[E7paymentTVC class]]) break; //既に開いてる
+                //[naviRight popToRootViewControllerAnimated:NO];<<<<<<これがチラついて見える
+                //[naviRight pushViewController:tvc animated:YES];
+                [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
+            }else{
+                [self.navigationController pushViewController:tvc animated:YES];
+            }
+        }
+            break;
+        case 3: // カード一覧  E1 < E2 < E6 < E3detail
+        {
+            // E1card へ
+            E1cardTVC *tvc = [[E1cardTVC alloc] init];
+#ifdef AzDEBUG
+            tvc.title = [NSString stringWithFormat:@"E1 %@", cell.textLabel.text];
+#else
+            tvc.title = cell.textLabel.text;
+#endif
+            tvc.Re0root = _Re0root;
+            tvc.Re3edit = nil;
+            
+            if (IS_PAD) {
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];    //[1]Right
+                if ([naviRight.visibleViewController isMemberOfClass:[E1cardTVC class]]) break; //既に開いてる
+                //[naviRight popToRootViewControllerAnimated:NO];<<<<<<これがチラついて見える
+                //[naviRight pushViewController:tvc animated:YES];
+                [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
+            }else{
+                [self.navigationController pushViewController:tvc animated:YES];
+            }
+        }
+            break;
+        case 4: // 銀行等口座一覧  E8
+        {
+            // E8bank へ
+            E8bankTVC *tvc = [[E8bankTVC alloc] init];
+#ifdef AzDEBUG
+            tvc.title = [NSString stringWithFormat:@"E8 %@", cell.textLabel.text];
+#else
+            tvc.title = cell.textLabel.text;
+#endif
+            tvc.Re0root = _Re0root;
+            tvc.Pe1card = nil;
+            
+            if (IS_PAD) {
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];    //[1]Right
+                if ([naviRight.visibleViewController isMemberOfClass:[E8bankTVC class]]) break; //既に開いてる
+                [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
+            }else{
+                [self.navigationController pushViewController:tvc animated:YES];
+            }
+        }
+            break;
+
+        case 5: // 利用店一覧  E4 < E3 < E3detail
+        {
+            E4shopTVC *tvc = [[E4shopTVC alloc] init];
+#ifdef AzDEBUG
+            tvc.title = [NSString stringWithFormat:@"E4 %@", cell.textLabel.text];
+#else
+            tvc.title = cell.textLabel.text;
+#endif
+            tvc.Re0root = _Re0root;
+            tvc.Pe3edit = nil;
+            
+            if (IS_PAD) {
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];    //[1]Right
+                if ([naviRight.visibleViewController isMemberOfClass:[E4shopTVC class]]) break; //既に開いてる
+                [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
+            }else{
+                [self.navigationController pushViewController:tvc animated:YES];
+            }
+        }
+            break;
+        case 6: // 分類一覧  E5 < E3 < E3detail
+        {
+            E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
+#ifdef AzDEBUG
+            tvc.title = [NSString stringWithFormat:@"E5 %@", cell.textLabel.text];
+#else
+            tvc.title = cell.textLabel.text;
+#endif
+            tvc.Re0root = _Re0root;
+            tvc.Pe3edit = nil;
+            
+            if (IS_PAD) {
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviRight = [apd.mainSplit.viewControllers objectAtIndex:1];    //[1]Right
+                if ([naviRight.visibleViewController isMemberOfClass:[E5categoryTVC class]]) break; //既に開いてる
+                [naviRight setViewControllers:@[naviRight.viewControllers.firstObject, tvc] animated:YES]; //ごっそり入れ替える
+            }else{
+                [self.navigationController pushViewController:tvc animated:YES];
+            }
+        }
+            break;
+
+        case 7:
+        {  // Upload to iCloud
+            [AZAlert target:self
+                 actionRect:[tableView rectForRowAtIndexPath:indexPath]
+                      title:NSLocalizedString(@"iCloud Upload", nil)
+                    message:NSLocalizedString(@"iCloud Upload Detail", nil)
+                    b1title:NSLocalizedString(@"iCloud Upload OK", nil)
+                    b1style:UIAlertActionStyleDestructive
+                   b1action:^(UIAlertAction * _Nullable action) {
+                       // Upload to iCloud
+                       [DataManager.singleton iCloudUpload];
+                   }
+                    b2title:NSLocalizedString(@"Cancel", nil)
+                    b2style:UIAlertActionStyleCancel
+                   b2action:nil];
+        }
+            break;
+        case 8:
+        {  // Setting
+            [self azSettingView];
+        }
+            break;
+        case 9:
+        {  // Information
+            [self azInformationView];
+        }
+            break;
 	}
 }
-
-
-//#ifdef AzPAD
-//#pragma mark - <UIPopoverControllerDelegate>
-//- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
-//{	// Popoverの外部をタップして閉じる前に通知
-//	AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//	if (apd.entityModified) {	// 変更あり
-//		alertBox(NSLocalizedString(@"Cancel or Save",nil), 
-//				 NSLocalizedString(@"Cancel or Save msg",nil), NSLocalizedString(@"Roger",nil));
-//		return NO; // Popover外部タッチで閉じるのを禁止 ＜＜追加MOCオブジェクトをＣａｎｃｅｌ時に削除する必要があるため＞＞
-//	}
-//	else {	// 変更なし
-//		// E3recordDetailTVC:cancelClose:【insertAutoEntity削除】を通ってないのでここで通す。
-//		if ([popoverController.contentViewController isMemberOfClass:[UINavigationController class]]) {
-//			UINavigationController* nav = (UINavigationController*)popoverController.contentViewController;
-//			if (0 < [nav.viewControllers count] && [[nav.viewControllers objectAtIndex:0] isMemberOfClass:[E3recordDetailTVC class]]) 
-//			{	// Popover外側をタッチしたとき cancelClose: を通っていないので、ここで通す。 ＜＜＜同じ処理が E3recordTVC.m にもある＞＞＞
-//				E3recordDetailTVC* e3tvc = (E3recordDetailTVC *)[nav.viewControllers objectAtIndex:0]; //Root VC   <<<.topViewControllerではダメ>>>
-//				if ([e3tvc respondsToSelector:@selector(cancelClose:)]) {	// メソッドの存在を確認する
-//					[e3tvc cancelClose:nil];	// 【insertAutoEntity削除】
-//				}
-//			}
-//		}
-//		return YES;	// Popover外部タッチで閉じるのを許可
-//	}
-//}
-//#endif
-
 
 
 @end
