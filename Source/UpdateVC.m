@@ -8,10 +8,11 @@
 
 #import "UpdateVC.h"
 #import "FileCsv.h"
+#import <StoreKit/StoreKit.h>
 
 
 
-@interface UpdateVC ()
+@interface UpdateVC () <SKStoreProductViewControllerDelegate>
 {
     IBOutlet UIButton*   cloudSaveButton;
     IBOutlet UIButton*   appStoreButton;
@@ -59,10 +60,7 @@
 
 - (IBAction)appStoreButtonTap:(UIButton *)button
 {
-    button.enabled = NO;
-    NSString* urlString = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", NEW_APP_ID];
-    NSURL* url= [NSURL URLWithString:urlString];
-    [[UIApplication sharedApplication] openURL:url];
+    [self showSKStoreProductViewControllerWithProductID:NEW_APP_ID];
 }
 
 - (IBAction)closeButtonTap:(UIButton *)button
@@ -70,6 +68,39 @@
     button.enabled = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+// アプリ内AppStore画面を表示するメソッド  (SKStoreKit.framework)
+- (void)showSKStoreProductViewControllerWithProductID:(NSString*)productID {
+    SKStoreProductViewController *productViewController = [[SKStoreProductViewController alloc] init];
+    productViewController.delegate = self;
+    
+    [self presentViewController:productViewController animated:YES completion:^() {
+        
+        NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:productID};
+        [productViewController loadProductWithParameters:parameters
+                                         completionBlock:^(BOOL result, NSError *error)
+         {
+             if (!result) {
+                 // エラーのときの処理
+                 [AZAlert target:nil
+                           title:NSLocalizedString(@"AppStore Not Open",nil)
+                         message:error.localizedDescription
+                         b1title:@"OK"
+                         b1style:UIAlertActionStyleDefault
+                        b1action:^(UIAlertAction * _Nullable action) {
+                            //[productViewController dismissViewControllerAnimated:YES completion:nil];
+                        }];
+             }
+         }];
+    }];
+}
+
+#pragma mark - <SKStoreProductViewControllerDelegate>
+// キャンセルボタンが押されたときの処理
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 
 

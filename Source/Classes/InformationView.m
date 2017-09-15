@@ -10,32 +10,39 @@
 #import "AppDelegate.h"
 #import "InformationView.h"
 //#import "UIDevice-Hardware.h"
+#import <StoreKit/StoreKit.h>
+
+#import <CommonCrypto/CommonDigest.h>  // MD5
+#include <sys/socket.h>
+#include <sys/sysctl.h>
+#include <net/if.h>
+#include <net/if_dl.h>
 
 
-#ifdef AzDEBUG
-#import <mach/mach.h> // これを import するのを忘れずに
-@interface MemoryInfo : NSObject {
-}
-+ (struct task_basic_info)used;
-@end
+//#ifdef AzDEBUG
+//#import <mach/mach.h> // これを import するのを忘れずに
+//@interface MemoryInfo : NSObject {
+//}
+//+ (struct task_basic_info)used;
+//@end
+//
+//@implementation MemoryInfo
+//+ (struct task_basic_info)used {
+//    struct task_basic_info basicInfo;
+//    mach_msg_type_number_t basicInfoCount = TASK_BASIC_INFO_COUNT;
+//
+//    if (task_info(current_task(), TASK_BASIC_INFO, (task_info_t)&basicInfo, &basicInfoCount) != KERN_SUCCESS) {
+//        NSLog(@"%s", strerror(errno));
+//    }
+//
+//    return basicInfo;
+//}
+////return info;
+//@end
+//#endif
 
-@implementation MemoryInfo 
-+ (struct task_basic_info)used {
-	struct task_basic_info basicInfo;
-	mach_msg_type_number_t basicInfoCount = TASK_BASIC_INFO_COUNT;
-	
-	if (task_info(current_task(), TASK_BASIC_INFO, (task_info_t)&basicInfo, &basicInfoCount) != KERN_SUCCESS) {
-		NSLog(@"%s", strerror(errno));
-	}
-	
-    return basicInfo;
-}
-//return info;
-@end
-#endif
 
-
-@interface InformationView (PrivateMethods)
+@interface InformationView () <SKStoreProductViewControllerDelegate>
 @end
 
 @implementation InformationView
@@ -53,11 +60,7 @@
 
 
 #pragma mark - UUID　-　passCode生成
-#import <CommonCrypto/CommonDigest.h>  // MD5
-#include <sys/socket.h>
-#include <sys/sysctl.h>
-#include <net/if.h>
-#include <net/if_dl.h>
+
 NSString *getMacAddress()
 {	// cf. http://iphonedevelopertips.com/device/determine-mac-address.html
 	int                 mgmtInfoBase[6];
@@ -189,31 +192,64 @@ NSString *passCode()
 - (void)buGoAppStore:(UIButton *)button
 {
     NSString* zTitle;
-    zTitle = NSLocalizedString(@"GoAppStore Stable",nil);
+    NSString* zProductID;
+
+    switch (button.tag) {
+        case 2: // クレメモ  432458298
+            zTitle = NSLocalizedString(@"GoAppStore Stable",nil);
+            zProductID = @"432458298";
+            break;
+        case 3: // クレメモβ  1262724086
+            zTitle = NSLocalizedString(@"GoAppStore Beta",nil);
+            zProductID = @"1262724086";
+            break;
+    }
 
     [AZAlert target:self
          actionRect:button.frame
               title:zTitle
-            message:NSLocalizedString(@"GoAppStore msg",nil)
+            message:nil  //NSLocalizedString(@"GoAppStore msg",nil)
             b1title:@"OK"
             b1style:UIAlertActionStyleDefault
            b1action:^(UIAlertAction * _Nullable action) {
-               NSURL *url;
-               url = [NSURL URLWithString:               // クレメモ  432458298
-                      @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=432458298&mt=8"];
-
-               //url = [NSURL URLWithString:               // クレメモβ  1262724086
-               //       @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1262724086&mt=8"];
-
-               [[UIApplication sharedApplication] openURL:url
-                                                  options:@{}
-                                        completionHandler:nil];
+               [self showSKStoreProductViewControllerWithProductID:zProductID];
            }
             b2title:@"Cancel"
             b2style:UIAlertActionStyleCancel
            b2action:nil
      ];
 
+}
+// アプリ内AppStore画面を表示するメソッド  (SKStoreKit.framework)
+- (void)showSKStoreProductViewControllerWithProductID:(NSString*)productID {
+    SKStoreProductViewController *productViewController = [[SKStoreProductViewController alloc] init];
+    productViewController.delegate = self;
+    
+    [self presentViewController:productViewController animated:YES completion:^() {
+        
+        NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier:productID};
+        [productViewController loadProductWithParameters:parameters
+                                         completionBlock:^(BOOL result, NSError *error)
+         {
+             if (!result) {
+                 // エラーのときの処理
+                 [AZAlert target:nil
+                           title:NSLocalizedString(@"AppStore Not Open",nil)
+                         message:error.localizedDescription
+                         b1title:@"OK"
+                         b1style:UIAlertActionStyleDefault
+                        b1action:^(UIAlertAction * _Nullable action) {
+                            //[productViewController dismissViewControllerAnimated:YES completion:nil];
+                        }];
+             }
+         }];
+    }];
+}
+
+#pragma mark - <SKStoreProductViewControllerDelegate>
+// キャンセルボタンが押されたときの処理
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -448,7 +484,11 @@ NSString *passCode()
         fX = 70;  //(768 - 320) / 2.0;
         fY = 100;
     }
-	
+    else if (600.0 < self.view.frame.size.height) {  //iPhone6以降対応
+        fY += 50.0;
+    }
+
+    
 	// 小豆色 RGB(152,81,75) #98514B
 	self.view.backgroundColor = [UIColor colorWithRed:152/255.0f 
 												green:81/255.0f 
@@ -546,20 +586,20 @@ NSString *passCode()
 	[self.view addSubview:label]; 	
 	
     UIButton *bu;
-    //------------------------------------------Go to Support blog.
-    bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    bu.tintColor = [UIColor lightGrayColor];
-    bu.frame = CGRectMake(fX+100, fY+200, 200,25);
-    [bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
-    [bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:bu];  //autorelease
+//    //------------------------------------------Go to Support blog.
+//    bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    bu.tintColor = [UIColor lightGrayColor];
+//    bu.frame = CGRectMake(fX+100, fY+200, 200,25);
+//    [bu setTitle:NSLocalizedString(@"GoSupportSite",nil) forState:UIControlStateNormal];
+//    [bu addTarget:self action:@selector(buGoSupportSite:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:bu];  //autorelease
     
 	//------------------------------------------Post Comment
 	bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     bu.tintColor = [UIColor lightGrayColor];
-	bu.frame = CGRectMake(fX+100, fY+230, 200,25);
+	bu.frame = CGRectMake(fX+100, fY+200, 200,25);
 	[bu setTitle:NSLocalizedString(@"Contact mail",nil) forState:UIControlStateNormal];
 	[bu addTarget:self action:@selector(buPostComment:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:bu];  //autorelease
@@ -579,12 +619,22 @@ NSString *passCode()
     bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     bu.tintColor = [UIColor lightGrayColor];
-    bu.frame = CGRectMake(fX+50, fY+260, 250,25);
+    bu.frame = CGRectMake(fX+100, fY+230, 200,25);
     [bu setTitle:NSLocalizedString(@"GoAppStore Stable",nil) forState:UIControlStateNormal];
-    bu.tag = 2;
+    bu.tag = 2; // Stable
     [bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:bu];  //autorelease
 	
+    //------------------------------------------Go to App Store: Stable
+    bu = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    bu.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    bu.tintColor = [UIColor lightGrayColor];
+    bu.frame = CGRectMake(fX+100, fY+260, 200,25);
+    [bu setTitle:NSLocalizedString(@"GoAppStore Beta",nil) forState:UIControlStateNormal];
+    bu.tag = 3; // Beta
+    [bu addTarget:self action:@selector(buGoAppStore:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:bu];  //autorelease
+    
     //------------------------------------------CLOSE
     if (IS_PAD) {
         //label.text = NSLocalizedString(@"Information Open Pad",nil);
