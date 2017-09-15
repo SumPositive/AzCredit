@@ -166,7 +166,7 @@ NSDate *GdateYearMMDD(NSInteger PiMinYearMMDD,
 
 void alertBox( NSString *zTitle, NSString *zMsg, NSString *zButton );
 
-UIViewController* getTopViewController();
+UIViewController* getTopViewController(void);
 
 
 

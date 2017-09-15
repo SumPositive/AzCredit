@@ -472,7 +472,7 @@
 	[self unloadRelease];
 	// @property (retain)
 	_Re0root = nil;
-  //  [super dealloc];
+    //[super dealloc];
 }
 
 // メモリ不足時に呼び出されるので不要メモリを解放する。 ただし、カレント画面は呼ばない。

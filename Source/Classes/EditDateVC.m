@@ -507,6 +507,7 @@
 		[McalcView removeFromSuperview];
 		McalcView = nil;
 	}
+    //[super dealloc];
 }
 
 
