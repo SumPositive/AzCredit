@@ -280,10 +280,14 @@
 
     if (IS_PAD) {
         self.navigationItem.hidesBackButton = YES;
+        // Set up NEXT Left [Back] buttons.
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                                 initWithImage:[UIImage imageNamed:@"R16_Back1"]
+                                                 style:UIBarButtonItemStylePlain  target:nil  action:nil];
     }else{
         // Set up NEXT Left [Back] buttons.
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-                                                 initWithImage:[UIImage imageNamed:@"Icon16-Return1.png"]
+                                                 initWithImage:[UIImage imageNamed:@"R16_Back1"]
                                                  style:UIBarButtonItemStylePlain  target:nil  action:nil];
     }
 	

@@ -63,7 +63,9 @@
 	{	// 金額　：　電卓出現
 		assert(Re6edit);
 		if (McalcView==nil) {
-			McalcView = [[CalcView alloc] initWithFrame:self.view.bounds withE3:nil];
+            CGRect rect = self.view.bounds;
+            rect.origin.y = MlbAmount.frame.origin.y - 64.0;
+			McalcView = [[CalcView alloc] initWithFrame:rect withE3:nil];
 			McalcView.Rlabel = MlbAmount;  // 結果もこのラベルに戻る
 			McalcView.PoParentTableView = nil;
 			McalcView.delegate = self;	// viewWillAppear:を呼び出すため
@@ -327,7 +329,7 @@
             rect.origin.y = popBounds.size.height - 90;
             MbuYearTime.frame = rect;
         } else {
-            rect.origin.y = 40;  //self.view.bounds.size.height - 110;
+            rect.origin.y = 60;  //self.view.bounds.size.height - 110;
             rect.size.height = 30;
             rect.size.width = 200;
             rect.origin.x = (popBounds.size.width - rect.size.width) / 2;
@@ -340,11 +342,7 @@
     }else{
         if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation))
         {	// タテ
-            if (Re3edit) {
-                rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
-            } else {
-                rect.origin.y = 120;
-            }
+            rect.origin.y = (self.view.bounds.size.height - GD_PickerHeight) / 2;
             rect.size.height = GD_PickerHeight;
             MdatePicker.frame = rect;
             

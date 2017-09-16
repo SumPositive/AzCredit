@@ -150,25 +150,8 @@
 	}
 	
 	CGRect rect = self.view.bounds;
-//	if (320.0 < self.view.frame.size.width) {  // iPhone6以降対応
-//		rect.origin.x = (self.view.frame.size.width - 320.0) / 2.0;
-//	}
-	NSIndexPath* indexPath = [NSIndexPath indexPathForRow:1 inSection:0]; // 利用金額行
-	if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
-		// 横
-		[self.tableView scrollToRowAtIndexPath:indexPath 
-							  atScrollPosition:UITableViewScrollPositionTop	// 上端へ
-									  animated:YES];
-		rect.origin.y = 52; //55;
-	}
-	else {
-		// 縦   ＜＜iPadの場合は、常にタテ
-		[self.tableView scrollToRowAtIndexPath:indexPath 
-							  atScrollPosition:UITableViewScrollPositionMiddle	// 中央へ
-									  animated:YES];
-		rect.origin.y = 65; //0;
-	}
-	
+    rect.origin.y = 65;
+    
 	// CalcView
 	McalcView = [[CalcView alloc] initWithFrame:rect withE3:_Re3edit];
 	McalcView.Rlabel = MlbAmount;  // MlbAmount.tag にはCalc入力された数値(long)が記録される
@@ -795,6 +778,8 @@
 		
 		//MiIndexE3lasts = (-2); // Footerメッセージを非表示にするため
 	}
+    
+    //self.tableView.contentOffset = CGPointZero;
 }
 
 - (void)viewDesign
@@ -906,7 +891,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-    return 3;
+    if (0 < (_Re3edit.e6parts).count) {
+        return 3;
+    }
+    return 2;
 }
 
 
@@ -928,8 +916,8 @@
 			if (0 < (_Re3edit.e6parts).count) {
 				return (_Re3edit.e6parts).count; // 支払明細
 			} else {
-				return 1; // 新規追加時の電卓描画範囲を確保するためダミーセル表示する
-			}
+				return 0;
+            }
 			break;
 	}
 	return 0;
@@ -940,13 +928,13 @@
 {
     switch (section) {
         case 0:
-            return 5.0;
+            return 1.0;
             break;
         case 1:
-            return 12.0;
+            return 1.0;
             break;
         case 2:
-            return 18.0;
+            return 16.0;
             break;
     }
     return 0.0;
@@ -957,10 +945,10 @@
 {
 	switch (section) {
 		case 0:
-            return @" ";  //NSLocalizedString(@"Indispensable",nil);
+            return @" ";  //何か表示しないと高さが指示できない。  //NSLocalizedString(@"Indispensable",nil);
 			break;
 		case 1:
-			return NSLocalizedString(@"Option",nil);
+            return @" ";  //NSLocalizedString(@"Option",nil);
 			break;
 		case 2:
 			if (0 < (_Re3edit.e6parts).count) {
@@ -971,6 +959,28 @@
 	return nil;
 }
 
+// セクションフッタの高さを返却
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            if (MbCopyAdd) {
+                return 44.0;
+            }
+            else if    (0 <= MiIndexE3lasts && !MbModified) {
+                return 44.0;
+            }
+            else if (0 < _PiAdd && !MbCopyAdd && (-1) <= MiIndexE3lasts && !MbModified) {
+                return 44.0;
+            }
+            else return 3.0;
+            break;
+        case 1:
+            return 18.0;
+            break;
+    }
+    return 1.0;
+}
 // TableView セクションフッタを応答
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section 
 {
@@ -994,13 +1004,13 @@
 			if (MbE6paid) {
 				return NSLocalizedString(@"E6PAID Help",nil);
 			}
-			else if ((_Re3edit.e6parts).count <= 0) {
-				return	@"\n\n\n\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
-			}
+//            else if ((_Re3edit.e6parts).count <= 0) {
+//                return    @"\n\n\n\n\n\n\n\n"; // 画面ヨコで電卓出たときのスクロール範囲を確保するため5行表示
+//            }
 			break;
 
-		case 2:
-			return	@"\n\n\n"; //[1.0.1]万一広告が残ったとき、支払明細が見える所までスクロールできるようにするため
+//        case 2:
+//            return    @"\n\n\n"; //[1.0.1]万一広告が残ったとき、支払明細が見える所までスクロールできるようにするため
 	}
 	return nil;
 }
@@ -1010,13 +1020,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
 {
 	if (indexPath.section==0 && 3<=indexPath.row) {
-        if (IS_PAD) {
-            return 36; // Repeat, Payment
-        }else{
-            return 30; // Repeat, Payment
-        }
+        return 38; // Repeat, Payment
 	}
-	return 44; // デフォルト：44ピクセル
+	return 55; // デフォルト：44ピクセル
 }
 
 
@@ -1036,12 +1042,12 @@
 				cell.showsReorderControl = NO; // Move禁止
                 if (IS_PAD) {
                     cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
-                    cell.detailTextLabel.font = [UIFont systemFontOfSize:20]; // 必須内容表示　大きく
+                    cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:20]; // 必須内容表示　大きく
                 }else{
                     cell.textLabel.font = [UIFont systemFontOfSize:12];  // 見出し
-                    cell.detailTextLabel.font = [UIFont systemFontOfSize:17]; // 必須内容表示　大きく
+                    cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:17]; // 必須内容表示　大きく
                 }
-				cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
 				cell.textLabel.textColor = [UIColor grayColor];
 				
 				cell.detailTextLabel.textColor = [UIColor blackColor];
@@ -1055,6 +1061,7 @@
 
 			switch (indexPath.row) {
 				case 0: { // Use date	// NSDateは、GTM(+0000)協定時刻で記録 ⇒ 表示でタイムゾーン変換する
+                    cell.backgroundColor = [UIColor whiteColor];
 					if (_Re3edit.e1card && (_Re3edit.e1card.nPayDay).integerValue==0) {	//[0.4]E3.dateUse を支払日とするモード
 						cell.textLabel.text = NSLocalizedString(@"Due date",nil);
 					} else {
@@ -1072,22 +1079,23 @@
 					}
 					//AzLOG(@"Me3zDateUse=%@", Me3zDateUse);
                     if (IS_PAD) {
-                        cell.detailTextLabel.font = [UIFont systemFontOfSize:24]; // 特に大きく
+                        cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:24]; // 特に大きく
                     }
 					cell.detailTextLabel.text = [df stringFromDate:_Re3edit.dateUse];
 					
 				} break;
 					
 				case 1:{ // Amount
+                    cell.backgroundColor = [UIColor whiteColor];
 					if (MlbAmount == nil) {
-						MlbAmount = [[UILabel alloc] initWithFrame:CGRectMake(65,5, 210,35)];
+						MlbAmount = [[UILabel alloc] initWithFrame:CGRectMake(120,10, 210,35)];
 						MlbAmount.lineBreakMode = NSLineBreakByWordWrapping; // 単語を途切れさせないように改行する
-						MlbAmount.textAlignment = NSTextAlignmentCenter;
+                        MlbAmount.textAlignment = NSTextAlignmentLeft; //Center;
 						MlbAmount.tag = 0; // Calc入力された数値(long)を記録する
 #ifdef AzDEBUG
 						//MlbAmount.backgroundColor = [UIColor grayColor]; //範囲チェック用
 #endif
-						MlbAmount.font = [UIFont systemFontOfSize:30];
+						MlbAmount.font = [UIFont boldSystemFontOfSize:30];
 						MlbAmount.backgroundColor = [UIColor clearColor];
 						[cell.contentView addSubview:MlbAmount];
 					}
@@ -1115,6 +1123,7 @@
 				}break;
 					
 				case 2:{ // Card
+                    cell.backgroundColor = [UIColor whiteColor];
 					cell.textLabel.text = NSLocalizedString(@"Use Card",nil);
 					if (_Re3edit.e1card) {
 						cell.detailTextLabel.text = _Re3edit.e1card.zName;
@@ -1129,6 +1138,7 @@
 					
 				case 3: // Repeat	//[0.4] (0)なし　(1)1ヶ月後　(2)2ヶ月後　(12)1年後
 				{
+                    cell.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
 					cell.textLabel.text = NSLocalizedString(@"Use Repeat",nil);
                     if (IS_PAD) {
                         cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
@@ -1151,6 +1161,7 @@
 				} break;
 					
 				case 4:{ // nPayType
+                    cell.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
 					cell.textLabel.text = NSLocalizedString(@"Use Payment",nil);
                     if (IS_PAD) {
                         cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
@@ -1196,6 +1207,7 @@
 				cell.detailTextLabel.textColor = [UIColor blackColor];
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;	// > ディスクロージャマーク
 			}
+            cell.backgroundColor = [UIColor colorWithWhite:0.96 alpha:1];
 
 			switch (indexPath.row) {
 				case 0: // Shop
@@ -1264,17 +1276,18 @@
                     cellLabel.font = [UIFont systemFontOfSize:14];
                 }
 				cellLabel.tag = -1;
-				[cell addSubview:cellLabel];
+				[cell.contentView addSubview:cellLabel];
 			}
 			else {
 				cellLabel = (UILabel *)[cell viewWithTag:-1];
 			}
 			// 回転対応のため
+            CGFloat fy = (cell.contentView.bounds.size.height - 20.0)/2.0 + 5.0;
             if (IS_PAD) {
                 // -25 は、Popoverの余白分だと思われる
-                cellLabel.frame = CGRectMake(self.tableView.frame.size.width-180, 12, 125, 20);
+                cellLabel.frame = CGRectMake(self.tableView.frame.size.width-180, fy, 125, 20);
             }else{
-                cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, 12, 90, 20);
+                cellLabel.frame = CGRectMake(self.tableView.frame.size.width-125, fy, 90, 20);
             }
 			if (MbSaved) break; //[0.4.17] SAVE直後、E6が削除されている可能性があるためE6参照禁止。
 			
@@ -1552,6 +1565,7 @@
                     }else{
                         evc.hidesBottomBarWhenPushed = YES; // 現状PUSHして次の画面では非表示にする
                     }
+                    evc.view.frame = self.view.bounds;
 					[self.navigationController pushViewController:evc animated:YES];
 					
 				}
