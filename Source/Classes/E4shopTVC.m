@@ -624,7 +624,7 @@
 			// E3records へ
 			E3recordTVC *tvc = [[E3recordTVC alloc] init];
 			E4shop *e4obj = RaE4shops[indexPath.row];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxxx
 			tvc.title = [NSString stringWithFormat:@"E3 %@", e4obj.zName];
 #else
 			tvc.title =  e4obj.zName;

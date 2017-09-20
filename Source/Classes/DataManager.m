@@ -45,99 +45,98 @@ static DataManager* _singleton = nil;
     NSURL* url = [fm URLForUbiquityContainerIdentifier:ICLOUD_CONTAINER]; //ICLOUD_CONTAINER
     NSURL* fileUrl = [url URLByAppendingPathComponent:ICLOUD_FILENAME];
     AzLOG(@"fileUrl: %@", fileUrl);
-    return fileUrl;
-}
-
-// 保存
-- (void)iCloudUpload
-{
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
-    
-    
-    E0root *e0node = [MocFunctions e0root];
-    // E0配下をファイルへ書き出す
-    NSString* zErr = [FileCsv zSave:e0node toLocalFileName:ICLOUD_FILENAME];
-    if (zErr) {
-        [SVProgressHUD dismiss];
+    if (fileUrl == nil) {
         [AZAlert target:nil
-                  title:NSLocalizedString(@"iCloud Upload Fail",nil)
-                message:NSLocalizedString(@"iCloud Upload NoData",nil)
-                b1title:@"OK"
-                b1style:UIAlertActionStyleDefault
-               b1action:nil];
-        return;
-    }
-    
-    // /Documentのパスの取得
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    // ファイル名の作成
-    NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:ICLOUD_FILENAME];
-    NSError *error = nil;
-    // ファイルを読み出して文字列化する
-    NSString *csvString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
-    if (error) {
-        [SVProgressHUD dismiss];
-        AzLOG(@"stringWithContentsOfFile: NG : %@", error.localizedDescription);
-        [AZAlert target:nil
-                  title:NSLocalizedString(@"iCloud Upload Fail",nil)
-                message:NSLocalizedString(@"iCloud Upload NoData",nil)
-                b1title:@"OK"
-                b1style:UIAlertActionStyleDefault
-               b1action:nil];
-        return;
-    }
-    
-    // WRITE
-    @try {
-        NSError *error = nil;
-        // 文字列化したものをiCloudへ書き込む
-        if ([csvString writeToURL:[self iCloudFileUrl]
-                       atomically:YES
-                         encoding:NSUTF8StringEncoding
-                            error:&error]) {
-            
-            AzLOG(@"writeToURL: OK");
-            [AZAlert target:nil
-                      title:NSLocalizedString(@"iCloud Upload Success",nil)
-                    message:nil
-                    b1title:@"OK"
-                    b1style:UIAlertActionStyleDefault
-                   b1action:nil];
-            // タイムスタンプ
-            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-            df.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-            df.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-            NSString* zTimestamp = [df stringFromDate:[NSDate date]];
-            // iCloud KVS へ保存
-            NSUbiquitousKeyValueStore *ukvs = [NSUbiquitousKeyValueStore defaultStore];
-            [ukvs setString:zTimestamp forKey:UKVS_UPLOAD_DATE];
-            [ukvs synchronize];
-        }
-        else{
-            AzLOG(@"writeToURL: NG : %@", error.localizedDescription);
-            [AZAlert target:nil
-                      title:NSLocalizedString(@"iCloud Upload Fail",nil)
-                    message:NSLocalizedString(@"iCloud Upload NoData",nil)
-                    b1title:@"OK"
-                    b1style:UIAlertActionStyleDefault
-                   b1action:nil];
-        }
-        // OK
-        
-        
-    } @catch (NSException *exception) {
-        AzLOG(@"writeToURL: @catch: %@", exception);
-        [AZAlert target:nil
-                  title:NSLocalizedString(@"iCloud Upload Fail",nil)
+                  title:NSLocalizedString(@"iCloud nil",nil)
                 message:nil
                 b1title:@"OK"
                 b1style:UIAlertActionStyleDefault
                b1action:nil];
-        
-    } @finally {
-        AzLOG(@"writeToURL: @finally");
-        [SVProgressHUD dismiss];
     }
+    return fileUrl;
+}
+
+// E0配下をNSDataへ書き出す
+- (void)coreExport:(void(^)(BOOL success, NSData* exportData))completion
+{
+    assert([NSThread isMainThread]);
+
+    E0root *e0node = [MocFunctions e0root];
+    NSString* zErr = [FileCsv zSave:e0node toTempFileName:ICLOUD_FILENAME];
+    if (zErr) {
+        // NG
+        completion(NO,nil);
+        return;
+    }
+    // 一時ファイルパス
+    NSString *csvPath = [NSTemporaryDirectory() stringByAppendingPathComponent:ICLOUD_FILENAME];
+    //
+    NSData* exportData = [NSData dataWithContentsOfFile:csvPath];
+    // OK
+    completion(YES, exportData);
+}
+
+// NSDataを読み込んでE0配下を更新する
+- (void)coreImportData:(NSData*)importData completion:(void(^)(BOOL success))completion
+{
+    // 一時ファイルパス
+    NSString *csvPath = [NSTemporaryDirectory() stringByAppendingPathComponent:ICLOUD_FILENAME];
+    // ファイルへ書き込む
+    NSError *error = nil;
+    [importData writeToFile:csvPath options:NSDataWritingAtomic error:&error];
+    if (error) {
+        completion(NO);
+        return;
+    }
+
+    if ([NSThread isMainThread]) {
+        E0root *e0node = [MocFunctions e0root];
+        NSString* zErr = [FileCsv zLoad:e0node fromTempFileName:ICLOUD_FILENAME];
+        if (zErr) {
+            completion(NO);
+        } else {
+            completion(YES);
+        }
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            E0root *e0node = [MocFunctions e0root];
+            NSString* zErr = [FileCsv zLoad:e0node fromTempFileName:ICLOUD_FILENAME];
+            if (zErr) {
+                completion(NO);
+            } else {
+                completion(YES);
+            }
+        });
+    }
+}
+
+// 保存
+- (void)iCloudUpload:(void(^)(BOOL success))completion
+{
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
+    
+    [self coreExport:^(BOOL success, NSData *exportData) {
+        if (success) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                
+                NSError *error = nil;
+                [exportData writeToURL:[self iCloudFileUrl] options:NSDataWritingAtomic error:&error];
+                
+                [SVProgressHUD dismiss];
+                if (error) {
+                    AzLOG(@"writeToURL: NG : %@", error.localizedDescription);
+                    completion(NO);
+                } else {
+                    AzLOG(@"writeToURL: OK");
+                    completion(YES);
+                }
+            });
+        }
+        else {
+            [SVProgressHUD dismiss];
+            completion(NO);
+        }
+    }];
 }
 
 UIAlertController* alertController = nil;
@@ -151,115 +150,63 @@ UIAlertController* alertController = nil;
             b1style:UIAlertActionStyleDestructive
            b1action:^(UIAlertAction * _Nullable action) {
                // Download to iCloud
-               [self iCloudDownload];
+               [self iCloudDownload:^(BOOL success) {
+                   if (success) {
+                       [AZAlert target:nil
+                                 title:NSLocalizedString(@"iCloud Download Success",nil)
+                               message:nil
+                               b1title:@"OK"
+                               b1style:UIAlertActionStyleDefault
+                              b1action:nil];
+                       //
+                       if (IS_PAD) {
+                           // TopMenuTVCにある 「未払合計額」を再描画するための処理
+                           AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                           UINavigationController* naviLeft = [apd.mainSplit.viewControllers objectAtIndex:0];    //[0]Left
+                           TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+                           if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {    // メソッドの存在を確認する
+                               [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+                           }
+                       }
+                   }
+                   else {
+                       [AZAlert target:nil
+                                 title:NSLocalizedString(@"iCloud Download Fail",nil)
+                               message:NSLocalizedString(@"iCloud Download NoData",nil)
+                               b1title:@"OK"
+                               b1style:UIAlertActionStyleDefault
+                              b1action:nil];
+                   }
+               }];
            }
             b2title:NSLocalizedString(@"Cancel", nil)
             b2style:UIAlertActionStyleCancel
            b2action:nil];
 }
-- (void)iCloudDownload
+
+- (void)iCloudDownload:(void(^)(BOOL success))completion
 {
-    //[SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
-    // CoreDataがメインスレッドで動くのでプログラス処理が止まる。
-    // なので、応急措置としてアラートトースト表示して待たせる。
-    alertController = [AZAlert target:nil
-                                title:NSLocalizedString(@"Loading", nil)
-                              message:NSLocalizedString(@"Weiting", nil)
-                           completion:^{
-                               // メインスレッド
-                               [self iCloudDownloadTask];
-                               //
-                               if (IS_PAD) {
-                                   // TopMenuTVCにある 「未払合計額」を再描画するための処理
-                                   AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                                   UINavigationController* naviLeft = [apd.mainSplit.viewControllers objectAtIndex:0];	//[0]Left
-                                   TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-                                   if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {	// メソッドの存在を確認する
-                                       [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-                                   }
-                               }
-                           }];
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        NSData* importData = [NSData dataWithContentsOfURL:[self iCloudFileUrl]];
+        if (importData) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self coreImportData:importData completion:^(BOOL success) {
+                    [SVProgressHUD dismiss];
+                    if (success) {
+                        completion(YES);
+                    }else{
+                        completion(NO);
+                    }
+                }];
+            });
+        }else{
+            [SVProgressHUD dismiss];
+            completion(NO);
+        }
+    });
 }
 
-- (void)iCloudDownloadTask
-{
-    // READ
-    @try {
-        NSString* csvString = [NSString stringWithContentsOfURL:[self iCloudFileUrl]
-                                                       encoding:NSUTF8StringEncoding
-                                                          error:nil];
-        AzLOG(@"iCloudDownloadTask: csvString: %@", csvString);
-        if (csvString.length < 10) {
-            //[SVProgressHUD dismiss];
-            [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
-            [AZAlert target:nil
-                      title:NSLocalizedString(@"iCloud Download Fail",nil)
-                    message:NSLocalizedString(@"iCloud Download NoData",nil)
-                    b1title:@"OK"
-                    b1style:UIAlertActionStyleDefault
-                   b1action:nil];
-            return;
-        }
-        // ファイルへ書き込む
-        // /Documentのパスの取得
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        // ファイル名の作成
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:ICLOUD_FILENAME];
-        NSError *error = nil;
-        [csvString writeToFile:filePath
-                    atomically:YES
-                      encoding:NSUTF8StringEncoding
-                         error:&error];
-        if (error) {
-            //[SVProgressHUD dismiss];
-            [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
-            [AZAlert target:nil
-                      title:NSLocalizedString(@"iCloud Download Fail",nil)
-                    message:NSLocalizedString(@"iCloud Download NoData",nil)
-                    b1title:@"OK"
-                    b1style:UIAlertActionStyleDefault
-                   b1action:nil];
-            return;
-        }
-        
-        E0root *e0node = [MocFunctions e0root];
-        // CSVファイルを読み込んでクレメモ情報を更新する
-        NSString* zErr = [FileCsv zLoad:e0node fromLocalFileName:ICLOUD_FILENAME];
-        //[SVProgressHUD dismiss];
-        [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
-        if (zErr) {
-            AzLOG(@"FileCsv zLoad: %@", zErr);
-            [AZAlert target:nil
-                      title:NSLocalizedString(@"iCloud Download Fail",nil)
-                    message:NSLocalizedString(@"iCloud Download NoData",nil)
-                    b1title:@"OK"
-                    b1style:UIAlertActionStyleDefault
-                   b1action:nil];
-            return;
-        }
-        [AZAlert target:nil
-                  title:NSLocalizedString(@"iCloud Download Success",nil)
-                message:nil
-                b1title:@"OK"
-                b1style:UIAlertActionStyleDefault
-               b1action:nil];
-        
-    } @catch (NSException *exception) {
-        AzLOG(@"iCloudDownloadTask: @catch: %@", exception);
-        //[SVProgressHUD dismiss];
-        [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
-        [AZAlert target:nil
-                  title:NSLocalizedString(@"iCloud Download Fail",nil)
-                message:NSLocalizedString(@"iCloud Download NoData",nil)
-                b1title:@"OK"
-                b1style:UIAlertActionStyleDefault
-               b1action:nil];
-
-    } @finally {
-        AzLOG(@"iCloudDownloadTask: @finally");
-        //[SVProgressHUD dismiss];
-        [alertController dismissViewControllerAnimated:NO completion:nil]; alertController = nil;
-    }
-}
 
 @end

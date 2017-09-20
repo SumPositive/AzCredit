@@ -845,7 +845,7 @@ static UIImage* GimageFromString(NSString* str)
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	tvc.Pe7select = e7obj;	// カード別明細一覧（支払日の変更はできない）
 	tvc.PiFirstSection = 0;
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxx
 	tvc.title = [NSString stringWithFormat:@"E6 %@", cell.textLabel.text];
 #else
 	tvc.title = cell.textLabel.text;  // GstringYearMMDD( [e7obj.nYearMMDD integerValue] );

@@ -23,10 +23,15 @@
 
 + (DataManager*)singleton;
 
+// E0配下をDATAへ書き出す
+- (void)coreExport:(void(^)(BOOL success, NSData* exportData))completion;
+// NSDataを読み込んでE0配下を更新する
+- (void)coreImportData:(NSData*)importData completion:(void(^)(BOOL success))completion;
+
 // iCloud
-- (void)iCloudUpload;
+- (void)iCloudUpload:(void(^)(BOOL success))completion;
 - (void)iCloudDownloadAlert;
-- (void)iCloudDownload;
+//- (void)iCloudDownload:(void(^)(BOOL success))completion;
 
 
 @end

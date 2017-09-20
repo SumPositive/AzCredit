@@ -993,7 +993,7 @@
 	// E6parts へ
 	E6partTVC *tvc = [[E6partTVC alloc] init];
 	if (_Re1select) {
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxx
 		tvc.title = [NSString stringWithFormat:@"E6 %@", _Re1select.zName];
 #else
 		tvc.title =  _Re1select.zName;
@@ -1012,7 +1012,7 @@
 			tvc.title = [NSString stringWithFormat:@"(%d-%d%@) %@", 
 						 (int)iMM, (int)iDD, NSLocalizedString(@"Due",nil), _Re8select.zName];
 		}
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxxxx
 		tvc.title = [NSString stringWithFormat:@"E6 %@", tvc.title];
 #endif
 		// 支払日一覧と同様のカード別一覧（支払日の変更はできない）

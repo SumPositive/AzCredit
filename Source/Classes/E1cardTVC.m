@@ -538,7 +538,7 @@ static UIImage* GimageFromString(NSString* str)
 		
 		E1card *e1obj = RaE1cards[indexPath.row]; //[MfetchE1card objectAtIndexPath:indexPath];
 		
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxxxxx
 		if ([e1obj.zName length] <= 0) 
 			cell.textLabel.text = [NSString stringWithFormat:@"%ld) %@", 
 								   (long)[e1obj.nRow integerValue], NSLocalizedString(@"(Untitled)", nil)];
@@ -659,7 +659,7 @@ static UIImage* GimageFromString(NSString* str)
 			// E2invoice へ
 			E1card *e1obj = RaE1cards[indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxx
 			tvc.title = [NSString stringWithFormat:@"E2 %@", e1obj.zName];
 #else
 			tvc.title = e1obj.zName;

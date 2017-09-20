@@ -629,7 +629,7 @@
 			// E3records へ
 			E3recordTVC *tvc = [[E3recordTVC alloc] init];
 			E5category *e5obj = RaE5categorys[indexPath.row];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxx
 			tvc.title = [NSString stringWithFormat:@"E3 %@", e5obj.zName];
 #else
 			tvc.title =  e5obj.zName;

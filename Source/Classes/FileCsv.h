@@ -20,8 +20,8 @@
 }
 
 // クラスメソッド（グローバル関数）
-+ (NSString *)zSave: (E0root *)Pe0root toLocalFileName:(NSString *)PzFname;
++ (NSString *)zSave: (E0root *)Pe0root toTempFileName:(NSString *)PzFname;
 + (BOOL)getMaCsv: (NSFileHandle *)fileHandle;
-+ (NSString *)zLoad: (E0root *)Pe0root fromLocalFileName:(NSString *)PzFname;
++ (NSString *)zLoad: (E0root *)Pe0root fromTempFileName:(NSString *)PzFname;
 
 @end

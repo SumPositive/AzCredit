@@ -433,7 +433,7 @@
 		
 		E8bank *e8obj = RaE8banks[indexPath.row]; //[MfetchE8bank objectAtIndexPath:indexPath];
 		
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxxxxxx
 		if ([e8obj.zName length] <= 0) 
 			cell.textLabel.text = [NSString stringWithFormat:@"%ld) %@", 
 								   (long)[e8obj.nRow integerValue], NSLocalizedString(@"(Untitled)", nil)];
@@ -515,7 +515,7 @@
 			// E2invoice へ
 			E8bank *e8obj = RaE8banks[indexPath.row];
 			E2invoiceTVC *tvc = [[E2invoiceTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxxxx
 			tvc.title = [NSString stringWithFormat:@"E2 %@", e8obj.zName];
 #else
 			tvc.title = e8obj.zName;

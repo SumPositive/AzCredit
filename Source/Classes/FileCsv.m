@@ -42,15 +42,16 @@ static NSString *csvToStr( NSString *inCsv ) {
 }
 
 
-// クレメモ情報をCSVファイルへ書き出す
-+ (NSString *)zSave: (E0root *)Pe0root toLocalFileName:(NSString *)PzFname
+// クレメモ情報を一時CSVファイルへ書き出す
++ (NSString *)zSave: (E0root *)Pe0root toTempFileName:(NSString *)PzFname
 {
-//	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
-
 	NSString *zErrMsg = NSLocalizedString(@"File write error",nil);
-	NSString *home_dir = NSHomeDirectory();
-	NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
-	NSString *csvPath = [doc_dir stringByAppendingPathComponent:PzFname]; //GD_CSVFILENAME]; // ローカルファイル名
+//    NSString *home_dir = NSHomeDirectory();
+//    NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
+//    NSString *csvPath = [doc_dir stringByAppendingPathComponent:PzFname]; //GD_CSVFILENAME]; // ローカルファイル名
+    
+    // 一時ファイルパス
+    NSString *csvPath = [NSTemporaryDirectory() stringByAppendingPathComponent:PzFname];
 
 	NSDateFormatter *dtFmt = [[NSDateFormatter alloc] init];
 	dtFmt.timeStyle = NSDateFormatterFullStyle;
@@ -368,15 +369,15 @@ static NSString *csvToStr( NSString *inCsv ) {
 	return YES;
 }
 
-// CSVファイルを読み込んでクレメモ情報を更新する
-+ (NSString *)zLoad: (E0root *)Pe0root fromLocalFileName:(NSString *)PzFname
+// 一時CSVファイルを読み込んでクレメモ情報を更新する
++ (NSString *)zLoad: (E0root *)Pe0root fromTempFileName:(NSString *)PzFname
 {
-//	NSAutoreleasePool *autoPool = [[NSAutoreleasePool alloc] init];	// [0.3]autorelease独自解放のため
+//    NSString *home_dir = NSHomeDirectory();
+//    NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
+//    NSString *csvPath = [doc_dir stringByAppendingPathComponent:PzFname];  //GD_CSVFILENAME];
+    // 一時ファイルパス
+    NSString *csvPath = [NSTemporaryDirectory() stringByAppendingPathComponent:PzFname];
 
-	NSString *home_dir = NSHomeDirectory();
-	NSString *doc_dir = [home_dir stringByAppendingPathComponent:@"Documents"];
-	NSString *csvPath = [doc_dir stringByAppendingPathComponent:PzFname];  //GD_CSVFILENAME];		
-	
 	long	lE1nRow = 0;
 	
 	E1card		*ActE1card = nil;

@@ -26,7 +26,7 @@
 #import "WebSiteVC.h"
 //#import "HttpServerView.h"
 #import "PadRootVC.h"
-
+@import Firebase;
 
 #define TAG_VIEW_HttpServer			118
 #define FREE_AD_OFFSET_Y			200.0
@@ -272,6 +272,11 @@
 	[super loadView];
 
 	self.title = NSLocalizedString(@"Product Title",nil);
+    
+#if AZ_BETA
+    self.title = [self.title stringByAppendingString:@" β"];
+    self.navigationController.navigationBar.backgroundColor = [UIColor redColor];
+#endif
 
 //    self.view.backgroundColor = [UIColor colorWithRed:240/255.0f
 //                                                green:240/255.0f
@@ -376,7 +381,7 @@
 	
 	if (MbInformationOpen) {	//initWithStyleにて判定処理している
 		MbInformationOpen = NO;	// 以後、自動初期表示しない。
-		[self azInformationView];  //[1.0.2]最初に表示する。バックグランド復帰時には通らない
+//        [self azInformationView];  //[1.0.2]最初に表示する。バックグランド復帰時には通らない
 		//----------------------------------------
 		[MocFunctions bugFix113]; //[1.1.3.0] Bugデータ修正処理、1度だけ通すため。
 		//----------------------------------------
@@ -405,8 +410,8 @@
 - (void)viewWillDisappear:(BOOL)animated 
 {
 	//iPad// [Mpopover dismissPopoverAnimated:NO] ＜＜ TopMenuだけ、AppDelegate:applicationDidEnterBackground:から (void)popoverClose を呼び出して処理している。
-	
-	[super viewWillDisappear:animated];
+
+    [super viewWillDisappear:animated];
 }
 
 
@@ -708,7 +713,7 @@
         {
             // E7paymentTVC へ
             E7paymentTVC *tvc = [[E7paymentTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxx
             tvc.title = [NSString stringWithFormat:@"E7 %@", NSLocalizedString(@"Payment list",nil)];
 #else
             tvc.title = NSLocalizedString(@"Payment list",nil); //cell.textLabel.text;
@@ -731,7 +736,7 @@
         {
             // E1card へ
             E1cardTVC *tvc = [[E1cardTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxxxx
             tvc.title = [NSString stringWithFormat:@"E1 %@", cell.textLabel.text];
 #else
             tvc.title = cell.textLabel.text;
@@ -755,7 +760,7 @@
         {
             // E8bank へ
             E8bankTVC *tvc = [[E8bankTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxx
             tvc.title = [NSString stringWithFormat:@"E8 %@", cell.textLabel.text];
 #else
             tvc.title = cell.textLabel.text;
@@ -777,7 +782,7 @@
         case 5: // 利用店一覧  E4 < E3 < E3detail
         {
             E4shopTVC *tvc = [[E4shopTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxx
             tvc.title = [NSString stringWithFormat:@"E4 %@", cell.textLabel.text];
 #else
             tvc.title = cell.textLabel.text;
@@ -798,7 +803,7 @@
         case 6: // 分類一覧  E5 < E3 < E3detail
         {
             E5categoryTVC *tvc = [[E5categoryTVC alloc] init];
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxxx
             tvc.title = [NSString stringWithFormat:@"E5 %@", cell.textLabel.text];
 #else
             tvc.title = cell.textLabel.text;
@@ -827,7 +832,33 @@
                     b1style:UIAlertActionStyleDestructive
                    b1action:^(UIAlertAction * _Nullable action) {
                        // Upload to iCloud
-                       [DataManager.singleton iCloudUpload];
+                       [DataManager.singleton iCloudUpload:^(BOOL success) {
+                           if (success) {
+                               [AZAlert target:nil
+                                         title:NSLocalizedString(@"iCloud Upload Success",nil)
+                                       message:nil
+                                       b1title:@"OK"
+                                       b1style:UIAlertActionStyleDefault
+                                      b1action:nil];
+                               // タイムスタンプ
+                               NSDateFormatter *df = [[NSDateFormatter alloc] init];
+                               df.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+                               df.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+                               NSString* zTimestamp = [df stringFromDate:[NSDate date]];
+                               // iCloud KVS へ保存
+                               NSUbiquitousKeyValueStore *ukvs = [NSUbiquitousKeyValueStore defaultStore];
+                               [ukvs setString:zTimestamp forKey:UKVS_UPLOAD_DATE];
+                               [ukvs synchronize];
+                           }
+                           else {
+                               [AZAlert target:nil
+                                         title:NSLocalizedString(@"iCloud Upload Fail",nil)
+                                       message:NSLocalizedString(@"iCloud Upload NoData",nil)
+                                       b1title:@"OK"
+                                       b1style:UIAlertActionStyleDefault
+                                      b1action:nil];
+                           }
+                       }];
                    }
                     b2title:NSLocalizedString(@"Cancel", nil)
                     b2style:UIAlertActionStyleCancel

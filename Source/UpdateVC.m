@@ -55,7 +55,9 @@
 {
     button.enabled = NO;
     // Upload to iCloud
-    [DataManager.singleton iCloudUpload];
+    [DataManager.singleton iCloudUpload:^(BOOL success) {
+        //
+    }];
 }
 
 - (IBAction)appStoreButtonTap:(UIButton *)button

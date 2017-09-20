@@ -1092,7 +1092,7 @@
 						MlbAmount.lineBreakMode = NSLineBreakByWordWrapping; // 単語を途切れさせないように改行する
                         MlbAmount.textAlignment = NSTextAlignmentLeft; //Center;
 						MlbAmount.tag = 0; // Calc入力された数値(long)を記録する
-#ifdef AzDEBUG
+#ifdef AzDEBUGxxxxxxxx
 						//MlbAmount.backgroundColor = [UIColor grayColor]; //範囲チェック用
 #endif
 						MlbAmount.font = [UIFont boldSystemFontOfSize:30];

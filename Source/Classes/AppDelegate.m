@@ -19,6 +19,7 @@
 #import "UpdateVC.h"
 #import "InformationView.h"
 
+//@import Firebase;
 
 
 //iOS6以降、回転対応のためサブクラス化が必要になった。
@@ -66,6 +67,9 @@
 //	GA_TRACK_EVENT(@"Device", @"model", [[UIDevice currentDevice] model], 0);
 //	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
 
+    // Firebase Initial
+    MBaaS* mbs = MBaaS.singleton;
+    
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
 	self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	
@@ -144,7 +148,16 @@
     }
 #endif
 	
-	return YES;
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    
+    Dropbox* dbox = [Dropbox singleton];
+    [dbox authResultWithOpenUrl:url];
+    
+    return NO;
 }
 
 

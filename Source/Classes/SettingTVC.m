@@ -10,6 +10,7 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "SettingTVC.h"
+@import Firebase;
 
 #define TAG_GD_OptEnableSchedule		974
 #define TAG_GD_OptEnableCategory		965
@@ -18,7 +19,6 @@
 #define TAG_GD_OptLoginPass2			929	//[4.0]
 #define TAG_GD_OptRoundBankers			910 //[4.0]
 #define TAG_GD_OptTaxRate				901 //[4.0]
-
 
 @interface SettingTVC (PrivateMethods)
 - (void)buttonTaxRate:(UIButton *)button;
@@ -185,7 +185,11 @@
 {
     switch (section) {
         case 0: return 3;
+#if DEBUG
+        case 1: return 3;
+#else
         case 1: return 1;
+#endif
     }
 	return 0;
 }
@@ -245,6 +249,23 @@
                                              stringByAppendingString:zTimestamp];
             }
         }
+#if DEBUG
+        if (indexPath.row == 1) {
+            // Upload to Firebase
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault; // 選択時ハイライト
+            cell.textLabel.text = @"DEBUG: Upload to Firebase";
+            NSString* filename = NSLocalizedString(@"Firebase filename",nil);
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"file name: '%@'", filename];
+        }
+        else if (indexPath.row == 2) {
+            // Download from Firebase
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault; // 選択時ハイライト
+            cell.textLabel.text = @"DEBUG: Download from Firebase";
+            NSString* filename = NSLocalizedString(@"Firebase filename",nil);
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"file name: '%@'", filename];
+        }
+#endif
+        
         return cell;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleGray; // 選択時ハイライト
@@ -354,7 +375,7 @@
             [AZAlert target:self
                  actionRect:[tableView rectForRowAtIndexPath:indexPath]
                       title:NSLocalizedString(@"iCloud Download", nil)
-                    message:NSLocalizedString(@"iCloud Download Detail", nil)
+                    message:nil
                     b1title:NSLocalizedString(@"iCloud Download OK", nil)
                     b1style:UIAlertActionStyleDestructive
                    b1action:^(UIAlertAction * _Nullable action) {
@@ -365,9 +386,116 @@
                     b2style:UIAlertActionStyleCancel
                    b2action:nil];
         }
+#if DEBUG
+        if (indexPath.row == 1) {
+            // Upload to Firebase
+            //[self fireUpload];
+            [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
+            
+            [DataManager.singleton coreExport:^(BOOL success, NSData *exportData) {
+                if (success && exportData) {
+                    Dropbox* dbox = [Dropbox singleton];
+                    NSString* firename = NSLocalizedString(@"Dropbox filename",nil);
+                    [dbox uploadWithPath:firename fileData:exportData completion:^(BOOL success) {
+                        [SVProgressHUD dismiss];
+                        if (success) {
+                            [AZAlert target:nil
+                                      title:@"Dropbox Upload OK"
+                                    message:nil
+                                    b1title:@"OK"
+                                    b1style:UIAlertActionStyleDefault
+                                   b1action:nil];
+                        }
+                    }];
+                } else {
+                    [SVProgressHUD dismiss];
+                }
+            }];
+        }
+        else if (indexPath.row == 2) {
+            // Download from Firebase
+            //[self fireDownload];
+            [SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
+            Dropbox* dbox = [Dropbox singleton];
+            NSString* firename = NSLocalizedString(@"Dropbox filename",nil);
+            [dbox downloadWithPath:firename completion:^(BOOL success, NSData * _Nullable data) {
+                if (success && data) {
+                    [DataManager.singleton coreImportData:data completion:^(BOOL success) {
+                        [SVProgressHUD dismiss];
+                        if (success) {
+                            [AZAlert target:nil
+                                      title:@"Dropbox Download OK"
+                                    message:nil
+                                    b1title:@"OK"
+                                    b1style:UIAlertActionStyleDefault
+                                   b1action:nil];
+                        }
+                    }];
+                } else {
+                    [SVProgressHUD dismiss];
+                }
+            }];
+        }
+#endif
         return;
     }
 }
+
+#pragma make - Firebase
+#if DEBUG
+- (void)fireUpload
+{
+    NSString* firename = NSLocalizedString(@"Firebase filename",nil);
+    
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
+    [DataManager.singleton saveE0:^(BOOL success, NSString *filepath) {
+        if (success) {
+            // Get a reference to the storage service using the default Firebase App
+            FIRStorage *storage = [FIRStorage storage];
+            // Create a root reference
+            FIRStorageReference *storageRef = [storage reference];
+            // Create a reference to filename
+            FIRStorageReference *uploadRef = [storageRef child:firename];
+            // filepath ---> uploadRef
+            NSURL* localUrl = [NSURL URLWithString:filepath];
+            // Upload the file to the path "images/rivers.jpg"
+            FIRStorageUploadTask *uploadTask
+            = [uploadRef putFile:localUrl metadata:nil
+                      completion:^(FIRStorageMetadata *metadata, NSError *error)
+               {
+                   [SVProgressHUD dismiss];
+                   if (error != nil) {
+                       // Uh-oh, an error occurred!
+                       [AZAlert target:nil
+                                 title:@"ERROR"
+                               message:error.localizedDescription
+                               b1title:@"OK"
+                               b1style:UIAlertActionStyleDefault
+                              b1action:nil];
+                   } else {
+                       // Metadata contains file metadata such as size, content-type, and download URL.
+                       //NSURL *downloadURL = metadata.downloadURL;
+                       [AZAlert target:nil
+                                 title:@"Fire Upload OK"
+                               message:nil
+                               b1title:@"OK"
+                               b1style:UIAlertActionStyleDefault
+                              b1action:nil];
+                   }
+               }];
+        }
+        else {
+            [SVProgressHUD dismiss];
+        }
+    }];
+}
+
+- (void)fireDownload
+{
+    NSString* firename = NSLocalizedString(@"Firebase filename",nil);
+
+}
+#endif
 
 
 #pragma make - <UITextFieldDelegate>

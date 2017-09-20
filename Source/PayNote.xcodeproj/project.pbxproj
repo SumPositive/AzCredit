@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		16DA2982CD450DA5A476C327 /* libPods-PayNotePadFree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B279FD0A86A2FE47FD971EE /* libPods-PayNotePadFree.a */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28860BE50F44EE6400985440 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28860BE40F44EE6400985440 /* CoreData.framework */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		312D57EB53DF979CAF00A82D /* Pods_PayNoteFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F621A0C5EA744D2DF97E7D1B /* Pods_PayNoteFree.framework */; };
+		41669D648145DAA65F1CB394 /* Pods_PayNotePadFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D71E35D845B99BF9D73B1942 /* Pods_PayNotePadFree.framework */; };
+		431FFC797708A62A3BF4A0CF /* Pods_PayNoteS1Pad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 967BE3C617266379868B7DC7 /* Pods_PayNoteS1Pad.framework */; };
 		440328D311D81CAA002F321B /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
 		44034761155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
 		44034762155F6BD600D1FFE4 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
@@ -361,8 +363,9 @@
 		446707261F6BC97C00707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
 		446707271F6BC98600707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
 		446707281F6BC99200707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
-		446707291F6BD31D00707A78 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4467071F1F6ACF6400707A78 /* TopViewController.swift */; };
-		4467072A1F6BD32800707A78 /* TopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 446707201F6ACF6400707A78 /* TopViewController.xib */; };
+		4467072D1F6E5FD800707A78 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4467072B1F6E5FD000707A78 /* GoogleService-Info.plist */; };
+		446707361F6F649900707A78 /* MBaaS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446707321F6F5E5100707A78 /* MBaaS.swift */; };
+		4467073D1F6F92D900707A78 /* Dropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4467073C1F6F92D900707A78 /* Dropbox.swift */; };
 		447071CA12FC4F8C00C053D2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071C912FC4F8C00C053D2 /* AudioToolbox.framework */; };
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -786,13 +789,13 @@
 		44E9101312E3018400D4B6A6 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
-		5E43277E85865A1D5F27D23B /* libPods-PayNoteBeta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5732F9F8EB7BEE1556ECF65 /* libPods-PayNoteBeta.a */; };
-		898F7BD659594C954102B745 /* libPods-PayNoteS1Pad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */; };
-		AD34C22925BC7C2FCBDDB1E9 /* libPods-PayNoteFree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CE0837D89F270B61CA7051 /* libPods-PayNoteFree.a */; };
-		F283EF8FA090E976216CE672 /* libPods-PayNote.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5E54384CCB818C7F02203BE /* libPods-PayNote.a */; };
+		CF8F945AC8565CC11DAD1AFA /* Pods_PayNoteBeta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A5D64D7EE507D61E2B02FA /* Pods_PayNoteBeta.framework */; };
+		EE429DA1A66FC82CAFFCAA58 /* Pods_PayNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A4F73C35973971C5F76FFEC /* Pods_PayNote.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00A5D64D7EE507D61E2B02FA /* Pods_PayNoteBeta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PayNoteBeta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A4F73C35973971C5F76FFEC /* Pods_PayNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PayNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -831,10 +834,13 @@
 		445C662711678D2C00DE811D /* AzCredit 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "AzCredit 2.xcdatamodel"; sourceTree = "<group>"; };
 		445CA86B1F640B1700E1B930 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/UpdateVC.xib; sourceTree = "<group>"; };
 		445CA86D1F640B2200E1B930 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/UpdateVC.xib; sourceTree = "<group>"; };
-		4467071C1F6ACF2600707A78 /* PayNoteBeta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PayNoteBeta-Bridging-Header.h"; sourceTree = "<group>"; };
-		4467071F1F6ACF6400707A78 /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
-		446707201F6ACF6400707A78 /* TopViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopViewController.xib; sourceTree = "<group>"; };
 		446707231F6BC63E00707A78 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		4467072B1F6E5FD000707A78 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		446707321F6F5E5100707A78 /* MBaaS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBaaS.swift; sourceTree = "<group>"; };
+		446707331F6F5E5100707A78 /* PayNoteBeta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PayNoteBeta-Bridging-Header.h"; sourceTree = "<group>"; };
+		446707341F6F5E5100707A78 /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
+		446707351F6F5E5100707A78 /* TopViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopViewController.xib; sourceTree = "<group>"; };
+		4467073C1F6F92D900707A78 /* Dropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dropbox.swift; sourceTree = "<group>"; };
 		447071C912FC4F8C00C053D2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		447071CD12FC4F8C00C053D2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -985,21 +991,19 @@
 		64A1A8F9745734CD00E22BEC /* Pods-PayNoteBeta.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteBeta.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteBeta/Pods-PayNoteBeta.distribution.xcconfig"; sourceTree = "<group>"; };
 		6BB9F14BB293D5A4B357EA29 /* Pods-PayNoteFree.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteFree.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteFree/Pods-PayNoteFree.distribution.xcconfig"; sourceTree = "<group>"; };
 		72A08EE4E527A3A11553F912 /* Pods-PayNotePadFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNotePadFree.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNotePadFree/Pods-PayNotePadFree.debug.xcconfig"; sourceTree = "<group>"; };
-		72CE0837D89F270B61CA7051 /* libPods-PayNoteFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNoteFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.release.xcconfig"; sourceTree = "<group>"; };
-		8B279FD0A86A2FE47FD971EE /* libPods-PayNotePadFree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNotePadFree.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.distribution.xcconfig"; sourceTree = "<group>"; };
 		8F85BDA694B8B482EC043049 /* Pods-PayNoteBeta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteBeta.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteBeta/Pods-PayNoteBeta.release.xcconfig"; sourceTree = "<group>"; };
-		A5E54384CCB818C7F02203BE /* libPods-PayNote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		967BE3C617266379868B7DC7 /* Pods_PayNoteS1Pad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PayNoteS1Pad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNote/Pods-PayNote.debug.xcconfig"; sourceTree = "<group>"; };
 		ABD9C68315265BF2ACF6F739 /* Pods-PayNoteFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteFree.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteFree/Pods-PayNoteFree.release.xcconfig"; sourceTree = "<group>"; };
-		B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNoteS1Pad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5732F9F8EB7BEE1556ECF65 /* libPods-PayNoteBeta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PayNoteBeta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteS1Pad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad.debug.xcconfig"; sourceTree = "<group>"; };
+		D71E35D845B99BF9D73B1942 /* Pods_PayNotePadFree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PayNotePadFree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteS1Pad.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad.release.xcconfig"; sourceTree = "<group>"; };
 		E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteS1Pad.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteS1Pad/Pods-PayNoteS1Pad.distribution.xcconfig"; sourceTree = "<group>"; };
 		E5F7E5B52AE5DF163DD826D1 /* Pods-PayNotePadFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNotePadFree.release.xcconfig"; path = "Pods/Target Support Files/Pods-PayNotePadFree/Pods-PayNotePadFree.release.xcconfig"; sourceTree = "<group>"; };
 		F51F554BC54D369D269CEE20 /* Pods-PayNoteBeta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PayNoteBeta.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PayNoteBeta/Pods-PayNoteBeta.debug.xcconfig"; sourceTree = "<group>"; };
+		F621A0C5EA744D2DF97E7D1B /* Pods_PayNoteFree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PayNoteFree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1022,7 +1026,7 @@
 				447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */,
 				447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */,
 				447071D012FC4F8C00C053D2 /* QuartzCore.framework in Frameworks */,
-				AD34C22925BC7C2FCBDDB1E9 /* libPods-PayNoteFree.a in Frameworks */,
+				312D57EB53DF979CAF00A82D /* Pods_PayNoteFree.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,7 +1048,7 @@
 				44325A0D1F231CA400175312 /* QuartzCore.framework in Frameworks */,
 				44325A0E1F231CA400175312 /* AVFoundation.framework in Frameworks */,
 				44325A0F1F231CA400175312 /* libsqlite3.0.dylib in Frameworks */,
-				F283EF8FA090E976216CE672 /* libPods-PayNote.a in Frameworks */,
+				EE429DA1A66FC82CAFFCAA58 /* Pods_PayNote.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1066,7 +1070,7 @@
 				44325ABA1F231DCC00175312 /* QuartzCore.framework in Frameworks */,
 				44325ABB1F231DCC00175312 /* AVFoundation.framework in Frameworks */,
 				44325ABC1F231DCC00175312 /* libsqlite3.0.dylib in Frameworks */,
-				5E43277E85865A1D5F27D23B /* libPods-PayNoteBeta.a in Frameworks */,
+				CF8F945AC8565CC11DAD1AFA /* Pods_PayNoteBeta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1089,7 +1093,7 @@
 				44C0E43413A0A2D1003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */,
 				44034761155F6BD500D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				16DA2982CD450DA5A476C327 /* libPods-PayNotePadFree.a in Frameworks */,
+				41669D648145DAA65F1CB394 /* Pods_PayNotePadFree.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1111,7 +1115,7 @@
 				44C0E65613A0A475003D0465 /* QuartzCore.framework in Frameworks */,
 				4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */,
 				44034762155F6BD600D1FFE4 /* libsqlite3.0.dylib in Frameworks */,
-				898F7BD659594C954102B745 /* libPods-PayNoteS1Pad.a in Frameworks */,
+				431FFC797708A62A3BF4A0CF /* Pods_PayNoteS1Pad.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,7 +1154,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				4467071B1F6ACEE100707A78 /* Swift */,
 				4473734D1F1C4E76000E3DAA /* Readme.h */,
 				4473734C1F1C4E76000E3DAA /* History.h */,
 				447373541F1C9058000E3DAA /* iCloud */,
@@ -1167,6 +1170,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4467072B1F6E5FD000707A78 /* GoogleService-Info.plist */,
 				4450BE131E7ED613001305D1 /* Images.xcassets */,
 				444A29381F36DABA000EEE4C /* Settings.bundle */,
 				4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */,
@@ -1203,11 +1207,11 @@
 				447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */,
 				447071CD12FC4F8C00C053D2 /* MessageUI.framework */,
 				447071CF12FC4F8C00C053D2 /* QuartzCore.framework */,
-				A5E54384CCB818C7F02203BE /* libPods-PayNote.a */,
-				B473C54FC1B46CE0D54512D9 /* libPods-PayNoteS1Pad.a */,
-				B5732F9F8EB7BEE1556ECF65 /* libPods-PayNoteBeta.a */,
-				72CE0837D89F270B61CA7051 /* libPods-PayNoteFree.a */,
-				8B279FD0A86A2FE47FD971EE /* libPods-PayNotePadFree.a */,
+				1A4F73C35973971C5F76FFEC /* Pods_PayNote.framework */,
+				00A5D64D7EE507D61E2B02FA /* Pods_PayNoteBeta.framework */,
+				F621A0C5EA744D2DF97E7D1B /* Pods_PayNoteFree.framework */,
+				D71E35D845B99BF9D73B1942 /* Pods_PayNotePadFree.framework */,
+				967BE3C617266379868B7DC7 /* Pods_PayNoteS1Pad.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1215,6 +1219,7 @@
 		4432573B1F22F2DA00175312 /* New */ = {
 			isa = PBXGroup;
 			children = (
+				446707311F6F5E5100707A78 /* Swift */,
 				4473736C1F1FA890000E3DAA /* AZAlert.h */,
 				4473736D1F1FA890000E3DAA /* AZAlert.m */,
 				447373551F1C93EC000E3DAA /* UpdateVC.h */,
@@ -1226,15 +1231,17 @@
 			name = New;
 			sourceTree = "<group>";
 		};
-		4467071B1F6ACEE100707A78 /* Swift */ = {
+		446707311F6F5E5100707A78 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				4467071C1F6ACF2600707A78 /* PayNoteBeta-Bridging-Header.h */,
-				4467071F1F6ACF6400707A78 /* TopViewController.swift */,
-				446707201F6ACF6400707A78 /* TopViewController.xib */,
+				4467073C1F6F92D900707A78 /* Dropbox.swift */,
+				446707321F6F5E5100707A78 /* MBaaS.swift */,
+				446707331F6F5E5100707A78 /* PayNoteBeta-Bridging-Header.h */,
+				446707341F6F5E5100707A78 /* TopViewController.swift */,
+				446707351F6F5E5100707A78 /* TopViewController.xib */,
 			);
 			path = Swift;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		447373541F1C9058000E3DAA /* iCloud */ = {
 			isa = PBXGroup;
@@ -2046,11 +2053,11 @@
 				44325A611F231DCC00175312 /* Icon32-CircleCheck@2x.png in Resources */,
 				44325A621F231DCC00175312 /* Icon32-Safari@2x.png in Resources */,
 				44325A631F231DCC00175312 /* Icon32-Safari.png in Resources */,
-				4467072A1F6BD32800707A78 /* TopViewController.xib in Resources */,
 				44325A641F231DCC00175312 /* Icon32-Google@2x.png in Resources */,
 				44325A651F231DCC00175312 /* Icon32-Google.png in Resources */,
 				447624A81F34BE98002F0202 /* Credit-320-3.png in Resources */,
 				44325A661F231DCC00175312 /* Icon16-Return3@2x.png in Resources */,
+				4467072D1F6E5FD800707A78 /* GoogleService-Info.plist in Resources */,
 				44325A671F231DCC00175312 /* Icon16-Return2@2x.png in Resources */,
 				44325A681F231DCC00175312 /* Icon16-Return1@2x.png in Resources */,
 				44325A691F231DCC00175312 /* Icon16-Return3.png in Resources */,
@@ -2592,6 +2599,7 @@
 				44325A991F231DCC00175312 /* EditTextVC.m in Sources */,
 				44325A9A1F231DCC00175312 /* E1editPayDayVC.m in Sources */,
 				443E7BC31F24FBFF00484342 /* CalcView.m in Sources */,
+				4467073D1F6F92D900707A78 /* Dropbox.swift in Sources */,
 				44325A9B1F231DCC00175312 /* E2invoiceTVC.m in Sources */,
 				44325A9C1F231DCC00175312 /* EditDateVC.m in Sources */,
 				44325A9D1F231DCC00175312 /* E3recordTVC.m in Sources */,
@@ -2600,7 +2608,6 @@
 				44325AA01F231DCC00175312 /* E6partTVC.m in Sources */,
 				44325AA11F231DCC00175312 /* E7paymentTVC.m in Sources */,
 				44325AA21F231DCC00175312 /* FileCsv.m in Sources */,
-				446707291F6BD31D00707A78 /* TopViewController.swift in Sources */,
 				44325AA31F231DCC00175312 /* E3selectPayTypeTVC.m in Sources */,
 				44325AA41F231DCC00175312 /* E5categoryDetailTVC.m in Sources */,
 				44325B041F23709300175312 /* DataManager.m in Sources */,
@@ -2611,6 +2618,7 @@
 				44325AAA1F231DCC00175312 /* E8bankDetailTVC.m in Sources */,
 				44325AAB1F231DCC00175312 /* E1editBonusVC.m in Sources */,
 				44325AAC1F231DCC00175312 /* E3selectRepeatTVC.m in Sources */,
+				446707361F6F649900707A78 /* MBaaS.swift in Sources */,
 				44325AAD1F231DCC00175312 /* PadRootVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
