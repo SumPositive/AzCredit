@@ -363,7 +363,7 @@
 	
 	if (MbInformationOpen) {	//initWithStyleにて判定処理している
 		MbInformationOpen = NO;	// 以後、自動初期表示しない。
-		[self azInformationView];  //[1.0.2]最初に表示する。バックグランド復帰時には通らない
+		////[self azInformationView];  //[1.0.2]最初に表示する。バックグランド復帰時には通らない
 		//----------------------------------------
 		[MocFunctions bugFix113]; //[1.1.3.0] Bugデータ修正処理、1度だけ通すため。
 		//----------------------------------------
