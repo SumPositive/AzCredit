@@ -2745,6 +2745,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 623C831C8E6E9678DE8D0DF6 /* Pods-PayNoteFree.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2784,6 +2785,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ABD9C68315265BF2ACF6F739 /* Pods-PayNoteFree.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -2820,6 +2822,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
@@ -2856,6 +2859,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
@@ -2889,6 +2893,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
@@ -3037,6 +3042,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 72A08EE4E527A3A11553F912 /* Pods-PayNotePadFree.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
@@ -3072,6 +3078,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E5F7E5B52AE5DF163DD826D1 /* Pods-PayNotePadFree.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
@@ -3104,6 +3111,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 397A4309230F1FF8CBCC9A2F /* Pods-PayNotePadFree.distribution.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNotePadFree.entitlements;
@@ -3136,6 +3144,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C4DD18A688B8EF76AD985872 /* Pods-PayNoteS1Pad.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
@@ -3172,6 +3181,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E08E5A3F247EC0BAD475126F /* Pods-PayNoteS1Pad.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
@@ -3205,6 +3215,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E3BC35FDFD931EFE4FC4C7B0 /* Pods-PayNoteS1Pad.distribution.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CODE_SIGN_ENTITLEMENTS = PayNoteS1Pad.entitlements;
@@ -3288,6 +3299,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6BB9F14BB293D5A4B357EA29 /* Pods-PayNoteFree.distribution.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconOld;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -3419,6 +3431,7 @@
 				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9AE31ED-1A19-4C7B-9C2B-4A8F1CC71A16";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = arm64;
