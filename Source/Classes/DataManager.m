@@ -187,11 +187,11 @@ UIAlertController* alertController = nil;
 - (void)iCloudDownload:(void(^)(BOOL success))completion
 {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
-    
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
         NSData* importData = [NSData dataWithContentsOfURL:[self iCloudFileUrl]];
         if (importData) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
+            //dispatch_sync(dispatch_get_main_queue(), ^{
                 [self coreImportData:importData completion:^(BOOL success) {
                     [SVProgressHUD dismiss];
                     if (success) {
@@ -200,7 +200,7 @@ UIAlertController* alertController = nil;
                         completion(NO);
                     }
                 }];
-            });
+            //});
         }else{
             [SVProgressHUD dismiss];
             completion(NO);

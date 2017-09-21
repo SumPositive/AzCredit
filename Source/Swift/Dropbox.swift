@@ -90,7 +90,7 @@ class Dropbox: NSObject {
         //let fileData = "testing data example".data(using: String.Encoding.utf8, allowLossyConversion: false)!
         // Reference after programmatic auth flow
         if let client = DropboxClientsManager.authorizedClient {
-            _ = client.files.upload(path: path, input: fileData)
+            _ = client.files.upload(path:path, mode:.overwrite, input:fileData)
                 .response { response, error in
                     if let response = response {
                         print(response)

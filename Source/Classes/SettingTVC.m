@@ -253,15 +253,15 @@
         if (indexPath.row == 1) {
             // Upload to Firebase
             cell.selectionStyle = UITableViewCellSelectionStyleDefault; // 選択時ハイライト
-            cell.textLabel.text = @"DEBUG: Upload to Firebase";
-            NSString* filename = NSLocalizedString(@"Firebase filename",nil);
+            cell.textLabel.text = @"DEBUG: Upload to Dropbox";
+            NSString* filename = NSLocalizedString(@"Dropbox filename",nil);
             cell.detailTextLabel.text = [NSString stringWithFormat:@"file name: '%@'", filename];
         }
         else if (indexPath.row == 2) {
             // Download from Firebase
             cell.selectionStyle = UITableViewCellSelectionStyleDefault; // 選択時ハイライト
-            cell.textLabel.text = @"DEBUG: Download from Firebase";
-            NSString* filename = NSLocalizedString(@"Firebase filename",nil);
+            cell.textLabel.text = @"DEBUG: Download from Dropbox";
+            NSString* filename = NSLocalizedString(@"Dropbox filename",nil);
             cell.detailTextLabel.text = [NSString stringWithFormat:@"file name: '%@'", filename];
         }
 #endif
@@ -443,58 +443,58 @@
 
 #pragma make - Firebase
 #if DEBUG
-- (void)fireUpload
-{
-    NSString* firename = NSLocalizedString(@"Firebase filename",nil);
-    
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
-    [DataManager.singleton saveE0:^(BOOL success, NSString *filepath) {
-        if (success) {
-            // Get a reference to the storage service using the default Firebase App
-            FIRStorage *storage = [FIRStorage storage];
-            // Create a root reference
-            FIRStorageReference *storageRef = [storage reference];
-            // Create a reference to filename
-            FIRStorageReference *uploadRef = [storageRef child:firename];
-            // filepath ---> uploadRef
-            NSURL* localUrl = [NSURL URLWithString:filepath];
-            // Upload the file to the path "images/rivers.jpg"
-            FIRStorageUploadTask *uploadTask
-            = [uploadRef putFile:localUrl metadata:nil
-                      completion:^(FIRStorageMetadata *metadata, NSError *error)
-               {
-                   [SVProgressHUD dismiss];
-                   if (error != nil) {
-                       // Uh-oh, an error occurred!
-                       [AZAlert target:nil
-                                 title:@"ERROR"
-                               message:error.localizedDescription
-                               b1title:@"OK"
-                               b1style:UIAlertActionStyleDefault
-                              b1action:nil];
-                   } else {
-                       // Metadata contains file metadata such as size, content-type, and download URL.
-                       //NSURL *downloadURL = metadata.downloadURL;
-                       [AZAlert target:nil
-                                 title:@"Fire Upload OK"
-                               message:nil
-                               b1title:@"OK"
-                               b1style:UIAlertActionStyleDefault
-                              b1action:nil];
-                   }
-               }];
-        }
-        else {
-            [SVProgressHUD dismiss];
-        }
-    }];
-}
-
-- (void)fireDownload
-{
-    NSString* firename = NSLocalizedString(@"Firebase filename",nil);
-
-}
+//- (void)fireUpload
+//{
+//    NSString* firename = NSLocalizedString(@"Firebase filename",nil);
+//
+//    [SVProgressHUD showWithStatus:NSLocalizedString(@"Saveing",nil)];
+//    [DataManager.singleton saveE0:^(BOOL success, NSString *filepath) {
+//        if (success) {
+//            // Get a reference to the storage service using the default Firebase App
+//            FIRStorage *storage = [FIRStorage storage];
+//            // Create a root reference
+//            FIRStorageReference *storageRef = [storage reference];
+//            // Create a reference to filename
+//            FIRStorageReference *uploadRef = [storageRef child:firename];
+//            // filepath ---> uploadRef
+//            NSURL* localUrl = [NSURL URLWithString:filepath];
+//            // Upload the file to the path "images/rivers.jpg"
+//            FIRStorageUploadTask *uploadTask
+//            = [uploadRef putFile:localUrl metadata:nil
+//                      completion:^(FIRStorageMetadata *metadata, NSError *error)
+//               {
+//                   [SVProgressHUD dismiss];
+//                   if (error != nil) {
+//                       // Uh-oh, an error occurred!
+//                       [AZAlert target:nil
+//                                 title:@"ERROR"
+//                               message:error.localizedDescription
+//                               b1title:@"OK"
+//                               b1style:UIAlertActionStyleDefault
+//                              b1action:nil];
+//                   } else {
+//                       // Metadata contains file metadata such as size, content-type, and download URL.
+//                       //NSURL *downloadURL = metadata.downloadURL;
+//                       [AZAlert target:nil
+//                                 title:@"Fire Upload OK"
+//                               message:nil
+//                               b1title:@"OK"
+//                               b1style:UIAlertActionStyleDefault
+//                              b1action:nil];
+//                   }
+//               }];
+//        }
+//        else {
+//            [SVProgressHUD dismiss];
+//        }
+//    }];
+//}
+//
+//- (void)fireDownload
+//{
+//    NSString* firename = NSLocalizedString(@"Firebase filename",nil);
+//
+//}
 #endif
 
 

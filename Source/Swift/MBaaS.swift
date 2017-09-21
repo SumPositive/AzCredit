@@ -63,7 +63,7 @@ class MBaaS: NSObject { // ObjCから使用するためNSObjectのサブクラ�
     func login( email:String!, password:String!, completion: ((Bool) -> Void)! ) -> Void {
         
         FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
-            if let user = user {
+            if user != nil {
 //                let uid = user.uid
 //                let email = user.email
 //                let photoURL = user.photoURL
@@ -90,13 +90,13 @@ class MBaaS: NSObject { // ObjCから使用するためNSObjectのサブクラ�
         
         // Upload the file to the path
         _ = sampleRef.putFile(localFile, metadata: metadata,
-                                           completion: { (metadata, error) in
-            if let error = error {
-                // Uh-oh, an error occurred!
-            } else {
-                // Metadata contains file metadata such as size, content-type, and download URL.
-                let downloadURL = metadata!.downloadURL()
-            }
+                              completion: { (metadata, error) in
+                                if error != nil {
+                                    // Uh-oh, an error occurred!
+                                } else {
+                                    // Metadata contains file metadata such as size, content-type, and download URL.
+                                    let downloadURL = metadata!.downloadURL()
+                                }
         })
     }
 
