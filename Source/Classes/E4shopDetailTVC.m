@@ -37,12 +37,12 @@
 	}
 	
     if (IS_PAD) {
-//        if (selfPopover) {
-//            [selfPopover dismissPopoverAnimated:YES];
-//        } else {
-//            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-//        }
-        [self dismissViewControllerAnimated:YES completion:nil];
+        //AzLOG(@"self.navigationController.viewControllers: %@", self.navigationController.viewControllers);
+        if (self.navigationController.viewControllers.count <= 1) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];    // < 前のViewへ戻る
+        }
 
     }else{
         [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
@@ -131,9 +131,9 @@
 		// 初期値
 		_PbAdd = NO;
 		self.Pe3edit = nil;
-        if (IS_PAD) {
-            self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = CGSizeMake(480, 250); //GD_POPOVER_SIZE;
+//        }
 	}
 	return self;
 }

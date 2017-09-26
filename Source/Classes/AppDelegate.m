@@ -67,8 +67,10 @@
 //	GA_TRACK_EVENT(@"Device", @"model", [[UIDevice currentDevice] model], 0);
 //	GA_TRACK_EVENT(@"Device", @"systemVersion", [[UIDevice currentDevice] systemVersion], 0);
 
+#if AZ_BETA
     // Firebase Initial
     MBaaS* mbs = MBaaS.singleton;
+#endif
     
     // MainWindow    ＜＜MainWindow.xlb を使用しないため、ここで生成＞＞
 	self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -151,6 +153,7 @@
     return YES;
 }
 
+#if AZ_BETA
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
     
@@ -159,6 +162,7 @@
     
     return NO;
 }
+#endif
 
 
 - (void)applicationWillResignActive:(UIApplication *)application

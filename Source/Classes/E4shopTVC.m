@@ -152,20 +152,10 @@
             MindexPathEdit = [indexPath copy];
             
             UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:e4detail];
-//            Mpopover = [[UIPopoverController alloc] initWithContentViewController:nc];
-//            Mpopover.delegate = self;	// popoverControllerDidDismissPopover:を呼び出してもらうため
-//            //[nc release];
-//            CGRect rc = [self.tableView rectForRowAtIndexPath:indexPath];
-//            rc.origin.x = rc.size.width - 40;	rc.size.width = 10;
-//            rc.origin.y += 10;	rc.size.height -= 20;
-//            [Mpopover presentPopoverFromRect:rc
-//                                      inView:self.tableView  permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-//            e4detail.selfPopover = Mpopover;  //[Mpopover release]; //(retain)  内から閉じるときに必要になる
             e4detail.delegate = self;		// refreshTable callback
             nc.modalPresentationStyle = UIModalPresentationFormSheet; // iPad画面1/4サイズ
             nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:nc animated:YES completion:nil];
-
         }
     }else{
         // 呼び出し側(親)にてツールバーを常に非表示にする

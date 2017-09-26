@@ -44,13 +44,11 @@
 	}
 	
     if (IS_PAD) {
-//        if (selfPopover) {
-//            [selfPopover dismissPopoverAnimated:YES];
-//        } else {
-//            [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
-//        }
-        [self dismissViewControllerAnimated:YES completion:nil];
-
+        if (self.navigationController.viewControllers.count <= 1) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];    // < 前のViewへ戻る
+        }
     }else{
         [self.navigationController popViewControllerAnimated:YES];	// < 前のViewへ戻る
     }
@@ -135,9 +133,9 @@
 	if (self) {
 		// 初期化成功
 		self.Pe1edit = nil;
-        if (IS_PAD) {
-            self.preferredContentSize = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
-        }
+//        if (IS_PAD) {
+//            self.preferredContentSize = CGSizeMake(480, 400); //GD_POPOVER_SIZE;
+//        }
   	}
 	return self;
 }

@@ -532,7 +532,7 @@ NSString *passCode()
 	//------------------------------------------Lable:Version
 	label = [[UILabel alloc] initWithFrame:CGRectMake(fX+100, fY+80, 200, 45)];
     
-    NSString *zDetail;
+    NSString *zDetail = @"";
 #ifdef AZ_LEGACY
     //NSString *zTitle = @"PayNote Legacy";
     zDetail = NSLocalizedString(@"Legacy version",nil);

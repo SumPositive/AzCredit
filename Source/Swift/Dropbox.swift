@@ -74,10 +74,19 @@ class Dropbox: NSObject {
             switch authResult {
             case .success:
                 print("Success! User is logged into Dropbox.")
+                AZAlert.target(nil, title: "Dropbox",
+                               message: NSLocalizedString("Successfully connected to Dropbox!", comment:""),
+                               completion: nil)
             case .cancel:
                 print("Authorization flow was manually canceled by user!")
+                AZAlert.target(nil, title: "Dropbox",
+                               message: NSLocalizedString("Canceled connection to Dropbox", comment:""),
+                               completion: nil)
             case .error(_, let description):
                 print("Error: \(description)")
+                AZAlert.target(nil, title: "Dropbox Error",
+                               message: description,
+                               completion: nil)
             }
         }
     }

@@ -10,7 +10,10 @@
 #import "Global.h"
 #import "AppDelegate.h"
 #import "SettingTVC.h"
+
+#if AZ_BETA
 @import Firebase;
+#endif
 
 #define TAG_GD_OptEnableSchedule		974
 #define TAG_GD_OptEnableCategory		965
@@ -386,7 +389,7 @@
                     b2style:UIAlertActionStyleCancel
                    b2action:nil];
         }
-#if DEBUG
+#if DEBUG && AZ_BETA
         if (indexPath.row == 1) {
             // Upload to Firebase
             //[self fireUpload];
@@ -442,7 +445,7 @@
 }
 
 #pragma make - Firebase
-#if DEBUG
+#if DEBUG && AZ_BETA
 //- (void)fireUpload
 //{
 //    NSString* firename = NSLocalizedString(@"Firebase filename",nil);

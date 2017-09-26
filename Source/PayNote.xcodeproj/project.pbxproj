@@ -26,155 +26,9 @@
 		4425D23B1425AAF4004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23E1425AB03004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
 		4425D23F1425AB04004D3747 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
-		442CD3691F2CD36A00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		442CD36A1F2CD36A00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		442CD36B1F2CD36B00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		442CD36C1F2CD36B00F7851A /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
-		443259911F231CA400175312 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
-		443259941F231CA400175312 /* Icon32-Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82740113A048B00F62E0E /* Icon32-Shop.png */; };
-		443259951F231CA400175312 /* Icon32-Category.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82741113A048B00F62E0E /* Icon32-Category.png */; };
-		443259961F231CA400175312 /* Icon32-Schedule.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82742113A048B00F62E0E /* Icon32-Schedule.png */; };
-		443259971F231CA400175312 /* Icon32-Statements.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82743113A048B00F62E0E /* Icon32-Statements.png */; };
-		443259991F231CA400175312 /* Icon32-CircleCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82746113A048B00F62E0E /* Icon32-CircleCheck.png */; };
-		4432599A1F231CA400175312 /* Icon32-Circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82747113A048B00F62E0E /* Icon32-Circle.png */; };
-		4432599B1F231CA400175312 /* Icon32-PAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82748113A048B00F62E0E /* Icon32-PAID.png */; };
-		4432599C1F231CA400175312 /* Icon32-CircleChkUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A828A2113A6B6C00F62E0E /* Icon32-CircleChkUnpaid.png */; };
-		4432599D1F231CA400175312 /* Icon32-CopyRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0D01174A3C600460EC2 /* Icon32-CopyRight.png */; };
-		4432599E1F231CA400175312 /* Icon32-CopyLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0D11174A3C600460EC2 /* Icon32-CopyLeft.png */; };
-		4432599F1F231CA400175312 /* Icon32-CopyStop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0D21174A3C600460EC2 /* Icon32-CopyStop.png */; };
-		443259A01F231CA400175312 /* Icon32-Top.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0E71174AEFA00460EC2 /* Icon32-Top.png */; };
-		443259A11F231CA400175312 /* Icon32-CopyAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0E81174AEFA00460EC2 /* Icon32-CopyAdd.png */; };
-		443259A21F231CA400175312 /* Icon32-NearPC.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AFB15411D5113A007CBFC9 /* Icon32-NearPC.png */; };
-		443259A31F231CA400175312 /* akihiro-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA33F411D78FAA00856A35 /* akihiro-320.jpg */; };
-		443259A41F231CA400175312 /* azuki-480.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA346E11D79C0D00856A35 /* azuki-480.jpg */; };
-		443259A51F231CA400175312 /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
-		443259A61F231CA400175312 /* Icon32-Bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A26D11DC75E200665A58 /* Icon32-Bank.png */; };
-		443259A71F231CA400175312 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
-		443259A81F231CA400175312 /* Icon32-Top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7312FD49E900703AEC /* Icon32-Top@2x.png */; };
-		443259A91F231CA400175312 /* Icon32-NearPC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7412FD49E900703AEC /* Icon32-NearPC@2x.png */; };
-		443259AA1F231CA400175312 /* Icon32-Bank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7512FD49E900703AEC /* Icon32-Bank@2x.png */; };
-		443259AB1F231CA400175312 /* Icon32-Circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7612FD49E900703AEC /* Icon32-Circle@2x.png */; };
-		443259AC1F231CA400175312 /* Icon32-Category@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7712FD49E900703AEC /* Icon32-Category@2x.png */; };
-		443259AD1F231CA400175312 /* Icon32-Shop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7812FD49E900703AEC /* Icon32-Shop@2x.png */; };
-		443259AE1F231CA400175312 /* Icon32-Schedule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7912FD49E900703AEC /* Icon32-Schedule@2x.png */; };
-		443259AF1F231CA400175312 /* Icon32-Statements@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7A12FD49E900703AEC /* Icon32-Statements@2x.png */; };
-		443259B01F231CA400175312 /* Icon32-PAID@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7C12FD49E900703AEC /* Icon32-PAID@2x.png */; };
-		443259B11F231CA400175312 /* Icon32-CircleChkUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7D12FD49E900703AEC /* Icon32-CircleChkUnpaid@2x.png */; };
-		443259B21F231CA400175312 /* Icon32-CircleUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7E12FD49E900703AEC /* Icon32-CircleUnpaid@2x.png */; };
-		443259B41F231CA400175312 /* Icon32-CircleCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EAC12FD4C8600703AEC /* Icon32-CircleCheck@2x.png */; };
-		443259B51F231CA400175312 /* Icon32-Safari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC312FDA27F00703AEC /* Icon32-Safari@2x.png */; };
-		443259B61F231CA400175312 /* Icon32-Safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC412FDA27F00703AEC /* Icon32-Safari.png */; };
-		443259B71F231CA400175312 /* Icon32-Google@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC512FDA27F00703AEC /* Icon32-Google@2x.png */; };
-		443259B81F231CA400175312 /* Icon32-Google.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC612FDA27F00703AEC /* Icon32-Google.png */; };
-		443259B91F231CA400175312 /* Icon16-Return3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC712FDA27F00703AEC /* Icon16-Return3@2x.png */; };
-		443259BA1F231CA400175312 /* Icon16-Return2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC812FDA27F00703AEC /* Icon16-Return2@2x.png */; };
-		443259BB1F231CA400175312 /* Icon16-Return1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC912FDA27F00703AEC /* Icon16-Return1@2x.png */; };
-		443259BC1F231CA400175312 /* Icon16-Return3.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECA12FDA27F00703AEC /* Icon16-Return3.png */; };
-		443259BD1F231CA400175312 /* Icon16-Return2.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECB12FDA27F00703AEC /* Icon16-Return2.png */; };
-		443259BE1F231CA400175312 /* Icon16-Return1.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECC12FDA27F00703AEC /* Icon16-Return1.png */; };
-		443259BF1F231CA400175312 /* Icon16-Information.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECD12FDA27F00703AEC /* Icon16-Information.png */; };
-		443259C11F231CA400175312 /* Icon16-Information@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECE12FDA27F00703AEC /* Icon16-Information@2x.png */; };
-		443259C21F231CA400175312 /* Icon16-Setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECF12FDA27F00703AEC /* Icon16-Setting@2x.png */; };
-		443259C31F231CA400175312 /* Icon16-Setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ED012FDA27F00703AEC /* Icon16-Setting.png */; };
-		443259C41F231CA400175312 /* Icon-DrumPush.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE012FDA61400703AEC /* Icon-DrumPush.png */; };
-		443259C51F231CA400175312 /* Icon-DrumPush@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE112FDA61400703AEC /* Icon-DrumPush@2x.png */; };
-		443259C61F231CA400175312 /* Icon-Drum@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE212FDA61400703AEC /* Icon-Drum@2x.png */; };
-		443259C71F231CA400175312 /* Icon-Drum.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE312FDA61400703AEC /* Icon-Drum.png */; };
-		443259C81F231CA400175312 /* Icon32-CopyRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5612FDABBB00703AEC /* Icon32-CopyRight@2x.png */; };
-		443259C91F231CA400175312 /* Icon32-CopyLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5712FDABBB00703AEC /* Icon32-CopyLeft@2x.png */; };
-		443259CA1F231CA400175312 /* Icon32-CopyStop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5812FDABBB00703AEC /* Icon32-CopyStop@2x.png */; };
-		443259CB1F231CA400175312 /* Icon32-CopyAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5912FDABBB00703AEC /* Icon32-CopyAdd@2x.png */; };
-		443259CC1F231CA400175312 /* Icon32-Check.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5F12FDAE7800703AEC /* Icon32-Check.png */; };
-		443259CD1F231CA400175312 /* Icon32-Check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F6012FDAE7800703AEC /* Icon32-Check@2x.png */; };
-		443259CE1F231CA400175312 /* Icon32-GreenPlus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC1131A113E000AE46F /* Icon32-GreenPlus@2x.png */; };
-		443259CF1F231CA400175312 /* Icon32-GreenPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC2131A113E000AE46F /* Icon32-GreenPlus.png */; };
-		443259D01F231CA400175312 /* Icon32-Recipient.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC5131A16E0000AE46F /* Icon32-Recipient.png */; };
-		443259D11F231CA400175312 /* Icon32-Recipient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC6131A16E0000AE46F /* Icon32-Recipient@2x.png */; };
-		443259D21F231CA400175312 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
-		443259D31F231CA400175312 /* Icon32-Clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */; };
-		443259D41F231CA400175312 /* Icon90x70-toUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D613C5B63100859E45 /* Icon90x70-toUnpaid.png */; };
-		443259D51F231CA400175312 /* Icon90x70-toUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D713C5B63100859E45 /* Icon90x70-toUnpaid@2x.png */; };
-		443259D61F231CA400175312 /* Icon90x70-toPAID@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D813C5B63100859E45 /* Icon90x70-toPAID@2x.png */; };
-		443259D71F231CA400175312 /* Icon90x70-toPAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D913C5B63100859E45 /* Icon90x70-toPAID.png */; };
-		443259D81F231CA400175312 /* Icon32-Setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B413D1F29D00EB9B2B /* Icon32-Setting@2x.png */; };
-		443259D91F231CA400175312 /* Icon32-Setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B513D1F29D00EB9B2B /* Icon32-Setting.png */; };
-		443259DA1F231CA400175312 /* Icon32-Information.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B613D1F29D00EB9B2B /* Icon32-Information.png */; };
-		443259DB1F231CA400175312 /* Icon32-Information@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B713D1F29D00EB9B2B /* Icon32-Information@2x.png */; };
-		443259DF1F231CA400175312 /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
-		443259E01F231CA400175312 /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
-		443259E11F231CA400175312 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
-		443259E21F231CA400175312 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
-		443259E31F231CA400175312 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4457518310C7A65900419205 /* Entity.m */; };
-		443259E41F231CA400175312 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
-		443259E51F231CA400175312 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
-		443259E61F231CA400175312 /* TopMenuTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B332CE1123B6AA007D3A15 /* TopMenuTVC.m */; };
-		443259E71F231CA400175312 /* E1cardTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B332D31123B756007D3A15 /* E1cardTVC.m */; };
-		443259E81F231CA400175312 /* AzCredit.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */; };
-		443259E91F231CA400175312 /* AzCredit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */; };
-		443259EA1F231CA400175312 /* E3recordDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7168F1123F309005423CB /* E3recordDetailTVC.m */; };
-		443259EB1F231CA400175312 /* E1cardDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7179E11244E52005423CB /* E1cardDetailTVC.m */; };
-		443259EC1F231CA400175312 /* EditTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B85E8D1125B5A900383A34 /* EditTextVC.m */; };
-		443259ED1F231CA400175312 /* E1editPayDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B605F51126FADD00E82C54 /* E1editPayDayVC.m */; };
-		443259EE1F231CA400175312 /* E2invoiceTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7351511279ACB00997A37 /* E2invoiceTVC.m */; };
-		443259EF1F231CA400175312 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
-		443259F01F231CA400175312 /* E3recordTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D00C3E112CCC25001BC4C8 /* E3recordTVC.m */; };
-		443259F11F231CA400175312 /* E4shopDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ABA3A1112FB92D0009E62E /* E4shopDetailTVC.m */; };
-		443259F21F231CA400175312 /* E4shopTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ABA3A3112FB92D0009E62E /* E4shopTVC.m */; };
-		443259F31F231CA400175312 /* E6partTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD48891132B6B900FB19FB /* E6partTVC.m */; };
-		443259F41F231CA400175312 /* E7paymentTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */; };
-		443259F51F231CA400175312 /* FileCsv.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DDFF113BE60B00DE9242 /* FileCsv.m */; };
-		443259F61F231CA400175312 /* E3selectPayTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD35D7113EB7A900E40BD0 /* E3selectPayTypeTVC.m */; };
-		443259F71F231CA400175312 /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
-		443259F81F231CA400175312 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
-		443259F91F231CA400175312 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
-		443259FA1F231CA400175312 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
-		443259FC1F231CA400175312 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
-		443259FD1F231CA400175312 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
-		443259FE1F231CA400175312 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
-		443259FF1F231CA400175312 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
-		44325A001F231CA400175312 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
-		44325A031F231CA400175312 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374641361DDF200F36E36 /* SystemConfiguration.framework */; };
-		44325A041F231CA400175312 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		44325A051F231CA400175312 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		44325A061F231CA400175312 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
-		44325A071F231CA400175312 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28860BE40F44EE6400985440 /* CoreData.framework */; };
-		44325A081F231CA400175312 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C2A7D41108AD3C006445DC /* Security.framework */; };
-		44325A091F231CA400175312 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8FFD711D033AA00F03B0F /* CFNetwork.framework */; };
-		44325A0A1F231CA400175312 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071C912FC4F8C00C053D2 /* AudioToolbox.framework */; };
-		44325A0B1F231CA400175312 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
-		44325A0C1F231CA400175312 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		44325A0D1F231CA400175312 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
-		44325A0E1F231CA400175312 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
-		44325A0F1F231CA400175312 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
-		44325A121F231CA400175312 /* PayNote_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */; };
-		44325A131F231CA400175312 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
-		44325A141F231CA400175312 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
-		44325A151F231CA400175312 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
-		44325A161F231CA400175312 /* E3recordDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7168E1123F309005423CB /* E3recordDetailTVC.h */; };
-		44325A171F231CA400175312 /* E1cardDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7179D11244E51005423CB /* E1cardDetailTVC.h */; };
-		44325A181F231CA400175312 /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
-		44325A191F231CA400175312 /* AZAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473736C1F1FA890000E3DAA /* AZAlert.h */; };
-		44325A1A1F231CA400175312 /* E1editPayDayVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B605F41126FADD00E82C54 /* E1editPayDayVC.h */; };
-		44325A1B1F231CA400175312 /* E2invoiceTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7351411279ACB00997A37 /* E2invoiceTVC.h */; };
-		44325A1C1F231CA400175312 /* EditDateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 440AC51411299DBE00B89317 /* EditDateVC.h */; };
-		44325A1D1F231CA400175312 /* E3recordTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D00C3D112CCC25001BC4C8 /* E3recordTVC.h */; };
-		44325A1E1F231CA400175312 /* E4shopDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ABA3A0112FB92D0009E62E /* E4shopDetailTVC.h */; };
-		44325A1F1F231CA400175312 /* E4shopTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ABA3A2112FB92D0009E62E /* E4shopTVC.h */; };
-		44325A201F231CA400175312 /* E6partTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD488A1132B6B900FB19FB /* E6partTVC.h */; };
-		44325A211F231CA400175312 /* E7paymentTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */; };
-		44325A221F231CA400175312 /* FileCsv.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DDFE113BE60B00DE9242 /* FileCsv.h */; };
-		44325A231F231CA400175312 /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
-		44325A241F231CA400175312 /* E3selectPayTypeTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */; };
-		44325A251F231CA400175312 /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
-		44325A261F231CA400175312 /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
-		44325A271F231CA400175312 /* MocFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ACA0C0114E698B000E9FD8 /* MocFunctions.h */; };
-		44325A281F231CA400175312 /* CalcView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A68B6211685110004A89ED /* CalcView.h */; };
-		44325A291F231CA400175312 /* E8bankDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */; };
-		44325A2A1F231CA400175312 /* E8bankTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4162011DB8446007DEB5B /* E8bankTVC.h */; };
-		44325A2B1F231CA400175312 /* E1editBonusVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */; };
-		44325A2C1F231CA400175312 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
-		44325A2D1F231CA400175312 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
-		44325A2F1F231CA400175312 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
 		44325A3E1F231DCC00175312 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
 		44325A411F231DCC00175312 /* Icon32-Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82740113A048B00F62E0E /* Icon32-Shop.png */; };
 		44325A421F231DCC00175312 /* Icon32-Category.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82741113A048B00F62E0E /* Icon32-Category.png */; };
@@ -320,7 +174,6 @@
 		44325AD91F231DCC00175312 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
 		44325ADA1F231DCC00175312 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
 		44325ADC1F231DCC00175312 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
-		44325AEE1F2323A500175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
 		44325AF01F2327CA00175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
 		44325AF11F2327CB00175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
 		44325AF21F2327CC00175312 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
@@ -329,24 +182,20 @@
 		44325AFB1F2334BA00175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFC1F2334BC00175312 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		44325AFF1F23709200175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
-		44325B001F23709200175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
 		44325B011F23709200175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
 		44325B021F23709300175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
 		44325B031F23709300175312 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
 		44325B041F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
-		44325B051F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		44325B061F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		44325B071F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		44325B081F23709300175312 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
 		44325B0B1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
-		44325B0C1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B0D1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B0E1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B0F1F246CC400175312 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
 		44325B101F246DEC00175312 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
 		443E7BC31F24FBFF00484342 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
 		444A29391F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
-		444A293A1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293B1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293C1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
 		444A293D1F36DABA000EEE4C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
@@ -362,10 +211,167 @@
 		446707251F6BC97200707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
 		446707261F6BC97C00707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
 		446707271F6BC98600707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
-		446707281F6BC99200707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
 		4467072D1F6E5FD800707A78 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4467072B1F6E5FD000707A78 /* GoogleService-Info.plist */; };
 		446707361F6F649900707A78 /* MBaaS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446707321F6F5E5100707A78 /* MBaaS.swift */; };
 		4467073D1F6F92D900707A78 /* Dropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4467073C1F6F92D900707A78 /* Dropbox.swift */; };
+		446707411F7A967F00707A78 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 448A5631110DF1DB003ACF5F /* Localizable.strings */; };
+		446707421F7A967F00707A78 /* Icon32-Shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82740113A048B00F62E0E /* Icon32-Shop.png */; };
+		446707431F7A967F00707A78 /* Icon32-Category.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82741113A048B00F62E0E /* Icon32-Category.png */; };
+		446707441F7A967F00707A78 /* Icon32-Schedule.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82742113A048B00F62E0E /* Icon32-Schedule.png */; };
+		446707451F7A967F00707A78 /* Icon32-Statements.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82743113A048B00F62E0E /* Icon32-Statements.png */; };
+		446707461F7A967F00707A78 /* Icon32-CircleCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82746113A048B00F62E0E /* Icon32-CircleCheck.png */; };
+		446707471F7A967F00707A78 /* Icon32-Circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82747113A048B00F62E0E /* Icon32-Circle.png */; };
+		446707481F7A967F00707A78 /* Icon32-PAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A82748113A048B00F62E0E /* Icon32-PAID.png */; };
+		446707491F7A967F00707A78 /* Icon32-CircleChkUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A828A2113A6B6C00F62E0E /* Icon32-CircleChkUnpaid.png */; };
+		4467074A1F7A967F00707A78 /* Icon32-CopyRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0D01174A3C600460EC2 /* Icon32-CopyRight.png */; };
+		4467074B1F7A967F00707A78 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44325AEB1F23239D00175312 /* InfoPlist.strings */; };
+		4467074C1F7A967F00707A78 /* Icon32-CopyLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0D11174A3C600460EC2 /* Icon32-CopyLeft.png */; };
+		4467074D1F7A967F00707A78 /* Icon32-CopyStop.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0D21174A3C600460EC2 /* Icon32-CopyStop.png */; };
+		4467074E1F7A967F00707A78 /* Icon32-Top.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0E71174AEFA00460EC2 /* Icon32-Top.png */; };
+		4467074F1F7A967F00707A78 /* Icon32-CopyAdd.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A3D0E81174AEFA00460EC2 /* Icon32-CopyAdd.png */; };
+		446707501F7A967F00707A78 /* Icon32-NearPC.png in Resources */ = {isa = PBXBuildFile; fileRef = 44AFB15411D5113A007CBFC9 /* Icon32-NearPC.png */; };
+		446707511F7A967F00707A78 /* akihiro-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA33F411D78FAA00856A35 /* akihiro-320.jpg */; };
+		446707521F7A967F00707A78 /* azuki-480.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 44BA346E11D79C0D00856A35 /* azuki-480.jpg */; };
+		446707531F7A967F00707A78 /* azuki-320.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 440328D211D81CAA002F321B /* azuki-320.jpg */; };
+		446707541F7A967F00707A78 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 444A29381F36DABA000EEE4C /* Settings.bundle */; };
+		446707551F7A967F00707A78 /* Icon32-Bank.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A8A26D11DC75E200665A58 /* Icon32-Bank.png */; };
+		446707561F7A967F00707A78 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
+		446707571F7A967F00707A78 /* Icon32-Top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7312FD49E900703AEC /* Icon32-Top@2x.png */; };
+		446707581F7A967F00707A78 /* Icon32-NearPC@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7412FD49E900703AEC /* Icon32-NearPC@2x.png */; };
+		446707591F7A967F00707A78 /* Icon32-Bank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7512FD49E900703AEC /* Icon32-Bank@2x.png */; };
+		4467075A1F7A967F00707A78 /* Icon32-Circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7612FD49E900703AEC /* Icon32-Circle@2x.png */; };
+		4467075B1F7A967F00707A78 /* Icon32-Category@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7712FD49E900703AEC /* Icon32-Category@2x.png */; };
+		4467075C1F7A967F00707A78 /* Icon32-Shop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7812FD49E900703AEC /* Icon32-Shop@2x.png */; };
+		4467075D1F7A967F00707A78 /* Icon32-Schedule@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7912FD49E900703AEC /* Icon32-Schedule@2x.png */; };
+		4467075E1F7A967F00707A78 /* Icon32-Statements@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7A12FD49E900703AEC /* Icon32-Statements@2x.png */; };
+		4467075F1F7A967F00707A78 /* Icon32-PAID@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7C12FD49E900703AEC /* Icon32-PAID@2x.png */; };
+		446707601F7A967F00707A78 /* Icon32-CircleChkUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7D12FD49E900703AEC /* Icon32-CircleChkUnpaid@2x.png */; };
+		446707611F7A967F00707A78 /* Icon32-CircleUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6E7E12FD49E900703AEC /* Icon32-CircleUnpaid@2x.png */; };
+		446707621F7A967F00707A78 /* Icon32-CircleCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EAC12FD4C8600703AEC /* Icon32-CircleCheck@2x.png */; };
+		446707631F7A967F00707A78 /* Icon32-Safari@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC312FDA27F00703AEC /* Icon32-Safari@2x.png */; };
+		446707641F7A967F00707A78 /* Icon32-Safari.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC412FDA27F00703AEC /* Icon32-Safari.png */; };
+		446707651F7A967F00707A78 /* Icon32-Google@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC512FDA27F00703AEC /* Icon32-Google@2x.png */; };
+		446707661F7A967F00707A78 /* Icon32-Google.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC612FDA27F00703AEC /* Icon32-Google.png */; };
+		446707671F7A967F00707A78 /* Credit-320-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-3.png */; };
+		446707681F7A967F00707A78 /* Icon16-Return3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC712FDA27F00703AEC /* Icon16-Return3@2x.png */; };
+		446707691F7A967F00707A78 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4467072B1F6E5FD000707A78 /* GoogleService-Info.plist */; };
+		4467076A1F7A967F00707A78 /* Icon16-Return2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC812FDA27F00703AEC /* Icon16-Return2@2x.png */; };
+		4467076B1F7A967F00707A78 /* Icon16-Return1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EC912FDA27F00703AEC /* Icon16-Return1@2x.png */; };
+		4467076C1F7A967F00707A78 /* Icon16-Return3.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECA12FDA27F00703AEC /* Icon16-Return3.png */; };
+		4467076D1F7A967F00707A78 /* Icon16-Return2.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECB12FDA27F00703AEC /* Icon16-Return2.png */; };
+		4467076E1F7A967F00707A78 /* Icon16-Return1.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECC12FDA27F00703AEC /* Icon16-Return1.png */; };
+		4467076F1F7A967F00707A78 /* Icon16-Information.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECD12FDA27F00703AEC /* Icon16-Information.png */; };
+		446707701F7A967F00707A78 /* Icon16-Information@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECE12FDA27F00703AEC /* Icon16-Information@2x.png */; };
+		446707711F7A967F00707A78 /* Icon16-Setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ECF12FDA27F00703AEC /* Icon16-Setting@2x.png */; };
+		446707721F7A967F00707A78 /* Icon16-Setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6ED012FDA27F00703AEC /* Icon16-Setting.png */; };
+		446707731F7A967F00707A78 /* Icon-DrumPush.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE012FDA61400703AEC /* Icon-DrumPush.png */; };
+		446707741F7A967F00707A78 /* Icon-DrumPush@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE112FDA61400703AEC /* Icon-DrumPush@2x.png */; };
+		446707751F7A967F00707A78 /* Icon-Drum@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE212FDA61400703AEC /* Icon-Drum@2x.png */; };
+		446707761F7A967F00707A78 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
+		446707771F7A967F00707A78 /* Icon-Drum.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6EE312FDA61400703AEC /* Icon-Drum.png */; };
+		446707781F7A967F00707A78 /* Icon32-CopyRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5612FDABBB00703AEC /* Icon32-CopyRight@2x.png */; };
+		446707791F7A967F00707A78 /* Icon32-CopyLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5712FDABBB00703AEC /* Icon32-CopyLeft@2x.png */; };
+		4467077A1F7A967F00707A78 /* Icon32-CopyStop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5812FDABBB00703AEC /* Icon32-CopyStop@2x.png */; };
+		4467077B1F7A967F00707A78 /* Icon32-CopyAdd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5912FDABBB00703AEC /* Icon32-CopyAdd@2x.png */; };
+		4467077C1F7A967F00707A78 /* Icon32-Check.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F5F12FDAE7800703AEC /* Icon32-Check.png */; };
+		4467077D1F7A967F00707A78 /* Icon32-Check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44BC6F6012FDAE7800703AEC /* Icon32-Check@2x.png */; };
+		4467077E1F7A967F00707A78 /* Icon32-GreenPlus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC1131A113E000AE46F /* Icon32-GreenPlus@2x.png */; };
+		4467077F1F7A967F00707A78 /* Icon32-GreenPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC2131A113E000AE46F /* Icon32-GreenPlus.png */; };
+		446707801F7A967F00707A78 /* Icon32-Recipient.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC5131A16E0000AE46F /* Icon32-Recipient.png */; };
+		446707811F7A967F00707A78 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 44325B0A1F246CC400175312 /* Launch Screen.storyboard */; };
+		446707821F7A967F00707A78 /* Icon32-Recipient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44A10FC6131A16E0000AE46F /* Icon32-Recipient@2x.png */; };
+		446707831F7A967F00707A78 /* Icon32-Clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEB13B4E56E005CBE85 /* Icon32-Clear.png */; };
+		446707841F7A967F00707A78 /* Icon32-Clear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44931BEC13B4E56E005CBE85 /* Icon32-Clear@2x.png */; };
+		446707851F7A967F00707A78 /* Icon90x70-toUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D613C5B63100859E45 /* Icon90x70-toUnpaid.png */; };
+		446707861F7A967F00707A78 /* Icon90x70-toUnpaid@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D713C5B63100859E45 /* Icon90x70-toUnpaid@2x.png */; };
+		446707871F7A967F00707A78 /* Icon90x70-toPAID@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D813C5B63100859E45 /* Icon90x70-toPAID@2x.png */; };
+		446707881F7A967F00707A78 /* Icon90x70-toPAID.png in Resources */ = {isa = PBXBuildFile; fileRef = 44CB03D913C5B63100859E45 /* Icon90x70-toPAID.png */; };
+		446707891F7A967F00707A78 /* Icon32-Setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B413D1F29D00EB9B2B /* Icon32-Setting@2x.png */; };
+		4467078A1F7A967F00707A78 /* Icon32-Setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B513D1F29D00EB9B2B /* Icon32-Setting.png */; };
+		4467078B1F7A967F00707A78 /* Icon32-Information.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B613D1F29D00EB9B2B /* Icon32-Information.png */; };
+		4467078C1F7A967F00707A78 /* Icon32-Information@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 44C4B7B713D1F29D00EB9B2B /* Icon32-Information@2x.png */; };
+		4467078E1F7A967F00707A78 /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
+		4467078F1F7A967F00707A78 /* UpdateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 447373561F1C93EC000E3DAA /* UpdateVC.m */; };
+		446707901F7A967F00707A78 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		446707911F7A967F00707A78 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
+		446707921F7A967F00707A78 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4457518310C7A65900419205 /* Entity.m */; };
+		446707931F7A967F00707A78 /* InformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4483449C10F2235B0078FEF6 /* InformationView.m */; };
+		446707941F7A967F00707A78 /* SettingTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 448549021115726F00D10CC8 /* SettingTVC.m */; };
+		446707951F7A967F00707A78 /* TopMenuTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B332CE1123B6AA007D3A15 /* TopMenuTVC.m */; };
+		446707961F7A967F00707A78 /* E1cardTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B332D31123B756007D3A15 /* E1cardTVC.m */; };
+		446707971F7A967F00707A78 /* AzCredit.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 44B333791123E97A007D3A15 /* AzCredit.xcmappingmodel */; };
+		446707981F7A967F00707A78 /* AzCredit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44B3339C1123EE2F007D3A15 /* AzCredit.xcdatamodeld */; };
+		446707991F7A967F00707A78 /* E3recordDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7168F1123F309005423CB /* E3recordDetailTVC.m */; };
+		4467079A1F7A967F00707A78 /* E1cardDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7179E11244E52005423CB /* E1cardDetailTVC.m */; };
+		4467079B1F7A967F00707A78 /* EditTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B85E8D1125B5A900383A34 /* EditTextVC.m */; };
+		4467079C1F7A967F00707A78 /* E1editPayDayVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44B605F51126FADD00E82C54 /* E1editPayDayVC.m */; };
+		4467079D1F7A967F00707A78 /* CalcView.m in Sources */ = {isa = PBXBuildFile; fileRef = 443E7BC21F24FBFF00484342 /* CalcView.m */; };
+		4467079E1F7A967F00707A78 /* Dropbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4467073C1F6F92D900707A78 /* Dropbox.swift */; };
+		4467079F1F7A967F00707A78 /* E2invoiceTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D7351511279ACB00997A37 /* E2invoiceTVC.m */; };
+		446707A01F7A967F00707A78 /* EditDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 440AC51511299DBE00B89317 /* EditDateVC.m */; };
+		446707A11F7A967F00707A78 /* E3recordTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44D00C3E112CCC25001BC4C8 /* E3recordTVC.m */; };
+		446707A21F7A967F00707A78 /* E4shopDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ABA3A1112FB92D0009E62E /* E4shopDetailTVC.m */; };
+		446707A31F7A967F00707A78 /* E4shopTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ABA3A3112FB92D0009E62E /* E4shopTVC.m */; };
+		446707A41F7A967F00707A78 /* E6partTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD48891132B6B900FB19FB /* E6partTVC.m */; };
+		446707A51F7A967F00707A78 /* E7paymentTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A19FDE11367A3B00DE0113 /* E7paymentTVC.m */; };
+		446707A61F7A967F00707A78 /* FileCsv.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A3DDFF113BE60B00DE9242 /* FileCsv.m */; };
+		446707A71F7A967F00707A78 /* E3selectPayTypeTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44AD35D7113EB7A900E40BD0 /* E3selectPayTypeTVC.m */; };
+		446707A81F7A967F00707A78 /* E5categoryDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C987114941930063621D /* E5categoryDetailTVC.m */; };
+		446707A91F7A967F00707A78 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44325AFE1F23709200175312 /* DataManager.m */; };
+		446707AA1F7A967F00707A78 /* E5categoryTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4454C988114941930063621D /* E5categoryTVC.m */; };
+		446707AB1F7A967F00707A78 /* MocFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACA0C1114E698B000E9FD8 /* MocFunctions.m */; };
+		446707AC1F7A967F00707A78 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
+		446707AD1F7A967F00707A78 /* E8bankTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161D11DB8446007DEB5B /* E8bankTVC.m */; };
+		446707AE1F7A967F00707A78 /* E8bankDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A4161E11DB8446007DEB5B /* E8bankDetailTVC.m */; };
+		446707AF1F7A967F00707A78 /* E1editBonusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A5AB3C11DF7CCD00C9A093 /* E1editBonusVC.m */; };
+		446707B01F7A967F00707A78 /* E3selectRepeatTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44E9101112E3018400D4B6A6 /* E3selectRepeatTVC.m */; };
+		446707B11F7A967F00707A78 /* MBaaS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 446707321F6F5E5100707A78 /* MBaaS.swift */; };
+		446707B21F7A967F00707A78 /* PadRootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C0E7EF13A110BA003D0465 /* PadRootVC.m */; };
+		446707B41F7A967F00707A78 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 446707231F6BC63E00707A78 /* StoreKit.framework */; };
+		446707B51F7A967F00707A78 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44D374641361DDF200F36E36 /* SystemConfiguration.framework */; };
+		446707B61F7A967F00707A78 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		446707B71F7A967F00707A78 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		446707B81F7A967F00707A78 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		446707B91F7A967F00707A78 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28860BE40F44EE6400985440 /* CoreData.framework */; };
+		446707BA1F7A967F00707A78 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C2A7D41108AD3C006445DC /* Security.framework */; };
+		446707BB1F7A967F00707A78 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A8FFD711D033AA00F03B0F /* CFNetwork.framework */; };
+		446707BC1F7A967F00707A78 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071C912FC4F8C00C053D2 /* AudioToolbox.framework */; };
+		446707BD1F7A967F00707A78 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
+		446707BE1F7A967F00707A78 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		446707BF1F7A967F00707A78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CF12FC4F8C00C053D2 /* QuartzCore.framework */; };
+		446707C01F7A967F00707A78 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4425D23A1425AAF4004D3747 /* AVFoundation.framework */; };
+		446707C11F7A967F00707A78 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 441377FD155BD5C6008047FC /* libsqlite3.0.dylib */; };
+		446707C21F7A967F00707A78 /* Pods_PayNoteBeta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A5D64D7EE507D61E2B02FA /* Pods_PayNoteBeta.framework */; };
+		446707C41F7A967F00707A78 /* PayNote_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 4486955F10F5ABCC00AD02D8 /* PayNote_Prefix.pch */; };
+		446707C51F7A967F00707A78 /* SettingTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 448549031115726F00D10CC8 /* SettingTVC.h */; };
+		446707C61F7A967F00707A78 /* TopMenuTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332CF1123B6AA007D3A15 /* TopMenuTVC.h */; };
+		446707C71F7A967F00707A78 /* E1cardTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B332D21123B756007D3A15 /* E1cardTVC.h */; };
+		446707C81F7A967F00707A78 /* E3recordDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7168E1123F309005423CB /* E3recordDetailTVC.h */; };
+		446707C91F7A967F00707A78 /* E1cardDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7179D11244E51005423CB /* E1cardDetailTVC.h */; };
+		446707CA1F7A967F00707A78 /* EditTextVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B85E8C1125B5A900383A34 /* EditTextVC.h */; };
+		446707CB1F7A967F00707A78 /* AZAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 4473736C1F1FA890000E3DAA /* AZAlert.h */; };
+		446707CC1F7A967F00707A78 /* DataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 44325AFD1F23709200175312 /* DataManager.h */; };
+		446707CD1F7A967F00707A78 /* E1editPayDayVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44B605F41126FADD00E82C54 /* E1editPayDayVC.h */; };
+		446707CE1F7A967F00707A78 /* E2invoiceTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D7351411279ACB00997A37 /* E2invoiceTVC.h */; };
+		446707CF1F7A967F00707A78 /* EditDateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 440AC51411299DBE00B89317 /* EditDateVC.h */; };
+		446707D01F7A967F00707A78 /* E3recordTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44D00C3D112CCC25001BC4C8 /* E3recordTVC.h */; };
+		446707D11F7A967F00707A78 /* E4shopDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ABA3A0112FB92D0009E62E /* E4shopDetailTVC.h */; };
+		446707D21F7A967F00707A78 /* E4shopTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ABA3A2112FB92D0009E62E /* E4shopTVC.h */; };
+		446707D31F7A967F00707A78 /* E6partTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD488A1132B6B900FB19FB /* E6partTVC.h */; };
+		446707D41F7A967F00707A78 /* E7paymentTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A19FDD11367A3B00DE0113 /* E7paymentTVC.h */; };
+		446707D51F7A967F00707A78 /* FileCsv.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A3DDFE113BE60B00DE9242 /* FileCsv.h */; };
+		446707D61F7A967F00707A78 /* UpdateVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 447373551F1C93EC000E3DAA /* UpdateVC.h */; };
+		446707D71F7A967F00707A78 /* E3selectPayTypeTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44AD35D8113EB7A900E40BD0 /* E3selectPayTypeTVC.h */; };
+		446707D81F7A967F00707A78 /* E5categoryTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C989114941930063621D /* E5categoryTVC.h */; };
+		446707D91F7A967F00707A78 /* E5categoryDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 4454C98A114941930063621D /* E5categoryDetailTVC.h */; };
+		446707DA1F7A967F00707A78 /* MocFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 44ACA0C0114E698B000E9FD8 /* MocFunctions.h */; };
+		446707DB1F7A967F00707A78 /* CalcView.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A68B6211685110004A89ED /* CalcView.h */; };
+		446707DC1F7A967F00707A78 /* E8bankDetailTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4161F11DB8446007DEB5B /* E8bankDetailTVC.h */; };
+		446707DD1F7A967F00707A78 /* E8bankTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A4162011DB8446007DEB5B /* E8bankTVC.h */; };
+		446707DE1F7A967F00707A78 /* E1editBonusVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44A5AB3B11DF7CCD00C9A093 /* E1editBonusVC.h */; };
+		446707DF1F7A967F00707A78 /* E3selectRepeatTVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44E9101012E3018300D4B6A6 /* E3selectRepeatTVC.h */; };
+		446707E01F7A967F00707A78 /* PadRootVC.h in Headers */ = {isa = PBXBuildFile; fileRef = 44C0E7F013A110BA003D0465 /* PadRootVC.h */; };
+		446707E11F7A967F00707A78 /* Global.h in Headers */ = {isa = PBXBuildFile; fileRef = 449312B410F0D5A700C6C8E5 /* Global.h */; };
 		447071CA12FC4F8C00C053D2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071C912FC4F8C00C053D2 /* AudioToolbox.framework */; };
 		447071CC12FC4F8C00C053D2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */; };
 		447071CE12FC4F8C00C053D2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 447071CD12FC4F8C00C053D2 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -383,9 +389,7 @@
 		447373741F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
 		447373751F1FA890000E3DAA /* AZAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 4473736D1F1FA890000E3DAA /* AZAlert.m */; };
 		447624A51F34B8BC002F0202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
-		447624A61F34B8BD002F0202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4450BE131E7ED613001305D1 /* Images.xcassets */; };
 		447624A81F34BE98002F0202 /* Credit-320-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-3.png */; };
-		447624A91F34BE98002F0202 /* Credit-320-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-3.png */; };
 		447624AA1F34BE98002F0202 /* Credit-320-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-3.png */; };
 		447624AB1F34BE98002F0202 /* Credit-320-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-3.png */; };
 		447624AC1F34BE98002F0202 /* Credit-320-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 447624A71F34BE98002F0202 /* Credit-320-3.png */; };
@@ -790,7 +794,6 @@
 		44EAA82712F44A4B00C4D156 /* Icon32-CircleUnpaid.png in Resources */ = {isa = PBXBuildFile; fileRef = 44EAA82612F44A4B00C4D156 /* Icon32-CircleUnpaid.png */; };
 		44FB5C5A11512063008DEC3E /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = 44FB5C5911512063008DEC3E /* Global.m */; };
 		CF8F945AC8565CC11DAD1AFA /* Pods_PayNoteBeta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00A5D64D7EE507D61E2B02FA /* Pods_PayNoteBeta.framework */; };
-		EE429DA1A66FC82CAFFCAA58 /* Pods_PayNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A4F73C35973971C5F76FFEC /* Pods_PayNote.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -809,7 +812,6 @@
 		440AC51511299DBE00B89317 /* EditDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EditDateVC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		441377FD155BD5C6008047FC /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4425D23A1425AAF4004D3747 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		44325A361F231CA400175312 /* PayNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44325A371F231CA500175312 /* PayNote-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNote-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNote-Info.plist"; sourceTree = "<absolute>"; };
 		44325AE31F231DCC00175312 /* PayNoteBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNoteBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44325AE41F231DCD00175312 /* PayNoteBeta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNoteBeta-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNoteBeta-Info.plist"; sourceTree = "<absolute>"; };
@@ -837,10 +839,12 @@
 		446707231F6BC63E00707A78 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		4467072B1F6E5FD000707A78 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		446707321F6F5E5100707A78 /* MBaaS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBaaS.swift; sourceTree = "<group>"; };
-		446707331F6F5E5100707A78 /* PayNoteBeta-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PayNoteBeta-Bridging-Header.h"; sourceTree = "<group>"; };
+		446707331F6F5E5100707A78 /* PayNote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PayNote-Bridging-Header.h"; sourceTree = "<group>"; };
 		446707341F6F5E5100707A78 /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
 		446707351F6F5E5100707A78 /* TopViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TopViewController.xib; sourceTree = "<group>"; };
 		4467073C1F6F92D900707A78 /* Dropbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dropbox.swift; sourceTree = "<group>"; };
+		446707E81F7A967F00707A78 /* PayNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PayNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		446707E91F7A968000707A78 /* PayNoteBeta copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "PayNoteBeta copy-Info.plist"; path = "/Users/masa/Code2017/PayNote/Source/PayNoteBeta copy-Info.plist"; sourceTree = "<absolute>"; };
 		447071C912FC4F8C00C053D2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		447071CB12FC4F8C00C053D2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		447071CD12FC4F8C00C053D2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -1030,28 +1034,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		44325A021F231CA400175312 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				446707281F6BC99200707A78 /* StoreKit.framework in Frameworks */,
-				44325A031F231CA400175312 /* SystemConfiguration.framework in Frameworks */,
-				44325A041F231CA400175312 /* Foundation.framework in Frameworks */,
-				44325A051F231CA400175312 /* UIKit.framework in Frameworks */,
-				44325A061F231CA400175312 /* CoreGraphics.framework in Frameworks */,
-				44325A071F231CA400175312 /* CoreData.framework in Frameworks */,
-				44325A081F231CA400175312 /* Security.framework in Frameworks */,
-				44325A091F231CA400175312 /* CFNetwork.framework in Frameworks */,
-				44325A0A1F231CA400175312 /* AudioToolbox.framework in Frameworks */,
-				44325A0B1F231CA400175312 /* MediaPlayer.framework in Frameworks */,
-				44325A0C1F231CA400175312 /* MessageUI.framework in Frameworks */,
-				44325A0D1F231CA400175312 /* QuartzCore.framework in Frameworks */,
-				44325A0E1F231CA400175312 /* AVFoundation.framework in Frameworks */,
-				44325A0F1F231CA400175312 /* libsqlite3.0.dylib in Frameworks */,
-				EE429DA1A66FC82CAFFCAA58 /* Pods_PayNote.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		44325AAF1F231DCC00175312 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1071,6 +1053,28 @@
 				44325ABB1F231DCC00175312 /* AVFoundation.framework in Frameworks */,
 				44325ABC1F231DCC00175312 /* libsqlite3.0.dylib in Frameworks */,
 				CF8F945AC8565CC11DAD1AFA /* Pods_PayNoteBeta.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		446707B31F7A967F00707A78 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				446707B41F7A967F00707A78 /* StoreKit.framework in Frameworks */,
+				446707B51F7A967F00707A78 /* SystemConfiguration.framework in Frameworks */,
+				446707B61F7A967F00707A78 /* Foundation.framework in Frameworks */,
+				446707B71F7A967F00707A78 /* UIKit.framework in Frameworks */,
+				446707B81F7A967F00707A78 /* CoreGraphics.framework in Frameworks */,
+				446707B91F7A967F00707A78 /* CoreData.framework in Frameworks */,
+				446707BA1F7A967F00707A78 /* Security.framework in Frameworks */,
+				446707BB1F7A967F00707A78 /* CFNetwork.framework in Frameworks */,
+				446707BC1F7A967F00707A78 /* AudioToolbox.framework in Frameworks */,
+				446707BD1F7A967F00707A78 /* MediaPlayer.framework in Frameworks */,
+				446707BE1F7A967F00707A78 /* MessageUI.framework in Frameworks */,
+				446707BF1F7A967F00707A78 /* QuartzCore.framework in Frameworks */,
+				446707C01F7A967F00707A78 /* AVFoundation.framework in Frameworks */,
+				446707C11F7A967F00707A78 /* libsqlite3.0.dylib in Frameworks */,
+				446707C21F7A967F00707A78 /* Pods_PayNoteBeta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1145,8 +1149,8 @@
 				448694E610F5A84300AD02D8 /* PayNoteFree.app */,
 				44C0E5B913A0A2D1003D0465 /* PayNotePadFree.app */,
 				44C0E7D413A0A475003D0465 /* PayNoteS1Pad.app */,
-				44325A361F231CA400175312 /* PayNote.app */,
 				44325AE31F231DCC00175312 /* PayNoteBeta.app */,
+				446707E81F7A967F00707A78 /* PayNote.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1163,6 +1167,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				8C43B28CA07FFBC217F3E466 /* Pods */,
+				446707E91F7A968000707A78 /* PayNoteBeta copy-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1236,7 +1241,7 @@
 			children = (
 				4467073C1F6F92D900707A78 /* Dropbox.swift */,
 				446707321F6F5E5100707A78 /* MBaaS.swift */,
-				446707331F6F5E5100707A78 /* PayNoteBeta-Bridging-Header.h */,
+				446707331F6F5E5100707A78 /* PayNote-Bridging-Header.h */,
 				446707341F6F5E5100707A78 /* TopViewController.swift */,
 				446707351F6F5E5100707A78 /* TopViewController.xib */,
 			);
@@ -1481,43 +1486,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		44325A111F231CA400175312 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				44325A121F231CA400175312 /* PayNote_Prefix.pch in Headers */,
-				44325A131F231CA400175312 /* SettingTVC.h in Headers */,
-				44325A141F231CA400175312 /* TopMenuTVC.h in Headers */,
-				44325A151F231CA400175312 /* E1cardTVC.h in Headers */,
-				44325A161F231CA400175312 /* E3recordDetailTVC.h in Headers */,
-				44325A171F231CA400175312 /* E1cardDetailTVC.h in Headers */,
-				44325A181F231CA400175312 /* EditTextVC.h in Headers */,
-				44325A191F231CA400175312 /* AZAlert.h in Headers */,
-				44325B001F23709200175312 /* DataManager.h in Headers */,
-				44325A1A1F231CA400175312 /* E1editPayDayVC.h in Headers */,
-				44325A1B1F231CA400175312 /* E2invoiceTVC.h in Headers */,
-				44325A1C1F231CA400175312 /* EditDateVC.h in Headers */,
-				44325A1D1F231CA400175312 /* E3recordTVC.h in Headers */,
-				44325A1E1F231CA400175312 /* E4shopDetailTVC.h in Headers */,
-				44325A1F1F231CA400175312 /* E4shopTVC.h in Headers */,
-				44325A201F231CA400175312 /* E6partTVC.h in Headers */,
-				44325A211F231CA400175312 /* E7paymentTVC.h in Headers */,
-				44325A221F231CA400175312 /* FileCsv.h in Headers */,
-				44325A231F231CA400175312 /* UpdateVC.h in Headers */,
-				44325A241F231CA400175312 /* E3selectPayTypeTVC.h in Headers */,
-				44325A251F231CA400175312 /* E5categoryTVC.h in Headers */,
-				44325A261F231CA400175312 /* E5categoryDetailTVC.h in Headers */,
-				44325A271F231CA400175312 /* MocFunctions.h in Headers */,
-				44325A281F231CA400175312 /* CalcView.h in Headers */,
-				44325A291F231CA400175312 /* E8bankDetailTVC.h in Headers */,
-				44325A2A1F231CA400175312 /* E8bankTVC.h in Headers */,
-				44325A2B1F231CA400175312 /* E1editBonusVC.h in Headers */,
-				44325A2C1F231CA400175312 /* E3selectRepeatTVC.h in Headers */,
-				44325A2D1F231CA400175312 /* PadRootVC.h in Headers */,
-				44325A2F1F231CA400175312 /* Global.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		44325ABE1F231DCC00175312 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1552,6 +1520,43 @@
 				44325AD91F231DCC00175312 /* E3selectRepeatTVC.h in Headers */,
 				44325ADA1F231DCC00175312 /* PadRootVC.h in Headers */,
 				44325ADC1F231DCC00175312 /* Global.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		446707C31F7A967F00707A78 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				446707C41F7A967F00707A78 /* PayNote_Prefix.pch in Headers */,
+				446707C51F7A967F00707A78 /* SettingTVC.h in Headers */,
+				446707C61F7A967F00707A78 /* TopMenuTVC.h in Headers */,
+				446707C71F7A967F00707A78 /* E1cardTVC.h in Headers */,
+				446707C81F7A967F00707A78 /* E3recordDetailTVC.h in Headers */,
+				446707C91F7A967F00707A78 /* E1cardDetailTVC.h in Headers */,
+				446707CA1F7A967F00707A78 /* EditTextVC.h in Headers */,
+				446707CB1F7A967F00707A78 /* AZAlert.h in Headers */,
+				446707CC1F7A967F00707A78 /* DataManager.h in Headers */,
+				446707CD1F7A967F00707A78 /* E1editPayDayVC.h in Headers */,
+				446707CE1F7A967F00707A78 /* E2invoiceTVC.h in Headers */,
+				446707CF1F7A967F00707A78 /* EditDateVC.h in Headers */,
+				446707D01F7A967F00707A78 /* E3recordTVC.h in Headers */,
+				446707D11F7A967F00707A78 /* E4shopDetailTVC.h in Headers */,
+				446707D21F7A967F00707A78 /* E4shopTVC.h in Headers */,
+				446707D31F7A967F00707A78 /* E6partTVC.h in Headers */,
+				446707D41F7A967F00707A78 /* E7paymentTVC.h in Headers */,
+				446707D51F7A967F00707A78 /* FileCsv.h in Headers */,
+				446707D61F7A967F00707A78 /* UpdateVC.h in Headers */,
+				446707D71F7A967F00707A78 /* E3selectPayTypeTVC.h in Headers */,
+				446707D81F7A967F00707A78 /* E5categoryTVC.h in Headers */,
+				446707D91F7A967F00707A78 /* E5categoryDetailTVC.h in Headers */,
+				446707DA1F7A967F00707A78 /* MocFunctions.h in Headers */,
+				446707DB1F7A967F00707A78 /* CalcView.h in Headers */,
+				446707DC1F7A967F00707A78 /* E8bankDetailTVC.h in Headers */,
+				446707DD1F7A967F00707A78 /* E8bankTVC.h in Headers */,
+				446707DE1F7A967F00707A78 /* E1editBonusVC.h in Headers */,
+				446707DF1F7A967F00707A78 /* E3selectRepeatTVC.h in Headers */,
+				446707E01F7A967F00707A78 /* PadRootVC.h in Headers */,
+				446707E11F7A967F00707A78 /* Global.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1689,27 +1694,6 @@
 			productReference = 448694E610F5A84300AD02D8 /* PayNoteFree.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4432598B1F231CA400175312 /* PayNote */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 44325A321F231CA400175312 /* Build configuration list for PBXNativeTarget "PayNote" */;
-			buildPhases = (
-				4432598C1F231CA400175312 /* [CP] Check Pods Manifest.lock */,
-				4432598D1F231CA400175312 /* Resources */,
-				443259DE1F231CA400175312 /* Sources */,
-				44325A021F231CA400175312 /* Frameworks */,
-				44325A111F231CA400175312 /* Headers */,
-				44325A301F231CA400175312 /* [CP] Embed Pods Frameworks */,
-				44325A311F231CA400175312 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = PayNote;
-			productName = iPack;
-			productReference = 44325A361F231CA400175312 /* PayNote.app */;
-			productType = "com.apple.product-type.application";
-		};
 		44325A381F231DCC00175312 /* PayNoteBeta */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44325ADF1F231DCC00175312 /* Build configuration list for PBXNativeTarget "PayNoteBeta" */;
@@ -1729,6 +1713,27 @@
 			name = PayNoteBeta;
 			productName = iPack;
 			productReference = 44325AE31F231DCC00175312 /* PayNoteBeta.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4467073E1F7A967F00707A78 /* PayNote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 446707E41F7A967F00707A78 /* Build configuration list for PBXNativeTarget "PayNote" */;
+			buildPhases = (
+				4467073F1F7A967F00707A78 /* [CP] Check Pods Manifest.lock */,
+				446707401F7A967F00707A78 /* Resources */,
+				4467078D1F7A967F00707A78 /* Sources */,
+				446707B31F7A967F00707A78 /* Frameworks */,
+				446707C31F7A967F00707A78 /* Headers */,
+				446707E21F7A967F00707A78 /* [CP] Embed Pods Frameworks */,
+				446707E31F7A967F00707A78 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PayNote;
+			productName = iPack;
+			productReference = 446707E81F7A967F00707A78 /* PayNote.app */;
 			productType = "com.apple.product-type.application";
 		};
 		44C0E3B413A0A2D1003D0465 /* PayNotePadFree */ = {
@@ -1789,13 +1794,6 @@
 							};
 						};
 					};
-					4432598B1F231CA400175312 = {
-						SystemCapabilities = {
-							com.apple.iCloud = {
-								enabled = 1;
-							};
-						};
-					};
 					44325A381F231DCC00175312 = {
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
@@ -1838,7 +1836,7 @@
 			projectDirPath = "";
 			projectRoot = AzukiSoft;
 			targets = (
-				4432598B1F231CA400175312 /* PayNote */,
+				4467073E1F7A967F00707A78 /* PayNote */,
 				44325A381F231DCC00175312 /* PayNoteBeta */,
 				1D6058900D05DD3D006BFB54 /* PayNoteFree */,
 				44C0E5DA13A0A475003D0465 /* PayNoteS1Pad */,
@@ -1931,88 +1929,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4432598D1F231CA400175312 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				443259911F231CA400175312 /* Localizable.strings in Resources */,
-				443259941F231CA400175312 /* Icon32-Shop.png in Resources */,
-				443259951F231CA400175312 /* Icon32-Category.png in Resources */,
-				443259961F231CA400175312 /* Icon32-Schedule.png in Resources */,
-				443259971F231CA400175312 /* Icon32-Statements.png in Resources */,
-				443259991F231CA400175312 /* Icon32-CircleCheck.png in Resources */,
-				4432599A1F231CA400175312 /* Icon32-Circle.png in Resources */,
-				44325AEE1F2323A500175312 /* InfoPlist.strings in Resources */,
-				4432599B1F231CA400175312 /* Icon32-PAID.png in Resources */,
-				4432599C1F231CA400175312 /* Icon32-CircleChkUnpaid.png in Resources */,
-				4432599D1F231CA400175312 /* Icon32-CopyRight.png in Resources */,
-				4432599E1F231CA400175312 /* Icon32-CopyLeft.png in Resources */,
-				4432599F1F231CA400175312 /* Icon32-CopyStop.png in Resources */,
-				443259A01F231CA400175312 /* Icon32-Top.png in Resources */,
-				443259A11F231CA400175312 /* Icon32-CopyAdd.png in Resources */,
-				443259A21F231CA400175312 /* Icon32-NearPC.png in Resources */,
-				443259A31F231CA400175312 /* akihiro-320.jpg in Resources */,
-				443259A41F231CA400175312 /* azuki-480.jpg in Resources */,
-				443259A51F231CA400175312 /* azuki-320.jpg in Resources */,
-				444A293A1F36DABA000EEE4C /* Settings.bundle in Resources */,
-				443259A61F231CA400175312 /* Icon32-Bank.png in Resources */,
-				443259A71F231CA400175312 /* Icon32-CircleUnpaid.png in Resources */,
-				443259A81F231CA400175312 /* Icon32-Top@2x.png in Resources */,
-				443259A91F231CA400175312 /* Icon32-NearPC@2x.png in Resources */,
-				443259AA1F231CA400175312 /* Icon32-Bank@2x.png in Resources */,
-				443259AB1F231CA400175312 /* Icon32-Circle@2x.png in Resources */,
-				443259AC1F231CA400175312 /* Icon32-Category@2x.png in Resources */,
-				443259AD1F231CA400175312 /* Icon32-Shop@2x.png in Resources */,
-				443259AE1F231CA400175312 /* Icon32-Schedule@2x.png in Resources */,
-				443259AF1F231CA400175312 /* Icon32-Statements@2x.png in Resources */,
-				443259B01F231CA400175312 /* Icon32-PAID@2x.png in Resources */,
-				443259B11F231CA400175312 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
-				443259B21F231CA400175312 /* Icon32-CircleUnpaid@2x.png in Resources */,
-				443259B41F231CA400175312 /* Icon32-CircleCheck@2x.png in Resources */,
-				443259B51F231CA400175312 /* Icon32-Safari@2x.png in Resources */,
-				443259B61F231CA400175312 /* Icon32-Safari.png in Resources */,
-				443259B71F231CA400175312 /* Icon32-Google@2x.png in Resources */,
-				443259B81F231CA400175312 /* Icon32-Google.png in Resources */,
-				447624A91F34BE98002F0202 /* Credit-320-3.png in Resources */,
-				443259B91F231CA400175312 /* Icon16-Return3@2x.png in Resources */,
-				443259BA1F231CA400175312 /* Icon16-Return2@2x.png in Resources */,
-				443259BB1F231CA400175312 /* Icon16-Return1@2x.png in Resources */,
-				443259BC1F231CA400175312 /* Icon16-Return3.png in Resources */,
-				443259BD1F231CA400175312 /* Icon16-Return2.png in Resources */,
-				443259BE1F231CA400175312 /* Icon16-Return1.png in Resources */,
-				443259BF1F231CA400175312 /* Icon16-Information.png in Resources */,
-				443259C11F231CA400175312 /* Icon16-Information@2x.png in Resources */,
-				443259C21F231CA400175312 /* Icon16-Setting@2x.png in Resources */,
-				443259C31F231CA400175312 /* Icon16-Setting.png in Resources */,
-				443259C41F231CA400175312 /* Icon-DrumPush.png in Resources */,
-				443259C51F231CA400175312 /* Icon-DrumPush@2x.png in Resources */,
-				443259C61F231CA400175312 /* Icon-Drum@2x.png in Resources */,
-				447624A61F34B8BD002F0202 /* Images.xcassets in Resources */,
-				443259C71F231CA400175312 /* Icon-Drum.png in Resources */,
-				443259C81F231CA400175312 /* Icon32-CopyRight@2x.png in Resources */,
-				443259C91F231CA400175312 /* Icon32-CopyLeft@2x.png in Resources */,
-				443259CA1F231CA400175312 /* Icon32-CopyStop@2x.png in Resources */,
-				443259CB1F231CA400175312 /* Icon32-CopyAdd@2x.png in Resources */,
-				443259CC1F231CA400175312 /* Icon32-Check.png in Resources */,
-				443259CD1F231CA400175312 /* Icon32-Check@2x.png in Resources */,
-				443259CE1F231CA400175312 /* Icon32-GreenPlus@2x.png in Resources */,
-				443259CF1F231CA400175312 /* Icon32-GreenPlus.png in Resources */,
-				443259D01F231CA400175312 /* Icon32-Recipient.png in Resources */,
-				44325B0C1F246CC400175312 /* Launch Screen.storyboard in Resources */,
-				443259D11F231CA400175312 /* Icon32-Recipient@2x.png in Resources */,
-				443259D21F231CA400175312 /* Icon32-Clear.png in Resources */,
-				443259D31F231CA400175312 /* Icon32-Clear@2x.png in Resources */,
-				443259D41F231CA400175312 /* Icon90x70-toUnpaid.png in Resources */,
-				443259D51F231CA400175312 /* Icon90x70-toUnpaid@2x.png in Resources */,
-				443259D61F231CA400175312 /* Icon90x70-toPAID@2x.png in Resources */,
-				443259D71F231CA400175312 /* Icon90x70-toPAID.png in Resources */,
-				443259D81F231CA400175312 /* Icon32-Setting@2x.png in Resources */,
-				443259D91F231CA400175312 /* Icon32-Setting.png in Resources */,
-				443259DA1F231CA400175312 /* Icon32-Information.png in Resources */,
-				443259DB1F231CA400175312 /* Icon32-Information@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		44325A3A1F231DCC00175312 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2093,6 +2009,89 @@
 				44325A861F231DCC00175312 /* Icon32-Setting.png in Resources */,
 				44325A871F231DCC00175312 /* Icon32-Information.png in Resources */,
 				44325A881F231DCC00175312 /* Icon32-Information@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		446707401F7A967F00707A78 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				446707411F7A967F00707A78 /* Localizable.strings in Resources */,
+				446707421F7A967F00707A78 /* Icon32-Shop.png in Resources */,
+				446707431F7A967F00707A78 /* Icon32-Category.png in Resources */,
+				446707441F7A967F00707A78 /* Icon32-Schedule.png in Resources */,
+				446707451F7A967F00707A78 /* Icon32-Statements.png in Resources */,
+				446707461F7A967F00707A78 /* Icon32-CircleCheck.png in Resources */,
+				446707471F7A967F00707A78 /* Icon32-Circle.png in Resources */,
+				446707481F7A967F00707A78 /* Icon32-PAID.png in Resources */,
+				446707491F7A967F00707A78 /* Icon32-CircleChkUnpaid.png in Resources */,
+				4467074A1F7A967F00707A78 /* Icon32-CopyRight.png in Resources */,
+				4467074B1F7A967F00707A78 /* InfoPlist.strings in Resources */,
+				4467074C1F7A967F00707A78 /* Icon32-CopyLeft.png in Resources */,
+				4467074D1F7A967F00707A78 /* Icon32-CopyStop.png in Resources */,
+				4467074E1F7A967F00707A78 /* Icon32-Top.png in Resources */,
+				4467074F1F7A967F00707A78 /* Icon32-CopyAdd.png in Resources */,
+				446707501F7A967F00707A78 /* Icon32-NearPC.png in Resources */,
+				446707511F7A967F00707A78 /* akihiro-320.jpg in Resources */,
+				446707521F7A967F00707A78 /* azuki-480.jpg in Resources */,
+				446707531F7A967F00707A78 /* azuki-320.jpg in Resources */,
+				446707541F7A967F00707A78 /* Settings.bundle in Resources */,
+				446707551F7A967F00707A78 /* Icon32-Bank.png in Resources */,
+				446707561F7A967F00707A78 /* Icon32-CircleUnpaid.png in Resources */,
+				446707571F7A967F00707A78 /* Icon32-Top@2x.png in Resources */,
+				446707581F7A967F00707A78 /* Icon32-NearPC@2x.png in Resources */,
+				446707591F7A967F00707A78 /* Icon32-Bank@2x.png in Resources */,
+				4467075A1F7A967F00707A78 /* Icon32-Circle@2x.png in Resources */,
+				4467075B1F7A967F00707A78 /* Icon32-Category@2x.png in Resources */,
+				4467075C1F7A967F00707A78 /* Icon32-Shop@2x.png in Resources */,
+				4467075D1F7A967F00707A78 /* Icon32-Schedule@2x.png in Resources */,
+				4467075E1F7A967F00707A78 /* Icon32-Statements@2x.png in Resources */,
+				4467075F1F7A967F00707A78 /* Icon32-PAID@2x.png in Resources */,
+				446707601F7A967F00707A78 /* Icon32-CircleChkUnpaid@2x.png in Resources */,
+				446707611F7A967F00707A78 /* Icon32-CircleUnpaid@2x.png in Resources */,
+				446707621F7A967F00707A78 /* Icon32-CircleCheck@2x.png in Resources */,
+				446707631F7A967F00707A78 /* Icon32-Safari@2x.png in Resources */,
+				446707641F7A967F00707A78 /* Icon32-Safari.png in Resources */,
+				446707651F7A967F00707A78 /* Icon32-Google@2x.png in Resources */,
+				446707661F7A967F00707A78 /* Icon32-Google.png in Resources */,
+				446707671F7A967F00707A78 /* Credit-320-3.png in Resources */,
+				446707681F7A967F00707A78 /* Icon16-Return3@2x.png in Resources */,
+				446707691F7A967F00707A78 /* GoogleService-Info.plist in Resources */,
+				4467076A1F7A967F00707A78 /* Icon16-Return2@2x.png in Resources */,
+				4467076B1F7A967F00707A78 /* Icon16-Return1@2x.png in Resources */,
+				4467076C1F7A967F00707A78 /* Icon16-Return3.png in Resources */,
+				4467076D1F7A967F00707A78 /* Icon16-Return2.png in Resources */,
+				4467076E1F7A967F00707A78 /* Icon16-Return1.png in Resources */,
+				4467076F1F7A967F00707A78 /* Icon16-Information.png in Resources */,
+				446707701F7A967F00707A78 /* Icon16-Information@2x.png in Resources */,
+				446707711F7A967F00707A78 /* Icon16-Setting@2x.png in Resources */,
+				446707721F7A967F00707A78 /* Icon16-Setting.png in Resources */,
+				446707731F7A967F00707A78 /* Icon-DrumPush.png in Resources */,
+				446707741F7A967F00707A78 /* Icon-DrumPush@2x.png in Resources */,
+				446707751F7A967F00707A78 /* Icon-Drum@2x.png in Resources */,
+				446707761F7A967F00707A78 /* Images.xcassets in Resources */,
+				446707771F7A967F00707A78 /* Icon-Drum.png in Resources */,
+				446707781F7A967F00707A78 /* Icon32-CopyRight@2x.png in Resources */,
+				446707791F7A967F00707A78 /* Icon32-CopyLeft@2x.png in Resources */,
+				4467077A1F7A967F00707A78 /* Icon32-CopyStop@2x.png in Resources */,
+				4467077B1F7A967F00707A78 /* Icon32-CopyAdd@2x.png in Resources */,
+				4467077C1F7A967F00707A78 /* Icon32-Check.png in Resources */,
+				4467077D1F7A967F00707A78 /* Icon32-Check@2x.png in Resources */,
+				4467077E1F7A967F00707A78 /* Icon32-GreenPlus@2x.png in Resources */,
+				4467077F1F7A967F00707A78 /* Icon32-GreenPlus.png in Resources */,
+				446707801F7A967F00707A78 /* Icon32-Recipient.png in Resources */,
+				446707811F7A967F00707A78 /* Launch Screen.storyboard in Resources */,
+				446707821F7A967F00707A78 /* Icon32-Recipient@2x.png in Resources */,
+				446707831F7A967F00707A78 /* Icon32-Clear.png in Resources */,
+				446707841F7A967F00707A78 /* Icon32-Clear@2x.png in Resources */,
+				446707851F7A967F00707A78 /* Icon90x70-toUnpaid.png in Resources */,
+				446707861F7A967F00707A78 /* Icon90x70-toUnpaid@2x.png in Resources */,
+				446707871F7A967F00707A78 /* Icon90x70-toPAID@2x.png in Resources */,
+				446707881F7A967F00707A78 /* Icon90x70-toPAID.png in Resources */,
+				446707891F7A967F00707A78 /* Icon32-Setting@2x.png in Resources */,
+				4467078A1F7A967F00707A78 /* Icon32-Setting.png in Resources */,
+				4467078B1F7A967F00707A78 /* Icon32-Information.png in Resources */,
+				4467078C1F7A967F00707A78 /* Icon32-Information@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2282,51 +2281,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		4432598C1F231CA400175312 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		44325A301F231CA400175312 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNote/Pods-PayNote-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		44325A311F231CA400175312 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNote/Pods-PayNote-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		44325A391F231DCC00175312 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2358,6 +2312,51 @@
 			showEnvVarsInLog = 0;
 		};
 		44325ADE1F231DCC00175312 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteBeta/Pods-PayNoteBeta-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4467073F1F7A967F00707A78 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		446707E21F7A967F00707A78 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PayNoteBeta/Pods-PayNoteBeta-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		446707E31F7A967F00707A78 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2537,48 +2536,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		443259DE1F231CA400175312 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				443259DF1F231CA400175312 /* AZAlert.m in Sources */,
-				443259E01F231CA400175312 /* UpdateVC.m in Sources */,
-				443259E11F231CA400175312 /* main.m in Sources */,
-				443259E21F231CA400175312 /* AppDelegate.m in Sources */,
-				443259E31F231CA400175312 /* Entity.m in Sources */,
-				443259E41F231CA400175312 /* InformationView.m in Sources */,
-				443259E51F231CA400175312 /* SettingTVC.m in Sources */,
-				443259E61F231CA400175312 /* TopMenuTVC.m in Sources */,
-				443259E71F231CA400175312 /* E1cardTVC.m in Sources */,
-				443259E81F231CA400175312 /* AzCredit.xcmappingmodel in Sources */,
-				443259E91F231CA400175312 /* AzCredit.xcdatamodeld in Sources */,
-				443259EA1F231CA400175312 /* E3recordDetailTVC.m in Sources */,
-				443259EB1F231CA400175312 /* E1cardDetailTVC.m in Sources */,
-				443259EC1F231CA400175312 /* EditTextVC.m in Sources */,
-				443259ED1F231CA400175312 /* E1editPayDayVC.m in Sources */,
-				442CD3691F2CD36A00F7851A /* CalcView.m in Sources */,
-				443259EE1F231CA400175312 /* E2invoiceTVC.m in Sources */,
-				443259EF1F231CA400175312 /* EditDateVC.m in Sources */,
-				443259F01F231CA400175312 /* E3recordTVC.m in Sources */,
-				443259F11F231CA400175312 /* E4shopDetailTVC.m in Sources */,
-				443259F21F231CA400175312 /* E4shopTVC.m in Sources */,
-				443259F31F231CA400175312 /* E6partTVC.m in Sources */,
-				443259F41F231CA400175312 /* E7paymentTVC.m in Sources */,
-				443259F51F231CA400175312 /* FileCsv.m in Sources */,
-				443259F61F231CA400175312 /* E3selectPayTypeTVC.m in Sources */,
-				443259F71F231CA400175312 /* E5categoryDetailTVC.m in Sources */,
-				44325B051F23709300175312 /* DataManager.m in Sources */,
-				443259F81F231CA400175312 /* E5categoryTVC.m in Sources */,
-				443259F91F231CA400175312 /* MocFunctions.m in Sources */,
-				443259FA1F231CA400175312 /* Global.m in Sources */,
-				443259FC1F231CA400175312 /* E8bankTVC.m in Sources */,
-				443259FD1F231CA400175312 /* E8bankDetailTVC.m in Sources */,
-				443259FE1F231CA400175312 /* E1editBonusVC.m in Sources */,
-				443259FF1F231CA400175312 /* E3selectRepeatTVC.m in Sources */,
-				44325A001F231CA400175312 /* PadRootVC.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		44325A8B1F231DCC00175312 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2620,6 +2577,50 @@
 				44325AAC1F231DCC00175312 /* E3selectRepeatTVC.m in Sources */,
 				446707361F6F649900707A78 /* MBaaS.swift in Sources */,
 				44325AAD1F231DCC00175312 /* PadRootVC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4467078D1F7A967F00707A78 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4467078E1F7A967F00707A78 /* AZAlert.m in Sources */,
+				4467078F1F7A967F00707A78 /* UpdateVC.m in Sources */,
+				446707901F7A967F00707A78 /* main.m in Sources */,
+				446707911F7A967F00707A78 /* AppDelegate.m in Sources */,
+				446707921F7A967F00707A78 /* Entity.m in Sources */,
+				446707931F7A967F00707A78 /* InformationView.m in Sources */,
+				446707941F7A967F00707A78 /* SettingTVC.m in Sources */,
+				446707951F7A967F00707A78 /* TopMenuTVC.m in Sources */,
+				446707961F7A967F00707A78 /* E1cardTVC.m in Sources */,
+				446707971F7A967F00707A78 /* AzCredit.xcmappingmodel in Sources */,
+				446707981F7A967F00707A78 /* AzCredit.xcdatamodeld in Sources */,
+				446707991F7A967F00707A78 /* E3recordDetailTVC.m in Sources */,
+				4467079A1F7A967F00707A78 /* E1cardDetailTVC.m in Sources */,
+				4467079B1F7A967F00707A78 /* EditTextVC.m in Sources */,
+				4467079C1F7A967F00707A78 /* E1editPayDayVC.m in Sources */,
+				4467079D1F7A967F00707A78 /* CalcView.m in Sources */,
+				4467079E1F7A967F00707A78 /* Dropbox.swift in Sources */,
+				4467079F1F7A967F00707A78 /* E2invoiceTVC.m in Sources */,
+				446707A01F7A967F00707A78 /* EditDateVC.m in Sources */,
+				446707A11F7A967F00707A78 /* E3recordTVC.m in Sources */,
+				446707A21F7A967F00707A78 /* E4shopDetailTVC.m in Sources */,
+				446707A31F7A967F00707A78 /* E4shopTVC.m in Sources */,
+				446707A41F7A967F00707A78 /* E6partTVC.m in Sources */,
+				446707A51F7A967F00707A78 /* E7paymentTVC.m in Sources */,
+				446707A61F7A967F00707A78 /* FileCsv.m in Sources */,
+				446707A71F7A967F00707A78 /* E3selectPayTypeTVC.m in Sources */,
+				446707A81F7A967F00707A78 /* E5categoryDetailTVC.m in Sources */,
+				446707A91F7A967F00707A78 /* DataManager.m in Sources */,
+				446707AA1F7A967F00707A78 /* E5categoryTVC.m in Sources */,
+				446707AB1F7A967F00707A78 /* MocFunctions.m in Sources */,
+				446707AC1F7A967F00707A78 /* Global.m in Sources */,
+				446707AD1F7A967F00707A78 /* E8bankTVC.m in Sources */,
+				446707AE1F7A967F00707A78 /* E8bankDetailTVC.m in Sources */,
+				446707AF1F7A967F00707A78 /* E1editBonusVC.m in Sources */,
+				446707B01F7A967F00707A78 /* E3selectRepeatTVC.m in Sources */,
+				446707B11F7A967F00707A78 /* MBaaS.swift in Sources */,
+				446707B21F7A967F00707A78 /* PadRootVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2818,111 +2819,6 @@
 			};
 			name = Release;
 		};
-		44325A331F231CA400175312 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB4A1B5FFA9B4E4975EFA56A /* Pods-PayNote.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 5C2UYK6F45;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_STABLE=1";
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/PayNote-Info.plist";
-				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = arm64;
-			};
-			name = Debug;
-		};
-		44325A341F231CA400175312 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 81E64C78E5A029B2B43201B1 /* Pods-PayNote.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				DEVELOPMENT_TEAM = 5C2UYK6F45;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_STABLE=1";
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/PayNote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
-			};
-			name = Release;
-		};
-		44325A351F231CA400175312 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F0EA0856BC79FFC62CBDD28 /* Pods-PayNote.distribution.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				COPY_PHASE_STRIP = YES;
-				DEVELOPMENT_TEAM = 5C2UYK6F45;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_STABLE=1";
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/PayNote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-				STRIP_INSTALLED_PRODUCT = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
-			};
-			name = Distribution;
-		};
 		44325AE01F231DCC00175312 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F51F554BC54D369D269CEE20 /* Pods-PayNoteBeta.debug.xcconfig */;
@@ -2955,7 +2851,7 @@
 				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNoteBeta-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2994,7 +2890,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNoteBeta-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
@@ -3031,7 +2927,122 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNoteBeta-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = Distribution;
+		};
+		446707E51F7A967F00707A78 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F51F554BC54D369D269CEE20 /* Pods-PayNoteBeta.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 5C2UYK6F45;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_STABLE=1";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "PayNote-Info.plist";
+				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = arm64;
+			};
+			name = Debug;
+		};
+		446707E61F7A967F00707A78 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F85BDA694B8B482EC043049 /* Pods-PayNoteBeta.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 5C2UYK6F45;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_STABLE=1";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "PayNote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = Release;
+		};
+		446707E71F7A967F00707A78 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64A1A8F9745734CD00E22BEC /* Pods-PayNoteBeta.distribution.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = PayNote.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 5C2UYK6F45;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = PayNote_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "AZ_STABLE=1";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "PayNote-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.azukid.AzCreditS1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "425e9765-e624-4c42-b021-92fe9314cbcf";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = arm64;
@@ -3289,6 +3300,8 @@
 				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BDCEE086-4BA3-47B9-B5D9-DB934CC217C6";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "PayNote-Swift.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = arm64;
@@ -3380,6 +3393,8 @@
 				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9AE31ED-1A19-4C7B-9C2B-4A8F1CC71A16";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "PayNote-Swift.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALID_ARCHS = arm64;
@@ -3431,6 +3446,8 @@
 				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D9AE31ED-1A19-4C7B-9C2B-4A8F1CC71A16";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Swift/PayNote-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "PayNote-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -3451,22 +3468,22 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		44325A321F231CA400175312 /* Build configuration list for PBXNativeTarget "PayNote" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				44325A331F231CA400175312 /* Debug */,
-				44325A341F231CA400175312 /* Release */,
-				44325A351F231CA400175312 /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		44325ADF1F231DCC00175312 /* Build configuration list for PBXNativeTarget "PayNoteBeta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				44325AE01F231DCC00175312 /* Debug */,
 				44325AE11F231DCC00175312 /* Release */,
 				44325AE21F231DCC00175312 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		446707E41F7A967F00707A78 /* Build configuration list for PBXNativeTarget "PayNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				446707E51F7A967F00707A78 /* Debug */,
+				446707E61F7A967F00707A78 /* Release */,
+				446707E71F7A967F00707A78 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

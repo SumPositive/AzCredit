@@ -17,5 +17,7 @@
 
 #import "DataManager.h"
 
-#import "PayNoteBeta-Swift.h"
+//#if AZ_BETA
+#import "PayNote-Swift.h"
+//#endif
 

@@ -26,7 +26,10 @@
 #import "WebSiteVC.h"
 //#import "HttpServerView.h"
 #import "PadRootVC.h"
+
+#if AZ_BETA
 @import Firebase;
+#endif
 
 #define TAG_VIEW_HttpServer			118
 #define FREE_AD_OFFSET_Y			200.0
