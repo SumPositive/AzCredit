@@ -140,7 +140,7 @@ static DataManager* _singleton = nil;
 }
 
 UIAlertController* alertController = nil;
-// 読み込む
+// 読み込む（開始アラートから）
 - (void)iCloudDownloadAlert
 {
     [AZAlert target:nil
@@ -150,40 +150,47 @@ UIAlertController* alertController = nil;
             b1style:UIAlertActionStyleDestructive
            b1action:^(UIAlertAction * _Nullable action) {
                // Download to iCloud
-               [self iCloudDownload:^(BOOL success) {
-                   if (success) {
-                       [AZAlert target:nil
-                                 title:NSLocalizedString(@"iCloud Download Success",nil)
-                               message:nil
-                               b1title:@"OK"
-                               b1style:UIAlertActionStyleDefault
-                              b1action:nil];
-                       //
-                       if (IS_PAD) {
-                           // TopMenuTVCにある 「未払合計額」を再描画するための処理
-                           AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                           UINavigationController* naviLeft = [apd.mainSplit.viewControllers objectAtIndex:0];    //[0]Left
-                           TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
-                           if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {    // メソッドの存在を確認する
-                               [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
-                           }
-                       }
-                   }
-                   else {
-                       [AZAlert target:nil
-                                 title:NSLocalizedString(@"iCloud Download Fail",nil)
-                               message:NSLocalizedString(@"iCloud Download NoData",nil)
-                               b1title:@"OK"
-                               b1style:UIAlertActionStyleDefault
-                              b1action:nil];
-                   }
-               }];
+               [self iCloudDownloading];
            }
             b2title:NSLocalizedString(@"Cancel", nil)
             b2style:UIAlertActionStyleCancel
            b2action:nil];
 }
 
+// 読み込む（終了アラートまで）
+- (void)iCloudDownloading
+{
+    [self iCloudDownload:^(BOOL success) {
+        if (success) {
+            [AZAlert target:nil
+                      title:NSLocalizedString(@"iCloud Download Success",nil)
+                    message:nil
+                    b1title:@"OK"
+                    b1style:UIAlertActionStyleDefault
+                   b1action:nil];
+            //
+            if (IS_PAD) {
+                // TopMenuTVCにある 「未払合計額」を再描画するための処理
+                AppDelegate *apd = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController* naviLeft = [apd.mainSplit.viewControllers objectAtIndex:0];    //[0]Left
+                TopMenuTVC* tvc = (TopMenuTVC *)[naviLeft.viewControllers objectAtIndex:0]; //<<<.topViewControllerではダメ>>>
+                if ([tvc respondsToSelector:@selector(refreshTopMenuTVC)]) {    // メソッドの存在を確認する
+                    [tvc refreshTopMenuTVC]; // 「未払合計額」再描画を呼び出す
+                }
+            }
+        }
+        else {
+            [AZAlert target:nil
+                      title:NSLocalizedString(@"iCloud Download Fail",nil)
+                    message:NSLocalizedString(@"iCloud Download NoData",nil)
+                    b1title:@"OK"
+                    b1style:UIAlertActionStyleDefault
+                   b1action:nil];
+        }
+    }];
+}
+
+// iCloudDownload処理
 - (void)iCloudDownload:(void(^)(BOOL success))completion
 {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Loading",nil)];
@@ -207,6 +214,5 @@ UIAlertController* alertController = nil;
         }
     });
 }
-
 
 @end

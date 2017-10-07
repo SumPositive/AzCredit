@@ -30,8 +30,10 @@
 
 // iCloud
 - (void)iCloudUpload:(void(^)(BOOL success))completion;
+// 読み込む（開始アラートから）
 - (void)iCloudDownloadAlert;
-//- (void)iCloudDownload:(void(^)(BOOL success))completion;
+// 読み込む（終了アラートまで）
+- (void)iCloudDownloading;
 
 
 @end
