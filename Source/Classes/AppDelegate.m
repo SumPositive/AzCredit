@@ -144,8 +144,11 @@
         // 初起動からE3明細が0件ならば
         NSArray* arFetch = [MocFunctions select:@"E3record"  limit:1  offset:0  where:nil  sort:nil];
         if (arFetch==nil || arFetch.count<1) {
-            // iCloudから読み込む（終了アラートまで）
-            [DataManager.singleton iCloudDownloading];
+            // 遅延実行
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                // iCloudから読み込む（終了アラートまで）
+                [DataManager.singleton iCloudDownloading];
+            });
         }
     }
 #endif
